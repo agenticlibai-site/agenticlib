@@ -1,7 +1,7 @@
 export const domains = [
   {
     name: "Education",
-    slug: "education",
+    slug: "education", // ⭐ THIS IS THE FIX
     agents: [
       { name: "Cogniti", url: "https://cogniti.ai/" },
       { name: "Taskade", url: "https://www.taskade.com/agents/education" },
