@@ -108,27 +108,31 @@ const handleSearch = () => {
               </h2>
 
               <div className="flex gap-3">
-              <input
-                placeholder="Search agents..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") handleSearch();
-                }}
-                className="glass-input flex-1 px-4 py-3"
-              />
+              <div className="relative w-full">
 
-              <button
-                onClick={handleSearch}
-                className="bg-black text-white px-5 py-3 rounded-xl"
-              >
-                Explore →
-              </button>
+                <select
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      router.push(`/domains/${e.target.value}`);
+                    }
+                  }}
+                  className="glass-input w-full px-4 py-4 rounded-xl border text-zinc-700 appearance-none"
+                >
+                  <option value="">Select Domain</option>
+
+                  {domains.map((d) => (
+                    <option key={d.slug} value={d.slug}>
+                      {d.name}
+                    </option>
+                  ))}
+                </select>
+
+                {/* Arrow */}
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500">
+                  ▼
+                </div>
+
               </div>
-
-            </div>
-          </div>
-        </section>
 
         {/* ── DEMO SECTION (UPDATED) ── */}
         <section id="demo" className="py-20 text-center">
