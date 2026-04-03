@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { domains } from "../../data/agents";
 <div className="grid md:grid-cols-2 gap-6">
   {domains.map((domain) => (
     <Link key={domain.slug} href={`/domains/${domain.slug}`} className="group">
