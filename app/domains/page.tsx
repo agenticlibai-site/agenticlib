@@ -7,11 +7,11 @@ export default function DomainsPage() {
       <div className="max-w-5xl mx-auto">
         
         <h1 className="text-5xl font-semibold tracking-tight mb-4">
-          Explore Domains
+          Explore Business Domains
         </h1>
 
         <p className="text-lg text-zinc-500 mb-12">
-          Browse AI agents by domain
+          Browse AI agents by business domain
         </p>
 
         <div className="grid md:grid-cols-2 gap-6">
