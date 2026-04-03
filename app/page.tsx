@@ -149,12 +149,12 @@ const handleSearch = () => {
   </div>
 
   {/* 🚀 EXPLORE BUTTON */}
-  <button
-    onClick={handleSearch}
-    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-black text-white hover:opacity-90 transition"
-  >
-    Explore →
-  </button>
+<button
+  onClick={() => router.push("/domains")}
+  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-black text-white hover:opacity-90 transition"
+>
+  Explore →
+</button>
 
   </div>
 
