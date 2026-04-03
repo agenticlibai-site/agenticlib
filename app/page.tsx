@@ -133,6 +133,10 @@ const handleSearch = () => {
                 </div>
 
               </div>
+              </div>   {/* closes flex */}
+              </div>   {/* closes glass-card */}
+              </div>   {/* closes container */}
+              </section>  {/* closes library section */}
 
         {/* ── DEMO SECTION (UPDATED) ── */}
         <section id="demo" className="py-20 text-center">
