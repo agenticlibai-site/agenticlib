@@ -1,11 +1,15 @@
 import { domains } from "../../../data/agents";
 
-export default function DomainPage({
+export default async function DomainPage({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
-  const domain = domains.find((d) => d.slug === params.slug);
+  const { slug } = await params; // ⭐ THIS IS THE KEY
+
+  const domain = domains.find(
+    (d) => d.slug.toLowerCase() === slug.toLowerCase()
+  );
 
   if (!domain) {
     return (
@@ -21,9 +25,6 @@ export default function DomainPage({
     <main className="min-h-screen px-6 py-24">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-4xl font-semibold mb-3">{domain.name}</h1>
-        <p className="text-zinc-500 mb-8">
-          Browse through our collection of AI agents for {domain.name}
-        </p>
 
         <div className="grid gap-4">
           {domain.agents.map((agent) => (
