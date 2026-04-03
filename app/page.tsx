@@ -1,6 +1,27 @@
+"use client";
 import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { domains } from "@/data/agents";
 
 export default function Home() {
+  const [query, setQuery] = useState("");
+const router = useRouter();
+
+const handleSearch = () => {
+  const q = query.toLowerCase().trim();
+
+  const match = domains.find((d) =>
+    d.name.toLowerCase().includes(q) ||
+    d.slug.toLowerCase().includes(q)
+  );
+
+  if (match) {
+    router.push(`/domains/${match.slug}`);
+  } else {
+    router.push("/domains");
+  }
+};
   return (
     <div className="page-bg relative text-zinc-900 font-sans">
 
@@ -87,14 +108,22 @@ export default function Home() {
               </h2>
 
               <div className="flex gap-3">
-                <input
-                  placeholder="Search agents..."
-                  className="glass-input flex-1 px-4 py-3"
-                />
+              <input
+                placeholder="Search agents..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleSearch();
+                }}
+                className="glass-input flex-1 px-4 py-3"
+              />
 
-                <Link href="/domains" className="bg-black text-white px-5 py-3 rounded-xl">
-                  Explore →
-                </Link>
+              <button
+                onClick={handleSearch}
+                className="bg-black text-white px-5 py-3 rounded-xl"
+              >
+                Explore →
+              </button>
               </div>
 
             </div>
