@@ -1,11 +1,11 @@
 import { domains } from "../../../data/agents";
 
-export default async function DomainPage({
+export default function DomainPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }) {
-  const { slug } = await params;
+  const slug = params.slug;
 
   const domain = domains.find(
     (d) => d.slug.toLowerCase() === slug.toLowerCase()
