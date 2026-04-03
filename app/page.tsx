@@ -107,36 +107,60 @@ const handleSearch = () => {
                 Explore AI Agent Library
               </h2>
 
-              <div className="flex gap-3">
-              <div className="relative w-full">
+        
+<div className="flex flex-col sm:flex-row gap-4 items-center">
 
-                <select
-                  onChange={(e) => {
-                    if (e.target.value) {
-                      router.push(`/domains/${e.target.value}`);
-                    }
-                  }}
-                  className="glass-input w-full px-4 py-4 rounded-xl border text-zinc-700 appearance-none"
-                >
-                  <option value="">Select Domain</option>
+  {/* 🔍 SEARCH BAR */}
+  <input
+    type="text"
+    placeholder="Search domains..."
+    value={query}
+    onChange={(e) => setQuery(e.target.value)}
+    onKeyDown={(e) => {
+      if (e.key === "Enter") handleSearch();
+    }}
+    className="glass-input w-full sm:flex-1 px-4 py-3 rounded-xl border border-zinc-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
 
-                  {domains.map((d) => (
-                    <option key={d.slug} value={d.slug}>
-                      {d.name}
-                    </option>
-                  ))}
-                </select>
+  {/* ⬇️ DROPDOWN */}
+  <div className="relative w-full sm:w-64">
+    <select
+      onChange={(e) => {
+        if (e.target.value) {
+          router.push(`/domains/${e.target.value}`);
+        }
+      }}
+      className="glass-input w-full px-4 py-3 rounded-xl border border-zinc-300 text-zinc-700 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+      defaultValue=""
+    >
+      <option value="">Select Domain</option>
 
-                {/* Arrow */}
-                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500">
-                  ▼
-                </div>
+      {domains.map((d) => (
+        <option key={d.slug} value={d.slug}>
+          {d.name}
+        </option>
+      ))}
+    </select>
 
-              </div>
-              </div>   {/* closes flex */}
-              </div>   {/* closes glass-card */}
-              </div>   {/* closes container */}
-              </section>  {/* closes library section */}
+    {/* Arrow */}
+    <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-500">
+      ▼
+    </div>
+  </div>
+
+  {/* 🚀 EXPLORE BUTTON */}
+  <button
+    onClick={handleSearch}
+    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-black text-white hover:opacity-90 transition"
+  >
+    Explore →
+  </button>
+
+  </div>
+
+</div>   {/* closes glass-card */}
+</div>   {/* closes container */}
+</section>  {/* closes library section */}
 
         {/* ── DEMO SECTION (UPDATED) ── */}
         <section id="demo" className="py-20 text-center">
