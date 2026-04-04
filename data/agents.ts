@@ -47,8 +47,8 @@ export const domains = [
   },
 
   {
-    name: "Taxation",
-    slug: "taxation",
+    name: "Tax",
+    slug: "tax",
     agents: [
       { name: "TaxGPT", url: "https://www.taxgpt.com/" },
       { name: "Empathetic AI", url: "https://empathetic-ai.com/home" },

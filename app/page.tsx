@@ -33,35 +33,36 @@ export default function Home() {
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[300px] rounded-full" style={{ background: "rgba(249,168,212,0.12)", filter: "blur(72px)" }} />
       </div>
 
-      {/* NAVBAR (ONLY ONE NOW ✅) */}
+      {/* NAVBAR */}
       <header className="fixed top-0 inset-x-0 z-50 px-4 pt-3">
         <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md border border-white/20 shadow-sm rounded-xl px-6 h-14 flex items-center justify-between">
-         <div className="flex items-center gap-2">
-  <img
-    src="/logo.png"
-    alt="AgenticLib logo"
-    className="h-6 w-auto"
-  />
-  <span className="text-lg font-semibold tracking-tight">
-    AgenticLib
-  </span>
-</div>
 
-    <nav className="hidden md:flex items-center gap-8 text-sm text-zinc-500">
-      <a href="#library">Library</a>
-      <a href="#demo">How it works</a>
-    </nav>
+          {/* LOGO ✅ */}
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="AgenticLib logo" className="h-6 w-auto" />
+            <span className="text-lg font-semibold tracking-tight">
+              AgenticLib
+            </span>
+          </div>
 
-          <a href="#recommend" className="text-sm font-medium bg-zinc-900 text-white px-4 py-2 rounded-full">
+          <nav className="hidden md:flex items-center gap-8 text-sm text-zinc-500">
+            <a href="#library">Library</a>
+            <a href="#demo">How it works</a>
+          </nav>
+
+          <button
+            onClick={() => router.push("/recommend")}
+            className="text-sm font-medium bg-zinc-900 text-white px-4 py-2 rounded-full"
+          >
             Get started
-          </a>
+          </button>
         </div>
       </header>
 
       <main className="pt-16 relative z-10">
 
-        {/* HERO (clean — no fake navbar anymore) */}
-        <section id="recommend" className="relative max-w-6xl mx-auto px-6 pt-28 pb-20 text-center">
+        {/* HERO */}
+        <section className="relative max-w-6xl mx-auto px-6 pt-28 pb-20 text-center">
 
           <div className="inline-flex items-center gap-2 bg-white/60 border text-zinc-600 text-xs px-3 py-1.5 rounded-full mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
@@ -82,13 +83,19 @@ export default function Home() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <a href="#library" className="btn-primary px-9 py-4 rounded-full text-white">
+
+              {/* 🔥 THIS BUTTON IS NOW FIXED */}
+              <button
+                onClick={() => router.push("/recommend")}
+                className="btn-primary px-9 py-4 rounded-full text-white"
+              >
                 Get personalised AI agent recommendations →
-              </a>
+              </button>
 
               <a href="#demo" className="px-6 py-4 rounded-full border bg-white/50">
                 Watch demo
               </a>
+
             </div>
           </div>
 
