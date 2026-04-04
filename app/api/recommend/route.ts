@@ -8,39 +8,28 @@ export async function POST(req: Request) {
   try {
     console.log("🔥 API HIT");
 
-    // ✅ MOVE CLIENT HERE (fixes Vercel build error)
     const client = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY,
     });
 
     const { input } = await req.json();
 
-    // ✅ STEP 1: detect domain
     const domain = input.toLowerCase().includes("real estate")
       ? "Real Estate"
       : null;
 
-    console.log("DOMAIN:", domain);
-    console.log("TOTAL AGENTS:", agents.length);
-
-    // ✅ STEP 2: filter agents
     const filteredAgents = Array.isArray(agents)
       ? agents.filter((a: any) =>
           domain ? a["Business_Domain"] === domain : true
         )
       : [];
 
-    console.log("AFTER FILTER:", filteredAgents.length);
-    console.log("FIRST ROW:", filteredAgents[0]);
-
     if (filteredAgents.length === 0) {
       return NextResponse.json({
-        output:
-          "No agents found. Check your JSON keys (Agent_Name, Business_Domain, etc.)",
+        output: "No agents found.",
       });
     }
 
-    // ✅ STEP 3: group by agent name
     const grouped: any = {};
 
     filteredAgents.forEach((a: any) => {
@@ -74,25 +63,10 @@ export async function POST(req: Request) {
       cost: a.cost,
     }));
 
-    console.log("FINAL AGENTS:", knowledge.length);
-
-    if (knowledge.length === 0) {
-      return NextResponse.json({
-        output:
-          "Still empty → your JSON keys are mismatched. Check console logs.",
-      });
-    }
-
-    // ✅ STEP 4: call model
     const response = await client.responses.create({
       model: "gpt-4.1",
       input: `
 You are AgenticLib — an AI agent comparison engine.
-
-You MUST:
-- Compare ALL agents provided
-- NEVER invent agents
-- NEVER group them into categories
 
 AGENTS:
 ${JSON.stringify(knowledge, null, 2)}
@@ -100,38 +74,26 @@ ${JSON.stringify(knowledge, null, 2)}
 USER REQUEST:
 ${input}
 
----
-
-OUTPUT FORMAT:
-
-Agent Confirmation:
-[Best Agent Name]: [Agent Type]
-
-Straight Answer First:
-Yes/No + key limitation
-
-Comparison Table:
-| Agent | Core Capabilities | How it works | Personalisation | Cost | Deal-breakers |
-|-------|------------------|-------------|-----------------|------|----------------|
-
-RULES:
-- EACH row = ONE REAL agent
-- MINIMUM 3 agents
-- Use REAL capabilities from data
-
-Final Recommendation:
-Clear winner + why
+OUTPUT:
+- Agent Confirmation
+- Straight Answer
+- Comparison Table
+- Final Recommendation
 `,
     });
 
-    const text = response.output[0].content[0].text;
+    const text = response.output_text || "No response generated";
 
     return NextResponse.json({
       output: text,
     });
 
-  } catch (error) {
+  } catch (error: any) {
     console.error("❌ ERROR:", error);
-    return NextResponse.json({ error: "Something went wrong" });
+
+    return NextResponse.json(
+      { error: error.message || "Something went wrong" },
+      { status: 500 }
+    );
   }
 }
