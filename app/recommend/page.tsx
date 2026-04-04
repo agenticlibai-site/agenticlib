@@ -17,7 +17,7 @@ export default function RecommendPage() {
   if (!mounted) return null;
 
   const handleSubmit = async () => {
-    console.log("🚀 BUTTON CLICKED");
+    console.log("🚀 HANDLE SUBMIT CALLED");
 
     setLoading(true);
 
@@ -30,10 +30,20 @@ export default function RecommendPage() {
         body: JSON.stringify({ input }),
       });
 
+      console.log("📡 STATUS:", res.status);
+
       const data = await res.json();
-      setOutput(data.output);
+      console.log("📦 DATA:", data);
+
+      if (!res.ok) {
+        setOutput("❌ Error: " + JSON.stringify(data));
+        return;
+      }
+
+      setOutput(data.output || "No output returned");
     } catch (err) {
       console.error("❌ FETCH ERROR:", err);
+      setOutput("❌ Fetch failed");
     }
 
     setLoading(false);
@@ -71,7 +81,8 @@ export default function RecommendPage() {
         <div className="mt-10 w-full max-w-4xl">
           <div className="bg-white p-6 rounded-2xl shadow border">
 
-            <div className="prose max-w-none 
+            <div
+              className="prose max-w-none 
               [&_table]:border 
               [&_th]:border [&_td]:border 
               [&_th]:bg-gray-100 
