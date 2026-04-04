@@ -1,15 +1,17 @@
-console.log("🔥 API HIT");
+console.log("🔥 API FILE LOADED");
+
 import { OpenAI } from "openai";
 import { NextResponse } from "next/server";
 import agents from "@/data/agents.json";
 
-const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-
 export async function POST(req: Request) {
   try {
     console.log("🔥 API HIT");
+
+    // ✅ MOVE CLIENT HERE (fixes Vercel build error)
+    const client = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
 
     const { input } = await req.json();
 
@@ -21,7 +23,7 @@ export async function POST(req: Request) {
     console.log("DOMAIN:", domain);
     console.log("TOTAL AGENTS:", agents.length);
 
-    // ✅ STEP 2: filter agents (FIXED KEYS)
+    // ✅ STEP 2: filter agents
     const filteredAgents = Array.isArray(agents)
       ? agents.filter((a: any) =>
           domain ? a["Business_Domain"] === domain : true
@@ -43,7 +45,6 @@ export async function POST(req: Request) {
 
     filteredAgents.forEach((a: any) => {
       const name = a["Agent_Name"];
-
       if (!name) return;
 
       if (!grouped[name]) {
@@ -75,7 +76,6 @@ export async function POST(req: Request) {
 
     console.log("FINAL AGENTS:", knowledge.length);
 
-    // 🚨 SAFETY CHECK
     if (knowledge.length === 0) {
       return NextResponse.json({
         output:
