@@ -107,6 +107,7 @@ export default function Home() {
 
         </section>
 
+
         {/* LIBRARY */}
         <section id="library" className="py-16">
           <div className="max-w-3xl mx-auto px-6">
@@ -164,6 +165,7 @@ export default function Home() {
             </div>
           </div>
         </section>
+
 
         {/* DEMO */}
         <section id="demo" className="py-20 text-center">
@@ -243,6 +245,38 @@ export default function Home() {
 
     </div>
   </div>
+</section>
+
+{/* 🔥 SUPPORTED BY BLACKBIRD — RECTANGLE LOGO */}
+<section className="px-6 pb-12">
+
+  <div className="max-w-2xl mx-auto">
+
+    <div className="rounded-2xl p-[1.5px] bg-gradient-to-r from-pink-300/60 via-orange-200/60 to-purple-300/60 shadow-md">
+
+      <div className="backdrop-blur-2xl bg-gradient-to-br from-pink-100/10 to-orange-100/10 border border-white/5 rounded-2xl px-6 py-4">
+
+        <div className="flex items-center justify-center gap-6">
+
+          <p className="text-zinc-700/80 text-lg font-semibold">
+            Selected for Blackbird Giants
+          </p>
+
+          {/* 👇 RECTANGULAR LOGO */}
+          <img
+            src="/blackbird.png"
+            alt="Blackbird Giants"
+            className="h-14 w-auto object-contain rounded-lg"
+          />
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
 </section>
 
 <footer className="py-10 text-center text-sm text-zinc-400">
