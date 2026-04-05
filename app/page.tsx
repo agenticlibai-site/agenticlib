@@ -47,7 +47,7 @@ export default function Home() {
 
           <nav className="hidden md:flex items-center gap-8 text-sm text-zinc-500">
             <a href="#library">AI Agent Library</a>
-            <a href="#demo">How it works</a>
+            <a href="#demo">AgenticLib Platform</a>
              <button
     onClick={() => router.push("/blog")}
     className="hover:text-black transition"
