@@ -61,6 +61,7 @@ export default function RecommendPage() {
       <div className="w-full max-w-2xl bg-white p-6 rounded-2xl shadow-lg border">
 
         <textarea
+        id="input-box"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Describe your use case..."
