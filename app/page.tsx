@@ -46,7 +46,7 @@ export default function Home() {
           </div>
 
           <nav className="hidden md:flex items-center gap-8 text-sm text-zinc-500">
-            <a href="#library">Library</a>
+            <a href="#library">AI Agent Library</a>
             <a href="#demo">How it works</a>
           </nav>
 
@@ -66,7 +66,7 @@ export default function Home() {
 
           <div className="inline-flex items-center gap-2 bg-white/60 border text-zinc-600 text-xs px-3 py-1.5 rounded-full mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-            250+ agents across 90+ domains
+            250+ agents across 90+ Business Domains
           </div>
 
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-semibold mb-5">
@@ -114,7 +114,7 @@ export default function Home() {
 
                 <input
                   type="text"
-                  placeholder="Search domains..."
+                  placeholder="Search business domains..."
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={(e) => {
@@ -133,7 +133,7 @@ export default function Home() {
                     className="glass-input w-full px-4 py-3 rounded-xl border border-zinc-300 text-zinc-700 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
                     defaultValue=""
                   >
-                    <option value="">Select Domain</option>
+                    <option value="">Select Business Domain</option>
 
                     {domains.map((d) => (
                       <option key={d.slug} value={d.slug}>

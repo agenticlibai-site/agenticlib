@@ -1,4 +1,4 @@
-console.log("🔥 API FILE LOADED");
+console.log("API KEY EXISTS:", !!process.env.OPENAI_API_KEY);
 
 import { OpenAI } from "openai";
 import { NextResponse } from "next/server";
