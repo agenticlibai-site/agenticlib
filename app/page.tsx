@@ -74,12 +74,12 @@ export default function Home() {
           </h1>
 
           <p className="text-lg text-zinc-500 mb-12">
-            Tell us your use case → we compare and recommend the best agents
+            Tell us your workflow or use case → we compare and recommend the best agents
           </p>
 
           <div className="flex flex-col items-center gap-4">
             <p className="text-xs uppercase text-zinc-400">
-              No more trial and error
+          
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3">
