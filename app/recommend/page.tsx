@@ -10,8 +10,19 @@ export default function RecommendPage() {
   const [output, setOutput] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // ✅ Hydration fix
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // ✅ AUTO FOCUS (THIS WAS THE FIX)
+  useEffect(() => {
+    const el = document.getElementById("input-box") as HTMLTextAreaElement;
+
+    if (el) {
+      el.focus();
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
   }, []);
 
   if (!mounted) return null;
@@ -50,7 +61,7 @@ export default function RecommendPage() {
   };
 
   return (
-   <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 flex flex-col items-center px-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 flex flex-col items-center px-6">
 
       {/* Title */}
       <h1 className="text-4xl font-semibold mb-8 text-center">
@@ -61,7 +72,7 @@ export default function RecommendPage() {
       <div className="w-full max-w-2xl bg-white p-6 rounded-2xl shadow-lg border">
 
         <textarea
-        id="input-box"
+          id="input-box"
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Describe your use case..."
@@ -82,31 +93,30 @@ export default function RecommendPage() {
         <div className="mt-10 w-full max-w-4xl px-2">
           <div className="bg-white p-6 rounded-2xl shadow border overflow-hidden">
 
-            {/* 🔥 FIXED TABLE CONTAINER */}
-            <div className="w-full overflow-x-auto max-w-full">
+            <div className="w-full overflow-x-auto">
 
-<ReactMarkdown
-  remarkPlugins={[remarkGfm]}
-  components={{
-    table: ({ children }) => (
-      <table className="w-full min-w-[900px] border-collapse border text-sm">
-        {children}
-      </table>
-    ),
-    th: ({ children }) => (
-      <th className="border bg-gray-100 p-2 whitespace-nowrap text-left">
-        {children}
-      </th>
-    ),
-    td: ({ children }) => (
-      <td className="border p-2 whitespace-nowrap">
-        {children}
-      </td>
-    ),
-  }}
->
-  {output}
-</ReactMarkdown>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  table: ({ children }) => (
+                    <table className="w-full min-w-[900px] border-collapse border text-sm">
+                      {children}
+                    </table>
+                  ),
+                  th: ({ children }) => (
+                    <th className="border bg-gray-100 p-2 whitespace-nowrap text-left">
+                      {children}
+                    </th>
+                  ),
+                  td: ({ children }) => (
+                    <td className="border p-2 whitespace-nowrap">
+                      {children}
+                    </td>
+                  ),
+                }}
+              >
+                {output}
+              </ReactMarkdown>
 
             </div>
 
