@@ -54,7 +54,7 @@ export default function RecommendPage() {
 
       {/* Title */}
       <h1 className="text-4xl font-semibold mb-8 text-center">
-        Find the best AI agent
+        Find the best AI agent for your workflows
       </h1>
 
       {/* Input Card */}
