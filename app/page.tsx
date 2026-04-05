@@ -183,10 +183,66 @@ export default function Home() {
 
       </main>
 
-      <footer className="py-10 text-center text-sm text-zinc-400">
-        © 2026 AgenticLib
-      </footer>
+      <section className="mt-20 mb-10 px-6">
+  <div className="max-w-4xl mx-auto text-center">
+
+    <h3 className="text-lg font-semibold text-gray-600 mb-6">
+      Connect with AgenticLib
+    </h3>
+
+    <div className="flex flex-wrap justify-center gap-4">
+
+      <a
+        href="https://www.linkedin.com/company/108024233/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 px-4 py-2 rounded-full border bg-white/60 hover:bg-white hover:shadow-md transition"
+      >
+        🔗 <span>LinkedIn</span>
+      </a>
+
+      <a
+        href="mailto:agenticlib.ai@gmail.com"
+        className="flex items-center gap-2 px-4 py-2 rounded-full border bg-white/60 hover:bg-white hover:shadow-md transition"
+      >
+        ✉️ <span>Email</span>
+      </a>
+
+      <a
+        href="https://x.com/AgenticLibAI/status/1960527278087266557"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 px-4 py-2 rounded-full border bg-white/60 hover:bg-white hover:shadow-md transition"
+      >
+        𝕏 <span>X</span>
+      </a>
+
+      <a
+        href="https://www.producthunt.com/p/self-promotion/agenticlib-simplifying-your-ai-agent-discovery-journey"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 px-4 py-2 rounded-full border bg-white/60 hover:bg-white hover:shadow-md transition"
+      >
+        🟠 <span>Product Hunt</span>
+      </a>
+
+      <a
+        href="https://www.reddit.com/r/SideProject/comments/1m6bfy1/agenticlib_simplifying_your_ai_agent_discovery/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex items-center gap-2 px-4 py-2 rounded-full border bg-white/60 hover:bg-white hover:shadow-md transition"
+      >
+        👽 <span>Reddit</span>
+      </a>
 
     </div>
+  </div>
+</section>
+
+<footer className="py-10 text-center text-sm text-zinc-400">
+  © 2026 AgenticLib
+</footer>
+
+</div>
   );
 }
