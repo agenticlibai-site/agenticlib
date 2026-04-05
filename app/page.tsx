@@ -247,33 +247,22 @@ export default function Home() {
   </div>
 </section>
 
-{/* 🔥 SUPPORTED BY BLACKBIRD — RECTANGLE LOGO */}
+{/* 🔥 BLACKBIRD GIANTS CLEAN STRIP */}
 <section className="px-6 pb-12">
 
-  <div className="max-w-2xl mx-auto">
+  <div className="max-w-4xl mx-auto text-center">
 
-    <div className="rounded-2xl p-[1.5px] bg-gradient-to-r from-pink-300/60 via-orange-200/60 to-purple-300/60 shadow-md">
+    {/* TEXT */}
+    <p className="text-lg font-semibold text-zinc-800 mb-4">
+      Selected for Blackbird Giants
+    </p>
 
-      <div className="backdrop-blur-2xl bg-gradient-to-br from-pink-100/10 to-orange-100/10 border border-white/5 rounded-2xl px-6 py-4">
-
-        <div className="flex items-center justify-center gap-6">
-
-          <p className="text-zinc-700/80 text-lg font-semibold">
-            Selected for Blackbird Giants
-          </p>
-
-          {/* 👇 RECTANGULAR LOGO */}
-          <img
-            src="/blackbird.png"
-            alt="Blackbird Giants"
-            className="h-14 w-auto object-contain rounded-lg"
-          />
-
-        </div>
-
-      </div>
-
-    </div>
+    {/* IMAGE */}
+    <img
+      src="/blackbird.png"
+      alt="Blackbird Giants"
+      className="w-full h-27 object-cover rounded-2xl shadow-md"
+    />
 
   </div>
 
