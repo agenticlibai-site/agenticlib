@@ -50,7 +50,7 @@ export default function RecommendPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 flex flex-col items-center justify-center px-6">
+   <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 flex flex-col items-center px-6">
 
       {/* Title */}
       <h1 className="text-4xl font-semibold mb-8 text-center">
@@ -78,19 +78,35 @@ export default function RecommendPage() {
 
       {/* Output */}
       {output && (
-        <div className="mt-10 w-full max-w-4xl">
-          <div className="bg-white p-6 rounded-2xl shadow border">
+        <div className="mt-10 w-full max-w-4xl px-2">
+          <div className="bg-white p-6 rounded-2xl shadow border overflow-hidden">
 
-            <div
-              className="prose max-w-none 
-              [&_table]:border 
-              [&_th]:border [&_td]:border 
-              [&_th]:bg-gray-100 
-              [&_th]:p-2 [&_td]:p-2"
-            >
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                {output}
-              </ReactMarkdown>
+            {/* 🔥 FIXED TABLE CONTAINER */}
+            <div className="w-full overflow-x-auto max-w-full">
+
+<ReactMarkdown
+  remarkPlugins={[remarkGfm]}
+  components={{
+    table: ({ children }) => (
+      <table className="w-full min-w-[900px] border-collapse border text-sm">
+        {children}
+      </table>
+    ),
+    th: ({ children }) => (
+      <th className="border bg-gray-100 p-2 whitespace-nowrap text-left">
+        {children}
+      </th>
+    ),
+    td: ({ children }) => (
+      <td className="border p-2 whitespace-nowrap">
+        {children}
+      </td>
+    ),
+  }}
+>
+  {output}
+</ReactMarkdown>
+
             </div>
 
           </div>
