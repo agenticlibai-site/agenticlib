@@ -34,7 +34,7 @@ export default function Home() {
       </div>
 
       {/* NAVBAR */}
-      <header className="fixed top-0 inset-x-0 z-50 px-4 pt-3">
+      <header className="fixed top-0 inset-x-0 z-[999] px-4 pt-3 pointer-events-auto">
         <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md border border-white/20 shadow-sm rounded-xl px-6 h-14 flex items-center justify-between">
 
           {/* LOGO ✅ */}
@@ -45,19 +45,35 @@ export default function Home() {
             </span>
           </div>
 
-          <nav className="hidden md:flex items-center gap-8 text-sm text-zinc-500">
-            <a href="#library">AI Agent Library</a>
-            <a href="#demo">AgenticLib Platform</a>
-             <button
+<nav className="hidden md:flex items-center gap-8 text-sm text-zinc-500">
+
+  {/* AI Library */}
+  <a href="#library" className="hover:text-black transition">
+    AI Agent Library
+  </a>
+
+  {/* 🔥 THIS GOES TO RECOMMEND PAGE */}
+<button
+  onClick={() => router.push("/recommend")}
+  className="transition px-3 py-1 rounded-full text-zinc-500 hover:text-black hover:bg-purple-50"
+>
+  AgenticLib Platform
+</button>
+
+  {/* Blog */}
+  <button
     onClick={() => router.push("/blog")}
     className="hover:text-black transition"
   >
     Blog
   </button>
-          </nav>
+
+</nav>
 
           <button
-            onClick={() => router.push("/recommend")}
+            onClick={() => {
+  router.push("/recommend");
+}}
             className="text-sm font-medium bg-zinc-900 text-white px-4 py-2 rounded-full"
           >
             Get started
@@ -65,10 +81,10 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="pt-16 relative z-10">
+      <main className="pt-16 relative z-0">
 
         {/* HERO */}
-        <section className="relative max-w-6xl mx-auto px-6 pt-28 pb-20 text-center">
+        <section className="relative z-0 max-w-6xl mx-auto px-6 pt-28 pb-20 text-center">
 
           <div className="inline-flex items-center gap-2 bg-white/60 border text-zinc-600 text-xs px-3 py-1.5 rounded-full mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
@@ -92,7 +108,9 @@ export default function Home() {
 
               {/* 🔥 THIS BUTTON IS NOW FIXED */}
               <button
-                onClick={() => router.push("/recommend")}
+                onClick={() => {
+  router.push("/recommend");
+}}
                 className="btn-primary px-9 py-4 rounded-full text-white"
               >
                 Get personalised AI agent recommendations
