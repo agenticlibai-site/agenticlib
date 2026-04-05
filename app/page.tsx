@@ -95,7 +95,7 @@ export default function Home() {
                 onClick={() => router.push("/recommend")}
                 className="btn-primary px-9 py-4 rounded-full text-white"
               >
-                Get personalised AI agent recommendations →
+                Get personalised AI agent recommendations
               </button>
 
               <a href="#demo" className="px-6 py-4 rounded-full border bg-white/50">
