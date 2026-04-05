@@ -36,7 +36,7 @@ export const domains = [
       { name: "Sana Labs", url: "https://sanalabs.com/" },
       { name: "Lawdify", url: "https://www.lawdify.ai/" },
       { name: "Kira", url: "https://kirasystems.com/" },
-      { name: "Thomson Reuters CoCounsel", url: "https://www.thomsonreuters.com/en/cocounsel" },
+      { name: "Thomson Reuters", url: "https://www.thomsonreuters.com/en/cocounsel" },
       { name: "LeewayHertz", url: "https://www.leewayhertz.com/ai-agent-for-legal/" },
       { name: "Harvey", url: "https://www.harvey.ai/" },
       { name: "Spellbook", url: "https://www.spellbook.legal/" },
