@@ -257,12 +257,18 @@ export default function Home() {
       Selected for Blackbird Giants
     </p>
 
-    {/* IMAGE */}
-    <img
-      src="/blackbird.png"
-      alt="Blackbird Giants"
-      className="w-full h-27 object-cover rounded-2xl shadow-md"
-    />
+    {/* IMAGE (CLICKABLE) */}
+    <a 
+      href="https://www.blackbird.vc/giants" 
+      target="_blank" 
+      rel="noopener noreferrer"
+    >
+      <img
+        src="/blackbird.png"
+        alt="Blackbird Giants"
+        className="w-full h-40 object-cover object-[center_30%] rounded-2xl shadow-md cursor-pointer hover:opacity-90 hover:-translate-y-0.5 transition"
+      />
+    </a>
 
   </div>
 
