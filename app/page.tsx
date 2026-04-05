@@ -254,7 +254,7 @@ export default function Home() {
 
     {/* TEXT */}
     <p className="text-lg font-semibold text-zinc-800 mb-4">
-      Selected for Blackbird Giants
+      Selected for Blackbird (VC) Giants
     </p>
 
     {/* IMAGE (CLICKABLE) */}
