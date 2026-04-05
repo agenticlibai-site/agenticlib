@@ -5,7 +5,7 @@ import { blogs } from "@/data/blogs";
 
 export default function BlogPost() {
   const params = useParams();
-  const slug = params.slug;
+  const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
 
   const blog = blogs.find((b) => b.slug === slug);
 
@@ -28,10 +28,11 @@ export default function BlogPost() {
 
         <img
           src={blog.image}
+          alt={blog.title}
           className="w-full rounded-xl mb-6"
         />
 
-        <div className="text-zinc-700 whitespace-pre-line leading-relaxed">
+        <div className="text-zinc-700 whitespace-pre-line leading-relaxed text-[17px]">
           {blog.content}
         </div>
 
