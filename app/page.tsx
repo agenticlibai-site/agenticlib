@@ -1,12 +1,13 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { domains } from "@/data/agents";
+import { useRouter, usePathname } from "next/navigation";
 
 export default function Home() {
   const [query, setQuery] = useState("");
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleSearch = () => {
     const q = query.toLowerCase().trim();
@@ -45,25 +46,42 @@ export default function Home() {
             </span>
           </div>
 
-<nav className="hidden md:flex items-center gap-8 text-sm text-zinc-500">
+<nav className="flex items-center gap-6">
 
-  {/* AI Library */}
-  <a href="#library" className="hover:text-black transition">
-    AI Agent Library
-  </a>
-
-  {/* 🔥 THIS GOES TO RECOMMEND PAGE */}
+  {/* AI Agent Library */}
 <button
-  onClick={() => router.push("/recommend")}
-  className="transition px-3 py-1 rounded-full text-zinc-500 hover:text-black hover:bg-purple-50"
+  onClick={() => {
+    if (pathname === "/") {
+      document.getElementById("library")?.scrollIntoView({ behavior: "smooth" });
+    } else {
+      router.push("/#library");
+    }
+  }}
+  className="transition px-3 py-1 rounded-full text-zinc-500 hover:text-black hover:bg-purple-100"
 >
-  AgenticLib Platform
+  AI Agent Library
 </button>
+
+  {/* AgenticLib Platform */}
+  <button
+    onClick={() => router.push("/recommend")}
+    className={`transition px-3 py-1 rounded-full ${
+      pathname === "/recommend"
+        ? "bg-purple-100 text-black"
+        : "text-zinc-500 hover:text-black hover:bg-pink-100"
+    }`}
+  >
+    AgenticLib Platform
+  </button>
 
   {/* Blog */}
   <button
     onClick={() => router.push("/blog")}
-    className="hover:text-black transition"
+    className={`transition px-3 py-1 rounded-full ${
+      pathname === "/blog"
+        ? "bg-orange-100 text-black"
+        : "text-zinc-500 hover:text-black hover:bg-orange-100"
+    }`}
   >
     Blog
   </button>
