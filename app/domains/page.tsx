@@ -7,7 +7,7 @@ export default function DomainsPage() {
       <div className="max-w-5xl mx-auto">
         
         <h1 className="text-5xl font-semibold tracking-tight mb-4">
-          Explore AI Agent Library
+          Explore AI Agent Library 📚
         </h1>
 
         <p className="text-lg text-zinc-500 mb-12">
