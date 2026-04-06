@@ -14,22 +14,25 @@ export async function POST(req: Request) {
 
     const { input } = await req.json();
 
-    const domain = input.toLowerCase().includes("real estate")
-      ? "Real Estate"
-      : null;
-
+    // ✅ BACK TO SIMPLE REAL ESTATE FILTER
     const filteredAgents = Array.isArray(agents)
-      ? agents.filter((a: any) =>
-          domain ? a["Business_Domain"] === domain : true
+      ? agents.filter(
+          (a: any) =>
+            a["Business_Domain"]
+              ?.toLowerCase()
+              .trim() === "real estate"
         )
       : [];
 
+    console.log("MATCHED AGENTS:", filteredAgents.length);
+
     if (filteredAgents.length === 0) {
       return NextResponse.json({
-        output: "No agents found.",
+        output: "No real estate agents found.",
       });
     }
 
+    // ✅ GROUP AGENTS
     const grouped: any = {};
 
     filteredAgents.forEach((a: any) => {
@@ -63,6 +66,7 @@ export async function POST(req: Request) {
       cost: a.cost,
     }));
 
+    // ✅ GPT RESPONSE
     const response = await client.responses.create({
       model: "gpt-4.1",
       input: `
