@@ -11,7 +11,7 @@ export default function BlogPage() {
 
       {/* Header */}
       <div className="max-w-5xl mx-auto mb-12 text-center">
-        <h1 className="text-4xl font-semibold mb-3">AgenticLib Blog</h1>
+        <h1 className="text-4xl font-semibold mb-3">AgenticLib Blogs</h1>
         <p className="text-zinc-500">
 
         </p>
