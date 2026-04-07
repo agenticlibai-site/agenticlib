@@ -4,6 +4,7 @@ import { useState } from "react";
 import { domains } from "@/data/agents";
 import { useRouter, usePathname } from "next/navigation";
 
+
 export default function Home() {
   const [query, setQuery] = useState("");
   const router = useRouter();
