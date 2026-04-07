@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import FeedbackBox from "@/components/FeedbackBox";
 
 export default function RecommendPage() {
   const [mounted, setMounted] = useState(false);
@@ -27,38 +28,36 @@ export default function RecommendPage() {
 
   if (!mounted) return null;
 
-  const handleSubmit = async () => {
-    console.log("🚀 HANDLE SUBMIT CALLED");
+const handleSubmit = async () => {
+  console.log("🚀 HANDLE SUBMIT CALLED");
 
-    setLoading(true);
+  setLoading(true);
+  setOutput(""); // 👈 ADD THIS
 
-    try {
-      const res = await fetch("/api/recommend", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ input }),
-      });
+  try {
+    const res = await fetch("/api/recommend", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ input }),
+    });
 
-      console.log("📡 STATUS:", res.status);
+    const data = await res.json();
 
-      const data = await res.json();
-      console.log("📦 DATA:", data);
-
-      if (!res.ok) {
-        setOutput("❌ Error: " + JSON.stringify(data));
-        return;
-      }
-
-      setOutput(data.output || "No output returned");
-    } catch (err) {
-      console.error("❌ FETCH ERROR:", err);
-      setOutput("❌ Fetch failed");
+    if (!res.ok) {
+      setOutput("❌ Error: " + JSON.stringify(data));
+      return;
     }
 
-    setLoading(false);
-  };
+    setOutput(data.output || "No output returned");
+  } catch (err) {
+    console.error("❌ FETCH ERROR:", err);
+    setOutput("❌ Fetch failed");
+  }
+
+  setLoading(false);
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 flex flex-col items-center px-6">
@@ -79,51 +78,55 @@ export default function RecommendPage() {
           className="w-full h-32 p-4 rounded-xl border focus:outline-none focus:ring-2 focus:ring-purple-400 resize-none mb-4"
         />
 
-        <button
-          onClick={handleSubmit}
-          className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-medium hover:opacity-90 transition"
-        >
+<button
+  onClick={handleSubmit}
+  disabled={!input.trim() || loading}
+  className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-medium hover:opacity-90 transition disabled:opacity-50"
+>
           {loading ? "Thinking..." : "Get Recommendations"}
         </button>
 
       </div>
 
       {/* Output */}
-      {output && (
-        <div className="mt-10 w-full max-w-4xl px-2">
-          <div className="bg-white p-6 rounded-2xl shadow border overflow-hidden">
-
-            <div className="w-full overflow-x-auto">
-
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  table: ({ children }) => (
-                    <table className="w-full min-w-[900px] border-collapse border text-sm">
-                      {children}
-                    </table>
-                  ),
-                  th: ({ children }) => (
-                    <th className="border bg-gray-100 p-2 whitespace-nowrap text-left">
-                      {children}
-                    </th>
-                  ),
-                  td: ({ children }) => (
-                    <td className="border p-2 whitespace-nowrap">
-                      {children}
-                    </td>
-                  ),
-                }}
-              >
-                {output}
-              </ReactMarkdown>
-
-            </div>
-
-          </div>
-        </div>
-      )}
-
+{/* Output */}
+{output && (
+  <div className="mt-10 w-full max-w-4xl px-2">
+    
+    <div className="bg-white p-6 rounded-2xl shadow border overflow-hidden">
+      <div className="w-full overflow-x-auto">
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            table: ({ children }) => (
+              <table className="w-full min-w-[900px] border-collapse border text-sm">
+                {children}
+              </table>
+            ),
+            th: ({ children }) => (
+              <th className="border bg-gray-100 p-2 whitespace-nowrap text-left">
+                {children}
+              </th>
+            ),
+            td: ({ children }) => (
+              <td className="border p-2 whitespace-nowrap">
+                {children}
+              </td>
+            ),
+          }}
+        >
+          {output}
+        </ReactMarkdown>
+      </div>
     </div>
-  );
+
+<div className="mt-6 bg-white p-6 rounded-xl shadow border">
+  <FeedbackBox />
+</div>
+
+  </div>
+)}
+
+</div>
+);
 }
