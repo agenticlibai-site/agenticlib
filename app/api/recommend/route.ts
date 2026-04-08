@@ -12,7 +12,7 @@ export async function POST(req: Request) {
       apiKey: process.env.OPENAI_API_KEY,
     });
 
-    const { input } = await req.json();
+    const { input, messages } = await req.json();
 
     // ✅ BACK TO SIMPLE REAL ESTATE FILTER
     const filteredAgents = Array.isArray(agents)
@@ -69,14 +69,29 @@ export async function POST(req: Request) {
     // ✅ GPT RESPONSE
     const response = await client.responses.create({
       model: "gpt-4.1",
-      input: `
+input: `
 You are AgenticLib — an AI agent comparison engine.
 
 AGENTS:
 ${JSON.stringify(knowledge, null, 2)}
 
+CONVERSATION:
+${(messages || [])
+  .map((m: any) =>
+    `${m.role === "user" ? "User" : "AgenticLib"}: ${m.content}`
+  )
+  .join("\n")}
+
+  
+
 USER REQUEST:
 ${input}
+
+Always take previous conversation into account when answering.
+Use the context of the previous question when answering.
+If the user asks a follow-up, refine or update your previous recommendation as or if required to suit their needs.
+If the latest user request conflicts with previous responses, prioritise the latest request.
+
 
 OUTPUT:
 - Agent Confirmation

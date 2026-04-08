@@ -25,7 +25,8 @@ export default function FeedbackBox() {
         setSubmitted(true);
         setFeedback("");
       } else {
-        alert("Something went wrong");
+       const errorData = await res.json();
+alert("Error: " + JSON.stringify(errorData));
       }
     } catch (err) {
       console.error(err);
