@@ -8,7 +8,7 @@ import FeedbackBox from "@/components/FeedbackBox";
 export default function RecommendPage() {
   const [mounted, setMounted] = useState(false);
   const [input, setInput] = useState("");
-  const [output, setOutput] = useState("");
+  const [messages, setMessages] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
 
   // ✅ Hydration fix
@@ -31,8 +31,17 @@ export default function RecommendPage() {
 const handleSubmit = async () => {
   console.log("🚀 HANDLE SUBMIT CALLED");
 
+  if (!input.trim()) return;
+
   setLoading(true);
-  setOutput(""); // 👈 ADD THIS
+
+  const newMessages = [
+    ...messages,
+    { role: "user", content: input }
+  ];
+
+  setMessages(newMessages);
+  setInput("");
 
   try {
     const res = await fetch("/api/recommend", {
@@ -40,20 +49,34 @@ const handleSubmit = async () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ input }),
+      body: JSON.stringify({
+        input,
+        messages: newMessages
+      }),
     });
 
     const data = await res.json();
 
     if (!res.ok) {
-      setOutput("❌ Error: " + JSON.stringify(data));
+      setMessages([
+        ...newMessages,
+        { role: "assistant", content: "❌ Error: " + JSON.stringify(data) }
+      ]);
       return;
     }
 
-    setOutput(data.output || "No output returned");
+    setMessages([
+      ...newMessages,
+      { role: "assistant", content: data.output || "No output returned" }
+    ]);
+
   } catch (err) {
     console.error("❌ FETCH ERROR:", err);
-    setOutput("❌ Fetch failed");
+
+    setMessages([
+      ...newMessages,
+      { role: "assistant", content: "❌ Fetch failed" }
+    ]);
   }
 
   setLoading(false);
@@ -90,10 +113,31 @@ const handleSubmit = async () => {
 
       {/* Output */}
 {/* Output */}
-{output && (
+{messages.length > 0 && (
   <div className="mt-10 w-full max-w-4xl px-2">
-    
+
     <div className="bg-white p-6 rounded-2xl shadow border overflow-hidden">
+
+{messages.map((msg, index) => (
+  <div
+    key={index}
+    className={`mb-6 flex ${
+      msg.role === "user" ? "justify-end" : "justify-start"
+    }`}
+  >
+
+    <div
+className={`p-4 rounded-2xl shadow ${
+  msg.role === "user"
+    ? "bg-purple-100 text-black max-w-[80%]"
+    : "bg-white border w-full"
+}`}
+    >
+
+      <p className="text-sm font-semibold mb-2">
+        {msg.role === "user" ? "You" : "AgenticLib"}
+      </p>
+
       <div className="w-full overflow-x-auto">
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
@@ -115,18 +159,24 @@ const handleSubmit = async () => {
             ),
           }}
         >
-          {output}
+          {msg.content}
         </ReactMarkdown>
       </div>
+
     </div>
 
-<div className="mt-6 bg-white p-6 rounded-xl shadow border">
-  <FeedbackBox />
-</div>
+  </div>
+))}
+
+    </div>
+
+    <div className="mt-6 bg-white p-6 rounded-xl shadow border">
+      <FeedbackBox />
+    </div>
 
   </div>
 )}
 
-</div>
-);
+    </div>
+  );
 }
