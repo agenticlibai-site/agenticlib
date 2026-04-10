@@ -87,7 +87,7 @@ const handleSubmit = async () => {
 
       {/* Title */}
       <h1 className="text-4xl font-semibold mb-8 text-center">
-        Find the best AI agent for your workflows
+        Find the best AI agent for your use case
       </h1>
 
       {/* Input Card */}

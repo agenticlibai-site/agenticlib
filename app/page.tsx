@@ -37,7 +37,7 @@ export default function Home() {
 
       {/* NAVBAR */}
       <header className="fixed top-0 inset-x-0 z-[999] px-4 pt-3 pointer-events-auto">
-        <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md border border-white/20 shadow-sm rounded-xl px-6 h-14 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md border border-white/20 shadow-sm rounded-xl px-6 py-3 flex items-center justify-between">
 
           {/* LOGO ✅ */}
           <div className="flex items-center gap-2">
@@ -47,23 +47,24 @@ export default function Home() {
             </span>
           </div>
 
-<nav className="flex items-center gap-6">
+<nav className="flex items-center gap-12">
 
   {/* AI Agent Library */}
-<button
-  onClick={() => {
-    if (pathname === "/") {
-      document.getElementById("library")?.scrollIntoView({ behavior: "smooth" });
-    } else {
-      router.push("/#library");
-    }
-  }}
-  className="transition px-3 py-1 rounded-full text-zinc-500 hover:text-black hover:bg-purple-100"
->
-  AI Agent Library
-</button>
+  <button
+    onClick={() => {
+      if (pathname === "/") {
+        document.getElementById("library")?.scrollIntoView({ behavior: "smooth" });
+      } else {
+        router.push("/#library");
+      }
+    }}
+    className="transition px-3 py-1 rounded-full text-zinc-500 hover:text-black hover:bg-purple-100"
+  >
+    AI Agent Library
+  </button>
 
-  {/* AgenticLib Platform */}
+  {/* AgenticLib Platform + Badge */}
+<div className="flex items-center gap-[1px]">
   <button
     onClick={() => router.push("/recommend")}
     className={`transition px-3 py-1 rounded-full ${
@@ -74,6 +75,19 @@ export default function Home() {
   >
     AgenticLib Platform
   </button>
+
+  <span className="
+    text-[11px] font-medium leading-none
+    px-2.5 py-[2px]
+    rounded-full
+    bg-green-100
+    text-green-700
+    border border-green-200
+    whitespace-nowrap
+  ">
+    Alpha v1.0
+  </span>
+</div>
 
   {/* Blog */}
   <button
