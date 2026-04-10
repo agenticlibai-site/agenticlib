@@ -12,27 +12,72 @@ export async function POST(req: Request) {
       apiKey: process.env.OPENAI_API_KEY,
     });
 
-    const { input, messages } = await req.json();
+    const { input } = await req.json();
 
-    // ✅ BACK TO SIMPLE REAL ESTATE FILTER
+    // 🔥 STEP 1: DOMAIN DETECTION
+    const domainResponse = await client.responses.create({
+      model: "gpt-4.1",
+      input: `
+Classify the user's request into ONE of these domains:
+
+- real estate
+- education
+- finance
+- travel
+- healthcare
+- legal
+- marketing
+- general
+
+ONLY return the domain name. No explanation.
+
+User request:
+${input}
+`,
+    });
+
+    const detectedDomain =
+      domainResponse.output_text
+        ?.toLowerCase()
+        .replace(/[^a-z ]/g, "")
+        .trim() || "general";
+
+    console.log("🧠 DETECTED DOMAIN:", detectedDomain);
+
+    // 🔥 STEP 2: DOMAIN MAPPING
+    const domainMap: any = {
+      "real estate": "real estate",
+      "finance": "financial",
+      "education": "education",
+      "travel": "travel",
+      "legal": "legal",
+      "healthcare": "pharmacy",
+      "marketing": "marketing",
+      "general": "",
+    };
+
+    const mappedDomain = domainMap[detectedDomain] || "";
+
+    console.log("🔁 MAPPED DOMAIN:", mappedDomain);
+
+    // 🔥 STEP 3: FILTER AGENTS (STRONGER MATCHING)
     const filteredAgents = Array.isArray(agents)
-      ? agents.filter(
-          (a: any) =>
-            a["Business_Domain"]
-              ?.toLowerCase()
-              .trim() === "real estate"
-        )
+      ? agents.filter((a: any) => {
+          const domain = a["Business_Domain"]?.toLowerCase() || "";
+
+          return (
+            domain.includes(mappedDomain) ||
+            (mappedDomain === "financial" &&
+              (domain.includes("bank") ||
+               domain.includes("investment") ||
+               domain.includes("finance")))
+          );
+        })
       : [];
 
     console.log("MATCHED AGENTS:", filteredAgents.length);
 
-    if (filteredAgents.length === 0) {
-      return NextResponse.json({
-        output: "No real estate agents found.",
-      });
-    }
-
-    // ✅ GROUP AGENTS
+    // 🔥 STEP 4: GROUP AGENTS
     const grouped: any = {};
 
     filteredAgents.forEach((a: any) => {
@@ -61,50 +106,123 @@ export async function POST(req: Request) {
     const knowledge = Object.values(grouped).map((a: any) => ({
       name: a.name,
       type: a.type,
-      capabilities: Array.from(a.capabilities),
-      features: Array.from(a.features),
+      capabilities: Array.from(a.capabilities).slice(0, 5),
+      features: Array.from(a.features).slice(0, 5),
       cost: a.cost,
     }));
 
-    // ✅ GPT RESPONSE
+    console.log("📊 KNOWLEDGE SIZE:", knowledge.length);
+
+    // 🔥 STEP 5: RELEVANCE RANKING (MAJOR UPGRADE)
+    const scoredKnowledge = knowledge.map((agent: any) => {
+      const text = (
+        agent.name +
+        " " +
+        agent.capabilities.join(" ") +
+        " " +
+        agent.features.join(" ")
+      ).toLowerCase();
+
+      const query = input.toLowerCase();
+
+      let score = 0;
+
+      query.split(" ").forEach((word: string) => {
+        if (text.includes(word)) score += 1;
+      });
+
+      return { ...agent, score };
+    });
+
+    const sortedKnowledge = scoredKnowledge.sort(
+      (a: any, b: any) => b.score - a.score
+    );
+
+    const topKnowledge = sortedKnowledge.slice(0, 8);
+
+    const knowledgeContext = JSON.stringify(topKnowledge, null, 2);
+
+    // 🔥 STEP 6: FINAL RESPONSE (PRIVATE + PUBLIC RAG)
     const response = await client.responses.create({
       model: "gpt-4.1",
-input: `
-You are AgenticLib — an AI agent comparison engine.
+      input: [
+        {
+          role: "system",
+          content: `
+You are an AI agent recommendation engine.
 
-AGENTS:
-${JSON.stringify(knowledge, null, 2)}
+You have TWO sources of knowledge:
 
-CONVERSATION:
-${(messages || [])
-  .map((m: any) =>
-    `${m.role === "user" ? "User" : "AgenticLib"}: ${m.content}`
-  )
-  .join("\n")}
+1. PRIVATE DATA (high priority):
+${knowledgeContext}
 
-  
+2. PUBLIC KNOWLEDGE
 
-USER REQUEST:
-${input}
+RULES:
 
-Always take previous conversation into account when answering.
-Use the context of the previous question when answering.
-If the user asks a follow-up, refine or update your previous recommendation as or if required to suit their needs.
-If the latest user request conflicts with previous responses, prioritise the latest request.
+- Always prioritise PRIVATE DATA first
 
+- If PRIVATE DATA has less than 2 strong matches:
+→ Use PUBLIC DATA aggressively
 
-OUTPUT:
-- Agent Confirmation
-- Straight Answer
-- Comparison Table
-- Final Recommendation
-`,
+- If user request is not clearly covered:
+→ Use PUBLIC DATA
+
+- If using public data, label:
+"Based on publicly available information..."
+
+- Different user queries MUST result in DIFFERENT answers
+
+- DO NOT give generic answers
+
+STRICT OUTPUT RULES:
+
+1. Start with:
+Agent Confirmation (ONE LINE)
+
+2. Then:
+Straight Answer First
+
+3. ALWAYS include comparison table if multiple options
+
+4. Compare based on:
+- Pricing / Free access
+- How it works
+- Personalisation
+- Deal-breakers
+
+5. DO NOT mention:
+- database
+- internal logic
+- AgenticLib
+
+6. End with:
+Final Recommendation (NO ambiguity)
+
+FORMAT:
+
+Agent Confirmation:
+...
+
+Comparison Table:
+| Agent | Best For | Pricing | Strength | Weakness |
+
+Final Recommendation:
+...
+          `,
+        },
+        {
+          role: "user",
+          content: input,
+        },
+      ],
     });
 
     const text = response.output_text || "No response generated";
 
     return NextResponse.json({
       output: text,
+      domain: detectedDomain,
     });
 
   } catch (error: any) {
