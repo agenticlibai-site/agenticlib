@@ -66,7 +66,12 @@ export default function Home() {
   {/* AgenticLib Platform + Badge */}
 <div className="flex items-center gap-[1px]">
   <button
-    onClick={() => router.push("/recommend")}
+onClick={() =>
+  window.open(
+    "https://chatgpt.com/g/g-69795c1eeb808191beea0005fdc16126-ai-agent-decision-engine",
+    "_blank"
+  )
+}
     className={`transition px-3 py-1 rounded-full ${
       pathname === "/recommend"
         ? "bg-purple-100 text-black"
@@ -104,9 +109,12 @@ export default function Home() {
 </nav>
 
           <button
-            onClick={() => {
-  router.push("/recommend");
-}}
+onClick={() =>
+  window.open(
+    "https://chatgpt.com/g/g-69795c1eeb808191beea0005fdc16126-ai-agent-decision-engine",
+    "_blank"
+  )
+}
             className="text-sm font-medium bg-zinc-900 text-white px-4 py-2 rounded-full"
           >
             Get started
@@ -140,14 +148,14 @@ export default function Home() {
             <div className="flex flex-col sm:flex-row gap-3">
 
               {/* 🔥 THIS BUTTON IS NOW FIXED */}
-              <button
-                onClick={() => {
-  router.push("/recommend");
-}}
-                className="btn-primary px-9 py-4 rounded-full text-white"
-              >
-                Get personalised AI agent recommendations
-              </button>
+<a
+  href="https://chatgpt.com/g/g-69795c1eeb808191beea0005fdc16126-ai-agent-decision-engine"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="btn-primary px-9 py-4 rounded-full text-white"
+>
+  Get personalised AI agent recommendations
+</a>
 
               <a href="#demo" className="px-6 py-4 rounded-full border bg-white/50">
                 Watch demo
