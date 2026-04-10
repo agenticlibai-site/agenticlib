@@ -149,4 +149,78 @@ export const domains = [
       { name: "Workday", url: "https://www.workday.com/" },
     ],
   },
+
+  {
+    name: "Pharmacy",
+    slug: "pharmacy",
+    agents: [
+      { name: "Springs", url: "https://springsapps.com/ai-agents-for-pharmacy-healthcare" },
+    ],
+  },
+
+  {
+    name: "Travel",
+    slug: "travel",
+    agents: [
+      { name: "Booked AI", url: "https://www.booked.ai/" },
+      { name: "Mindtrip", url: "https://mindtrip.ai/" },
+      { name: "Travel AI", url: "https://www.travelai.com/" },
+      { name: "Jotform AI Travel Agent", url: "https://www.jotform.com/d/agent-directory/vacation-itinerary-ai-agent" },
+      { name: "Layla", url: "https://layla.ai/" },
+      { name: "Rybo", url: "https://www.rybo.ai/" },
+    ],
+  },
+
+  {
+    name: "Hospitality",
+    slug: "hospitality",
+    agents: [
+      { name: "Loman AI", url: "https://www.loman.ai/" },
+      { name: "Duve", url: "https://marketing.duve.com/duve-ai/" },
+      { name: "Akira AI", url: "https://www.akira.ai/blog/ai-agent-for-hospitality" },
+      { name: "SoundHound AI", url: "https://www.soundhound.com/voice-ai-solutions/hospitality/" },
+    ],
+  },
+
+  {
+    name: "Retail",
+    slug: "retail",
+    agents: [
+      { name: "Coveo", url: "https://get.coveo.com/lp/ecommerce/report/harvard-business-review-analytic-services/" },
+      { name: "Markovate", url: "https://markovate.com/retail-ai-agents/" },
+      { name: "SuperAGI", url: "https://superagi.com/" },
+      { name: "Akira AI", url: "https://www.akira.ai/ai-agents" },
+    ],
+  },
+
+  {
+    name: "Telecommunication",
+    slug: "telecommunication",
+    agents: [
+      { name: "Cognigy", url: "https://www.cognigy.com/solutions/telecommunications" },
+      { name: "Glide", url: "https://www.glideapps.com/agents/telecommunication" },
+      { name: "SoundHound AI", url: "https://www.soundhound.com/voice-ai-solutions/telecommunication/" },
+    ],
+  },
+
+  {
+    name: "Agriculture",
+    slug: "agriculture",
+    agents: [
+      { name: "Lyzr", url: "https://www.lyzr.ai/landing-pages/gen-ai-in-agriculture/" },
+      { name: "Farmonaut", url: "https://farmonaut.com/" },
+      { name: "AgriPilot", url: "https://agripilot.ai/" },
+      { name: "Qaltivate", url: "https://qaltivate.com/" },
+    ],
+  },
+
+  {
+    name: "Aerospace",
+    slug: "aerospace",
+    agents: [
+      { name: "Kavida AI", url: "https://www.kavida.ai/ai-for-aerospace/" },
+      { name: "Ado Aero", url: "https://adoaero.com/ai-agent" },
+      { name: "Glide Aerospace", url: "https://www.glideapps.com/agents/aerospace" },
+    ],
+  },
 ];
