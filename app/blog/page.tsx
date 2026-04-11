@@ -2,6 +2,7 @@
 
 import { blogs } from "@/data/blogs";
 import { useRouter } from "next/navigation";
+import posthog from "posthog-js";
 
 export default function BlogPage() {
   const router = useRouter();
@@ -23,7 +24,13 @@ export default function BlogPage() {
         {blogs.map((blog) => (
           <div
             key={blog.slug}
-            onClick={() => router.push(`/blog/${blog.slug}`)}
+            onClick={() => {
+              posthog.capture("blog_post_clicked", {
+                blog_slug: blog.slug,
+                blog_title: blog.title,
+              });
+              router.push(`/blog/${blog.slug}`);
+            }}
             className="glass-card flex flex-col md:flex-row overflow-hidden rounded-2xl cursor-pointer hover:shadow-lg transition"
           >
             <img

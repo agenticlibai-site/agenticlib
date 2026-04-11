@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import FeedbackBox from "@/components/FeedbackBox";
+import posthog from "posthog-js";
 
 export default function RecommendPage() {
   const [mounted, setMounted] = useState(false);
@@ -41,6 +42,12 @@ const handleSubmit = async () => {
   ];
 
   setMessages(newMessages);
+
+  posthog.capture("recommendation_requested", {
+    query: input,
+    conversation_length: messages.length,
+  });
+
   setInput("");
 
   try {
@@ -58,6 +65,7 @@ const handleSubmit = async () => {
     const data = await res.json();
 
     if (!res.ok) {
+      posthog.captureException(new Error("Recommendation API error: " + JSON.stringify(data)));
       setMessages([
         ...newMessages,
         { role: "assistant", content: "❌ Error: " + JSON.stringify(data) }
@@ -72,6 +80,7 @@ const handleSubmit = async () => {
 
   } catch (err) {
     console.error("❌ FETCH ERROR:", err);
+    posthog.captureException(err);
 
     setMessages([
       ...newMessages,

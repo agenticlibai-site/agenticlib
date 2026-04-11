@@ -3,6 +3,7 @@ console.log("API KEY EXISTS:", !!process.env.OPENAI_API_KEY);
 import { OpenAI } from "openai";
 import { NextResponse } from "next/server";
 import agents from "@/data/agents.json";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 export async function POST(req: Request) {
   try {
@@ -219,6 +220,17 @@ Final Recommendation:
     });
 
     const text = response.output_text || "No response generated";
+
+    const posthog = getPostHogClient();
+    posthog.capture({
+      distinctId: "anonymous",
+      event: "recommendation_received",
+      properties: {
+        detected_domain: detectedDomain,
+        matched_agents_count: knowledge.length,
+        top_agents_count: topKnowledge.length,
+      },
+    });
 
     return NextResponse.json({
       output: text,

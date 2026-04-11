@@ -1,5 +1,7 @@
+"use client";
 import Link from "next/link";
 import { domains } from "../../data/agents";
+import posthog from "posthog-js";
 
 export default function DomainsPage() {
   return (
@@ -19,6 +21,12 @@ export default function DomainsPage() {
             <Link
               key={domain.slug}
               href={`/domains/${domain.slug}`}
+              onClick={() =>
+                posthog.capture("domain_card_clicked", {
+                  domain_slug: domain.slug,
+                  domain_name: domain.name,
+                })
+              }
             >
               <div className="group relative rounded-2xl p-[1px] bg-gradient-to-br from-blue-200 via-white to-blue-300">
                 
