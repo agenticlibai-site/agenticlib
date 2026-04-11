@@ -74,7 +74,7 @@ export default function Home() {
   <button
 onClick={() =>
   window.open(
-    "https://chatgpt.com/g/g-69795c1eeb808191beea0005fdc16126-ai-agent-decision-engine",
+    "https://chatgpt.com/g/g-69795c1eeb808191beea0005fdc16126-agenticlib-decision-engine",
     "_blank"
   )
 }
@@ -156,7 +156,7 @@ onClick={() => {
 
               {/* 🔥 THIS BUTTON IS NOW FIXED */}
 <a
-  href="https://chatgpt.com/g/g-69795c1eeb808191beea0005fdc16126-ai-agent-decision-engine"
+  href="https://chatgpt.com/g/g-69795c1eeb808191beea0005fdc16126-agenticlib-decision-engine"
   target="_blank"
   rel="noopener noreferrer"
   className="btn-primary px-9 py-4 rounded-full text-white"
