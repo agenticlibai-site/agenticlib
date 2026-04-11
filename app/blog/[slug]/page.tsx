@@ -1,13 +1,24 @@
 "use client";
 
+import { useEffect } from "react";
 import { useParams } from "next/navigation";
 import { blogs } from "@/data/blogs";
+import posthog from "posthog-js";
 
 export default function BlogPost() {
   const params = useParams();
   const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
 
   const blog = blogs.find((b) => b.slug === slug);
+
+  useEffect(() => {
+    if (blog) {
+      posthog.capture("blog_post_viewed", {
+        blog_slug: blog.slug,
+        blog_title: blog.title,
+      });
+    }
+  }, [blog]);
 
   if (!blog) {
     return <div className="p-10">Blog not found</div>;

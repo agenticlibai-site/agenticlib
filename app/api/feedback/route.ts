@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
+import { getPostHogClient } from "@/lib/posthog-server";
 
 export async function POST(req: Request) {
   try {
@@ -21,6 +22,15 @@ export async function POST(req: Request) {
     });
 
     console.log("✅ Email sent:", feedback);
+
+    const posthog = getPostHogClient();
+    posthog.capture({
+      distinctId: "anonymous",
+      event: "feedback_sent",
+      properties: {
+        feedback_length: feedback?.length ?? 0,
+      },
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {

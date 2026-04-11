@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import posthog from "posthog-js";
 
 export default function FeedbackBox() {
   const [feedback, setFeedback] = useState("");
@@ -22,6 +23,9 @@ export default function FeedbackBox() {
       });
 
       if (res.ok) {
+        posthog.capture("feedback_submitted", {
+          feedback_length: feedback.trim().length,
+        });
         setSubmitted(true);
         setFeedback("");
       } else {
@@ -30,6 +34,7 @@ alert("Error: " + JSON.stringify(errorData));
       }
     } catch (err) {
       console.error(err);
+      posthog.captureException(err);
       alert("Error sending feedback");
     }
 

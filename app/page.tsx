@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { domains } from "@/data/agents";
 import { useRouter, usePathname } from "next/navigation";
+import posthog from "posthog-js";
 
 
 export default function Home() {
@@ -17,6 +18,11 @@ export default function Home() {
       d.name.toLowerCase().includes(q) ||
       d.slug.toLowerCase().includes(q)
     );
+
+    posthog.capture("library_searched", {
+      query: q,
+      matched_domain: match?.slug ?? null,
+    });
 
     if (match) {
       router.push(`/domains/${match.slug}`);
@@ -109,12 +115,13 @@ onClick={() =>
 </nav>
 
           <button
-onClick={() =>
+onClick={() => {
+  posthog.capture("get_started_clicked", { location: "navbar" });
   window.open(
     "https://chatgpt.com/g/g-69795c1eeb808191beea0005fdc16126-ai-agent-decision-engine",
     "_blank"
-  )
-}
+  );
+}}
             className="text-sm font-medium bg-zinc-900 text-white px-4 py-2 rounded-full"
           >
             Get started
@@ -153,6 +160,7 @@ onClick={() =>
   target="_blank"
   rel="noopener noreferrer"
   className="btn-primary px-9 py-4 rounded-full text-white"
+  onClick={() => posthog.capture("hero_cta_clicked", { location: "hero" })}
 >
   Get personalised AI agent recommendations
 </a>
@@ -193,6 +201,9 @@ onClick={() =>
                   <select
                     onChange={(e) => {
                       if (e.target.value) {
+                        posthog.capture("domain_selected_from_dropdown", {
+                          domain_slug: e.target.value,
+                        });
                         router.push(`/domains/${e.target.value}`);
                       }
                     }}
