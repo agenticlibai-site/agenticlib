@@ -8,6 +8,8 @@ import posthog from "posthog-js";
 
 export default function Home() {
   const [query, setQuery] = useState("");
+  const [showPrivacy, setShowPrivacy] = useState(false);
+const [showTerms, setShowTerms] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -342,6 +344,242 @@ onClick={() => {
 
   </div>
 
+</section>
+
+{/* 🔥 LEGAL SECTION */}
+<section className="px-6 pb-10">
+
+  <div className="max-w-4xl mx-auto text-center">
+
+    {/* Buttons */}
+    <div className="flex justify-center gap-4 mb-6">
+      <button
+        onClick={() => {
+          setShowPrivacy(!showPrivacy);
+          setShowTerms(false);
+        }}
+        className="px-4 py-2 border rounded-full hover:bg-gray-100"
+      >
+        Privacy Policy
+      </button>
+
+      <button
+        onClick={() => {
+          setShowTerms(!showTerms);
+          setShowPrivacy(false);
+        }}
+        className="px-4 py-2 border rounded-full hover:bg-gray-100"
+      >
+        Terms & Conditions
+      </button>
+    </div>
+
+{showPrivacy && (
+  <div className="text-left max-w-3xl mx-auto space-y-4 text-sm leading-relaxed">
+
+    <h2 className="text-xl font-semibold">Privacy Policy</h2>
+
+    <p>
+      Welcome to AgenticLib. Your privacy is important to us. This Privacy Policy explains how we collect, use, disclose, and protect your information when you visit our website: https://www.agenticlib.com/ (the “Site”) or use our services (collectively, the “Services”).
+    </p>
+
+    <p>
+      By using our Services, you agree to the collection and use of information in accordance with this Policy.
+    </p>
+
+    <h3 className="font-semibold">1. Information We Collect</h3>
+    <p>We may collect the following types of information:</p>
+
+    <h4 className="font-medium">a. Personal Information</h4>
+    <p>Information that can be used to identify you, such as:</p>
+    <ul className="list-disc ml-5">
+      <li>Name</li>
+      <li>Email address</li>
+      <li>Account login information</li>
+      <li>Any information you provide when contacting us or creating an account</li>
+    </ul>
+
+    <h4 className="font-medium">b. Non-Personal Information</h4>
+    <p>Information that does not personally identify you, including:</p>
+    <ul className="list-disc ml-5">
+      <li>Browser type, device, and operating system</li>
+      <li>Pages visited and time spent on our Site</li>
+      <li>IP address and general location data (country/city level)</li>
+      <li>Cookies and usage data</li>
+    </ul>
+
+    <h3 className="font-semibold">2. How We Use Your Information</h3>
+    <p>We use your information to:</p>
+    <ul className="list-disc ml-5">
+      <li>Provide, maintain, and improve our Services</li>
+      <li>Communicate with you, including sending updates and responses</li>
+      <li>Analyse usage trends to improve user experience</li>
+      <li>Ensure compliance with legal obligations</li>
+      <li>Prevent fraudulent or malicious activity</li>
+    </ul>
+
+    <h3 className="font-semibold">3. Cookies and Tracking Technologies</h3>
+    <p>We use cookies and similar technologies to:</p>
+    <ul className="list-disc ml-5">
+      <li>Keep you signed in</li>
+      <li>Remember your preferences</li>
+      <li>Analyse site performance</li>
+    </ul>
+    <p>
+      You can disable cookies through your browser settings, though some parts of the Site may not function properly if you do.
+    </p>
+
+    <h3 className="font-semibold">4. Data Sharing and Disclosure</h3>
+    <p>We do not sell your personal data. We may share your data with:</p>
+    <ul className="list-disc ml-5">
+      <li>Service providers who assist in operating our website or business (e.g., hosting, analytics, customer support)</li>
+      <li>Legal authorities, if required by law or to protect our rights</li>
+    </ul>
+    <p>All third parties are bound by confidentiality and data protection agreements.</p>
+
+    <h3 className="font-semibold">5. Data Retention</h3>
+    <p>
+      We retain your information only for as long as necessary to fulfill the purposes outlined in this Policy, or as required by law.
+    </p>
+
+    <h3 className="font-semibold">6. Data Security</h3>
+    <p>
+      We implement reasonable administrative, technical, and physical measures to protect your data. However, no online platform is completely secure, and we cannot guarantee absolute security.
+    </p>
+
+    <h3 className="font-semibold">7. Your Rights</h3>
+    <p>Depending on your location, you may have rights to:</p>
+    <ul className="list-disc ml-5">
+      <li>Access, correct, or delete your data</li>
+      <li>Withdraw consent</li>
+      <li>Request a copy of your data (data portability)</li>
+      <li>File a complaint with a data protection authority</li>
+    </ul>
+    <p>
+      You can contact us at agenticlib.ai@gmail.com to exercise these rights.
+    </p>
+
+    <h3 className="font-semibold">8. Third-Party Links</h3>
+    <p>
+      Our Site may contain links to external websites. We are not responsible for their privacy practices and encourage you to review their policies.
+    </p>
+
+    <h3 className="font-semibold">9. Changes to This Policy</h3>
+    <p>
+      We may update this Privacy Policy periodically. Changes will be posted on this page with an updated “Last Updated” date.
+    </p>
+
+    <h3 className="font-semibold">10. Contact Us</h3>
+    <p>
+      If you have questions or concerns about this Privacy Policy, please contact us at:
+    </p>
+    <p>
+      📧 agenticlib.ai@gmail.com <br />
+      🌐 https://www.agenticlib.com/
+    </p>
+
+  </div>
+)}
+
+{showTerms && (
+  <div className="text-left max-w-3xl mx-auto space-y-4 text-sm leading-relaxed">
+
+    <h2 className="text-xl font-semibold">Terms & Conditions</h2>
+
+    <p>
+      Welcome to AgenticLib. These Terms and Conditions (“Terms”) govern your use of our website: https://www.agenticlib.com (the “Site”), and any related products or services (collectively, the “Services”).
+    </p>
+
+    <p>
+      By accessing or using AgenticLib, you agree to comply with and be bound by these Terms. If you do not agree, please do not use our Services.
+    </p>
+
+    <h3 className="font-semibold">1. Use of Our Services</h3>
+    <p>
+      You must use our Services only for lawful purposes and in accordance with these Terms.
+    </p>
+    <p>You agree not to:</p>
+    <ul className="list-disc ml-5">
+      <li>Violate any applicable laws or regulations</li>
+      <li>Attempt to gain unauthorised access to our systems or data</li>
+      <li>Use the Site to transmit spam, malware, or harmful content</li>
+      <li>Copy, distribute, or reproduce content without permission</li>
+    </ul>
+    <p>
+      We reserve the right to suspend or terminate your access to AgenticLib if you violate these Terms.
+    </p>
+
+    <h3 className="font-semibold">2. Intellectual Property</h3>
+    <p>
+      All content, design, features, and functionality on AgenticLib — including logos, text, graphics, software, and data — are the intellectual property of AgenticLib and are protected by copyright, trademark, and other applicable laws.
+    </p>
+    <p>
+      You may not use, reproduce, or distribute any content from AgenticLib without prior written consent.
+    </p>
+
+    <h3 className="font-semibold">3. User Accounts</h3>
+    <p>If you create an account with us:</p>
+    <ul className="list-disc ml-5">
+      <li>You are responsible for maintaining the confidentiality of your login credentials.</li>
+      <li>You agree to provide accurate and complete information.</li>
+      <li>You must immediately notify us of any unauthorised use of your account.</li>
+    </ul>
+    <p>
+      We are not liable for any loss or damage arising from your failure to protect your account.
+    </p>
+
+    <h3 className="font-semibold">4. Third-Party Links</h3>
+    <p>
+      AgenticLib may contain links to third-party websites or services. We are not responsible for the content, privacy policies, or practices of those third parties. Accessing such links is at your own risk.
+    </p>
+
+    <h3 className="font-semibold">5. Disclaimers</h3>
+    <p>
+      AgenticLib provides information and listings “as is” and “as available.”
+    </p>
+    <p>We make no warranties or representations, express or implied, about:</p>
+    <ul className="list-disc ml-5">
+      <li>The accuracy or reliability of any content</li>
+      <li>The completeness or suitability of data provided by AI tools or third parties</li>
+      <li>The uninterrupted or error-free operation of the Site</li>
+    </ul>
+    <p>
+      Use of AgenticLib is at your own discretion and risk.
+    </p>
+
+    <h3 className="font-semibold">6. Limitation of Liability</h3>
+    <p>
+      To the maximum extent permitted by law, AgenticLib and its affiliates shall not be liable for any indirect, incidental, or consequential damages arising from your use of the Site or Services, including but not limited to loss of data, profits, or business opportunities.
+    </p>
+
+    <h3 className="font-semibold">7. Indemnification</h3>
+    <p>
+      You agree to indemnify and hold harmless AgenticLib, its founders, employees, and affiliates from any claims, losses, or damages resulting from your breach of these Terms or misuse of the Services.
+    </p>
+
+    <h3 className="font-semibold">8. Changes to These Terms</h3>
+    <p>
+      We may update these Terms from time to time. Any changes will be posted on this page with the updated “Last Updated” date. Continued use of the Services after updates constitutes your acceptance of the revised Terms.
+    </p>
+
+    <h3 className="font-semibold">9. Governing Law</h3>
+    <p>
+      These Terms are governed by and construed in accordance with the laws of New South Wales, Australia, without regard to conflict of law principles.
+    </p>
+
+    <h3 className="font-semibold">10. Contact Us</h3>
+    <p>
+      If you have any questions about these Terms, please contact us at:
+    </p>
+    <p>
+      📧 agenticlib.ai@gmail.com <br />
+      🌐 https://www.agenticlib.com
+    </p>
+
+  </div>
+)}
+
+  </div>
 </section>
 
 <footer className="py-10 text-center text-sm text-zinc-400">
