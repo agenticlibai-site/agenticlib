@@ -373,4 +373,86 @@ export const domains = [
   ],
 },
 
+{
+  name: "AI Agent Developer",
+  slug: "ai-agent-developer",
+  agents: [
+    { name: "Dify", url: "https://dify.ai/" },
+    { name: "Postman AI", url: "https://www.postman.com/product/ai-agent-builder/" },
+  ],
+},
+
+{
+  name: "Digital Advertising",
+  slug: "digital-advertising",
+  agents: [
+    { name: "Omneky", url: "https://www.breakerindustries.com/" },
+    { name: "Firsthand", url: "https://www.firsthand.ai/" },
+  ],
+},
+
+{
+  name: "Customer Experience",
+  slug: "customer-experience",
+  agents: [
+    { name: "Maven AGI", url: "https://www.mavenagi.com/" },
+    { name: "Observe.AI", url: "https://www.observe.ai/" },
+  ],
+},
+
+{
+  name: "Sports",
+  slug: "sports",
+  agents: [
+    { name: "Glide", url: "https://www.glideapps.com/agents/sports" },
+    { name: "Machina", url: "https://machina.gg/" },
+    { name: "Jotform", url: "https://www.jotform.com/agent-templates/category/sports-ai-agents" },
+  ],
+},
+
+{
+  name: "Logistics",
+  slug: "logistics",
+  agents: [
+    { name: "Osher Digital", url: "https://osher.com.au/" },
+    { name: "V7 Labs", url: "https://www.v7labs.com/agents/cost-analysis-agent" },
+    { name: "Pando", url: "https://pando.ai/" },
+  ],
+},
+
+{
+  name: "Robotics",
+  slug: "robotics",
+  agents: [
+    { name: "Breaker", url: "https://www.breakerindustries.com/" },
+    { name: "Figure AI", url: "https://www.figure.ai/" },
+    { name: "Hanson Robotics", url: "https://www.hansonrobotics.com/" },
+    { name: "Miso Robotics", url: "https://misorobotics.com/" },
+    { name: "Locus Robotics", url: "https://locusrobotics.com/" },
+    { name: "Scythe Robotics", url: "https://scytherobotics.com/" },
+    { name: "Sanctuary AI", url: "https://www.sanctuary.ai/" },
+  ],
+},
+
+{
+  name: "AR/VR",
+  slug: "ar-vr",
+  agents: [
+    { name: "GOTOVIAR", url: "https://gotoviar.com/ai-agents/" },
+    { name: "Catalyst", url: "https://catalystvr.com.au/" },
+  ],
+},
+
+{
+  name: "Procurement",
+  slug: "procurement",
+  agents: [
+    { name: "GEP", url: "https://www.gep.com/software/gep-smart/procurement-software/catalog-management/guided-buying" },
+    { name: "Zip", url: "https://ziphq.com/ai" },
+    { name: "Suplari AI", url: "https://suplari.com/" },
+    { name: "Vertice", url: "https://www.vertice.one/solutions/saas-procurement-software" },
+    { name: "Globality", url: "https://www.globality.com/product" },
+    { name: "JAGGAER", url: "https://www.jaggaer.com/" },
+  ],
+},
 ];
