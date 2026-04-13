@@ -223,4 +223,154 @@ export const domains = [
       { name: "Glide Aerospace", url: "https://www.glideapps.com/agents/aerospace" },
     ],
   },
+  {
+  name: "Healthcare",
+  slug: "healthcare",
+  agents: [
+    { name: "Cognigy", url: "https://www.cognigy.com/solutions/healthcare" },
+    { name: "ONEai Health", url: "https://oneaihealth.com/" },
+    { name: "SoundHound AI", url: "https://www.soundhound.com/voice-ai-solutions/healthcare/" },
+    { name: "Notable", url: "https://www.notablehealth.com/" },
+    { name: "Hippocratic", url: "https://www.hippocraticai.com/" },
+    { name: "Altilia", url: "https://www.altilia.ai/industries/healthcare" },
+    { name: "Navina", url: "https://www.navina.ai/" },
+    { name: "Subtle Medical", url: "https://subtlemedical.com/" },
+    { name: "Inbenta", url: "https://www.inbenta.com/industries/healthcare/" },
+    { name: "Optum", url: "https://marketplace.optum.com/products/patient_and_member_engagement/parakeet-health.html" },
+    { name: "Anterior", url: "https://www.anterior.com/" },
+    { name: "Thoughtful AI", url: "https://thoughtfulai.net/" },
+    { name: "Sully AI", url: "https://www.sully.ai/" },
+    { name: "Innovaccer", url: "https://innovaccer.com/sara" },
+    { name: "Ambience", url: "https://www.ambiencehealthcare.com/" },
+    { name: "Assort", url: "https://www.assorthealth.com/" },
+    { name: "Develop Health", url: "https://www.develophealth.ai/" },
+    { name: "Glass Health", url: "https://glass.health/" },
+  ],
+},
+
+{
+  name: "Dental",
+  slug: "dental",
+  agents: [
+    { name: "HeyGent", url: "https://heygent.ai/" },
+    { name: "Rondah", url: "https://www.rondah.ai/" },
+    { name: "Denota", url: "https://www.denota.ai/" },
+    { name: "Pearl", url: "https://www.hellopearl.com/" },
+    { name: "Tempus", url: "https://www.tempus.com/" },
+    { name: "AI:Dental", url: "https://www.aidental.ai/" },
+    { name: "Arini", url: "https://www.arini.ai/" },
+  ],
+},
+
+{
+  name: "Optometry",
+  slug: "optometry",
+  agents: [
+    { name: "RingIQ", url: "https://ringiq.ai/3-ringiq-ai-call-assistant-for-independent-optometry-offices/" },
+    { name: "DocsBot", url: "https://docsbot.ai/industry/optometry-services" },
+    { name: "Altris AI", url: "https://www.altris.ai/" },
+    { name: "IDx-DR", url: "https://www.healthvisors.com/en/idx-dr/" },
+  ],
+},
+
+{
+  name: "Veterinary",
+  slug: "veterinary",
+  agents: [
+    { name: "Tixie.AI", url: "https://tixae.ai/ai-agents-for-veterinary" },
+    { name: "Vet Chatbot", url: "https://vetchatbot.com/" },
+    { name: "ScribVet", url: "https://scribvet.com/" },
+    { name: "CoVet", url: "https://www.co.vet/" },
+    { name: "VetRec", url: "https://www.vetrec.io/" },
+  ],
+},
+
+{
+  name: "Mental Health",
+  slug: "mental-health",
+  agents: [
+    { name: "Woebot", url: "https://woebothealth.com/" },
+    { name: "Wysa", url: "https://www.wysa.com/" },
+  ],
+},
+
+{
+  name: "Marketing",
+  slug: "marketing",
+  agents: [
+    { name: "JustCall AI", url: "https://justcall.io/product/ai-agent-assist/" },
+    { name: "Writesonic", url: "https://writesonic.com/chat" },
+    { name: "Synthesia", url: "https://www.synthesia.io/" },
+    { name: "Skott", url: "https://www.lyzr.ai/skott/" },
+    { name: "Anyword", url: "https://www.anyword.com/" },
+    { name: "HubSpot Breeze", url: "https://www.hubspot.com/products/artificial-intelligence" },
+    { name: "RTB House", url: "https://www.rtbhouse.com/" },
+    { name: "dotdigital", url: "https://dotdigital.com/" },
+    { name: "ActiveCampaign", url: "https://www.activecampaign.com/platform/ai-marketing" },
+    { name: "Braze", url: "https://www.braze.com/" },
+    { name: "Wask", url: "https://www.wask.co/" },
+    { name: "HockeyStack", url: "https://www.hockeystack.com/" },
+    { name: "Pencil", url: "https://trypencil.com/" },
+    { name: "StoryChief", url: "https://www.storychief.io/ai-marketing-agent" },
+    { name: "Warmly", url: "https://www.warmly.ai/" },
+    { name: "Lucy", url: "https://www.lucyos.ai/" },
+    { name: "Averi", url: "https://www.averi.ai/" },
+    { name: "Jasper", url: "https://www.jasper.ai/" },
+    { name: "Persado", url: "https://www.persado.com/" },
+    { name: "Trigify", url: "https://www.trigify.io/" },
+    { name: "Leap", url: "https://www.tryleap.ai/" },
+    { name: "Opencord AI", url: "https://www.opencord.ai/" },
+    { name: "Writer", url: "https://writer.com/solutions/marketing/" },
+  ],
+},
+
+{
+  name: "E-commerce",
+  slug: "ecommerce",
+  agents: [
+    { name: "Curatle", url: "https://curatle.com/" },
+    { name: "Hypotenuse AI", url: "https://www.hypotenuse.ai/features/ai-agents-for-ecommerce" },
+    { name: "Akira AI", url: "https://www.akira.ai/ai-agents/e-commerce-ai-agents" },
+    { name: "DigitalGenius", url: "https://www.digitalgenius.com/" },
+    { name: "Rep AI", url: "https://www.hellorep.ai/" },
+  ],
+},
+
+{
+  name: "Video Editing",
+  slug: "video-editing",
+  agents: [
+    { name: "Mosaic", url: "https://mosaic.so/" },
+    { name: "GliaCloud", url: "https://www.gliacloud.com/en/" },
+    { name: "Spot", url: "https://www.spot.ai/aiagents" },
+    { name: "D-ID", url: "https://www.d-id.com/" },
+    { name: "Synthesia", url: "https://www.synthesia.io/" },
+    { name: "Videoleap", url: "https://www.videoleapapp.com/" },
+  ],
+},
+
+{
+  name: "Trading",
+  slug: "trading",
+  agents: [
+    { name: "Open Ledger", url: "https://www.openledger.xyz/" },
+    { name: "Cohere", url: "https://cohere.com/" },
+    { name: "Permutable AI", url: "https://permutable.ai/trading-co-pilot/" },
+  ],
+},
+
+{
+  name: "Media",
+  slug: "media",
+  agents: [
+    { name: "Descript", url: "https://www.descript.com/" },
+    { name: "Otter", url: "https://otter.ai/" },
+    { name: "Adobe Sensei", url: "https://www.adobe.com/au/sensei/generative-ai.html" },
+    { name: "Flawless", url: "https://flawlessai.com/" },
+    { name: "Runway", url: "https://runwayml.com/" },
+    { name: "Autodesk Wonder Dynamics", url: "https://www.autodesk.com/products/flow-studio/overview" },
+    { name: "Truewind", url: "https://www.truewind.ai/solutions/media-and-entertainment" },
+  ],
+},
+
 ];
