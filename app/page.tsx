@@ -134,7 +134,7 @@ onClick={() => {
       <main className="pt-16 relative z-0">
 
         {/* HERO */}
-        <section className="relative z-0 max-w-6xl mx-auto px-6 pt-28 pb-20 text-center">
+        <section className="relative z-0 max-w-6xl mx-auto px-6 pt-28 pb-8 text-center">
 
           <div className="inline-flex items-center gap-2 bg-white/60 border text-zinc-600 text-xs px-3 py-1.5 rounded-full mb-8">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
@@ -178,16 +178,29 @@ onClick={() => {
 
 
         {/* LIBRARY */}
-        <section id="library" className="py-16">
-          <div className="max-w-3xl mx-auto px-6">
-            <div className="glass-card p-8">
+        <section id="library" className="pt-4 pb-16">
+          <div className="max-w-[960px] mx-auto px-6">
+            <div
+              className="p-9"
+              style={{
+                background: "linear-gradient(135deg, #fafbff 0%, #f5f7ff 100%)",
+                border: "1px solid #e2e8f0",
+                borderRadius: "1.5rem",
+                boxShadow: "0 4px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)",
+              }}
+            >
 
-              <h2 className="text-2xl font-semibold text-center mb-4">
+              <h2 className="text-2xl font-semibold text-center mb-1 text-zinc-800">
                 Explore AI Agent Library
               </h2>
 
-              <div className="flex flex-col sm:flex-row gap-4 items-center">
+              <p className="text-center text-zinc-500 text-sm mb-6">
+                Browse 250+ agents across 90+ business domains
+              </p>
 
+              <div className="flex flex-col sm:flex-row gap-3 items-center">
+
+                {/* Search — dominant, ~55% */}
                 <input
                   type="text"
                   placeholder="Search business domains..."
@@ -196,10 +209,11 @@ onClick={() => {
                   onKeyDown={(e) => {
                     if (e.key === "Enter") handleSearch();
                   }}
-                  className="glass-input w-full sm:flex-1 px-4 py-3 rounded-xl border border-zinc-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full sm:flex-[2] px-4 py-2.5 rounded-xl bg-white border border-blue-200 text-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                 />
 
-                <div className="relative w-full sm:w-64">
+                {/* Dropdown — ~33% */}
+                <div className="relative w-full sm:flex-[2]">
                   <select
                     onChange={(e) => {
                       if (e.target.value) {
@@ -209,7 +223,7 @@ onClick={() => {
                         router.push(`/domains/${e.target.value}`);
                       }
                     }}
-                    className="glass-input w-full px-4 py-3 rounded-xl border border-zinc-300 text-zinc-700 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2.5 rounded-xl bg-white border border-blue-200 text-zinc-700 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                     defaultValue=""
                   >
                     <option value="">Select Business Domain</option>
@@ -221,14 +235,22 @@ onClick={() => {
                     ))}
                   </select>
 
-                  <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-500">
+                  <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400 text-xs">
                     ▼
                   </div>
                 </div>
 
+                {/* Button — fixed, ~18% */}
                 <button
-                  onClick={() => router.push("/domains")}
-                  className="w-full sm:w-auto px-6 py-3 rounded-xl bg-black text-white hover:opacity-90 transition"
+                  onClick={() => {
+                    posthog.capture("library_explore_clicked");
+                    router.push("/domains");
+                  }}
+                  className="w-full sm:flex-1 px-6 py-2.5 rounded-xl text-white font-medium transition hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap"
+                  style={{
+                    background: "linear-gradient(135deg, #6c4cf1 0%, #4f7cf5 100%)",
+                    boxShadow: "0 4px 14px rgba(108,76,241,0.25)",
+                  }}
                 >
                   Explore →
                 </button>
