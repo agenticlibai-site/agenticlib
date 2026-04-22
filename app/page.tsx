@@ -111,7 +111,7 @@ onClick={() =>
         : "text-zinc-500 hover:text-black hover:bg-orange-100"
     }`}
   >
-    Blog
+    Blogs
   </button>
 
   {/* Contact Us */}
