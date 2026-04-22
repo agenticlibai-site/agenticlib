@@ -114,29 +114,27 @@ function BlogContent({ content }: { content: string }) {
       {blocks.map((block, i) => {
         switch (block.type) {
           case "h2":
-            return (
-              <h2 key={i}>{block.text}</h2>
-            );
+            return <h2 key={i}>{block.text}</h2>;
 
           case "numbered": {
             const longRest = block.rest.length > 90;
             return (
-              <div key={i} className="flex gap-4 mt-7 first:mt-0">
+              <div key={i} className="flex gap-4 mt-8 first:mt-0 mb-2">
                 <span
-                  className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500
-                             text-white text-xs font-bold flex items-center justify-center mt-0.5"
+                  className="flex-shrink-0 w-7 h-7 rounded-full bg-gradient-to-br from-violet-600 to-fuchsia-500
+                             text-white text-xs font-bold flex items-center justify-center mt-0.5 shadow-sm"
                 >
                   {block.n}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-zinc-900 leading-snug">
+                  <p className="font-semibold text-zinc-900 leading-snug !mb-0">
                     {block.lead}
                     {block.rest && !longRest && (
-                      <span className="font-normal text-zinc-500"> — {block.rest}</span>
+                      <span className="font-normal text-zinc-600"> — {block.rest}</span>
                     )}
                   </p>
                   {block.rest && longRest && (
-                    <p className="mt-1 text-zinc-600 leading-relaxed">
+                    <p className="mt-2 text-zinc-700 leading-relaxed !mb-0">
                       {block.rest.split("\n").map((line, j, arr) => (
                         <span key={j}>
                           <Linkified text={line} />
@@ -152,7 +150,7 @@ function BlogContent({ content }: { content: string }) {
 
           case "p":
             return (
-              <p key={i}>
+              <p key={i} className="text-zinc-800 leading-[1.9]">
                 {block.text.split("\n").map((line, j, arr) => (
                   <span key={j}>
                     <Linkified text={line} />
@@ -164,10 +162,10 @@ function BlogContent({ content }: { content: string }) {
 
           case "ul":
             return (
-              <ul key={i} className="mt-4 space-y-2 pl-1">
+              <ul key={i} className="space-y-2.5 pl-1 mb-6">
                 {block.items.map((item, j) => (
-                  <li key={j} className="flex gap-3 text-zinc-600 leading-relaxed">
-                    <span className="flex-shrink-0 mt-[0.6em] w-1.5 h-1.5 rounded-full bg-violet-400" />
+                  <li key={j} className="flex gap-3 text-zinc-800 leading-relaxed">
+                    <span className="flex-shrink-0 mt-[0.65em] w-1.5 h-1.5 rounded-full bg-violet-500 flex-none" />
                     <span>
                       <Linkified text={item} />
                     </span>
@@ -292,7 +290,7 @@ export default function BlogPost() {
 
       {/* Article body */}
       <div className="relative z-10 max-w-5xl mx-auto px-6 py-10">
-        <div className="bg-white/70 backdrop-blur-sm border border-white/40 rounded-3xl p-8 md:p-14 shadow-sm">
+        <div className="bg-white/80 backdrop-blur-sm border border-white/50 rounded-3xl px-8 py-10 md:px-16 md:py-14 shadow-sm">
           <div className="max-w-3xl mx-auto">
             <BlogContent content={blog.content} />
           </div>

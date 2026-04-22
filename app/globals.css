@@ -64,6 +64,68 @@ body {
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.10), 0 2px 4px rgba(0,0,0,0.04);
 }
 
+/* ── Blog prose content ── */
+.blog-content {
+  font-family: var(--font-inter), var(--font-geist-sans), system-ui, sans-serif;
+  font-size: 1.0625rem;    /* 17px */
+  line-height: 1.9;
+  color: #27272a;           /* zinc-800 */
+}
+
+.blog-content h2 {
+  font-size: 1.5rem;        /* 24px */
+  font-weight: 700;
+  color: #18181b;           /* zinc-900 */
+  margin-top: 2.75rem;
+  margin-bottom: 0.875rem;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+}
+
+.blog-content h2:first-child {
+  margin-top: 0;
+}
+
+.blog-content h3 {
+  font-size: 1.2rem;        /* ~19px */
+  font-weight: 600;
+  color: #18181b;
+  margin-top: 2rem;
+  margin-bottom: 0.5rem;
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+}
+
+.blog-content p {
+  margin-bottom: 1.5rem;
+  line-height: 1.9;
+}
+
+.blog-content p:last-child {
+  margin-bottom: 0;
+}
+
+.blog-content ul {
+  margin-bottom: 1.5rem;
+}
+
+.blog-content a {
+  color: #6d28d9;           /* violet-700 */
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.15s ease;
+  word-break: break-all;
+}
+
+.blog-content a:hover {
+  text-decoration-color: #6d28d9;
+}
+
+/* ── Scrollbar hide utility ── */
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
 /* ── Glass input / select ── */
 .glass-input {
   background: rgba(255, 255, 255, 0.55);
