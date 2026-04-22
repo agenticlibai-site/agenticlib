@@ -143,12 +143,12 @@ export default function BlogPage() {
           {/* Latest Insights carousel */}
           <div className="mb-16">
             <SectionLabel>Latest Insights</SectionLabel>
-            <BlogCarousel items={blogs} onNavigate={navigate} />
+            <BlogCarousel items={[...blogs].reverse()} onNavigate={navigate} />
           </div>
 
           {/* Everyday, Made Easier series carousel */}
           {(() => {
-            const series = blogs.filter((b) => b.series === "everyday-made-easier");
+            const series = [...blogs].filter((b) => b.series === "everyday-made-easier").reverse();
             if (!series.length) return null;
             return (
               <div className="mb-16">
