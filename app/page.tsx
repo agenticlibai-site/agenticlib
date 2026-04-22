@@ -55,7 +55,7 @@ const [showTerms, setShowTerms] = useState(false);
             </span>
           </div>
 
-<nav className="flex items-center gap-12">
+<nav className="flex items-center gap-8">
 
   {/* AI Agent Library */}
   <button
@@ -112,6 +112,20 @@ onClick={() =>
     }`}
   >
     Blog
+  </button>
+
+  {/* Contact Us */}
+  <button
+    onClick={() => {
+      if (pathname === "/") {
+        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+      } else {
+        router.push("/#contact");
+      }
+    }}
+    className="transition px-3 py-1 rounded-full text-zinc-500 hover:text-black hover:bg-zinc-100"
+  >
+    Contact Us
   </button>
 
 </nav>
@@ -285,7 +299,7 @@ onClick={() => {
 
       </main>
 
-      <section className="mt-20 mb-10 px-6">
+      <section id="contact" className="mt-20 mb-10 px-6">
   <div className="max-w-4xl mx-auto text-center">
 
     <h3 className="text-lg font-semibold text-gray-600 mb-6">
