@@ -234,8 +234,7 @@ And in 2025, that's becoming less of a luxury and more of a necessity.`,
     series: "everyday-made-easier",
     content: `What if your day didn't start with opening five different apps?
 
-No jumping between tabs.
-No searching, comparing, re-checking, or second-guessing.
+No jumping between tabs. No searching, comparing, re-checking, or second-guessing.
 
 Instead, you just say:
 
