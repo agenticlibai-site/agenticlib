@@ -178,7 +178,7 @@ onClick={() => {
   className="btn-primary px-9 py-4 rounded-full text-white"
   onClick={() => posthog.capture("hero_cta_clicked", { location: "hero" })}
 >
-  Get personalised AI agent recommendations
+  Get recommendations
 </a>
 
               <a href="#demo" className="px-6 py-4 rounded-full border bg-white/50">
