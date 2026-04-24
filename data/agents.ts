@@ -19,11 +19,11 @@ export const domains = [
     name: "Real Estate",
     slug: "real-estate",
     agents: [
-      { name: "REX", url: "https://www.rexsoftware.com/" },
+      { name: "Rex", url: "https://www.rexsoftware.com/" },
       { name: "Joy", url: "https://withjoy.ai/" },
       { name: "Likely.AI", url: "https://likely.ai/" },
       { name: "Voiceflow", url: "https://www.voiceflow.com/industries/real-estate" },
-      { name: "V7 Labs", url: "https://www.v7labs.com/go/agents" },
+      { name: "V7", url: "https://www.v7labs.com/go/agents" },
       { name: "Beam", url: "https://beam.ai/solutions/property-management" },
       { name: "Truewind", url: "https://www.truewind.ai/solutions/real-estate" },
     ],
@@ -455,4 +455,280 @@ export const domains = [
     { name: "JAGGAER", url: "https://www.jaggaer.com/" },
   ],
 },
+{
+  name: "General Purpose & Technology",
+  slug: "general-purpose-technology",
+  agents: [
+    { name: "Manus Playbook", url: "https://manus.im/playbook" },
+    { name: "ZBrain", url: "https://zbrain.ai/agents/Utilities/" },
+    { name: "Jina AI", url: "https://jina.ai/" },
+    { name: "nventr", url: "https://agent.nventr.ai/" },
+  ],
+},
+{
+  name: "Gaming",
+  slug: "gaming",
+  agents: [
+    { name: "Token Minds", url: "https://tokenminds.co/ai-agent-development" },
+    { name: "Inworld", url: "https://inworld.ai/" },
+    { name: "modl", url: "https://modl.ai/" },
+    { name: "Gridly", url: "https://www.gridly.com/continuous-game-localization/" },
+    { name: "GraphLogic", url: "https://graphlogic.ai/gaming/" },
+    { name: "Latitude", url: "https://latitude.io/" },
+    { name: "Promethean AI", url: "https://www.prometheanai.com/" },
+    { name: "Convai", url: "https://www.convai.com/" },
+  ],
+},
+{
+  name: "Chemical Industry",
+  slug: "chemical-industry",
+  agents: [
+    { name: "hellonesh", url: "https://www.hellonesh.io/" },
+    { name: "Glide", url: "https://www.glideapps.com/agents/chemical" },
+  ],
+},
+{
+  name: "Hedge Funds",
+  slug: "hedge-funds",
+  agents: [
+    { name: "Unique AI", url: "https://www.unique.ai/unique-ai-for-hedge-funds" },
+  ],
+},
+{
+  name: "Inventory Management",
+  slug: "inventory-management",
+  agents: [
+    { name: "Akira AI", url: "https://www.akira.ai/" },
+    { name: "Taskade", url: "https://www.taskade.com/generate/e-commerce/inventory-management" },
+    { name: "f7i", url: "https://f7i.ai/features/inventory-management" },
+  ],
+},
+{
+  name: "Material & Manufacturing",
+  slug: "material-manufacturing",
+  agents: [
+    { name: "Cradle", url: "https://www.cradle.bio/" },
+    { name: "ToffeeX", url: "https://toffeex.com/" },
+    { name: "Truewind", url: "https://www.truewind.ai/solutions/manufacturing" },
+  ],
+},
+{
+  name: "Fashion Design",
+  slug: "fashion-design",
+  agents: [
+    { name: "Resleeve.ai", url: "https://resleeve.ai/" },
+    { name: "Uwear", url: "https://uwear.ai/" },
+  ],
+},
+{
+  name: "Research and Innovation",
+  slug: "research-innovation",
+  agents: [
+    { name: "aiXplain", url: "https://aixplain.com/" },
+    { name: "ToolUniverse", url: "https://aiscientist.tools/" },
+    { name: "Exa", url: "https://exa.ai/" },
+    { name: "Tavily", url: "https://www.tavily.com/" },
+    { name: "Pints AI", url: "https://pints.ai/agents" },
+    { name: "Consensus", url: "https://consensus.app/" },
+    { name: "Glean", url: "https://www.glean.com/product/deep-research" },
+  ],
+},
+{
+  name: "Life Sciences",
+  slug: "life-sciences",
+  agents: [
+    { name: "Causaly", url: "https://www.causaly.com/" },
+  ],
+},
+{
+  name: "Recruitment",
+  slug: "recruitment",
+  agents: [
+    { name: "HireEZ", url: "https://hireez.com/agentic-ai/" },
+    { name: "HireHunt", url: "https://www.herohunt.ai/" },
+    { name: "Loxo", url: "https://www.loxo.co/ai-agents-for-recruiters" },
+    { name: "Teamtailor", url: "https://www.teamtailor.com/en/resources/ai-recruiting-software/" },
+    { name: "Manatal", url: "https://www.manatal.com/" },
+    { name: "Eightfold AI", url: "https://eightfold.ai/" },
+    { name: "X0PA", url: "https://x0pa.com/ai-hiring-agent" },
+    { name: "Beam AI", url: "https://beam.ai/solutions/hr-recruitment" },
+    { name: "Lyzr", url: "https://www.lyzr.ai/landing-pages/ai-in-hr/" },
+  ],
+},
+{
+  name: "Film Making",
+  slug: "film-making",
+  agents: [
+    { name: "Runway", url: "https://runwayml.com", category: "Video Editing & Production" },
+    { name: "Synthesia", url: "https://www.synthesia.io", category: "Video Editing & Production" },
+    { name: "Descript", url: "https://www.descript.com", category: "Video Editing & Production" },
+    { name: "Pictory", url: "https://pictory.ai", category: "Video Editing & Production" },
+    { name: "Topaz Labs", url: "https://www.topazlabs.com", category: "Video Editing & Production" },
+
+    { name: "LTX Studio", url: "https://www.ltxstudio.com", category: "Pre-Production" },
+    { name: "Midjourney", url: "https://www.midjourney.com", category: "Concept Art & Moodboards" },
+    { name: "Cuebric", url: "https://cuebric.com", category: "Virtual Production" },
+    { name: "Largo AI", url: "https://www.largo.ai", category: "Film Analysis & Casting" },
+    { name: "Colourlab AI", url: "https://colourlab.ai", category: "Colour Grading" },
+    { name: "Deepdub", url: "https://deepdub.ai", category: "Dubbing & Translation" },
+    { name: "Studiovity", url: "https://studiovity.com", category: "Storyboard" },
+  ],
+}
+]
+
+
+export const decisionAgents = [
+  {
+    name: "Rex",
+    use_cases: [
+      "crm",
+      "lead_management",
+      "automation",
+      "property_transactions",
+      "buyer_seller_matching",
+      "real_estate_operations"
+    ],
+    best_for: [
+      "buyers",
+      "sellers",
+      "real_estate_agents"
+    ],
+    priority_fit: [
+      "automation",
+      "ease_of_use",
+      "end_to_end_platform",
+      "transaction_support"
+    ],
+    complexity: "medium"
+  },
+  {
+    name: "Joy",
+    use_cases: [
+      "conversation_automation",
+      "lead_engagement",
+      "follow_up_automation",
+      "sms_email_automation",
+      "appointment_booking"
+    ],
+    best_for: [
+      "real_estate_agents",
+      "sales_teams",
+      "agencies"
+    ],
+    priority_fit: [
+      "response_speed",
+      "automation",
+      "conversion"
+    ],
+    complexity: "low"
+  },
+  {
+    name: "Likely.AI",
+    use_cases: [
+      "predictive_lead_scoring",
+      "seller_prediction",
+      "lead_scoring",
+      "prospect_prioritisation",
+      "data_driven_prospecting"
+    ],
+    best_for: [
+      "real_estate_agents",
+      "brokerages",
+      "sales_teams"
+    ],
+    priority_fit: [
+      "high_conversion_focus",
+      "data_driven_decisions"
+    ],
+    complexity: "medium"
+  },
+  {
+  name: "Voiceflow",
+  use_cases: [
+    "ai_agent_builder",
+    "conversational_ai",
+    "chatbot_creation",
+    "workflow_design",
+    "customer_support_automation"
+  ],
+  best_for: [
+    "product_teams",
+    "developers",
+    "ai_agent_builders"
+  ],
+  priority_fit: [
+    "customisation",
+    "automation",
+    "scalability",
+    "no_code_low_code"
+  ],
+  complexity: "medium"
+},
+
+{
+  name: "Beam",
+  use_cases: [
+    "workflow_automation",
+    "crm_integration",
+    "process_automation",
+    "data_sync",
+    "task_automation",
+    "process_orchestration"
+  ],
+  best_for: [
+    "real_estate_agents",
+    "teams",
+    "operations_managers"
+  ],
+  priority_fit: [
+    "automation",
+    "efficiency",
+    "integration",
+    "custom_workflows"
+  ],
+  complexity: "medium"
+},
+
+{
+  name: "V7",
+  use_cases: [
+    "image_processing",
+    "document_ai",
+    "visual_data_extraction",
+    "annotation"
+  ],
+  best_for: [
+    "enterprises",
+    "real_estate_platforms",
+    "data_teams",
+    "ai_engineers"
+  ],
+  priority_fit: [
+    "accuracy",
+    "advanced_ai",
+    "visual_analysis",
+    "data_extraction"
+  ],
+  complexity: "high"
+},
+{
+  name: "HouseCanary",
+  use_cases: [
+    "property_valuation",
+    "market_analysis",
+    "investment_analysis",
+    "price_forecasting",
+    "real_estate_data"
+  ],
+  best_for: [
+    "real_estate_investors",
+    "analysts"
+  ],
+  priority_fit: [
+    "accuracy",
+    "advanced_analytics",
+    "data_depth"
+  ],
+  complexity: "medium"
+}
 ];
