@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 
-const STORAGE_KEY = "survey_shown_v3";
+const STORAGE_KEY = "surveyPopupShown";
 const OPTIONS = [
   "Compare AI agents",
   "Automate a workflow",
@@ -15,32 +15,30 @@ export default function SurveyPopup({ pageUrl }: { pageUrl: string }) {
 
   const dismiss = useCallback(() => {
     setVisible(false);
-    sessionStorage.setItem(STORAGE_KEY, "1");
+    localStorage.setItem(STORAGE_KEY, "1");
   }, []);
 
   useEffect(() => {
-    // Don't show if already seen this session
-    if (sessionStorage.getItem(STORAGE_KEY)) return;
+    if (localStorage.getItem(STORAGE_KEY)) return;
 
     let triggered = false;
 
     const trigger = () => {
       if (triggered) return;
       triggered = true;
+      clearTimeout(timer);
+      window.removeEventListener("scroll", checkScroll);
       setVisible(true);
     };
 
-    // Timer: 5 seconds
-    const timer = setTimeout(trigger, 5000);
-
-    // Scroll: check immediately on mount AND on every scroll
     const checkScroll = () => {
       const scrolled = window.scrollY + window.innerHeight;
       const total = document.documentElement.scrollHeight;
       if (scrolled / total >= 0.25) trigger();
     };
 
-    checkScroll(); // run once immediately in case page is already 25% shown
+    // Trigger after 6 seconds OR on 25% scroll — whichever comes first
+    const timer = setTimeout(trigger, 6000);
     window.addEventListener("scroll", checkScroll, { passive: true });
 
     return () => {
@@ -130,6 +128,10 @@ export default function SurveyPopup({ pageUrl }: { pageUrl: string }) {
             </button>
           ))}
         </div>
+
+        <p className="mt-4 text-sm text-gray-400 text-center">
+          Your response helps us improve our website experience.
+        </p>
       </div>
       </div>
 
