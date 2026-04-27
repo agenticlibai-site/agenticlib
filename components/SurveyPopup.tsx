@@ -80,13 +80,14 @@ export default function SurveyPopup({ pageUrl }: { pageUrl: string }) {
       {/* Backdrop */}
       <div className="fixed inset-0 z-[9998] bg-black/20" />
 
-      {/* Popup */}
+      {/* Popup — flex wrapper handles centering, no transforms needed */}
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none">
       <div
         id="survey-popup"
         role="dialog"
         aria-modal="true"
         aria-label="Quick survey"
-        className="fixed z-[9999] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+        className="pointer-events-auto relative
                    w-[90vw] max-w-2xl
                    rounded-2xl border border-zinc-200
                    bg-white shadow-[0_8px_40px_rgba(0,0,0,0.18)]
@@ -130,11 +131,12 @@ export default function SurveyPopup({ pageUrl }: { pageUrl: string }) {
           ))}
         </div>
       </div>
+      </div>
 
       <style>{`
         @keyframes surveyFadeIn {
-          from { opacity: 0; transform: translate(-50%, -48%); }
-          to   { opacity: 1; transform: translate(-50%, -50%); }
+          from { opacity: 0; transform: translateY(8px); }
+          to   { opacity: 1; transform: translateY(0); }
         }
       `}</style>
     </>
