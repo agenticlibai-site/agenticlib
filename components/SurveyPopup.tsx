@@ -21,30 +21,8 @@ export default function SurveyPopup({ pageUrl }: { pageUrl: string }) {
   useEffect(() => {
     if (localStorage.getItem(STORAGE_KEY)) return;
 
-    let triggered = false;
-
-    const trigger = () => {
-      if (triggered) return;
-      triggered = true;
-      clearTimeout(timer);
-      window.removeEventListener("scroll", checkScroll);
-      setVisible(true);
-    };
-
-    const checkScroll = () => {
-      const scrolled = window.scrollY + window.innerHeight;
-      const total = document.documentElement.scrollHeight;
-      if (scrolled / total >= 0.25) trigger();
-    };
-
-    // Trigger after 6 seconds OR on 25% scroll — whichever comes first
-    const timer = setTimeout(trigger, 6000);
-    window.addEventListener("scroll", checkScroll, { passive: true });
-
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("scroll", checkScroll);
-    };
+    const timer = setTimeout(() => setVisible(true), 1500);
+    return () => clearTimeout(timer);
   }, []);
 
   // Dismiss on outside click
@@ -80,59 +58,59 @@ export default function SurveyPopup({ pageUrl }: { pageUrl: string }) {
 
       {/* Popup — flex wrapper handles centering, no transforms needed */}
       <div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none">
-      <div
-        id="survey-popup"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Quick survey"
-        className="pointer-events-auto relative
-                   w-[90vw] max-w-2xl
-                   rounded-2xl border border-zinc-200
-                   bg-white shadow-[0_8px_40px_rgba(0,0,0,0.18)]
-                   p-8"
-        style={{ animation: "surveyFadeIn 0.2s ease both" }}
-      >
-        {/* Close */}
-        <button
-          onClick={dismiss}
-          aria-label="Close"
-          className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center rounded-full
-                     text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition-all cursor-pointer"
+        <div
+          id="survey-popup"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Quick survey"
+          className="pointer-events-auto relative
+                     w-[90vw] max-w-2xl
+                     rounded-2xl border border-zinc-200
+                     bg-white shadow-[0_8px_40px_rgba(0,0,0,0.18)]
+                     p-8"
+          style={{ animation: "surveyFadeIn 0.2s ease both" }}
         >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-            <line x1="1" y1="1" x2="13" y2="13" />
-            <line x1="13" y1="1" x2="1" y2="13" />
-          </svg>
-        </button>
+          {/* Close */}
+          <button
+            onClick={dismiss}
+            aria-label="Close"
+            className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center rounded-full
+                       text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition-all cursor-pointer"
+          >
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <line x1="1" y1="1" x2="13" y2="13" />
+              <line x1="13" y1="1" x2="1" y2="13" />
+            </svg>
+          </button>
 
-        {/* Title */}
-        <p className="text-xl font-semibold uppercase tracking-widest text-[#6495ED] mb-1">
-          Quick question
-        </p>
-        <h3 className="text-base font-semibold text-zinc-900 leading-snug mb-5">
-          What are you mainly looking to do with an AI agent?
-        </h3>
+          {/* Title */}
+          <p className="text-xl font-semibold uppercase tracking-widest text-[#6495ED] mb-1">
+            Quick question
+          </p>
+          <h3 className="text-base font-semibold text-zinc-900 leading-snug mb-5">
+            What are you mainly looking to do with an AI agent?
+          </h3>
 
-        {/* Options */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {OPTIONS.map((opt) => (
-            <button
-              key={opt}
-              onClick={() => handleOption(opt)}
-              className="w-full text-left text-sm font-medium text-zinc-700
-                         px-4 py-3 rounded-xl border border-zinc-200 bg-white
-                         hover:bg-[#EEF3FD] hover:border-[#6495ED] hover:text-[#3a6fd8]
-                         transition-all duration-150 cursor-pointer"
-            >
-              {opt}
-            </button>
-          ))}
+          {/* Options */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {OPTIONS.map((opt) => (
+              <button
+                key={opt}
+                onClick={() => handleOption(opt)}
+                className="w-full text-left text-sm font-medium text-zinc-700
+                           px-4 py-3 rounded-xl border border-zinc-200 bg-white
+                           hover:bg-[#EEF3FD] hover:border-[#6495ED] hover:text-[#3a6fd8]
+                           transition-all duration-150 cursor-pointer"
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
+
+          <p className="mt-4 text-sm text-gray-400 text-center">
+            Your response helps us improve our website experience.
+          </p>
         </div>
-
-        <p className="mt-4 text-sm text-gray-400 text-center">
-          Your response helps us improve our website experience.
-        </p>
-      </div>
       </div>
 
       <style>{`
