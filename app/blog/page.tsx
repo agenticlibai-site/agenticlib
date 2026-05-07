@@ -204,8 +204,8 @@ export default function BlogPage() {
                     <div className="flex items-center justify-between pt-3 border-t border-zinc-100/80">
                       <AuthorChip name={blog.author} size="sm" />
                       <span className="text-xs font-medium text-violet-500 group-hover:translate-x-0.5 transition-transform inline-block">
-                        Read →
-                      </span>
+                    Read →
+                  </span>
                     </div>
                   </div>
                 </div>
