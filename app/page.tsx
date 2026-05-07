@@ -45,7 +45,7 @@ const [showTerms, setShowTerms] = useState(false);
 
       {/* NAVBAR */}
       <header className="fixed top-0 inset-x-0 z-[999] px-4 pt-3 pointer-events-auto">
-        <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md border border-white/20 shadow-sm rounded-xl px-6 py-3 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md border border-white/20 shadow-sm rounded-xl px-6 py-3 flex items-center gap-10">
 
           {/* LOGO ✅ */}
           <div className="flex items-center gap-2">
@@ -129,19 +129,6 @@ onClick={() =>
   </button>
 
 </nav>
-
-          <button
-onClick={() => {
-  posthog.capture("get_started_clicked", { location: "navbar" });
-  window.open(
-    "https://chatgpt.com/g/g-69795c1eeb808191beea0005fdc16126-ai-agent-decision-engine",
-    "_blank"
-  );
-}}
-            className="text-sm font-medium bg-zinc-900 text-white px-4 py-2 rounded-full"
-          >
-            Get started
-          </button>
         </div>
       </header>
 
