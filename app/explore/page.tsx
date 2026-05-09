@@ -99,13 +99,6 @@ export default function ExplorePage() {
 
         <footer className="border-t border-zinc-100 py-8 text-center text-sm text-zinc-400">
           <p>© {new Date().getFullYear()} AgenticLib — The AI Agent Discovery Platform</p>
-          <p className="mt-1">
-            <Link href="/" className="hover:text-zinc-600 transition">Home</Link>
-            {" · "}
-            <Link href="/domains" className="hover:text-zinc-600 transition">Agent Library</Link>
-            {" · "}
-            <Link href="/blog" className="hover:text-zinc-600 transition">Blog</Link>
-          </p>
         </footer>
 
       </div>
