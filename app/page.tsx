@@ -1,5 +1,4 @@
 "use client";
-import Link from "next/link";
 import { useState } from "react";
 import { domains } from "@/data/agents";
 import { useRouter, usePathname } from "next/navigation";
@@ -245,7 +244,7 @@ onClick={() =>
                 <button
                   onClick={() => {
                     posthog.capture("library_explore_clicked");
-                    router.push("/domains");
+                    router.push("/explore");
                   }}
                   className="w-full sm:flex-1 px-6 py-2.5 rounded-xl text-white font-medium transition hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap"
                   style={{

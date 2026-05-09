@@ -31,7 +31,12 @@ export default function DomainPage() {
           href={agent.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="group"
+          className="group relative rounded-2xl p-[1px] transition-all duration-300
+                     bg-gradient-to-br from-blue-300/60 via-indigo-200/40 to-blue-400/50
+                     hover:from-blue-400/80 hover:to-indigo-400/70
+                     shadow-[0_4px_20px_rgba(59,130,246,0.10)]
+                     hover:shadow-[0_8px_32px_rgba(59,130,246,0.28)]
+                     hover:-translate-y-0.5"
           onClick={() =>
             posthog.capture("agent_link_clicked", {
               agent_name: agent.name,
@@ -40,16 +45,16 @@ export default function DomainPage() {
             })
           }
         >
-          <div className="relative rounded-2xl p-[1px] bg-gradient-to-br from-blue-200 via-white to-blue-300">
-            <div className="rounded-2xl bg-white/60 backdrop-blur-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02]">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-lg font-semibold">{agent.name}</div>
-                  <div className="text-sm text-zinc-500 mt-1">Visit official site</div>
-                </div>
-                <div className="text-blue-500 transition-transform group-hover:translate-x-1">→</div>
+          <div className="rounded-2xl p-6 flex items-center justify-between
+                          bg-gradient-to-br from-blue-50/90 to-white/95
+                          backdrop-blur-md">
+            <div>
+              <div className="text-xl font-semibold text-zinc-900 group-hover:text-blue-700 transition-colors">
+                {agent.name}
               </div>
+              <div className="text-sm text-blue-400/80 mt-1">Visit official site</div>
             </div>
+            <div className="text-blue-300 group-hover:text-blue-500 transition-all group-hover:translate-x-1">→</div>
           </div>
         </a>
       ))}
