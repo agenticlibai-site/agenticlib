@@ -51,7 +51,6 @@ export default async function DomainSeoPage({
   const domain = getSeoDomain(slug);
   if (!domain) notFound();
 
-  const related = seoDomains.filter((d) => domain.relatedSlugs.includes(d.slug));
   const agentDomain = domains.find((d) => d.slug === domain.agentLibrarySlug);
   const agents = agentDomain?.agents ?? [];
 
@@ -65,58 +64,40 @@ export default async function DomainSeoPage({
             <img src="/logo.png" alt="AgenticLib" className="h-6 w-auto" />
             <span className="text-base font-semibold tracking-tight">AgenticLib</span>
           </Link>
-          <Link href="/domains" className="text-sm text-zinc-500 hover:text-zinc-900 transition">
-            Browse all agents →
+          <Link href="/explore" className="text-sm text-zinc-500 hover:text-zinc-900 transition">
+            Browse all domains →
           </Link>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-6 py-16">
+      <main className="max-w-5xl mx-auto px-6 py-12">
 
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-8 text-sm text-zinc-400">
+        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-zinc-400">
           <ol className="flex items-center gap-2">
             <li><Link href="/" className="hover:text-zinc-600 transition">Home</Link></li>
             <li>/</li>
-            <li><Link href="/domains" className="hover:text-zinc-600 transition">AI Agent Library</Link></li>
+            <li><Link href="/explore" className="hover:text-zinc-600 transition">Domains</Link></li>
             <li>/</li>
             <li className="text-zinc-600">{domain.name}</li>
           </ol>
         </nav>
 
-        {/* Hero */}
-        <section className="mb-14">
-          <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 tracking-tight mb-6">
+        {/* Hero - short intro */}
+        <section className="mb-10">
+          <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 tracking-tight mb-4">
             {domain.h1}
           </h1>
-          <p className="text-lg text-zinc-600 leading-relaxed max-w-3xl">{domain.intro}</p>
+          <p className="text-lg text-zinc-600 leading-relaxed max-w-2xl">{domain.intro}</p>
         </section>
 
-        {/* Use Cases */}
-        <section className="mb-14">
-          <h2 className="text-2xl font-bold text-zinc-900 mb-8">
-            Top Use Cases for AI Agents in {domain.name}
-          </h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {domain.useCases.map((uc) => (
-              <div
-                key={uc.title}
-                className="bg-white rounded-2xl border border-zinc-100 p-6 shadow-sm hover:shadow-md transition"
-              >
-                <h3 className="text-base font-semibold text-zinc-900 mb-2">{uc.title}</h3>
-                <p className="text-sm text-zinc-500 leading-relaxed">{uc.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Agent cards */}
+        {/* ── AGENT CARDS - primary conversion area ─────────────────────────── */}
         {agents.length > 0 && (
           <section className="mb-14">
-            <h2 className="text-2xl font-bold text-zinc-900 mb-8">
+            <h2 className="text-xl font-semibold text-zinc-900 mb-5">
               {domain.name} AI Agents
             </h2>
-            <div className="grid md:grid-cols-2 gap-5">
+            <div className="grid md:grid-cols-2 gap-4">
               {agents.map((agent) => (
                 <a
                   key={agent.name}
@@ -149,6 +130,41 @@ export default async function DomainSeoPage({
           </section>
         )}
 
+        {/* ── SUPPORTING CONTENT - SEO layer ────────────────────────────────── */}
+
+        {/* Why AI Matters */}
+        <section className="mb-12 pt-4 border-t border-zinc-100">
+          <h2 className="text-xl font-semibold text-zinc-900 mb-3">
+            Why AI Matters in {domain.name}
+          </h2>
+          <ul className="space-y-2 max-w-3xl">
+            {domain.whyAiMatters.map((point, i) => (
+              <li key={i} className="flex gap-3">
+                <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-[7px]" />
+                <span className="text-sm text-zinc-600 leading-relaxed">{point}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        {/* Use Cases */}
+        <section className="mb-12">
+          <h2 className="text-xl font-semibold text-zinc-900 mb-5">
+            Top Use Cases
+          </h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {domain.useCases.map((uc) => (
+              <div
+                key={uc.title}
+                className="rounded-2xl bg-white border border-zinc-200 px-6 py-5
+                           hover:border-blue-200 hover:shadow-sm transition-all duration-200"
+              >
+                <p className="text-sm font-semibold text-zinc-900 mb-1.5">{uc.title}</p>
+                <p className="text-sm text-zinc-500 leading-relaxed">{uc.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
       </main>
 
@@ -157,7 +173,7 @@ export default async function DomainSeoPage({
         <p className="mt-1">
           <Link href="/" className="hover:text-zinc-600 transition">Home</Link>
           {" · "}
-          <Link href="/domains" className="hover:text-zinc-600 transition">Agent Library</Link>
+          <Link href="/explore" className="hover:text-zinc-600 transition">Browse Domains</Link>
           {" · "}
           <Link href="/blog" className="hover:text-zinc-600 transition">Blog</Link>
         </p>
