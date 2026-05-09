@@ -26,9 +26,9 @@ const [showTerms, setShowTerms] = useState(false);
     });
 
     if (match) {
-      router.push(`/domains/${match.slug}`);
+      router.push(`/domain/${match.slug}`);
     } else {
-      router.push("/domains");
+      router.push("/explore");
     }
   };
 
@@ -220,7 +220,7 @@ onClick={() =>
                         posthog.capture("domain_selected_from_dropdown", {
                           domain_slug: e.target.value,
                         });
-                        router.push(`/domains/${e.target.value}`);
+                        router.push(`/domain/${e.target.value}`);
                       }
                     }}
                     className="w-full px-4 py-2.5 rounded-xl bg-white border border-blue-200 text-zinc-700 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
