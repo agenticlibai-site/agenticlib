@@ -59,13 +59,10 @@ export default async function DomainSeoPage({
 
       {/* Navbar */}
       <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-zinc-100">
-        <div className="max-w-5xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-6 py-4">
           <Link href="/" className="flex items-center gap-2">
             <img src="/logo.png" alt="AgenticLib" className="h-6 w-auto" />
             <span className="text-base font-semibold tracking-tight">AgenticLib</span>
-          </Link>
-          <Link href="/explore" className="text-sm text-zinc-500 hover:text-zinc-900 transition">
-            Browse all domains →
           </Link>
         </div>
       </header>
