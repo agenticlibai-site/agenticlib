@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from "react";
 const STORAGE_KEY = "surveyPopupShown";
 const OPTIONS = [
   "Compare AI agents",
-  "Automate a workflow",
+  "Automate a workflow or task",
   "Explore what's possible",
   "Solve a specific task",
 ];
@@ -88,7 +88,7 @@ export default function SurveyPopup({ pageUrl }: { pageUrl: string }) {
             Quick question
           </p>
           <h3 className="text-base font-semibold text-zinc-900 leading-snug mb-5">
-            What are you mainly looking to do with an AI agent?
+            What are you trying to do today?
           </h3>
 
           {/* Options */}
