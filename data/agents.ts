@@ -16,6 +16,18 @@ export const domains = [
   },
 
   {
+    name: "Customer Service",
+    slug: "customer-service",
+    agents: [
+      { name: "Intercom (Fin)", url: "https://www.intercom.com/" },
+      { name: "Sierra", url: "https://sierra.ai/" },
+      { name: "Ada", url: "https://www.ada.cx/" },
+      { name: "Decagon", url: "https://decagon.ai/" },
+      { name: "Zendesk AI", url: "https://www.zendesk.com/" },
+    ],
+  },
+
+  {
     name: "Real Estate",
     slug: "real-estate",
     agents: [
@@ -555,6 +567,7 @@ export const domains = [
     { name: "Lyzr", url: "https://www.lyzr.ai/landing-pages/ai-in-hr/" },
   ],
 },
+
 {
   name: "Film Making",
   slug: "film-making",
@@ -573,7 +586,213 @@ export const domains = [
     { name: "Deepdub", url: "https://deepdub.ai", category: "Dubbing & Translation" },
     { name: "Studiovity", url: "https://studiovity.com", category: "Storyboard" },
   ],
+},
+{
+  name: "Automobile",
+  slug: "automobile",
+  agents: [
+    { name: "Cognigy", url: "https://www.cognigy.com/solutions/automotive", category: "Conversational AI & Customer Experience" },
+    { name: "Beam AI", url: "https://beam.ai/articles/ai-agents-paving-the-highways-of-innovation-in-automotive-engineering", category: "AI Agents for Automotive Engineering" },
+    { name: "Engaged AI", url: "https://engagedai.io/", category: "AI Sales & Engagement" },
+    { name: "Axel (SpiderX)", url: "https://spiderx.ai/axel", category: "Autonomous AI Agent" },
+    { name: "Glide", url: "https://www.provenskincare.com/?srsltid=AfmBOoreulPXpuAWexG3VExjE-aHQEmPKXtn2H03WNm6hMPkHd6WcNRD", category: "AI Automation Tool (unclear domain)" },
+    { name: "Stella Automotive", url: "https://www.stellaautomotive.com/", category: "Automotive AI Solutions" },
+    { name: "Conversica", url: "https://www.conversica.com/solutions/automotive/", category: "AI Sales Assistant" },
+    { name: "Cerence AI", url: "https://www.cerence.com/cerence-products/conversational-generative-ai", category: "In-Vehicle Conversational AI" },
+    { name: "SoundHound AI", url: "https://www.soundhound.com/voice-ai-solutions/automotive/", category: "Voice AI for Automotive" }
+  ],
+},
+
+{
+  name: "IP Management",
+  slug: "ip-management",
+  agents: [
+    { name: "Ankar", url: "https://ankar.ai/", category: "IP Intelligence & Management" }
+  ],
+},
+
+{
+  name: "Visual AI Avatars",
+  slug: "visual-ai-avatars",
+  agents: [
+    { name: "D-ID", url: "https://www.d-id.com/", category: "AI Avatar Generation" },
+    { name: "RAVATAR", url: "https://ravatar.com/", category: "AI Digital Humans" },
+    { name: "DeepBrain AI", url: "https://www.aistudios.com/ai-avatars", category: "AI Video Avatars" },
+    { name: "Aivah", url: "https://aivah.ai/", category: "AI Avatar Platform" }
+  ],
+},
+
+{
+  name: "Vision Agents",
+  slug: "vision-agents",
+  agents: [
+    { name: "Neurala", url: "https://www.neurala.com/", category: "Computer Vision AI" },
+    { name: "Clarifai", url: "https://www.clarifai.com/", category: "Visual Recognition AI" }
+  ],
+},
+
+{
+  name: "Branding",
+  slug: "branding",
+  agents: [
+    { name: "Relevance AI", url: "https://relevanceai.com/agent-templates-roles/brand-manager-ai-agents", category: "Brand AI Agents" }
+  ],
+},
+
+{
+  name: "Entertainment",
+  slug: "entertainment",
+  agents: [
+    { name: "Move AI", url: "https://www.move.ai/", category: "Motion Capture AI" },
+    { name: "Truewind", url: "https://www.truewind.ai/solutions/media-and-entertainment", category: "Media & Finance AI" },
+    { name: "Augmenta", url: "https://www.augmenta.ai/", category: "Generative Design AI" },
+    { name: "Togal AI", url: "https://www.togal.ai/en-au", category: "Construction Estimation AI (adjacent use)" },
+    { name: "Nyfty AI", url: "https://www.nyfty.ai/", category: "AI Automation Platform" }
+  ],
+},
+
+{
+  name: "Patient Service",
+  slug: "patient-service",
+  agents: [
+    { name: "Beam AI", url: "https://beam.ai/agents/patient-service-agent/", category: "Healthcare AI Agent" }
+  ],
+},
+
+{
+  name: "Payroll",
+  slug: "payroll",
+  agents: [
+    { name: "Beam AI", url: "https://beam.ai/agents/payroll-calculation-agent/", category: "Payroll Automation AI" }
+  ],
+},
+
+{
+  name: "Creative Content",
+  slug: "creative-content",
+  agents: [
+    { name: "Lovart", url: "https://www.lovart.ai/", category: "Creative AI Platform" }
+  ],
+},
+
+{
+  name: "Content Creation",
+  slug: "content-creation",
+  agents: [
+    { name: "ThumbGenie AI", url: "https://thumbgenieai.com/", category: "Thumbnail Generation AI" },
+    { name: "Easy-Peasy AI", url: "https://easy-peasy.ai/templates", category: "Content Generation Templates" },
+    { name: "Autopilot Shorts", url: "https://autopilotshorts.com/", category: "Short-form Video AI" },
+    { name: "ReadPo", url: "https://readpo.com/en", category: "Content Summarization AI" },
+    { name: "Charts Not Chapters", url: "https://www.chartsnotchapters.com/", category: "Visual Content Generation" },
+    { name: "Makeform AI", url: "https://www.makeform.ai/", category: "Form Generation AI" }
+  ],
+},
+
+{
+  name: "Kitchen",
+  slug: "kitchen",
+  agents: [
+    { name: "AICookingAgent", url: "https://aicookingagent.com/", category: "AI Recipe Assistant" },
+    { name: "AgentSea", url: "https://www.agentsea.ai/blog?p=robochef-your-ai-powered-recipe-assistant", category: "Cooking Assistant AI" }
+  ],
+},
+
+{
+  name: "Drone",
+  slug: "drone",
+  agents: [
+    { name: "Spleenlab AI", url: "https://www.spleenlab.ai/", category: "Autonomous Drone AI" },
+    { name: "DroneDeploy", url: "https://www.dronedeploy.com/product/ai-at-dronedeploy", category: "Drone Mapping AI" }
+  ],
+},
+
+{
+  name: "Contract Review",
+  slug: "contract-review",
+  agents: [
+    { name: "V7", url: "https://www.v7labs.com/agents/ai-contract-review-agent", category: "Document Intelligence AI" }
+  ],
+},
+
+{
+  name: "Fund Management",
+  slug: "fund-management",
+  agents: [
+    { name: "V7", url: "https://www.v7labs.com/agents/ai-fund-of-funds-manager-selection-agent", category: "Financial AI Analysis" }
+  ],
+},
+
+{
+  name: "Personal Finance",
+  slug: "personal-finance",
+  agents: [
+    { name: "Taskade", url: "https://www.taskade.com/agents/productivity/personal-finance-management", category: "Finance Management AI" }
+  ],
+},
+
+{
+  name: "Insurance Claims",
+  slug: "insurance-claims",
+  agents: [
+    { name: "V7", url: "https://www.v7labs.com/agents/ai-claims-processing-agent", category: "Claims Automation AI" }
+  ],
+},
+
+{
+  name: "Production Orchestration",
+  slug: "production-orchestration",
+  agents: [
+    { name: "f7i", url: "https://f7i.ai/", category: "Workflow Orchestration AI" }
+  ],
+},
+
+{
+  name: "Productivity",
+  slug: "productivity",
+  agents: [
+    { name: "Tennr", url: "https://www.tennr.com/", category: "Workflow Automation AI" },
+    { name: "Mirtilla", url: "https://mirtilla.org/", category: "Productivity Assistant" },
+    { name: "Harvey AI", url: "https://www.harvey.ai/", category: "Legal AI Assistant" },
+    { name: "OneTask", url: "https://onetask.me/blog/agent-knowledge?utm_source=onetask.me&utm_medium=social&utm_campaign=blog", category: "Task Management AI" },
+    { name: "BrainChat AI", url: "https://www.brainchat.ai/", category: "Conversational Productivity AI" },
+    { name: "Athena AI", url: "https://athenachat.bot/chatbot", category: "Chatbot AI Assistant" },
+    { name: "Mesha", url: "https://trymesha.com/", category: "Business Automation AI" },
+    { name: "Ainisa", url: "https://ainisa.com/", category: "AI Assistant Platform" },
+    { name: "Agentive", url: "https://agentive.au/", category: "AI Agent Builder" }
+  ],
+},
+
+{
+  name: "Sales",
+  slug: "sales",
+  agents: [
+    { name: "Cognism", url: "https://www.cognism.com/", category: "Sales Intelligence AI" },
+    { name: "Clay", url: "https://www.clay.com/", category: "Sales Automation AI" },
+    { name: "Scratchpad", url: "https://www.scratchpad.com/ai-sales-agents", category: "Sales Workflow AI" },
+    { name: "Gong", url: "https://www.gong.io/ai-powered-sales-engagement/", category: "Revenue Intelligence AI" },
+    { name: "Common Room", url: "https://www.commonroom.io/product/ai/", category: "Customer Intelligence AI" },
+    { name: "Clari", url: "https://www.clari.com/downloads/state-of-enterprise-revenue-clari-labs-benchmark-report-2025/", category: "Revenue Forecasting AI" },
+    { name: "Artisan", url: "https://www.artisan.co/", category: "AI Sales Rep Automation" },
+    { name: "Crystal", url: "https://www.crystalknows.com/sell-smarter", category: "Personality-based Sales AI" },
+    { name: "Ora", url: "https://www.ora.im/", category: "AI Sales Assistant" },
+    { name: "InsightSquared", url: "https://www.insightsquared.com/", category: "Sales Analytics AI" },
+    { name: "Control Hippo", url: "https://controlhippo.com/ai-agents/ecommerce/", category: "Ecommerce AI Agents" },
+    { name: "Bardeen", url: "https://www.bardeen.ai/solutions/sales-teams", category: "Automation AI for Sales Teams" },
+    { name: "HubSpot AI", url: "https://www.hubspot.com/products/sales/ai-prospecting-agent", category: "CRM AI Agents" },
+    { name: "Botsonic", url: "https://botsonic.com/", category: "AI Chatbot Builder" },
+    { name: "ZBrain", url: "https://zbrain.ai/agents/Sales/", category: "Sales AI Agents Platform" },
+    { name: "11x", url: "https://www.11x.ai/", category: "Autonomous Sales Agents" },
+    { name: "Unify GTM", url: "https://www.unifygtm.com/solutions/sales", category: "Go-to-Market AI" },
+    { name: "Endgame", url: "https://www.endgame.io/", category: "Sales Intelligence AI" },
+    { name: "Operator", url: "https://www.operator.ai/", category: "AI Workflow Automation" },
+    { name: "Trigify", url: "https://www.trigify.io/", category: "Sales Trigger Intelligence AI" },
+    { name: "Leap AI", url: "https://www.tryleap.ai/", category: "AI API Platform for Sales Tools" },
+    { name: "Lumi AI", url: "https://www.lumi-ai.com/customer-insights-sales-analytics", category: "Customer Insight AI" },
+    { name: "REP", url: "https://www.hellorep.ai/product", category: "AI Sales Engagement" },
+    { name: "HappySales", url: "https://www.happysales.ai/autonomous-prospecting", category: "Autonomous Prospecting AI" }
+  ],
 }
+
 ]
 
 
