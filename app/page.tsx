@@ -201,7 +201,7 @@ onClick={() =>
 
               <div className="flex flex-col sm:flex-row gap-3 items-center">
 
-                {/* Search — dominant, ~55% */}
+                {/* Search - dominant, ~55% */}
                 <input
                   type="text"
                   placeholder="Search business domains..."
@@ -213,7 +213,7 @@ onClick={() =>
                   className="w-full sm:flex-[2] px-4 py-2.5 rounded-xl bg-white border border-blue-200 text-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                 />
 
-                {/* Dropdown — ~33% */}
+                {/* Dropdown - ~33% */}
                 <div className="relative w-full sm:flex-[2]">
                   <select
                     onChange={(e) => {
@@ -241,7 +241,7 @@ onClick={() =>
                   </div>
                 </div>
 
-                {/* Button — fixed, ~18% */}
+                {/* Button - fixed, ~18% */}
                 <Link
                   href="/explore"
                   onClick={() => trackEvent("library_explore_clicked", {})}
@@ -532,7 +532,7 @@ onClick={() =>
 
     <h3 className="font-semibold">2. Intellectual Property</h3>
     <p>
-      All content, design, features, and functionality on AgenticLib — including logos, text, graphics, software, and data — are the intellectual property of AgenticLib and are protected by copyright, trademark, and other applicable laws.
+      All content, design, features, and functionality on AgenticLib - including logos, text, graphics, software, and data - are the intellectual property of AgenticLib and are protected by copyright, trademark, and other applicable laws.
     </p>
     <p>
       You may not use, reproduce, or distribute any content from AgenticLib without prior written consent.

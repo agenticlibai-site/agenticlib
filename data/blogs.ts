@@ -33,39 +33,39 @@ Here are the top 10 AI agents making waves in 2025.
 
 Coveo uses AI to deliver personalised product search and recommendations that boost sales and improve customer experience. Its ability to analyse user behaviour makes it a favourite for retailers wanting to increase conversions.
 
-2. Cognigy — Conversational AI for Healthcare and Telecom
+2. Cognigy - Conversational AI for Healthcare and Telecom
 
-Cognigy automates customer and patient interactions with smart virtual agents. It helps healthcare providers manage appointment bookings and patient questions, while telecom companies streamline their customer support — all through natural conversations.
+Cognigy automates customer and patient interactions with smart virtual agents. It helps healthcare providers manage appointment bookings and patient questions, while telecom companies streamline their customer support - all through natural conversations.
 
-3. ONEai Health — Unlocking Insights from Medical Data
+3. ONEai Health - Unlocking Insights from Medical Data
 
 ONEai Health excels at processing complex medical records and extracting valuable insights. This AI agent supports clinicians with data-driven decisions, making healthcare smarter and more efficient.
 
-4. Amelia — AI Virtual Agents with a Human Touch
+4. Amelia - AI Virtual Agents with a Human Touch
 
 Amelia offers empathetic, AI-powered virtual agents that manage patient onboarding, follow-ups, and more. Its advanced conversational capabilities ensure patients feel heard and cared for.
 
-5. Rex — Real Estate Made Smarter
+5. Rex - Real Estate Made Smarter
 
 Rex optimises real estate workflows by automating property listings, client communications, and market analytics. This AI agent helps realtors save time and close deals faster.
 
-6. Joy — Simplifying the Home-Buying Journey
+6. Joy - Simplifying the Home-Buying Journey
 
 Joy enhances the property search process by providing tailored recommendations and scheduling virtual tours, helping buyers find their perfect home with less hassle.
 
-7. Likely.AI — Predictive Insights for Real Estate Agents
+7. Likely.AI - Predictive Insights for Real Estate Agents
 
 Likely.AI uses data analysis to identify homeowners likely to sell soon, enabling agents to focus on leads with the highest potential and improve their sales pipeline.
 
-8. curatle — Personalised Shopping for e-Commerce
+8. curatle - Personalised Shopping for e-Commerce
 
 curatle powers AI-driven product curation that tailors shopping experiences to each customer's preferences, increasing engagement and boosting sales.
 
-9. Darktrace — Cybersecurity's AI Sentinel
+9. Darktrace - Cybersecurity's AI Sentinel
 
 Darktrace uses machine learning to detect cyber threats in real-time and respond autonomously. Its proactive defense helps organisations stay ahead of evolving attacks.
 
-10. Crowdstrike — AI-Powered Endpoint Protection
+10. Crowdstrike - AI-Powered Endpoint Protection
 
 Crowdstrike delivers cloud-based security with AI at its core, preventing and responding to threats across enterprise networks to keep data safe and secure.
 
@@ -90,7 +90,7 @@ Explore more AI agents and start your automation journey today at AgenticLib.com
     slug: "ai-agents-everyday-assistants",
     title: "How AI Agents Are Becoming Our Everyday Assistants",
     description:
-      "AI agents are no longer a novelty — they're dynamic digital teammates reshaping how individuals and teams work every single day.",
+      "AI agents are no longer a novelty - they're dynamic digital teammates reshaping how individuals and teams work every single day.",
     category: "Industry",
     date: "Nov 13, 2025",
     read: "2 min read",
@@ -132,7 +132,7 @@ AI agents and their influence on modern workflows is steadily increasing. In the
     slug: "ai-agents-vs-software",
     title: "AI Agents vs Traditional Software: What's Actually Different?",
     description:
-      "Everyone's talking about AI agents — but how are they actually different from the software you've used for years? Here's a clear-eyed breakdown.",
+      "Everyone's talking about AI agents - but how are they actually different from the software you've used for years? Here's a clear-eyed breakdown.",
     category: "Guide",
     date: "Jan 29, 2026",
     read: "2 min read",

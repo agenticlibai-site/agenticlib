@@ -30,6 +30,8 @@ function validatePayload(raw: unknown): TrackPayload {
 }
 
 // ── In-memory dedup (per-process, 5 s window) ─────────────────────────────────
+// NOTE: In serverless each cold-start is a new process, so dedup only catches
+// duplicate requests that arrive within the same warm instance.
 
 const recentHashes = new Set<string>();
 
@@ -40,22 +42,28 @@ function isDuplicate(event: string, payload: TrackPayload): boolean {
   const hash = eventId
     ? `${event}:${popupId}:${eventId}`
     : `${event}:${popupId}:${timeBucket}`;
-  if (recentHashes.has(hash)) return true;
+
+  if (recentHashes.has(hash)) {
+    console.log("[serverAnalytics] dedup blocked event:", event, "hash:", hash);
+    return true;
+  }
+
   recentHashes.add(hash);
   setTimeout(() => recentHashes.delete(hash), 5_000);
   return false;
 }
 
 // ── In-memory email cooldown (5 min per event+popup) ─────────────────────────
+// Same serverless caveat as dedup: only effective within a warm instance.
 
 const cooldowns = new Map<string, number>();
 const COOLDOWN_MS = 5 * 60 * 1_000;
 
-function canSendEmail(key: string): boolean {
+function isOnCooldown(key: string): boolean {
   const last = cooldowns.get(key);
-  if (last && Date.now() - last < COOLDOWN_MS) return false;
+  if (last && Date.now() - last < COOLDOWN_MS) return true;
   cooldowns.set(key, Date.now());
-  return true;
+  return false;
 }
 
 // ── Email builders ────────────────────────────────────────────────────────────
@@ -102,33 +110,45 @@ function buildEmailHtml(event: string, payload: TrackPayload): string {
   </div>`;
 }
 
-// ── Popup events that trigger immediate email ─────────────────────────────────
-
-const POPUP_EVENTS = new Set([
-  "popup_shown",
-  "popup_cta_clicked",
-  "popup_dismissed_x",
-  "popup_dismissed_outside",
-  "popup_dismissed_esc",
-]);
-
 // ── Public trackEvent ─────────────────────────────────────────────────────────
 
 export async function trackEvent(event: string, rawPayload: unknown): Promise<void> {
-  if (!POPUP_EVENTS.has(event)) return;
+  console.log("[serverAnalytics] processing event:", event);
 
-  const payload = validatePayload(rawPayload);
-  if (isDuplicate(event, payload)) return;
-
-  const popupId = safeStr(payload.popup_id, "unknown");
-  if (!canSendEmail(`${event}:${popupId}`)) {
-    console.log("[serverAnalytics] cooldown active, skipping:", event);
+  // Prefix check — more resilient than a hardcoded Set
+  if (!event.startsWith("popup_")) {
+    console.log("[serverAnalytics] non-popup event ignored:", event);
     return;
   }
 
-  // Fire-and-forget — don't block the route response
-  void sendEmail({
-    subject: getSubject(event, payload),
-    html:    buildEmailHtml(event, payload),
-  }).catch((err) => console.error("[serverAnalytics] email failed:", event, err));
+  const payload = validatePayload(rawPayload);
+  console.log("[serverAnalytics] payload:", JSON.stringify(payload));
+
+  if (isDuplicate(event, payload)) {
+    // isDuplicate logs the block itself
+    return;
+  }
+  console.log("[serverAnalytics] passed dedup check:", event);
+
+  const popupId     = safeStr(payload.popup_id, "unknown");
+  const cooldownKey = `${event}:${popupId}`;
+  if (isOnCooldown(cooldownKey)) {
+    console.log("[serverAnalytics] cooldown active, skipping email:", event, "popup:", popupId);
+    return;
+  }
+  console.log("[serverAnalytics] passed cooldown check:", event);
+
+  const subject = getSubject(event, payload);
+  const html    = buildEmailHtml(event, payload);
+
+  console.log("[serverAnalytics] sending email:", event, "subject:", subject);
+
+  try {
+    await sendEmail({ subject, html });
+    console.log("[serverAnalytics] email success:", event);
+  } catch (err) {
+    console.error("[serverAnalytics] email failed:", event, err);
+    // Re-throw so the route can log and return a 500, making the failure visible
+    throw err;
+  }
 }

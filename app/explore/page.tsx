@@ -50,6 +50,25 @@ const domains = [
   { label: "Life Sciences", slug: "life-sciences", icon: "🧬" },
   { label: "Recruitment", slug: "recruitment", icon: "🤝" },
   { label: "Film Making", slug: "film-making", icon: "🎬" },
+  { label: "Automobile", slug: "automobile", icon: "🚗" },
+  { label: "IP Management", slug: "ip-management", icon: "🔏" },
+  { label: "Visual AI Avatars", slug: "visual-ai-avatars", icon: "🎭" },
+  { label: "Vision Agents", slug: "vision-agents", icon: "🔭" },
+  { label: "Branding", slug: "branding", icon: "✨" },
+  { label: "Entertainment", slug: "entertainment", icon: "🎪" },
+  { label: "Patient Service", slug: "patient-service", icon: "🩺" },
+  { label: "Payroll", slug: "payroll", icon: "💵" },
+  { label: "Creative Content", slug: "creative-content", icon: "🎨" },
+  { label: "Content Creation", slug: "content-creation", icon: "✍️" },
+  { label: "Kitchen & Food", slug: "kitchen", icon: "🍳" },
+  { label: "Drone", slug: "drone", icon: "🚁" },
+  { label: "Contract Review", slug: "contract-review", icon: "📝" },
+  { label: "Fund Management", slug: "fund-management", icon: "💹" },
+  { label: "Personal Finance", slug: "personal-finance", icon: "💳" },
+  { label: "Insurance Claims", slug: "insurance-claims", icon: "🛡️" },
+  { label: "Production Orchestration", slug: "production-orchestration", icon: "⚙️" },
+  { label: "Productivity", slug: "productivity", icon: "🗂️" },
+  { label: "Sales", slug: "sales", icon: "📣" },
 ];
 
 export default function ExplorePage() {
@@ -98,7 +117,7 @@ export default function ExplorePage() {
         </main>
 
         <footer className="border-t border-zinc-100 py-8 text-center text-sm text-zinc-400">
-          <p>© {new Date().getFullYear()} AgenticLib — The AI Agent Discovery Platform</p>
+          <p>© {new Date().getFullYear()} AgenticLib - The AI Agent Discovery Platform</p>
         </footer>
 
       </div>

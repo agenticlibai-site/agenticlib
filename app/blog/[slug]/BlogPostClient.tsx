@@ -18,7 +18,7 @@ function classifyText(text: string, out: ContentBlock[]) {
   const num = text.match(/^(\d+)\.\s+([\s\S]+)/);
   if (num) {
     const [, n, body] = num;
-    const dashIdx  = body.indexOf(" — ");
+    const dashIdx  = body.indexOf(" - ");
     const colonIdx = body.indexOf(": ");
     if (dashIdx > 0 && dashIdx < 60) {
       out.push({ type: "numbered", n, lead: body.slice(0, dashIdx).trim(), rest: body.slice(dashIdx + 3).trim() });
@@ -127,7 +127,7 @@ function BlogContent({ content }: { content: string }) {
                   <p className="font-semibold text-zinc-900 leading-snug !mb-0">
                     {block.lead}
                     {block.rest && !longRest && (
-                      <span className="font-normal text-zinc-600"> — {block.rest}</span>
+                      <span className="font-normal text-zinc-600"> - {block.rest}</span>
                     )}
                   </p>
                   {block.rest && longRest && (
@@ -281,7 +281,7 @@ export default function BlogPostClient({ blog, related }: Props) {
           </div>
         </div>
 
-        {/* Related posts — use <Link> so crawlers can follow these */}
+        {/* Related posts - use <Link> so crawlers can follow these */}
         {related.length > 0 && (
           <div className="mt-14">
             <div className="flex items-center gap-3 mb-6">

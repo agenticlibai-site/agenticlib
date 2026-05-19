@@ -175,13 +175,13 @@ function scoreCSAgent(profile: Omit<CSAgentProfile, "score">, data: CSWizardData
   const volume = data.csVolume.toLowerCase();
   const tech = data.csTech.toLowerCase();
 
-  // Goal signals — any selected goal that matches scores
+  // Goal signals - any selected goal that matches scores
   if (goals.some((g) => g.includes("response time")) && (text.includes("resol") || text.includes("deflect") || text.includes("autonomous"))) score += 5;
   if (goals.some((g) => g.includes("faq")) && (text.includes("faq") || text.includes("self-service") || text.includes("knowledge"))) score += 5;
   if (goals.some((g) => g.includes("complaint")) && (text.includes("escalat") || text.includes("complaint") || text.includes("handoff"))) score += 5;
   if (goals.some((g) => g.includes("quality")) && (text.includes("csat") || text.includes("quality") || text.includes("sentiment") || text.includes("feedback"))) score += 5;
 
-  // Channel signals — each selected channel that matches adds score
+  // Channel signals - each selected channel that matches adds score
   if (channels.some((c) => c.includes("email")) && text.includes("email")) score += 4;
   if (channels.some((c) => c.includes("whatsapp")) && text.includes("whatsapp")) score += 4;
   if (channels.some((c) => c.includes("live chat")) && (text.includes("live chat") || text.includes("web chat") || text.includes("chat"))) score += 4;
@@ -206,7 +206,7 @@ const CS_SYSTEM_PROMPT = `You are a Customer Service AI Agent Expert with deep k
 
 The user completed a 5-question wizard. You will receive their answers and a list of matched agents from our database.
 
-OUTPUT — you MUST produce exactly these four sections, in this order, using these exact headings:
+OUTPUT - you MUST produce exactly these four sections, in this order, using these exact headings:
 
 ## Summary
 2–3 sentences. Name the best-fit agent and explain in plain language why it matches this user's specific goal, channel, and scale. No filler.
@@ -220,14 +220,14 @@ Include ALL provided agents.
 Start with "Best choice: **[Agent Name]**". Then 3–5 sentences: what it does, why it fits this user's goal + channel + volume + tech preference, and one concrete outcome the user can expect. If a secondary agent meaningfully complements the primary (covers a gap), name it and say why in 1–2 sentences.
 
 ## Setup Instructions
-Numbered list of 4–6 practical steps to get started with the recommended agent. Be specific — mention the agent by name, reference the channel/integration, and match the user's stated tech preference.
+Numbered list of 4–6 practical steps to get started with the recommended agent. Be specific - mention the agent by name, reference the channel/integration, and match the user's stated tech preference.
 
 ## Official Links
 For each recommended agent, format as: [Visit Agent Name](url)
 
 RULES:
 - Only describe capabilities explicitly present in the provided agent data. Do NOT invent features.
-- Fit Score must reflect the user's specific answers — not generic agent quality.
+- Fit Score must reflect the user's specific answers - not generic agent quality.
 - Keep tone professional and direct. No marketing language.
 - Do NOT include links anywhere except the "Official Links" section.`;
 
@@ -343,7 +343,7 @@ function scoreMediaAgent(profile: Omit<MediaAgentProfile, "score">, data: MediaW
   const st = data.mediaStyle.join(" ").toLowerCase();
   const p = data.mediaProduction.join(" ").toLowerCase();
 
-  // ── Q3 transformation — strongest signal (weight 8 per match) ──
+  // ── Q3 transformation - strongest signal (weight 8 per match) ──
   if (t.includes("generate full video") &&
       (text.includes("generat") || text.includes("text-to-video") || text.includes("ai video"))) score += 8;
   if (t.includes("vfx") &&
@@ -423,10 +423,10 @@ Tool routing logic (use this to validate your recommendation):
 - Color / quality enhancement / automation → Adobe Sensei
 If multiple tools match, return the top 2 ranked by fit.
 
-OUTPUT — produce exactly these sections in this order using these exact headings:
+OUTPUT - produce exactly these sections in this order using these exact headings:
 
 ## Creative Brief
-2–3 cinematic sentences restating the user's intent. Name the transformation type, style direction, and production goal. Sound like a creative director briefing a team — not a chatbot summarising a form.
+2–3 cinematic sentences restating the user's intent. Name the transformation type, style direction, and production goal. Sound like a creative director briefing a team - not a chatbot summarising a form.
 
 ## Comparison Table
 | Tool | Best For | Transformation Type | Style Match | Production Scale |
@@ -447,7 +447,7 @@ If a second tool meaningfully covers a gap the primary can't handle, name it and
 RULES:
 - Only describe capabilities present in the provided agent data. Do NOT invent features.
 - Tone: cinematic, mentor-like, direct. No corporate filler.
-- Fit must reflect the user's specific answers — not generic tool rankings.
+- Fit must reflect the user's specific answers - not generic tool rankings.
 - Links appear ONLY in the Official Links section.`;
 
 async function handleMediaRecommend(wizardData: MediaWizardData) {
@@ -793,28 +793,28 @@ the user’s real situation.
 
 AGENT COVERAGE RULE (MANDATORY)
 Before building any comparison table:
-Step 1 — Evaluate every agent in the detected domain against the user's stated needs.
-Step 2 — Include an agent in the comparison if it satisfies ANY of the following:
+Step 1 - Evaluate every agent in the detected domain against the user's stated needs.
+Step 2 - Include an agent in the comparison if it satisfies ANY of the following:
 ● It directly addresses at least one stated user need
 ● It offers a capability that materially affects the user's decision
 ● It provides a meaningful complement to the recommended agent
 
-Step 3 — Only exclude an agent if it has zero relevance to any stated need.
-Step 4 — Never reduce the comparison set to validate a winner already chosen.
+Step 3 - Only exclude an agent if it has zero relevance to any stated need.
+Step 4 - Never reduce the comparison set to validate a winner already chosen.
 ❌ Do NOT default to 2–3 agents when more are relevant. ❌ Do NOT omit agents simply
 because they are not the top recommendation. ✅ The comparison table must reflect ALL
 relevant agents from the domain.
 
 AGENT COVERAGE RULE (MANDATORY)
 Before building any comparison table:
-Step 1 — Evaluate every agent in the detected domain against the user's stated needs.
-Step 2 — Include an agent in the comparison if it satisfies ANY of the following:
+Step 1 - Evaluate every agent in the detected domain against the user's stated needs.
+Step 2 - Include an agent in the comparison if it satisfies ANY of the following:
 ● It directly addresses at least one stated user need
 ● It offers a capability that materially affects the user's decision
 ● It provides a meaningful complement to the recommended agent
 
-Step 3 — Only exclude an agent if it has zero relevance to any stated need.
-Step 4 — Never reduce the comparison set to validate a winner already chosen.
+Step 3 - Only exclude an agent if it has zero relevance to any stated need.
+Step 4 - Never reduce the comparison set to validate a winner already chosen.
 ❌ Do NOT default to 2–3 agents when more are relevant. ❌ Do NOT omit agents simply
 because they are not the top recommendation. ✅ The comparison table must reflect ALL
 relevant agents from the domain.
@@ -859,7 +859,7 @@ RULES:
 
 🔧 Critical Instruction Upgrade
 “If a required capability (e.g., property valuation, market pricing analytics) is not covered by the initially selected agents, you MUST introduce at least one additional agent that directly fulfills that capability.
-Do NOT leave capability gaps unresolved or respond with ‘additional tools may be required’ — instead, explicitly name and include the missing agent in the recommendation.”
+Do NOT leave capability gaps unresolved or respond with ‘additional tools may be required’ - instead, explicitly name and include the missing agent in the recommendation.”
 `,
     },
     {

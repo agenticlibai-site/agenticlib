@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { blogs } from "@/data/blogs";
 
 // In-memory store: slug → { likes, likedSessions }
-// Resets on server restart — good enough for a simple social-proof feature.
+// Resets on server restart - good enough for a simple social-proof feature.
 const store = new Map<string, number>(
   blogs.map((b) => [b.slug, Math.floor(Math.random() * 18) + 3])
 );
