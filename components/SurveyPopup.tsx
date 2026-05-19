@@ -1,8 +1,10 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { usePopupAnalytics } from "@/hooks/usePopupAnalytics";
 
 const STORAGE_KEY = "surveyPopupShown";
+const POPUP_ID = "survey_popup";
 const OPTIONS = [
   "Compare AI agents",
   "Automate a workflow or task",
@@ -13,31 +15,47 @@ const OPTIONS = [
 export default function SurveyPopup({ pageUrl }: { pageUrl: string }) {
   const [visible, setVisible] = useState(false);
 
-  const dismiss = useCallback(() => {
+  // ── Core close logic (no analytics) ─────────────────────────────────────────
+  const closePopup = useCallback(() => {
     setVisible(false);
     localStorage.setItem(STORAGE_KEY, "1");
   }, []);
 
+  // ── Analytics hook ───────────────────────────────────────────────────────────
+  const { trackCtaClicked, trackDismissedX, trackDismissedOutside } =
+    usePopupAnalytics({ popupId: POPUP_ID, pageUrl, visible, onDismissEsc: closePopup });
+
+  // ── Show after delay ─────────────────────────────────────────────────────────
   useEffect(() => {
     if (localStorage.getItem(STORAGE_KEY)) return;
-
     const timer = setTimeout(() => setVisible(true), 1500);
     return () => clearTimeout(timer);
   }, []);
 
-  // Dismiss on outside click
+  // ── Outside click → overlay_click dismiss ────────────────────────────────────
   useEffect(() => {
     if (!visible) return;
     const onPointerDown = (e: PointerEvent) => {
       const popup = document.getElementById("survey-popup");
-      if (popup && !popup.contains(e.target as Node)) dismiss();
+      if (popup && !popup.contains(e.target as Node)) {
+        trackDismissedOutside();
+        closePopup();
+      }
     };
     window.addEventListener("pointerdown", onPointerDown);
     return () => window.removeEventListener("pointerdown", onPointerDown);
-  }, [visible, dismiss]);
+  }, [visible, trackDismissedOutside, closePopup]);
 
+  // ── X button ─────────────────────────────────────────────────────────────────
+  const handleXClose = useCallback(() => {
+    trackDismissedX();
+    closePopup();
+  }, [trackDismissedX, closePopup]);
+
+  // ── Survey option selected ────────────────────────────────────────────────────
   const handleOption = async (option: string) => {
-    dismiss();
+    trackCtaClicked(option);
+    closePopup();
     await fetch("/api/feedback", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -72,7 +90,7 @@ export default function SurveyPopup({ pageUrl }: { pageUrl: string }) {
         >
           {/* Close */}
           <button
-            onClick={dismiss}
+            onClick={handleXClose}
             aria-label="Close"
             className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center rounded-full
                        text-zinc-400 hover:text-zinc-600 hover:bg-zinc-100 transition-all cursor-pointer"

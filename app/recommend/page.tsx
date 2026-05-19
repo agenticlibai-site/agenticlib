@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import FeedbackBox from "@/components/FeedbackBox";
 import posthog from "posthog-js";
+import { trackEvent } from "@/lib/analytics";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -189,7 +190,7 @@ const handleSubmit = async () => {
 
   setMessages(newMessages);
 
-  posthog.capture("recommendation_requested", {
+  trackEvent("recommendation_requested", {
     query: input,
     conversation_length: messages.length,
   });

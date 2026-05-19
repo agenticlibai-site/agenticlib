@@ -21,6 +21,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://agenticlib.com"),
   title: "AgenticLib — Find the Best AI Agent for Your Use Case",
   description:
     "Discover, compare, and deploy the best AI agents for marketing, sales, education, and productivity. AgenticLib is the definitive AI agent discovery platform.",
