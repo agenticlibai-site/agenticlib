@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import posthog from "posthog-js";
+import { trackEvent } from "@/lib/analytics";
 
 export default function FeedbackBox() {
   const [feedback, setFeedback] = useState("");
@@ -23,7 +24,7 @@ export default function FeedbackBox() {
       });
 
       if (res.ok) {
-        posthog.capture("feedback_submitted", {
+        trackEvent("feedback_submitted", {
           feedback_length: feedback.trim().length,
         });
         setSubmitted(true);

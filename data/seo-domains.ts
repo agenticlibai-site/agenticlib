@@ -50,7 +50,7 @@ export const seoDomains: SeoDomain[] = [
       },
     ],
     agentLibrarySlug: "education",
-    relatedSlugs: [],
+    relatedSlugs: ["research-innovation", "recruitment", "general-purpose"],
   },
 
   {

@@ -153,15 +153,47 @@ export default async function DomainSeoPage({
             {domain.useCases.map((uc) => (
               <div
                 key={uc.title}
-                className="rounded-2xl bg-white border border-zinc-200 px-6 py-5
-                           hover:border-blue-200 hover:shadow-sm transition-all duration-200"
+                className="rounded-2xl p-[1px] transition-all duration-300
+                           bg-gradient-to-br from-blue-300/60 via-indigo-200/40 to-blue-400/50
+                           shadow-[0_4px_20px_rgba(59,130,246,0.08)]
+                           hover:shadow-[0_8px_28px_rgba(59,130,246,0.20)]
+                           hover:-translate-y-0.5"
               >
-                <p className="text-sm font-semibold text-zinc-900 mb-1.5">{uc.title}</p>
-                <p className="text-sm text-zinc-500 leading-relaxed">{uc.description}</p>
+                <div className="rounded-2xl px-6 py-5 h-full
+                                bg-gradient-to-br from-blue-50/90 to-white/95
+                                backdrop-blur-md">
+                  <p className="text-sm font-semibold text-zinc-900 mb-1.5">{uc.title}</p>
+                  <p className="text-sm text-zinc-500 leading-relaxed">{uc.description}</p>
+                </div>
               </div>
             ))}
           </div>
         </section>
+
+        {/* ── RELATED DOMAINS ───────────────────────────────────────────────── */}
+        {domain.relatedSlugs.length > 0 && (
+          <section className="mb-12">
+            <h2 className="text-xl font-semibold text-zinc-900 mb-5">Related Domains</h2>
+            <div className="flex flex-wrap gap-3">
+              {domain.relatedSlugs.map((relSlug) => {
+                const rel = seoDomains.find((d) => d.slug === relSlug);
+                if (!rel) return null;
+                return (
+                  <Link
+                    key={relSlug}
+                    href={`/domain/${relSlug}`}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full border border-blue-200
+                               bg-blue-50 text-sm font-medium text-blue-700
+                               hover:bg-blue-100 hover:border-blue-300 transition-colors"
+                  >
+                    {rel.name}
+                    <span className="text-blue-400">→</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
       </main>
 

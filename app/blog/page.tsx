@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import posthog from "posthog-js";
+import { trackEvent } from "@/lib/analytics";
 import { blogs, Blog } from "@/data/blogs";
 
 const CATEGORY_COLORS: Record<string, string> = {
@@ -80,7 +80,7 @@ export default function BlogPage() {
   const router = useRouter();
 
   const navigate = (slug: string, title: string) => {
-    posthog.capture("blog_post_clicked", { blog_slug: slug, blog_title: title });
+    trackEvent("blog_post_clicked", { blog_slug: slug, blog_title: title });
     router.push(`/blog/${slug}`);
   };
 

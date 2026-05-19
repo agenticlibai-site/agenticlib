@@ -1,8 +1,9 @@
 "use client";
 import { useState } from "react";
+import Link from "next/link";
 import { domains } from "@/data/agents";
 import { useRouter, usePathname } from "next/navigation";
-import posthog from "posthog-js";
+import { trackEvent } from "@/lib/analytics";
 
 
 export default function Home() {
@@ -20,7 +21,7 @@ const [showTerms, setShowTerms] = useState(false);
       d.slug.toLowerCase().includes(q)
     );
 
-    posthog.capture("library_searched", {
+    trackEvent("library_searched", {
       query: q,
       matched_domain: match?.slug ?? null,
     });
@@ -57,18 +58,18 @@ const [showTerms, setShowTerms] = useState(false);
 <nav className="flex items-center gap-8">
 
   {/* AI Agent Library */}
-  <button
-    onClick={() => {
+  <Link
+    href="/#library"
+    onClick={(e) => {
       if (pathname === "/") {
+        e.preventDefault();
         document.getElementById("library")?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        router.push("/#library");
       }
     }}
     className="transition px-3 py-1 rounded-full text-zinc-500 hover:text-black hover:bg-purple-100"
   >
     AI Agent Library
-  </button>
+  </Link>
 
   {/* AgenticLib Platform + Badge */}
 <div className="flex items-center gap-[1px]">
@@ -102,8 +103,8 @@ onClick={() =>
 </div>
 
   {/* Blog */}
-  <button
-    onClick={() => router.push("/blog")}
+  <Link
+    href="/blog"
     className={`transition px-3 py-1 rounded-full ${
       pathname === "/blog"
         ? "bg-orange-100 text-black"
@@ -111,21 +112,21 @@ onClick={() =>
     }`}
   >
     Blogs
-  </button>
+  </Link>
 
   {/* Contact Us */}
-  <button
-    onClick={() => {
+  <Link
+    href="/#contact"
+    onClick={(e) => {
       if (pathname === "/") {
+        e.preventDefault();
         document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        router.push("/#contact");
       }
     }}
     className="transition px-3 py-1 rounded-full text-zinc-500 hover:text-black hover:bg-zinc-100"
   >
     Contact Us
-  </button>
+  </Link>
 
 </nav>
         </div>
@@ -162,7 +163,7 @@ onClick={() =>
   target="_blank"
   rel="noopener noreferrer"
   className="btn-primary px-9 py-4 rounded-full text-white"
-  onClick={() => posthog.capture("hero_cta_clicked", { location: "hero" })}
+  onClick={() => trackEvent("hero_cta_clicked", { location: "hero" })}
 >
   Get recommendations
 </a>
@@ -217,7 +218,7 @@ onClick={() =>
                   <select
                     onChange={(e) => {
                       if (e.target.value) {
-                        posthog.capture("domain_selected_from_dropdown", {
+                        trackEvent("domain_selected_from_dropdown", {
                           domain_slug: e.target.value,
                         });
                         router.push(`/domain/${e.target.value}`);
@@ -241,19 +242,17 @@ onClick={() =>
                 </div>
 
                 {/* Button — fixed, ~18% */}
-                <button
-                  onClick={() => {
-                    posthog.capture("library_explore_clicked");
-                    router.push("/explore");
-                  }}
-                  className="w-full sm:flex-1 px-6 py-2.5 rounded-xl text-white font-medium transition hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap"
+                <Link
+                  href="/explore"
+                  onClick={() => trackEvent("library_explore_clicked", {})}
+                  className="w-full sm:flex-1 px-6 py-2.5 rounded-xl text-white font-medium transition hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap text-center"
                   style={{
                     background: "linear-gradient(135deg, #6c4cf1 0%, #4f7cf5 100%)",
                     boxShadow: "0 4px 14px rgba(108,76,241,0.25)",
                   }}
                 >
                   Explore →
-                </button>
+                </Link>
 
               </div>
             </div>
