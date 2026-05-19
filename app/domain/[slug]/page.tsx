@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { seoDomains, getSeoDomain } from "@/data/seo-domains";
+import { seoDomains, getSeoDomain, NOINDEX_SLUGS } from "@/data/seo-domains";
 import { domains } from "@/data/agents";
 
 // ── Static params ─────────────────────────────────────────────────────────────
@@ -25,6 +25,7 @@ export async function generateMetadata({
     title: domain.metaTitle,
     description: domain.metaDescription,
     alternates: { canonical: `https://agenticlib.com/domain/${slug}` },
+    ...(NOINDEX_SLUGS.has(slug) && { robots: { index: false, follow: true } }),
     openGraph: {
       title: domain.metaTitle,
       description: domain.metaDescription,
@@ -198,7 +199,7 @@ export default async function DomainSeoPage({
       </main>
 
       <footer className="border-t border-zinc-100 py-8 text-center text-sm text-zinc-400">
-        <p>© {new Date().getFullYear()} AgenticLib — The AI Agent Discovery Platform</p>
+        <p>© {new Date().getFullYear()} AgenticLib - The AI Agent Discovery Platform</p>
         <p className="mt-1">
           <Link href="/" className="hover:text-zinc-600 transition">Home</Link>
           {" · "}

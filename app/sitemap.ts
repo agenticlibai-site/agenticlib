@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { seoDomains } from "@/data/seo-domains";
+import { seoDomains, NOINDEX_SLUGS } from "@/data/seo-domains";
 import { blogs } from "@/data/blogs";
 
 const BASE = "https://agenticlib.com";
@@ -26,7 +26,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  const seoDomainPages: MetadataRoute.Sitemap = seoDomains.map((d) => ({
+  const seoDomainPages: MetadataRoute.Sitemap = seoDomains
+    .filter((d) => !NOINDEX_SLUGS.has(d.slug))
+    .map((d) => ({
     url: `${BASE}/domain/${d.slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,

@@ -1938,8 +1938,828 @@ export const seoDomains: SeoDomain[] = [
     agentLibrarySlug: "film-making",
     relatedSlugs: ["media", "video-editing", "marketing"],
   },
+
+  {
+    slug: "automobile",
+    name: "Automobile",
+    metaTitle: "Best AI Agents for the Automotive Industry | AgenticLib",
+    metaDescription:
+      "Find AI agents for automotive - dealer sales assistants, in-vehicle voice AI, service centre automation, and customer retention for car dealerships.",
+    h1: "AI Agents for the Automotive Industry",
+    intro:
+      "Car buyers now spend the majority of their purchase journey online before entering a showroom, and in-vehicle software has become a primary differentiator in new car sales. AI agents reshape how dealerships handle leads, how service centres manage throughput, and how automakers deliver connected experiences.",
+    whyAiMatters: [
+      "Automotive retail margins on new vehicles average under 2%, making the service department - where margins run 40–60% - the financial centre of every dealership; any friction in service booking or status communication is a direct revenue loss.",
+      "Car buyers who submit online enquiries expect a response within five minutes to remain engaged; the average dealership response time exceeds three hours, making AI-driven instant follow-up a direct competitive advantage.",
+      "In-vehicle experience has overtaken engine performance as a purchase criterion for a growing segment of buyers - automakers are building software-defined platform businesses where recurring service subscriptions drive long-term revenue.",
+      "The EV transition requires dealers to handle entirely new sales conversations around range, charging, and total cost of ownership - topics where AI agents deliver consistent, accurate answers at scale."
+    ],
+    useCases: [
+      {
+        title: "Dealer Lead Qualification and Instant Follow-Up",
+        description:
+          "Respond to online vehicle enquiries within seconds, qualify purchase intent, answer configuration questions, and book test drives without requiring a sales rep to be available - capturing buyers at peak interest.",
+      },
+      {
+        title: "Service Centre Booking and Status Communication",
+        description:
+          "Handle service appointment scheduling, parts availability queries, recall notifications, and job status updates across inbound calls, SMS, and chat - reducing service advisor phone time and increasing workshop utilisation.",
+      },
+      {
+        title: "In-Vehicle Conversational AI and Voice Interfaces",
+        description:
+          "Power in-vehicle natural language interfaces for navigation, vehicle controls, infotainment, and connected services - replacing static menu systems with context-aware conversational experiences that improve with use.",
+      },
+      {
+        title: "Post-Sale Retention and Upsell Automation",
+        description:
+          "Trigger personalised service reminders, warranty renewal outreach, trade-in valuations, and upgrade offers at the right point in each customer's ownership cycle - maintaining dealership relationships between physical visits.",
+      },
+    ],
+    agentLibrarySlug: "automobile",
+    relatedSlugs: ["robotics", "logistics", "customer-experience"],
+  },
+
+  {
+    slug: "ip-management",
+    name: "IP Management",
+    metaTitle: "Best AI Agents for IP Management | AgenticLib",
+    metaDescription:
+      "Find AI agents for intellectual property management - patent monitoring, prior art search, trademark watching, and portfolio deadline management.",
+    h1: "AI Agents for IP Management",
+    intro:
+      "Managing a live patent and trademark portfolio means tracking deadlines across dozens of jurisdictions, monitoring competitor filings in real time, and responding to infringement signals before they compound. AI agents handle the monitoring and alerting continuously, freeing IP teams for high-judgement legal work.",
+    whyAiMatters: [
+      "A missed patent renewal or trademark filing deadline can result in irreversible loss of IP rights - yet the volume of deadlines across multi-jurisdiction portfolios routinely exceeds what manual tracking systems reliably catch.",
+      "Competitor patent filing activity is public and searchable in near-real-time, but identifying freedom-to-operate risks and design-around opportunities is too labour-intensive for most in-house IP teams to perform continuously.",
+      "Prior art searches that once required specialist searchers and weeks of work can be accelerated significantly with AI - reducing the time between invention disclosure and provisional application.",
+      "For technology companies with large portfolios, identifying which patents are actively monetised versus lapsed across the competitive landscape requires continuous analysis that AI handles more systematically than manual review."
+    ],
+    useCases: [
+      {
+        title: "Patent Portfolio Monitoring and Deadline Management",
+        description:
+          "Track renewal deadlines, file date anniversaries, and jurisdiction-specific requirements across the full portfolio - generating automated alerts and action queues for IP counsel before deadlines become critical.",
+      },
+      {
+        title: "Competitor Filing Surveillance and Freedom-to-Operate Analysis",
+        description:
+          "Monitor competitor patent filings in relevant technology classes in real time, summarise key claims, and flag applications that may affect product roadmap decisions or existing freedom-to-operate positions.",
+      },
+      {
+        title: "Prior Art Search and Patentability Assessment",
+        description:
+          "Search patent databases and technical literature at scale to identify prior art relevant to new inventions, estimate patentability, and support the drafting of stronger, more defensible claims.",
+      },
+      {
+        title: "Trademark Watch and Infringement Detection",
+        description:
+          "Monitor trademark registries and internet sources for marks confusingly similar to registered assets, surface potential infringements early, and generate evidence packages for enforcement consideration.",
+      },
+    ],
+    agentLibrarySlug: "ip-management",
+    relatedSlugs: ["legal", "research-innovation", "finance"],
+  },
+
+  {
+    slug: "visual-ai-avatars",
+    name: "Visual AI Avatars",
+    metaTitle: "Best AI Visual Avatar Agents | AgenticLib",
+    metaDescription:
+      "Find AI agents for visual avatar generation - AI digital humans, video avatar production, personalised video at scale, and multilingual dubbing.",
+    h1: "AI Agents for Visual Avatars and Digital Humans",
+    intro:
+      "AI-generated digital humans and video avatars have crossed from experimental to production-grade: they deliver personalised video messages at scale, power always-on virtual presenters, and enable multilingual content without re-shooting. The production cost barrier that once made video a limited-volume asset has been removed.",
+    whyAiMatters: [
+      "Producing personalised video at scale was physically impossible with human presenters - AI avatars make it feasible to send thousands of unique video messages to individual prospects, customers, or learners with distinct names and contexts.",
+      "Dubbing and localising video content into multiple languages traditionally required re-shoots, voice actors, and lip-sync post-production for each language; AI avatar tools deliver this in hours rather than weeks.",
+      "Consistent on-brand presenter appearances across all video content are difficult to maintain with human presenters over time; digital avatars maintain absolute consistency across thousands of productions.",
+      "The barrier to video production is creating a meaningful disadvantage for organisations that rely on written content alone - AI avatar tools bring video into the reach of teams with no production infrastructure."
+    ],
+    useCases: [
+      {
+        title: "Personalised Video at Scale for Sales and Marketing",
+        description:
+          "Generate thousands of unique outreach videos featuring an AI avatar that addresses each recipient by name and references their specific context - combining the conversion power of video with the scalability of text.",
+      },
+      {
+        title: "Multilingual Video Localisation and Dubbing",
+        description:
+          "Translate and re-lip-sync existing video content into multiple languages using AI avatar dubbing - turning a single production into a multilingual asset library without additional recording sessions.",
+      },
+      {
+        title: "Training and E-Learning Video Production",
+        description:
+          "Create and update training module videos using AI presenters - producing professional-quality instructional content rapidly and updating it when procedures change without reshooting.",
+      },
+      {
+        title: "Always-On Virtual Presenter and Brand Representative",
+        description:
+          "Deploy a consistent digital human as a virtual brand ambassador, product demo presenter, or customer-facing agent - delivering video interactions at any hour without scheduling constraints.",
+      },
+    ],
+    agentLibrarySlug: "visual-ai-avatars",
+    relatedSlugs: ["media", "video-editing", "film-making"],
+  },
+
+  {
+    slug: "vision-agents",
+    name: "Vision Agents",
+    metaTitle: "Best AI Vision Agents for Computer Vision | AgenticLib",
+    metaDescription:
+      "Find AI vision agents for computer vision - image recognition, visual quality inspection, object detection, and visual data intelligence.",
+    h1: "AI Vision Agents for Computer Vision",
+    intro:
+      "Computer vision has matured from research-grade to production deployment across manufacturing, healthcare imaging, retail analytics, and security. AI vision agents process visual data at a speed and consistency that human inspection cannot match, turning cameras and sensors into intelligent decision-making endpoints.",
+    whyAiMatters: [
+      "Visual quality inspection in manufacturing historically required dedicated QA staff operating at the speed of the production line; AI vision systems detect defects at full line speed with higher consistency and documented accuracy.",
+      "Medical imaging interpretation faces a global shortage of specialists combined with growing scan volumes; AI vision tools triage and pre-analyse images to focus specialist time on the highest-priority cases.",
+      "Retail environments generate constant visual data from shelf cameras and checkout systems that AI vision turns into real-time inventory intelligence, theft detection, and conversion analytics.",
+      "Security and perimeter monitoring historically required human operators watching multiple feeds; AI vision agents process all feeds simultaneously, triggering alerts only when defined conditions are detected."
+    ],
+    useCases: [
+      {
+        title: "Manufacturing Quality Inspection and Defect Detection",
+        description:
+          "Analyse product images and video streams on production lines in real time to detect defects, dimensional deviations, and assembly errors - replacing or augmenting human visual inspection with consistent, documentable accuracy.",
+      },
+      {
+        title: "Medical Image Triage and Analysis Assistance",
+        description:
+          "Pre-process and triage medical scans to flag anomalies requiring specialist review, prioritise worklists, and surface relevant historical comparisons for clinical decision support.",
+      },
+      {
+        title: "Retail Shelf Intelligence and Loss Prevention",
+        description:
+          "Monitor retail shelves for out-of-stock conditions, planogram compliance, and misplaced products in real time - while simultaneously detecting theft or suspicious behaviours that trigger alerts.",
+      },
+      {
+        title: "Document and Visual Data Extraction",
+        description:
+          "Extract structured data from forms, invoices, ID documents, labels, and mixed-media inputs using visual understanding - turning visual assets into machine-readable records without manual data entry.",
+      },
+    ],
+    agentLibrarySlug: "vision-agents",
+    relatedSlugs: ["healthcare", "robotics", "cybersecurity"],
+  },
+
+  {
+    slug: "branding",
+    name: "Branding",
+    metaTitle: "Best AI Agents for Branding | AgenticLib",
+    metaDescription:
+      "Find AI agents for branding - brand voice consistency, brand sentiment monitoring, competitor positioning analysis, and on-brand content generation.",
+    h1: "AI Agents for Branding",
+    intro:
+      "Brand consistency across global teams, channels, and markets has always depended on governance frameworks that friction slows rather than scales. AI agents enforce brand standards automatically, monitor brand sentiment in real time, and help teams produce on-brand content without bottlenecking through centralised approval.",
+    whyAiMatters: [
+      "Inconsistent brand expression across teams, markets, and channels is the most common source of brand dilution - yet manual review of all brand-facing content at scale is not operationally feasible without AI.",
+      "Social media, review platforms, and news outlets generate a continuous stream of brand mentions that affect perception in real time; monitoring this manually requires a team, while AI brand monitoring handles it continuously.",
+      "Generating on-brand marketing content that matches a defined tone, visual identity, and messaging hierarchy is one of the highest-volume creative bottlenecks in large organisations - AI brand agents accelerate production without sacrificing consistency.",
+      "Competitor brand positioning evolves continuously, and tracking how your positioning compares in the market requires ongoing research that AI can structure and surface without dedicated analyst effort."
+    ],
+    useCases: [
+      {
+        title: "Brand Voice Consistency Enforcement",
+        description:
+          "Review marketing copy, social posts, customer communications, and product descriptions against defined brand guidelines - flagging tone, terminology, and messaging deviations before publication.",
+      },
+      {
+        title: "Brand Sentiment Monitoring and Reputation Alerts",
+        description:
+          "Monitor brand mentions across social media, news, review sites, and forums in real time - surfacing sentiment trends, tracking share of voice, and alerting teams to emerging reputation issues.",
+      },
+      {
+        title: "On-Brand Content Generation and Campaign Brief Execution",
+        description:
+          "Generate brand-aligned marketing copy, ad headlines, email subject lines, and social content from campaign briefs - producing multiple variants at brand guidelines for human selection and refinement.",
+      },
+      {
+        title: "Competitor Brand Positioning and Market Perception Analysis",
+        description:
+          "Analyse competitor messaging, campaign themes, and customer perception data to map the competitive positioning landscape - identifying differentiation opportunities and messaging gaps.",
+      },
+    ],
+    agentLibrarySlug: "branding",
+    relatedSlugs: ["marketing", "media", "ecommerce"],
+  },
+
+  {
+    slug: "entertainment",
+    name: "Entertainment",
+    metaTitle: "Best AI Agents for Entertainment | AgenticLib",
+    metaDescription:
+      "Find AI agents for the entertainment industry - content recommendation, audience analytics, production automation, and IP monetisation for studios and platforms.",
+    h1: "AI Agents for the Entertainment Industry",
+    intro:
+      "Streaming platforms, studios, and entertainment brands operate in a market where audience attention is the scarcest resource and data on consumption behaviour is the most abundant. AI agents turn that data into content decisions, personalised recommendations, and production efficiency gains that compound across a portfolio.",
+    whyAiMatters: [
+      "Streaming platforms with libraries of thousands of titles face the paradox of choice at scale - recommendation quality directly determines viewing hours and retention, and AI is the only mechanism that personalises at the subscriber level continuously.",
+      "Content production decisions - greenlighting, casting, budget allocation, release scheduling - are increasingly informed by audience data and comparable title performance analysis that AI structures faster than human research teams.",
+      "Fan engagement and community management across entertainment franchises operate across multiple platforms with high message volume - AI agents handle the volume while maintaining brand character.",
+      "IP monetisation across merchandise, licensing, theatrical, and streaming markets requires coordinating complex rights landscapes that AI can model to surface non-obvious revenue opportunities."
+    ],
+    useCases: [
+      {
+        title: "Personalised Content Recommendation and Discovery",
+        description:
+          "Build recommendation systems that surface content matched to individual viewer preferences, viewing history, and contextual signals - increasing viewing hours, reducing churn, and surfacing catalogue content that would otherwise remain undiscovered.",
+      },
+      {
+        title: "Audience Analytics and Content Performance Intelligence",
+        description:
+          "Analyse viewership patterns, completion rates, social engagement, and audience demographics to identify what drives performance, inform commissioning decisions, and detect underperforming titles early.",
+      },
+      {
+        title: "Fan Community Management and Social Engagement",
+        description:
+          "Manage high-volume fan interactions across social platforms, moderate community spaces, respond to fan questions in brand voice, and identify trending fan conversations relevant to marketing strategy.",
+      },
+      {
+        title: "Production Workflow Automation and Asset Management",
+        description:
+          "Automate production scheduling, asset management, subtitling, metadata tagging, and distribution logistics - reducing the administrative overhead of managing large content libraries across multiple platforms and territories.",
+      },
+    ],
+    agentLibrarySlug: "entertainment",
+    relatedSlugs: ["media", "film-making", "video-editing"],
+  },
+
+  {
+    slug: "patient-service",
+    name: "Patient Service",
+    metaTitle: "Best AI Agents for Patient Service | AgenticLib",
+    metaDescription:
+      "Find AI agents for patient service - appointment scheduling, patient communication, care navigation, and administrative automation for healthcare providers.",
+    h1: "AI Agents for Patient Service",
+    intro:
+      "Healthcare providers face the compounding effect of staff shortages, call centre overload, and patient communication expectations reset by consumer digital experiences. AI patient service agents handle the high-volume administrative and communication layer, freeing clinical staff for work that requires human judgement.",
+    whyAiMatters: [
+      "The average healthcare call centre handles hundreds of calls daily for tasks requiring no clinical judgement - appointment booking, location queries, prescription refill requests - all of which AI agents handle reliably without call wait times.",
+      "Missed appointments cost US healthcare providers an estimated $150 billion annually, and the majority are preventable with timely, personalised reminder communication that AI agents automate across SMS, email, and phone.",
+      "Discharge instructions are understood by fewer than 50% of patients at time of discharge; AI agents that follow up, answer questions, and confirm adherence improve outcomes and reduce avoidable readmissions.",
+      "Patient experience scores directly affect hospital reimbursement rates under value-based care models, making patient communication quality a financial as well as clinical priority."
+    ],
+    useCases: [
+      {
+        title: "Appointment Scheduling and Rescheduling Automation",
+        description:
+          "Handle inbound appointment requests, check provider availability, book appointments, send confirmations, and manage rescheduling across voice, chat, and SMS - without staff involvement for routine bookings.",
+      },
+      {
+        title: "Appointment Reminder and No-Show Reduction",
+        description:
+          "Send personalised, timely appointment reminders through patient-preferred channels, handle confirmation responses, and trigger same-day outreach for unfilled cancellation slots - measurably reducing no-show rates.",
+      },
+      {
+        title: "Post-Discharge Follow-Up and Care Plan Support",
+        description:
+          "Check in with patients following discharge, confirm understanding of care instructions, answer common post-visit questions, and escalate concerning responses to clinical staff - supporting recovery and reducing avoidable readmissions.",
+      },
+      {
+        title: "Prescription Refill and Referral Request Handling",
+        description:
+          "Process routine prescription refill requests, coordinate referral authorisations, and communicate status updates to patients - removing high-volume administrative tasks from front desk and nursing staff.",
+      },
+    ],
+    agentLibrarySlug: "patient-service",
+    relatedSlugs: ["healthcare", "dental", "mental-health"],
+  },
+
+  {
+    slug: "payroll",
+    name: "Payroll",
+    metaTitle: "Best AI Agents for Payroll Automation | AgenticLib",
+    metaDescription:
+      "Find AI agents for payroll - automated payroll calculation, compliance checks, employee query handling, and payroll data reconciliation.",
+    h1: "AI Agents for Payroll Automation",
+    intro:
+      "Payroll is one of the highest-stakes recurring operations in any organisation - it must be accurate, compliant across every jurisdiction, and processed without delay. AI agents handle the calculation, validation, and query management layer, turning payroll from a stressful manual cycle into a reliable automated process.",
+    whyAiMatters: [
+      "Payroll errors affect employee trust immediately - studies show that employees who experience two payroll errors are significantly more likely to leave, making payroll accuracy a retention factor as well as a compliance requirement.",
+      "Payroll compliance spans tax codes, superannuation or pension contribution rules, leave entitlements, and award rates that vary by jurisdiction and change regularly - staying current manually requires dedicated expertise most businesses cannot sustain.",
+      "Payroll teams spend a significant proportion of time answering employee questions about payslips, leave balances, and tax withholding that AI agents answer instantly from current records.",
+      "Payroll data reconciliation - matching hours worked to pay calculations across multiple systems and cost centres - is error-prone when done manually and increasingly automated by AI systems that flag discrepancies before processing."
+    ],
+    useCases: [
+      {
+        title: "Automated Payroll Calculation and Processing",
+        description:
+          "Calculate gross to net pay for all employee types applying current tax tables, superannuation rates, and award conditions, then process payroll with exception-flagging for human review.",
+      },
+      {
+        title: "Employee Self-Service Payroll Query Handling",
+        description:
+          "Answer employee questions about payslips, leave balances, tax withholding, expense reimbursements, and pay rate changes instantly and accurately - reducing the query burden on payroll team members.",
+      },
+      {
+        title: "Compliance Monitoring and Regulatory Update Management",
+        description:
+          "Monitor changes to payroll-relevant legislation, tax codes, and industrial awards in relevant jurisdictions, assess the impact on current payroll configurations, and generate action items for compliance updates.",
+      },
+      {
+        title: "Payroll Data Reconciliation and Audit Support",
+        description:
+          "Cross-reference payroll data against timesheets, leave records, and cost-centre allocations to identify discrepancies before payroll runs, and generate audit-ready reconciliation reports for finance and HR review.",
+      },
+    ],
+    agentLibrarySlug: "payroll",
+    relatedSlugs: ["accounting", "finance", "banking"],
+  },
+
+  {
+    slug: "creative-content",
+    name: "Creative Content",
+    metaTitle: "Best AI Agents for Creative Content | AgenticLib",
+    metaDescription:
+      "Find AI agents for creative content - concept generation, creative brief execution, iterative design, and personalised creative production at scale.",
+    h1: "AI Agents for Creative Content Production",
+    intro:
+      "Creative production has always been constrained by the time between brief and execution. AI creative agents accelerate the conceptual and production phases - generating multiple directions from a brief, enabling rapid iteration, and handling the operational tasks that consume creative resource without adding creative value.",
+    whyAiMatters: [
+      "The brief-to-concept phase in creative production is the highest-friction bottleneck - clients and creative teams iterate through multiple directions before alignment, and AI agents that generate diverse concepts rapidly compress this cycle significantly.",
+      "Creative teams are increasingly expected to produce more content for more channels with flat or reduced headcount - AI creative tools are the mechanism for maintaining output quality while absorbing volume growth.",
+      "Personalisation at scale - adapting creative assets for audience segments, regional markets, and individual users - is not feasible manually at the volumes modern marketing requires; AI makes it operationally viable.",
+      "Creative production generates an enormous volume of in-progress assets and feedback notes that teams manage poorly without structure; AI agents that organise and version creative assets reduce production friction substantially."
+    ],
+    useCases: [
+      {
+        title: "Rapid Concept Generation from Creative Briefs",
+        description:
+          "Generate multiple distinct creative concepts - with copy, visual direction, and rationale - from a creative brief, giving teams and clients a wider starting set to evaluate before committing to development.",
+      },
+      {
+        title: "Personalised Creative Adaptation at Scale",
+        description:
+          "Adapt master creative assets for audience segments, markets, formats, and channels - generating dozens or hundreds of personalised variants from a single production without proportional increase in studio time.",
+      },
+      {
+        title: "Iterative Creative Refinement and Feedback Processing",
+        description:
+          "Receive and process structured creative feedback, apply revisions systematically across all relevant asset variants, and track version history - compressing the review-and-revise cycle significantly.",
+      },
+      {
+        title: "Creative Asset Organisation and Production Management",
+        description:
+          "Catalogue, tag, and retrieve creative assets across projects and campaigns, surface relevant past work during new brief development, and manage production timelines and handoff points automatically.",
+      },
+    ],
+    agentLibrarySlug: "creative-content",
+    relatedSlugs: ["marketing", "media", "video-editing"],
+  },
+
+  {
+    slug: "content-creation",
+    name: "Content Creation",
+    metaTitle: "Best AI Agents for Content Creation | AgenticLib",
+    metaDescription:
+      "Find AI agents for content creation - blog writing, video script generation, social media content, thumbnail creation, and multi-format content production.",
+    h1: "AI Agents for Content Creation",
+    intro:
+      "Content creation at modern marketing scale requires producing across blog posts, video scripts, social formats, email, and short-form channels simultaneously - volumes that traditional content teams cannot sustain. AI content creation agents generate, repurpose, and publish across formats from a single strategy layer.",
+    whyAiMatters: [
+      "Organic search and social distribution require consistent, high-volume content publishing that most organisations cannot sustain with human writers alone - AI content tools make publishing cadences feasible that drive compounding organic reach.",
+      "Repurposing a single piece of content across multiple formats - a blog post into a video script, a webinar into a social series, a report into an email sequence - requires significant editorial work that AI handles automatically from source material.",
+      "Content performance varies significantly by format, channel, and audience, and identifying the highest-performing content variants requires A/B testing at a volume only feasible with AI-accelerated production.",
+      "The graphic and visual component of content - thumbnails, header images, social graphics - requires design resource that many content teams don't have; AI image tools that generate on-brand visuals from content context close that gap."
+    ],
+    useCases: [
+      {
+        title: "Long-Form Content and Blog Post Generation",
+        description:
+          "Generate SEO-optimised blog posts, articles, and long-form content from keyword targets, outlines, or topic briefs - producing drafts that content editors refine rather than write from scratch.",
+      },
+      {
+        title: "Multi-Format Content Repurposing",
+        description:
+          "Transform long-form content into social posts, email newsletters, video scripts, podcast outlines, and short-form clips - extracting maximum distribution from each content investment without manual reformatting.",
+      },
+      {
+        title: "Thumbnail and Visual Asset Generation",
+        description:
+          "Generate on-brand thumbnails, header images, and visual assets for content pieces automatically - removing the design bottleneck from high-volume content publishing workflows.",
+      },
+      {
+        title: "Content Calendar Planning and Topic Research",
+        description:
+          "Research trending topics, competitor content gaps, and keyword opportunities in a given category, then generate a structured content calendar with briefs - moving from strategy to production queue in one step.",
+      },
+    ],
+    agentLibrarySlug: "content-creation",
+    relatedSlugs: ["marketing", "media", "ecommerce"],
+  },
+
+  {
+    slug: "kitchen",
+    name: "Kitchen & Food",
+    metaTitle: "Best AI Agents for Kitchen and Food | AgenticLib",
+    metaDescription:
+      "Find AI agents for kitchen and food - AI recipe generation, meal planning automation, ingredient substitution, and culinary workflow assistance.",
+    h1: "AI Agents for Kitchen and Food",
+    intro:
+      "Food service operations and home cooking both face the same challenge: converting available ingredients, dietary constraints, and skill level into good meals efficiently. AI kitchen agents remove the planning friction, surface relevant recipes, and assist operators with menu development and waste reduction.",
+    whyAiMatters: [
+      "Food waste in commercial kitchens averages 4–10% of total food purchased; AI agents that plan menus around available inventory, predict demand, and suggest ingredient cross-utilisation across dishes reduce this loss materially.",
+      "Home cooks spend significant meal planning time dealing with the constraints of what's in the refrigerator, dietary requirements, and what they're capable of making - a problem AI agents solve instantly.",
+      "Professional culinary education requires access to expertise that many food industry workers lack; AI cooking assistants provide technique guidance, recipe scaling, and flavour pairing knowledge at the point of need.",
+      "Menu development in food service requires balancing nutrition, cost, seasonal ingredient availability, and customer preference - analysis that AI tools accelerate significantly for chefs and product developers."
+    ],
+    useCases: [
+      {
+        title: "Recipe Generation from Available Ingredients",
+        description:
+          "Generate complete recipes with method, timing, and nutritional information from a set of available ingredients and stated dietary constraints - solving the daily 'what to cook' problem for home cooks and professional kitchens alike.",
+      },
+      {
+        title: "Menu Planning and Nutritional Optimisation",
+        description:
+          "Create weekly meal plans balanced for nutrition, budget, and household preferences - generating shopping lists and prep schedules that reduce planning time and food waste.",
+      },
+      {
+        title: "Culinary Technique Guidance and Skill Assistance",
+        description:
+          "Provide step-by-step technique instruction, timing guidance, and troubleshooting for specific dishes in real time - functioning as an always-available culinary advisor during cooking.",
+      },
+      {
+        title: "Food Service Inventory and Waste Reduction",
+        description:
+          "Track kitchen inventory, suggest preparations that utilise ingredients approaching their use-by date, and model menu changes that improve margin while minimising over-ordering.",
+      },
+    ],
+    agentLibrarySlug: "kitchen",
+    relatedSlugs: ["hospitality", "retail", "ecommerce"],
+  },
+
+  {
+    slug: "drone",
+    name: "Drone",
+    metaTitle: "Best AI Agents for Drone Operations | AgenticLib",
+    metaDescription:
+      "Find AI agents for drone operations - autonomous drone navigation, mapping and survey automation, aerial inspection AI, and drone fleet management.",
+    h1: "AI Agents for Drone Operations",
+    intro:
+      "Drones have moved from consumer gadgets to critical operational infrastructure for surveying, inspection, logistics, and monitoring - but realising their value at scale requires automation that removes the human operator from routine missions. AI agents power the navigation, analysis, and fleet management layer that makes autonomous drone operations viable.",
+    whyAiMatters: [
+      "Aerial survey and inspection missions that once required piloted aircraft or ground teams are now operationally deployable with autonomous drone systems - power line inspection, pipeline monitoring, roof assessment, agricultural imaging - at a fraction of the cost.",
+      "Drone-captured imagery and sensor data require analysis to deliver business value; AI models that process aerial imagery automatically extract actionable intelligence faster than manual review.",
+      "Drone fleet operations at scale - coordinating multiple drones across a geography, managing maintenance schedules, and processing mission data - require automation infrastructure that AI orchestration provides.",
+      "Regulatory and safety compliance for drone operations requires real-time awareness of airspace restrictions, weather conditions, and mission parameters that AI monitoring handles more reliably than human operators."
+    ],
+    useCases: [
+      {
+        title: "Autonomous Survey and Mapping Missions",
+        description:
+          "Plan, execute, and process aerial survey missions autonomously - generating orthomosaic maps, elevation models, and point clouds from waypoint-defined flights without manual piloting.",
+      },
+      {
+        title: "Infrastructure and Asset Inspection",
+        description:
+          "Conduct autonomous inspection flights of power lines, pipelines, cell towers, bridges, and rooftops - using AI image analysis to detect defects, corrosion, and structural issues from aerial imagery.",
+      },
+      {
+        title: "Agricultural Monitoring and Crop Analysis",
+        description:
+          "Fly regular monitoring missions over agricultural land, analyse multispectral imagery for crop health, stress, and yield indicators, and generate actionable precision agriculture recommendations.",
+      },
+      {
+        title: "Drone Fleet Management and Mission Orchestration",
+        description:
+          "Manage multi-drone fleets across concurrent missions - tracking asset status, scheduling maintenance, processing mission data, and maintaining regulatory compliance documentation automatically.",
+      },
+    ],
+    agentLibrarySlug: "drone",
+    relatedSlugs: ["aerospace", "robotics", "logistics"],
+  },
+
+  {
+    slug: "contract-review",
+    name: "Contract Review",
+    metaTitle: "Best AI Agents for Contract Review | AgenticLib",
+    metaDescription:
+      "Find AI agents for contract review - automated contract analysis, clause extraction, risk flagging, and contract comparison for legal and procurement teams.",
+    h1: "AI Agents for Contract Review",
+    intro:
+      "Contract review is the most predictably labour-intensive task in legal and procurement workflows, yet the majority of the work - reading, extracting key terms, flagging non-standard clauses, and comparing to playbook positions - follows systematic rules that AI agents apply faster and more consistently than human reviewers.",
+    whyAiMatters: [
+      "Senior legal time spent reviewing routine contracts is the highest unit-cost activity in most in-house legal departments; AI contract review that handles first-pass analysis frees counsel for negotiation and strategic legal work.",
+      "Contract risk is asymmetric: a missed unfavourable clause in a supplier agreement or employment contract can create liability that is expensive to unwind; AI review catches non-standard terms before signing.",
+      "Procurement teams managing hundreds of supplier contracts annually face a review volume that legal resources cannot match, creating either a bottleneck or a blind spot - AI review eliminates both.",
+      "Contract data locked in PDF documents is operationally invisible; AI extraction that turns contract terms into structured records creates the searchable obligation registry that compliance and finance teams require."
+    ],
+    useCases: [
+      {
+        title: "First-Pass Contract Review Against Playbook",
+        description:
+          "Analyse incoming contracts for deviations from standard positions - liability caps, indemnification, IP ownership, termination rights, governing law - and produce a structured redline summary for lawyer review.",
+      },
+      {
+        title: "Key Term and Obligation Extraction",
+        description:
+          "Extract dates, payment terms, renewal provisions, notice periods, and all material obligations from contracts into structured records - creating a searchable contract database from a document library.",
+      },
+      {
+        title: "Risk Flagging and Clause Classification",
+        description:
+          "Identify high-risk clauses - unlimited liability, broad IP assignment, unilateral amendment rights, one-sided indemnities - and classify them by risk level for prioritised attorney attention.",
+      },
+      {
+        title: "Multi-Party Contract Comparison and Version Control",
+        description:
+          "Compare draft versions from multiple parties, track negotiation changes across redlines, and maintain version history with change summaries - giving negotiating teams a clear view of open issues at each stage.",
+      },
+    ],
+    agentLibrarySlug: "contract-review",
+    relatedSlugs: ["legal", "finance", "procurement"],
+  },
+
+  {
+    slug: "fund-management",
+    name: "Fund Management",
+    metaTitle: "Best AI Agents for Fund Management | AgenticLib",
+    metaDescription:
+      "Find AI agents for fund management - portfolio monitoring, fund analysis automation, investor reporting, and due diligence for asset managers.",
+    h1: "AI Agents for Fund Management",
+    intro:
+      "Fund managers are data-intensive operations: monitoring portfolio performance, conducting due diligence, preparing investor reporting, and staying current on market developments are all high-volume analytical tasks. AI agents handle the research and reporting layer, giving fund teams more time for the investment decisions that compound.",
+    whyAiMatters: [
+      "Fund due diligence requires analysing hundreds of documents - PPMs, performance records, audited financials, and manager track records - with a thoroughness that analyst bandwidth limits; AI accelerates this analysis without sacrificing rigour.",
+      "Investor reporting at fund manager scale involves assembling consistent, compliant communications across hundreds of LPs with different information requirements - a production task that AI automates while ensuring accuracy.",
+      "Market monitoring relevant to fund positions spans financial filings, news, regulatory changes, and sector developments that no analyst team can track comprehensively without AI assistance.",
+      "Portfolio risk monitoring requires continuous analysis across positions, correlations, and market conditions - a real-time computation that AI systems perform continuously rather than in periodic batch analysis."
+    ],
+    useCases: [
+      {
+        title: "Fund Due Diligence Automation",
+        description:
+          "Analyse fund documentation - PPMs, financial statements, track records, and legal agreements - to extract key terms, compare performance against benchmarks, and surface due diligence flags for investment team review.",
+      },
+      {
+        title: "Portfolio Monitoring and Risk Analysis",
+        description:
+          "Monitor portfolio positions against performance targets, risk limits, and market benchmarks continuously - generating alerts when positions breach defined parameters and producing real-time risk attribution analysis.",
+      },
+      {
+        title: "Investor Reporting and Communication Automation",
+        description:
+          "Assemble accurate LP reports, capital call and distribution notices, and performance communications from portfolio data - ensuring consistency across investor types and regulatory jurisdiction requirements.",
+      },
+      {
+        title: "Market Intelligence and Sector Research Synthesis",
+        description:
+          "Monitor financial news, regulatory changes, earnings releases, and sector developments relevant to current and target portfolio positions - synthesising intelligence into structured briefings for investment teams.",
+      },
+    ],
+    agentLibrarySlug: "fund-management",
+    relatedSlugs: ["finance", "banking", "trading"],
+  },
+
+  {
+    slug: "personal-finance",
+    name: "Personal Finance",
+    metaTitle: "Best AI Agents for Personal Finance | AgenticLib",
+    metaDescription:
+      "Find AI agents for personal finance - budget automation, expense categorisation, savings goal tracking, and personalised financial planning assistance.",
+    h1: "AI Agents for Personal Finance",
+    intro:
+      "Personal financial management has been constrained by the gap between what people intend to do with their money and what they actually track and act on. AI personal finance agents close that gap - monitoring spending, surfacing patterns, and making the right financial behaviour easier to execute than the wrong one.",
+    whyAiMatters: [
+      "Most people manage household finances reactively - reviewing spending after the fact rather than directing it in advance; AI agents that flag approaching budget limits change the feedback loop from monthly review to real-time awareness.",
+      "Superannuation, insurance, tax minimisation, and mortgage optimisation all represent significant value that most households leave unrealised because the decisions require analysis they don't know how to perform.",
+      "Subscription sprawl - the accumulation of recurring charges across services people no longer actively use - costs the average household hundreds annually; AI agents that identify and flag these save money without requiring user effort.",
+      "Saving for specific financial goals requires consistent behaviour over long periods; AI agents that automate contribution rules and project milestones make goal achievement more reliable."
+    ],
+    useCases: [
+      {
+        title: "Automated Budget Tracking and Spending Categorisation",
+        description:
+          "Automatically categorise transactions, track spending against budget allocations in real time, and generate alerts when categories approach or exceed limits - turning spending data into actionable weekly awareness.",
+      },
+      {
+        title: "Savings Goal Automation and Milestone Tracking",
+        description:
+          "Set savings goals with target amounts and dates, automate contribution rules, track progress against milestones, and model the impact of different contribution levels on goal completion dates.",
+      },
+      {
+        title: "Subscription and Recurring Charge Audit",
+        description:
+          "Identify all recurring charges across accounts, flag unused or duplicate subscriptions, and surface cancellation opportunities - finding money that is already being spent without value.",
+      },
+      {
+        title: "Personalised Financial Planning Guidance",
+        description:
+          "Answer questions about budget allocation, debt repayment strategies, insurance coverage, and tax-minimisation options based on actual financial data - providing guidance that is personalised rather than generic.",
+      },
+    ],
+    agentLibrarySlug: "personal-finance",
+    relatedSlugs: ["finance", "banking", "cash-flow-forecasting"],
+  },
+
+  {
+    slug: "insurance-claims",
+    name: "Insurance Claims",
+    metaTitle: "Best AI Agents for Insurance Claims | AgenticLib",
+    metaDescription:
+      "Find AI agents for insurance claims - claims intake automation, fraud detection, document processing, and claims status communication for insurers.",
+    h1: "AI Agents for Insurance Claims",
+    intro:
+      "Insurance claims processing is the moment that determines whether a customer renews or churns - speed and transparency of claims settlement are the highest-weighted factors in insurance NPS. AI agents accelerate the intake, assessment, and communication steps that create or destroy loyalty in the claims cycle.",
+    whyAiMatters: [
+      "Claims processing speed is the single strongest predictor of customer retention in personal lines insurance; every day of claims delay increases churn probability, and AI automation of routine claims cuts cycle time measurably.",
+      "Claims fraud costs the US insurance industry an estimated $80 billion annually; AI fraud detection that analyses claim patterns, third-party data, and network relationships flags suspicious claims before settlement.",
+      "A significant proportion of claims processing labour involves extracting information from submitted documents - photos, repair estimates, medical records, police reports - that AI document processing automates at scale.",
+      "Claimants who receive no proactive status updates are significantly more likely to escalate to complaints teams; AI-driven automated status communication manages expectations and reduces unnecessary inbound volume."
+    ],
+    useCases: [
+      {
+        title: "First Notice of Loss Intake and Triage",
+        description:
+          "Handle first notice of loss across phone, web, and mobile channels - collecting claim details, assigning claim reference numbers, triggering validation workflows, and routing claims to the appropriate handler without manual intake.",
+      },
+      {
+        title: "Document Processing and Information Extraction",
+        description:
+          "Extract structured data from submitted claim documents - photos, invoices, repair quotes, medical certificates, and police reports - populating claim records automatically and flagging incomplete submissions.",
+      },
+      {
+        title: "Fraud Detection and Anomaly Flagging",
+        description:
+          "Analyse new claims against historical patterns, network relationships, and external data sources to score fraud probability - flagging high-risk claims for specialist investigation before settlement.",
+      },
+      {
+        title: "Claimant Status Communication and Case Management",
+        description:
+          "Send proactive claim status updates at each processing milestone, answer claimant queries about their case, and manage settlement communication - reducing inbound contact centre volume while improving claimant experience.",
+      },
+    ],
+    agentLibrarySlug: "insurance-claims",
+    relatedSlugs: ["loans-insurance", "legal", "finance"],
+  },
+
+  {
+    slug: "production-orchestration",
+    name: "Production Orchestration",
+    metaTitle: "Best AI Agents for Production Orchestration | AgenticLib",
+    metaDescription:
+      "Find AI agents for production orchestration - workflow automation, multi-system coordination, process sequencing, and operational efficiency for complex production environments.",
+    h1: "AI Agents for Production Orchestration",
+    intro:
+      "Production operations in manufacturing, media, software development, and service industries share a common challenge: coordinating work across systems, teams, and timelines at a pace that manual coordination cannot sustain. AI orchestration agents manage the sequencing, handoffs, and exception handling that keep complex production pipelines running.",
+    whyAiMatters: [
+      "Production bottlenecks in multi-step workflows compound - a delay in one stage blocks all downstream stages, and identifying the constraint fast enough to intervene requires monitoring at a granularity humans cannot sustain continuously.",
+      "Manual coordination of multi-team workflows involves significant overhead in status updates, handoff communication, and exception escalation - overhead that AI agents eliminate by automating the coordination layer.",
+      "Production scheduling optimisation across variable demand, resource availability, and workflow dependencies is an NP-hard planning problem that AI solves more effectively than rule-based scheduling systems.",
+      "Quality control in production workflows requires consistent application of standards at every stage - a consistency that human operators cannot sustain across long shifts and high volume, but AI monitoring agents apply without degradation."
+    ],
+    useCases: [
+      {
+        title: "End-to-End Workflow Sequencing and Handoff Automation",
+        description:
+          "Define production workflows as sequences of tasks with dependencies and handoff conditions, then automate progression through each stage - triggering downstream work automatically when upstream conditions are met.",
+      },
+      {
+        title: "Production Schedule Optimisation and Resource Allocation",
+        description:
+          "Optimise production schedules across available resources, machine capacity, and workflow priorities - dynamically rebalancing allocations when capacity changes, orders arrive, or exceptions occur.",
+      },
+      {
+        title: "Exception Detection and Escalation Management",
+        description:
+          "Monitor production pipelines for deviations from expected pace, quality, and completion rates - triggering escalation workflows automatically when exceptions breach defined thresholds.",
+      },
+      {
+        title: "Cross-System Data Synchronisation and Reporting",
+        description:
+          "Synchronise production data across ERP, MES, scheduling, and quality management systems in real time - maintaining a single accurate operational picture and generating live production performance reports.",
+      },
+    ],
+    agentLibrarySlug: "production-orchestration",
+    relatedSlugs: ["logistics", "procurement", "robotics"],
+  },
+
+  {
+    slug: "productivity",
+    name: "Productivity",
+    metaTitle: "Best AI Productivity Agents | AgenticLib",
+    metaDescription:
+      "Find AI agents for productivity - task automation, meeting summarisation, workflow management, and AI-powered personal assistant tools for individuals and teams.",
+    h1: "AI Agents for Productivity",
+    intro:
+      "Knowledge work generates far more administrative overhead than most individuals recognise - the time spent managing tasks, processing email, attending status meetings, and updating records adds up to hours that compound into weeks of lost productive time annually. AI productivity agents handle this administrative layer, returning focus to the work that matters.",
+    whyAiMatters: [
+      "The average knowledge worker spends 28% of their work week managing email and over 20% in meetings - much of this time involves coordination, status updates, and information retrieval that AI agents handle without human involvement.",
+      "Context-switching between tasks is the primary driver of productivity loss for knowledge workers; AI agents that handle incoming task routing, calendar management, and information retrieval reduce the interruptions that fragment deep work.",
+      "Task completion rates drop significantly when tasks are not clearly defined, prioritised, or tracked; AI task management agents that decompose goals into actionable steps and track progress improve output without changing working hours.",
+      "Business process documentation and knowledge management are persistently underfunded relative to their operational value; AI agents that capture, organise, and surface institutional knowledge prevent the repeated recreation of work that already exists."
+    ],
+    useCases: [
+      {
+        title: "Meeting Summarisation and Action Item Capture",
+        description:
+          "Transcribe, summarise, and extract action items from meetings automatically - distributing accurate notes with owners and deadlines without requiring manual note-taking or post-meeting write-up.",
+      },
+      {
+        title: "Intelligent Task Management and Prioritisation",
+        description:
+          "Capture tasks from email, messages, and conversations, organise them by project and priority, surface the highest-value work at the start of each day, and track completion without manual updates.",
+      },
+      {
+        title: "Workflow Automation for Repetitive Business Processes",
+        description:
+          "Identify and automate repetitive workflows - data entry, report generation, status updates, approvals, and routine communications - freeing knowledge worker time for non-automatable work.",
+      },
+      {
+        title: "AI Research and Information Retrieval Assistance",
+        description:
+          "Answer questions, retrieve relevant documents, summarise research, and draft communications from context - acting as an always-available work partner for knowledge retrieval and first-draft production.",
+      },
+    ],
+    agentLibrarySlug: "productivity",
+    relatedSlugs: ["marketing", "recruitment", "sales"],
+  },
+
+  {
+    slug: "sales",
+    name: "Sales",
+    metaTitle: "Best AI Agents for Sales | AgenticLib",
+    metaDescription:
+      "Find AI agents for sales - AI SDR automation, lead qualification, sales engagement, pipeline management, and revenue intelligence for sales teams.",
+    h1: "AI Agents for Sales",
+    intro:
+      "Sales teams have traditionally scaled revenue by adding headcount - more reps, more calls, more demos. AI sales agents break that linear relationship: an AI SDR can run personalised outbound sequences at a volume no human team can match, and a sales intelligence layer that surfaces the right information to the right rep at the right moment directly improves conversion rates.",
+    whyAiMatters: [
+      "Sales development rep time is heavily allocated to research, personalisation, and follow-up sequences - tasks that AI agents execute at scale without the unit cost of headcount, meaning sales teams can run larger top-of-funnel programs with the same investment.",
+      "Lead qualification requires consistent application of criteria across large inbound volumes; AI qualification agents process every inbound lead against defined ICP criteria and route only qualified leads to human reps - eliminating wasted rep time on unqualified pipeline.",
+      "Revenue forecasting accuracy is the highest-value analytical output in most sales operations, yet most forecasts are built on CRM hygiene that human reps consistently fail to maintain; AI systems that extract pipeline data from actual behaviour are materially more accurate.",
+      "Sales conversations generate more usable intelligence about buyer needs and objections than any formal market research - but that intelligence lives in call recordings no one reviews; AI conversation analysis turns this into structured go-to-market intelligence."
+    ],
+    useCases: [
+      {
+        title: "AI SDR and Outbound Prospecting Automation",
+        description:
+          "Research target accounts, identify decision-makers, personalise outreach at scale, and manage multi-touch sequences across email and LinkedIn - running an autonomous prospecting function that books meetings for account executives.",
+      },
+      {
+        title: "Inbound Lead Qualification and Routing",
+        description:
+          "Score and qualify inbound leads against ICP criteria in real time, engage high-intent leads instantly with personalised responses, and route qualified pipeline to the appropriate sales rep without queue delays.",
+      },
+      {
+        title: "Sales Conversation Intelligence and Coaching",
+        description:
+          "Analyse recorded sales calls for objection patterns, competitor mentions, talk time ratios, and best-practice adherence - generating per-rep coaching insights and deal-specific next-step recommendations.",
+      },
+      {
+        title: "Pipeline Management and Revenue Forecasting",
+        description:
+          "Maintain CRM hygiene from sales activity data automatically, model pipeline conversion probabilities from deal attributes and historical patterns, and generate accurate revenue forecasts without rep self-reporting.",
+      },
+    ],
+    agentLibrarySlug: "sales",
+    relatedSlugs: ["marketing", "ecommerce", "recruitment"],
+  },
 ];
 
 export function getSeoDomain(slug: string): SeoDomain | undefined {
   return seoDomains.find((d) => d.slug === slug);
 }
+
+// Domains with fewer than 4 agents - noindexed and excluded from the sitemap.
+// Audit date: 2026-05-19  |  Threshold: <4 agents → noindex, follow
+// Remove a slug here once enough agents have been added to graduate it.
+export const NOINDEX_SLUGS = new Set([
+  "aerospace",              // 3 agents
+  "inventory-management",   // 3 agents
+  "logistics",              // 3 agents
+  "material-manufacturing", // 3 agents
+  "sports",                 // 3 agents
+  "telecommunication",      // 3 agents
+  "trading",                // 3 agents
+  "accounting",             // 2 agents
+  "ai-agent-developer",     // 2 agents
+  "ar-vr",                  // 2 agents
+  "chemical-industry",      // 2 agents
+  "customer-experience",    // 2 agents
+  "digital-advertising",    // 2 agents
+  "fashion-design",         // 2 agents
+  "mental-health",          // 2 agents
+  "cash-flow-forecasting",  // 1 agent
+  "financial-advisory",     // 1 agent
+  "hedge-funds",            // 1 agent
+  "life-sciences",          // 1 agent
+  "pharmacy",               // 1 agent
+  "technology",             // 0 agents in agent library
+  // New domains - thin at launch
+  "ip-management",          // 1 agent
+  "vision-agents",          // 2 agents
+  "branding",               // 1 agent
+  "patient-service",        // 1 agent
+  "payroll",                // 1 agent
+  "creative-content",       // 1 agent
+  "kitchen",                // 2 agents
+  "drone",                  // 2 agents
+  "contract-review",        // 1 agent
+  "fund-management",        // 1 agent
+  "personal-finance",       // 1 agent
+  "insurance-claims",       // 1 agent
+  "production-orchestration", // 1 agent
+]);
