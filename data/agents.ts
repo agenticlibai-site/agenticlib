@@ -109,12 +109,11 @@ export const domains = [
     name: "Loans & Insurance",
     slug: "loans-insurance",
     agents: [
-      { name: "Multimodal", url: "https://www.multimodal.dev/ai-powered-business-loan-underwriting" },
-      { name: "Tiimely", url: "https://tiimely.com/products/xapii-decide" },
+      { name: "Tiimely", url: "https://tiimely.com" },
       { name: "Cognigy", url: "https://www.cognigy.com/solutions/insurance" },
       { name: "V7 Labs", url: "https://www.v7labs.com/go/agents" },
-      { name: "Beam", url: "https://beam.ai/solutions/insurance" },
-      { name: "Cropguard", url: "https://www.cropguard.ai/" },
+      { name: "Beam AI", url: "https://beam.ai/solutions/insurance" },
+      { name: "Multimodal", url: "https://www.multimodal.dev/ai-powered-business-loan-underwriting" },
     ],
   },
 
@@ -122,12 +121,12 @@ export const domains = [
     name: "Banking",
     slug: "banking",
     agents: [
-      { name: "Multimodal", url: "https://www.multimodal.dev/retail-banking" },
-      { name: "Adept", url: "https://www.adept.ai/" },
-      { name: "Leena AI", url: "https://leena.ai/autonomous-agent-for-finance" },
-      { name: "Interface AI", url: "https://interface.ai/platform/" },
+      { name: "interface.ai", url: "https://interface.ai" },
       { name: "Finley", url: "https://www.finleyai.com/" },
-      { name: "Portrait", url: "https://portraitresearch.com/" },
+      { name: "Adept AI", url: "https://www.adept.ai/" },
+      { name: "Portrait Analytics", url: "https://portraitresearch.com/" },
+      { name: "Multimodal", url: "https://www.multimodal.dev/retail-banking" },
+      { name: "Leena AI", url: "https://leena.ai/autonomous-agent-for-finance" },
     ],
   },
 
@@ -193,7 +192,7 @@ export const domains = [
     agents: [
       { name: "Loman AI", url: "https://www.loman.ai/" },
       { name: "Duve", url: "https://marketing.duve.com/duve-ai/" },
-      { name: "Akira AI", url: "https://www.akira.ai/blog/ai-agent-for-hospitality" },
+      { name: "Akira AI", url: "https://www.akira-agent.com/hospitality" },
       { name: "SoundHound AI", url: "https://www.soundhound.com/voice-ai-solutions/hospitality/" },
     ],
   },
