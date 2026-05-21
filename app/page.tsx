@@ -43,16 +43,18 @@ export default function Home() {
 
       {/* NAVBAR */}
       <header className="fixed top-0 inset-x-0 z-[999] px-4 pt-3 pointer-events-auto">
-        <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md border border-white/20 shadow-sm rounded-xl px-6 py-3 flex items-center gap-10">
+        <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md border border-white/20 shadow-sm rounded-xl px-6 py-3 flex items-center">
 
-          {/* LOGO ✅ */}
-          <div className="flex items-center gap-2">
+          {/* LOGO */}
+          <div className="flex items-center gap-2 flex-shrink-0">
             <img src="/logo.png" alt="AgenticLib logo" className="h-6 w-auto" />
             <span className="text-lg font-semibold tracking-tight">
               AgenticLib
             </span>
           </div>
 
+          {/* NAV — centred in remaining space */}
+          <div className="flex-1 flex justify-center">
 <nav className="flex items-center gap-8">
 
   {/* AI Agent Library */}
@@ -127,6 +129,7 @@ onClick={() =>
   </Link>
 
 </nav>
+          </div>
         </div>
       </header>
 
