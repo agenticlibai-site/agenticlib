@@ -74,7 +74,7 @@ export default function SurveyPopup({ pageUrl }: { pageUrl: string }) {
       {/* Backdrop */}
       <div className="fixed inset-0 z-[9998] bg-black/20" />
 
-      {/* Popup — flex wrapper handles centering, no transforms needed */}
+      {/* Popup - flex wrapper handles centering, no transforms needed */}
       <div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none">
         <div
           id="survey-popup"
