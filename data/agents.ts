@@ -24,6 +24,10 @@ export const domains = [
       { name: "Ada", url: "https://www.ada.cx/" },
       { name: "Decagon", url: "https://decagon.ai/" },
       { name: "Zendesk AI", url: "https://www.zendesk.com/" },
+      { name: "Octocom", url: "https://www.octocom.ai/" },
+      { name: "Yuma AI", url: "https://yuma.ai/" },
+      { name: "Auralis AI", url: "https://auralis.ai/" },
+      { name: "Tavus", url: "https://www.tavus.io/" },
     ],
   },
 
@@ -289,7 +293,7 @@ export const domains = [
   name: "Veterinary",
   slug: "veterinary",
   agents: [
-    { name: "Tixie.AI", url: "https://tixae.ai/ai-agents-for-veterinary" },
+    { name: "Tixie.AI", url: "https://www.tixae.ai/" },
     { name: "Vet Chatbot", url: "https://vetchatbot.com/" },
     { name: "ScribVet", url: "https://scribvet.com/" },
     { name: "CoVet", url: "https://www.co.vet/" },
