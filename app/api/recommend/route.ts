@@ -187,7 +187,15 @@ function scoreCSAgent(profile: Omit<CSAgentProfile, "score">, data: CSWizardData
   if (channels.some((c) => c.includes("live chat")) && (text.includes("live chat") || text.includes("web chat") || text.includes("chat"))) score += 4;
   if (channels.some((c) => c.includes("chatbot")) && (text.includes("chatbot") || text.includes("web") || text.includes("chat"))) score += 4;
   if (channels.some((c) => c.includes("social")) && (text.includes("social") || text.includes("facebook") || text.includes("instagram"))) score += 4;
+  if (channels.some((c) => c.includes("voice") || c.includes("phone")) && (text.includes("voice") || text.includes("phone") || text.includes("telephony") || text.includes("call"))) score += 4;
+  if (channels.some((c) => c.includes("video")) && (text.includes("video") || text.includes("avatar") || text.includes("cvi") || text.includes("visual"))) score += 4;
   if (text.includes("omnichannel")) score += 2;
+
+  // Ecommerce-specific signals
+  const industry = data.csIndustry.toLowerCase();
+  if (industry.includes("e-commerce") || industry.includes("ecommerce")) {
+    if (text.includes("shopify") || text.includes("ecommerce") || text.includes("e-commerce") || text.includes("post-purchase") || text.includes("returns") || text.includes("order tracking") || text.includes("dtc")) score += 4;
+  }
 
   // Volume signals
   if (volume.includes("high") && (text.includes("enterprise") || text.includes("high volume") || text.includes("scale") || text.includes("large"))) score += 3;
@@ -230,6 +238,72 @@ RULES:
 - Fit Score must reflect the user's specific answers - not generic agent quality.
 - Keep tone professional and direct. No marketing language.
 - Do NOT include links anywhere except the "Official Links" section.`;
+
+function extractCSRequirements(data: CSWizardData): string[] {
+  const reqs: string[] = [];
+
+  const goalMap: Record<string, string> = {
+    "Reduce response time":
+      "Reduction of customer response and resolution time as a primary performance target",
+    "Automate FAQs":
+      "Self-service FAQ automation and knowledge base deflection requirements",
+    "Handle complaints":
+      "Complaint handling, escalation management, and resolution workflow requirements",
+    "Improve support quality":
+      "Support quality improvement through AI-assisted sentiment analysis and CSAT optimisation",
+  };
+  const industryMap: Record<string, string> = {
+    "E-commerce":
+      "E-commerce and post-purchase customer support automation requirements",
+    "SaaS":
+      "SaaS product support and customer success automation requirements",
+    "Real estate":
+      "Real estate customer enquiry and lead support automation requirements",
+    "Healthcare":
+      "Healthcare patient communication and compliance-aware support requirements",
+    "Education":
+      "Education and student services support automation requirements",
+  };
+  const channelMap: Record<string, string> = {
+    "Email":
+      "Email-based support automation and ticket management requirements",
+    "Live chat":
+      "Real-time live chat and web chat automation requirements",
+    "WhatsApp":
+      "WhatsApp and messaging channel automation requirements",
+    "Website chatbot":
+      "Website chatbot and conversational AI deployment requirements",
+    "Social media":
+      "Social media monitoring and automated customer response requirements",
+    "Voice / Phone":
+      "Voice and phone channel automation and IVR integration requirements",
+  };
+  const volumeMap: Record<string, string> = {
+    "Low (fewer than 50 / day)":
+      "Small-scale deployment optimised for low-volume support operations",
+    "Medium (50–500 / day)":
+      "Mid-scale deployment supporting 50–500 daily customer interactions",
+    "High (500+ / day)":
+      "Enterprise-scale deployment for high-volume support operations (500+ daily queries)",
+  };
+  const techMap: Record<string, string> = {
+    "No-code setup":
+      "No-code deployment preference with minimal technical implementation overhead",
+    "API-based integration":
+      "API-based integration with existing support stack and CRM infrastructure",
+    "Enterprise CRM integration":
+      "Enterprise CRM integration requirements (Salesforce, HubSpot, or equivalent)",
+  };
+
+  (data.csGoal ?? []).forEach((g) => { if (goalMap[g]) reqs.push(goalMap[g]); });
+  if (data.csIndustry && industryMap[data.csIndustry]) reqs.push(industryMap[data.csIndustry]);
+  (data.csChannel ?? []).forEach((c) => { if (channelMap[c]) reqs.push(channelMap[c]); });
+  if (data.csVolume && volumeMap[data.csVolume]) reqs.push(volumeMap[data.csVolume]);
+  if (data.csTech && techMap[data.csTech]) reqs.push(techMap[data.csTech]);
+  if (data.csNotes?.trim()) reqs.push(`Additional context: ${data.csNotes.trim().slice(0, 140)}${data.csNotes.trim().length > 140 ? "…" : ""}`);
+
+  return [...new Set(reqs)].slice(0, 7);
+}
 
 async function handleCSRecommend(wizardData: CSWizardData) {
   // 1. Filter Customer Service rows from agents.json
@@ -291,8 +365,15 @@ async function handleCSRecommend(wizardData: CSWizardData) {
     ],
   });
 
+  const csRequirements = extractCSRequirements(wizardData);
+  const csRequirementsSection =
+    `## Key Requirements Captured\n\n` +
+    csRequirements.map((r) => `- ${r}`).join("\n") +
+    "\n\n";
+  const csGptOutput = aiResponse.choices[0].message.content ?? "No recommendations generated.";
+
   return NextResponse.json({
-    output: aiResponse.choices[0].message.content ?? "No recommendations generated.",
+    output: csRequirementsSection + csGptOutput,
   });
 }
 
@@ -511,6 +592,386 @@ async function handleMediaRecommend(wizardData: MediaWizardData) {
 }
 
 // ─────────────────────────────────────────
+// FINANCE HANDLER
+// ─────────────────────────────────────────
+
+type FinanceWizardData = {
+  finSubdomain: string;
+  finFocus?: string[];
+  finChannel?: string[];
+  finInstitution?: string;
+  finOutcome?: string[];
+  finNotes?: string;
+  loanArea?: string[];
+  loanWorkflow?: string[];
+  loanChallenge?: string[];
+  loanAutomation?: string;
+  loanNotes?: string;
+};
+
+type FinanceAgentProfile = {
+  id: string;
+  name: string;
+  type: string;
+  link: string;
+  capabilities: string[];
+  claims: string[];
+  userValues: string[];
+  bestFor: string[];
+  whenToUse: string[];
+  score: number;
+};
+
+function scoreFinanceAgent(
+  profile: Omit<FinanceAgentProfile, "score">,
+  data: FinanceWizardData
+): number {
+  const text = [
+    ...profile.capabilities,
+    ...profile.claims,
+    ...profile.userValues,
+    ...profile.bestFor,
+    ...profile.whenToUse,
+    profile.type,
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  let score = 0;
+
+  if (data.finSubdomain === "Banking") {
+    const focus = (data.finFocus ?? []).join(" ").toLowerCase();
+    const channels = (data.finChannel ?? []).join(" ").toLowerCase();
+    const institution = (data.finInstitution ?? "").toLowerCase();
+    const outcome = (data.finOutcome ?? []).join(" ").toLowerCase();
+
+    if (focus.includes("customer onboarding") && (text.includes("onboard") || text.includes("kyc") || text.includes("digital"))) score += 6;
+    if (focus.includes("loan") && (text.includes("loan") || text.includes("credit") || text.includes("underwriting") || text.includes("lending"))) score += 6;
+    if (focus.includes("fraud") && (text.includes("fraud") || text.includes("compliance") || text.includes("risk") || text.includes("aml"))) score += 6;
+    if (focus.includes("customer engagement") && (text.includes("engagement") || text.includes("retention") || text.includes("personaliz"))) score += 6;
+    if (focus.includes("operational") && (text.includes("operational") || text.includes("efficiency") || text.includes("automat") || text.includes("cost"))) score += 6;
+
+    if (channels.includes("voice") && (text.includes("voice") || text.includes("phone") || text.includes("call"))) score += 4;
+    if (channels.includes("web") && (text.includes("web") || text.includes("digital") || text.includes("mobile") || text.includes("chat"))) score += 4;
+    if (channels.includes("branch") && (text.includes("branch") || text.includes("in-person") || text.includes("staff"))) score += 4;
+    if (channels.includes("back-office") && (text.includes("back-office") || text.includes("api") || text.includes("integration"))) score += 4;
+    if (channels.includes("whatsapp") && (text.includes("whatsapp") || text.includes("messaging") || text.includes("sms"))) score += 4;
+
+    if (institution.includes("community") && (text.includes("community") || text.includes("credit union") || text.includes("cooperative"))) score += 3;
+    if (institution.includes("retail") && (text.includes("retail") || text.includes("consumer"))) score += 3;
+    if (institution.includes("neobank") && (text.includes("neobank") || text.includes("fintech") || text.includes("startup"))) score += 3;
+    if (institution.includes("enterprise") && (text.includes("enterprise") || text.includes("tier-1") || text.includes("large"))) score += 3;
+    if (institution.includes("regional") && (text.includes("regional") || text.includes("mid-size"))) score += 3;
+
+    if (outcome.includes("loan default") && (text.includes("default") || text.includes("risk") || text.includes("credit"))) score += 3;
+    if (outcome.includes("customer nps") && (text.includes("nps") || text.includes("satisfaction") || text.includes("engagement"))) score += 3;
+    if (outcome.includes("speed") && (text.includes("speed") || text.includes("faster") || text.includes("automat") || text.includes("real-time"))) score += 3;
+    if (outcome.includes("operational costs") && (text.includes("cost") || text.includes("efficienc") || text.includes("reduc"))) score += 3;
+    if (outcome.includes("regulatory") && (text.includes("regulat") || text.includes("compliance") || text.includes("audit"))) score += 3;
+  } else {
+    const area = (data.loanArea ?? []).join(" ").toLowerCase();
+    const workflow = (data.loanWorkflow ?? []).join(" ").toLowerCase();
+    const challenge = (data.loanChallenge ?? []).join(" ").toLowerCase();
+    const automation = (data.loanAutomation ?? "").toLowerCase();
+
+    if (area.includes("loan origination") && (text.includes("origination") || text.includes("underwriting") || text.includes("lending"))) score += 6;
+    if (area.includes("claims") && (text.includes("claim") || text.includes("insurance") || text.includes("processing"))) score += 6;
+    if (area.includes("fraud") && (text.includes("fraud") || text.includes("risk") || text.includes("detection"))) score += 6;
+    if (area.includes("customer service") && (text.includes("customer") || text.includes("service") || text.includes("self-service") || text.includes("support"))) score += 6;
+    if (area.includes("compliance") && (text.includes("compliance") || text.includes("regulatory") || text.includes("audit"))) score += 6;
+
+    if (workflow.includes("document") && (text.includes("document") || text.includes("ocr") || text.includes("extraction"))) score += 5;
+    if (workflow.includes("automated credit") && (text.includes("credit") || text.includes("decision") || text.includes("automat"))) score += 5;
+    if (workflow.includes("customer communication") && (text.includes("communication") || text.includes("engagement") || text.includes("messaging"))) score += 5;
+    if (workflow.includes("back-office") && (text.includes("back-office") || text.includes("workflow") || text.includes("process"))) score += 5;
+    if (workflow.includes("reporting") && (text.includes("report") || text.includes("analytic") || text.includes("portfolio"))) score += 5;
+
+    if (challenge.includes("slow manual") && (text.includes("automat") || text.includes("speed") || text.includes("efficiency"))) score += 3;
+    if (challenge.includes("high cost") && (text.includes("cost") || text.includes("efficienc") || text.includes("reduc"))) score += 3;
+    if (challenge.includes("compliance") && (text.includes("compliance") || text.includes("regulat") || text.includes("audit"))) score += 3;
+    if (challenge.includes("data quality") && (text.includes("data") || text.includes("accuracy") || text.includes("extract"))) score += 3;
+    if (challenge.includes("limited automation") && (text.includes("automat") || text.includes("workflow") || text.includes("process"))) score += 3;
+
+    if (automation.includes("full automation") && (text.includes("fully automat") || text.includes("autonomous") || text.includes("end-to-end"))) score += 3;
+    if (automation.includes("ai-assisted") && (text.includes("assist") || text.includes("copilot") || text.includes("recommend"))) score += 3;
+    if (automation.includes("decision support") && (text.includes("decision support") || text.includes("advisory") || text.includes("analytic"))) score += 3;
+  }
+
+  return score;
+}
+
+const FINANCE_SYSTEM_PROMPT = `You are a Financial Services AI Expert with deep knowledge of fintech, banking operations, and lending automation.
+
+The user completed a 5-question wizard. You will receive their answers and a list of matched agents from our database.
+
+OUTPUT - you MUST produce exactly these four sections, in this order, using these exact headings:
+
+## Summary
+2–3 sentences. Name the best-fit agent and explain in plain language why it matches this user's specific subdomain, focus area, and institution type. No filler.
+
+## Comparison Table
+A markdown table with columns: Agent Name | Strength | Best Use Case | Limitation | Fit Score
+Fit Score must be High / Medium / Low relative to this user's answers.
+Include ALL provided agents.
+
+## Recommended Agent
+Start with "Best choice: **[Agent Name]**". Then 3–5 sentences: what it does, why it fits this user's subdomain + focus + institution + outcome, and one concrete result the user can expect. If a secondary agent meaningfully covers a gap, name it and explain in 1–2 sentences.
+
+## Setup Instructions
+Numbered list of 4–6 practical steps to get started with the recommended agent. Be specific — reference the user's focus area, institution type, and integration needs.
+
+## Official Links
+For each recommended agent, format as: [Visit Agent Name](url)
+
+RULES:
+- Only describe capabilities explicitly present in the provided agent data. Do NOT invent features.
+- Fit Score must reflect the user's specific answers — not generic agent quality.
+- Keep tone professional and direct. No marketing language.
+- Do NOT include links anywhere except the "Official Links" section.`;
+
+function extractKeyRequirements(data: FinanceWizardData): string[] {
+  const reqs: string[] = [];
+
+  if (data.finSubdomain === "Banking") {
+    const focusMap: Record<string, string> = {
+      "Customer onboarding & digital banking":
+        "Customer onboarding optimisation and digital self-service channel requirements",
+      "Loan & credit decisioning":
+        "Automated loan and credit decisioning workflow requirements",
+      "Fraud detection & compliance":
+        "Fraud detection, AML monitoring, and regulatory compliance requirements",
+      "Customer engagement & retention":
+        "Customer engagement, personalisation, and retention automation requirements",
+      "Operational efficiency":
+        "Banking operations efficiency and workflow automation requirements",
+    };
+    const channelMap: Record<string, string> = {
+      "Web / mobile banking app":
+        "Digital self-service via web and mobile banking channels",
+      "Voice / phone banking":
+        "Omnichannel voice and phone banking capability requirement",
+      "Branch in-person support":
+        "Branch staff augmentation and in-person assisted service support",
+      "Back-office / API integration":
+        "Back-office automation and API-based core banking system integration",
+      "WhatsApp / messaging":
+        "Conversational AI delivery via messaging and WhatsApp channels",
+    };
+    const institutionMap: Record<string, string> = {
+      "Community bank / credit union":
+        "Purpose-built deployment for community banking and credit union scale",
+      "Retail / consumer bank":
+        "Retail and consumer banking operations optimisation focus",
+      "Neobank / fintech startup":
+        "Fintech-native, API-first deployment for neobank and startup scale",
+      "Enterprise / tier-1 bank":
+        "Enterprise-grade capability requirements for tier-1 banking institutions",
+      "Regional / mid-size bank":
+        "Mid-market regional banking operational and integration requirements",
+    };
+    const outcomeMap: Record<string, string> = {
+      "Reduce loan default rate":
+        "Reduction in loan default rate through improved credit risk assessment",
+      "Improve customer NPS / satisfaction":
+        "Customer satisfaction and NPS improvement as a primary performance target",
+      "Speed up processing time":
+        "Significant reduction in processing and decision turnaround time",
+      "Lower operational costs":
+        "Operational cost reduction through AI-driven workflow automation",
+      "Achieve regulatory compliance":
+        "Regulatory compliance, audit readiness, and reporting automation requirements",
+    };
+
+    (data.finFocus ?? []).forEach((f) => { if (focusMap[f]) reqs.push(focusMap[f]); });
+    (data.finChannel ?? []).forEach((c) => { if (channelMap[c]) reqs.push(channelMap[c]); });
+    if (data.finInstitution && institutionMap[data.finInstitution]) reqs.push(institutionMap[data.finInstitution]);
+    (data.finOutcome ?? []).forEach((o) => { if (outcomeMap[o]) reqs.push(outcomeMap[o]); });
+    if (data.finNotes?.trim()) reqs.push(`Additional context: ${data.finNotes.trim().slice(0, 140)}${data.finNotes.trim().length > 140 ? "…" : ""}`);
+  } else {
+    const areaMap: Record<string, string> = {
+      "Loan origination & underwriting":
+        "Automated loan origination and AI-driven underwriting process requirements",
+      "Claims processing & management":
+        "Insurance claims automation and end-to-end processing efficiency requirements",
+      "Fraud detection & risk scoring":
+        "Real-time fraud detection and AI-powered risk scoring requirements",
+      "Customer service & self-service":
+        "AI-driven customer self-service and assisted support channel requirements",
+      "Compliance & regulatory reporting":
+        "Regulatory compliance automation and audit reporting requirements",
+    };
+    const workflowMap: Record<string, string> = {
+      "Document processing & data extraction":
+        "Intelligent document processing and OCR-based data extraction requirements",
+      "Automated credit decisioning":
+        "Explainable AI credit decisioning engine with configurable policy rules",
+      "Customer communications & follow-up":
+        "Automated customer communication and application follow-up workflow requirements",
+      "Back-office workflow automation":
+        "End-to-end back-office process automation and orchestration requirements",
+      "Reporting & portfolio analytics":
+        "Portfolio analytics, performance reporting, and dashboard automation requirements",
+    };
+    const challengeMap: Record<string, string> = {
+      "Slow manual underwriting processes":
+        "Elimination of manual underwriting bottlenecks as a primary operational objective",
+      "High cost to originate / serve":
+        "Reduction in cost-to-originate and cost-to-serve as primary financial targets",
+      "Compliance and audit overhead":
+        "Reduction of compliance and audit overhead through structured automation",
+      "Poor data quality / extraction":
+        "Improvement of data quality, document accuracy, and extraction reliability",
+      "Limited automation in place":
+        "Greenfield AI automation deployment across lending and insurance operational workflows",
+    };
+    const automationMap: Record<string, string> = {
+      "Full automation (minimal human oversight)":
+        "Fully autonomous AI decisioning pipeline with minimal human intervention required",
+      "AI-assisted (AI recommends, human approves)":
+        "AI-assisted workflow with human-in-the-loop approval and oversight requirement",
+      "Decision support only (human decides)":
+        "AI-powered decision support and analytics layer with human authority retained",
+    };
+
+    (data.loanArea ?? []).forEach((a) => { if (areaMap[a]) reqs.push(areaMap[a]); });
+    (data.loanWorkflow ?? []).forEach((w) => { if (workflowMap[w]) reqs.push(workflowMap[w]); });
+    (data.loanChallenge ?? []).forEach((c) => { if (challengeMap[c]) reqs.push(challengeMap[c]); });
+    if (data.loanAutomation && automationMap[data.loanAutomation]) reqs.push(automationMap[data.loanAutomation]);
+    if (data.loanNotes?.trim()) reqs.push(`Additional context: ${data.loanNotes.trim().slice(0, 140)}${data.loanNotes.trim().length > 140 ? "…" : ""}`);
+  }
+
+  return [...new Set(reqs)].slice(0, 7);
+}
+
+async function handleFinanceRecommend(wizardData: FinanceWizardData) {
+  const domainFilter =
+    wizardData.finSubdomain === "Banking"
+      ? "Finance - Banking"
+      : "Finance - Loans & Insurance";
+
+  const finRows = (agentsJson as AgentRow[]).filter(
+    (r) => r.Business_Domain === domainFilter
+  );
+
+  const agentMap = new Map<string, Omit<FinanceAgentProfile, "score">>();
+  for (const row of finRows) {
+    if (!agentMap.has(row.Agent_ID)) {
+      agentMap.set(row.Agent_ID, {
+        id: row.Agent_ID,
+        name: row.Agent_Name,
+        type: row.Agent_Type,
+        link: row.Link ?? "",
+        capabilities: [],
+        claims: [],
+        userValues: [],
+        bestFor: [],
+        whenToUse: [],
+      });
+    }
+    const profile = agentMap.get(row.Agent_ID)!;
+    if (row.Sub_Parameter_L2) profile.capabilities.push(row.Sub_Parameter_L2);
+    if (row.Capability_Claim) profile.claims.push(row.Capability_Claim);
+    if (row.User_Value) profile.userValues.push(row.User_Value);
+    if (row.Best_For_User_Needs) profile.bestFor.push(row.Best_For_User_Needs);
+    if (row.When_To_Use) profile.whenToUse.push(row.When_To_Use);
+  }
+
+  const scored: FinanceAgentProfile[] = Array.from(agentMap.values())
+    .map((p) => ({ ...p, score: scoreFinanceAgent(p, wizardData) }))
+    .sort((a, b) => b.score - a.score);
+
+  const topAgents = scored.slice(0, 5).map((a) => ({
+    name: a.name,
+    type: a.type,
+    link: a.link,
+    score: a.score,
+    capabilities: a.capabilities,
+    userValues: [...new Set(a.userValues)].slice(0, 6),
+    bestFor: [...new Set(a.bestFor)].slice(0, 4),
+    whenToUse: [...new Set(a.whenToUse)].slice(0, 4),
+  }));
+
+  const requirements = extractKeyRequirements(wizardData);
+  const requirementsSection =
+    `## Key Requirements Captured\n\n` +
+    requirements.map((r) => `- ${r}`).join("\n") +
+    "\n\n";
+
+  const aiResponse = await openai.chat.completions.create({
+    model: "gpt-4o",
+    max_tokens: 1600,
+    messages: [
+      { role: "system", content: FINANCE_SYSTEM_PROMPT },
+      {
+        role: "user",
+        content: JSON.stringify({ wizardAnswers: wizardData, agents: topAgents }),
+      },
+    ],
+  });
+
+  const gptOutput = aiResponse.choices[0].message.content ?? "No recommendations generated.";
+
+  return NextResponse.json({
+    output: requirementsSection + gptOutput,
+  });
+}
+
+// ─────────────────────────────────────────
+// REAL ESTATE REQUIREMENTS EXTRACTION
+// ─────────────────────────────────────────
+
+function extractRealEstateRequirements(data: {
+  goals: string[];
+  persona: string;
+  priorities: string[];
+  notes: string;
+}): string[] {
+  const reqs: string[] = [];
+
+  const goalMap: Record<string, string> = {
+    "Find undervalued investment properties":
+      "Identification and prioritisation of undervalued investment property opportunities",
+    "Compare property prices vs actual value":
+      "Property price vs intrinsic market value comparison and valuation analytics requirements",
+    "Automate paperwork / offer documents":
+      "Automated document generation and offer paperwork workflow requirements",
+    "Analyse market trends":
+      "Real-time market trend analysis and predictive property analytics requirements",
+    "Manage leads / CRM":
+      "Lead management, pipeline automation, and CRM integration requirements",
+  };
+  const personaMap: Record<string, string> = {
+    "Beginner investor":
+      "Guided decision support suited to beginner investor workflows and simplified onboarding",
+    "Active investor":
+      "Advanced analytics and portfolio management capabilities for active investor workflows",
+    "Real estate agent":
+      "Agent productivity, client management, and listing automation requirements",
+    "Buyer":
+      "Property buyer journey support and purchase decision intelligence requirements",
+  };
+  const priorityMap: Record<string, string> = {
+    "Accuracy":
+      "High data accuracy and valuation reliability as a primary performance requirement",
+    "Ease of use":
+      "Ease of use and low-friction adoption as a key deployment requirement",
+    "Automation":
+      "Workflow automation and operational efficiency as primary functional targets",
+    "Cost":
+      "Cost-effectiveness and return on investment as primary procurement criteria",
+    "Advanced analytics":
+      "Advanced analytics and AI-driven market insights as a core capability requirement",
+  };
+
+  (data.goals ?? []).forEach((g) => { if (goalMap[g]) reqs.push(goalMap[g]); });
+  if (data.persona && personaMap[data.persona]) reqs.push(personaMap[data.persona]);
+  (data.priorities ?? []).forEach((p) => { if (priorityMap[p]) reqs.push(priorityMap[p]); });
+  if (data.notes?.trim()) reqs.push(`Additional context: ${data.notes.trim().slice(0, 140)}${data.notes.trim().length > 140 ? "…" : ""}`);
+
+  return [...new Set(reqs)].slice(0, 7);
+}
+
+// ─────────────────────────────────────────
 // MAIN ROUTE
 // ─────────────────────────────────────────
 export async function POST(req: Request) {
@@ -527,6 +988,10 @@ export async function POST(req: Request) {
 
     if (domain === "Media") {
       return handleMediaRecommend(body.wizardData as MediaWizardData);
+    }
+
+    if (domain === "Finance") {
+      return handleFinanceRecommend(body.wizardData as FinanceWizardData);
     }
 
     const needs = mapGoalsToNeeds(goals);
@@ -875,9 +1340,24 @@ content: JSON.stringify({
   ],
 });
 
-const output = aiResponse.choices[0].message.content;
+const gptOutput = aiResponse.choices[0].message.content ?? "";
 
-return NextResponse.json({ output });
+let finalOutput = gptOutput;
+if (domain === "Real Estate") {
+  const reReqs = extractRealEstateRequirements({
+    goals,
+    persona: body.wizardData?.persona ?? "",
+    priorities,
+    notes: body.wizardData?.notes ?? "",
+  });
+  const reSection =
+    `## Key Requirements Captured\n\n` +
+    reReqs.map((r) => `- ${r}`).join("\n") +
+    "\n\n";
+  finalOutput = reSection + gptOutput;
+}
+
+return NextResponse.json({ output: finalOutput });
   } catch (err) {
     console.error(err);
     return NextResponse.json({
