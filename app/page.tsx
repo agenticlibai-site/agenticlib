@@ -51,7 +51,7 @@ export default function Home() {
 
       {/* NAVBAR */}
       <header className="fixed top-0 inset-x-0 z-[999] px-4 pt-3 pointer-events-auto">
-        <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md border border-white/20 shadow-sm rounded-xl px-6 py-3 flex items-center">
+        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center" style={{ background: "rgba(255,255,255,0.72)", backdropFilter: "blur(16px)", border: "0.5px solid rgba(255,255,255,0.9)", borderRadius: "14px" }}>
 
           {/* LOGO */}
           <div className="flex items-center gap-2 flex-shrink-0">
@@ -74,7 +74,10 @@ export default function Home() {
         document.getElementById("library")?.scrollIntoView({ behavior: "smooth" });
       }
     }}
-    className="transition px-3 py-1 rounded-full text-zinc-500 hover:text-black hover:bg-purple-100"
+    className="transition px-3 py-1.5 rounded-lg"
+    style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b" }}
+    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLAnchorElement).style.color = "#18181b"; }}
+    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; (e.currentTarget as HTMLAnchorElement).style.color = "#52525b"; }}
   >
     AI Agent Library
   </Link>
@@ -88,11 +91,10 @@ onClick={() =>
     "_blank"
   )
 }
-    className={`transition px-3 py-1 rounded-full ${
-      pathname === "/recommend"
-        ? "bg-purple-100 text-black"
-        : "text-zinc-500 hover:text-black hover:bg-pink-100"
-    }`}
+    className="transition px-3 py-1.5 rounded-lg"
+    style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b" }}
+    onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLButtonElement).style.color = "#18181b"; }}
+    onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = ""; (e.currentTarget as HTMLButtonElement).style.color = "#52525b"; }}
   >
     AgenticLib Platform
   </button>
@@ -113,11 +115,10 @@ onClick={() =>
   {/* Blog */}
   <Link
     href="/blog"
-    className={`transition px-3 py-1 rounded-full ${
-      pathname === "/blog"
-        ? "bg-orange-100 text-black"
-        : "text-zinc-500 hover:text-black hover:bg-orange-100"
-    }`}
+    className="transition px-3 py-1.5 rounded-lg"
+    style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b" }}
+    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLAnchorElement).style.color = "#18181b"; }}
+    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; (e.currentTarget as HTMLAnchorElement).style.color = "#52525b"; }}
   >
     Blogs
   </Link>
@@ -131,7 +132,10 @@ onClick={() =>
         document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
       }
     }}
-    className="transition px-3 py-1 rounded-full text-zinc-500 hover:text-black hover:bg-zinc-100"
+    className="transition px-3 py-1.5 rounded-lg"
+    style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b" }}
+    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLAnchorElement).style.color = "#18181b"; }}
+    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; (e.currentTarget as HTMLAnchorElement).style.color = "#52525b"; }}
   >
     Contact Us
   </Link>
