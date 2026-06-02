@@ -917,6 +917,248 @@ async function handleFinanceRecommend(wizardData: FinanceWizardData) {
 }
 
 // ─────────────────────────────────────────
+// MARKETING HANDLER
+// ─────────────────────────────────────────
+
+type MarketingWizardData = {
+  mktGoal: string[];
+  mktChannel: string[];
+  mktOutput: string[];
+  mktTeam: string;
+  mktNotes?: string;
+};
+
+type MarketingAgentProfile = {
+  id: string;
+  name: string;
+  type: string;
+  link: string;
+  capabilities: string[];
+  claims: string[];
+  userValues: string[];
+  bestFor: string[];
+  whenToUse: string[];
+  score: number;
+};
+
+function scoreMarketingAgent(
+  profile: Omit<MarketingAgentProfile, "score">,
+  data: MarketingWizardData
+): number {
+  const text = [
+    ...profile.capabilities,
+    ...profile.claims,
+    ...profile.userValues,
+    ...profile.bestFor,
+    ...profile.whenToUse,
+    profile.type,
+  ].join(" ").toLowerCase();
+
+  let score = 0;
+  const goal = data.mktGoal.join(" ").toLowerCase();
+  const channels = data.mktChannel.map((c) => c.toLowerCase());
+  const outputs = data.mktOutput.map((o) => o.toLowerCase());
+  const team = data.mktTeam.toLowerCase();
+
+  // ── Goal signals (weight 8) ──
+  if (goal.includes("leads") || goal.includes("pipeline")) {
+    if (text.includes("lead") || text.includes("pipeline") || text.includes("intent") || text.includes("prospect")) score += 8;
+  }
+  if (goal.includes("content at scale")) {
+    if (text.includes("content") || text.includes("generat") || text.includes("blog") || text.includes("scale") || text.includes("writing")) score += 8;
+  }
+  if (goal.includes("ad") || goal.includes("copy performance")) {
+    if (text.includes("ad copy") || text.includes("performan") || text.includes("optim") || text.includes("score") || text.includes("predict")) score += 8;
+  }
+  if (goal.includes("automate marketing") || goal.includes("workflow")) {
+    if (text.includes("automat") || text.includes("workflow") || text.includes("crm") || text.includes("sequence")) score += 8;
+  }
+  if (goal.includes("brand awareness")) {
+    if (text.includes("brand") || text.includes("content") || text.includes("awareness") || text.includes("voice")) score += 8;
+  }
+  if (goal.includes("video")) {
+    if (text.includes("video") || text.includes("avatar") || text.includes("synthes")) score += 8;
+  }
+
+  // ── Channel signals (weight 5) ──
+  if (channels.some((c) => c.includes("email")) &&
+      (text.includes("email") || text.includes("subject line") || text.includes("nurture") || text.includes("sequence"))) score += 5;
+  if (channels.some((c) => c.includes("paid ads") || c.includes("meta") || c.includes("google") || c.includes("linkedin")) &&
+      (text.includes("ad") || text.includes("paid") || text.includes("ppc") || text.includes("linkedin") || text.includes("copy optim"))) score += 5;
+  if (channels.some((c) => c.includes("social media")) &&
+      (text.includes("social") || text.includes("content") || text.includes("post") || text.includes("caption"))) score += 5;
+  if (channels.some((c) => c.includes("seo") || c.includes("organic")) &&
+      (text.includes("seo") || text.includes("organic") || text.includes("blog") || text.includes("search"))) score += 5;
+  if (channels.some((c) => c.includes("video")) &&
+      (text.includes("video") || text.includes("avatar") || text.includes("synthes"))) score += 5;
+  if (channels.some((c) => c.includes("website") || c.includes("landing page")) &&
+      (text.includes("landing page") || text.includes("website") || text.includes("conversion") || text.includes("cro"))) score += 5;
+
+  // ── Output signals (weight 6) ──
+  if (outputs.some((o) => o.includes("written content") || o.includes("ad copy") || o.includes("email")) &&
+      (text.includes("content") || text.includes("writing") || text.includes("copy") || text.includes("blog") || text.includes("email"))) score += 6;
+  if (outputs.some((o) => o.includes("video")) &&
+      (text.includes("video") || text.includes("avatar") || text.includes("text-to-video"))) score += 6;
+  if (outputs.some((o) => o.includes("lead") || o.includes("pipeline")) &&
+      (text.includes("lead") || text.includes("pipeline") || text.includes("intent") || text.includes("visitor"))) score += 6;
+  if (outputs.some((o) => o.includes("crm") || o.includes("workflow")) &&
+      (text.includes("crm") || text.includes("workflow") || text.includes("automat") || text.includes("hubspot"))) score += 6;
+  if (outputs.some((o) => o.includes("analytics") || o.includes("optimis")) &&
+      (text.includes("analytic") || text.includes("optim") || text.includes("performan") || text.includes("score"))) score += 6;
+
+  // ── Team size signals (weight 3) ──
+  if ((team.includes("solo") || team.includes("founder")) &&
+      (text.includes("solo") || text.includes("individual") || text.includes("easy") || text.includes("no-code") || text.includes("small"))) score += 3;
+  if (team.includes("small") &&
+      (text.includes("team") || text.includes("small") || text.includes("smb") || text.includes("growing"))) score += 3;
+  if (team.includes("agency") &&
+      (text.includes("agency") || text.includes("client") || text.includes("white-label") || text.includes("multi-brand"))) score += 3;
+  if (team.includes("enterprise") &&
+      (text.includes("enterprise") || text.includes("scale") || text.includes("large") || text.includes("org"))) score += 3;
+
+  return score;
+}
+
+const MARKETING_SYSTEM_PROMPT = `You are a Marketing AI Expert with deep knowledge of content marketing, demand generation, and marketing automation platforms.
+
+The user completed a 4-question wizard about their marketing goals. You will receive their answers and a list of matched agents from our database.
+
+OUTPUT - you MUST produce exactly these four sections, in this order, using these exact headings:
+
+## Summary
+2–3 sentences. Name the best-fit agent and explain in plain language why it matches this user's specific goal, channels, and team size. No filler.
+
+## Comparison Table
+A markdown table with columns: Agent Name | Strength | Best Use Case | Limitation | Fit Score
+Fit Score must be High / Medium / Low relative to this user's answers.
+Include ALL provided agents.
+
+## Recommended Agent
+Start with "Best choice: **[Agent Name]**". Then 3–5 sentences: what it does, why it fits this user's goal + channels + desired output + team size, and one concrete outcome the user can expect. If a secondary agent meaningfully complements the primary (covers a gap), name it and say why in 1–2 sentences.
+
+## Setup Instructions
+Numbered list of 4–6 practical steps to get started with the recommended agent. Be specific - mention the agent by name, reference the channel and output type, and match the user's team size and workflow.
+
+## Official Links
+For each recommended agent, format as: [Visit Agent Name](url)
+
+RULES:
+- Only describe capabilities explicitly present in the provided agent data. Do NOT invent features.
+- Fit Score must reflect the user's specific answers - not generic agent quality.
+- Keep tone professional and direct. No marketing language.
+- Do NOT include links anywhere except the "Official Links" section.`;
+
+function extractMarketingRequirements(data: MarketingWizardData): string[] {
+  const reqs: string[] = [];
+
+  const goalMap: Record<string, string> = {
+    "Generate more leads and pipeline": "Lead generation and pipeline growth as the primary marketing objective",
+    "Create content at scale": "High-volume content creation and scaling requirements across marketing channels",
+    "Improve ad and copy performance": "Ad copy and content performance optimisation as the primary KPI focus",
+    "Automate marketing workflows": "Marketing workflow automation and operational efficiency requirements",
+    "Build brand awareness": "Brand awareness and content reach as the primary marketing objective",
+    "Produce video content": "AI-powered video production and distribution requirements",
+  };
+  const channelMap: Record<string, string> = {
+    "Email marketing": "Email campaign automation and copy optimisation requirements",
+    "Paid ads (Meta, Google, LinkedIn)": "Paid advertising copy and performance optimisation requirements",
+    "Social media": "Social media content creation and publishing requirements",
+    "SEO / organic content": "SEO-optimised blog and organic content production requirements",
+    "Video": "Video content creation and distribution requirements",
+    "Website / landing pages": "Landing page and website conversion copy requirements",
+  };
+  const outputMap: Record<string, string> = {
+    "Written content (blogs, emails, ad copy)": "Written content at scale: blogs, emails, and ad copy",
+    "Video production": "AI video production output requirements",
+    "Lead and pipeline data": "Lead intelligence and pipeline signal data requirements",
+    "CRM and workflow automation": "CRM and marketing workflow automation requirements",
+    "Performance analytics and optimisation": "Content and ad performance analytics requirements",
+  };
+  const teamMap: Record<string, string> = {
+    "Solo marketer or founder": "Solo marketer or founder — optimised for ease of use and low operational overhead",
+    "Small marketing team (2–10 people)": "Small marketing team deployment with collaborative workflow support",
+    "Marketing agency": "Marketing agency use case — multi-client, white-label, or high-volume production",
+    "Enterprise marketing department": "Enterprise marketing department scale with advanced integration requirements",
+  };
+
+  (data.mktGoal ?? []).forEach((g) => { if (goalMap[g]) reqs.push(goalMap[g]); });
+  (data.mktChannel ?? []).forEach((c) => { if (channelMap[c]) reqs.push(channelMap[c]); });
+  (data.mktOutput ?? []).forEach((o) => { if (outputMap[o]) reqs.push(outputMap[o]); });
+  if (data.mktTeam && teamMap[data.mktTeam]) reqs.push(teamMap[data.mktTeam]);
+  if (data.mktNotes?.trim()) reqs.push(`Additional context: ${data.mktNotes.trim().slice(0, 140)}${data.mktNotes.trim().length > 140 ? "…" : ""}`);
+
+  return [...new Set(reqs)].slice(0, 7);
+}
+
+async function handleMarketingRecommend(wizardData: MarketingWizardData) {
+  const mktRows = (agentsJson as AgentRow[]).filter(
+    (r) => r.Business_Domain === "Marketing"
+  );
+
+  const agentMap = new Map<string, Omit<MarketingAgentProfile, "score">>();
+  for (const row of mktRows) {
+    if (!agentMap.has(row.Agent_ID)) {
+      agentMap.set(row.Agent_ID, {
+        id: row.Agent_ID,
+        name: row.Agent_Name,
+        type: row.Agent_Type,
+        link: row.Link ?? "",
+        capabilities: [],
+        claims: [],
+        userValues: [],
+        bestFor: [],
+        whenToUse: [],
+      });
+    }
+    const profile = agentMap.get(row.Agent_ID)!;
+    if (row.Sub_Parameter_L2) profile.capabilities.push(row.Sub_Parameter_L2);
+    if (row.Capability_Claim) profile.claims.push(row.Capability_Claim);
+    if (row.User_Value) profile.userValues.push(row.User_Value);
+    if (row.Best_For_User_Needs) profile.bestFor.push(row.Best_For_User_Needs);
+    if (row.When_To_Use) profile.whenToUse.push(row.When_To_Use);
+  }
+
+  const scored: MarketingAgentProfile[] = Array.from(agentMap.values())
+    .map((p) => ({ ...p, score: scoreMarketingAgent(p, wizardData) }))
+    .sort((a, b) => b.score - a.score);
+
+  const topAgents = scored.slice(0, 5).map((a) => ({
+    name: a.name,
+    type: a.type,
+    link: a.link,
+    score: a.score,
+    capabilities: a.capabilities,
+    userValues: [...new Set(a.userValues)].slice(0, 6),
+    bestFor: [...new Set(a.bestFor)].slice(0, 4),
+    whenToUse: [...new Set(a.whenToUse)].slice(0, 4),
+  }));
+
+  const requirements = extractMarketingRequirements(wizardData);
+  const requirementsSection =
+    `## Key Requirements Captured\n\n` +
+    requirements.map((r) => `- ${r}`).join("\n") +
+    "\n\n";
+
+  const aiResponse = await openai.chat.completions.create({
+    model: "gpt-4o",
+    max_tokens: 1600,
+    messages: [
+      { role: "system", content: MARKETING_SYSTEM_PROMPT },
+      {
+        role: "user",
+        content: JSON.stringify({ wizardAnswers: wizardData, agents: topAgents }),
+      },
+    ],
+  });
+
+  const gptOutput = aiResponse.choices[0].message.content ?? "No recommendations generated.";
+
+  return NextResponse.json({
+    output: requirementsSection + gptOutput,
+  });
+}
+
+// ─────────────────────────────────────────
 // REAL ESTATE REQUIREMENTS EXTRACTION
 // ─────────────────────────────────────────
 
@@ -992,6 +1234,10 @@ export async function POST(req: Request) {
 
     if (domain === "Finance") {
       return handleFinanceRecommend(body.wizardData as FinanceWizardData);
+    }
+
+    if (domain === "Marketing") {
+      return handleMarketingRecommend(body.wizardData as MarketingWizardData);
     }
 
     const needs = mapGoalsToNeeds(goals);
