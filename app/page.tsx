@@ -311,7 +311,7 @@ onClick={() =>
                 },
                 {
                   Icon: Rocket,
-                  title: "Built around your business domain",
+                  title: "Business domain oriented",
                   body: "AgenticLib is organised by industry - real estate, finance, marketing, customer support, and more. Every recommendation is built around the specific context and needs of your business domain.",
                 },
                 {
