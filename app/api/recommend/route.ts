@@ -240,13 +240,13 @@ OUTPUT - you MUST produce exactly these four sections, in this order, using thes
 ## Comparison Table
 First, derive 6–8 technical parameters that customer service practitioners use to evaluate tools in this domain. Group them into 2–3 categories (e.g. "Channel & Deployment", "Automation & AI", "Integration & Scale"). Use these parameters as rows, and each agent as a column.
 
-Each cell must contain 1–2 sentences in plain English explaining what the agent actually does for that parameter. Do not use tick marks, labels like High/Medium/Low, or single-word descriptors. If an agent does not support a parameter, explain what it does instead or why it falls short — never use ✗ or "N/A" alone.
+Each cell must contain 1–2 sentences in plain English explaining what the agent actually does for that parameter. Do not use tick marks, labels like High/Medium/Low, or single-word descriptors. If an agent does not support a parameter, briefly explain what it does instead and when that alternative capability would still be useful — never use ✗ or "N/A" alone. No cell may begin with "does not", "lacks", "limited", or "not designed for" without immediately pivoting to what the agent does offer.
 
 Example structure:
-| Parameter | Agent A | Agent B | Agent C |
+| Capability | Agent A | Agent B | Agent C |
 |---|---|---|---|
 | **Channel & Deployment** | | | |
-| Live chat support | Deploys natively on your website with no code setup and handles conversations end-to-end. | Connects to live chat via API, requiring a developer to configure the integration. | Focuses on email and voice only — live chat is not currently supported. |
+| Live chat support | Deploys natively on your website with no code setup and handles conversations end-to-end. | Connects to live chat via API, requiring a developer to configure the integration. | Specialises in email and voice automation — a strong fit if your primary channel is inbound calls or ticketing rather than live chat. |
 | **Pricing** | From $29/month with a free trial available. | Starts at $99/month per seat; enterprise plans available on request. | Contact for pricing — no public tiers listed. |
 
 At the bottom of the table always include a **Pricing** row. For each agent, state the actual pricing tier or starting price if publicly known (e.g. "From $49/month per seat"). If a freemium plan exists, mention it. If pricing is enterprise-only, say "Contact for pricing". If pricing is genuinely unknown, say "Pricing not publicly listed". Never leave this cell vague.
@@ -276,6 +276,23 @@ SCORING RULES — read carefully:
 - Each dimension score (requirements_match, domain_fit, ease_of_adoption) must also reflect real differences — avoid giving every agent similar sub-scores.
 
 CRITICAL: Include EVERY agent that appears in the comparison table — not just the recommended pick or its complement. The "agents" array must have one entry per column in the comparison table. Do not omit any agent.
+
+CONSISTENCY CHECK — run these steps in order before finalising the recommendation:
+1. The user's PRIMARY requirement is the FIRST goal they selected in the wizard form. Look at the wizardAnswers object in the user message — the primary requirement is the first item in the goal array (csGoal[0], mktGoal[0], goals[0], finFocus[0], loanArea[0], mediaVision[0], or equivalent for the domain). Use that value, not the Key Requirements Captured list.
+2. Look at the comparison table and find the capability row that most directly maps to that primary goal. Identify which agent has the strongest, most direct cell for that row.
+3. That agent MUST be the recommended agent — unless it scores below 50 overall, in which case note the conflict explicitly.
+4. You are NOT allowed to recommend an agent based on secondary requirements if a different agent clearly leads on the primary requirement.
+5. If the recommended agent's own table cell for the primary requirement contains any of the following — "lacks", "not focused", "does not", "limited", "not designed for", "not its primary" — the recommendation is INVALID and must be changed to the agent with the strongest cell for that requirement.
+6. Do not paper over a primary requirement gap with prose qualifications. If the table shows a mismatch, the recommendation must change.
+
+MULTI-GOAL STACK RULE:
+- Count how many goals the user selected (length of the goal array in wizardAnswers).
+- If the user selected 2 or more goals AND no single agent scores above 80 on requirements_match for ALL of those goals combined, output a PRIMARY + SECONDARY agent stack in the Recommended Agent section instead of a single pick.
+- Format the stack as:
+  **Primary: [Agent A]** — covers [primary goal] and [secondary goal if applicable].
+  **Secondary: [Agent B]** — fills the gap on [remaining goal], and works alongside [Agent A] to complete the workflow.
+  Then explain in 2–3 sentences why this combination is stronger than any single agent for this specific set of goals.
+- If a single agent covers all selected goals adequately (requirements_match above 80 for each), recommend it alone — do not force a stack.
 
 \`\`\`CONFIDENCE_SCORES
 {
@@ -574,10 +591,10 @@ First, derive 6–8 technical parameters that media/film practitioners use to ev
 Each cell must contain 1–2 sentences in plain English explaining what the tool actually does for that parameter. Do not use tick marks, labels like High/Medium/Low, or single-word descriptors. If a tool does not support a parameter, explain what it does instead or where it falls short — never use ✗ or "N/A" alone.
 
 Example structure:
-| Parameter | Tool A | Tool B | Tool C |
+| Capability | Tool A | Tool B | Tool C |
 |---|---|---|---|
 | **Core Production** | | | |
-| Text-to-video generation | Generates complete video scenes from a text prompt, including motion, lighting, and camera angles. | Focuses on VFX and character animation rather than generating video from scratch. | Designed for editing existing footage — text-to-video generation is not part of its toolset. |
+| Text-to-video generation | Generates complete video scenes from a text prompt, including motion, lighting, and camera angles. | Focuses on inserting photorealistic CG characters into live footage — the right choice when you already have video and need VFX rather than generation. | Built for editing and assembling existing footage, making it ideal when you have raw material to work with rather than starting from a prompt. |
 | **Pricing** | From $29/month with a free trial available. | Starts at $99/month per seat; enterprise plans available on request. | Contact for pricing — no public tiers listed. |
 
 At the bottom of the table always include a **Pricing** row. For each tool, state the actual pricing tier or starting price if publicly known. If a freemium plan exists, mention it. If pricing is enterprise-only, say "Contact for pricing". If pricing is genuinely unknown, say "Pricing not publicly listed". Never leave this cell vague.
@@ -807,10 +824,10 @@ First, derive 6–8 technical parameters that financial services practitioners u
 Each cell must contain 1–2 sentences in plain English explaining what the agent actually does for that parameter. Do not use tick marks, labels like High/Medium/Low, or single-word descriptors. If an agent does not support a parameter, explain what it does instead or where it falls short — never use ✗ or "N/A" alone.
 
 Example structure:
-| Parameter | Agent A | Agent B | Agent C |
+| Capability | Agent A | Agent B | Agent C |
 |---|---|---|---|
 | **Core Processing** | | | |
-| Document extraction accuracy | Extracts structured data from unstructured loan documents with over 95% accuracy using a purpose-built OCR and NLP pipeline. | Uses general-purpose document AI that performs well on standard formats but can struggle with handwritten or non-standard layouts. | Relies on manual data entry workflows and does not offer automated document extraction. |
+| Document extraction accuracy | Extracts structured data from unstructured loan documents with over 95% accuracy using a purpose-built OCR and NLP pipeline. | Uses general-purpose document AI that handles standard formats well — better suited to structured PDFs than complex or handwritten documents. | Centres on workflow automation and decision logic; pairs well with a dedicated extraction tool upstream if document parsing is a priority. |
 | **Pricing** | From $29/month with a free trial available. | Starts at $99/month per seat; enterprise plans available on request. | Contact for pricing — no public tiers listed. |
 
 At the bottom of the table always include a **Pricing** row. For each agent, state the actual pricing tier or starting price if publicly known. If a freemium plan exists, mention it. If pricing is enterprise-only, say "Contact for pricing". If pricing is genuinely unknown, say "Pricing not publicly listed". Never leave this cell vague.
@@ -840,6 +857,23 @@ SCORING RULES — read carefully:
 - Each dimension score (requirements_match, domain_fit, ease_of_adoption) must also reflect real differences — avoid giving every agent similar sub-scores.
 
 CRITICAL: Include EVERY agent that appears in the comparison table — not just the recommended pick or its complement. The "agents" array must have one entry per column in the comparison table. Do not omit any agent.
+
+CONSISTENCY CHECK — run these steps in order before finalising the recommendation:
+1. The user's PRIMARY requirement is the FIRST goal they selected in the wizard form. Look at the wizardAnswers object in the user message — the primary requirement is the first item in the goal array (csGoal[0], mktGoal[0], goals[0], finFocus[0], loanArea[0], mediaVision[0], or equivalent for the domain). Use that value, not the Key Requirements Captured list.
+2. Look at the comparison table and find the capability row that most directly maps to that primary goal. Identify which agent has the strongest, most direct cell for that row.
+3. That agent MUST be the recommended agent — unless it scores below 50 overall, in which case note the conflict explicitly.
+4. You are NOT allowed to recommend an agent based on secondary requirements if a different agent clearly leads on the primary requirement.
+5. If the recommended agent's own table cell for the primary requirement contains any of the following — "lacks", "not focused", "does not", "limited", "not designed for", "not its primary" — the recommendation is INVALID and must be changed to the agent with the strongest cell for that requirement.
+6. Do not paper over a primary requirement gap with prose qualifications. If the table shows a mismatch, the recommendation must change.
+
+MULTI-GOAL STACK RULE:
+- Count how many goals the user selected (length of the goal array in wizardAnswers).
+- If the user selected 2 or more goals AND no single agent scores above 80 on requirements_match for ALL of those goals combined, output a PRIMARY + SECONDARY agent stack in the Recommended Agent section instead of a single pick.
+- Format the stack as:
+  **Primary: [Agent A]** — covers [primary goal] and [secondary goal if applicable].
+  **Secondary: [Agent B]** — fills the gap on [remaining goal], and works alongside [Agent A] to complete the workflow.
+  Then explain in 2–3 sentences why this combination is stronger than any single agent for this specific set of goals.
+- If a single agent covers all selected goals adequately (requirements_match above 80 for each), recommend it alone — do not force a stack.
 
 \`\`\`CONFIDENCE_SCORES
 {
@@ -1167,10 +1201,10 @@ First, derive 6–8 technical parameters that marketing practitioners use to eva
 Each cell must contain 1–2 sentences in plain English explaining what the agent actually does for that parameter. Do not use tick marks, labels like High/Medium/Low, or single-word descriptors. If an agent does not support a parameter, explain what it does instead or where it falls short — never use ✗ or "N/A" alone.
 
 Example structure:
-| Parameter | Jasper | Synthesia | HubSpot Breeze |
+| Capability | Jasper | Synthesia | HubSpot Breeze |
 |---|---|---|---|
 | **Content & Output** | | | |
-| Blog & long-form content | Generates full blog posts, outlines, and long-form copy using your brand voice guidelines stored in Jasper IQ. | Designed exclusively for video — it does not generate written content of any kind. | Supports short-form content like email copy and CTAs but is not built for long-form blog production. |
+| Blog & long-form content | Generates full blog posts, outlines, and long-form copy using your brand voice guidelines stored in Jasper IQ. | Specialises in AI video production with avatars and voiceovers — the right pick when your content strategy centres on video rather than written assets. | Excels at short-form copy like email subject lines, CTAs, and ad text — well suited if your blog needs are secondary to campaign and email output. |
 | **Pricing** | From $29/month with a free trial available. | Starts at $99/month per seat; enterprise plans available on request. | Contact for pricing — no public tiers listed. |
 
 At the bottom of the table always include a **Pricing** row. For each agent, state the actual pricing tier or starting price if publicly known. If a freemium plan exists, mention it. If pricing is enterprise-only, say "Contact for pricing". If pricing is genuinely unknown, say "Pricing not publicly listed". Never leave this cell vague.
@@ -1200,6 +1234,23 @@ SCORING RULES — read carefully:
 - Each dimension score (requirements_match, domain_fit, ease_of_adoption) must also reflect real differences — avoid giving every agent similar sub-scores.
 
 CRITICAL: Include EVERY agent that appears in the comparison table — not just the recommended pick or its complement. The "agents" array must have one entry per column in the comparison table. Do not omit any agent.
+
+CONSISTENCY CHECK — run these steps in order before finalising the recommendation:
+1. The user's PRIMARY requirement is the FIRST goal they selected in the wizard form. Look at the wizardAnswers object in the user message — the primary requirement is the first item in the goal array (csGoal[0], mktGoal[0], goals[0], finFocus[0], loanArea[0], mediaVision[0], or equivalent for the domain). Use that value, not the Key Requirements Captured list.
+2. Look at the comparison table and find the capability row that most directly maps to that primary goal. Identify which agent has the strongest, most direct cell for that row.
+3. That agent MUST be the recommended agent — unless it scores below 50 overall, in which case note the conflict explicitly.
+4. You are NOT allowed to recommend an agent based on secondary requirements if a different agent clearly leads on the primary requirement.
+5. If the recommended agent's own table cell for the primary requirement contains any of the following — "lacks", "not focused", "does not", "limited", "not designed for", "not its primary" — the recommendation is INVALID and must be changed to the agent with the strongest cell for that requirement.
+6. Do not paper over a primary requirement gap with prose qualifications. If the table shows a mismatch, the recommendation must change.
+
+MULTI-GOAL STACK RULE:
+- Count how many goals the user selected (length of the goal array in wizardAnswers).
+- If the user selected 2 or more goals AND no single agent scores above 80 on requirements_match for ALL of those goals combined, output a PRIMARY + SECONDARY agent stack in the Recommended Agent section instead of a single pick.
+- Format the stack as:
+  **Primary: [Agent A]** — covers [primary goal] and [secondary goal if applicable].
+  **Secondary: [Agent B]** — fills the gap on [remaining goal], and works alongside [Agent A] to complete the workflow.
+  Then explain in 2–3 sentences why this combination is stronger than any single agent for this specific set of goals.
+- If a single agent covers all selected goals adequately (requirements_match above 80 for each), recommend it alone — do not force a stack.
 
 \`\`\`CONFIDENCE_SCORES
 {
@@ -1544,10 +1595,10 @@ First, derive 6–8 technical parameters that real estate practitioners use to e
 Each cell must contain 1–2 sentences in plain English explaining what the agent actually does for that parameter. Do not use tick marks, labels like High/Medium/Low, or single-word descriptors. If an agent does not support a parameter, explain what it does instead or where it falls short — never use ✗ or "N/A" alone.
 
 Example structure:
-| Parameter | Agent A | Agent B | Agent C |
+| Capability | Agent A | Agent B | Agent C |
 |---|---|---|---|
 | **Market Intelligence** | | | |
-| Property valuation accuracy | Analyses comparable sales, listing history, and local market data to generate AVM estimates within 3–5% of market value. | Focuses on lead prediction rather than valuation — it surfaces likely sellers but does not estimate property prices. | Provides market trend summaries but relies on MLS data feeds rather than its own valuation model. |
+| Property valuation accuracy | Analyses comparable sales, listing history, and local market data to generate AVM estimates within 3–5% of market value. | Focuses on predicting which homeowners are likely to sell — a strong complement when lead timing matters more than precise price estimates. | Aggregates market trend data from MLS feeds, useful for directional pricing insight even if granular AVM precision is not its primary output. |
 | **Pricing** | From $29/month with a free trial available. | Starts at $99/month per seat; enterprise plans available on request. | Contact for pricing — no public tiers listed. |
 
 At the bottom of the table always include a **Pricing** row. Use the verified current pricing data provided in the user message. State the actual pricing tier or starting price. If a freemium plan exists, mention it. If enterprise-only, say "Contact for pricing". If unknown, say "Pricing not publicly listed". Never leave this cell vague.
@@ -1774,6 +1825,23 @@ SCORING RULES — read carefully:
 - Each dimension score (requirements_match, domain_fit, ease_of_adoption) must also reflect real differences — avoid giving every agent similar sub-scores.
 
 CRITICAL: Include EVERY agent that appears in the comparison table — not just the recommended pick or its complement. The "agents" array must have one entry per column in the comparison table. Do not omit any agent.
+
+CONSISTENCY CHECK — run these steps in order before finalising the recommendation:
+1. The user's PRIMARY requirement is the FIRST goal they selected in the wizard form. Look at the wizardAnswers object in the user message — the primary requirement is the first item in the goal array (csGoal[0], mktGoal[0], goals[0], finFocus[0], loanArea[0], mediaVision[0], or equivalent for the domain). Use that value, not the Key Requirements Captured list.
+2. Look at the comparison table and find the capability row that most directly maps to that primary goal. Identify which agent has the strongest, most direct cell for that row.
+3. That agent MUST be the recommended agent — unless it scores below 50 overall, in which case note the conflict explicitly.
+4. You are NOT allowed to recommend an agent based on secondary requirements if a different agent clearly leads on the primary requirement.
+5. If the recommended agent's own table cell for the primary requirement contains any of the following — "lacks", "not focused", "does not", "limited", "not designed for", "not its primary" — the recommendation is INVALID and must be changed to the agent with the strongest cell for that requirement.
+6. Do not paper over a primary requirement gap with prose qualifications. If the table shows a mismatch, the recommendation must change.
+
+MULTI-GOAL STACK RULE:
+- Count how many goals the user selected (length of the goal array in wizardAnswers).
+- If the user selected 2 or more goals AND no single agent scores above 80 on requirements_match for ALL of those goals combined, output a PRIMARY + SECONDARY agent stack in the Recommended Agent section instead of a single pick.
+- Format the stack as:
+  **Primary: [Agent A]** — covers [primary goal] and [secondary goal if applicable].
+  **Secondary: [Agent B]** — fills the gap on [remaining goal], and works alongside [Agent A] to complete the workflow.
+  Then explain in 2–3 sentences why this combination is stronger than any single agent for this specific set of goals.
+- If a single agent covers all selected goals adequately (requirements_match above 80 for each), recommend it alone — do not force a stack.
 
 \`\`\`CONFIDENCE_SCORES
 {
