@@ -7,6 +7,24 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// ─────────────────────────────────────────
+// Fetch live pricing via web search
+// ─────────────────────────────────────────
+async function fetchAgentPricing(agentNames: string[]): Promise<string> {
+  try {
+    const query = `Current pricing plans for ${agentNames.join(", ")} AI tools 2025 — monthly cost, free tier, enterprise pricing`;
+    const response = await (openai as any).responses.create({
+      model: "gpt-4o-mini-search-preview",
+      tools: [{ type: "web_search_preview" }],
+      input: query,
+    });
+    const text = response.output_text ?? response.output?.find((b: any) => b.type === "message")?.content?.find((c: any) => c.type === "output_text")?.text ?? "";
+    return text ? `CURRENT PRICING DATA (from live web search):\n${text}` : "";
+  } catch {
+    return "";
+  }
+}
+
 // Normalize
 // ─────────────────────────────────────────
 const normalize = (str: string) =>
@@ -220,9 +238,18 @@ OUTPUT - you MUST produce exactly these four sections, in this order, using thes
 2–3 sentences. Name the best-fit agent and explain in plain language why it matches this user's specific goal, channel, and scale. No filler.
 
 ## Comparison Table
-A markdown table with columns: Agent Name | Strength | Best Use Case | Limitation | Fit Score
-Fit Score must be High / Medium / Low relative to this user's answers.
-Include ALL provided agents.
+First, derive 6–8 technical parameters that customer service practitioners use to evaluate tools in this domain. Group them into 2–3 categories (e.g. "Channel & Deployment", "Automation & AI", "Integration & Scale"). Use these parameters as rows, and each agent as a column.
+
+Each cell must contain 1–2 sentences in plain English explaining what the agent actually does for that parameter. Do not use tick marks, labels like High/Medium/Low, or single-word descriptors. If an agent does not support a parameter, explain what it does instead or why it falls short — never use ✗ or "N/A" alone.
+
+Example structure:
+| Parameter | Agent A | Agent B | Agent C |
+|---|---|---|---|
+| **Channel & Deployment** | | | |
+| Live chat support | Deploys natively on your website with no code setup and handles conversations end-to-end. | Connects to live chat via API, requiring a developer to configure the integration. | Focuses on email and voice only — live chat is not currently supported. |
+| **Pricing** | From $29/month with a free trial available. | Starts at $99/month per seat; enterprise plans available on request. | Contact for pricing — no public tiers listed. |
+
+At the bottom of the table always include a **Pricing** row. For each agent, state the actual pricing tier or starting price if publicly known (e.g. "From $49/month per seat"). If a freemium plan exists, mention it. If pricing is enterprise-only, say "Contact for pricing". If pricing is genuinely unknown, say "Pricing not publicly listed". Never leave this cell vague.
 
 ## Recommended Agent
 Start with "Best choice: **[Agent Name]**". Then 3–5 sentences: what it does, why it fits this user's goal + channel + volume + tech preference, and one concrete outcome the user can expect. If a secondary agent meaningfully complements the primary (covers a gap), name it and say why in 1–2 sentences.
@@ -233,9 +260,40 @@ Numbered list of 4–6 practical steps to get started with the recommended agent
 ## Official Links
 For each recommended agent, format as: [Visit Agent Name](url)
 
+## CONFIDENCE_SCORES
+After the Official Links section, append this exact JSON block. Score each agent 0–100 across three dimensions:
+- requirements_match: how many of the user's stated requirements the agent covers
+- domain_fit: how purpose-built the agent is for this specific industry and use case
+- ease_of_adoption: how low-friction setup is based on the user's stated tech preferences
+
+Average the three into overall. Scores MUST reflect genuine differentiation — never output the same score for all agents.
+
+SCORING RULES — read carefully:
+- The gap between the best-fit and worst-fit agent MUST be at least 25–30 points overall.
+- An agent that is clearly mismatched for the user's scale, use case, or technical requirements MUST score in the 40s or 50s — not the 70s.
+- Do not cluster scores in the 70–80 range to seem balanced. If an agent is a weak fit, score it honestly.
+- Only the best-matched agent should score above 80. Secondary agents should be in the 60s–70s. Poor fits should be in the 40s–60s.
+- Each dimension score (requirements_match, domain_fit, ease_of_adoption) must also reflect real differences — avoid giving every agent similar sub-scores.
+
+CRITICAL: Include EVERY agent that appears in the comparison table — not just the recommended pick or its complement. The "agents" array must have one entry per column in the comparison table. Do not omit any agent.
+
+\`\`\`CONFIDENCE_SCORES
+{
+  "agents": [
+    {
+      "name": "Agent Name",
+      "overall": 84,
+      "requirements_match": 90,
+      "domain_fit": 85,
+      "ease_of_adoption": 77
+    }
+  ]
+}
+\`\`\`
+
 RULES:
 - Only describe capabilities explicitly present in the provided agent data. Do NOT invent features.
-- Fit Score must reflect the user's specific answers - not generic agent quality.
+- Parameter scores must reflect the user's specific answers and agent data — not generic quality.
 - Keep tone professional and direct. No marketing language.
 - Do NOT include links anywhere except the "Official Links" section.`;
 
@@ -352,15 +410,16 @@ async function handleCSRecommend(wizardData: CSWizardData) {
     whenToUse: [...new Set(a.whenToUse)].slice(0, 4),
   }));
 
-  // 4. OpenAI call
+  // 4. Fetch live pricing then call OpenAI
+  const csPricing = await fetchAgentPricing(topAgents.map((a) => a.name));
   const aiResponse = await openai.chat.completions.create({
     model: "gpt-4o",
-    max_tokens: 1600,
+    max_tokens: 2400,
     messages: [
       { role: "system", content: CS_SYSTEM_PROMPT },
       {
         role: "user",
-        content: JSON.stringify({ wizardAnswers: wizardData, agents: topAgents }),
+        content: JSON.stringify({ wizardAnswers: wizardData, agents: topAgents }) + (csPricing ? `\n\n${csPricing}` : ""),
       },
     ],
   });
@@ -510,8 +569,18 @@ OUTPUT - produce exactly these sections in this order using these exact headings
 2–3 cinematic sentences restating the user's intent. Name the transformation type, style direction, and production goal. Sound like a creative director briefing a team - not a chatbot summarising a form.
 
 ## Comparison Table
-| Tool | Best For | Transformation Type | Style Match | Production Scale |
-Include ALL provided agents. Use the user's actual answers to assess fit.
+First, derive 6–8 technical parameters that media/film practitioners use to evaluate production AI tools for this specific use case (e.g. rendering quality, supported input formats, language/dubbing support, export options, real-time preview, collaboration, API access). Group into 2–3 categories (e.g. "Core Production", "Output & Format", "Workflow & Scale"). Use parameters as rows, agents as columns.
+
+Each cell must contain 1–2 sentences in plain English explaining what the tool actually does for that parameter. Do not use tick marks, labels like High/Medium/Low, or single-word descriptors. If a tool does not support a parameter, explain what it does instead or where it falls short — never use ✗ or "N/A" alone.
+
+Example structure:
+| Parameter | Tool A | Tool B | Tool C |
+|---|---|---|---|
+| **Core Production** | | | |
+| Text-to-video generation | Generates complete video scenes from a text prompt, including motion, lighting, and camera angles. | Focuses on VFX and character animation rather than generating video from scratch. | Designed for editing existing footage — text-to-video generation is not part of its toolset. |
+| **Pricing** | From $29/month with a free trial available. | Starts at $99/month per seat; enterprise plans available on request. | Contact for pricing — no public tiers listed. |
+
+At the bottom of the table always include a **Pricing** row. For each tool, state the actual pricing tier or starting price if publicly known. If a freemium plan exists, mention it. If pricing is enterprise-only, say "Contact for pricing". If pricing is genuinely unknown, say "Pricing not publicly listed". Never leave this cell vague.
 
 ## Recommended Tool
 Start with: "Your ideal tool: **[Tool Name]**"
@@ -524,6 +593,28 @@ If a second tool meaningfully covers a gap the primary can't handle, name it and
 
 ## Official Links
 [Visit Tool Name](url) for each recommended tool.
+
+## CONFIDENCE_SCORES
+After the Official Links section, append this exact JSON block. Score each tool 0–100 across three dimensions:
+- requirements_match: how many of the user's stated production requirements the tool covers
+- domain_fit: how purpose-built the tool is for this specific media use case and transformation type
+- ease_of_adoption: how low-friction setup and integration is for this user's workflow
+
+Average the three into overall. Scores MUST reflect genuine differentiation — never output the same score for all tools.
+
+\`\`\`CONFIDENCE_SCORES
+{
+  "agents": [
+    {
+      "name": "Tool Name",
+      "overall": 84,
+      "requirements_match": 90,
+      "domain_fit": 85,
+      "ease_of_adoption": 77
+    }
+  ]
+}
+\`\`\`
 
 RULES:
 - Only describe capabilities present in the provided agent data. Do NOT invent features.
@@ -574,14 +665,15 @@ async function handleMediaRecommend(wizardData: MediaWizardData) {
     whenToUse: [...new Set(a.whenToUse)].slice(0, 4),
   }));
 
+  const mediaPricing = await fetchAgentPricing(topAgents.map((a) => a.name));
   const aiResponse = await openai.chat.completions.create({
     model: "gpt-4o",
-    max_tokens: 1600,
+    max_tokens: 2400,
     messages: [
       { role: "system", content: MEDIA_SYSTEM_PROMPT },
       {
         role: "user",
-        content: JSON.stringify({ wizardAnswers: wizardData, agents: topAgents }),
+        content: JSON.stringify({ wizardAnswers: wizardData, agents: topAgents }) + (mediaPricing ? `\n\n${mediaPricing}` : ""),
       },
     ],
   });
@@ -710,9 +802,18 @@ OUTPUT - you MUST produce exactly these four sections, in this order, using thes
 2–3 sentences. Name the best-fit agent and explain in plain language why it matches this user's specific subdomain, focus area, and institution type. No filler.
 
 ## Comparison Table
-A markdown table with columns: Agent Name | Strength | Best Use Case | Limitation | Fit Score
-Fit Score must be High / Medium / Low relative to this user's answers.
-Include ALL provided agents.
+First, derive 6–8 technical parameters that financial services practitioners use to evaluate AI tools for this specific subdomain (e.g. for lending: document extraction accuracy, decisioning speed, explainability, compliance coverage, integration with core banking systems, automation level). Group into 2–3 categories (e.g. "Core Processing", "Compliance & Risk", "Integration & Scale"). Use parameters as rows, agents as columns.
+
+Each cell must contain 1–2 sentences in plain English explaining what the agent actually does for that parameter. Do not use tick marks, labels like High/Medium/Low, or single-word descriptors. If an agent does not support a parameter, explain what it does instead or where it falls short — never use ✗ or "N/A" alone.
+
+Example structure:
+| Parameter | Agent A | Agent B | Agent C |
+|---|---|---|---|
+| **Core Processing** | | | |
+| Document extraction accuracy | Extracts structured data from unstructured loan documents with over 95% accuracy using a purpose-built OCR and NLP pipeline. | Uses general-purpose document AI that performs well on standard formats but can struggle with handwritten or non-standard layouts. | Relies on manual data entry workflows and does not offer automated document extraction. |
+| **Pricing** | From $29/month with a free trial available. | Starts at $99/month per seat; enterprise plans available on request. | Contact for pricing — no public tiers listed. |
+
+At the bottom of the table always include a **Pricing** row. For each agent, state the actual pricing tier or starting price if publicly known. If a freemium plan exists, mention it. If pricing is enterprise-only, say "Contact for pricing". If pricing is genuinely unknown, say "Pricing not publicly listed". Never leave this cell vague.
 
 ## Recommended Agent
 Start with "Best choice: **[Agent Name]**". Then 3–5 sentences: what it does, why it fits this user's subdomain + focus + institution + outcome, and one concrete result the user can expect. If a secondary agent meaningfully covers a gap, name it and explain in 1–2 sentences.
@@ -723,9 +824,40 @@ Numbered list of 4–6 practical steps to get started with the recommended agent
 ## Official Links
 For each recommended agent, format as: [Visit Agent Name](url)
 
+## CONFIDENCE_SCORES
+After the Official Links section, append this exact JSON block. Score each agent 0–100 across three dimensions:
+- requirements_match: how many of the user's stated financial requirements the agent covers
+- domain_fit: how purpose-built the agent is for this specific financial subdomain and institution type
+- ease_of_adoption: how low-friction integration is given the user's stated institution size and tech stack
+
+Average the three into overall. Scores MUST reflect genuine differentiation — never output the same score for all agents.
+
+SCORING RULES — read carefully:
+- The gap between the best-fit and worst-fit agent MUST be at least 25–30 points overall.
+- An agent that is clearly mismatched for the user's scale, use case, or technical requirements MUST score in the 40s or 50s — not the 70s.
+- Do not cluster scores in the 70–80 range to seem balanced. If an agent is a weak fit, score it honestly.
+- Only the best-matched agent should score above 80. Secondary agents should be in the 60s–70s. Poor fits should be in the 40s–60s.
+- Each dimension score (requirements_match, domain_fit, ease_of_adoption) must also reflect real differences — avoid giving every agent similar sub-scores.
+
+CRITICAL: Include EVERY agent that appears in the comparison table — not just the recommended pick or its complement. The "agents" array must have one entry per column in the comparison table. Do not omit any agent.
+
+\`\`\`CONFIDENCE_SCORES
+{
+  "agents": [
+    {
+      "name": "Agent Name",
+      "overall": 84,
+      "requirements_match": 90,
+      "domain_fit": 85,
+      "ease_of_adoption": 77
+    }
+  ]
+}
+\`\`\`
+
 RULES:
 - Only describe capabilities explicitly present in the provided agent data. Do NOT invent features.
-- Fit Score must reflect the user's specific answers — not generic agent quality.
+- Parameter scores must reflect the user's specific answers and agent data — not generic quality.
 - Keep tone professional and direct. No marketing language.
 - Do NOT include links anywhere except the "Official Links" section.`;
 
@@ -897,14 +1029,15 @@ async function handleFinanceRecommend(wizardData: FinanceWizardData) {
     requirements.map((r) => `- ${r}`).join("\n") +
     "\n\n";
 
+  const financePricing = await fetchAgentPricing(topAgents.map((a) => a.name));
   const aiResponse = await openai.chat.completions.create({
     model: "gpt-4o",
-    max_tokens: 1600,
+    max_tokens: 2400,
     messages: [
       { role: "system", content: FINANCE_SYSTEM_PROMPT },
       {
         role: "user",
-        content: JSON.stringify({ wizardAnswers: wizardData, agents: topAgents }),
+        content: JSON.stringify({ wizardAnswers: wizardData, agents: topAgents }) + (financePricing ? `\n\n${financePricing}` : ""),
       },
     ],
   });
@@ -1029,9 +1162,18 @@ OUTPUT - you MUST produce exactly these four sections, in this order, using thes
 2–3 sentences. Name the best-fit agent and explain in plain language why it matches this user's specific goal, channels, and team size. No filler.
 
 ## Comparison Table
-A markdown table with columns: Agent Name | Strength | Best Use Case | Limitation | Fit Score
-Fit Score must be High / Medium / Low relative to this user's answers.
-Include ALL provided agents.
+First, derive 6–8 technical parameters that marketing practitioners use to evaluate AI tools for this specific use case (e.g. content types supported, channel integrations, brand voice training, performance optimisation, CRM compatibility, video capability, team collaboration, AI model quality). Group into 2–3 categories (e.g. "Content & Output", "Channel & Distribution", "Performance & Scale"). Use parameters as rows, agents as columns.
+
+Each cell must contain 1–2 sentences in plain English explaining what the agent actually does for that parameter. Do not use tick marks, labels like High/Medium/Low, or single-word descriptors. If an agent does not support a parameter, explain what it does instead or where it falls short — never use ✗ or "N/A" alone.
+
+Example structure:
+| Parameter | Jasper | Synthesia | HubSpot Breeze |
+|---|---|---|---|
+| **Content & Output** | | | |
+| Blog & long-form content | Generates full blog posts, outlines, and long-form copy using your brand voice guidelines stored in Jasper IQ. | Designed exclusively for video — it does not generate written content of any kind. | Supports short-form content like email copy and CTAs but is not built for long-form blog production. |
+| **Pricing** | From $29/month with a free trial available. | Starts at $99/month per seat; enterprise plans available on request. | Contact for pricing — no public tiers listed. |
+
+At the bottom of the table always include a **Pricing** row. For each agent, state the actual pricing tier or starting price if publicly known. If a freemium plan exists, mention it. If pricing is enterprise-only, say "Contact for pricing". If pricing is genuinely unknown, say "Pricing not publicly listed". Never leave this cell vague.
 
 ## Recommended Agent
 Start with "Best choice: **[Agent Name]**". Then 3–5 sentences: what it does, why it fits this user's goal + channels + desired output + team size, and one concrete outcome the user can expect. If a secondary agent meaningfully complements the primary (covers a gap), name it and say why in 1–2 sentences.
@@ -1042,9 +1184,40 @@ Numbered list of 4–6 practical steps to get started with the recommended agent
 ## Official Links
 For each recommended agent, format as: [Visit Agent Name](url)
 
+## CONFIDENCE_SCORES
+After the Official Links section, append this exact JSON block. Score each agent 0–100 across three dimensions:
+- requirements_match: how many of the user's stated marketing goals, channels, and output types the agent covers
+- domain_fit: how purpose-built the agent is for this specific marketing use case and team size
+- ease_of_adoption: how low-friction setup and onboarding is for a team of this size and technical level
+
+Average the three into overall. Scores MUST reflect genuine differentiation — never output the same score for all agents.
+
+SCORING RULES — read carefully:
+- The gap between the best-fit and worst-fit agent MUST be at least 25–30 points overall.
+- An agent that is clearly mismatched for the user's scale, use case, or technical requirements MUST score in the 40s or 50s — not the 70s.
+- Do not cluster scores in the 70–80 range to seem balanced. If an agent is a weak fit, score it honestly.
+- Only the best-matched agent should score above 80. Secondary agents should be in the 60s–70s. Poor fits should be in the 40s–60s.
+- Each dimension score (requirements_match, domain_fit, ease_of_adoption) must also reflect real differences — avoid giving every agent similar sub-scores.
+
+CRITICAL: Include EVERY agent that appears in the comparison table — not just the recommended pick or its complement. The "agents" array must have one entry per column in the comparison table. Do not omit any agent.
+
+\`\`\`CONFIDENCE_SCORES
+{
+  "agents": [
+    {
+      "name": "Agent Name",
+      "overall": 84,
+      "requirements_match": 90,
+      "domain_fit": 85,
+      "ease_of_adoption": 77
+    }
+  ]
+}
+\`\`\`
+
 RULES:
 - Only describe capabilities explicitly present in the provided agent data. Do NOT invent features.
-- Fit Score must reflect the user's specific answers - not generic agent quality.
+- Parameter scores must reflect the user's specific answers and agent data — not generic quality.
 - Keep tone professional and direct. No marketing language.
 - Do NOT include links anywhere except the "Official Links" section.`;
 
@@ -1139,14 +1312,15 @@ async function handleMarketingRecommend(wizardData: MarketingWizardData) {
     requirements.map((r) => `- ${r}`).join("\n") +
     "\n\n";
 
+  const marketingPricing = await fetchAgentPricing(topAgents.map((a) => a.name));
   const aiResponse = await openai.chat.completions.create({
     model: "gpt-4o",
-    max_tokens: 1600,
+    max_tokens: 2400,
     messages: [
       { role: "system", content: MARKETING_SYSTEM_PROMPT },
       {
         role: "user",
-        content: JSON.stringify({ wizardAnswers: wizardData, agents: topAgents }),
+        content: JSON.stringify({ wizardAnswers: wizardData, agents: topAgents }) + (marketingPricing ? `\n\n${marketingPricing}` : ""),
       },
     ],
   });
@@ -1331,11 +1505,12 @@ const hasStrongMatch = needs.every((need) =>
     }));
 
     // ─────────────────────────────────────
-    // Build output
+    // Fetch live pricing + build output
     // ─────────────────────────────────────
+const rePricing = await fetchAgentPricing(enriched.map((a: any) => a.name));
 const aiResponse = await openai.chat.completions.create({
   model: "gpt-4o",
-  max_tokens: 1200,
+  max_tokens: 2400,
   messages: [
     {
       role: "system",
@@ -1364,7 +1539,18 @@ Straight Answer First
 <clear answer>
 
 ## Comparison Table
-Agent | Core Role | What it actually does | Strength | Limitation | Budget/Cost
+First, derive 6–8 technical parameters that real estate practitioners use to evaluate AI tools for this specific use case (e.g. property valuation accuracy, lead scoring, CRM integration, market trend analysis, document automation, listing intelligence, investment analysis). Group into 2–3 categories (e.g. "Market Intelligence", "Lead & CRM", "Workflow Automation"). Use parameters as rows, agents as columns.
+
+Each cell must contain 1–2 sentences in plain English explaining what the agent actually does for that parameter. Do not use tick marks, labels like High/Medium/Low, or single-word descriptors. If an agent does not support a parameter, explain what it does instead or where it falls short — never use ✗ or "N/A" alone.
+
+Example structure:
+| Parameter | Agent A | Agent B | Agent C |
+|---|---|---|---|
+| **Market Intelligence** | | | |
+| Property valuation accuracy | Analyses comparable sales, listing history, and local market data to generate AVM estimates within 3–5% of market value. | Focuses on lead prediction rather than valuation — it surfaces likely sellers but does not estimate property prices. | Provides market trend summaries but relies on MLS data feeds rather than its own valuation model. |
+| **Pricing** | From $29/month with a free trial available. | Starts at $99/month per seat; enterprise plans available on request. | Contact for pricing — no public tiers listed. |
+
+At the bottom of the table always include a **Pricing** row. Use the verified current pricing data provided in the user message. State the actual pricing tier or starting price. If a freemium plan exists, mention it. If enterprise-only, say "Contact for pricing". If unknown, say "Pricing not publicly listed". Never leave this cell vague.
 
 ## What This Means in Practice
 <explain clearly using actual capabilities and user needs>
@@ -1571,6 +1757,37 @@ RULES:
 🔧 Critical Instruction Upgrade
 “If a required capability (e.g., property valuation, market pricing analytics) is not covered by the initially selected agents, you MUST introduce at least one additional agent that directly fulfills that capability.
 Do NOT leave capability gaps unresolved or respond with ‘additional tools may be required’ - instead, explicitly name and include the missing agent in the recommendation.”
+
+## CONFIDENCE_SCORES
+After your final recommendation, append this exact JSON block. Score each agent 0–100 across three dimensions:
+- requirements_match: how many of the user’s stated goals and priorities the agent covers
+- domain_fit: how purpose-built the agent is for real estate and this user’s specific persona
+- ease_of_adoption: how low-friction setup is based on the user’s stated priorities and technical comfort
+
+Average the three into overall. Scores MUST reflect genuine differentiation — never output the same score for all agents.
+
+SCORING RULES — read carefully:
+- The gap between the best-fit and worst-fit agent MUST be at least 25–30 points overall.
+- An agent that is clearly mismatched for the user's scale, use case, or technical requirements MUST score in the 40s or 50s — not the 70s.
+- Do not cluster scores in the 70–80 range to seem balanced. If an agent is a weak fit, score it honestly.
+- Only the best-matched agent should score above 80. Secondary agents should be in the 60s–70s. Poor fits should be in the 40s–60s.
+- Each dimension score (requirements_match, domain_fit, ease_of_adoption) must also reflect real differences — avoid giving every agent similar sub-scores.
+
+CRITICAL: Include EVERY agent that appears in the comparison table — not just the recommended pick or its complement. The "agents" array must have one entry per column in the comparison table. Do not omit any agent.
+
+\`\`\`CONFIDENCE_SCORES
+{
+  “agents”: [
+    {
+      “name”: “Agent Name”,
+      “overall”: 84,
+      “requirements_match”: 90,
+      “domain_fit”: 85,
+      “ease_of_adoption”: 77
+    }
+  ]
+}
+\`\`\`
 `,
     },
     {
@@ -1581,7 +1798,7 @@ content: JSON.stringify({
   priorities,
   agents: enriched,
   hasStrongMatch,
-}),
+}) + (rePricing ? `\n\n${rePricing}` : ""),
     },
   ],
 });

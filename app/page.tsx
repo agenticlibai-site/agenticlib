@@ -310,9 +310,9 @@ onClick={() =>
                   body: "Every recommendation explains itself. See which agents were considered, why your top pick ranked highest, and what trade-offs exist, so you make the decision with full context, not blind trust.",
                 },
                 {
-                  Icon: ArrowLeftRight,
-                  title: "Compare agents seamlessly",
-                  body: "Get a side-by-side breakdown of any two agents across capabilities, pricing, use cases, and visual performance metrics - all in one view.",
+                  Icon: Rocket,
+                  title: "Built around your business domain",
+                  body: "AgenticLib is organised by industry - real estate, finance, marketing, customer support, and more. Every recommendation is built around the specific context and needs of your business domain.",
                 },
                 {
                   Icon: Database,
@@ -320,9 +320,9 @@ onClick={() =>
                   body: "AgenticLib surfaces structured, decision-relevant intelligence rather than generic AI summaries. Every agent profile is built around the dimensions that actually matter for your use case.",
                 },
                 {
-                  Icon: Rocket,
-                  title: "Setup included",
-                  body: "We don't stop at the recommendation. Every result includes step-by-step setup instructions so you can go from decision to deployed fast.",
+                  Icon: ArrowLeftRight,
+                  title: "Compare agents seamlessly",
+                  body: "Get a side-by-side breakdown of any two agents across capabilities, pricing, use cases, and visual performance metrics - all in one view.",
                 },
                 {
                   Icon: Users,
