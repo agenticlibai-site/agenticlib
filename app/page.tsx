@@ -123,6 +123,23 @@ onClick={() =>
     Blogs
   </Link>
 
+  {/* About */}
+  <Link
+    href="/#about"
+    onClick={(e) => {
+      if (pathname === "/") {
+        e.preventDefault();
+        document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
+      }
+    }}
+    className="transition px-3 py-1.5 rounded-lg"
+    style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b" }}
+    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLAnchorElement).style.color = "#18181b"; }}
+    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; (e.currentTarget as HTMLAnchorElement).style.color = "#52525b"; }}
+  >
+    About
+  </Link>
+
   {/* Contact Us */}
   <Link
     href="/#contact"
@@ -290,7 +307,7 @@ onClick={() =>
         </section>
 
         {/* WHAT MAKES US UNIQUE */}
-        <section className="py-16 px-6">
+        <section id="about" className="py-16 px-6">
           <div className="max-w-5xl mx-auto">
 
             <h2 className="text-3xl font-semibold mb-3 text-zinc-900">
