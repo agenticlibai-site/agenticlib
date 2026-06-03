@@ -278,6 +278,7 @@ onClick={() =>
             <video
               src="/AgenticLib demo video.mp4"
               controls
+              poster="/recommendations-cover.png"
               className="w-full"
               onPlay={handleVideoPlay}
             />
@@ -300,6 +301,7 @@ onClick={() =>
               src="/C&R Video.mp4"
               controls
               autoPlay={false}
+              poster="/research-cover.png"
               className="w-full"
             />
           </div>
