@@ -106,18 +106,19 @@ export default function BlogPage() {
             <Image src="/logo.png" alt="AgenticLib" width={120} height={24} className="h-6 w-auto" />
             <span className="text-lg font-semibold tracking-tight">AgenticLib</span>
           </Link>
-          <div className="flex items-center gap-6">
-            <Link href="/" className="text-sm text-zinc-500 hover:text-zinc-900 transition">
-              ← Home
-            </Link>
-            <a
-              href="https://chatgpt.com/g/g-69795c1eeb808191beea0005fdc16126-agenticlib-decision-engine"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-medium bg-zinc-900 text-white px-4 py-2 rounded-full hover:opacity-90 transition"
+          <div className="flex items-center">
+            <Link
+              href="/"
+              className="flex items-center gap-2 px-4 py-2 rounded-full border transition-all text-sm font-medium"
+              style={{ borderColor: "#e4e4e7", color: "#3f3f46", background: "white" }}
+              onMouseEnter={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "#f4f4f5"; el.style.borderColor = "#d4d4d8"; }}
+              onMouseLeave={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "white"; el.style.borderColor = "#e4e4e7"; }}
             >
-              Get started
-            </a>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 11L5 7l4-4" />
+              </svg>
+              Home
+            </Link>
           </div>
         </div>
       </header>

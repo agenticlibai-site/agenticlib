@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { decisionAgents, domains } from "@/data/agents";
 import agentsJson from "@/data/agents.json";
 import OpenAI from "openai";
+import { generateStructuredRecommendation } from "./anthropic-handler";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -427,7 +428,12 @@ async function handleCSRecommend(wizardData: CSWizardData) {
     whenToUse: [...new Set(a.whenToUse)].slice(0, 4),
   }));
 
-  // 4. Fetch live pricing then call OpenAI
+  // 4. Try Anthropic structured recommendation; fall back to OpenAI markdown
+  const structured = await generateStructuredRecommendation("Customer Service", wizardData as Record<string, unknown>, topAgents);
+  if (structured) {
+    return NextResponse.json({ structured });
+  }
+
   const csPricing = await fetchAgentPricing(topAgents.map((a) => a.name));
   const aiResponse = await openai.chat.completions.create({
     model: "gpt-4o",
@@ -681,6 +687,11 @@ async function handleMediaRecommend(wizardData: MediaWizardData) {
     bestFor: [...new Set(a.bestFor)].slice(0, 4),
     whenToUse: [...new Set(a.whenToUse)].slice(0, 4),
   }));
+
+  const mediaStructured = await generateStructuredRecommendation("Media & Entertainment", wizardData as Record<string, unknown>, topAgents);
+  if (mediaStructured) {
+    return NextResponse.json({ structured: mediaStructured });
+  }
 
   const mediaPricing = await fetchAgentPricing(topAgents.map((a) => a.name));
   const aiResponse = await openai.chat.completions.create({
@@ -1057,6 +1068,12 @@ async function handleFinanceRecommend(wizardData: FinanceWizardData) {
     whenToUse: [...new Set(a.whenToUse)].slice(0, 4),
   }));
 
+  const finDomain = wizardData.finSubdomain === "Banking" ? "Finance - Banking" : "Finance - Loans & Insurance";
+  const finStructured = await generateStructuredRecommendation(finDomain, wizardData as Record<string, unknown>, topAgents);
+  if (finStructured) {
+    return NextResponse.json({ structured: finStructured });
+  }
+
   const requirements = extractKeyRequirements(wizardData);
   const requirementsSection =
     `## Key Requirements Captured\n\n` +
@@ -1357,6 +1374,11 @@ async function handleMarketingRecommend(wizardData: MarketingWizardData) {
     whenToUse: [...new Set(a.whenToUse)].slice(0, 4),
   }));
 
+  const mktStructured = await generateStructuredRecommendation("Marketing", wizardData as Record<string, unknown>, topAgents);
+  if (mktStructured) {
+    return NextResponse.json({ structured: mktStructured });
+  }
+
   const requirements = extractMarketingRequirements(wizardData);
   const requirementsSection =
     `## Key Requirements Captured\n\n` +
@@ -1556,8 +1578,24 @@ const hasStrongMatch = needs.every((need) =>
     }));
 
     // ─────────────────────────────────────
-    // Fetch live pricing + build output
+    // Try Anthropic structured output first
     // ─────────────────────────────────────
+    if (domain === "Real Estate") {
+      const reAgents = enriched.map((a: any) => ({
+        name: a.name,
+        type: a.use_cases?.join(", ") ?? "",
+        link: a.url ?? "",
+        score: a.score ?? 0,
+        capabilities: a.use_cases ?? [],
+        userValues: [],
+        bestFor: [],
+      }));
+      const reStructured = await generateStructuredRecommendation("Real Estate", body.wizardData as Record<string, unknown>, reAgents);
+      if (reStructured) {
+        return NextResponse.json({ structured: reStructured });
+      }
+    }
+
 const rePricing = await fetchAgentPricing(enriched.map((a: any) => a.name));
 const aiResponse = await openai.chat.completions.create({
   model: "gpt-4o",
