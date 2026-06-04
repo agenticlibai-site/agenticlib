@@ -10,6 +10,7 @@ import { Target, Lightbulb, ArrowLeftRight, Database, Rocket, Users, Share2, Mai
 export default function Home() {
   const [query, setQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [productExpanded, setProductExpanded] = useState(false);
   const videoPlayedRef = useRef(false);
 
   const handleVideoPlay = () => {
@@ -213,10 +214,38 @@ export default function Home() {
         {/* Mobile menu */}
         {mobileOpen && (
           <div className="md:hidden mt-2 rounded-2xl overflow-hidden" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 8px 24px rgba(0,0,0,0.08)" }}>
+            {/* Product accordion */}
+            <button
+              onClick={() => setProductExpanded((o) => !o)}
+              className="w-full flex items-center justify-between px-5 py-3.5 text-sm font-medium text-zinc-700 hover:bg-gray-50 transition-colors"
+              style={{ background: "none", border: "none", cursor: "pointer", borderBottom: "1px solid #f3f4f6" }}
+            >
+              <span>Product</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ transform: productExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>
+                <path d="M3 5l4 4 4-4" stroke="#71717a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            {productExpanded && (
+              <div style={{ background: "#fafafa", borderBottom: "1px solid #f3f4f6" }}>
+                {[
+                  { label: "Sage – AI Agent Recommendations", href: "/product/recommendations" },
+                  { label: "Vera – Research & Compare", href: "/product/research" },
+                  { label: "AI Agent Library", href: "/explore" },
+                ].map((item) => (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="block pl-8 pr-5 py-3 text-sm text-zinc-600 hover:text-zinc-900 hover:bg-gray-100 transition-colors"
+                    style={{ textDecoration: "none", borderBottom: "1px solid #f0f0f0" }}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            )}
+            {/* Top-level links */}
             {[
-              { label: "Sage – AI Agent Recommendations", href: "/product/recommendations" },
-              { label: "Vera – Research & Compare", href: "/product/research" },
-              { label: "AI Agent Library", href: "/explore" },
               { label: "Blog", href: "/blog" },
               { label: "About", href: "/#about" },
               { label: "Contact Us", href: "/#contact" },
