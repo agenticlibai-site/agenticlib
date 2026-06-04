@@ -276,7 +276,7 @@ onClick={() =>
 
           <div className="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl border">
             <video
-              src="/Agenticlib demo video.mp4"
+              src="/AgenticLib demo video.mp4"
               controls
               poster="/recommendations-cover.png"
               className="w-full"
@@ -290,7 +290,7 @@ onClick={() =>
         <section className="pb-10 text-center" style={{ marginTop: "48px" }}>
 
           <h2 className="text-4xl font-semibold mb-3">
-            Where we're headed
+            Where we&apos;re headed
           </h2>
           <p className="text-zinc-900 text-base mb-6">
             Compare, research, and decide — all in one place.
