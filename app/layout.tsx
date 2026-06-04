@@ -23,7 +23,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://agenticlib.com"),
   title: {
-    default: "AgenticLib — AI Agent Library & Personalised Recommendations",
+    default: "AgenticLib — AI Agent Comparison & Personalised Recommendations",
     template: "%s | AgenticLib",
   },
   description:
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "AgenticLib",
-    title: "AgenticLib — AI Agent Library & Personalised Recommendations",
+    title: "AgenticLib — AI Agent Comparison & Personalised Recommendations",
     description:
       "Browse 250+ AI agents across 90+ business domains. Get personalised recommendations tailored to your goals, team, and workflow.",
     url: "https://agenticlib.com",

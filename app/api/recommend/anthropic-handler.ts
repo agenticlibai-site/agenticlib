@@ -98,6 +98,7 @@ Rules:
 - For realPricing use your best knowledge of publicly available pricing — state clearly if uncertain
 - For the RECOMMENDED agent's realFeatures: write 4-6 entries in the format "Feature name — one sentence explaining what it does and exactly why it helps this user achieve their stated goal". Ground each feature in real, publicly available knowledge about the product. Do NOT list generic marketing claims.
 - For non-recommended agents' realFeatures: 2-3 concise factual feature names only
+- For every agent in every comparison table cell, always write 1-2 sentences in plain English. Never use dashes, never leave cells empty or with a single word. If a capability is not applicable to an agent, explain why in plain English and mention what the user would need instead.
 - Cells in comparisonTable must NEVER start with "does not", "lacks", "limited" without pivoting to what the agent does offer instead
 - Return only valid JSON — no markdown code fences, no explanation text outside the JSON`;
 }

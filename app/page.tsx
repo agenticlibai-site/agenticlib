@@ -276,7 +276,7 @@ onClick={() =>
 
           <div className="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl border">
             <video
-              src="/AgenticLib demo video.mp4"
+              src="/Agenticlib demo video.mp4"
               controls
               poster="/recommendations-cover.png"
               className="w-full"

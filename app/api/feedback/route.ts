@@ -16,6 +16,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Missing option" }, { status: 400 });
   }
 
+  const country = req.headers.get("x-vercel-ip-country") ?? "Unknown";
+  const city = req.headers.get("x-vercel-ip-city") ?? "Unknown";
+  const location = [city, country].filter((v) => v && v !== "Unknown").join(", ") || "Unknown";
+
   try {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
@@ -27,6 +31,10 @@ export async function POST(req: NextRequest) {
           <tr>
             <td style="padding:8px 12px;font-weight:600;color:#3f3f46;background:#f4f4f5;border-radius:4px;">Selected option</td>
             <td style="padding:8px 12px;color:#18181b;">${option}</td>
+          </tr>
+          <tr>
+            <td style="padding:8px 12px;font-weight:600;color:#3f3f46;background:#f4f4f5;border-radius:4px;">Location</td>
+            <td style="padding:8px 12px;color:#18181b;">📍 ${location}</td>
           </tr>
           <tr>
             <td style="padding:8px 12px;font-weight:600;color:#3f3f46;background:#f4f4f5;border-radius:4px;">Page</td>
