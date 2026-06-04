@@ -9,6 +9,7 @@ import { Target, Lightbulb, ArrowLeftRight, Database, Rocket, Users, Share2, Mai
 
 export default function Home() {
   const [query, setQuery] = useState("");
+  const [mobileOpen, setMobileOpen] = useState(false);
   const videoPlayedRef = useRef(false);
 
   const handleVideoPlay = () => {
@@ -61,8 +62,8 @@ export default function Home() {
             </span>
           </div>
 
-          {/* NAV — centred in remaining space */}
-          <div className="flex-1 flex justify-center">
+          {/* NAV — centred in remaining space, hidden on mobile */}
+          <div className="flex-1 justify-center hidden md:flex">
 <nav className="flex items-center gap-8">
 
   {/* Product dropdown */}
@@ -194,7 +195,44 @@ export default function Home() {
 
 </nav>
           </div>
+          {/* Hamburger — mobile only */}
+          <button
+            className="md:hidden ml-auto flex flex-col justify-center items-center gap-1.5 p-2 rounded-lg"
+            style={{ background: "none", border: "none", cursor: "pointer" }}
+            onClick={() => setMobileOpen((o) => !o)}
+            aria-label="Toggle menu"
+          >
+            {mobileOpen ? (
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 4l12 12M16 4L4 16" stroke="#18181b" strokeWidth="1.8" strokeLinecap="round"/></svg>
+            ) : (
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="1.8" rx="0.9" fill="#18181b"/><rect x="3" y="9.1" width="14" height="1.8" rx="0.9" fill="#18181b"/><rect x="3" y="13.2" width="14" height="1.8" rx="0.9" fill="#18181b"/></svg>
+            )}
+          </button>
         </div>
+
+        {/* Mobile menu */}
+        {mobileOpen && (
+          <div className="md:hidden mt-2 rounded-2xl overflow-hidden" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 8px 24px rgba(0,0,0,0.08)" }}>
+            {[
+              { label: "Sage – AI Agent Recommendations", href: "/product/recommendations" },
+              { label: "Vera – Research & Compare", href: "/product/research" },
+              { label: "AI Agent Library", href: "/explore" },
+              { label: "Blog", href: "/blog" },
+              { label: "About", href: "/#about" },
+              { label: "Contact Us", href: "/#contact" },
+            ].map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileOpen(false)}
+                className="block px-5 py-3.5 text-sm font-medium text-zinc-700 hover:bg-gray-50 transition-colors"
+                style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        )}
       </header>
 
       <main className="pt-16 relative z-0">
