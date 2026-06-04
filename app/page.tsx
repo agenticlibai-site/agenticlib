@@ -65,52 +65,57 @@ export default function Home() {
           <div className="flex-1 flex justify-center">
 <nav className="flex items-center gap-8">
 
-  {/* AI Agent Library */}
-  <Link
-    href="/#library"
-    onClick={(e) => {
-      if (pathname === "/") {
-        e.preventDefault();
-        document.getElementById("library")?.scrollIntoView({ behavior: "smooth" });
-      }
-    }}
-    className="transition px-3 py-1.5 rounded-lg"
-    style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b" }}
-    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLAnchorElement).style.color = "#18181b"; }}
-    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; (e.currentTarget as HTMLAnchorElement).style.color = "#52525b"; }}
-  >
-    AI Agent Library
-  </Link>
-
-  {/* AgenticLib Platform + Badge */}
-<div className="flex items-center gap-[1px]">
-  <button
-onClick={() =>
-  window.open(
-    "https://chatgpt.com/g/g-69795c1eeb808191beea0005fdc16126-agenticlib-decision-engine",
-    "_blank"
-  )
-}
-    className="transition px-3 py-1.5 rounded-lg"
-    style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b" }}
-    onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLButtonElement).style.color = "#18181b"; }}
-    onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = ""; (e.currentTarget as HTMLButtonElement).style.color = "#52525b"; }}
-  >
-    AgenticLib Platform
-  </button>
-
-  <span className="
-    text-[11px] font-medium leading-none
-    px-2.5 py-[2px]
-    rounded-full
-    bg-green-100
-    text-green-700
-    border border-green-200
-    whitespace-nowrap
-  ">
-    Alpha v1.0
-  </span>
-</div>
+  {/* Product dropdown */}
+  <div className="relative group">
+    <button
+      className="transition px-3 py-1.5 rounded-lg flex items-center gap-1"
+      style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b", background: "none", border: "none", cursor: "pointer" }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLButtonElement).style.color = "#18181b"; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = ""; (e.currentTarget as HTMLButtonElement).style.color = "#52525b"; }}
+    >
+      Product
+      <span className="text-[11px] font-medium leading-none px-2 py-[2px] rounded-full bg-green-100 text-green-700 border border-green-200 whitespace-nowrap">Alpha v1.0</span>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginTop: 1 }}>
+        <path d="M2.5 4.5l3.5 3.5 3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </button>
+    {/* Dropdown */}
+    <div className="absolute left-0 top-full pt-2 hidden group-hover:block" style={{ zIndex: 9999, minWidth: 320 }}>
+      <div className="rounded-2xl p-2" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 16px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)" }}>
+        {[
+          { label: "AI Agent Recommendations", href: "/product/recommendations", desc: "Get matched to the right agent instantly", iconBg: "linear-gradient(135deg,#7c3aed,#a78bfa)", icon: (
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.4 5 5.6.8-4 3.9.9 5.5L10 14.5l-4.9 2.7.9-5.5L2 7.8l5.6-.8L10 2z" fill="white"/></svg>
+          )},
+          { label: "Research & Compare", href: "/product/research", desc: "Compare agents side by side in detail", iconBg: "linear-gradient(135deg,#2563eb,#60a5fa)", icon: (
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="6" height="12" rx="1.5" fill="white" fillOpacity=".9"/><rect x="12" y="3" width="6" height="14" rx="1.5" fill="white" fillOpacity=".6"/><path d="M9 10h2M9 10l-1.5-1.5M9 10l-1.5 1.5M11 10l1.5-1.5M11 10l1.5 1.5" stroke="white" strokeWidth="1.2" strokeLinecap="round"/></svg>
+          )},
+          { label: "AI Agent Library", href: "/explore", desc: "Browse all agents across every domain", iconBg: "linear-gradient(135deg,#16a34a,#4ade80)", icon: (
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="white" fillOpacity=".9"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="white" fillOpacity=".6"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="white" fillOpacity=".6"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="white" fillOpacity=".9"/></svg>
+          )},
+        ].map((item) => (
+          <a
+            key={item.href}
+            href={item.href}
+            className="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-colors group/item"
+            style={{ textDecoration: "none" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#f8f8ff"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}
+          >
+            <div className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: item.iconBg }}>
+              {item.icon}
+            </div>
+            <div className="flex flex-col flex-1">
+              <span style={{ fontSize: 14, fontWeight: 600, color: "#18181b", lineHeight: 1.3 }}>{item.label}</span>
+              <span style={{ fontSize: 12, color: "#18181b", marginTop: 2 }}>{item.desc}</span>
+            </div>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color: "#d1d5db" }}>
+              <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
 
   {/* Blog */}
   <Link
