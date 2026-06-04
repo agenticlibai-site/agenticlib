@@ -80,13 +80,13 @@ export default function Home() {
       </svg>
     </button>
     {/* Dropdown */}
-    <div className="absolute left-0 top-full pt-2 hidden group-hover:block" style={{ zIndex: 9999, minWidth: 320 }}>
+    <div className="absolute left-0 top-full pt-2 hidden group-hover:block" style={{ zIndex: 9999, minWidth: 380 }}>
       <div className="rounded-2xl p-2" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 16px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)" }}>
         {[
-          { label: "AI Agent Recommendations", href: "/product/recommendations", desc: "Get matched to the right agent instantly", iconBg: "linear-gradient(135deg,#7c3aed,#a78bfa)", icon: (
+          { label: "Sage – AI Agent Recommendations", href: "/product/recommendations", desc: "Get matched to the right agent instantly", iconBg: "linear-gradient(135deg,#7c3aed,#a78bfa)", icon: (
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.4 5 5.6.8-4 3.9.9 5.5L10 14.5l-4.9 2.7.9-5.5L2 7.8l5.6-.8L10 2z" fill="white"/></svg>
           )},
-          { label: "Research & Compare", href: "/product/research", desc: "Compare agents side by side in detail", iconBg: "linear-gradient(135deg,#2563eb,#60a5fa)", icon: (
+          { label: "Vera – Research & Compare", href: "/product/research", desc: "Compare agents side by side in detail", iconBg: "linear-gradient(135deg,#2563eb,#60a5fa)", icon: (
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="6" height="12" rx="1.5" fill="white" fillOpacity=".9"/><rect x="12" y="3" width="6" height="14" rx="1.5" fill="white" fillOpacity=".6"/><path d="M9 10h2M9 10l-1.5-1.5M9 10l-1.5 1.5M11 10l1.5-1.5M11 10l1.5 1.5" stroke="white" strokeWidth="1.2" strokeLinecap="round"/></svg>
           )},
           { label: "AI Agent Library", href: "/explore", desc: "Browse all agents across every domain", iconBg: "linear-gradient(135deg,#16a34a,#4ade80)", icon: (
@@ -105,8 +105,8 @@ export default function Home() {
               {item.icon}
             </div>
             <div className="flex flex-col flex-1">
-              <span style={{ fontSize: 14, fontWeight: 600, color: "#18181b", lineHeight: 1.3 }}>{item.label}</span>
-              <span style={{ fontSize: 12, color: "#18181b", marginTop: 2 }}>{item.desc}</span>
+              <span style={{ fontSize: 13, fontWeight: 600, color: "#18181b", lineHeight: 1.3 }}>{item.label}</span>
+              <span style={{ fontSize: 11.5, color: "#18181b", marginTop: 2 }}>{item.desc}</span>
             </div>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color: "#d1d5db" }}>
               <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -117,16 +117,46 @@ export default function Home() {
     </div>
   </div>
 
-  {/* Blog */}
-  <Link
-    href="/blog"
-    className="transition px-3 py-1.5 rounded-lg"
-    style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b" }}
-    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLAnchorElement).style.color = "#18181b"; }}
-    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; (e.currentTarget as HTMLAnchorElement).style.color = "#52525b"; }}
-  >
-    Blogs
-  </Link>
+  {/* Resources dropdown */}
+  <div className="relative group">
+    <button
+      className="transition px-3 py-1.5 rounded-lg flex items-center gap-1"
+      style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b", background: "none", border: "none", cursor: "pointer" }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLButtonElement).style.color = "#18181b"; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = ""; (e.currentTarget as HTMLButtonElement).style.color = "#52525b"; }}
+    >
+      Resources
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginTop: 1 }}>
+        <path d="M2.5 4.5l3.5 3.5 3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    </button>
+    <div className="absolute left-0 top-full pt-2 hidden group-hover:block" style={{ zIndex: 9999, minWidth: 340 }}>
+      <div className="rounded-2xl p-2" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 16px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)" }}>
+        <Link
+          href="/blog"
+          className="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-colors"
+          style={{ textDecoration: "none" }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#f8f8ff"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}
+        >
+          <div className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#f59e0b,#fbbf24)" }}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <rect x="3" y="4" width="14" height="2.5" rx="1.25" fill="white"/>
+              <rect x="3" y="8.5" width="10" height="2.5" rx="1.25" fill="white" fillOpacity=".8"/>
+              <rect x="3" y="13" width="7" height="2.5" rx="1.25" fill="white" fillOpacity=".6"/>
+            </svg>
+          </div>
+          <div className="flex flex-col flex-1">
+            <span style={{ fontSize: 13, fontWeight: 600, color: "#18181b", lineHeight: 1.3 }}>Blog</span>
+            <span style={{ fontSize: 11.5, color: "#18181b", marginTop: 2 }}>Insights, guides and updates</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color: "#d1d5db" }}>
+            <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </Link>
+      </div>
+    </div>
+  </div>
 
   {/* About */}
   <Link
