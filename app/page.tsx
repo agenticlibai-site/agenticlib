@@ -1,14 +1,11 @@
 "use client";
 import { useState, useRef } from "react";
 import Link from "next/link";
-import { domains } from "@/data/agents";
-import { useRouter, usePathname } from "next/navigation";
-import { trackEvent } from "@/lib/analytics";
+import { usePathname } from "next/navigation";
 import { Target, Lightbulb, ArrowLeftRight, Database, Rocket, Users, Share2, Mail, X as XIcon, ArrowUp, MessageCircle } from "lucide-react";
 
 
 export default function Home() {
-  const [query, setQuery] = useState("");
   const [mobileOpen, setMobileOpen] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
   const videoPlayedRef = useRef(false);
@@ -18,28 +15,7 @@ export default function Home() {
     videoPlayedRef.current = true;
     fetch("/api/notify-play", { method: "POST" }).catch(() => {});
   };
-  const router = useRouter();
   const pathname = usePathname();
-
-  const handleSearch = () => {
-    const q = query.toLowerCase().trim();
-
-    const match = domains.find((d) =>
-      d.name.toLowerCase().includes(q) ||
-      d.slug.toLowerCase().includes(q)
-    );
-
-    trackEvent("library_searched", {
-      query: q,
-      matched_domain: match?.slug ?? null,
-    });
-
-    if (match) {
-      router.push(`/domain/${match.slug}`);
-    } else {
-      router.push("/explore");
-    }
-  };
 
   return (
     <div className="page-bg relative text-zinc-900 font-sans">
@@ -295,76 +271,6 @@ export default function Home() {
         </section>
 
 
-        {/* LIBRARY */}
-        <section id="library" className="pb-8" style={{ marginTop: "4px" }}>
-          <div className="max-w-[960px] mx-auto px-6">
-            <div
-              className="px-6 py-5"
-              style={{
-                background: "linear-gradient(135deg, #fafbff 0%, #f5f7ff 100%)",
-                border: "1px solid #e2e8f0",
-                borderRadius: "1.5rem",
-                boxShadow: "0 4px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04)",
-              }}
-            >
-              <h2 className="text-xl font-semibold text-center mb-4 text-zinc-800">
-                Explore AI Agent Library
-              </h2>
-
-              <div className="flex flex-col sm:flex-row gap-3 items-center">
-
-                <input
-                  type="text"
-                  placeholder="Search business domains..."
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") handleSearch();
-                  }}
-                  className="w-full sm:flex-[2] px-4 py-2.5 rounded-xl bg-white border border-blue-200 text-zinc-700 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                />
-
-                <div className="relative w-full sm:flex-[2]">
-                  <select
-                    onChange={(e) => {
-                      if (e.target.value) {
-                        trackEvent("domain_selected_from_dropdown", {
-                          domain_slug: e.target.value,
-                        });
-                        router.push(`/domain/${e.target.value}`);
-                      }
-                    }}
-                    className="w-full px-4 py-2.5 rounded-xl bg-white border border-blue-200 text-zinc-700 appearance-none focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent"
-                    defaultValue=""
-                  >
-                    <option value="">Select Business Domain</option>
-                    {domains.map((d) => (
-                      <option key={d.slug} value={d.slug}>
-                        {d.name}
-                      </option>
-                    ))}
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-3 flex items-center text-zinc-400 text-xs">
-                    ▼
-                  </div>
-                </div>
-
-                <Link
-                  href="/explore"
-                  onClick={() => trackEvent("library_explore_clicked", {})}
-                  className="w-full sm:flex-1 px-6 py-2.5 rounded-xl text-white font-medium transition hover:opacity-90 hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap text-center"
-                  style={{
-                    background: "linear-gradient(135deg, #6c4cf1 0%, #4f7cf5 100%)",
-                    boxShadow: "0 4px 14px rgba(108,76,241,0.25)",
-                  }}
-                >
-                  Explore →
-                </Link>
-
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* DEMO */}
         <section id="demo" className="pb-10 text-center" style={{ marginTop: "12px" }}>
