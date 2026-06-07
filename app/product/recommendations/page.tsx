@@ -37,10 +37,11 @@ export default function RecommendationsPage() {
       <nav className="relative z-10 px-6 py-5 flex items-center">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 text-sm font-medium text-zinc-700 hover:text-zinc-900 transition-colors"
-          style={{ textDecoration: "none", background: "white", border: "1px solid #e5e7eb", borderRadius: 999, padding: "8px 18px", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}
+          className="inline-flex items-center gap-2 text-sm font-semibold transition-colors hover:bg-[#f5f3ff]"
+          style={{ textDecoration: "none", background: "white", borderRadius: 8, padding: "8px 16px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)", color: "#5B5BD6" }}
         >
-          <span style={{ fontSize: 15 }}>‹</span> Home
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8l4 4" stroke="#5B5BD6" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          Home
         </Link>
       </nav>
 
