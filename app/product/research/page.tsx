@@ -7,27 +7,62 @@ export const metadata = {
 
 export default function ResearchPage() {
   return (
-    <main className="min-h-screen" style={{ background: "#fafafa" }}>
-      <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 px-6 py-3 flex items-center gap-4">
-        <Link href="/" className="font-semibold text-zinc-900 text-sm hover:text-violet-600 transition-colors">
-          ← AgenticLib
+    <main className="min-h-screen relative overflow-hidden" style={{ background: "linear-gradient(180deg, #F5F3FF 0%, #FFFFFF 100%)" }}>
+
+      {/* Decorative blurred circles */}
+      <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">
+        <div style={{
+          position: "absolute",
+          top: "-80px",
+          right: "-120px",
+          width: "600px",
+          height: "600px",
+          borderRadius: "50%",
+          background: "rgba(91,91,214,0.08)",
+          filter: "blur(80px)",
+        }} />
+        <div style={{
+          position: "absolute",
+          bottom: "-100px",
+          left: "-100px",
+          width: "400px",
+          height: "400px",
+          borderRadius: "50%",
+          background: "rgba(91,91,214,0.08)",
+          filter: "blur(70px)",
+        }} />
+      </div>
+
+      {/* Nav */}
+      <nav className="relative z-10 px-6 py-5 flex items-center">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-sm font-medium text-zinc-700 hover:text-zinc-900 transition-colors"
+          style={{ textDecoration: "none", background: "white", border: "1px solid #e5e7eb", borderRadius: 999, padding: "8px 18px", boxShadow: "0 1px 4px rgba(0,0,0,0.06)" }}
+        >
+          <span style={{ fontSize: 15 }}>‹</span> Home
         </Link>
       </nav>
 
-      <div className="max-w-4xl mx-auto px-6 py-16">
+      {/* Content */}
+      <div className="relative z-10 max-w-4xl mx-auto px-6 pb-20 pt-8">
+        {/* Header */}
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-semibold mb-3 text-zinc-900">Research & Compare</h1>
-          <p className="text-zinc-600 text-base">
+          <h1 className="text-5xl font-bold mb-4 text-zinc-900" style={{ letterSpacing: "-0.02em" }}>
+            Research & Compare
+          </h1>
+          <p className="text-base text-zinc-500 mx-auto" style={{ maxWidth: 480 }}>
             Compare, research, and decide — all in one place.
           </p>
         </div>
 
-        <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200">
+        {/* Video card */}
+        <div className="rounded-2xl overflow-hidden bg-white" style={{ boxShadow: "0 4px 6px rgba(0,0,0,0.04), 0 20px 60px rgba(91,91,214,0.10), 0 0 0 1px rgba(91,91,214,0.08)" }}>
           <video
             src="/C&R Video.mp4"
             controls
             poster="/research-cover.png"
-            className="w-full"
+            className="w-full block"
           />
         </div>
       </div>
