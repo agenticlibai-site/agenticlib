@@ -436,9 +436,14 @@ export default function Home() {
           <span className="text-sm font-semibold tracking-tight" style={{ color: "rgba(255,255,255,0.75)" }}>AgenticLib</span>
         </div>
         <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }} className="max-w-6xl mx-auto px-8" />
-        <div className="max-w-6xl mx-auto px-8 py-4 flex flex-wrap gap-x-6 gap-y-2">
-          <Link href="/privacy" className="text-xs text-white/40 hover:text-white/70 transition">Privacy Policy</Link>
-          <Link href="/terms" className="text-xs text-white/40 hover:text-white/70 transition">Terms &amp; Conditions</Link>
+        <div className="max-w-6xl mx-auto px-8 py-4 flex flex-wrap items-center justify-between gap-y-4">
+          <div className="flex flex-wrap gap-x-6 gap-y-2">
+            <Link href="/privacy" className="text-xs text-white/40 hover:text-white/70 transition">Privacy Policy</Link>
+            <Link href="/terms" className="text-xs text-white/40 hover:text-white/70 transition">Terms &amp; Conditions</Link>
+          </div>
+          <a href="https://launchpadly.co/startup/agenticlib" target="_blank" rel="noopener noreferrer">
+            <img src="https://launchpadly.co/embed/badges/startup/agenticlib.svg?variant=light" alt="Launchpadly Startup Directory" width="220" height="48" style={{ display: "block", border: 0 }} />
+          </a>
         </div>
       </footer>
 
