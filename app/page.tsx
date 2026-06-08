@@ -13,7 +13,7 @@ export default function Home() {
   const handleVideoPlay = () => {
     if (videoPlayedRef.current) return;
     videoPlayedRef.current = true;
-    fetch("/api/notify-play", { method: "POST" }).catch(() => {});
+    fetch("/api/notify-play", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ source: "Homepage" }) }).catch(() => {});
   };
   const pathname = usePathname();
 
@@ -294,6 +294,9 @@ export default function Home() {
 
         </section>
 
+        {/* FEEDBACK CARD */}
+        <FeedbackCard />
+
         {/* DEMO 2 */}
         <section className="pb-10 text-center" style={{ marginTop: "48px" }}>
 
@@ -440,5 +443,73 @@ export default function Home() {
       </footer>
 
 </div>
+  );
+}
+
+function FeedbackCard() {
+  const [feedback, setFeedback] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!feedback.trim() || !industry.trim()) return;
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/demo-feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ feedback, industry }),
+      });
+      setStatus(res.ok ? "sent" : "error");
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  return (
+    <section className="max-w-2xl mx-auto px-6 pb-2" style={{ marginTop: 32 }}>
+      <div className="rounded-2xl p-6" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
+        {status === "sent" ? (
+          <div className="text-center py-4">
+            <div className="text-2xl mb-2">🙏</div>
+            <p className="font-semibold text-zinc-800 mb-1">Thanks for your feedback!</p>
+            <p className="text-sm text-zinc-500">It genuinely helps us build the right thing.</p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div>
+              <h3 className="text-lg font-bold text-zinc-900 mb-1">What did you think of the demo?</h3>
+              <p className="text-sm text-zinc-500">We&apos;re building AgenticLib and your feedback shapes what we build next.</p>
+            </div>
+            <textarea
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+              placeholder="Share your thoughts..."
+              rows={4}
+              className="w-full rounded-xl px-4 py-3 text-sm text-zinc-800 resize-none focus:outline-none focus:ring-2"
+              style={{ border: "1px solid #e5e7eb", background: "#fafafa" }}
+            />
+            <input
+              value={industry}
+              onChange={(e) => setIndustry(e.target.value)}
+              placeholder="Your industry or domain"
+              required
+              className="w-full rounded-xl px-4 py-3 text-sm text-zinc-800 focus:outline-none focus:ring-2"
+              style={{ border: "1px solid #e5e7eb", background: "#fafafa" }}
+            />
+            <button
+              type="submit"
+              disabled={status === "sending" || !feedback.trim() || !industry.trim()}
+              className="w-full py-3 rounded-xl text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
+              style={{ background: "#5B5BD6" }}
+            >
+              {status === "sending" ? "Sending..." : "Submit Feedback"}
+            </button>
+            {status === "error" && <p className="text-xs text-red-500 text-center">Something went wrong — please try again.</p>}
+          </form>
+        )}
+      </div>
+    </section>
   );
 }

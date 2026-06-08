@@ -7,6 +7,9 @@ export async function POST(req: Request) {
     const city = req.headers.get("x-vercel-ip-city") ?? "";
     const location = [city, country].filter(Boolean).join(", ");
 
+    const body = await req.json().catch(() => ({}));
+    const source: string = body.source ?? "Homepage";
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -18,9 +21,10 @@ export async function POST(req: Request) {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: "agenticlib.ai@gmail.com",
-      subject: "Someone just played the AgenticLib demo video",
-      text: `A visitor clicked play on the demo video.\n\nTime: ${new Date().toUTCString()}\nLocation: ${location}`,
+      subject: `Someone just played the demo video — ${source}`,
+      text: `A visitor clicked play on the demo video.\n\nSource: ${source}\nTime: ${new Date().toUTCString()}\nLocation: ${location}`,
       html: `<p>A visitor clicked <strong>play</strong> on the AgenticLib demo video.</p>
+             <p style="font-size:13px;color:#555;">📺 <strong>Source:</strong> ${source}</p>
              <p style="font-size:13px;color:#555;">📍 <strong>Location:</strong> ${location}</p>
              <p style="color:#888;font-size:13px;">🕐 ${new Date().toUTCString()}</p>`,
     });
