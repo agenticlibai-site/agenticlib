@@ -126,6 +126,15 @@ body {
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
+/* ── Agent preview step entrance animation ── */
+@keyframes stepFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.step-enter {
+  animation: stepFadeIn 0.35s ease both;
+}
+
 /* ── Glass input / select ── */
 .glass-input {
   background: rgba(255, 255, 255, 0.55);
