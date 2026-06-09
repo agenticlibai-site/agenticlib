@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Target, Lightbulb, ArrowLeftRight, Database, Rocket, Users, Share2, Mail, X as XIcon, ArrowUp, MessageCircle } from "lucide-react";
+import { Target, Lightbulb, ArrowLeftRight, Database, Rocket, Users, Share2, Mail, X as XIcon, ArrowUp, MessageCircle, BarChart2 } from "lucide-react";
 
 
 export default function Home() {
@@ -359,9 +359,9 @@ export default function Home() {
                   body: "Get a side-by-side breakdown of any two agents across capabilities, pricing, use cases, and visual performance metrics - all in one view.",
                 },
                 {
-                  Icon: Users,
-                  title: "Built for non-technical teams",
-                  body: "You don't need to understand APIs or integrations. If you know what problem you're trying to solve, AgenticLib finds the agent that solves it.",
+                  Icon: BarChart2,
+                  title: "Prompt Analytics",
+                  body: "See how AI agents are recommended, described, and rated across Claude Sonnet 4.6, GPT-5.5, and Gemini 3.5 in real queries. AgenticLib tracks LLM visibility and sentiment so you deploy with confidence, not guesswork.",
                 },
               ].map(({ Icon, title, body }) => (
                 <div
@@ -384,6 +384,7 @@ export default function Home() {
         </section>
 
       </main>
+
 
       <section id="contact" style={{ background: "linear-gradient(160deg, #F0F0FF 0%, #ffffff 60%)", paddingTop: "80px", paddingBottom: "80px" }}>
         <div className="max-w-3xl mx-auto px-6 text-center">
