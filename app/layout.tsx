@@ -62,9 +62,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AgenticLib — AI Agent Library & Personalised Recommendations",
+    title: "AgenticLib - AI Agent Recommendation Platform",
     description:
-      "Browse 250+ AI agents across 90+ business domains. Get personalised recommendations tailored to your goals, team, and workflow.",
+      "Get personalised AI agent recommendations for your workflow and goals. Stop researching and start using the right one.",
     images: ["/recommendations-cover.png"],
   },
   robots: {
