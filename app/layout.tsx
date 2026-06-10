@@ -23,11 +23,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://agenticlib.com"),
   title: {
-    default: "AgenticLib — AI Agent Comparison & Personalised Recommendations",
+    default: "AgenticLib - AI Agent Recommendation Platform",
     template: "%s | AgenticLib",
   },
   description:
-    "AgenticLib is the leading AI agent library. Browse 250+ agents across 90+ business domains, get personalised AI agent recommendations, and find the best AI agent for marketing, customer support, real estate, finance, and more.",
+    "Get personalised AI agent recommendations for your workflow and goals. Stop researching and start using the right one.",
   keywords: [
     "AI agent library",
     "agents library",
@@ -47,9 +47,9 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "AgenticLib",
-    title: "AgenticLib — AI Agent Comparison & Personalised Recommendations",
+    title: "AgenticLib — AI Agent Recommendation Platform",
     description:
-      "Browse 250+ AI agents across 90+ business domains. Get personalised recommendations tailored to your goals, team, and workflow.",
+      "Get personalised AI agent recommendations for your workflow and goals. Stop researching and start using the right one.",
     url: "https://agenticlib.com",
     images: [
       {
