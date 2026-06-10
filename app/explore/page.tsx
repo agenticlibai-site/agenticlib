@@ -96,7 +96,7 @@ export default function ExplorePage() {
           </Link>
         </nav>
 
-        <main className="max-w-5xl mx-auto px-6 py-16">
+        <main className="max-w-5xl mx-auto px-6 pt-6 pb-16">
 
           <div className="mb-10">
             <h1 className="text-4xl font-bold text-zinc-900 tracking-tight mb-3">
