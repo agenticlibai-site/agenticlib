@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Target, Lightbulb, ArrowLeftRight, Database, Rocket, Users, Share2, Mail, X as XIcon, ArrowUp, MessageCircle, BarChart2 } from "lucide-react";
 import HowItWorks from "./components/HowItWorks";
+import BrandIntelligencePreview from "./components/BrandIntelligencePreview";
 
 
 export default function Home() {
@@ -250,6 +251,9 @@ export default function Home() {
             Choosing the right <span className="gradient-text">AI agent</span>, made simple.
           </h1>
 
+          <p className="text-xl font-medium mb-1" style={{ background: "linear-gradient(90deg, #5B5BD6, #F4436C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+            Your go-to AI agent recommendation platform.
+          </p>
           <p className="text-lg text-zinc-700 mx-auto mb-10" style={{ maxWidth: "500px" }}>
             Stop researching. Start using the right one.
           </p>
@@ -327,8 +331,8 @@ export default function Home() {
             <h2 className="text-3xl font-semibold mb-3 text-zinc-900">
               What makes us unique?
             </h2>
-            <p className="text-zinc-900 text-xl font-medium mb-10 whitespace-nowrap">
-              Built differently from the start - so finding the right AI agent actually feels easy.
+            <p className="text-zinc-900 text-xl font-medium mb-10">
+              AgenticLib is an AI agent recommendation platform built differently from the start - so finding the right agent for your workflow actually feels easy.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -385,6 +389,7 @@ export default function Home() {
         </section>
 
         <HowItWorks />
+        <BrandIntelligencePreview />
 
       </main>
 
