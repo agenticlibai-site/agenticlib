@@ -389,7 +389,7 @@ export default function Home() {
         </section>
 
         <HowItWorks />
-        <BrandIntelligencePreview />
+        {process.env.NODE_ENV === 'development' && <BrandIntelligencePreview />}
 
       </main>
 
