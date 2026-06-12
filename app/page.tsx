@@ -3,7 +3,6 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Target, Lightbulb, ArrowLeftRight, Database, Rocket, Users, Share2, Mail, X as XIcon, ArrowUp, MessageCircle, BarChart2 } from "lucide-react";
-import HowItWorks from "./components/HowItWorks";
 import BrandIntelligencePreview from "./components/BrandIntelligencePreview";
 
 
@@ -388,8 +387,7 @@ export default function Home() {
           </div>
         </section>
 
-        <HowItWorks />
-        {process.env.NODE_ENV === 'development' && <BrandIntelligencePreview />}
+        {process.env.NODE_ENV === "development" && <BrandIntelligencePreview />}
 
       </main>
 
@@ -449,6 +447,7 @@ export default function Home() {
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             <Link href="/privacy" className="text-xs text-white/40 hover:text-white/70 transition">Privacy Policy</Link>
             <Link href="/terms" className="text-xs text-white/40 hover:text-white/70 transition">Terms &amp; Conditions</Link>
+            <Link href="/disclaimer" className="text-xs text-white/40 hover:text-white/70 transition">Web Disclaimer</Link>
           </div>
           <a href="https://launchpadly.co/startup/agenticlib" target="_blank" rel="noopener noreferrer" data-launchpadly-badge="agenticlib" data-launchpadly-badge-variant="light">
             <img src="https://launchpadly.co/embed/badges/startup/agenticlib.svg?variant=light" alt="Launchpadly Startup Directory" width="220" height="48" style={{ display: "block", border: 0 }} />
