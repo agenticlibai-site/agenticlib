@@ -12,6 +12,7 @@
     "@anthropic-ai/sdk": "^0.100.1",
     "@google/generative-ai": "^0.24.1",
     "@vercel/analytics": "^2.0.1",
+    "@vercel/postgres": "^0.10.0",
     "lucide-react": "^1.8.0",
     "next": "16.2.2",
     "nodemailer": "^8.0.4",

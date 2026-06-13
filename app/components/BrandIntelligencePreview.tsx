@@ -236,9 +236,11 @@ export default function BrandIntelligencePreview() {
   const [timeFilter,  setTimeFilter]  = useState<TimeFilter>("7d");
   const [visible,     setVisible]     = useState(() => new Set(CHART_BRANDS.map(b => b.name)));
   const [activeParam, setActiveParam] = useState("Content Generation");
-  const [mounted,     setMounted]     = useState(false);
-  const [apiData,     setApiData]     = useState<BrandIntelligenceData | null>(null);
-  const [loading,     setLoading]     = useState(true);
+  const [mounted,       setMounted]       = useState(false);
+  const [apiData,       setApiData]       = useState<BrandIntelligenceData | null>(null);
+  const [loading,       setLoading]       = useState(true);
+  const [historyData,   setHistoryData]   = useState<Record<string, unknown>[] | null>(null);
+  const [historyLoading, setHistoryLoading] = useState(true);
 
   useEffect(() => setMounted(true), []);
 
@@ -255,6 +257,22 @@ export default function BrandIntelligencePreview() {
       }
     }
     load();
+  }, []);
+
+  useEffect(() => {
+    async function loadHistory() {
+      try {
+        const res = await fetch("/api/brand-intelligence/history?domain=marketing&days=7");
+        if (!res.ok) throw new Error(`${res.status}`);
+        setHistoryData(await res.json());
+      } catch (err) {
+        console.error("History fetch failed:", err);
+        setHistoryData([]);
+      } finally {
+        setHistoryLoading(false);
+      }
+    }
+    loadHistory();
   }, []);
 
   function toggleBrand(name: string) {
@@ -306,14 +324,17 @@ export default function BrandIntelligencePreview() {
     .sort((a, b) => b.score - a.score);
 
   // Chart data
+  const hasRealHistory = !historyLoading && Array.isArray(historyData) && historyData.length >= 2;
   const period = TIME_PERIODS[timeFilter];
-  const chartData = period.dates.map((date, i) => ({
-    date,
-    "HubSpot Breeze": period.data["HubSpot Breeze"][i],
-    "Jasper":         period.data["Jasper"][i],
-    "ActiveCampaign": period.data["ActiveCampaign"][i],
-    "Writesonic":     period.data["Writesonic"][i],
-  }));
+  const chartData = hasRealHistory
+    ? (historyData as Record<string, unknown>[])
+    : period.dates.map((date, i) => ({
+        date,
+        "HubSpot Breeze": period.data["HubSpot Breeze"][i],
+        "Jasper":         period.data["Jasper"][i],
+        "ActiveCampaign": period.data["ActiveCampaign"][i],
+        "Writesonic":     period.data["Writesonic"][i],
+      }));
 
   // Formatted timestamp
   const generatedAt = apiData?.generatedAt
@@ -422,30 +443,43 @@ export default function BrandIntelligencePreview() {
                       );
                     })}
                   </div>
-                  {/* Time filter */}
-                  <div className="flex items-center gap-1.5 flex-shrink-0">
-                    {(["24h", "7d", "3m"] as TimeFilter[]).map((f) => {
-                      const labels: Record<TimeFilter, string> = { "24h": "Last 24h", "7d": "Last 7 days", "3m": "Last 3 months" };
-                      return (
-                        <button
-                          key={f}
-                          onClick={() => setTimeFilter(f)}
-                          className="text-[10px] font-semibold px-2.5 py-1.5 rounded-lg transition-all duration-150 whitespace-nowrap"
-                          style={{
-                            background: timeFilter === f ? "#5B5BD6" : "white",
-                            color:      timeFilter === f ? "white"   : "#6b7280",
-                            border:     timeFilter === f ? "none"    : "1px solid #e5e7eb",
-                          }}
-                        >
-                          {labels[f]}
-                        </button>
-                      );
-                    })}
-                  </div>
+                  {/* Time filter - only shown when using fallback data */}
+                  {!hasRealHistory && (
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      {(["24h", "7d", "3m"] as TimeFilter[]).map((f) => {
+                        const labels: Record<TimeFilter, string> = { "24h": "Last 24h", "7d": "Last 7 days", "3m": "Last 3 months" };
+                        return (
+                          <button
+                            key={f}
+                            onClick={() => setTimeFilter(f)}
+                            className="text-[10px] font-semibold px-2.5 py-1.5 rounded-lg transition-all duration-150 whitespace-nowrap"
+                            style={{
+                              background: timeFilter === f ? "#5B5BD6" : "white",
+                              color:      timeFilter === f ? "white"   : "#6b7280",
+                              border:     timeFilter === f ? "none"    : "1px solid #e5e7eb",
+                            }}
+                          >
+                            {labels[f]}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
 
                 {/* Chart */}
-                {mounted ? (
+                {historyLoading ? (
+                  <div className="h-[240px] rounded-xl bg-gray-50 animate-pulse" />
+                ) : !hasRealHistory ? (
+                  <div className="h-[240px] rounded-xl bg-gray-50 flex flex-col items-center justify-center gap-3">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#d1d5db" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M3 3v18h18"/>
+                      <path d="m19 9-5 5-4-4-3 3"/>
+                    </svg>
+                    <p className="text-sm font-semibold text-gray-400">Trend data building</p>
+                    <p className="text-xs text-gray-300">Check back in 7 days as daily snapshots accumulate</p>
+                  </div>
+                ) : mounted ? (
                   <ResponsiveContainer width="100%" height={240}>
                     <LineChart data={chartData} margin={{ top: 4, right: 8, bottom: 0, left: 10 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
@@ -454,9 +488,6 @@ export default function BrandIntelligencePreview() {
                         tick={{ fontSize: 10, fill: "#9ca3af" }}
                         axisLine={false}
                         tickLine={false}
-                        tickFormatter={v =>
-                          timeFilter === "3m" ? (v.endsWith("W1") ? v.split(" ")[0] : "") : v
-                        }
                       />
                       <YAxis
                         tick={{ fontSize: 10, fill: "#9ca3af" }}
@@ -478,12 +509,6 @@ export default function BrandIntelligencePreview() {
                   </ResponsiveContainer>
                 ) : (
                   <div className="h-[240px] rounded-xl bg-gray-50 animate-pulse" />
-                )}
-
-                {apiData && (
-                  <p className="text-[10px] text-gray-300 mt-3 italic">
-                    Trend data illustrative. Current visibility scores from live LLM queries are shown in the sidebar.
-                  </p>
                 )}
               </div>
 
