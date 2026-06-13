@@ -3,7 +3,6 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Target, Lightbulb, ArrowLeftRight, Database, Rocket, Users, Share2, Mail, X as XIcon, ArrowUp, MessageCircle, BarChart2 } from "lucide-react";
-import BrandIntelligencePreview from "./components/BrandIntelligencePreview";
 
 
 export default function Home() {
@@ -33,11 +32,12 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6 py-3 flex items-center" style={{ background: "rgba(255,255,255,0.72)", backdropFilter: "blur(16px)", border: "0.5px solid rgba(255,255,255,0.9)", borderRadius: "14px" }}>
 
           {/* LOGO */}
-          <div className="flex items-center gap-2 flex-shrink-0">
-            <img src="/logo.png" alt="AgenticLib logo" className="h-6 w-auto" />
-            <span className="text-lg font-semibold tracking-tight">
-              AgenticLib
-            </span>
+          <div className="flex items-start gap-2 flex-shrink-0">
+            <img src="/logo.png" alt="AgenticLib logo" className="h-6 w-auto mt-0.5" />
+            <div className="flex flex-col leading-none">
+              <span className="text-lg font-semibold tracking-tight">AgenticLib</span>
+              <span className="text-[10px] text-zinc-900 font-normal tracking-wide mt-0.5">AI Agent Comparison Intelligence Company</span>
+            </div>
           </div>
 
           {/* NAV — centred in remaining space, hidden on mobile */}
@@ -387,7 +387,6 @@ export default function Home() {
           </div>
         </section>
 
-        {process.env.NODE_ENV === "development" && <BrandIntelligencePreview />}
 
       </main>
 
