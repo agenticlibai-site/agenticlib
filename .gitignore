@@ -41,3 +41,11 @@ yarn-error.log*
 next-env.d.ts
 .env.local
 app/wizard/
+
+# Brand intelligence (dev-only, not for production)
+app/components/BrandIntelligencePreview.tsx
+app/api/brand-intelligence/
+app/api/cron/
+lib/db.ts
+lib/run-brand-intelligence.ts
+vercel.json
