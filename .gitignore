@@ -48,4 +48,3 @@ app/api/brand-intelligence/
 app/api/cron/
 lib/db.ts
 lib/run-brand-intelligence.ts
-vercel.json

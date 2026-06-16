@@ -3,8 +3,7 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Target, Lightbulb, ArrowLeftRight, Database, Rocket, Users, Share2, Mail, X as XIcon, ArrowUp, MessageCircle, BarChart2 } from "lucide-react";
-
-
+import BrandIntelligencePreview from "./components/BrandIntelligencePreview";
 export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
@@ -68,9 +67,6 @@ export default function Home() {
           { label: "Vera – Research & Compare", href: "/product/research", desc: "Compare agents side by side in detail", iconBg: "linear-gradient(135deg,#2563eb,#60a5fa)", icon: (
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="6" height="12" rx="1.5" fill="white" fillOpacity=".9"/><rect x="12" y="3" width="6" height="14" rx="1.5" fill="white" fillOpacity=".6"/><path d="M9 10h2M9 10l-1.5-1.5M9 10l-1.5 1.5M11 10l1.5-1.5M11 10l1.5 1.5" stroke="white" strokeWidth="1.2" strokeLinecap="round"/></svg>
           )},
-          { label: "AI Agent Library", href: "/explore", desc: "Browse all agents across every domain", iconBg: "linear-gradient(135deg,#16a34a,#4ade80)", icon: (
-            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="white" fillOpacity=".9"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="white" fillOpacity=".6"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="white" fillOpacity=".6"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="white" fillOpacity=".9"/></svg>
-          )},
         ].map((item) => (
           <a
             key={item.href}
@@ -128,6 +124,24 @@ export default function Home() {
           <div className="flex flex-col flex-1">
             <span style={{ fontSize: 13, fontWeight: 600, color: "#18181b", lineHeight: 1.3 }}>Blog</span>
             <span style={{ fontSize: 11.5, color: "#18181b", marginTop: 2 }}>Insights, guides and updates</span>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color: "#d1d5db" }}>
+            <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </Link>
+        <Link
+          href="/explore"
+          className="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-colors"
+          style={{ textDecoration: "none" }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#f8f8ff"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}
+        >
+          <div className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#16a34a,#4ade80)" }}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="white" fillOpacity=".9"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="white" fillOpacity=".6"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="white" fillOpacity=".6"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="white" fillOpacity=".9"/></svg>
+          </div>
+          <div className="flex flex-col flex-1">
+            <span style={{ fontSize: 13, fontWeight: 600, color: "#18181b", lineHeight: 1.3 }}>AI Agent Library</span>
+            <span style={{ fontSize: 11.5, color: "#18181b", marginTop: 2 }}>Browse all agents across every domain</span>
           </div>
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color: "#d1d5db" }}>
             <path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -207,7 +221,6 @@ export default function Home() {
                 {[
                   { label: "Sage – AI Agent Recommendations", href: "/product/recommendations" },
                   { label: "Vera – Research & Compare", href: "/product/research" },
-                  { label: "AI Agent Library", href: "/explore" },
                 ].map((item) => (
                   <a
                     key={item.href}
@@ -224,6 +237,7 @@ export default function Home() {
             {/* Top-level links */}
             {[
               { label: "Blog", href: "/blog" },
+              { label: "AI Agent Library", href: "/explore" },
               { label: "About", href: "/#about" },
               { label: "Contact Us", href: "/#contact" },
             ].map((item) => (
@@ -387,6 +401,7 @@ export default function Home() {
           </div>
         </section>
 
+        {process.env.NODE_ENV === "development" && <BrandIntelligencePreview />}
 
       </main>
 
