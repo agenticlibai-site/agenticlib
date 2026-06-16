@@ -43,7 +43,6 @@ next-env.d.ts
 app/wizard/
 
 # Brand intelligence (dev-only, not for production)
-app/components/BrandIntelligencePreview.tsx
 app/api/brand-intelligence/
 app/api/cron/
 lib/db.ts
