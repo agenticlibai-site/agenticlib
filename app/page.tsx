@@ -2,7 +2,7 @@
 import { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Target, Lightbulb, ArrowLeftRight, Database, Rocket, Users, Share2, Mail, X as XIcon, ArrowUp, MessageCircle, BarChart2 } from "lucide-react";
+import { Share2, Mail, X as XIcon, ArrowUp, MessageCircle } from "lucide-react";
 import BrandIntelligencePreview from "./components/BrandIntelligencePreview";
 export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -151,23 +151,6 @@ export default function Home() {
     </div>
   </div>
 
-  {/* About */}
-  <Link
-    href="/#about"
-    onClick={(e) => {
-      if (pathname === "/") {
-        e.preventDefault();
-        document.getElementById("about")?.scrollIntoView({ behavior: "smooth" });
-      }
-    }}
-    className="transition px-3 py-1.5 rounded-lg"
-    style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b" }}
-    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLAnchorElement).style.color = "#18181b"; }}
-    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; (e.currentTarget as HTMLAnchorElement).style.color = "#52525b"; }}
-  >
-    About
-  </Link>
-
   {/* Contact Us */}
   <Link
     href="/#contact"
@@ -238,7 +221,6 @@ export default function Home() {
             {[
               { label: "Blog", href: "/blog" },
               { label: "AI Agent Library", href: "/explore" },
-              { label: "About", href: "/#about" },
               { label: "Contact Us", href: "/#contact" },
             ].map((item) => (
               <a
@@ -335,70 +317,6 @@ export default function Home() {
             />
           </div>
 
-        </section>
-
-        {/* WHAT MAKES US UNIQUE */}
-        <section id="about" className="py-16 px-6">
-          <div className="max-w-5xl mx-auto">
-
-            <h2 className="text-3xl font-semibold mb-3 text-zinc-900">
-              What makes us unique?
-            </h2>
-            <p className="text-zinc-900 text-xl font-medium mb-10">
-              AgenticLib is an AI agent recommendation platform built differently from the start - so finding the right agent for your workflow actually feels easy.
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-
-              {[
-                {
-                  Icon: Target,
-                  title: "Requirements-first matching",
-                  body: "Most directories show you a list. AgenticLib starts by understanding what you actually need: your team size, workflow, and goals. It then matches you to the right agent. No browsing, no guesswork.",
-                },
-                {
-                  Icon: Lightbulb,
-                  title: "Dynamic, explainable matching",
-                  body: "Every recommendation explains itself. See which agents were considered, why your top pick ranked highest, and what trade-offs exist, so you make the decision with full context, not blind trust.",
-                },
-                {
-                  Icon: Rocket,
-                  title: "Business domain oriented",
-                  body: "AgenticLib is organised by industry - real estate, finance, marketing, customer support, and more. Every recommendation is built around the specific context and needs of your business domain.",
-                },
-                {
-                  Icon: Database,
-                  title: "Data-driven architecture",
-                  body: "AgenticLib surfaces structured, decision-relevant intelligence rather than generic AI summaries. Every agent profile is built around the dimensions that actually matter for your use case.",
-                },
-                {
-                  Icon: ArrowLeftRight,
-                  title: "Compare agents seamlessly",
-                  body: "Get a side-by-side breakdown of any two agents across capabilities, pricing, use cases, and visual performance metrics - all in one view.",
-                },
-                {
-                  Icon: BarChart2,
-                  title: "Prompt Analytics",
-                  body: "See how AI agents are recommended, described, and rated across Claude Sonnet 4.6, GPT-5.5, and Gemini 3.5 in real queries. AgenticLib tracks LLM visibility and sentiment so you deploy with confidence, not guesswork.",
-                },
-              ].map(({ Icon, title, body }) => (
-                <div
-                  key={title}
-                  className="flex flex-col gap-3 rounded-2xl p-6"
-                  style={{
-                    background: "#fafbff",
-                    border: "1px solid #e2e8f0",
-                    boxShadow: "0 2px 10px rgba(0,0,0,0.04)",
-                  }}
-                >
-                  <Icon size={32} strokeWidth={1.5} style={{ color: "#6c4cf1" }} />
-                  <h3 className="font-semibold text-zinc-900 text-base leading-snug">{title}</h3>
-                  <p className="text-zinc-800 text-base leading-relaxed">{body}</p>
-                </div>
-              ))}
-
-            </div>
-          </div>
         </section>
 
         {process.env.NODE_ENV === "development" && <BrandIntelligencePreview />}
