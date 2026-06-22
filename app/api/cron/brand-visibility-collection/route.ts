@@ -104,21 +104,29 @@ async function runWithConcurrency<T>(
 // ── Cron handler ───────────────────────────────────────────────────────────────
 
 export async function GET(request: Request) {
+  // Auth check is outside try/catch — we don't alert on unauthorized access.
   const secret = request.headers.get("authorization")?.replace("Bearer ", "");
   if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  await initBrandVisibilityDB();
-
-  const { searchParams } = new URL(request.url);
-  const modelParam = searchParams.get("model");    // "claude-haiku-4-5" | "gpt-4o-mini" | null
-  const aggregateOnly = searchParams.has("aggregate");
-  const testAlert = searchParams.has("test_alert"); // force-fires an alert email without real work
-
+  // Compute metadata before the try block so the crash handler has access to them
+  // even if an early step (e.g. initBrandVisibilityDB) throws.
   const now = new Date();
   const today = now.toISOString().split("T")[0];
   const runTimestamp = now.toISOString().replace("T", " ").slice(0, 19) + " UTC";
+
+  const { searchParams } = new URL(request.url);
+  const modelParam = searchParams.get("model");
+  const aggregateOnly = searchParams.has("aggregate");
+  const testAlert = searchParams.has("test_alert");
+
+  const jobLabel = aggregateOnly ? "aggregation"
+    : testAlert ? "test_alert"
+    : `collection (${modelParam ?? "all"})`;
+
+  try {
+  await initBrandVisibilityDB();
 
   const windowStartDate = new Date(now);
   windowStartDate.setDate(windowStartDate.getDate() - 6);
@@ -266,4 +274,27 @@ export async function GET(request: Request) {
     succeeded,
     failed,
   });
+
+  } catch (err) {
+    // Top-level crash handler: fires if the job throws before reaching its own
+    // alert logic (e.g. initBrandVisibilityDB failure, network error, unhandled exception).
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`[cron] brand-visibility ${jobLabel} crashed:`, message);
+
+    await sendEmail({
+      subject: `[AgenticLib] CRASH — Brand Visibility ${jobLabel} (${today})`,
+      html: `
+        <h2>Brand Visibility Pipeline — Unhandled Crash</h2>
+        <table style="border-collapse:collapse;font-family:monospace">
+          <tr><td style="padding:4px 12px 4px 0"><strong>Job</strong></td><td>${jobLabel}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0"><strong>Timestamp</strong></td><td>${runTimestamp}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0"><strong>Error</strong></td><td>${message}</td></tr>
+        </table>
+        <p>The job crashed before completing its health check. Check Vercel function logs for the full stack trace.</p>
+        <p>Audit: <code>/api/brand-visibility/audit/daily-check</code></p>
+      `,
+    }).catch((e) => console.error("[alert] crash email failed:", e));
+
+    return Response.json({ error: "Internal server error", message }, { status: 500 });
+  }
 }
