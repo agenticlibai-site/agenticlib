@@ -1,0 +1,477 @@
+import { sql } from "@vercel/postgres";
+import { DEFAULT_STOPLIST, type ResolutionCache, type CanonicalEntry } from "./normalization";
+
+let dbInitialised = false;
+
+export async function initBrandVisibilityDB(): Promise<void> {
+  if (dbInitialised) return;
+
+  // ── Core collection tables ─────────────────────────────────────────────────
+
+  // Raw per-call responses — one row per (date, prompt, model, run)
+  await sql`
+    CREATE TABLE IF NOT EXISTS raw_responses (
+      id             SERIAL PRIMARY KEY,
+      date           DATE    NOT NULL,
+      prompt_id      INTEGER NOT NULL CHECK (prompt_id BETWEEN 1 AND 22),
+      prompt_text    TEXT    NOT NULL,
+      bucket_tag     TEXT    NOT NULL,
+      model          TEXT    NOT NULL CHECK (model IN ('claude-haiku-4-5', 'gpt-4o-mini')),
+      model_snapshot TEXT,
+      run_number     INTEGER NOT NULL CHECK (run_number BETWEEN 1 AND 5),
+      brands         JSONB   NOT NULL DEFAULT '[]',
+      created_at     TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  // Backfill column on tables created before this column was added
+  await sql`ALTER TABLE raw_responses ADD COLUMN IF NOT EXISTS model_snapshot TEXT`;
+  await sql`
+    CREATE UNIQUE INDEX IF NOT EXISTS raw_responses_unique
+    ON raw_responses (date, prompt_id, model, run_number)
+  `;
+
+  // Parse failures — raw text logged here instead of silently dropped
+  await sql`
+    CREATE TABLE IF NOT EXISTS collection_errors (
+      id            SERIAL PRIMARY KEY,
+      date          DATE    NOT NULL,
+      prompt_id     INTEGER,
+      model         TEXT,
+      run_number    INTEGER,
+      raw_response  TEXT,
+      error_message TEXT,
+      created_at    TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  // ── Brand normalization tables ─────────────────────────────────────────────
+
+  // Registry of known canonical brand names.
+  // display_name: how it appears in the UI (e.g. "HubSpot").
+  // normalized_name: lowercased, suffixes stripped — used for alias lookup and fuzzy matching.
+  await sql`
+    CREATE TABLE IF NOT EXISTS canonical_brands (
+      id              SERIAL PRIMARY KEY,
+      display_name    TEXT NOT NULL,
+      normalized_name TEXT NOT NULL UNIQUE,
+      created_at      TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  // Maps a normalized raw brand string → canonical brand.
+  // Populated on first encounter; avoids re-running fuzzy logic on subsequent runs.
+  await sql`
+    CREATE TABLE IF NOT EXISTS brand_aliases (
+      id           SERIAL PRIMARY KEY,
+      raw_name     TEXT    NOT NULL UNIQUE,
+      canonical_id INTEGER NOT NULL REFERENCES canonical_brands(id) ON DELETE CASCADE,
+      created_at   TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  // New auto-created canonicals awaiting manual confirmation.
+  // raw_name: original LLM output (un-normalized, for readability).
+  // suggested_canonical/levenshtein_dist: populated when a close-but-not-exact fuzzy match exists.
+  await sql`
+    CREATE TABLE IF NOT EXISTS brand_review_queue (
+      id                   SERIAL PRIMARY KEY,
+      raw_name             TEXT    NOT NULL UNIQUE,
+      suggested_canonical  TEXT,
+      levenshtein_dist     INTEGER,
+      first_seen           DATE    NOT NULL,
+      occurrence_count     INTEGER NOT NULL DEFAULT 1,
+      reviewed             BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at           TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  // Generic terms excluded from brand counting.
+  // Seeded from DEFAULT_STOPLIST on first init; extend via direct DB INSERT.
+  await sql`
+    CREATE TABLE IF NOT EXISTS brand_stoplist (
+      id         SERIAL PRIMARY KEY,
+      term       TEXT NOT NULL UNIQUE,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  // Per-response brand resolution — bridge table enabling SQL-level LLM visibility queries.
+  // position: 1-based index of this brand's first occurrence in the response's brands array.
+  await sql`
+    CREATE TABLE IF NOT EXISTS response_canonical_brands (
+      response_id     INTEGER NOT NULL REFERENCES raw_responses(id) ON DELETE CASCADE,
+      canonical_brand TEXT    NOT NULL,
+      position        INTEGER NOT NULL,
+      PRIMARY KEY (response_id, canonical_brand)
+    )
+  `;
+
+  // ── Aggregation output tables ──────────────────────────────────────────────
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS daily_summary (
+      id            SERIAL PRIMARY KEY,
+      date          DATE    NOT NULL,
+      brand         TEXT    NOT NULL,
+      model         TEXT    NOT NULL,
+      mention_count INTEGER NOT NULL DEFAULT 0,
+      avg_position  FLOAT,
+      confidence    TEXT    NOT NULL DEFAULT 'normal' CHECK (confidence IN ('low', 'normal')),
+      created_at    TIMESTAMP DEFAULT NOW(),
+      UNIQUE (date, brand, model)
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS weekly_summary (
+      id            SERIAL PRIMARY KEY,
+      window_start  DATE    NOT NULL,
+      window_end    DATE    NOT NULL,
+      brand         TEXT    NOT NULL,
+      model         TEXT    NOT NULL,
+      mention_count INTEGER NOT NULL DEFAULT 0,
+      avg_position  FLOAT,
+      confidence    TEXT    NOT NULL DEFAULT 'normal' CHECK (confidence IN ('low', 'normal')),
+      created_at    TIMESTAMP DEFAULT NOW(),
+      UNIQUE (window_start, window_end, brand, model)
+    )
+  `;
+
+  // Stores denominator (total_responses) alongside pct so the percentage is always auditable.
+  await sql`
+    CREATE TABLE IF NOT EXISTS llm_visibility (
+      id              SERIAL PRIMARY KEY,
+      window_start    DATE    NOT NULL,
+      window_end      DATE    NOT NULL,
+      model           TEXT    NOT NULL,
+      visibility_pct  FLOAT   NOT NULL,
+      total_responses INTEGER NOT NULL,
+      created_at      TIMESTAMP DEFAULT NOW(),
+      UNIQUE (window_start, window_end, model)
+    )
+  `;
+
+  // Placeholder for top-15 brand list — uses canonical display_names.
+  // Populate manually after first week once brands meet MIN_OCCURRENCES_FOR_TOP15.
+  // When empty, all brands are treated as tracked (pipeline safe on day 1).
+  await sql`
+    CREATE TABLE IF NOT EXISTS top_15_brands (
+      id         SERIAL PRIMARY KEY,
+      brand_name TEXT NOT NULL UNIQUE,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  // ── Audit / changelog tables ───────────────────────────────────────────────
+
+  // Records every change to the 22-prompt set in prompts.ts.
+  // Populate manually whenever prompts.ts changes — the pipeline does not auto-log this.
+  await sql`
+    CREATE TABLE IF NOT EXISTS prompt_changelog (
+      id         SERIAL PRIMARY KEY,
+      date       DATE        NOT NULL DEFAULT CURRENT_DATE,
+      prompt_id  INTEGER     NOT NULL,
+      action     TEXT        NOT NULL CHECK (action IN ('added', 'modified', 'removed')),
+      old_text   TEXT,
+      new_text   TEXT,
+      created_at TIMESTAMP   DEFAULT NOW()
+    )
+  `;
+
+  // Records every change to the stoplist (DEFAULT_STOPLIST additions or DB inserts/deletes).
+  // Populate manually when terms are added/removed — the pipeline does not auto-log this.
+  await sql`
+    CREATE TABLE IF NOT EXISTS stoplist_changelog (
+      id         SERIAL PRIMARY KEY,
+      date       DATE        NOT NULL DEFAULT CURRENT_DATE,
+      term       TEXT        NOT NULL,
+      action     TEXT        NOT NULL CHECK (action IN ('added', 'removed')),
+      reason     TEXT,
+      created_at TIMESTAMP   DEFAULT NOW()
+    )
+  `;
+
+  // Seed stoplist on first init (idempotent via ON CONFLICT DO NOTHING)
+  for (const term of DEFAULT_STOPLIST) {
+    await sql`INSERT INTO brand_stoplist (term) VALUES (${term}) ON CONFLICT (term) DO NOTHING`;
+  }
+
+  dbInitialised = true;
+}
+
+// ── Raw response writes ────────────────────────────────────────────────────────
+
+export async function insertRawResponse(row: {
+  date: string;
+  promptId: number;
+  promptText: string;
+  bucketTag: string;
+  model: string;
+  modelSnapshot: string; // exact snapshot returned by API, e.g. "claude-haiku-4-5-20241022"
+  runNumber: number;
+  brands: string[];
+}): Promise<void> {
+  await sql`
+    INSERT INTO raw_responses (date, prompt_id, prompt_text, bucket_tag, model, model_snapshot, run_number, brands)
+    VALUES (
+      ${row.date}::date, ${row.promptId}, ${row.promptText}, ${row.bucketTag},
+      ${row.model}, ${row.modelSnapshot}, ${row.runNumber}, ${JSON.stringify(row.brands)}::jsonb
+    )
+    ON CONFLICT (date, prompt_id, model, run_number) DO UPDATE SET
+      brands         = EXCLUDED.brands,
+      model_snapshot = EXCLUDED.model_snapshot,
+      created_at     = NOW()
+  `;
+}
+
+export async function insertCollectionError(row: {
+  date: string;
+  promptId: number | null;
+  model: string | null;
+  runNumber: number | null;
+  rawResponse: string;
+  errorMessage: string;
+}): Promise<void> {
+  await sql`
+    INSERT INTO collection_errors (date, prompt_id, model, run_number, raw_response, error_message)
+    VALUES (${row.date}::date, ${row.promptId}, ${row.model}, ${row.runNumber}, ${row.rawResponse}, ${row.errorMessage})
+  `;
+}
+
+// ── Normalization cache helpers ────────────────────────────────────────────────
+
+/**
+ * Load the full resolution cache in three parallel queries.
+ * Called once per aggregation run; all brand resolution is then done in-memory.
+ */
+export async function loadResolutionCache(): Promise<ResolutionCache> {
+  const [aliasRows, canonicalRows, stopRows] = await Promise.all([
+    sql`
+      SELECT ba.raw_name, cb.display_name AS canonical
+      FROM brand_aliases ba
+      JOIN canonical_brands cb ON cb.id = ba.canonical_id
+    `,
+    sql`SELECT id, display_name, normalized_name FROM canonical_brands`,
+    sql`SELECT term FROM brand_stoplist`,
+  ]);
+
+  const aliases = new Map<string, string>(
+    aliasRows.rows.map((r) => [r.raw_name as string, r.canonical as string]),
+  );
+  const canonicals: CanonicalEntry[] = canonicalRows.rows.map((r) => ({
+    id: r.id as number,
+    displayName: r.display_name as string,
+    normalizedName: r.normalized_name as string,
+  }));
+  const stoplist = new Set<string>(stopRows.rows.map((r) => r.term as string));
+
+  return { aliases, canonicals, stoplist };
+}
+
+// ── Raw brand rows for aggregation ────────────────────────────────────────────
+
+export interface RawBrandRow {
+  responseId: number;
+  model: string;
+  brandName: string; // raw string from LLM — not yet normalized
+  position: number;  // 1-based ordinal position in that response's brands array
+}
+
+export async function getRawBrandsForDate(date: string): Promise<RawBrandRow[]> {
+  const result = await sql`
+    SELECT r.id AS response_id, r.model, t.brand_name, t.pos::int AS position
+    FROM raw_responses r,
+         jsonb_array_elements_text(r.brands) WITH ORDINALITY AS t(brand_name, pos)
+    WHERE r.date = ${date}::date
+  `;
+  return result.rows.map((r) => ({
+    responseId: r.response_id as number,
+    model: r.model as string,
+    brandName: r.brand_name as string,
+    position: r.position as number,
+  }));
+}
+
+export async function getRawBrandsForWindow(start: string, end: string): Promise<RawBrandRow[]> {
+  const result = await sql`
+    SELECT r.id AS response_id, r.model, t.brand_name, t.pos::int AS position
+    FROM raw_responses r,
+         jsonb_array_elements_text(r.brands) WITH ORDINALITY AS t(brand_name, pos)
+    WHERE r.date BETWEEN ${start}::date AND ${end}::date
+  `;
+  return result.rows.map((r) => ({
+    responseId: r.response_id as number,
+    model: r.model as string,
+    brandName: r.brand_name as string,
+    position: r.position as number,
+  }));
+}
+
+// ── Canonical brand + alias writes ─────────────────────────────────────────────
+
+export interface NewCanonical {
+  displayName: string;
+  normalizedName: string;
+}
+
+/**
+ * Persist a batch of new canonical entries and aliases produced by the resolution pipeline.
+ * Returns a map of normalizedName → assigned display_name (refreshed from DB to handle races).
+ */
+export async function persistNewCanonicals(
+  entries: NewCanonical[],
+): Promise<Map<string, string>> {
+  const result = new Map<string, string>();
+  for (const e of entries) {
+    // ON CONFLICT DO UPDATE so we always get the id back
+    const row = await sql`
+      INSERT INTO canonical_brands (display_name, normalized_name)
+      VALUES (${e.displayName}, ${e.normalizedName})
+      ON CONFLICT (normalized_name) DO UPDATE SET normalized_name = EXCLUDED.normalized_name
+      RETURNING id, display_name
+    `;
+    const id = row.rows[0].id as number;
+    const displayName = row.rows[0].display_name as string;
+
+    // Create self-alias so future runs hit the cache immediately
+    await sql`
+      INSERT INTO brand_aliases (raw_name, canonical_id)
+      VALUES (${e.normalizedName}, ${id})
+      ON CONFLICT (raw_name) DO NOTHING
+    `;
+
+    result.set(e.normalizedName, displayName);
+  }
+  return result;
+}
+
+export async function persistAlias(rawName: string, canonicalDisplayName: string): Promise<void> {
+  const row = await sql`
+    SELECT id FROM canonical_brands WHERE display_name = ${canonicalDisplayName} LIMIT 1
+  `;
+  const id = row.rows[0]?.id as number | undefined;
+  if (!id) return;
+  await sql`
+    INSERT INTO brand_aliases (raw_name, canonical_id)
+    VALUES (${rawName}, ${id})
+    ON CONFLICT (raw_name) DO NOTHING
+  `;
+}
+
+// ── Review queue ──────────────────────────────────────────────────────────────
+
+export interface ReviewQueueEntry {
+  rawName: string;
+  suggestedCanonical: string | null;
+  levenshteinDist: number | null;
+  firstSeen: string;
+}
+
+export async function addToReviewQueue(entries: ReviewQueueEntry[]): Promise<void> {
+  for (const e of entries) {
+    await sql`
+      INSERT INTO brand_review_queue (raw_name, suggested_canonical, levenshtein_dist, first_seen, occurrence_count)
+      VALUES (${e.rawName}, ${e.suggestedCanonical}, ${e.levenshteinDist}, ${e.firstSeen}::date, 1)
+      ON CONFLICT (raw_name) DO UPDATE SET
+        occurrence_count = brand_review_queue.occurrence_count + 1
+    `;
+  }
+}
+
+// ── response_canonical_brands writes ─────────────────────────────────────────
+
+export interface ResponseBrandEntry {
+  responseId: number;
+  canonicalBrand: string;
+  position: number; // 1-based first occurrence in response's brands array
+}
+
+export async function persistResponseCanonicalBrands(entries: ResponseBrandEntry[]): Promise<void> {
+  for (const e of entries) {
+    await sql`
+      INSERT INTO response_canonical_brands (response_id, canonical_brand, position)
+      VALUES (${e.responseId}, ${e.canonicalBrand}, ${e.position})
+      ON CONFLICT (response_id, canonical_brand) DO UPDATE SET
+        position = LEAST(response_canonical_brands.position, EXCLUDED.position)
+    `;
+  }
+}
+
+// ── Top-15 eligibility helper ─────────────────────────────────────────────────
+
+/**
+ * Returns brands that have accumulated at least minOccurrences total mentions
+ * across all days in daily_summary. Use this to decide which brands to add to
+ * top_15_brands — only confirmed, high-frequency brands should be tracked.
+ */
+export async function getEligibleBrandsForTop15(minOccurrences: number): Promise<
+  { brand: string; total_mentions: number }[]
+> {
+  await initBrandVisibilityDB();
+  const result = await sql`
+    SELECT brand, SUM(mention_count) AS total_mentions
+    FROM daily_summary
+    GROUP BY brand
+    HAVING SUM(mention_count) >= ${minOccurrences}
+    ORDER BY total_mentions DESC
+  `;
+  return result.rows as { brand: string; total_mentions: number }[];
+}
+
+// ── Daily summary reads (for frontend) ────────────────────────────────────────
+
+export async function getDailySummary(days = 7): Promise<
+  { date: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string }[]
+> {
+  await initBrandVisibilityDB();
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - days + 1);
+  const cutoffStr = cutoff.toISOString().split("T")[0];
+
+  const result = await sql`
+    SELECT date::text AS date, brand, model, mention_count, avg_position, confidence
+    FROM daily_summary
+    WHERE date >= ${cutoffStr}::date
+    ORDER BY date ASC, mention_count DESC
+  `;
+  return result.rows as { date: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string }[];
+}
+
+export async function getWeeklySummary(): Promise<
+  { window_start: string; window_end: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string }[]
+> {
+  await initBrandVisibilityDB();
+  const result = await sql`
+    SELECT window_start::text, window_end::text, brand, model, mention_count, avg_position, confidence
+    FROM weekly_summary
+    ORDER BY window_start DESC, mention_count DESC
+    LIMIT 200
+  `;
+  return result.rows as { window_start: string; window_end: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string }[];
+}
+
+export async function getLLMVisibility(): Promise<
+  { window_start: string; window_end: string; model: string; visibility_pct: number; total_responses: number }[]
+> {
+  await initBrandVisibilityDB();
+  const result = await sql`
+    SELECT window_start::text, window_end::text, model, visibility_pct, total_responses
+    FROM llm_visibility
+    ORDER BY window_start DESC
+    LIMIT 20
+  `;
+  return result.rows as { window_start: string; window_end: string; model: string; visibility_pct: number; total_responses: number }[];
+}
+
+// ── Observability ──────────────────────────────────────────────────────────────
+
+export async function getDailyRunStats(date: string): Promise<{ success: number; errors: number }> {
+  const [successResult, errorResult] = await Promise.all([
+    sql`SELECT COUNT(*) AS count FROM raw_responses WHERE date = ${date}::date`,
+    sql`SELECT COUNT(*) AS count FROM collection_errors WHERE date = ${date}::date`,
+  ]);
+  return {
+    success: parseInt(successResult.rows[0]?.count ?? "0", 10),
+    errors: parseInt(errorResult.rows[0]?.count ?? "0", 10),
+  };
+}
