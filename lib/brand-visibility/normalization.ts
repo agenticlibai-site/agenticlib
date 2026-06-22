@@ -53,6 +53,20 @@ export const DEFAULT_STOPLIST: string[] = [
   "slack",
   "salesforce",
   "openai",
+  // LLM self-references — model names the model while answering, not a competitor brand.
+  // Stoplist matches the EXACT normalized form only; compound products like
+  // "Claude Enterprise" or "Anthropic Research" would normalize to different strings
+  // and are not affected.
+  "claude",
+  "anthropic",
+  // Bare parent-company names — the company alone is not a trackable product signal;
+  // their specific products (Adobe Sensei, Adobe Marketo Engage, Microsoft Advertising,
+  // Microsoft Copilot, IBM Watson Marketing, etc.) normalize to compound strings
+  // ("adobe sensei", "microsoft advertising", etc.) and are NOT caught by these entries.
+  "adobe",
+  "microsoft",
+  // "ibm" — omitted; bare IBM never appeared as a canonical_brand in day-1 data.
+  //   Add here if it appears in future runs.
 ];
 
 // ── Normalization ──────────────────────────────────────────────────────────────
