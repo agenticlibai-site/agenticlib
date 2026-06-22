@@ -210,23 +210,49 @@ export async function computeDailySummary(date: string): Promise<void> {
     }
   }
 
-  // Upsert daily_summary — idempotent via ON CONFLICT.
+  // Upsert daily_summary — single batched UNNEST instead of one query per (brand, model).
+  const dsDates: string[] = [];
+  const dsBrands: string[] = [];
+  const dsModels: string[] = [];
+  const dsMentions: number[] = [];
+  const dsAvgPos: number[] = [];
+  const dsConf: string[] = [];
+
   for (const [brand, byModel] of stats) {
     for (const [model, { ids, positions }] of byModel) {
       const mentionCount = ids.size;
       const posArr = [...positions.values()];
       const avgPosition = posArr.reduce((a, b) => a + b, 0) / posArr.length;
-      const confidence = mentionCount < 5 ? "low" : "normal";
-
-      await sql`
-        INSERT INTO daily_summary (date, brand, model, mention_count, avg_position, confidence)
-        VALUES (${date}::date, ${brand}, ${model}, ${mentionCount}, ${avgPosition}, ${confidence})
-        ON CONFLICT (date, brand, model) DO UPDATE SET
-          mention_count = EXCLUDED.mention_count,
-          avg_position  = EXCLUDED.avg_position,
-          confidence    = EXCLUDED.confidence
-      `;
+      dsDates.push(date);
+      dsBrands.push(brand);
+      dsModels.push(model);
+      dsMentions.push(mentionCount);
+      dsAvgPos.push(avgPosition);
+      dsConf.push(mentionCount < 5 ? "low" : "normal");
     }
+  }
+
+  if (dsBrands.length) {
+    await sql`
+      INSERT INTO daily_summary (date, brand, model, mention_count, avg_position, confidence)
+      SELECT
+        t.date::date, t.brand, t.model,
+        t.mention_count::int,
+        t.avg_position::float,
+        t.confidence
+      FROM UNNEST(
+        ${dsDates}::text[],
+        ${dsBrands}::text[],
+        ${dsModels}::text[],
+        ${dsMentions}::text[],
+        ${dsAvgPos}::text[],
+        ${dsConf}::text[]
+      ) AS t(date, brand, model, mention_count, avg_position, confidence)
+      ON CONFLICT (date, brand, model) DO UPDATE SET
+        mention_count = EXCLUDED.mention_count,
+        avg_position  = EXCLUDED.avg_position,
+        confidence    = EXCLUDED.confidence
+    `;
   }
 
   // Populate response_canonical_brands for this date so computeLLMVisibility
