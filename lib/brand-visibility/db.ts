@@ -191,10 +191,13 @@ export async function initBrandVisibilityDB(): Promise<void> {
     )
   `;
 
-  // Seed stoplist on first init (idempotent via ON CONFLICT DO NOTHING)
-  for (const term of DEFAULT_STOPLIST) {
-    await sql`INSERT INTO brand_stoplist (term) VALUES (${term}) ON CONFLICT (term) DO NOTHING`;
-  }
+  // Seed stoplist on first init — single batch insert (idempotent via ON CONFLICT DO NOTHING)
+  const stopTerms = [...DEFAULT_STOPLIST];
+  await sql`
+    INSERT INTO brand_stoplist (term)
+    SELECT t.term FROM UNNEST(${stopTerms}::text[]) AS t(term)
+    ON CONFLICT (term) DO NOTHING
+  `;
 
   dbInitialised = true;
 }
@@ -322,25 +325,33 @@ export async function persistNewCanonicals(
   entries: NewCanonical[],
 ): Promise<Map<string, string>> {
   const result = new Map<string, string>();
-  for (const e of entries) {
-    // ON CONFLICT DO UPDATE so we always get the id back
-    const row = await sql`
-      INSERT INTO canonical_brands (display_name, normalized_name)
-      VALUES (${e.displayName}, ${e.normalizedName})
-      ON CONFLICT (normalized_name) DO UPDATE SET normalized_name = EXCLUDED.normalized_name
-      RETURNING id, display_name
-    `;
-    const id = row.rows[0].id as number;
-    const displayName = row.rows[0].display_name as string;
+  if (!entries.length) return result;
 
-    // Create self-alias so future runs hit the cache immediately
-    await sql`
-      INSERT INTO brand_aliases (raw_name, canonical_id)
-      VALUES (${e.normalizedName}, ${id})
-      ON CONFLICT (raw_name) DO NOTHING
-    `;
+  // Batch all canonical inserts in a single statement using unnest.
+  // ON CONFLICT DO UPDATE returns the winning row (existing or inserted).
+  const displayNames = entries.map((e) => e.displayName);
+  const normalizedNames = entries.map((e) => e.normalizedName);
+  const rows = await sql`
+    INSERT INTO canonical_brands (display_name, normalized_name)
+    SELECT * FROM UNNEST(
+      ${displayNames}::text[],
+      ${normalizedNames}::text[]
+    ) AS t(display_name, normalized_name)
+    ON CONFLICT (normalized_name) DO UPDATE SET normalized_name = EXCLUDED.normalized_name
+    RETURNING id, display_name, normalized_name
+  `;
 
-    result.set(e.normalizedName, displayName);
+  // Batch self-alias inserts in a single statement
+  const ids = rows.rows.map((r) => r.id as number);
+  const norms = rows.rows.map((r) => r.normalized_name as string);
+  await sql`
+    INSERT INTO brand_aliases (raw_name, canonical_id)
+    SELECT * FROM UNNEST(${norms}::text[], ${ids}::int[]) AS t(raw_name, canonical_id)
+    ON CONFLICT (raw_name) DO NOTHING
+  `;
+
+  for (const r of rows.rows) {
+    result.set(r.normalized_name as string, r.display_name as string);
   }
   return result;
 }
@@ -368,14 +379,28 @@ export interface ReviewQueueEntry {
 }
 
 export async function addToReviewQueue(entries: ReviewQueueEntry[]): Promise<void> {
-  for (const e of entries) {
-    await sql`
-      INSERT INTO brand_review_queue (raw_name, suggested_canonical, levenshtein_dist, first_seen, occurrence_count)
-      VALUES (${e.rawName}, ${e.suggestedCanonical}, ${e.levenshteinDist}, ${e.firstSeen}::date, 1)
-      ON CONFLICT (raw_name) DO UPDATE SET
-        occurrence_count = brand_review_queue.occurrence_count + 1
-    `;
-  }
+  if (!entries.length) return;
+  const rawNames = entries.map((e) => e.rawName);
+  const suggestedCanonicals = entries.map((e) => e.suggestedCanonical);
+  const levenshteinDists = entries.map((e) => e.levenshteinDist);
+  const firstSeens = entries.map((e) => e.firstSeen);
+  await sql`
+    INSERT INTO brand_review_queue (raw_name, suggested_canonical, levenshtein_dist, first_seen, occurrence_count)
+    SELECT
+      t.raw_name,
+      t.suggested_canonical,
+      t.levenshtein_dist::int,
+      t.first_seen::date,
+      1
+    FROM UNNEST(
+      ${rawNames}::text[],
+      ${suggestedCanonicals}::text[],
+      ${levenshteinDists}::text[],
+      ${firstSeens}::text[]
+    ) AS t(raw_name, suggested_canonical, levenshtein_dist, first_seen)
+    ON CONFLICT (raw_name) DO UPDATE SET
+      occurrence_count = brand_review_queue.occurrence_count + 1
+  `;
 }
 
 // ── response_canonical_brands writes ─────────────────────────────────────────
@@ -387,14 +412,17 @@ export interface ResponseBrandEntry {
 }
 
 export async function persistResponseCanonicalBrands(entries: ResponseBrandEntry[]): Promise<void> {
-  for (const e of entries) {
-    await sql`
-      INSERT INTO response_canonical_brands (response_id, canonical_brand, position)
-      VALUES (${e.responseId}, ${e.canonicalBrand}, ${e.position})
-      ON CONFLICT (response_id, canonical_brand) DO UPDATE SET
-        position = LEAST(response_canonical_brands.position, EXCLUDED.position)
-    `;
-  }
+  if (!entries.length) return;
+  const responseIds = entries.map((e) => e.responseId);
+  const canonicalBrands = entries.map((e) => e.canonicalBrand);
+  const positions = entries.map((e) => e.position);
+  await sql`
+    INSERT INTO response_canonical_brands (response_id, canonical_brand, position)
+    SELECT * FROM UNNEST(${responseIds}::int[], ${canonicalBrands}::text[], ${positions}::int[])
+      AS t(response_id, canonical_brand, position)
+    ON CONFLICT (response_id, canonical_brand) DO UPDATE SET
+      position = LEAST(response_canonical_brands.position, EXCLUDED.position)
+  `;
 }
 
 // ── Top-15 eligibility helper ─────────────────────────────────────────────────
