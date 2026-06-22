@@ -5,7 +5,7 @@ import { initBrandVisibilityDB, insertRawResponse, insertCollectionError, getDai
 import { runAllAggregations } from "@/lib/brand-visibility/aggregation";
 
 export const dynamic = "force-dynamic";
-export const maxDuration = 60;
+export const maxDuration = 300;
 
 // ── Split-job design ───────────────────────────────────────────────────────────
 // 220 calls from syd1 to US APIs (~2-3s each) exceeds the Hobby plan's 60s limit
