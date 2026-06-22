@@ -44,6 +44,6 @@ app/wizard/
 
 # Brand intelligence (dev-only, not for production)
 app/api/brand-intelligence/
-app/api/cron/
+app/api/cron/brand-intelligence/
 lib/db.ts
 lib/run-brand-intelligence.ts

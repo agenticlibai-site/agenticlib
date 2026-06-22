@@ -5,8 +5,16 @@
       "schedule": "0 2 * * *"
     },
     {
-      "path": "/api/cron/brand-visibility-collection",
+      "path": "/api/cron/brand-visibility-collection?model=claude-haiku-4-5",
       "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/cron/brand-visibility-collection?model=gpt-4o-mini",
+      "schedule": "10 3 * * *"
+    },
+    {
+      "path": "/api/cron/brand-visibility-collection?aggregate",
+      "schedule": "25 3 * * *"
     }
   ]
 }
