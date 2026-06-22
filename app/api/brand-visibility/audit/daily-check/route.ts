@@ -85,7 +85,9 @@ export async function GET(request: Request) {
       ORDER BY model, model_snapshot
     `,
 
-    // 4. Collection errors
+    // 4. Active (non-archived) collection errors only.
+    // Errors from superseded failed runs are archived automatically when a retry
+    // succeeds and are excluded here so error_count reflects the current run only.
     sql`
       SELECT
         prompt_id,
@@ -96,6 +98,7 @@ export async function GET(request: Request) {
         created_at::text        AS created_at
       FROM collection_errors
       WHERE date = ${date}::date
+        AND archived = FALSE
       ORDER BY prompt_id, model, run_number
     `,
 
@@ -119,11 +122,9 @@ export async function GET(request: Request) {
     health: {
       total_rows_stored: totalRows,
       expected_total: 220,
-      // complete reflects whether raw_responses data is structurally complete for this date.
-      // collection_errors are historical — a previous failed run's errors don't undo a
-      // successful re-run that filled in all 220 rows.
       complete: totalRows === 220 && missingResult.rows.length === 0,
       missing_cells: missingResult.rows.length,
+      // active errors only — errors from superseded failed runs are archived and not counted
       error_count: errorsResult.rows.length,
       summary_brands: summaryResult.rows.length,
     },

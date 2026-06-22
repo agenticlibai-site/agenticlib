@@ -199,6 +199,23 @@ export async function initBrandVisibilityDB(): Promise<void> {
     ON CONFLICT (term) DO NOTHING
   `;
 
+  // Add archived column to collection_errors for per-run scoping (safe if already exists)
+  await sql`ALTER TABLE collection_errors ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE`;
+
+  // One-time cleanup: archive errors for any (date, model) pair that already has a full
+  // set of 110 successful raw_responses rows — those errors were from superseded failed runs.
+  await sql`
+    UPDATE collection_errors ce
+    SET archived = TRUE
+    WHERE ce.archived = FALSE
+      AND ce.model IS NOT NULL
+      AND (
+        SELECT COUNT(*)
+        FROM raw_responses rr
+        WHERE rr.date = ce.date AND rr.model = ce.model
+      ) = 110
+  `;
+
   dbInitialised = true;
 }
 
@@ -224,6 +241,19 @@ export async function insertRawResponse(row: {
       brands         = EXCLUDED.brands,
       model_snapshot = EXCLUDED.model_snapshot,
       created_at     = NOW()
+  `;
+}
+
+/**
+ * Archive all active (non-archived) collection_errors for a specific date + model.
+ * Call this at the START of a collection retry so errors from the previous attempt
+ * don't persist as active errors once a new run begins.
+ */
+export async function archiveErrorsForRun(date: string, model: string): Promise<void> {
+  await sql`
+    UPDATE collection_errors
+    SET archived = TRUE
+    WHERE date = ${date}::date AND model = ${model} AND archived = FALSE
   `;
 }
 
@@ -493,13 +523,13 @@ export async function getLLMVisibility(): Promise<
 
 // ── Observability ──────────────────────────────────────────────────────────────
 
-export async function getDailyRunStats(date: string): Promise<{ success: number; errors: number }> {
+export async function getDailyRunStats(date: string): Promise<{ success: number; activeErrors: number }> {
   const [successResult, errorResult] = await Promise.all([
     sql`SELECT COUNT(*) AS count FROM raw_responses WHERE date = ${date}::date`,
-    sql`SELECT COUNT(*) AS count FROM collection_errors WHERE date = ${date}::date`,
+    sql`SELECT COUNT(*) AS count FROM collection_errors WHERE date = ${date}::date AND archived = FALSE`,
   ]);
   return {
     success: parseInt(successResult.rows[0]?.count ?? "0", 10),
-    errors: parseInt(errorResult.rows[0]?.count ?? "0", 10),
+    activeErrors: parseInt(errorResult.rows[0]?.count ?? "0", 10),
   };
 }

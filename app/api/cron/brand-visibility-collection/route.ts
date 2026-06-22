@@ -1,8 +1,15 @@
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
 import { PROMPTS, COLLECTION_SYSTEM_PROMPT } from "@/lib/brand-visibility/prompts";
-import { initBrandVisibilityDB, insertRawResponse, insertCollectionError, getDailyRunStats } from "@/lib/brand-visibility/db";
+import {
+  initBrandVisibilityDB,
+  insertRawResponse,
+  insertCollectionError,
+  archiveErrorsForRun,
+  getDailyRunStats,
+} from "@/lib/brand-visibility/db";
 import { runAllAggregations } from "@/lib/brand-visibility/aggregation";
+import { sendEmail } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 300;
@@ -107,20 +114,62 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const modelParam = searchParams.get("model");    // "claude-haiku-4-5" | "gpt-4o-mini" | null
   const aggregateOnly = searchParams.has("aggregate");
+  const testAlert = searchParams.has("test_alert"); // force-fires an alert email without real work
 
-  const today = new Date().toISOString().split("T")[0];
-  const windowStartDate = new Date();
+  const now = new Date();
+  const today = now.toISOString().split("T")[0];
+  const runTimestamp = now.toISOString().replace("T", " ").slice(0, 19) + " UTC";
+
+  const windowStartDate = new Date(now);
   windowStartDate.setDate(windowStartDate.getDate() - 6);
   const windowStart = windowStartDate.toISOString().split("T")[0];
+
+  // ── Test-alert mode ────────────────────────────────────────────────────────
+  // ?test_alert — sends a fake failure email to verify delivery end-to-end,
+  // without touching any real data. Safe to call at any time.
+  if (testAlert) {
+    await sendEmail({
+      subject: `[AgenticLib] TEST ALERT — Brand Visibility Pipeline (${today})`,
+      html: `
+        <p>This is a <strong>test alert</strong> triggered manually via <code>?test_alert</code>.</p>
+        <p>If you received this, email alerting is working correctly for the brand-visibility pipeline.</p>
+        <p>Timestamp: ${runTimestamp}</p>
+      `,
+    }).catch((e) => console.error("[alert] test email failed:", e));
+    return Response.json({ mode: "test_alert", email_sent: true, timestamp: runTimestamp });
+  }
 
   // ── Aggregate-only mode (third cron, 3:25 AM UTC) ─────────────────────────
   if (aggregateOnly) {
     await runAllAggregations(today, windowStart);
     const stats = await getDailyRunStats(today);
+
+    const EXPECTED_TOTAL = 220;
+    const healthy = stats.success === EXPECTED_TOTAL && stats.activeErrors === 0;
+
+    if (!healthy) {
+      await sendEmail({
+        subject: `[AgenticLib] ALERT — Brand Visibility Aggregation failed (${today})`,
+        html: `
+          <h2>Brand Visibility Pipeline — Aggregation Health Check Failed</h2>
+          <table style="border-collapse:collapse;font-family:monospace">
+            <tr><td style="padding:4px 12px 4px 0"><strong>Run timestamp</strong></td><td>${runTimestamp}</td></tr>
+            <tr><td style="padding:4px 12px 4px 0"><strong>Date</strong></td><td>${today}</td></tr>
+            <tr><td style="padding:4px 12px 4px 0"><strong>Rows stored</strong></td><td>${stats.success} / ${EXPECTED_TOTAL}</td></tr>
+            <tr><td style="padding:4px 12px 4px 0"><strong>Active errors</strong></td><td>${stats.activeErrors}</td></tr>
+            <tr><td style="padding:4px 12px 4px 0"><strong>complete</strong></td><td>${stats.success === EXPECTED_TOTAL ? "true" : "false"}</td></tr>
+          </table>
+          <p>Check <code>/api/brand-visibility/audit/daily-check</code> for details.</p>
+        `,
+      }).catch((e) => console.error("[alert] aggregation failure email failed:", e));
+    }
+
     return Response.json({
       mode: "aggregate_only",
       date: today,
       db_success_rows: stats.success,
+      active_errors: stats.activeErrors,
+      healthy,
       window_start: windowStart,
       window_end: today,
     });
@@ -135,6 +184,13 @@ export async function GET(request: Request) {
     : ["claude-haiku-4-5", "gpt-4o-mini"];
 
   const expected = PROMPTS.length * RUNS_PER_PROMPT * modelsToRun.length;
+
+  // Archive any errors from previous attempts for these models before retrying.
+  // This scopes error_count to the current run only.
+  for (const m of modelsToRun) {
+    await archiveErrorsForRun(today, m);
+  }
+
   const tasks: (() => Promise<{ success: boolean }>)[] = [];
 
   for (const prompt of PROMPTS) {
@@ -183,6 +239,24 @@ export async function GET(request: Request) {
 
   const results = await runWithConcurrency(tasks, BATCH_CONCURRENCY, BATCH_DELAY_MS);
   const succeeded = results.filter((r) => r.success).length;
+  const failed = expected - succeeded;
+
+  if (failed > 0) {
+    await sendEmail({
+      subject: `[AgenticLib] ALERT — Brand Visibility Collection failed (${modelParam ?? "all"}, ${today})`,
+      html: `
+        <h2>Brand Visibility Pipeline — Collection Failures</h2>
+        <table style="border-collapse:collapse;font-family:monospace">
+          <tr><td style="padding:4px 12px 4px 0"><strong>Run timestamp</strong></td><td>${runTimestamp}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0"><strong>Model</strong></td><td>${modelParam ?? "all"}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0"><strong>Date</strong></td><td>${today}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0"><strong>Succeeded</strong></td><td>${succeeded} / ${expected}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0"><strong>Failed</strong></td><td>${failed}</td></tr>
+        </table>
+        <p>Check <code>/api/brand-visibility/audit/daily-check</code> for error details.</p>
+      `,
+    }).catch((e) => console.error("[alert] collection failure email failed:", e));
+  }
 
   return Response.json({
     mode: "collection",
@@ -190,6 +264,6 @@ export async function GET(request: Request) {
     date: today,
     expected,
     succeeded,
-    failed: expected - succeeded,
+    failed,
   });
 }
