@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/brand-intelligence",
       "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/brand-visibility-collection",
+      "schedule": "0 3 * * *"
     }
   ]
 }
