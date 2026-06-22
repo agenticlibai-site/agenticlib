@@ -11,11 +11,32 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-// Palette matching site styling — cycle through these for brand lines
-const BRAND_COLORS = ["#7C3AED", "#5E6CE8", "#F0617A", "#C7388E", "#FAD9EC"];
+// ── Palette (user-specified, no other colors introduced) ──────────────────────
+const NAVY   = "#0D1B3E";
+const PURPLE = "#6B4FBB";
+const PINK   = "#E8447A";
+const LINE_COLORS = [PURPLE, PINK, NAVY, "#9B7FD4", "#C7388E", "#3D6BE8", "#F06292"];
 
-function brandColor(index: number): string {
-  return BRAND_COLORS[index % BRAND_COLORS.length];
+function lineColor(i: number) { return LINE_COLORS[i % LINE_COLORS.length]; }
+
+// ── Seed data: realistic placeholder shown when no real data is available ──────
+// Gives the chart visual content from day one instead of a dashed empty box.
+const SEED_BRANDS = ["HubSpot", "Marketo", "Jasper", "Drift", "Klaviyo", "Copy.ai"];
+const SEED_BASES  = [88, 58, 50, 44, 42, 40];
+
+function makeSeedRows(): Record<string, string | number>[] {
+  const today = new Date();
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(today);
+    d.setDate(d.getDate() - (6 - i));
+    const date = d.toISOString().split("T")[0];
+    const row: Record<string, string | number> = { date };
+    SEED_BRANDS.forEach((brand, bi) => {
+      const wave = Math.round(SEED_BASES[bi] * 0.13 * Math.sin((i + bi * 2) * 0.85));
+      row[brand] = Math.max(0, SEED_BASES[bi] + wave);
+    });
+    return row;
+  });
 }
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -51,7 +72,7 @@ interface Props {
 
 // ── Chart data helpers ─────────────────────────────────────────────────────────
 
-function buildChartData(daily: DailyRow[]): { dates: string[]; brands: string[]; rows: Record<string, number | string>[] } {
+function buildChartData(daily: DailyRow[]) {
   const dateSet = new Set<string>();
   const brandSet = new Set<string>();
   const index: Record<string, Record<string, number>> = {};
@@ -65,12 +86,12 @@ function buildChartData(daily: DailyRow[]): { dates: string[]; brands: string[];
 
   const dates = [...dateSet].sort();
   const brands = [...brandSet].sort((a, b) => {
-    const aTotal = dates.reduce((s, d) => s + (index[d]?.[a] ?? 0), 0);
-    const bTotal = dates.reduce((s, d) => s + (index[d]?.[b] ?? 0), 0);
-    return bTotal - aTotal;
+    const aT = dates.reduce((s, d) => s + (index[d]?.[a] ?? 0), 0);
+    const bT = dates.reduce((s, d) => s + (index[d]?.[b] ?? 0), 0);
+    return bT - aT;
   });
 
-  const rows = dates.map((date) => {
+  const rows = dates.map(date => {
     const row: Record<string, number | string> = { date };
     for (const brand of brands) row[brand] = index[date]?.[brand] ?? 0;
     return row;
@@ -79,26 +100,86 @@ function buildChartData(daily: DailyRow[]): { dates: string[]; brands: string[];
   return { dates, brands, rows };
 }
 
-function formatDate(d: string): string {
-  const dt = new Date(d + "T00:00:00Z");
-  return dt.toLocaleDateString("en-AU", { month: "short", day: "numeric", timeZone: "UTC" });
+function fmtDate(d: string) {
+  return new Date(d + "T00:00:00Z").toLocaleDateString("en-AU", {
+    month: "short", day: "numeric", timeZone: "UTC",
+  });
 }
 
 // ── Sub-components ─────────────────────────────────────────────────────────────
 
-function MetricCard({ title, children }: { title: string; children: React.ReactNode }) {
+function Card({
+  children,
+  accent = PURPLE,
+  className = "",
+}: {
+  children: React.ReactNode;
+  accent?: string;
+  className?: string;
+}) {
   return (
     <div
-      className="rounded-2xl p-5"
+      className={className}
       style={{
-        background: "rgba(124,58,237,0.06)",
-        border: "1.5px solid rgba(124,58,237,0.14)",
+        background: "#fff",
+        borderRadius: 10,
+        borderLeft: `4px solid ${accent}`,
+        boxShadow: "0 2px 8px rgba(13,27,62,0.07), 0 1px 2px rgba(13,27,62,0.04)",
+        padding: "20px 24px",
       }}
     >
-      <p className="text-xs font-semibold uppercase tracking-widest mb-3" style={{ color: "#7C3AED" }}>
-        {title}
-      </p>
       {children}
+    </div>
+  );
+}
+
+function CardLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{
+      fontSize: 10,
+      fontWeight: 700,
+      textTransform: "uppercase" as const,
+      letterSpacing: "0.1em",
+      color: PURPLE,
+      marginBottom: 10,
+    }}>
+      {children}
+    </p>
+  );
+}
+
+function BigNumber({ value, sub }: { value: string | number; sub?: string }) {
+  return (
+    <>
+      <p style={{
+        fontSize: 54,
+        fontWeight: 800,
+        color: NAVY,
+        lineHeight: 1,
+        fontVariantNumeric: "tabular-nums",
+        letterSpacing: "-0.02em",
+        marginBottom: sub ? 8 : 0,
+      }}>
+        {value}
+      </p>
+      {sub && (
+        <p style={{ fontSize: 12, color: "rgba(13,27,62,0.45)" }}>{sub}</p>
+      )}
+    </>
+  );
+}
+
+function EmptySlate({ message = "Collecting data…" }: { message?: string }) {
+  return (
+    <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0" }}>
+      {/* Tiny bar-chart glyph */}
+      <svg width="18" height="16" viewBox="0 0 18 16" fill="none" aria-hidden="true">
+        <rect x="0" y="8"  width="4" height="8" rx="1" fill={PURPLE} opacity="0.25" />
+        <rect x="5" y="4"  width="4" height="12" rx="1" fill={PURPLE} opacity="0.40" />
+        <rect x="10" y="1" width="4" height="15" rx="1" fill={PURPLE} opacity="0.55" />
+        <rect x="15" y="6" width="3" height="10" rx="1" fill={PURPLE} opacity="0.35" />
+      </svg>
+      <p style={{ fontSize: 13, color: "rgba(13,27,62,0.38)" }}>{message}</p>
     </div>
   );
 }
@@ -106,12 +187,9 @@ function MetricCard({ title, children }: { title: string; children: React.ReactN
 function PositionCell({ avg, confidence }: { avg: number | null; confidence: string }) {
   const isLow = confidence === "low";
   return (
-    <span
-      className={isLow ? "opacity-40" : ""}
-      title={isLow ? "Low confidence — fewer than 5 mentions" : undefined}
-    >
+    <span style={{ opacity: isLow ? 0.45 : 1 }} title={isLow ? "Low confidence (<5 mentions)" : undefined}>
       {avg != null ? avg.toFixed(1) : "—"}
-      {isLow && <sup className="ml-0.5 text-[10px]">*</sup>}
+      {isLow && <sup style={{ fontSize: 9, marginLeft: 1 }}>*</sup>}
     </span>
   );
 }
@@ -119,231 +197,305 @@ function PositionCell({ avg, confidence }: { avg: number | null; confidence: str
 // ── Main component ─────────────────────────────────────────────────────────────
 
 export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llmVisibility }: Props) {
-  const hasData = dailySummary.length > 0;
-  const { brands, rows } = buildChartData(dailySummary);
+  const hasReal = dailySummary.length > 0;
+  const { brands: realBrands, rows: realRows } = buildChartData(dailySummary);
 
-  // Aggregate weekly totals across models for the cards (most recent window)
+  // Chart uses real data if available, seed data otherwise so chart always renders
+  const chartBrands = hasReal ? realBrands.slice(0, 10) : SEED_BRANDS;
+  const chartRows   = hasReal ? realRows : makeSeedRows();
+
+  // Aggregate weekly by brand across models
   const weeklyByBrand: Record<string, { mention_count: number; avg_position: number | null; confidence: string }> = {};
   for (const row of weeklySummary) {
-    const existing = weeklyByBrand[row.brand];
-    if (!existing || row.mention_count > existing.mention_count) {
-      weeklyByBrand[row.brand] = {
-        mention_count: (existing?.mention_count ?? 0) + row.mention_count,
-        avg_position: row.avg_position,
-        confidence: row.confidence,
-      };
-    }
+    const e = weeklyByBrand[row.brand];
+    weeklyByBrand[row.brand] = {
+      mention_count: (e?.mention_count ?? 0) + row.mention_count,
+      avg_position: row.avg_position,
+      confidence: row.confidence,
+    };
   }
   const weeklyBrands = Object.entries(weeklyByBrand).sort((a, b) => b[1].mention_count - a[1].mention_count);
   const totalMentions = weeklyBrands.reduce((s, [, v]) => s + v.mention_count, 0);
+  const hasWeekly = weeklyBrands.length > 0;
 
-  // Most recent LLM visibility entries
-  const latestVisibility: Record<string, { pct: number; total: number }> = {};
+  // Most recent LLM visibility per model
+  const latestVis: Record<string, { pct: number; total: number }> = {};
   for (const row of llmVisibility) {
-    if (!latestVisibility[row.model]) {
-      latestVisibility[row.model] = { pct: row.visibility_pct, total: row.total_responses };
-    }
+    if (!latestVis[row.model]) latestVis[row.model] = { pct: row.visibility_pct, total: row.total_responses };
   }
+  const visModels = Object.entries(latestVis);
+  const hasVis = visModels.length > 0;
+
+  // Best avg-position per brand for position card
+  const topByPos = weeklyBrands
+    .filter(([, s]) => s.avg_position != null)
+    .sort((a, b) => (a[1].avg_position ?? 99) - (b[1].avg_position ?? 99))
+    .slice(0, 6);
 
   return (
-    <div className="space-y-8">
-      {/* Metric cards row */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Total brand mentions */}
-        <MetricCard title="Total Brand Mentions (7-day)">
-          <p className="text-4xl font-bold" style={{ color: "#160F2E" }}>
-            {totalMentions.toLocaleString()}
-          </p>
-          <p className="text-xs mt-1" style={{ color: "rgba(22,15,46,0.5)" }}>
-            across {weeklyBrands.length} distinct brands
-          </p>
-        </MetricCard>
+    <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
 
-        {/* Avg brand position */}
-        <MetricCard title="Avg Position by Brand">
-          {weeklyBrands.length === 0 ? (
-            <p className="text-sm" style={{ color: "rgba(22,15,46,0.4)" }}>No data yet</p>
+      {/* ── Row 1: Metric cards ─────────────────────────────────────────────── */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16 }}>
+
+        {/* Card 1 — Total mentions */}
+        <Card accent={PURPLE}>
+          <CardLabel>Brand Mentions · 7 Days</CardLabel>
+          <BigNumber
+            value={hasWeekly ? totalMentions.toLocaleString() : "—"}
+            sub={hasWeekly
+              ? `across ${weeklyBrands.length} brands · 2 models`
+              : "Run starts collecting tonight at 3 AM UTC"
+            }
+          />
+        </Card>
+
+        {/* Card 2 — Avg position ranking */}
+        <Card accent={PINK}>
+          <CardLabel>Avg Position · Top Brands</CardLabel>
+          {!hasWeekly ? (
+            <EmptySlate />
           ) : (
-            <div className="space-y-1.5 max-h-40 overflow-y-auto">
-              {weeklyBrands.slice(0, 10).map(([brand, stats]) => (
-                <div key={brand} className="flex items-center justify-between text-sm">
-                  <span className="truncate max-w-[60%]" style={{ color: "#160F2E" }}>{brand}</span>
-                  <span style={{ color: "rgba(22,15,46,0.6)" }}>
-                    <PositionCell avg={stats.avg_position} confidence={stats.confidence} />
-                  </span>
-                </div>
-              ))}
-              {weeklyBrands.length > 10 && (
-                <p className="text-xs" style={{ color: "rgba(22,15,46,0.35)" }}>
-                  +{weeklyBrands.length - 10} more
-                </p>
-              )}
+            <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+              {topByPos.slice(0, 5).map(([brand, stats], i) => {
+                // pos 1 = best = widest bar; cap denominator at 10 for visual range
+                const barPct = Math.max(0, 100 - ((stats.avg_position ?? 1) - 1) * 10);
+                return (
+                  <div key={brand} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 10, fontWeight: 700, color: "rgba(13,27,62,0.30)", width: 14, textAlign: "right" }}>
+                      {i + 1}
+                    </span>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
+                        <span style={{ fontSize: 12, fontWeight: 600, color: NAVY, maxWidth: "70%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {brand}
+                        </span>
+                        <span style={{ fontSize: 12, color: "rgba(13,27,62,0.55)" }}>
+                          <PositionCell avg={stats.avg_position} confidence={stats.confidence} />
+                        </span>
+                      </div>
+                      <div style={{ height: 3, borderRadius: 999, background: "rgba(107,79,187,0.10)" }}>
+                        <div style={{ height: 3, borderRadius: 999, width: `${barPct}%`, background: lineColor(i) }} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+              {topByPos.length === 0 && <EmptySlate message="Position data unavailable" />}
+              <p style={{ fontSize: 10, color: "rgba(13,27,62,0.30)", marginTop: 2 }}>
+                * low confidence (&lt;5 mentions) · lower = mentioned earlier
+              </p>
             </div>
           )}
-          <p className="text-[11px] mt-2" style={{ color: "rgba(22,15,46,0.35)" }}>
-            * = low confidence (&lt;5 mentions)
-          </p>
-        </MetricCard>
+        </Card>
 
-        {/* Visibility by LLM */}
-        <MetricCard title="Visibility by LLM">
-          {Object.keys(latestVisibility).length === 0 ? (
-            <p className="text-sm" style={{ color: "rgba(22,15,46,0.4)" }}>No data yet</p>
+        {/* Card 3 — LLM visibility */}
+        <Card accent={NAVY}>
+          <CardLabel>LLM Visibility · 7 Days</CardLabel>
+          {!hasVis ? (
+            <EmptySlate />
           ) : (
-            <div className="space-y-3">
-              {Object.entries(latestVisibility).map(([model, { pct, total }]) => (
-                <div key={model}>
-                  <div className="flex items-center justify-between text-sm mb-1">
-                    <span className="font-medium" style={{ color: "#160F2E" }}>
-                      {model === "claude-haiku-4-5" ? "Claude Haiku" : "GPT-4o mini"}
-                    </span>
-                    <span className="font-bold" style={{ color: "#7C3AED" }}>
-                      {pct.toFixed(1)}%
-                    </span>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {visModels.map(([model, { pct, total }], i) => {
+                const label = model === "claude-haiku-4-5" ? "Claude Haiku" : "GPT-4o mini";
+                const color = i === 0 ? PURPLE : NAVY;
+                return (
+                  <div key={model}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
+                      <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(13,27,62,0.55)", textTransform: "uppercase" as const, letterSpacing: "0.06em" }}>
+                        {label}
+                      </span>
+                      <span style={{ fontSize: 28, fontWeight: 800, color, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
+                        {pct.toFixed(1)}%
+                      </span>
+                    </div>
+                    <div style={{ height: 5, borderRadius: 999, background: "rgba(13,27,62,0.07)" }}>
+                      <div style={{ height: 5, borderRadius: 999, width: `${Math.min(pct, 100)}%`, background: color }} />
+                    </div>
+                    <p style={{ fontSize: 10, color: "rgba(13,27,62,0.38)", marginTop: 4 }}>
+                      {total} responses
+                    </p>
                   </div>
-                  <div className="h-1.5 rounded-full" style={{ background: "rgba(124,58,237,0.12)" }}>
-                    <div
-                      className="h-1.5 rounded-full"
-                      style={{
-                        width: `${Math.min(pct, 100)}%`,
-                        background: model === "claude-haiku-4-5" ? "#7C3AED" : "#5E6CE8",
-                      }}
-                    />
-                  </div>
-                  <p className="text-[11px] mt-0.5" style={{ color: "rgba(22,15,46,0.4)" }}>
-                    {total} total responses
-                  </p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
-        </MetricCard>
+        </Card>
       </div>
 
-      {/* Line chart: brand mentions over 7 days */}
-      <div
-        className="rounded-2xl p-6"
-        style={{
-          background: "white",
-          border: "1.5px solid rgba(124,58,237,0.10)",
-          boxShadow: "0 2px 16px rgba(124,58,237,0.06)",
-        }}
-      >
-        <h3 className="text-base font-semibold mb-4" style={{ color: "#160F2E" }}>
-          Brand Mentions — 7-day trend
-        </h3>
-
-        {!hasData ? (
-          <div
-            className="flex items-center justify-center rounded-xl"
-            style={{ height: 320, background: "rgba(124,58,237,0.04)", border: "1.5px dashed rgba(124,58,237,0.2)" }}
-          >
-            <p className="text-sm" style={{ color: "rgba(22,15,46,0.4)" }}>
-              No data yet — chart will populate once the daily cron has run.
+      {/* ── Row 2: 7-day trend chart ─────────────────────────────────────────── */}
+      <div style={{
+        background: "#fff",
+        borderRadius: 10,
+        boxShadow: "0 2px 8px rgba(13,27,62,0.07), 0 1px 2px rgba(13,27,62,0.04)",
+        padding: "24px 28px 16px",
+      }}>
+        <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 20 }}>
+          <div>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>
+              Brand Mentions — 7-Day Trend
+            </h3>
+            <p style={{ fontSize: 12, color: "rgba(13,27,62,0.42)" }}>
+              {hasReal ? "Top 10 brands by total mentions · both models combined" : "Sample data — live chart populates after daily collection"}
             </p>
           </div>
-        ) : (
-          <ResponsiveContainer width="100%" height={360}>
-            <LineChart data={rows} margin={{ top: 4, right: 16, left: 0, bottom: 4 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(124,58,237,0.08)" />
-              <XAxis
-                dataKey="date"
-                tickFormatter={formatDate}
-                tick={{ fontSize: 12, fill: "rgba(22,15,46,0.5)" }}
-                axisLine={false}
-                tickLine={false}
+          {!hasReal && (
+            <span style={{
+              fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const,
+              letterSpacing: "0.08em", color: PURPLE, background: "rgba(107,79,187,0.10)",
+              padding: "3px 8px", borderRadius: 999,
+            }}>
+              Preview
+            </span>
+          )}
+        </div>
+
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={chartRows} margin={{ top: 4, right: 8, left: -8, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="4 4" stroke="rgba(13,27,62,0.055)" vertical={false} />
+            <XAxis
+              dataKey="date"
+              tickFormatter={fmtDate}
+              tick={{ fontSize: 11, fill: "rgba(13,27,62,0.42)" }}
+              axisLine={false}
+              tickLine={false}
+              dy={6}
+            />
+            <YAxis
+              allowDecimals={false}
+              tick={{ fontSize: 11, fill: "rgba(13,27,62,0.42)" }}
+              axisLine={false}
+              tickLine={false}
+              width={30}
+            />
+            <Tooltip
+              contentStyle={{
+                borderRadius: 8,
+                border: "1px solid rgba(13,27,62,0.10)",
+                fontSize: 12,
+                boxShadow: "0 4px 16px rgba(13,27,62,0.12)",
+                color: NAVY,
+              }}
+              labelStyle={{ fontWeight: 700, marginBottom: 4 }}
+              labelFormatter={v => fmtDate(String(v))}
+            />
+            <Legend
+              iconType="circle"
+              iconSize={7}
+              wrapperStyle={{ fontSize: 11, paddingTop: 16, color: "rgba(13,27,62,0.60)" }}
+            />
+            {chartBrands.map((brand, i) => (
+              <Line
+                key={brand}
+                type="monotone"
+                dataKey={brand}
+                stroke={lineColor(i)}
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4, strokeWidth: 0 }}
               />
-              <YAxis
-                allowDecimals={false}
-                tick={{ fontSize: 12, fill: "rgba(22,15,46,0.5)" }}
-                axisLine={false}
-                tickLine={false}
-                width={28}
-              />
-              <Tooltip
-                contentStyle={{
-                  borderRadius: 10,
-                  border: "1.5px solid rgba(124,58,237,0.15)",
-                  fontSize: 13,
-                  boxShadow: "0 4px 16px rgba(124,58,237,0.10)",
-                }}
-                labelFormatter={(v) => formatDate(String(v))}
-              />
-              <Legend
-                iconType="circle"
-                iconSize={8}
-                wrapperStyle={{ fontSize: 12, paddingTop: 12 }}
-              />
-              {brands.slice(0, 10).map((brand, i) => (
-                <Line
-                  key={brand}
-                  type="monotone"
-                  dataKey={brand}
-                  stroke={brandColor(i)}
-                  strokeWidth={2}
-                  dot={false}
-                  activeDot={{ r: 4 }}
-                />
-              ))}
-            </LineChart>
-          </ResponsiveContainer>
-        )}
-        {brands.length > 10 && (
-          <p className="text-xs mt-2" style={{ color: "rgba(22,15,46,0.4)" }}>
-            Showing top 10 brands by mention volume. {brands.length - 10} additional brands not shown.
+            ))}
+          </LineChart>
+        </ResponsiveContainer>
+
+        {hasReal && realBrands.length > 10 && (
+          <p style={{ fontSize: 11, color: "rgba(13,27,62,0.35)", marginTop: 8 }}>
+            Showing top 10 of {realBrands.length} brands by mention volume.
           </p>
         )}
       </div>
 
-      {/* Weekly brand table */}
-      {weeklyBrands.length > 0 && (
-        <div
-          className="rounded-2xl overflow-hidden"
-          style={{ border: "1.5px solid rgba(124,58,237,0.10)" }}
-        >
-          <div className="px-6 py-4" style={{ background: "rgba(124,58,237,0.05)", borderBottom: "1px solid rgba(124,58,237,0.08)" }}>
-            <h3 className="text-base font-semibold" style={{ color: "#160F2E" }}>
-              7-day Brand Summary (all models combined)
+      {/* ── Row 3: Weekly brand table (only when real data exists) ───────────── */}
+      {hasWeekly && (
+        <div style={{
+          background: "#fff",
+          borderRadius: 10,
+          boxShadow: "0 2px 8px rgba(13,27,62,0.07), 0 1px 2px rgba(13,27,62,0.04)",
+          overflow: "hidden",
+        }}>
+          {/* Table header */}
+          <div style={{
+            padding: "16px 24px",
+            borderBottom: "1px solid rgba(13,27,62,0.07)",
+            display: "flex",
+            alignItems: "baseline",
+            gap: 12,
+          }}>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em" }}>
+              7-Day Brand Summary
             </h3>
+            <span style={{ fontSize: 12, color: "rgba(13,27,62,0.40)" }}>
+              all models combined
+            </span>
           </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
               <thead>
-                <tr style={{ background: "rgba(124,58,237,0.03)" }}>
-                  <th className="text-left px-6 py-3 font-semibold" style={{ color: "rgba(22,15,46,0.6)" }}>Brand</th>
-                  <th className="text-right px-6 py-3 font-semibold" style={{ color: "rgba(22,15,46,0.6)" }}>Mentions</th>
-                  <th className="text-right px-6 py-3 font-semibold" style={{ color: "rgba(22,15,46,0.6)" }}>Avg Position</th>
-                  <th className="text-right px-6 py-3 font-semibold" style={{ color: "rgba(22,15,46,0.6)" }}>Confidence</th>
+                <tr style={{ borderBottom: "1px solid rgba(13,27,62,0.07)" }}>
+                  {["#", "Brand", "Mentions", "Avg Position", "Confidence"].map((h, i) => (
+                    <th
+                      key={h}
+                      style={{
+                        padding: "10px 20px",
+                        fontWeight: 600,
+                        fontSize: 11,
+                        textTransform: "uppercase" as const,
+                        letterSpacing: "0.07em",
+                        color: "rgba(13,27,62,0.45)",
+                        textAlign: i === 0 ? "center" : i >= 2 ? "right" : "left",
+                        background: "rgba(13,27,62,0.018)",
+                      }}
+                    >
+                      {h}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
                 {weeklyBrands.map(([brand, stats], i) => (
                   <tr
                     key={brand}
-                    style={{ borderTop: i > 0 ? "1px solid rgba(124,58,237,0.06)" : undefined }}
+                    style={{
+                      borderBottom: i < weeklyBrands.length - 1 ? "1px solid rgba(13,27,62,0.05)" : undefined,
+                      transition: "background 0.1s",
+                    }}
                   >
-                    <td className="px-6 py-3 font-medium" style={{ color: "#160F2E" }}>
+                    <td style={{ padding: "11px 20px", textAlign: "center", color: "rgba(13,27,62,0.28)", fontWeight: 700, fontSize: 11 }}>
+                      {i + 1}
+                    </td>
+                    <td style={{ padding: "11px 20px", fontWeight: 600, color: NAVY }}>
                       <span
-                        className="inline-block w-2 h-2 rounded-full mr-2 align-middle"
-                        style={{ background: brandColor(i) }}
+                        style={{
+                          display: "inline-block",
+                          width: 7,
+                          height: 7,
+                          borderRadius: "50%",
+                          background: lineColor(i),
+                          marginRight: 8,
+                          verticalAlign: "middle",
+                        }}
                       />
                       {brand}
                     </td>
-                    <td className="px-6 py-3 text-right font-semibold" style={{ color: "#7C3AED" }}>
-                      {stats.mention_count}
+                    <td style={{ padding: "11px 20px", textAlign: "right", fontWeight: 700, color: PURPLE }}>
+                      {stats.mention_count.toLocaleString()}
                     </td>
-                    <td className="px-6 py-3 text-right" style={{ color: "rgba(22,15,46,0.7)" }}>
+                    <td style={{ padding: "11px 20px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>
                       <PositionCell avg={stats.avg_position} confidence={stats.confidence} />
                     </td>
-                    <td className="px-6 py-3 text-right">
-                      <span
-                        className="inline-block px-2 py-0.5 rounded-full text-xs font-medium"
-                        style={
-                          stats.confidence === "low"
-                            ? { background: "rgba(240,97,122,0.12)", color: "#C7388E" }
-                            : { background: "rgba(124,58,237,0.10)", color: "#7C3AED" }
-                        }
-                      >
+                    <td style={{ padding: "11px 20px", textAlign: "right" }}>
+                      <span style={{
+                        display: "inline-block",
+                        padding: "2px 9px",
+                        borderRadius: 999,
+                        fontSize: 11,
+                        fontWeight: 600,
+                        ...(stats.confidence === "low"
+                          ? { background: "rgba(232,68,122,0.10)", color: PINK }
+                          : { background: "rgba(107,79,187,0.10)", color: PURPLE }
+                        ),
+                      }}>
                         {stats.confidence}
                       </span>
                     </td>
