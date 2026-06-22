@@ -508,6 +508,46 @@ export async function getWeeklySummary(): Promise<
   return result.rows as { window_start: string; window_end: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string }[];
 }
 
+// ── Cohort-filtered reads (Phase 3) ───────────────────────────────────────────
+// These functions mirror getDailySummary / getWeeklySummary but join against
+// top_15_brands so only the locked cohort is returned.
+//
+// NOT wired into any live route yet — switch the dashboard calls once
+// top_15_brands is populated (see getEligibleBrandsForTop15).
+// Do not activate before ~7 days of data have accumulated.
+
+export async function getCohortDailySummary(days = 7): Promise<
+  { date: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string }[]
+> {
+  await initBrandVisibilityDB();
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - days + 1);
+  const cutoffStr = cutoff.toISOString().split("T")[0];
+
+  const result = await sql`
+    SELECT ds.date::text AS date, ds.brand, ds.model, ds.mention_count, ds.avg_position, ds.confidence
+    FROM daily_summary ds
+    JOIN top_15_brands t ON t.brand_name = ds.brand
+    WHERE ds.date >= ${cutoffStr}::date
+    ORDER BY ds.date ASC, ds.mention_count DESC
+  `;
+  return result.rows as { date: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string }[];
+}
+
+export async function getCohortWeeklySummary(): Promise<
+  { window_start: string; window_end: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string }[]
+> {
+  await initBrandVisibilityDB();
+  const result = await sql`
+    SELECT ws.window_start::text, ws.window_end::text, ws.brand, ws.model, ws.mention_count, ws.avg_position, ws.confidence
+    FROM weekly_summary ws
+    JOIN top_15_brands t ON t.brand_name = ws.brand
+    ORDER BY ws.window_start DESC, ws.mention_count DESC
+    LIMIT 200
+  `;
+  return result.rows as { window_start: string; window_end: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string }[];
+}
+
 export async function getLLMVisibility(): Promise<
   { window_start: string; window_end: string; model: string; visibility_pct: number; total_responses: number }[]
 > {

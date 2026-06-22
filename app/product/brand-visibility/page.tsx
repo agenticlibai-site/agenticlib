@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { getDailySummary, getWeeklySummary, getLLMVisibility, initBrandVisibilityDB } from "@/lib/brand-visibility/db";
+// TODO: Switch to getCohortDailySummary / getCohortWeeklySummary once top_15_brands is populated
+// (see getEligibleBrandsForTop15 in db.ts). Do not switch before ~7 days of data have accumulated.
 import BrandVisibilityCharts from "./BrandVisibilityCharts";
 
 export const dynamic = "force-dynamic";
