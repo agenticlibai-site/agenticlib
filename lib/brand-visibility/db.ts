@@ -162,6 +162,38 @@ export async function initBrandVisibilityDB(): Promise<void> {
     )
   `;
 
+  // Brands excluded from aggregation output (daily_summary, weekly_summary) but
+  // kept in raw_responses and response_canonical_brands for audit purposes.
+  // Add new entries directly: INSERT INTO brand_denylist (brand_name) VALUES ('...')
+  await sql`
+    CREATE TABLE IF NOT EXISTS brand_denylist (
+      id         SERIAL PRIMARY KEY,
+      brand_name TEXT NOT NULL UNIQUE,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  const denyEntries = [
+    // Legacy / non-AI-first martech platforms
+    "HubSpot", "Salesforce", "Salesforce Einstein", "Salesforce Marketing Cloud",
+    "Marketo", "Adobe Analytics", "Adobe", "Adobe Sensei", "Adobe Experience Cloud",
+    "Adobe Marketo Engage", "Adobe Advertising Cloud", "Tableau", "Segment",
+    "Mixpanel", "Amplitude", "Looker", "Power BI", "Zoho", "Zoho CRM",
+    "Zoho Analytics", "Pipedrive", "ZoomInfo", "Domo", "Klipfolio", "Heap",
+    "Google Search Console", "Google Marketing Platform", "Microsoft Advertising",
+    "Ahrefs", "Moz", "Semrush", "SE Ranking", "BuzzSumo", "Brightedge",
+    // Model / maker-name artifacts
+    "Claude", "Anthropic", "ChatGPT", "OpenAI", "Gemini", "Google",
+    // Customer support / adjacent tools — out of scope for marketing-agent tracking
+    "Intercom",
+    // Legacy paid-ads platforms predating the AI agent wave
+    "Pardot", "WordStream", "Kenshoo", "Skai",
+  ];
+  await sql`
+    INSERT INTO brand_denylist (brand_name)
+    SELECT t.name FROM UNNEST(${denyEntries}::text[]) AS t(name)
+    ON CONFLICT (brand_name) DO NOTHING
+  `;
+
   // ── Audit / changelog tables ───────────────────────────────────────────────
 
   // Records every change to the 22-prompt set in prompts.ts.
@@ -299,6 +331,17 @@ export async function loadResolutionCache(): Promise<ResolutionCache> {
   const stoplist = new Set<string>(stopRows.rows.map((r) => r.term as string));
 
   return { aliases, canonicals, stoplist };
+}
+
+/**
+ * Returns all denylisted brand names as a lowercase Set for O(1) lookup.
+ * Called once per aggregation run; the denylist is applied before any row is
+ * written to daily_summary or weekly_summary.
+ */
+export async function loadDenylist(): Promise<Set<string>> {
+  await initBrandVisibilityDB();
+  const result = await sql`SELECT brand_name FROM brand_denylist`;
+  return new Set(result.rows.map((r) => (r.brand_name as string).toLowerCase()));
 }
 
 // ── Raw brand rows for aggregation ────────────────────────────────────────────
