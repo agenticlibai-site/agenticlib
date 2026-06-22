@@ -546,7 +546,7 @@ export async function getWeeklySummary(): Promise<
     SELECT window_start::text, window_end::text, brand, model, mention_count, avg_position, confidence
     FROM weekly_summary
     ORDER BY window_start DESC, mention_count DESC
-    LIMIT 200
+    LIMIT 2000
   `;
   return result.rows as { window_start: string; window_end: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string }[];
 }
@@ -586,7 +586,7 @@ export async function getCohortWeeklySummary(): Promise<
     FROM weekly_summary ws
     JOIN top_15_brands t ON t.brand_name = ws.brand
     ORDER BY ws.window_start DESC, ws.mention_count DESC
-    LIMIT 200
+    LIMIT 2000
   `;
   return result.rows as { window_start: string; window_end: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string }[];
 }
