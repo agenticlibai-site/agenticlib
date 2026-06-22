@@ -1,13 +1,34 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Share2, Mail, X as XIcon, ArrowUp, MessageCircle } from "lucide-react";
-import BrandIntelligencePreview from "./components/BrandIntelligencePreview";
+
+const SHARED_SUB = "Get agent recommendations matched to your specific workflows, backed by the comparison analytics.";
+
+const HERO_STATES = [
+  {
+    pill: "AI Agent Builders",
+    sub: "Give product, engineering, and marketing teams an edge with hands-on intelligence on where your product features lead and what you can build next.",
+    cta: true,
+    duration: 10000,
+  },
+  { pill: "Individuals",  sub: SHARED_SUB, cta: false, duration: 7000 },
+  { pill: "Businesses",   sub: SHARED_SUB, cta: false, duration: 7000 },
+] as const;
 export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
   const videoPlayedRef = useRef(false);
+  const [stateIdx, setStateIdx] = useState(0);
+
+  useEffect(() => {
+    const t = setTimeout(
+      () => setStateIdx((i) => (i + 1) % HERO_STATES.length),
+      HERO_STATES[stateIdx].duration,
+    );
+    return () => clearTimeout(t);
+  }, [stateIdx]);
 
   const handleVideoPlay = () => {
     if (videoPlayedRef.current) return;
@@ -27,32 +48,27 @@ export default function Home() {
       </div>
 
       {/* NAVBAR */}
-      <header className="fixed top-0 inset-x-0 z-[999] px-4 pt-3 pointer-events-auto">
-        <div className="max-w-6xl mx-auto px-6 py-3 flex items-center" style={{ background: "rgba(255,255,255,0.72)", backdropFilter: "blur(16px)", border: "0.5px solid rgba(255,255,255,0.9)", borderRadius: "14px" }}>
+      <header className="relative bg-white z-[999]" style={{ borderBottom: "1px solid #f0f0f0" }}>
+        <div className="max-w-7xl mx-auto px-8 py-4 flex items-center">
 
           {/* LOGO */}
-          <div className="flex items-start gap-2 flex-shrink-0">
-            <img src="/logo.png" alt="AgenticLib logo" className="h-6 w-auto mt-0.5" />
-            <div className="flex flex-col leading-none">
-              <span className="text-lg font-semibold tracking-tight">AgenticLib</span>
-              <span className="text-[10px] text-zinc-900 font-normal tracking-wide mt-0.5">AI Agent Comparison Intelligence Company</span>
-            </div>
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <img src="/logo.png" alt="AgenticLib logo" className="h-6 w-auto" />
+            <span className="text-lg font-semibold tracking-tight">AgenticLib</span>
           </div>
 
-          {/* NAV — centred in remaining space, hidden on mobile */}
-          <div className="flex-1 justify-center hidden md:flex">
-<nav className="flex items-center gap-8">
+          {/* NAV — left, close to logo */}
+          <nav className="hidden md:flex items-center ml-10" style={{ gap: 36 }}>
 
   {/* Product dropdown */}
   <div className="relative group">
     <button
       className="transition px-3 py-1.5 rounded-lg flex items-center gap-1"
-      style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b", background: "none", border: "none", cursor: "pointer" }}
-      onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLButtonElement).style.color = "#18181b"; }}
-      onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = ""; (e.currentTarget as HTMLButtonElement).style.color = "#52525b"; }}
+      style={{ fontSize: "15.5px", fontWeight: 400, color: "#18181b", background: "none", border: "none", cursor: "pointer" }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.05)"; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = ""; }}
     >
       Product
-      <span className="text-[11px] font-medium leading-none px-2 py-[2px] rounded-full bg-green-100 text-green-700 border border-green-200 whitespace-nowrap">Alpha v1.0</span>
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginTop: 1 }}>
         <path d="M2.5 4.5l3.5 3.5 3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
@@ -92,13 +108,24 @@ export default function Home() {
     </div>
   </div>
 
+  {/* Solutions — plain link, no dropdown */}
+  <Link
+    href="/#how-it-works"
+    className="transition px-3 py-1.5 rounded-lg"
+    style={{ fontSize: "15.5px", fontWeight: 400, color: "#18181b" }}
+    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; }}
+    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}
+  >
+    Solutions
+  </Link>
+
   {/* Resources dropdown */}
   <div className="relative group">
     <button
       className="transition px-3 py-1.5 rounded-lg flex items-center gap-1"
-      style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b", background: "none", border: "none", cursor: "pointer" }}
-      onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLButtonElement).style.color = "#18181b"; }}
-      onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = ""; (e.currentTarget as HTMLButtonElement).style.color = "#52525b"; }}
+      style={{ fontSize: "15.5px", fontWeight: 400, color: "#18181b", background: "none", border: "none", cursor: "pointer" }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.05)"; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = ""; }}
     >
       Resources
       <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginTop: 1 }}>
@@ -161,15 +188,15 @@ export default function Home() {
       }
     }}
     className="transition px-3 py-1.5 rounded-lg"
-    style={{ fontSize: "13.5px", fontWeight: 400, color: "#52525b" }}
-    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; (e.currentTarget as HTMLAnchorElement).style.color = "#18181b"; }}
-    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; (e.currentTarget as HTMLAnchorElement).style.color = "#52525b"; }}
+    style={{ fontSize: "15.5px", fontWeight: 400, color: "#18181b" }}
+    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; }}
+    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}
   >
     Contact Us
   </Link>
 
 </nav>
-          </div>
+
           {/* Hamburger — mobile only */}
           <button
             className="md:hidden ml-auto flex flex-col justify-center items-center gap-1.5 p-2 rounded-lg"
@@ -219,6 +246,7 @@ export default function Home() {
             )}
             {/* Top-level links */}
             {[
+              { label: "Solutions", href: "/#how-it-works" },
               { label: "Blog", href: "/blog" },
               { label: "AI Agent Library", href: "/explore" },
               { label: "Contact Us", href: "/#contact" },
@@ -237,96 +265,108 @@ export default function Home() {
         )}
       </header>
 
-      <main className="pt-16 relative z-0">
+      <main className="relative z-0">
 
-        {/* HERO */}
-        <section className="relative z-0 max-w-6xl mx-auto px-6 pt-20 pb-8 text-center">
+        {/* ── HERO ───────────────────────────────────────────── */}
+        <div style={{ margin: "16px 32px 0", borderRadius: "32px 32px 0 0", overflow: "hidden", border: "1.5px solid #ffffff", boxShadow: "0 8px 40px rgba(124,58,237,0.12)" }}>
+        <section
+          className="relative text-center"
+          style={{
+            fontFamily: "var(--font-schibsted), var(--font-geist-sans), sans-serif",
+          }}
+        >
+          {/* Layer 1 — palette colour blobs */}
+          <div className="absolute inset-0" style={{
+            background: [
+              "radial-gradient(circle at 2% 0%,    rgba(124,58,237,.65)  0%, transparent 48%)",
+              "radial-gradient(circle at 100% 4%,  rgba(94,108,232,.55)  0%, transparent 50%)",
+              "radial-gradient(circle at 98% 100%, rgba(240,97,122,.50)  0%, transparent 50%)",
+              "radial-gradient(circle at 0% 100%,  rgba(199,60,142,.45)  0%, transparent 50%)",
+              "radial-gradient(circle at 50% 50%,  rgba(250,217,236,.35) 0%, transparent 60%)",
+            ].join(", "),
+          }} />
 
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-semibold mb-8" style={{ lineHeight: 1.15 }}>
-            Choosing the right <span className="gradient-text">AI agent</span>, made simple.
-          </h1>
+          {/* Layer 2 — frosted veil blurs the blobs into a soft pastel haze */}
+          <div className="absolute inset-0" style={{
+            backdropFilter: "blur(80px) saturate(150%)",
+            WebkitBackdropFilter: "blur(80px) saturate(150%)",
+            background: "rgba(255,255,255,.33)",
+          }} />
 
-          <p className="text-xl font-medium mb-1" style={{ background: "linear-gradient(90deg, #5B5BD6, #F4436C)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-            Your go-to AI agent recommendation platform.
-          </p>
-          <p className="text-lg text-zinc-700 mx-auto mb-10" style={{ maxWidth: "500px" }}>
-            Stop researching. Start using the right one.
-          </p>
+          {/* Content — sits above both background layers */}
+          <div className="relative max-w-5xl mx-auto px-8 pt-20 pb-16" style={{ zIndex: 2 }}>
 
-          <div className="flex justify-center w-full">
-            <a
-              href="#demo"
-              className="text-white font-medium transition hover:opacity-90"
-              style={{
-                background: "#F0607E",
-                padding: "16px 40px",
-                borderRadius: "12px",
-                boxShadow: "0 4px 20px rgba(240, 96, 126, 0.3)",
-              }}
+            {/* Headline */}
+            <h1
+              className="text-[40px] md:text-[54px] lg:text-[64px] mb-5"
+              style={{ color: "#160F2E", fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.08 }}
             >
-              Watch demo
-            </a>
+              Comparison intelligence for the{" "}
+              <span style={{ display: "inline-block", background: "linear-gradient(95deg, #6B4FBB 15%, #E8447A 85%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", paddingBottom: "0.15em" }}>
+                AI agent era
+              </span>
+            </h1>
+
+            {/* Rotating pill + subhead + CTA — key forces remount and fade-in animation on each state change */}
+            <style>{`@keyframes heroFadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}`}</style>
+            <div key={stateIdx} style={{ animation: "heroFadeIn 0.55s ease forwards" }}>
+
+              {/* Tagline + pill */}
+              <div style={{ margin: "32px 0" }}>
+                <span style={{ fontSize: "22px", fontWeight: 500, color: "#160F2E" }}>AgenticLib, the hub for </span>
+                <span style={{ fontSize: "22px", fontWeight: 500, color: "#7C3AED", background: "rgba(124,58,237,0.10)", borderRadius: 4, padding: "2px 8px" }}>
+                  {HERO_STATES[stateIdx].pill}
+                </span>
+              </div>
+
+              {/* Subhead */}
+              <p className="text-base md:text-lg mx-auto" style={{ color: "rgba(22,15,46,0.6)", maxWidth: "520px", lineHeight: 1.35, marginTop: "40px" }}>
+                {HERO_STATES[stateIdx].sub}
+              </p>
+
+              {/* CTA — only shown for state 1 */}
+              {HERO_STATES[stateIdx].cta && (
+                <div className="flex items-center justify-center gap-3 mt-10 mb-0">
+                  <a
+                    href="/#contact"
+                    className="inline-flex items-center gap-2 font-semibold transition-all"
+                    style={{ background: "rgba(124,58,237,0.18)", border: "1.5px solid rgba(124,58,237,0.35)", borderRadius: 9999, padding: "14px 28px", fontSize: "15px", textDecoration: "none", letterSpacing: "-0.01em", color: "#160F2E", fontWeight: 600 }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.28)"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.18)"; }}
+                  >
+                    Get Started <span aria-hidden>›</span>
+                  </a>
+                </div>
+              )}
+
+            </div>
+
+            {/* State indicator dots — auto-rotation only, no click handlers */}
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginTop: 32 }}>
+              {HERO_STATES.map((_, i) => (
+                <div key={i} style={{
+                  height: 8,
+                  width: i === stateIdx ? 24 : 8,
+                  borderRadius: 999,
+                  background: i === stateIdx ? "#E8447A" : "rgba(22,15,46,0.18)",
+                  transition: "width 0.35s ease, background 0.35s ease",
+                }} />
+              ))}
+            </div>
+
           </div>
-
         </section>
+        </div>
 
 
 
-        {/* DEMO */}
-        <section id="demo" className="pb-10 text-center" style={{ marginTop: "12px" }}>
 
-          <h2 className="text-4xl font-semibold mb-3">
-            See how it works
-          </h2>
-          <p className="text-zinc-900 text-base mb-6">
-            Watch how AgenticLib turns a few simple questions into tailored AI agent recommendations.
-          </p>
 
-          <div className="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl border">
-            <video
-              src="/AgenticLib demo video.mp4"
-              controls
-              poster="/recommendations-cover.png"
-              className="w-full"
-              onPlay={handleVideoPlay}
-            />
-          </div>
-
-        </section>
-
-        {/* FEEDBACK CARD */}
-        <FeedbackCard />
-
-        {/* DEMO 2 */}
-        <section className="pb-10 text-center" style={{ marginTop: "48px" }}>
-
-          <h2 className="text-4xl font-semibold mb-3">
-            Where we&apos;re headed
-          </h2>
-          <p className="text-zinc-900 text-base mb-6">
-            Compare, research, and decide — all in one place.
-          </p>
-
-          <div className="max-w-4xl mx-auto rounded-2xl overflow-hidden shadow-xl border">
-            <video
-              src="/C&R Video.mp4"
-              controls
-              autoPlay={false}
-              poster="/research-cover.png"
-              className="w-full"
-            />
-          </div>
-
-        </section>
-
-        {process.env.NODE_ENV === "development" && <BrandIntelligencePreview />}
 
       </main>
 
-
       <section id="contact" style={{ background: "linear-gradient(160deg, #F0F0FF 0%, #ffffff 60%)", paddingTop: "80px", paddingBottom: "80px" }}>
         <div className="max-w-3xl mx-auto px-6 text-center">
-
           <h2
             className="text-3xl font-bold mb-3 leading-snug"
             style={{ background: "linear-gradient(90deg, #5B5BD6, #E8633A)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
@@ -334,7 +374,6 @@ export default function Home() {
             Stay connected
           </h2>
           <p className="text-zinc-500 text-base mb-10">Follow along as we build.</p>
-
           <div className="flex flex-wrap justify-center gap-3 mb-10">
             {[
               { href: "https://www.linkedin.com/company/108024233/", Icon: Share2, label: "LinkedIn" },
@@ -358,14 +397,9 @@ export default function Home() {
               </a>
             ))}
           </div>
-
-          <span
-            className="inline-block text-xs font-medium px-4 py-1.5 rounded-full"
-            style={{ background: "#EEF0FF", color: "#5B5BD6" }}
-          >
+          <span className="inline-block text-xs font-medium px-4 py-1.5 rounded-full" style={{ background: "#EEF0FF", color: "#5B5BD6" }}>
             Backed by Blackbird VC Giants Program
           </span>
-
         </div>
       </section>
 
@@ -391,70 +425,4 @@ export default function Home() {
   );
 }
 
-function FeedbackCard() {
-  const [feedback, setFeedback] = useState("");
-  const [industry, setIndustry] = useState("");
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!feedback.trim() || !industry.trim()) return;
-    setStatus("sending");
-    try {
-      const res = await fetch("/api/demo-feedback", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ feedback, industry }),
-      });
-      setStatus(res.ok ? "sent" : "error");
-    } catch {
-      setStatus("error");
-    }
-  };
-
-  return (
-    <section className="max-w-2xl mx-auto px-6 pb-2" style={{ marginTop: 32 }}>
-      <div className="rounded-2xl p-6" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 2px 12px rgba(0,0,0,0.06)" }}>
-        {status === "sent" ? (
-          <div className="text-center py-4">
-            <div className="text-2xl mb-2">🙏</div>
-            <p className="font-semibold text-zinc-800 mb-1">Thanks for your feedback!</p>
-            <p className="text-sm text-zinc-500">It genuinely helps us build the right thing.</p>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div>
-              <h3 className="text-lg font-bold text-zinc-900 mb-1">What did you think of the demo?</h3>
-              <p className="text-sm text-zinc-500">We&apos;re building AgenticLib and your feedback shapes what we build next.</p>
-            </div>
-            <textarea
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-              placeholder="Share your thoughts..."
-              rows={4}
-              className="w-full rounded-xl px-4 py-3 text-sm text-zinc-800 resize-none focus:outline-none focus:ring-2"
-              style={{ border: "1px solid #e5e7eb", background: "#fafafa" }}
-            />
-            <input
-              value={industry}
-              onChange={(e) => setIndustry(e.target.value)}
-              placeholder="Your industry or domain"
-              required
-              className="w-full rounded-xl px-4 py-3 text-sm text-zinc-800 focus:outline-none focus:ring-2"
-              style={{ border: "1px solid #e5e7eb", background: "#fafafa" }}
-            />
-            <button
-              type="submit"
-              disabled={status === "sending" || !feedback.trim() || !industry.trim()}
-              className="w-full py-3 rounded-xl text-sm font-semibold text-white transition hover:opacity-90 disabled:opacity-50"
-              style={{ background: "#5B5BD6" }}
-            >
-              {status === "sending" ? "Sending..." : "Submit Feedback"}
-            </button>
-            {status === "error" && <p className="text-xs text-red-500 text-center">Something went wrong — please try again.</p>}
-          </form>
-        )}
-      </div>
-    </section>
-  );
-}
