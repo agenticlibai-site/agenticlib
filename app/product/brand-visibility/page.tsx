@@ -29,7 +29,7 @@ export default async function BrandVisibilityPage() {
   return (
     <main
       className="min-h-screen relative overflow-hidden"
-      style={{ background: "linear-gradient(160deg, #EEF0FF 0%, #F5F3FF 50%, #ffffff 100%)" }}
+      style={{ background: "linear-gradient(160deg, #E8E4F5 0%, #EFF0FF 45%, #F7F5FF 100%)" }}
     >
       {/* Background grain */}
       <svg className="pointer-events-none fixed inset-0 w-full h-full z-0" style={{ opacity: 0.10 }} aria-hidden="true">
