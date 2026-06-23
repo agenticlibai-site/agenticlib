@@ -14,7 +14,7 @@
     },
     {
       "path": "/api/cron/brand-visibility-collection?aggregate",
-      "schedule": "25 3 * * *"
+      "schedule": "45 3 * * *"
     },
     {
       "path": "/api/cron/daily-check-watchdog",
