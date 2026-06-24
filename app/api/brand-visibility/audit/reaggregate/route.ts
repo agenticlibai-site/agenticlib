@@ -32,6 +32,7 @@ export async function GET(request: Request) {
     "AdRoll", "Marin Software", "Kissmetrics", "Meta Ads Manager", "Terminus",
     "Apollo", "Hunter.io", "Clay",
     "Optimizely",
+    "6sense", "Demandbase",
   ];
   await sql`
     INSERT INTO brand_denylist (brand_name)
