@@ -201,7 +201,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
   const { brands: realBrands, rows: realRows } = buildChartData(dailySummary);
 
   // Chart uses real data if available, seed data otherwise so chart always renders
-  const chartBrands = hasReal ? realBrands.slice(0, 10) : SEED_BRANDS;
+  const chartBrands = hasReal ? realBrands.slice(0, 15) : SEED_BRANDS;
   const chartRows   = hasReal ? realRows : makeSeedRows();
 
   // Aggregate weekly by brand across models
@@ -248,45 +248,6 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
               : "Run starts collecting tonight at 3 AM UTC"
             }
           />
-        </Card>
-
-        {/* Card 2 — Avg position ranking */}
-        <Card accent={PINK}>
-          <CardLabel>Avg Position · Top Brands</CardLabel>
-          {!hasWeekly ? (
-            <EmptySlate />
-          ) : (
-            <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
-              {topByPos.slice(0, 5).map(([brand, stats], i) => {
-                // pos 1 = best = widest bar; cap denominator at 10 for visual range
-                const barPct = Math.max(0, 100 - ((stats.avg_position ?? 1) - 1) * 10);
-                return (
-                  <div key={brand} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <span style={{ fontSize: 10, fontWeight: 700, color: "rgba(13,27,62,0.30)", width: 14, textAlign: "right" }}>
-                      {i + 1}
-                    </span>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 3 }}>
-                        <span style={{ fontSize: 12, fontWeight: 600, color: NAVY, maxWidth: "70%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                          {brand}
-                        </span>
-                        <span style={{ fontSize: 12, color: "rgba(13,27,62,0.55)" }}>
-                          <PositionCell avg={stats.avg_position} confidence={stats.confidence} />
-                        </span>
-                      </div>
-                      <div style={{ height: 3, borderRadius: 999, background: "rgba(107,79,187,0.10)" }}>
-                        <div style={{ height: 3, borderRadius: 999, width: `${barPct}%`, background: lineColor(i) }} />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-              {topByPos.length === 0 && <EmptySlate message="Position data unavailable" />}
-              <p style={{ fontSize: 10, color: "rgba(13,27,62,0.30)", marginTop: 2 }}>
-                * low confidence (&lt;5 mentions) · lower = mentioned earlier
-              </p>
-            </div>
-          )}
         </Card>
 
         {/* Card 3 — LLM visibility */}
@@ -336,7 +297,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
               Brand Mentions — 7-Day Trend
             </h3>
             <p style={{ fontSize: 12, color: "rgba(13,27,62,0.42)" }}>
-              {hasReal ? "Top 10 brands by total mentions · both models combined" : "Sample data — live chart populates after daily collection"}
+              {hasReal ? "Top 15 brands by total mentions · both models combined" : "Sample data — live chart populates after daily collection"}
             </p>
           </div>
           {!hasReal && (
@@ -398,9 +359,9 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
           </LineChart>
         </ResponsiveContainer>
 
-        {hasReal && realBrands.length > 10 && (
+        {hasReal && realBrands.length > 15 && (
           <p style={{ fontSize: 11, color: "rgba(13,27,62,0.35)", marginTop: 8 }}>
-            Showing top 10 of {realBrands.length} brands by mention volume.
+            Showing top 15 of {realBrands.length} brands by mention volume.
           </p>
         )}
       </div>
