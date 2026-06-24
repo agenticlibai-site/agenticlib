@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   LineChart,
   Line,
@@ -7,7 +8,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 
@@ -204,6 +204,13 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
   const chartBrands = hasReal ? realBrands.slice(0, 15) : SEED_BRANDS;
   const chartRows   = hasReal ? realRows : makeSeedRows();
 
+  // Brand filter state — all visible by default; toggled client-side, no re-fetch
+  const [hiddenBrands, setHiddenBrands] = useState<Set<string>>(new Set());
+  const toggleBrand = (brand: string) =>
+    setHiddenBrands(prev => { const n = new Set(prev); n.has(brand) ? n.delete(brand) : n.add(brand); return n; });
+  const selectAll = () => setHiddenBrands(new Set());
+  const clearAll  = () => setHiddenBrands(new Set(chartBrands));
+
   // Aggregate weekly by brand across models
   const weeklyByBrand: Record<string, { mention_count: number; avg_position: number | null; confidence: string }> = {};
   for (const row of weeklySummary) {
@@ -340,11 +347,6 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
               labelStyle={{ fontWeight: 700, marginBottom: 4 }}
               labelFormatter={v => fmtDate(String(v))}
             />
-            <Legend
-              iconType="circle"
-              iconSize={7}
-              wrapperStyle={{ fontSize: 11, paddingTop: 16, color: "rgba(13,27,62,0.60)" }}
-            />
             {chartBrands.map((brand, i) => (
               <Line
                 key={brand}
@@ -354,16 +356,71 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                 strokeWidth={2}
                 dot={false}
                 activeDot={{ r: 4, strokeWidth: 0 }}
+                hide={hiddenBrands.has(brand)}
               />
             ))}
           </LineChart>
         </ResponsiveContainer>
 
-        {hasReal && realBrands.length > 15 && (
-          <p style={{ fontSize: 11, color: "rgba(13,27,62,0.35)", marginTop: 8 }}>
-            Showing top 15 of {realBrands.length} brands by mention volume.
-          </p>
-        )}
+        {/* Interactive brand filter — replaces built-in Recharts legend */}
+        <div style={{ marginTop: 14, borderTop: "1px solid rgba(13,27,62,0.06)", paddingTop: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
+            <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: "rgba(13,27,62,0.32)" }}>
+              Brands
+            </span>
+            <div style={{ display: "flex", gap: 10 }}>
+              {(["Select all", "Clear all"] as const).map(label => (
+                <button
+                  key={label}
+                  onClick={label === "Select all" ? selectAll : clearAll}
+                  style={{
+                    fontSize: 10, fontWeight: 600, color: PURPLE,
+                    background: "none", border: "none", cursor: "pointer",
+                    padding: 0, textDecoration: "underline", textUnderlineOffset: 2,
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "5px 16px" }}>
+            {chartBrands.map((brand, i) => {
+              const color = lineColor(i);
+              const visible = !hiddenBrands.has(brand);
+              return (
+                <button
+                  key={brand}
+                  onClick={() => toggleBrand(brand)}
+                  style={{
+                    display: "flex", alignItems: "center", gap: 5,
+                    background: "none", border: "none", cursor: "pointer", padding: "1px 0",
+                  }}
+                >
+                  <span style={{
+                    width: 8, height: 8, borderRadius: "50%", flexShrink: 0,
+                    background: visible ? color : "transparent",
+                    border: `2px solid ${color}`,
+                    transition: "background 0.12s",
+                    display: "inline-block",
+                  }} />
+                  <span style={{
+                    fontSize: 11,
+                    color: visible ? "rgba(13,27,62,0.65)" : "rgba(13,27,62,0.28)",
+                    transition: "color 0.12s",
+                  }}>
+                    {brand}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+          {hasReal && realBrands.length > 15 && (
+            <p style={{ fontSize: 10, color: "rgba(13,27,62,0.30)", marginTop: 8 }}>
+              Showing top 15 of {realBrands.length} brands by mention volume.
+            </p>
+          )}
+        </div>
       </div>
 
       {/* ── Row 3: Weekly brand table (only when real data exists) ───────────── */}
