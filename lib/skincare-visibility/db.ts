@@ -105,6 +105,84 @@ export async function initSkincareDB(): Promise<void> {
     )
   `;
 
+  // ── Part A: Use-case share of voice ───────────────────────────────────────────
+  // Aggregated across all models; low_prompt_coverage flags single-prompt buckets.
+  await sql`
+    CREATE TABLE IF NOT EXISTS skincare_use_case_summary (
+      id                    SERIAL PRIMARY KEY,
+      window_start          DATE    NOT NULL,
+      window_end            DATE    NOT NULL,
+      bucket_tag            TEXT    NOT NULL,
+      brand                 TEXT    NOT NULL,
+      mentions_in_bucket    INTEGER NOT NULL,
+      total_bucket_mentions INTEGER NOT NULL,
+      share_pct             NUMERIC(5,2) NOT NULL,
+      low_prompt_coverage   BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at            TIMESTAMP DEFAULT NOW(),
+      UNIQUE (window_start, window_end, bucket_tag, brand)
+    )
+  `;
+
+  // ── Part B: Sentiment + tag collection (activated after top-10 confirmed) ───
+  // skincare_sentiment_brands: user-populated list of confirmed top-10 brands.
+  // Insert after discovery data is stable: INSERT INTO skincare_sentiment_brands (brand_name) VALUES ('...')
+  await sql`
+    CREATE TABLE IF NOT EXISTS skincare_sentiment_brands (
+      id         SERIAL PRIMARY KEY,
+      brand_name TEXT NOT NULL UNIQUE,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  // One row per (date, brand, model, run_number) — how AI models describe this agent.
+  await sql`
+    CREATE TABLE IF NOT EXISTS skincare_sentiment_responses (
+      id         SERIAL PRIMARY KEY,
+      date       DATE    NOT NULL,
+      brand      TEXT    NOT NULL,
+      model      TEXT    NOT NULL CHECK (model IN ('claude-haiku-4-5', 'gpt-4o-mini')),
+      run_number INTEGER NOT NULL CHECK (run_number BETWEEN 1 AND 3),
+      sentiment  TEXT    NOT NULL CHECK (sentiment IN ('positive', 'neutral', 'negative')),
+      tags       JSONB   NOT NULL DEFAULT '[]',
+      created_at TIMESTAMP DEFAULT NOW(),
+      UNIQUE (date, brand, model, run_number)
+    )
+  `;
+
+  // Malformed JSON responses — logged here instead of dropped silently.
+  await sql`
+    CREATE TABLE IF NOT EXISTS skincare_sentiment_errors (
+      id            SERIAL PRIMARY KEY,
+      date          DATE NOT NULL,
+      brand         TEXT,
+      model         TEXT,
+      run_number    INTEGER,
+      raw_response  TEXT,
+      error_message TEXT,
+      created_at    TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  // Aggregated per-brand sentiment percentages and top tags with cross-brand shared flag.
+  // top_tags schema: [{tag: string, frequency: number, shared: boolean}, ...]
+  // "Shared" means the tag also appears in another confirmed brand's top 4 — surfaced in UI,
+  // not suppressed. An all-shared tag profile is itself a meaningful finding (undifferentiated player).
+  await sql`
+    CREATE TABLE IF NOT EXISTS skincare_sentiment_summary (
+      id              SERIAL PRIMARY KEY,
+      window_start    DATE         NOT NULL,
+      window_end      DATE         NOT NULL,
+      brand           TEXT         NOT NULL,
+      positive_pct    NUMERIC(5,2) NOT NULL,
+      neutral_pct     NUMERIC(5,2) NOT NULL,
+      negative_pct    NUMERIC(5,2) NOT NULL,
+      top_tags        JSONB        NOT NULL DEFAULT '[]',
+      total_responses INTEGER      NOT NULL,
+      created_at      TIMESTAMP    DEFAULT NOW(),
+      UNIQUE (window_start, window_end, brand)
+    )
+  `;
+
   // ── Shared normalization tables (created by marketing pipeline init if not present) ──
   // canonical_brands, brand_aliases, brand_stoplist, brand_review_queue are category-agnostic
   // and shared across pipelines. Ensure they exist here too so skincare can run independently.
