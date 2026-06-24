@@ -197,6 +197,8 @@ export async function initBrandVisibilityDB(): Promise<void> {
     "Apollo", "Hunter.io", "Clay",
     // A/B testing / optimisation (not AI agents)
     "Optimizely",
+    // B2B demand-gen / intent-data platforms (not AI agents)
+    "6sense", "Demandbase",
   ];
   await sql`
     INSERT INTO brand_denylist (brand_name)
