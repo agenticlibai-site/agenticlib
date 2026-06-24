@@ -23,11 +23,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://agenticlib.com"),
   title: {
-    default: "AgenticLib - AI Agent Recommendation Platform",
+    default: "AgenticLib — Comparison Intelligence for AI Agent Builders",
     template: "%s | AgenticLib",
   },
   description:
-    "Get personalised AI agent recommendations for your workflow and goals. Stop researching and start using the right one.",
+    "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
   keywords: [
     "AI agent library",
     "agents library",
@@ -47,24 +47,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "AgenticLib",
-    title: "AgenticLib — AI Agent Recommendation Platform",
+    title: "AgenticLib — Comparison Intelligence for AI Agent Builders",
     description:
-      "Get personalised AI agent recommendations for your workflow and goals. Stop researching and start using the right one.",
+      "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
     url: "https://agenticlib.com",
     images: [
       {
         url: "/recommendations-cover.png",
         width: 1200,
         height: 630,
-        alt: "AgenticLib — AI Agent Library",
+        alt: "AgenticLib — Comparison Intelligence for AI Agent Builders",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AgenticLib - AI Agent Recommendation Platform",
+    title: "AgenticLib — Comparison Intelligence for AI Agent Builders",
     description:
-      "Get personalised AI agent recommendations for your workflow and goals. Stop researching and start using the right one.",
+      "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
     images: ["/recommendations-cover.png"],
   },
   robots: {
