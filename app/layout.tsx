@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Schibsted_Grotesk, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
@@ -20,6 +20,19 @@ const inter = Inter({
   display: "swap",
 });
 
+const schibstedGrotesk = Schibsted_Grotesk({
+  variable: "--font-schibsted",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://agenticlib.com"),
   title: {
@@ -29,18 +42,12 @@ export const metadata: Metadata = {
   description:
     "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
   keywords: [
-    "AI agent library",
-    "agents library",
-    "agentic library",
-    "AI agent recommendation",
-    "personalised AI agent",
-    "find the right AI agent",
-    "best AI agent for marketing",
-    "best AI agent for customer support",
-    "best AI agent for real estate",
-    "best AI agent for finance",
-    "AI agent comparison",
-    "AI agent discovery platform",
+    "AI search visibility",
+    "AI agent comparison tool",
+    "AI brand monitoring",
+    "compare AI agent features",
+    "AI agent benchmarking",
+    "track brand visibility in AI search",
   ],
   authors: [{ name: "AgenticLib" }],
   creator: "AgenticLib",
@@ -84,7 +91,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${schibstedGrotesk.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
 
