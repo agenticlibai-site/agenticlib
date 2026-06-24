@@ -1,0 +1,345 @@
+import { sql } from "@vercel/postgres";
+import { DEFAULT_STOPLIST, type ResolutionCache, type CanonicalEntry } from "@/lib/brand-visibility/normalization";
+
+let dbInitialised = false;
+
+export async function initSkincareDB(): Promise<void> {
+  if (dbInitialised) return;
+
+  // ── Collection tables ──────────────────────────────────────────────────────
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS skincare_raw_responses (
+      id             SERIAL PRIMARY KEY,
+      date           DATE    NOT NULL,
+      prompt_id      INTEGER NOT NULL CHECK (prompt_id BETWEEN 1 AND 13),
+      prompt_text    TEXT    NOT NULL,
+      bucket_tag     TEXT    NOT NULL,
+      model          TEXT    NOT NULL CHECK (model IN ('claude-haiku-4-5', 'gpt-4o-mini')),
+      model_snapshot TEXT,
+      run_number     INTEGER NOT NULL CHECK (run_number BETWEEN 1 AND 3),
+      brands         JSONB   NOT NULL DEFAULT '[]',
+      created_at     TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE UNIQUE INDEX IF NOT EXISTS skincare_raw_responses_unique
+    ON skincare_raw_responses (date, prompt_id, model, run_number)
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS skincare_collection_errors (
+      id            SERIAL PRIMARY KEY,
+      date          DATE    NOT NULL,
+      prompt_id     INTEGER,
+      model         TEXT,
+      run_number    INTEGER,
+      raw_response  TEXT,
+      error_message TEXT,
+      archived      BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at    TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  // Bridge table — canonical brand per skincare response, for LLM visibility queries.
+  await sql`
+    CREATE TABLE IF NOT EXISTS skincare_response_canonical_brands (
+      response_id     INTEGER NOT NULL REFERENCES skincare_raw_responses(id) ON DELETE CASCADE,
+      canonical_brand TEXT    NOT NULL,
+      position        INTEGER NOT NULL,
+      PRIMARY KEY (response_id, canonical_brand)
+    )
+  `;
+
+  // ── Aggregation output tables ──────────────────────────────────────────────
+
+  // No avg_position column — not required for the skincare report.
+  await sql`
+    CREATE TABLE IF NOT EXISTS skincare_daily_summary (
+      id            SERIAL PRIMARY KEY,
+      date          DATE    NOT NULL,
+      brand         TEXT    NOT NULL,
+      model         TEXT    NOT NULL,
+      mention_count INTEGER NOT NULL DEFAULT 0,
+      confidence    TEXT    NOT NULL DEFAULT 'normal' CHECK (confidence IN ('low', 'normal')),
+      created_at    TIMESTAMP DEFAULT NOW(),
+      UNIQUE (date, brand, model)
+    )
+  `;
+
+  // Tracked brand cohort for LLM visibility denominator.
+  // Populate after day-1 review, same process as top_15_brands in marketing pipeline.
+  // When empty, ALL brands count as tracked (safe on day 1).
+  await sql`
+    CREATE TABLE IF NOT EXISTS skincare_tracked_brands (
+      id         SERIAL PRIMARY KEY,
+      brand_name TEXT NOT NULL UNIQUE,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  // Empty denylist — skincare noise differs from marketing noise
+  // (e.g. dermatology clinics, e-commerce sites, beauty blogs).
+  // Add entries after day-1 review: INSERT INTO skincare_denylist (brand_name) VALUES ('...')
+  await sql`
+    CREATE TABLE IF NOT EXISTS skincare_denylist (
+      id         SERIAL PRIMARY KEY,
+      brand_name TEXT NOT NULL UNIQUE,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  // LLM visibility — % of responses in a window that mention ≥1 tracked brand.
+  // Recomputed daily over the growing window (window_start = first collection day, window_end = today).
+  await sql`
+    CREATE TABLE IF NOT EXISTS skincare_llm_visibility (
+      id                SERIAL PRIMARY KEY,
+      window_start      DATE    NOT NULL,
+      window_end        DATE    NOT NULL,
+      model             TEXT    NOT NULL,
+      visibility_pct    NUMERIC(5,2) NOT NULL,
+      total_responses   INTEGER NOT NULL,
+      tracked_responses INTEGER NOT NULL,
+      created_at        TIMESTAMP DEFAULT NOW(),
+      UNIQUE (window_start, window_end, model)
+    )
+  `;
+
+  // ── Shared normalization tables (created by marketing pipeline init if not present) ──
+  // canonical_brands, brand_aliases, brand_stoplist, brand_review_queue are category-agnostic
+  // and shared across pipelines. Ensure they exist here too so skincare can run independently.
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS canonical_brands (
+      id              SERIAL PRIMARY KEY,
+      display_name    TEXT NOT NULL,
+      normalized_name TEXT NOT NULL UNIQUE,
+      created_at      TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS brand_aliases (
+      id           SERIAL PRIMARY KEY,
+      raw_name     TEXT    NOT NULL UNIQUE,
+      canonical_id INTEGER NOT NULL REFERENCES canonical_brands(id) ON DELETE CASCADE,
+      created_at   TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS brand_review_queue (
+      id                   SERIAL PRIMARY KEY,
+      raw_name             TEXT    NOT NULL UNIQUE,
+      suggested_canonical  TEXT,
+      levenshtein_dist     INTEGER,
+      first_seen           DATE    NOT NULL,
+      occurrence_count     INTEGER NOT NULL DEFAULT 1,
+      reviewed             BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at           TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS brand_stoplist (
+      id         SERIAL PRIMARY KEY,
+      term       TEXT NOT NULL UNIQUE,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  const stopTerms = [...DEFAULT_STOPLIST];
+  await sql`
+    INSERT INTO brand_stoplist (term)
+    SELECT t.term FROM UNNEST(${stopTerms}::text[]) AS t(term)
+    ON CONFLICT (term) DO NOTHING
+  `;
+
+  dbInitialised = true;
+}
+
+// ── Raw response writes ────────────────────────────────────────────────────────
+
+export async function insertSkincareRawResponse(row: {
+  date: string;
+  promptId: number;
+  promptText: string;
+  bucketTag: string;
+  model: string;
+  modelSnapshot: string;
+  runNumber: number;
+  brands: string[];
+}): Promise<void> {
+  await sql`
+    INSERT INTO skincare_raw_responses
+      (date, prompt_id, prompt_text, bucket_tag, model, model_snapshot, run_number, brands)
+    VALUES (
+      ${row.date}::date, ${row.promptId}, ${row.promptText}, ${row.bucketTag},
+      ${row.model}, ${row.modelSnapshot}, ${row.runNumber}, ${JSON.stringify(row.brands)}::jsonb
+    )
+    ON CONFLICT (date, prompt_id, model, run_number) DO UPDATE SET
+      brands         = EXCLUDED.brands,
+      model_snapshot = EXCLUDED.model_snapshot,
+      created_at     = NOW()
+  `;
+}
+
+export async function insertSkincareCollectionError(row: {
+  date: string;
+  promptId: number | null;
+  model: string | null;
+  runNumber: number | null;
+  rawResponse: string;
+  errorMessage: string;
+}): Promise<void> {
+  await sql`
+    INSERT INTO skincare_collection_errors
+      (date, prompt_id, model, run_number, raw_response, error_message)
+    VALUES (${row.date}::date, ${row.promptId}, ${row.model}, ${row.runNumber}, ${row.rawResponse}, ${row.errorMessage})
+  `;
+}
+
+export async function archiveSkincareErrors(date: string, model: string): Promise<void> {
+  await sql`
+    UPDATE skincare_collection_errors
+    SET archived = TRUE
+    WHERE date = ${date}::date AND model = ${model} AND archived = FALSE
+  `;
+}
+
+// ── Normalization cache (shared with marketing pipeline) ───────────────────────
+
+export async function loadSkincareResolutionCache(): Promise<ResolutionCache> {
+  const [aliasRows, canonicalRows, stopRows] = await Promise.all([
+    sql`
+      SELECT ba.raw_name, cb.display_name AS canonical
+      FROM brand_aliases ba
+      JOIN canonical_brands cb ON cb.id = ba.canonical_id
+    `,
+    sql`SELECT id, display_name, normalized_name FROM canonical_brands`,
+    sql`SELECT term FROM brand_stoplist`,
+  ]);
+
+  const aliases = new Map<string, string>(
+    aliasRows.rows.map((r) => [r.raw_name as string, r.canonical as string]),
+  );
+  const canonicals: CanonicalEntry[] = canonicalRows.rows.map((r) => ({
+    id: r.id as number,
+    displayName: r.display_name as string,
+    normalizedName: r.normalized_name as string,
+  }));
+  const stoplist = new Set<string>(stopRows.rows.map((r) => r.term as string));
+
+  return { aliases, canonicals, stoplist };
+}
+
+export async function loadSkincareDenylist(): Promise<Set<string>> {
+  const result = await sql`SELECT brand_name FROM skincare_denylist`;
+  return new Set(result.rows.map((r) => (r.brand_name as string).toLowerCase()));
+}
+
+// ── Raw brand rows for aggregation ────────────────────────────────────────────
+
+export interface SkincareRawBrandRow {
+  responseId: number;
+  model: string;
+  brandName: string;
+  position: number;
+}
+
+export async function getSkincareRawBrandsForDate(date: string): Promise<SkincareRawBrandRow[]> {
+  const result = await sql`
+    SELECT r.id AS response_id, r.model, t.brand_name, t.pos::int AS position
+    FROM skincare_raw_responses r,
+         jsonb_array_elements_text(r.brands) WITH ORDINALITY AS t(brand_name, pos)
+    WHERE r.date = ${date}::date
+  `;
+  return result.rows.map((r) => ({
+    responseId: r.response_id as number,
+    model: r.model as string,
+    brandName: r.brand_name as string,
+    position: r.position as number,
+  }));
+}
+
+// ── Canonical brand + alias writes (shared tables) ────────────────────────────
+
+export interface NewCanonical { displayName: string; normalizedName: string; }
+export interface ReviewQueueEntry {
+  rawName: string;
+  suggestedCanonical: string | null;
+  levenshteinDist: number | null;
+  firstSeen: string;
+}
+
+export async function persistNewCanonicals(entries: NewCanonical[]): Promise<Map<string, string>> {
+  const result = new Map<string, string>();
+  if (!entries.length) return result;
+  const displayNames = entries.map((e) => e.displayName);
+  const normalizedNames = entries.map((e) => e.normalizedName);
+  const rows = await sql`
+    INSERT INTO canonical_brands (display_name, normalized_name)
+    SELECT * FROM UNNEST(${displayNames}::text[], ${normalizedNames}::text[]) AS t(display_name, normalized_name)
+    ON CONFLICT (normalized_name) DO UPDATE SET normalized_name = EXCLUDED.normalized_name
+    RETURNING id, display_name, normalized_name
+  `;
+  const ids = rows.rows.map((r) => r.id as number);
+  const norms = rows.rows.map((r) => r.normalized_name as string);
+  await sql`
+    INSERT INTO brand_aliases (raw_name, canonical_id)
+    SELECT * FROM UNNEST(${norms}::text[], ${ids}::int[]) AS t(raw_name, canonical_id)
+    ON CONFLICT (raw_name) DO NOTHING
+  `;
+  for (const r of rows.rows) result.set(r.normalized_name as string, r.display_name as string);
+  return result;
+}
+
+export async function persistAlias(rawName: string, canonicalDisplayName: string): Promise<void> {
+  const row = await sql`SELECT id FROM canonical_brands WHERE display_name = ${canonicalDisplayName} LIMIT 1`;
+  const id = row.rows[0]?.id as number | undefined;
+  if (!id) return;
+  await sql`
+    INSERT INTO brand_aliases (raw_name, canonical_id) VALUES (${rawName}, ${id})
+    ON CONFLICT (raw_name) DO NOTHING
+  `;
+}
+
+export async function addToReviewQueue(entries: ReviewQueueEntry[]): Promise<void> {
+  if (!entries.length) return;
+  const rawNames = entries.map((e) => e.rawName);
+  const suggested = entries.map((e) => e.suggestedCanonical);
+  const dists = entries.map((e) => e.levenshteinDist);
+  const firstSeens = entries.map((e) => e.firstSeen);
+  await sql`
+    INSERT INTO brand_review_queue (raw_name, suggested_canonical, levenshtein_dist, first_seen, occurrence_count)
+    SELECT t.raw_name, t.suggested_canonical, t.levenshtein_dist::int, t.first_seen::date, 1
+    FROM UNNEST(${rawNames}::text[], ${suggested}::text[], ${dists}::text[], ${firstSeens}::text[])
+      AS t(raw_name, suggested_canonical, levenshtein_dist, first_seen)
+    ON CONFLICT (raw_name) DO UPDATE SET occurrence_count = brand_review_queue.occurrence_count + 1
+  `;
+}
+
+export interface SkincareResponseBrandEntry { responseId: number; canonicalBrand: string; position: number; }
+
+export async function persistSkincareResponseCanonicalBrands(entries: SkincareResponseBrandEntry[]): Promise<void> {
+  if (!entries.length) return;
+  const responseIds = entries.map((e) => e.responseId);
+  const canonicalBrands = entries.map((e) => e.canonicalBrand);
+  const positions = entries.map((e) => e.position);
+  await sql`
+    INSERT INTO skincare_response_canonical_brands (response_id, canonical_brand, position)
+    SELECT * FROM UNNEST(${responseIds}::int[], ${canonicalBrands}::text[], ${positions}::int[])
+      AS t(response_id, canonical_brand, position)
+    ON CONFLICT (response_id, canonical_brand) DO UPDATE SET
+      position = LEAST(skincare_response_canonical_brands.position, EXCLUDED.position)
+  `;
+}
+
+// ── Observability ──────────────────────────────────────────────────────────────
+
+export async function getSkincareDailyRunStats(date: string): Promise<{ success: number; activeErrors: number }> {
+  const [s, e] = await Promise.all([
+    sql`SELECT COUNT(*) AS count FROM skincare_raw_responses WHERE date = ${date}::date`,
+    sql`SELECT COUNT(*) AS count FROM skincare_collection_errors WHERE date = ${date}::date AND archived = FALSE`,
+  ]);
+  return {
+    success: parseInt(s.rows[0]?.count ?? "0", 10),
+    activeErrors: parseInt(e.rows[0]?.count ?? "0", 10),
+  };
+}
