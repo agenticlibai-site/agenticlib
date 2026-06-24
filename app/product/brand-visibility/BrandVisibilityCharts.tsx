@@ -362,56 +362,40 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
           </LineChart>
         </ResponsiveContainer>
 
-        {/* Interactive brand filter — replaces built-in Recharts legend */}
+        {/* Interactive brand filter */}
         <div style={{ marginTop: 14, borderTop: "1px solid rgba(13,27,62,0.06)", paddingTop: 12 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
             <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: "rgba(13,27,62,0.32)" }}>
               Brands
             </span>
             <div style={{ display: "flex", gap: 10 }}>
-              {(["Select all", "Clear all"] as const).map(label => (
-                <button
-                  key={label}
-                  onClick={label === "Select all" ? selectAll : clearAll}
-                  style={{
-                    fontSize: 10, fontWeight: 600, color: PURPLE,
-                    background: "none", border: "none", cursor: "pointer",
-                    padding: 0, textDecoration: "underline", textUnderlineOffset: 2,
-                  }}
-                >
-                  {label}
-                </button>
-              ))}
+              <button onClick={selectAll} style={{ fontSize: 10, fontWeight: 600, color: PURPLE, background: "none", border: "none", cursor: "pointer", padding: 0, textDecoration: "underline", textUnderlineOffset: 2 }}>
+                Select all
+              </button>
+              <button onClick={clearAll} style={{ fontSize: 10, fontWeight: 600, color: PURPLE, background: "none", border: "none", cursor: "pointer", padding: 0, textDecoration: "underline", textUnderlineOffset: 2 }}>
+                Clear all
+              </button>
             </div>
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "5px 16px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
             {chartBrands.map((brand, i) => {
               const color = lineColor(i);
-              const visible = !hiddenBrands.has(brand);
+              const checked = !hiddenBrands.has(brand);
               return (
-                <button
+                <label
                   key={brand}
-                  onClick={() => toggleBrand(brand)}
-                  style={{
-                    display: "flex", alignItems: "center", gap: 5,
-                    background: "none", border: "none", cursor: "pointer", padding: "1px 0",
-                  }}
+                  style={{ display: "flex", alignItems: "center", gap: 5, cursor: "pointer" }}
                 >
-                  <span style={{
-                    width: 8, height: 8, borderRadius: "50%", flexShrink: 0,
-                    background: visible ? color : "transparent",
-                    border: `2px solid ${color}`,
-                    transition: "background 0.12s",
-                    display: "inline-block",
-                  }} />
-                  <span style={{
-                    fontSize: 11,
-                    color: visible ? "rgba(13,27,62,0.65)" : "rgba(13,27,62,0.28)",
-                    transition: "color 0.12s",
-                  }}>
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => toggleBrand(brand)}
+                    style={{ accentColor: color, width: 12, height: 12, cursor: "pointer", flexShrink: 0 }}
+                  />
+                  <span style={{ fontSize: 11, color: checked ? color : "rgba(13,27,62,0.28)", fontWeight: checked ? 600 : 400 }}>
                     {brand}
                   </span>
-                </button>
+                </label>
               );
             })}
           </div>
