@@ -3,29 +3,7 @@ import Script from "next/script";
 import { domains } from "@/data/agents";
 
 export const metadata: Metadata = {
-  title: "AI Agent Library — Browse 250+ Agents Across 90+ Business Domains",
-  description:
-    "Explore the AgenticLib AI agent library. Find the best AI agents for customer support, marketing, real estate, finance, education, and 90+ other business domains. Compare agents side by side.",
-  keywords: [
-    "AI agent library",
-    "agents library",
-    "agentic library",
-    "AI agents by industry",
-    "browse AI agents",
-    "AI agent database",
-    "best AI agent for customer support",
-    "best AI agent for marketing",
-    "best AI agent for real estate",
-  ],
-  openGraph: {
-    title: "AI Agent Library — Browse 250+ Agents Across 90+ Business Domains",
-    description:
-      "Explore 250+ AI agents across 90+ business domains. Find, compare, and decide on the best AI agent for your industry.",
-    url: "https://agenticlib.com/explore",
-  },
-  alternates: {
-    canonical: "https://agenticlib.com/explore",
-  },
+  robots: { index: false },
 };
 
 const itemListJsonLd = {

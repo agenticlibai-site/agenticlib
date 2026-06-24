@@ -25,7 +25,7 @@ export async function generateMetadata({
     title: domain.metaTitle,
     description: domain.metaDescription,
     alternates: { canonical: `https://agenticlib.com/domain/${slug}` },
-    ...(NOINDEX_SLUGS.has(slug) && { robots: { index: false, follow: true } }),
+    robots: { index: false, follow: true },
     openGraph: {
       title: domain.metaTitle,
       description: domain.metaDescription,
