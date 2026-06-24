@@ -11,13 +11,33 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-// ── Palette (user-specified, no other colors introduced) ──────────────────────
+// ── Palette ────────────────────────────────────────────────────────────────────
 const NAVY   = "#0D1B3E";
 const PURPLE = "#6B4FBB";
 const PINK   = "#E8447A";
-const LINE_COLORS = [PURPLE, PINK, NAVY, "#9B7FD4", "#C7388E", "#3D6BE8", "#F06292"];
 
-function lineColor(i: number) { return LINE_COLORS[i % LINE_COLORS.length]; }
+// 15 visually distinct colors, one per brand slot — no cycling, no repeats.
+// Hues spread across the full wheel; lightness varied within similar-hue pairs
+// to keep them apart even on a white background.
+const LINE_COLORS = [
+  "#6B4FBB", // 1.  purple
+  "#E8447A", // 2.  raspberry
+  "#2563EB", // 3.  blue
+  "#059669", // 4.  emerald
+  "#DC2626", // 5.  red
+  "#D97706", // 6.  amber
+  "#0891B2", // 7.  cyan
+  "#C026D3", // 8.  fuchsia
+  "#EA580C", // 9.  orange
+  "#0D9488", // 10. teal
+  "#7C3AED", // 11. violet
+  "#65A30D", // 12. lime
+  "#0369A1", // 13. dark blue
+  "#92400E", // 14. brown
+  "#BE185D", // 15. dark rose
+];
+
+function lineColor(i: number) { return LINE_COLORS[Math.min(i, LINE_COLORS.length - 1)]; }
 
 // ── Seed data: realistic placeholder shown when no real data is available ──────
 // Gives the chart visual content from day one instead of a dashed empty box.
