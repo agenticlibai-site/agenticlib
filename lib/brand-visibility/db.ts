@@ -187,6 +187,16 @@ export async function initBrandVisibilityDB(): Promise<void> {
     "Intercom",
     // Legacy paid-ads platforms predating the AI agent wave
     "Pardot", "WordStream", "Kenshoo", "Skai",
+    // Email marketing / CRM / non-AI-native platforms
+    "Klaviyo", "ConvertKit", "GetResponse", "Sendinblue", "Drip",
+    // Social media management tools (not AI agents)
+    "Hootsuite", "Buffer", "Sprout Social", "Brandwatch",
+    // Ad platforms / analytics tools (not AI agents)
+    "AdRoll", "Marin Software", "Kissmetrics", "Meta Ads Manager", "Terminus",
+    // Sales prospecting tools (not marketing AI agents)
+    "Apollo", "Hunter.io", "Clay",
+    // A/B testing / optimisation (not AI agents)
+    "Optimizely",
   ];
   await sql`
     INSERT INTO brand_denylist (brand_name)
