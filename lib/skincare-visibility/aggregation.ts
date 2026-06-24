@@ -18,6 +18,7 @@ import {
   type NewCanonical,
   type ReviewQueueEntry,
 } from "./db";
+import { computeSkincareUseCaseSummary } from "./use-case-aggregation";
 
 // ── Brand resolution ───────────────────────────────────────────────────────────
 
@@ -236,4 +237,5 @@ export async function computeSkincareLLMVisibility(windowStart: string, windowEn
 export async function runSkincareAggregations(date: string, windowStart: string): Promise<void> {
   await computeSkincareDailySummary(date);
   await computeSkincareLLMVisibility(windowStart, date);
+  await computeSkincareUseCaseSummary(windowStart, date);
 }
