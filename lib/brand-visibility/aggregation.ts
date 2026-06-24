@@ -214,8 +214,9 @@ export async function computeDailySummary(date: string): Promise<void> {
 
   // Remove denylisted brands before writing — raw_responses and response_canonical_brands
   // remain untouched; only the aggregation output (daily_summary) is filtered.
+  // TRIM guards against leading/trailing whitespace in canonical names from LLM output.
   for (const brand of stats.keys()) {
-    if (denylist.has(brand.toLowerCase())) stats.delete(brand);
+    if (denylist.has(brand.trim().toLowerCase())) stats.delete(brand);
   }
 
   // Purge any stale denylisted rows that may have been written on earlier runs for this date.
@@ -301,7 +302,7 @@ export async function computeWeeklySummary(windowStart: string, windowEnd: strin
     FROM response_canonical_brands rcb
     JOIN raw_responses r ON r.id = rcb.response_id
     WHERE r.date BETWEEN ${windowStart}::date AND ${windowEnd}::date
-      AND LOWER(rcb.canonical_brand) NOT IN (SELECT LOWER(brand_name) FROM brand_denylist)
+      AND LOWER(TRIM(rcb.canonical_brand)) NOT IN (SELECT LOWER(TRIM(brand_name)) FROM brand_denylist)
     GROUP BY rcb.canonical_brand, r.model
     ON CONFLICT (window_start, window_end, brand, model) DO UPDATE SET
       mention_count = EXCLUDED.mention_count,
@@ -310,11 +311,12 @@ export async function computeWeeklySummary(windowStart: string, windowEnd: strin
   `;
 
   // Purge any stale denylisted rows that may have been written on earlier runs for this window.
+  // TRIM handles leading/trailing whitespace from LLM output that may have slipped through.
   await sql`
     DELETE FROM weekly_summary
     WHERE window_start = ${windowStart}::date
       AND window_end   = ${windowEnd}::date
-      AND LOWER(brand) IN (SELECT LOWER(brand_name) FROM brand_denylist)
+      AND LOWER(TRIM(brand)) IN (SELECT LOWER(TRIM(brand_name)) FROM brand_denylist)
   `;
 }
 
