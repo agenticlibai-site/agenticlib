@@ -28,10 +28,10 @@
 //   Expected rows per model per day: 10 brands × 3 runs = 30.
 //   Expected total per day: 60. EXPECTED_TOTAL = 60.
 //
-// Cron entries to add when ready (suggested slots, 60+ min after skincare discovery):
-//   { "path": "/api/cron/skincare-sentiment-collection?model=claude-haiku-4-5", "schedule": "0 6 * * *" }
-//   { "path": "/api/cron/skincare-sentiment-collection?model=gpt-4o-mini",      "schedule": "10 6 * * *" }
-//   { "path": "/api/cron/skincare-sentiment-collection?aggregate",               "schedule": "30 6 * * *" }
+// Cron entries to add when ready (90-min buffer after discovery window ends at 05:30):
+//   { "path": "/api/cron/skincare-sentiment-collection?model=claude-haiku-4-5", "schedule": "0 7 * * *" }
+//   { "path": "/api/cron/skincare-sentiment-collection?model=gpt-4o-mini",      "schedule": "10 7 * * *" }
+//   { "path": "/api/cron/skincare-sentiment-collection?aggregate",               "schedule": "30 7 * * *" }
 // ─────────────────────────────────────────────────────────────────────────────
 
 import Anthropic from "@anthropic-ai/sdk";
