@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRef } from "react";
-import { Target, Lightbulb, ArrowLeftRight, Database, Rocket, BarChart2 } from "lucide-react";
+import { Target, Lightbulb, Database, Rocket, BarChart2 } from "lucide-react";
 
 const FEATURES = [
   {
@@ -41,16 +41,7 @@ const FEATURES = [
     body: "AgenticLib surfaces structured, decision-relevant intelligence rather than generic AI summaries. Every agent profile is built around the dimensions that actually matter for your use case.",
   },
   {
-    num: "05", color: "#7C3AED",
-    shadow: "0 14px 34px rgba(124,58,237,.08)",
-    hoverShadow: "0 14px 34px rgba(124,58,237,.08), 0 0 40px 8px rgba(240,97,122,0.25)",
-    iconBg: "linear-gradient(160deg,#F3EEFE,#EDE6FD)",
-    Icon: ArrowLeftRight,
-    title: "Compare agents seamlessly",
-    body: "Get a side-by-side breakdown of any two agents across capabilities, pricing, use cases, and visual performance metrics — all in one view.",
-  },
-  {
-    num: "06", color: "#5E6CE8",
+    num: "05", color: "#5E6CE8",
     shadow: "0 14px 34px rgba(94,108,232,.09)",
     hoverShadow: "0 14px 34px rgba(94,108,232,.09), 0 0 40px 8px rgba(240,97,122,0.25)",
     iconBg: "linear-gradient(160deg,#EEF0FE,#E5E9FD)",
