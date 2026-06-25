@@ -293,7 +293,7 @@ export default function Home() {
 
         {/* ── HERO ───────────────────────────────────────────── */}
         <div style={{ position: "relative", margin: "16px 32px 24px" }}>
-        <div style={{ borderRadius: "32px", overflow: "hidden", border: "1.5px solid rgba(199,204,245,0.5)", boxShadow: "0 8px 40px rgba(124,58,237,0.12)" }}>
+        <div style={{ borderRadius: "32px", overflow: "hidden", border: "1.5px solid rgba(150,160,230,0.75)", boxShadow: "0 8px 40px rgba(124,58,237,0.12)" }}>
         <section
           className="relative text-center"
           style={{
@@ -330,7 +330,7 @@ export default function Home() {
           </div>
 
           {/* Content */}
-          <div className="relative max-w-5xl mx-auto px-8 pt-20 pb-16" style={{ zIndex: 2, minHeight: "660px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <div className="relative max-w-5xl mx-auto px-8 pt-20 pb-16" style={{ zIndex: 2, minHeight: "480px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
 
             {/* Headline */}
             <h1
