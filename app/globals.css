@@ -15,11 +15,19 @@
 body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(
+    170deg,
+    #FEF0F5 0%,
+    #FDFAFF 28%,
+    #FFF8FC 52%,
+    #F8F3FF 76%,
+    #FEF0F5 100%
+  );
+  background-attachment: fixed;
 }
 
 /* ── Page background ── */
 .page-bg {
-  background: linear-gradient(160deg, #dbeafe 0%, #eef2ff 50%, #fdf2f8 100%);
   min-height: 100vh;
 }
 
@@ -122,9 +130,21 @@ body {
   text-decoration-color: #6d28d9;
 }
 
+
+/* ── Text selection highlight ── */
+::selection {
+  background: rgba(240, 97, 122, 0.35);
+  color: inherit;
+}
+
 /* ── Scrollbar hide utility ── */
 .hide-scrollbar::-webkit-scrollbar { display: none; }
 .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ── Capabilities grid — collapse to 1 col on mobile ── */
+@media (max-width: 768px) {
+  .caps-grid { grid-template-columns: 1fr !important; }
+}
 
 /* ── Agent preview step entrance animation ── */
 @keyframes stepFadeIn {
