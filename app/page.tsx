@@ -295,7 +295,7 @@ export default function Home() {
         <div style={{ position: "relative", margin: "16px 32px 24px" }}>
         {/* Border-only overlay — transparent fill so buttons are never obscured; fades the border at the bottom */}
         <div style={{ position: "absolute", inset: 0, borderRadius: "32px", border: "1.5px solid rgba(199,204,245,0.5)", pointerEvents: "none", zIndex: 10, WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.65) 74%, rgba(0,0,0,0.28) 88%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.65) 74%, rgba(0,0,0,0.28) 88%, transparent 100%)" }} />
-        <div style={{ borderRadius: "32px", boxShadow: "0 8px 40px rgba(124,58,237,0.12)" }}>
+        <div style={{ borderRadius: "32px", boxShadow: "0 8px 40px rgba(124,58,237,0.12)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 75%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 75%, transparent 100%)" }}>
         <section
           className="relative text-center"
           style={{
@@ -303,7 +303,7 @@ export default function Home() {
           }}
         >
           {/* Background layers — mask applied here only, so content stays full opacity */}
-          <div className="absolute inset-0" style={{ clipPath: "inset(0 round 32px)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,0.82) 64%, rgba(0,0,0,0.55) 77%, rgba(0,0,0,0.22) 90%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,0.82) 64%, rgba(0,0,0,0.55) 77%, rgba(0,0,0,0.22) 90%, transparent 100%)" }}>
+          <div className="absolute inset-0" style={{ WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,0.82) 64%, rgba(0,0,0,0.55) 77%, rgba(0,0,0,0.22) 90%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,0.82) 64%, rgba(0,0,0,0.55) 77%, rgba(0,0,0,0.22) 90%, transparent 100%)" }}>
             {/* State 0 background: radial colour blobs */}
             <div className="absolute inset-0" style={{
               opacity: stateIdx === 0 ? 1 : 0,
@@ -371,53 +371,53 @@ export default function Home() {
                   : BANNER2_SUB}
               </p>
 
-              {/* CTA — both banners, styled to match each banner's gradient */}
-              <div className="flex items-center justify-center gap-3 mt-10 mb-0">
-                {stateIdx === 0 ? (
-                  <a
-                    href="/#contact"
-                    className="inline-flex items-center gap-2 font-semibold transition-all"
-                    style={{ background: "rgba(124,58,237,0.18)", border: "1.5px solid rgba(124,58,237,0.35)", borderRadius: 9999, padding: "14px 28px", fontSize: "15px", textDecoration: "none", letterSpacing: "-0.01em", color: "#160F2E", fontWeight: 600 }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.28)"; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.18)"; }}
-                  >
-                    Get Started <span aria-hidden>›</span>
-                  </a>
-                ) : (
-                  <a
-                    href="/#contact"
-                    className="inline-flex items-center gap-2 font-semibold transition-all"
-                    style={{ background: "rgba(216,204,255,0.45)", border: "1.5px solid #9585F0", borderRadius: 9999, padding: "14px 28px", fontSize: "15px", textDecoration: "none", letterSpacing: "-0.01em", color: "#1E1569", fontWeight: 600 }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(216,204,255,0.65)"; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(216,204,255,0.45)"; }}
-                  >
-                    Get Started <span aria-hidden>›</span>
-                  </a>
-                )}
-              </div>
-
-            </div>
-
-            {/* 2-dot state indicator — clickable */}
-            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginTop: 32 }}>
-              {[0, 1].map((i) => (
-                <div
-                  key={i}
-                  onClick={() => { setStateIdx(i); setWordIdx(0); }}
-                  style={{
-                    height: 8,
-                    width: i === stateIdx ? 24 : 8,
-                    borderRadius: 999,
-                    background: i === stateIdx ? "#C91F65" : "rgba(199,60,142,0.45)",
-                    transition: "width 0.35s ease, background 0.35s ease",
-                    cursor: "pointer",
-                  }}
-                />
-              ))}
             </div>
 
           </div>
         </section>
+        </div>
+
+        {/* CTA + dots — outside the masked card so the fade never affects them */}
+        <div key={stateIdx} style={{ position: "absolute", bottom: "48px", left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", zIndex: 20, animation: "heroFadeIn 0.55s ease forwards" }}>
+          <div className="flex items-center justify-center gap-3">
+            {stateIdx === 0 ? (
+              <a
+                href="/#contact"
+                className="inline-flex items-center gap-2 font-semibold transition-all"
+                style={{ background: "rgba(124,58,237,0.18)", border: "1.5px solid rgba(124,58,237,0.35)", borderRadius: 9999, padding: "14px 28px", fontSize: "15px", textDecoration: "none", letterSpacing: "-0.01em", color: "#160F2E", fontWeight: 600 }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.28)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.18)"; }}
+              >
+                Get Started <span aria-hidden>›</span>
+              </a>
+            ) : (
+              <a
+                href="/#contact"
+                className="inline-flex items-center gap-2 font-semibold transition-all"
+                style={{ background: "rgba(216,204,255,0.45)", border: "1.5px solid #9585F0", borderRadius: 9999, padding: "14px 28px", fontSize: "15px", textDecoration: "none", letterSpacing: "-0.01em", color: "#1E1569", fontWeight: 600 }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(216,204,255,0.65)"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(216,204,255,0.45)"; }}
+              >
+                Get Started <span aria-hidden>›</span>
+              </a>
+            )}
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginTop: 32 }}>
+            {[0, 1].map((i) => (
+              <div
+                key={i}
+                onClick={() => { setStateIdx(i); setWordIdx(0); }}
+                style={{
+                  height: 8,
+                  width: i === stateIdx ? 24 : 8,
+                  borderRadius: 999,
+                  background: i === stateIdx ? "#C91F65" : "rgba(199,60,142,0.45)",
+                  transition: "width 0.35s ease, background 0.35s ease",
+                  cursor: "pointer",
+                }}
+              />
+            ))}
+          </div>
         </div>
         </div>
 
@@ -547,7 +547,7 @@ export default function Home() {
             <div className="caps-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, alignItems: "stretch" }}>
 
               {/* 01 — purple */}
-              <div style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 14px 34px rgba(124,58,237,.08)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(124,58,237,.08), 0 0 80px 20px rgba(240,97,122,0.28)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(124,58,237,.08)"; }}>
+              <div style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 14px 34px rgba(124,58,237,.08)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(124,58,237,.08), 0 0 40px 8px rgba(240,97,122,0.25)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(124,58,237,.08)"; }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 11 }}>
                     <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color: "#7C3AED" }}>01</span>
@@ -577,7 +577,7 @@ export default function Home() {
               </div>
 
               {/* 02 — indigo-violet */}
-              <div style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 14px 34px rgba(94,108,232,.09)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(94,108,232,.09), 0 0 80px 20px rgba(240,97,122,0.28)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(94,108,232,.09)"; }}>
+              <div style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 14px 34px rgba(94,108,232,.09)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(94,108,232,.09), 0 0 40px 8px rgba(240,97,122,0.25)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(94,108,232,.09)"; }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 11 }}>
                     <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color: "#5E6CE8" }}>02</span>
@@ -604,7 +604,7 @@ export default function Home() {
               </div>
 
               {/* 03 — magenta */}
-              <div style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 14px 34px rgba(194,24,106,.08)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(194,24,106,.08), 0 0 80px 20px rgba(240,97,122,0.28)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(194,24,106,.08)"; }}>
+              <div style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 14px 34px rgba(194,24,106,.08)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(194,24,106,.08), 0 0 40px 8px rgba(240,97,122,0.25)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(194,24,106,.08)"; }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 11 }}>
                     <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color: "#C2186A" }}>03</span>
@@ -635,7 +635,7 @@ export default function Home() {
               </div>
 
               {/* 04 — coral */}
-              <div style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 16px 38px rgba(240,97,122,.12)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 16px 38px rgba(240,97,122,.12), 0 0 80px 20px rgba(240,97,122,0.28)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 16px 38px rgba(240,97,122,.12)"; }}>
+              <div style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 16px 38px rgba(240,97,122,.12)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 16px 38px rgba(240,97,122,.12), 0 0 40px 8px rgba(240,97,122,0.25)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 16px 38px rgba(240,97,122,.12)"; }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 11 }}>
                     <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color: "#E0506A" }}>04</span>
