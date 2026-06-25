@@ -295,7 +295,7 @@ export default function Home() {
         <div style={{ position: "relative", margin: "16px 32px 24px" }}>
         {/* Border-only overlay — transparent fill so buttons are never obscured; fades the border at the bottom */}
         <div style={{ position: "absolute", inset: 0, borderRadius: "32px", border: "1.5px solid rgba(199,204,245,0.5)", pointerEvents: "none", zIndex: 10, WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.65) 74%, rgba(0,0,0,0.28) 88%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.65) 74%, rgba(0,0,0,0.28) 88%, transparent 100%)" }} />
-        <div style={{ borderRadius: "32px", boxShadow: "0 8px 40px rgba(124,58,237,0.12)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 75%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 75%, transparent 100%)" }}>
+        <div style={{ borderRadius: "32px", boxShadow: "0 8px 40px rgba(124,58,237,0.12)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 80%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 80%, transparent 100%)" }}>
         <section
           className="relative text-center"
           style={{
@@ -332,7 +332,7 @@ export default function Home() {
           </div>
 
           {/* Content — sits above both background layers; height fixed so both banners are identical dimensions */}
-          <div className="relative max-w-5xl mx-auto px-8 pt-20 pb-16" style={{ zIndex: 2, minHeight: "480px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <div className="relative max-w-5xl mx-auto px-8 pt-20 pb-16" style={{ zIndex: 2, minHeight: "480px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingBottom: "160px" }}>
 
             {/* Headline */}
             <h1
@@ -378,7 +378,7 @@ export default function Home() {
         </div>
 
         {/* CTA + dots — outside the masked card so the fade never affects them */}
-        <div key={stateIdx} style={{ position: "absolute", bottom: "48px", left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", zIndex: 20, animation: "heroFadeIn 0.55s ease forwards" }}>
+        <div key={stateIdx} style={{ position: "absolute", bottom: "60px", left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", zIndex: 20, animation: "heroFadeIn 0.55s ease forwards" }}>
           <div className="flex items-center justify-center gap-3">
             {stateIdx === 0 ? (
               <a
