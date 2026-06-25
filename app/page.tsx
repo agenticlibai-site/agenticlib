@@ -292,8 +292,10 @@ export default function Home() {
       <main className="relative z-0">
 
         {/* ── HERO ───────────────────────────────────────────── */}
-        <div style={{ position: "relative", margin: "16px 32px 24px", WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 68%, rgba(0,0,0,0.5) 83%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 68%, rgba(0,0,0,0.5) 83%, transparent 100%)" }}>
-        <div style={{ borderRadius: "32px", overflow: "hidden", border: "1.5px solid rgba(199,204,245,0.5)", borderBottom: "none", boxShadow: "0 8px 40px rgba(124,58,237,0.12)" }}>
+        <div style={{ position: "relative", margin: "16px 32px 24px" }}>
+        {/* Border-only overlay — transparent fill so buttons are never obscured; fades the border at the bottom */}
+        <div style={{ position: "absolute", inset: 0, borderRadius: "32px", border: "1.5px solid rgba(199,204,245,0.5)", pointerEvents: "none", zIndex: 10, WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.65) 74%, rgba(0,0,0,0.28) 88%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.65) 74%, rgba(0,0,0,0.28) 88%, transparent 100%)" }} />
+        <div style={{ borderRadius: "32px", overflow: "hidden", boxShadow: "0 8px 40px rgba(124,58,237,0.12)" }}>
         <section
           className="relative text-center"
           style={{
@@ -301,7 +303,7 @@ export default function Home() {
           }}
         >
           {/* Background layers — mask applied here only, so content stays full opacity */}
-          <div className="absolute inset-0" style={{ WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 55%, rgba(0,0,0,0.75) 72%, rgba(0,0,0,0.35) 86%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 55%, rgba(0,0,0,0.75) 72%, rgba(0,0,0,0.35) 86%, transparent 100%)" }}>
+          <div className="absolute inset-0" style={{ WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,0.82) 64%, rgba(0,0,0,0.55) 77%, rgba(0,0,0,0.22) 90%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,0.82) 64%, rgba(0,0,0,0.55) 77%, rgba(0,0,0,0.22) 90%, transparent 100%)" }}>
             {/* State 0 background: radial colour blobs */}
             <div className="absolute inset-0" style={{
               opacity: stateIdx === 0 ? 1 : 0,
@@ -421,7 +423,7 @@ export default function Home() {
 
         {/* ── WHY AGENTICLIB ─────────────────────────────────── */}
         <section style={{ background: "transparent", padding: "36px 24px 8px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
-          <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", overflow: "hidden", borderRadius: 34, background: "linear-gradient(150deg,#FDEAE4 0%,#FBD7CE 55%,#F6C6BC 100%)", boxShadow: "0 30px 70px rgba(90,26,50,.22)", border: "1px solid rgba(255,255,255,.6)", borderBottom: "none", WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 78%, rgba(0,0,0,0.45) 90%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 78%, rgba(0,0,0,0.45) 90%, transparent 100%)" }}>
+          <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", overflow: "hidden", borderRadius: 34, background: "linear-gradient(150deg,#FDEAE4 0%,#FBD7CE 55%,#F6C6BC 100%)", boxShadow: "0 30px 70px rgba(90,26,50,.22)", border: "1px solid rgba(255,255,255,.6)", borderBottom: "none", WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 70%, rgba(0,0,0,0.72) 81%, rgba(0,0,0,0.38) 91%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 70%, rgba(0,0,0,0.72) 81%, rgba(0,0,0,0.38) 91%, transparent 100%)" }}>
             {/* palette colour blobs */}
             <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 0% 0%,rgba(240,97,122,.36) 0%,transparent 46%),radial-gradient(circle at 100% 6%,rgba(255,138,107,.30) 0%,transparent 48%),radial-gradient(circle at 92% 100%,rgba(194,77,158,.26) 0%,transparent 50%),radial-gradient(circle at 12% 100%,rgba(250,211,230,.34) 0%,transparent 52%),radial-gradient(circle at 52% 50%,rgba(255,255,255,.48) 0%,transparent 58%)" }}></div>
             {/* frosted glass veil */}
