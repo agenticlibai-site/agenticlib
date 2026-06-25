@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRef } from "react";
-import { Search, ArrowLeftRight, BarChart2, FileText } from "lucide-react";
+import { Search, ArrowLeftRight, BarChart2, FileText, Layers } from "lucide-react";
 
 const FEATURES = [
   {
@@ -39,6 +39,15 @@ const FEATURES = [
     Icon: FileText,
     title: "Decision-ready reports",
     body: "Export your comparison as a shareable report your team can act on — feature gap analysis, positioning notes, and a prioritised improvement roadmap in one document.",
+  },
+  {
+    num: "05", color: "#7C3AED",
+    shadow: "0 14px 34px rgba(124,58,237,.08)",
+    hoverShadow: "0 14px 34px rgba(124,58,237,.08), 0 0 40px 8px rgba(240,97,122,0.25)",
+    iconBg: "linear-gradient(160deg,#F3EEFE,#EDE6FD)",
+    Icon: Layers,
+    title: "Compare agents seamlessly",
+    body: "Get a side-by-side breakdown of any two agents across capabilities, pricing, use cases, and visual performance metrics — all in one view.",
   },
 ];
 
