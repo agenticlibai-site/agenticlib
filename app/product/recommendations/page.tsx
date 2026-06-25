@@ -56,9 +56,89 @@ const FEATURES = [
     iconBg: "linear-gradient(160deg,#EEF0FE,#E5E9FD)",
     Icon: BarChart2,
     title: "Comparison Analytics",
-    body: "See how AI agents are recommended, described, and rated across Claude, GPT-5, and Gemini in real queries. AgenticLib tracks LLM visibility and sentiment so you deploy with confidence, not guesswork.",
+    body: "See how AI agents are recommended, described, and rated across Claude, GPT-5, and Gemini in real queries. AgenticLib tracks LLM visibility and sentiment so you deploy with confidence.",
   },
 ];
+
+function SageIllustration() {
+  return (
+    <svg viewBox="0 0 480 348" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: "100%", height: "auto" }}>
+      <defs>
+        <linearGradient id="sIllBG" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stopColor="#EDE6FD" />
+          <stop offset="1" stopColor="#F5F0FF" />
+        </linearGradient>
+        <linearGradient id="sCard1BG" x1="0" y1="0" x2="0.25" y2="0" gradientUnits="objectBoundingBox">
+          <stop offset="0" stopColor="#F3EEFE" />
+          <stop offset="1" stopColor="#ffffff" />
+        </linearGradient>
+        <linearGradient id="sBar1" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#7C3AED" />
+          <stop offset="1" stopColor="#E8447A" />
+        </linearGradient>
+        <linearGradient id="sBar2" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#5E6CE8" />
+          <stop offset="1" stopColor="#8E63D6" />
+        </linearGradient>
+        <linearGradient id="sBar3" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stopColor="#C4BAF2" />
+          <stop offset="1" stopColor="#DAD4F8" />
+        </linearGradient>
+      </defs>
+
+      {/* Panel background */}
+      <rect width="480" height="348" rx="20" fill="url(#sIllBG)" />
+
+      {/* Query input bar */}
+      <rect x="16" y="14" width="448" height="46" rx="11" fill="white" stroke="#DDD4F8" strokeWidth="1.5" />
+      <circle cx="37" cy="37" r="8" stroke="#9784E8" strokeWidth="1.5" />
+      <line x1="43" y1="43" x2="48" y2="48" stroke="#9784E8" strokeWidth="1.5" strokeLinecap="round" />
+      <rect x="54" y="31" width="180" height="12" rx="6" fill="#E4DAFC" />
+      <rect x="370" y="25" width="78" height="24" rx="12" fill="#EDE6FD" />
+      <text x="409" y="41" textAnchor="middle" fontSize="11" fontWeight="700" fill="#7C3AED">3 matches</text>
+
+      {/* Category chips */}
+      <rect x="16" y="74" width="90" height="26" rx="13" fill="#EDE6FD" />
+      <text x="61" y="91" textAnchor="middle" fontSize="12" fontWeight="600" fill="#7C3AED">Marketing</text>
+      <rect x="114" y="74" width="68" height="26" rx="13" fill="#EEF0FE" />
+      <text x="148" y="91" textAnchor="middle" fontSize="12" fontWeight="600" fill="#5E6CE8">Finance</text>
+      <rect x="190" y="74" width="100" height="26" rx="13" fill="white" stroke="#E2E8F0" strokeWidth="1" />
+      <text x="240" y="91" textAnchor="middle" fontSize="12" fill="#94A3B8">Automation</text>
+
+      {/* ── Card 1: Top match ── */}
+      <rect x="16" y="116" width="448" height="82" rx="14" fill="url(#sCard1BG)" stroke="#7C3AED" strokeWidth="1.5" />
+      {/* accent pill */}
+      <rect x="16" y="130" width="4" height="54" rx="2" fill="#7C3AED" />
+      {/* top match badge */}
+      <rect x="348" y="124" width="100" height="22" rx="11" fill="#EDE6FD" />
+      <text x="398" y="139" textAnchor="middle" fontSize="11" fontWeight="700" fill="#7C3AED">★ Top Match</text>
+      {/* agent details */}
+      <text x="34" y="144" fontSize="14" fontWeight="700" fill="#0E1320">Jasper Workflow AI</text>
+      <text x="34" y="161" fontSize="12" fill="#8891AA">Marketing automation · 12 integrations</text>
+      {/* match bar */}
+      <rect x="34" y="170" width="210" height="8" rx="4" fill="#EDE6FD" />
+      <rect x="34" y="170" width="189" height="8" rx="4" fill="url(#sBar1)" />
+      <text x="252" y="179" fontSize="12" fontWeight="700" fill="#7C3AED">90%</text>
+
+      {/* ── Card 2 ── */}
+      <rect x="16" y="212" width="448" height="64" rx="14" fill="white" stroke="#EFE3EA" strokeWidth="1" />
+      <rect x="16" y="226" width="4" height="36" rx="2" fill="#B4A8F0" />
+      <text x="34" y="235" fontSize="14" fontWeight="600" fill="#0E1320">Cortex AI Agent</text>
+      <text x="34" y="251" fontSize="12" fill="#8891AA">Finance · API-first · No-code workflows</text>
+      <rect x="34" y="258" width="210" height="7" rx="3.5" fill="#EEF0FE" />
+      <rect x="34" y="258" width="157" height="7" rx="3.5" fill="url(#sBar2)" />
+      <text x="252" y="266" fontSize="12" fontWeight="600" fill="#5E6CE8">75%</text>
+
+      {/* ── Card 3 ── */}
+      <rect x="16" y="290" width="448" height="44" rx="14" fill="white" stroke="#EFE3EA" strokeWidth="1" />
+      <rect x="16" y="302" width="4" height="20" rx="2" fill="#D0C8F4" />
+      <text x="34" y="310" fontSize="14" fontWeight="600" fill="#0E1320">BuildAI Pro</text>
+      <rect x="34" y="317" width="210" height="7" rx="3.5" fill="#EEF0FE" />
+      <rect x="34" y="317" width="130" height="7" rx="3.5" fill="url(#sBar3)" />
+      <text x="252" y="325" fontSize="12" fontWeight="600" fill="#B0AACE">62%</text>
+    </svg>
+  );
+}
 
 export default function RecommendationsPage() {
   const videoPlayedRef = useRef(false);
@@ -79,44 +159,64 @@ export default function RecommendationsPage() {
       {/* Nav */}
       <nav style={{ padding: "20px 32px", display: "flex", alignItems: "center" }}>
         <Link href="/" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.82)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderRadius: 8, padding: "8px 16px", boxShadow: "0 1px 4px rgba(0,0,0,0.10)", fontSize: 14, fontWeight: 600, color: "#160F2E" }}>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8l4 4" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 4L6 8l4 4" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" /></svg>
           Home
         </Link>
       </nav>
 
-      {/* Hero card — Signature gradient (Purple → Coral) */}
-      <div style={{ position: "relative", margin: "0 32px 32px" }}>
-        <div style={{ borderRadius: 32, overflow: "hidden", boxShadow: "0 8px 40px rgba(124,58,237,0.22)" }}>
-          <div style={{ position: "relative" }}>
-            {/* Gradient background */}
-            <div style={{ position: "absolute", inset: 0, background: [
-              "radial-gradient(circle at 2% 0%,   rgba(124,58,237,.70) 0%, transparent 48%)",
-              "radial-gradient(circle at 96% 8%,  rgba(199,60,142,.65) 0%, transparent 50%)",
-              "radial-gradient(circle at 90% 95%, rgba(240,97,122,.50) 0%, transparent 50%)",
-              "radial-gradient(circle at 4%  95%, rgba(199,60,142,.40) 0%, transparent 50%)",
-              "linear-gradient(135deg, #7C3AED 0%, #C73C8E 55%, #F0617A 100%)",
-            ].join(", ") }} />
-            {/* Frosted glass veil */}
-            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(70px) saturate(140%)", WebkitBackdropFilter: "blur(70px) saturate(140%)", background: "rgba(255,255,255,.10)" }} />
-            {/* Content */}
-            <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "60px 48px 56px" }}>
-              <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, letterSpacing: ".22em", color: "rgba(255,255,255,0.65)", margin: "0 0 20px", textTransform: "uppercase" }}>Sage by AgenticLib</p>
-              <h1 style={{ fontSize: "clamp(32px, 4vw, 54px)", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.1, color: "#fff", margin: "0 0 18px" }}>
-                AI Agent Recommendations
+      {/* ── Hero — two-column split ── */}
+      <div style={{ margin: "0 32px 40px" }}>
+        <div style={{
+          borderRadius: 32,
+          overflow: "hidden",
+          boxShadow: "0 8px 40px rgba(124,58,237,0.10)",
+          background: [
+            "radial-gradient(circle at 95% 8%,  rgba(199,60,142,0.10) 0%, transparent 45%)",
+            "radial-gradient(circle at 5%  90%, rgba(124,58,237,0.09) 0%, transparent 45%)",
+            "linear-gradient(135deg, #EDE8FF 0%, #F6F3FF 45%, #FFF4FB 100%)",
+          ].join(", "),
+        }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1.05fr", gap: 48, alignItems: "center", padding: "60px 56px 60px 64px" }}>
+
+            {/* Left: copy */}
+            <div>
+              <span style={{ display: "inline-block", border: "1px solid rgba(124,58,237,0.25)", background: "rgba(255,255,255,0.60)", color: "#6B35CC", fontSize: 13, fontWeight: 600, letterSpacing: "0.01em", padding: "6px 14px", borderRadius: 8, marginBottom: 24 }}>
+                Sage by AgenticLib
+              </span>
+
+              <h1 style={{ fontSize: "clamp(34px, 3.8vw, 56px)", fontWeight: 700, letterSpacing: "-0.025em", lineHeight: 1.1, color: "#0E1320", margin: "0 0 20px" }}>
+                Find the right{" "}
+                <span style={{ display: "inline-block", background: "linear-gradient(95deg, #7C3AED 15%, #E8447A 85%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", paddingBottom: "0.1em" }}>
+                  AI agent
+                </span>
+                {" "}— faster
               </h1>
-              <p style={{ fontSize: 18, color: "rgba(255,255,255,0.82)", maxWidth: 520, margin: "0 auto 36px", lineHeight: 1.5 }}>
-                Watch how Sage AI turns a few simple questions into tailored AI agent recommendations.
+
+              <p style={{ fontSize: 17, color: "#4A5068", lineHeight: 1.65, margin: "0 0 36px", maxWidth: 420 }}>
+                Sage turns a few questions about your workflow into matched, explainable agent recommendations. No browsing, no guesswork.
               </p>
-              <a href="/recommend" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(255,255,255,0.18)", border: "1.5px solid rgba(255,255,255,0.40)", borderRadius: 9999, padding: "13px 28px", fontSize: 15, fontWeight: 600, color: "#fff", textDecoration: "none", letterSpacing: "-0.01em" }}>
-                Try Sage ›
-              </a>
+
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <a href="/recommend" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "#7C3AED", borderRadius: 9999, padding: "14px 28px", fontSize: 15, fontWeight: 600, color: "#fff", textDecoration: "none", letterSpacing: "-0.01em", boxShadow: "0 4px 18px rgba(124,58,237,0.30)" }}>
+                  Try Sage ›
+                </a>
+                <a href="#sage-demo" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.7)", border: "1.5px solid rgba(124,58,237,0.28)", borderRadius: 9999, padding: "14px 28px", fontSize: 15, fontWeight: 600, color: "#6B35CC", textDecoration: "none", letterSpacing: "-0.01em" }}>
+                  Watch Demo
+                </a>
+              </div>
             </div>
+
+            {/* Right: illustration */}
+            <div>
+              <SageIllustration />
+            </div>
+
           </div>
         </div>
       </div>
 
       {/* Video */}
-      <div style={{ maxWidth: 900, margin: "0 auto 56px", padding: "0 32px" }}>
+      <div id="sage-demo" style={{ maxWidth: 900, margin: "0 auto 56px", padding: "0 32px" }}>
         <div style={{ borderRadius: 24, overflow: "hidden", boxShadow: "0 4px 8px rgba(0,0,0,0.04), 0 20px 60px rgba(124,58,237,0.10)" }}>
           <video
             src="/AgenticLib demo video.mp4"
