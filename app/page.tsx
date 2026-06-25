@@ -293,17 +293,15 @@ export default function Home() {
 
         {/* ── HERO ───────────────────────────────────────────── */}
         <div style={{ position: "relative", margin: "16px 32px 24px" }}>
-        {/* Border-only overlay — transparent fill so buttons are never obscured; fades the border at the bottom */}
-        <div style={{ position: "absolute", inset: 0, borderRadius: "32px", border: "1.5px solid rgba(199,204,245,0.5)", pointerEvents: "none", zIndex: 10, WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.65) 74%, rgba(0,0,0,0.28) 88%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.65) 74%, rgba(0,0,0,0.28) 88%, transparent 100%)" }} />
-        <div style={{ borderRadius: "32px", boxShadow: "0 8px 40px rgba(124,58,237,0.12)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,0.5) 75%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,0.5) 75%, transparent 100%)" }}>
+        <div style={{ borderRadius: "32px", overflow: "hidden", border: "1.5px solid rgba(199,204,245,0.5)", boxShadow: "0 8px 40px rgba(124,58,237,0.12)" }}>
         <section
           className="relative text-center"
           style={{
             fontFamily: "var(--font-schibsted), var(--font-geist-sans), sans-serif",
           }}
         >
-          {/* Background layers — mask applied here only, so content stays full opacity */}
-          <div className="absolute inset-0" style={{ WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 60%, rgba(0,0,0,0.4) 82%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 60%, rgba(0,0,0,0.4) 82%, transparent 100%)" }}>
+          {/* Background layers */}
+          <div className="absolute inset-0">
             {/* State 0 background: radial colour blobs */}
             <div className="absolute inset-0" style={{
               opacity: stateIdx === 0 ? 1 : 0,
@@ -331,11 +329,8 @@ export default function Home() {
             }} />
           </div>
 
-          {/* White wash — shifts background color toward pale white in the lower half, creating visible lightening before the card mask dissolves it */}
-          <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 40%, rgba(255,255,255,0.45) 68%, rgba(255,255,255,0.78) 88%)", zIndex: 1, pointerEvents: "none" }} />
-
-          {/* Content — sits above both background layers; height fixed so both banners are identical dimensions */}
-          <div className="relative max-w-5xl mx-auto px-8 pt-20 pb-16" style={{ zIndex: 2, minHeight: "480px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingBottom: "160px" }}>
+          {/* Content */}
+          <div className="relative max-w-5xl mx-auto px-8 pt-20 pb-16" style={{ zIndex: 2, minHeight: "480px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
 
             {/* Headline */}
             <h1
@@ -374,53 +369,53 @@ export default function Home() {
                   : BANNER2_SUB}
               </p>
 
+              {/* CTA — both banners, styled to match each banner's gradient */}
+              <div className="flex items-center justify-center gap-3 mt-10 mb-0">
+                {stateIdx === 0 ? (
+                  <a
+                    href="/#contact"
+                    className="inline-flex items-center gap-2 font-semibold transition-all"
+                    style={{ background: "rgba(124,58,237,0.18)", border: "1.5px solid rgba(124,58,237,0.35)", borderRadius: 9999, padding: "14px 28px", fontSize: "15px", textDecoration: "none", letterSpacing: "-0.01em", color: "#160F2E", fontWeight: 600 }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.28)"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.18)"; }}
+                  >
+                    Get Started <span aria-hidden>›</span>
+                  </a>
+                ) : (
+                  <a
+                    href="/#contact"
+                    className="inline-flex items-center gap-2 font-semibold transition-all"
+                    style={{ background: "rgba(216,204,255,0.45)", border: "1.5px solid #9585F0", borderRadius: 9999, padding: "14px 28px", fontSize: "15px", textDecoration: "none", letterSpacing: "-0.01em", color: "#1E1569", fontWeight: 600 }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(216,204,255,0.65)"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(216,204,255,0.45)"; }}
+                  >
+                    Get Started <span aria-hidden>›</span>
+                  </a>
+                )}
+              </div>
+
+            </div>
+
+            {/* 2-dot state indicator — clickable */}
+            <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginTop: 32 }}>
+              {[0, 1].map((i) => (
+                <div
+                  key={i}
+                  onClick={() => { setStateIdx(i); setWordIdx(0); }}
+                  style={{
+                    height: 8,
+                    width: i === stateIdx ? 24 : 8,
+                    borderRadius: 999,
+                    background: i === stateIdx ? "#C91F65" : "rgba(199,60,142,0.45)",
+                    transition: "width 0.35s ease, background 0.35s ease",
+                    cursor: "pointer",
+                  }}
+                />
+              ))}
             </div>
 
           </div>
         </section>
-        </div>
-
-        {/* CTA + dots — outside the masked card so the fade never affects them */}
-        <div key={stateIdx} style={{ position: "absolute", bottom: "60px", left: 0, right: 0, display: "flex", flexDirection: "column", alignItems: "center", zIndex: 20, animation: "heroFadeIn 0.55s ease forwards" }}>
-          <div className="flex items-center justify-center gap-3">
-            {stateIdx === 0 ? (
-              <a
-                href="/#contact"
-                className="inline-flex items-center gap-2 font-semibold transition-all"
-                style={{ background: "rgba(124,58,237,0.18)", border: "1.5px solid rgba(124,58,237,0.35)", borderRadius: 9999, padding: "14px 28px", fontSize: "15px", textDecoration: "none", letterSpacing: "-0.01em", color: "#160F2E", fontWeight: 600 }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.28)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.18)"; }}
-              >
-                Get Started <span aria-hidden>›</span>
-              </a>
-            ) : (
-              <a
-                href="/#contact"
-                className="inline-flex items-center gap-2 font-semibold transition-all"
-                style={{ background: "rgba(216,204,255,0.45)", border: "1.5px solid #9585F0", borderRadius: 9999, padding: "14px 28px", fontSize: "15px", textDecoration: "none", letterSpacing: "-0.01em", color: "#1E1569", fontWeight: 600 }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(216,204,255,0.65)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(216,204,255,0.45)"; }}
-              >
-                Get Started <span aria-hidden>›</span>
-              </a>
-            )}
-          </div>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 8, marginTop: 32 }}>
-            {[0, 1].map((i) => (
-              <div
-                key={i}
-                onClick={() => { setStateIdx(i); setWordIdx(0); }}
-                style={{
-                  height: 8,
-                  width: i === stateIdx ? 24 : 8,
-                  borderRadius: 999,
-                  background: i === stateIdx ? "#C91F65" : "rgba(199,60,142,0.45)",
-                  transition: "width 0.35s ease, background 0.35s ease",
-                  cursor: "pointer",
-                }}
-              />
-            ))}
-          </div>
         </div>
         </div>
 
