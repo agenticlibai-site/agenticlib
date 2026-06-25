@@ -295,7 +295,7 @@ export default function Home() {
         <div style={{ position: "relative", margin: "16px 32px 24px" }}>
         {/* Border-only overlay — transparent fill so buttons are never obscured; fades the border at the bottom */}
         <div style={{ position: "absolute", inset: 0, borderRadius: "32px", border: "1.5px solid rgba(199,204,245,0.5)", pointerEvents: "none", zIndex: 10, WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.65) 74%, rgba(0,0,0,0.28) 88%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.65) 74%, rgba(0,0,0,0.28) 88%, transparent 100%)" }} />
-        <div style={{ borderRadius: "32px", boxShadow: "0 8px 40px rgba(124,58,237,0.12)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 80%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 80%, transparent 100%)" }}>
+        <div style={{ borderRadius: "32px", boxShadow: "0 8px 40px rgba(124,58,237,0.12)", WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,0.5) 75%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,0.5) 75%, transparent 100%)" }}>
         <section
           className="relative text-center"
           style={{
@@ -303,7 +303,7 @@ export default function Home() {
           }}
         >
           {/* Background layers — mask applied here only, so content stays full opacity */}
-          <div className="absolute inset-0" style={{ WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,0.82) 64%, rgba(0,0,0,0.55) 77%, rgba(0,0,0,0.22) 90%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 50%, rgba(0,0,0,0.82) 64%, rgba(0,0,0,0.55) 77%, rgba(0,0,0,0.22) 90%, transparent 100%)" }}>
+          <div className="absolute inset-0" style={{ WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 60%, rgba(0,0,0,0.4) 82%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 60%, rgba(0,0,0,0.4) 82%, transparent 100%)" }}>
             {/* State 0 background: radial colour blobs */}
             <div className="absolute inset-0" style={{
               opacity: stateIdx === 0 ? 1 : 0,
@@ -330,6 +330,9 @@ export default function Home() {
               background: "linear-gradient(90deg, #A8B2F0 0%, #C8C0F8 25%, #ECEAFA 50%, #D8D0F8 75%, #B4BEEF 100%)",
             }} />
           </div>
+
+          {/* White wash — shifts background color toward pale white in the lower half, creating visible lightening before the card mask dissolves it */}
+          <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 40%, rgba(255,255,255,0.45) 68%, rgba(255,255,255,0.78) 88%)", zIndex: 1, pointerEvents: "none" }} />
 
           {/* Content — sits above both background layers; height fixed so both banners are identical dimensions */}
           <div className="relative max-w-5xl mx-auto px-8 pt-20 pb-16" style={{ zIndex: 2, minHeight: "480px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingBottom: "160px" }}>
