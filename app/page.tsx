@@ -330,7 +330,7 @@ export default function Home() {
           </div>
 
           {/* Content */}
-          <div className="relative max-w-5xl mx-auto px-8 pt-20 pb-16" style={{ zIndex: 2, minHeight: "480px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <div className="relative max-w-5xl mx-auto px-8 pt-20 pb-16" style={{ zIndex: 2, minHeight: "660px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
 
             {/* Headline */}
             <h1
