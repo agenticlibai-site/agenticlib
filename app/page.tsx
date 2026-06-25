@@ -423,7 +423,7 @@ export default function Home() {
 
         {/* ── WHY AGENTICLIB ─────────────────────────────────── */}
         <section style={{ background: "transparent", padding: "36px 24px 8px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
-          <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", overflow: "hidden", borderRadius: 34, background: "linear-gradient(150deg,#FDEAE4 0%,#FBD7CE 55%,#F6C6BC 100%)", boxShadow: "0 30px 70px rgba(90,26,50,.22)", border: "1px solid rgba(255,255,255,.6)", borderBottom: "none", WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 70%, rgba(0,0,0,0.72) 81%, rgba(0,0,0,0.38) 91%, transparent 100%)", maskImage: "linear-gradient(to bottom, black 0%, black 70%, rgba(0,0,0,0.72) 81%, rgba(0,0,0,0.38) 91%, transparent 100%)" }}>
+          <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", overflow: "hidden", borderRadius: 34, background: "linear-gradient(150deg,#FDEAE4 0%,#FBD7CE 55%,#F6C6BC 100%)", boxShadow: "0 30px 70px rgba(90,26,50,.22)", border: "1px solid rgba(255,255,255,.6)" }}>
             {/* palette colour blobs */}
             <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 0% 0%,rgba(240,97,122,.36) 0%,transparent 46%),radial-gradient(circle at 100% 6%,rgba(255,138,107,.30) 0%,transparent 48%),radial-gradient(circle at 92% 100%,rgba(194,77,158,.26) 0%,transparent 50%),radial-gradient(circle at 12% 100%,rgba(250,211,230,.34) 0%,transparent 52%),radial-gradient(circle at 52% 50%,rgba(255,255,255,.48) 0%,transparent 58%)" }}></div>
             {/* frosted glass veil */}
