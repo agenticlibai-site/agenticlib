@@ -83,7 +83,7 @@ export default function ExplorePage() {
 
   return (
     <>
-      <div className="min-h-screen" style={{ background: "linear-gradient(135deg, #cfdff8 0%, #edf2ff 45%, #e4e8f8 100%)" }}>
+      <div className="min-h-screen">
 
         <nav className="relative z-10 px-6 py-5 flex items-center">
           <Link
