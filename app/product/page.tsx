@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function ProductPage() {
   return (
-    <main className="min-h-screen" style={{ background: "#fafafa" }}>
+    <main className="min-h-screen">
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 px-6 py-3 flex items-center gap-4">
         <Link href="/" className="font-semibold text-zinc-900 text-sm hover:text-violet-600 transition-colors">
