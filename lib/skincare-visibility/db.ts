@@ -409,6 +409,59 @@ export async function persistSkincareResponseCanonicalBrands(entries: SkincareRe
   `;
 }
 
+// ── Dashboard reads ────────────────────────────────────────────────────────────
+
+export async function getSkincareDailySummary(days = 7): Promise<
+  { date: string; brand: string; model: string; mention_count: number; confidence: string }[]
+> {
+  await initSkincareDB();
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - days + 1);
+  const cutoffStr = cutoff.toISOString().split("T")[0];
+
+  const result = await sql`
+    SELECT date::text AS date, brand, model, mention_count, confidence
+    FROM skincare_daily_summary
+    WHERE date >= ${cutoffStr}::date
+    ORDER BY date ASC, mention_count DESC
+  `;
+  return result.rows as { date: string; brand: string; model: string; mention_count: number; confidence: string }[];
+}
+
+export async function getSkincareWeeklySummary(): Promise<
+  { brand: string; model: string; mention_count: number; confidence: string }[]
+> {
+  await initSkincareDB();
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - 6);
+  const cutoffStr = cutoff.toISOString().split("T")[0];
+
+  const result = await sql`
+    SELECT brand, model,
+           SUM(mention_count)::int AS mention_count,
+           CASE WHEN SUM(mention_count) < 5 THEN 'low' ELSE 'normal' END AS confidence
+    FROM skincare_daily_summary
+    WHERE date >= ${cutoffStr}::date
+    GROUP BY brand, model
+    ORDER BY mention_count DESC
+    LIMIT 2000
+  `;
+  return result.rows as { brand: string; model: string; mention_count: number; confidence: string }[];
+}
+
+export async function getSkincareLLMVisibility(): Promise<
+  { window_start: string; window_end: string; model: string; visibility_pct: number; total_responses: number }[]
+> {
+  await initSkincareDB();
+  const result = await sql`
+    SELECT window_start::text, window_end::text, model, visibility_pct, total_responses
+    FROM skincare_llm_visibility
+    ORDER BY window_start DESC
+    LIMIT 20
+  `;
+  return result.rows as { window_start: string; window_end: string; model: string; visibility_pct: number; total_responses: number }[];
+}
+
 // ── Observability ──────────────────────────────────────────────────────────────
 
 export async function getSkincareDailyRunStats(date: string): Promise<{ success: number; activeErrors: number }> {
