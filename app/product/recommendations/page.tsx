@@ -53,7 +53,7 @@ const FEATURES = [
 
 function SageIllustration() {
   return (
-    <div style={{ background: "linear-gradient(145deg, #FDE8F0 0%, #FFF0F8 100%)", borderRadius: 24, padding: "22px 22px 22px 22px", boxShadow: "0 20px 60px rgba(232,68,122,0.14), 0 4px 16px rgba(0,0,0,0.06)", fontFamily: "inherit" }}>
+    <div style={{ background: "radial-gradient(circle at 100% 8%, #FECFDE 0%, transparent 52%), radial-gradient(circle at 100% 100%, #EDCFF7 0%, transparent 55%), radial-gradient(circle at 0% 60%, #FBDAEA 0%, transparent 55%), radial-gradient(circle at 20% 0%, #FEF2F7 0%, transparent 50%), linear-gradient(135deg, #FCE7F2 0%, #FBF6FE 50%, #F6CFEA 100%)", borderRadius: 24, padding: "22px 22px 22px 22px", boxShadow: "0 20px 60px rgba(232,68,122,0.14), 0 4px 16px rgba(0,0,0,0.06)", fontFamily: "inherit" }}>
 
       {/* Search bar row */}
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
