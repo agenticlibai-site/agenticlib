@@ -80,8 +80,8 @@ export default function Navbar() {
                         iconBg: "rgba(240,97,122,0.10)",
                         icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 17V8l4-4h6l4 4v9H3z" stroke="#F0617A" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(240,97,122,0.12)"/><path d="M8 17v-5h4v5" stroke="#F0617A" strokeWidth="1.5" strokeLinejoin="round"/></svg> },
                       { label: "Skincare", desc: "Track your skincare AI agent's features, visibility, and sentiment against competitors.", href: "/solutions/skincare",
-                        iconBg: "rgba(194,24,106,0.10)",
-                        icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3c0 0-5 3.5-5 8a5 5 0 0010 0c0-4.5-5-8-5-8z" stroke="#C2186A" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(194,24,106,0.12)"/><circle cx="10" cy="11" r="1.5" fill="#C2186A"/></svg> },
+                        iconBg: "rgba(30,58,138,0.10)",
+                        icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3c0 0-5 3.5-5 8a5 5 0 0010 0c0-4.5-5-8-5-8z" stroke="#1E3A8A" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(30,58,138,0.12)"/><circle cx="10" cy="11" r="1.5" fill="#1E3A8A"/></svg> },
                     ].map((item) => (
                       <a key={item.href} href={item.href} className="flex items-start gap-4 py-4 rounded-xl px-3" style={{ textDecoration: "none" }}
                         onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
