@@ -109,7 +109,20 @@ export default function Home() {
             <div className="absolute inset-0" style={{
               opacity: stateIdx > 0 ? 1 : 0,
               transition: "opacity 0.55s ease",
-              background: "linear-gradient(90deg, #A8B2F0 0%, #C8C0F8 25%, #ECEAFA 50%, #D8D0F8 75%, #B4BEEF 100%)",
+              background: [
+                "radial-gradient(circle at 2% 0%,    rgba(94,108,232,.65)  0%, transparent 48%)",
+                "radial-gradient(circle at 100% 4%,  rgba(124,58,237,.55)  0%, transparent 50%)",
+                "radial-gradient(circle at 98% 100%, rgba(168,178,240,.60)  0%, transparent 50%)",
+                "radial-gradient(circle at 0% 100%,  rgba(180,190,239,.55)  0%, transparent 50%)",
+                "radial-gradient(circle at 50% 50%,  rgba(200,192,248,.20)  0%, transparent 60%)",
+              ].join(", "),
+            }} />
+            <div className="absolute inset-0" style={{
+              opacity: stateIdx > 0 ? 1 : 0,
+              transition: "opacity 0.55s ease",
+              backdropFilter: "blur(80px) saturate(150%)",
+              WebkitBackdropFilter: "blur(80px) saturate(150%)",
+              background: "rgba(255,255,255,.33)",
             }} />
           </div>
 
@@ -165,17 +178,7 @@ export default function Home() {
                   >
                     Get Started <span aria-hidden>›</span>
                   </a>
-                ) : (
-                  <a
-                    href="/ai-agent-builders"
-                    className="inline-flex items-center gap-2 font-semibold transition-all"
-                    style={{ background: "rgba(216,204,255,0.45)", border: "1.5px solid #9585F0", borderRadius: 9999, padding: "14px 28px", fontSize: "15px", textDecoration: "none", letterSpacing: "-0.01em", color: "#1E1569", fontWeight: 600 }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(216,204,255,0.65)"; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(216,204,255,0.45)"; }}
-                  >
-                    Get Started <span aria-hidden>›</span>
-                  </a>
-                )}
+                ) : null}
               </div>
 
             </div>
