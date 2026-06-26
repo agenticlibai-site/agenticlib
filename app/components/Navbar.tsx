@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
+  const [resourcesExpanded, setResourcesExpanded] = useState(false);
   const pathname = usePathname();
 
   return (
@@ -201,17 +202,35 @@ export default function Navbar() {
               ))}
             </div>
           )}
-          {[
-            { label: "Blog", href: "/blog" },
-            { label: "AI Agent Library", href: "/explore" },
-            { label: "Contact Us", href: "/#contact" },
-          ].map((item) => (
-            <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-              className="block px-5 py-3.5 text-sm font-medium text-zinc-700 hover:bg-gray-50 transition-colors"
-              style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
-              {item.label}
-            </a>
-          ))}
+          <button
+            onClick={() => setResourcesExpanded((o) => !o)}
+            className="w-full flex items-center justify-between px-5 py-3.5 text-sm font-medium text-zinc-700 hover:bg-gray-50 transition-colors"
+            style={{ background: "none", border: "none", cursor: "pointer", borderBottom: "1px solid #f3f4f6" }}
+          >
+            <span>Resources</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ transform: resourcesExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>
+              <path d="M3 5l4 4 4-4" stroke="#71717a" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          {resourcesExpanded && (
+            <div style={{ background: "#fafafa", borderBottom: "1px solid #f3f4f6" }}>
+              {[
+                { label: "Blog", href: "/blog" },
+                { label: "AI Agent Library", href: "/explore" },
+              ].map((item) => (
+                <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                  className="block pl-8 pr-5 py-3 text-sm text-zinc-600 hover:text-zinc-900 hover:bg-gray-100 transition-colors"
+                  style={{ textDecoration: "none", borderBottom: "1px solid #f0f0f0" }}>
+                  {item.label}
+                </a>
+              ))}
+            </div>
+          )}
+          <a href="/#contact" onClick={() => setMobileOpen(false)}
+            className="block px-5 py-3.5 text-sm font-medium text-zinc-700 hover:bg-gray-50 transition-colors"
+            style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
+            Contact Us
+          </a>
         </div>
       )}
     </header>
