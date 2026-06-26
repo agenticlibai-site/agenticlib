@@ -169,9 +169,34 @@ async function flushResolutionWrites(
   newAliases: { rawName: string; canonical: string }[],
   reviewQueue: ReviewQueueEntry[],
 ): Promise<void> {
-  if (newCanonicals.length) await persistNewCanonicals(newCanonicals);
-  for (const a of newAliases) await persistAlias(a.rawName, a.canonical);
-  if (reviewQueue.length) await addToReviewQueue(reviewQueue);
+  if (newCanonicals.length) {
+    try {
+      await persistNewCanonicals(newCanonicals);
+    } catch (err) {
+      console.error("[aggregation] persistNewCanonicals failed (non-fatal):", err);
+    }
+  }
+
+  let aliasFailures = 0;
+  for (const a of newAliases) {
+    try {
+      await persistAlias(a.rawName, a.canonical);
+    } catch (err) {
+      aliasFailures++;
+      console.error(`[aggregation] persistAlias "${a.rawName}" → "${a.canonical}" failed (non-fatal):`, err);
+    }
+  }
+  if (aliasFailures > 0) {
+    console.warn(`[aggregation] ${aliasFailures}/${newAliases.length} alias writes failed — aggregation continues`);
+  }
+
+  if (reviewQueue.length) {
+    try {
+      await addToReviewQueue(reviewQueue);
+    } catch (err) {
+      console.error("[aggregation] addToReviewQueue failed (non-fatal):", err);
+    }
+  }
 }
 
 // ── Metric 1 & 2: Brand mentions + avg position ────────────────────────────────

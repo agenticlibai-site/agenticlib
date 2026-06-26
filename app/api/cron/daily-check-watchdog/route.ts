@@ -37,12 +37,19 @@ export async function GET(request: Request) {
   const dateParam = searchParams.get("date");
   const targetDate = dateParam ?? new Date().toISOString().split("T")[0];
 
+  // How long ago a raw_response write must be for the pipeline to count as
+  // "in progress" rather than genuinely dead. 90 minutes covers the worst
+  // observed Vercel cron delay (56 min) with a meaningful safety margin.
+  const IN_PROGRESS_WINDOW_MINUTES = 90;
+
   try {
     await initBrandVisibilityDB();
 
-    const [rowsResult, summaryResult] = await Promise.all([
+    const [rowsResult, summaryResult, lastWriteResult] = await Promise.all([
       sql`SELECT COUNT(*)::int AS count FROM raw_responses WHERE date = ${targetDate}::date`,
       sql`SELECT COUNT(*)::int AS count FROM daily_summary WHERE date = ${targetDate}::date`,
+      // Most recent raw_response write for today — null if no rows at all
+      sql`SELECT MAX(created_at) AS last_write FROM raw_responses WHERE date = ${targetDate}::date`,
     ]);
 
     const rawRows = rowsResult.rows[0].count as number;
@@ -59,25 +66,47 @@ export async function GET(request: Request) {
       });
     }
 
-    // Pipeline incomplete — the job may have been killed or never started.
+    // Pipeline incomplete — distinguish between a delayed-but-active run and a
+    // genuinely dead one. If the most recent raw_response write is within the
+    // last 90 minutes, the cron jobs are still running (Vercel platform delay).
+    // Only fire the alert if there has been no write activity in that window.
+    const lastWrite: Date | null = lastWriteResult.rows[0].last_write
+      ? new Date(lastWriteResult.rows[0].last_write as string)
+      : null;
+    const minutesSinceLastWrite = lastWrite
+      ? (Date.now() - lastWrite.getTime()) / 60_000
+      : Infinity;
+    const inProgress = minutesSinceLastWrite < IN_PROGRESS_WINDOW_MINUTES;
+
+    if (inProgress) {
+      return Response.json({
+        watchdog: "in_progress",
+        date: targetDate,
+        raw_rows: rawRows,
+        summary_rows: summaryRows,
+        last_write_utc: lastWrite?.toISOString(),
+        minutes_since_last_write: Math.round(minutesSinceLastWrite),
+        complete: false,
+        checked_at: checkTime,
+      });
+    }
+
+    // No recent write activity — pipeline is genuinely stalled or never started.
     await sendEmail({
       subject: `[AgenticLib] WATCHDOG — No successful brand-visibility run for ${targetDate}`,
       html: `
         <h2>Brand Visibility Pipeline — Watchdog Alert</h2>
         <p>
           The dead-man's-switch check at <strong>${checkTime}</strong> found no complete
-          pipeline run for <strong>${targetDate}</strong>.
-        </p>
-        <p>
-          This alert fires when the scheduled jobs (3:00–3:25 AM UTC) were killed by a
-          platform timeout, never started, or otherwise did not complete before this
-          watchdog ran at 4:00 AM UTC.
+          pipeline run for <strong>${targetDate}</strong>, and no raw_response writes
+          in the past ${IN_PROGRESS_WINDOW_MINUTES} minutes — the pipeline appears stalled.
         </p>
         <table style="border-collapse:collapse;font-family:monospace">
           <tr><td style="padding:4px 12px 4px 0"><strong>Date checked</strong></td><td>${targetDate}</td></tr>
           <tr><td style="padding:4px 12px 4px 0"><strong>Check time</strong></td><td>${checkTime}</td></tr>
           <tr><td style="padding:4px 12px 4px 0"><strong>raw_responses rows</strong></td><td>${rawRows} / 220</td></tr>
           <tr><td style="padding:4px 12px 4px 0"><strong>daily_summary rows</strong></td><td>${summaryRows} (expected > 0)</td></tr>
+          <tr><td style="padding:4px 12px 4px 0"><strong>Last write activity</strong></td><td>${lastWrite ? lastWrite.toISOString() : "none"}</td></tr>
           <tr><td style="padding:4px 12px 4px 0"><strong>complete</strong></td><td>false</td></tr>
         </table>
         <p>
@@ -97,6 +126,8 @@ export async function GET(request: Request) {
       date: targetDate,
       raw_rows: rawRows,
       summary_rows: summaryRows,
+      last_write_utc: lastWrite?.toISOString() ?? null,
+      minutes_since_last_write: Math.round(minutesSinceLastWrite),
       complete: false,
       checked_at: checkTime,
     });
