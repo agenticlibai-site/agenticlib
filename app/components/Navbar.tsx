@@ -192,9 +192,21 @@ export default function Navbar() {
           </button>
           {productExpanded && (
             <div style={{ background: "#fafafa", borderBottom: "1px solid #f3f4f6" }}>
+              {/* For Individuals / Businesses */}
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#71717a", textTransform: "uppercase", padding: "10px 20px 6px" }}>For Individuals / Businesses</p>
               {[
                 { label: "Sage AI", href: "/product/recommendations" },
                 { label: "Vera AI", href: "/product/research" },
+              ].map((item) => (
+                <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                  className="block pl-8 pr-5 py-3 text-sm text-zinc-600 hover:text-zinc-900 hover:bg-gray-100 transition-colors"
+                  style={{ textDecoration: "none", borderBottom: "1px solid #f0f0f0" }}>
+                  {item.label}
+                </a>
+              ))}
+              {/* For AI Agent Builders */}
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#71717a", textTransform: "uppercase", padding: "10px 20px 6px", borderTop: "1px solid #ebebeb" }}>For AI Agent Builders</p>
+              {[
                 { label: "Marketing", href: "/solutions/marketing" },
                 { label: "Skincare", href: "/solutions/skincare" },
               ].map((item) => (
