@@ -454,7 +454,7 @@ export async function getSkincareLLMVisibility(): Promise<
 > {
   await initSkincareDB();
   const result = await sql`
-    SELECT window_start::text, window_end::text, model, visibility_pct, total_responses
+    SELECT window_start::text, window_end::text, model, visibility_pct::float AS visibility_pct, total_responses
     FROM skincare_llm_visibility
     ORDER BY window_start DESC
     LIMIT 20
