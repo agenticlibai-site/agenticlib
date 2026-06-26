@@ -161,11 +161,11 @@ export default function RecommendationsPage() {
           overflow: "hidden",
           boxShadow: "0 8px 40px rgba(199,60,142,0.18)",
           background: [
-            "radial-gradient(circle at 100% 8%,   #FECFDE 0%, transparent 52%)",
+            "radial-gradient(circle at 100% 8%,   #F9AECA 0%, transparent 55%)",
             "radial-gradient(circle at 100% 100%, #EDCFF7 0%, transparent 55%)",
-            "radial-gradient(circle at 0% 60%,    #FBDAEA 0%, transparent 55%)",
+            "radial-gradient(circle at 0% 60%,    #F7BEDD 0%, transparent 58%)",
             "radial-gradient(circle at 20% 0%,    #FEF2F7 0%, transparent 50%)",
-            "linear-gradient(135deg, #FCE7F2 0%, #FBF6FE 50%, #F6CFEA 100%)",
+            "linear-gradient(135deg, #F9D5E8 0%, #FBF6FE 50%, #F2C4E2 100%)",
           ].join(", "),
         }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: 20, alignItems: "center", padding: "36px 48px 72px 72px", justifyContent: "center" }}>
@@ -190,9 +190,6 @@ export default function RecommendationsPage() {
               </p>
 
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                <a href="#sage-demo" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "linear-gradient(95deg, #7C3AED 0%, #E8447A 100%)", borderRadius: 9999, padding: "12px 26px", fontSize: 14.5, fontWeight: 700, color: "#fff", textDecoration: "none", letterSpacing: "-0.01em", boxShadow: "0 4px 18px rgba(199,60,142,0.35)" }}>
-                  Try Sage ›
-                </a>
                 <a href="#sage-demo" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.80)", border: "1.5px solid rgba(124,58,237,0.22)", borderRadius: 9999, padding: "12px 26px", fontSize: 14.5, fontWeight: 700, color: "#0E1320", textDecoration: "none", letterSpacing: "-0.01em" }}>
                   Watch Demo ›
                 </a>
