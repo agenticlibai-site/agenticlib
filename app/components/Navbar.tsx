@@ -48,14 +48,16 @@ export default function Navbar() {
                     <div style={{ height: 1, background: "#f0f0f4", marginBottom: 16 }} />
                     {[
                       { label: "Sage", desc: "Get matched to the right agent instantly", href: "/product/recommendations",
-                        icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.4 5 5.6.8-4 3.9.9 5.5L10 14.5l-4.9 2.7.9-5.5L2 7.8l5.6-.8L10 2z" fill="#5B4FCF"/></svg> },
+                        iconBg: "rgba(124,58,237,0.10)",
+                        icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.4 5 5.6.8-4 3.9.9 5.5L10 14.5l-4.9 2.7.9-5.5L2 7.8l5.6-.8L10 2z" fill="url(#nav-sage)"/><defs><linearGradient id="nav-sage" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#E8447A"/></linearGradient></defs></svg> },
                       { label: "Vera", desc: "Research and compare agents side by side in detail", href: "/product/research",
-                        icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="6" height="12" rx="1.5" fill="#5B4FCF"/><rect x="12" y="3" width="6" height="14" rx="1.5" fill="#5B4FCF" fillOpacity=".5"/><path d="M9 10h2M9 10l-1.5-1.5M9 10l-1.5 1.5M11 10l1.5-1.5M11 10l1.5 1.5" stroke="#5B4FCF" strokeWidth="1.2" strokeLinecap="round"/></svg> },
+                        iconBg: "rgba(94,108,232,0.10)",
+                        icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="6" height="12" rx="1.5" fill="#5E6CE8"/><rect x="12" y="3" width="6" height="14" rx="1.5" fill="#9B6ED8"/><path d="M9 10h2M9 10l-1.5-1.5M9 10l-1.5 1.5M11 10l1.5-1.5M11 10l1.5 1.5" stroke="#5E6CE8" strokeWidth="1.2" strokeLinecap="round"/></svg> },
                     ].map((item) => (
                       <a key={item.href} href={item.href} className="flex items-start gap-4 py-4 rounded-xl px-3" style={{ textDecoration: "none" }}
                         onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
                         onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
-                        <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "rgba(124,58,237,0.08)" }}>{item.icon}</div>
+                        <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: item.iconBg }}>{item.icon}</div>
                         <div className="flex flex-col">
                           <span style={{ fontSize: 14, fontWeight: 600, color: "#18181b", lineHeight: 1.4 }}>{item.label} AI</span>
                           <span style={{ fontSize: 12.5, color: "#18181b", marginTop: 3, lineHeight: 1.5 }}>{item.desc}</span>
@@ -75,14 +77,16 @@ export default function Navbar() {
                     <div style={{ height: 1, background: "#f0f0f4", marginBottom: 16 }} />
                     {[
                       { label: "Marketing", desc: "Track your marketing AI agent's features, visibility, and sentiment against competitors.", href: "/solutions/marketing",
-                        icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 17V8l4-4h6l4 4v9H3z" stroke="#5B4FCF" strokeWidth="1.5" strokeLinejoin="round"/><path d="M8 17v-5h4v5" stroke="#5B4FCF" strokeWidth="1.5" strokeLinejoin="round"/></svg> },
+                        iconBg: "rgba(240,97,122,0.10)",
+                        icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 17V8l4-4h6l4 4v9H3z" stroke="#F0617A" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(240,97,122,0.12)"/><path d="M8 17v-5h4v5" stroke="#F0617A" strokeWidth="1.5" strokeLinejoin="round"/></svg> },
                       { label: "Skincare", desc: "Track your skincare AI agent's features, visibility, and sentiment against competitors.", href: "/solutions/skincare",
-                        icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3c0 0-5 3.5-5 8a5 5 0 0010 0c0-4.5-5-8-5-8z" stroke="#5B4FCF" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="10" cy="11" r="1.5" fill="#5B4FCF"/></svg> },
+                        iconBg: "rgba(194,24,106,0.10)",
+                        icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3c0 0-5 3.5-5 8a5 5 0 0010 0c0-4.5-5-8-5-8z" stroke="#C2186A" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(194,24,106,0.12)"/><circle cx="10" cy="11" r="1.5" fill="#C2186A"/></svg> },
                     ].map((item) => (
                       <a key={item.href} href={item.href} className="flex items-start gap-4 py-4 rounded-xl px-3" style={{ textDecoration: "none" }}
                         onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
                         onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
-                        <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: "rgba(124,58,237,0.08)" }}>{item.icon}</div>
+                        <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: item.iconBg }}>{item.icon}</div>
                         <div className="flex flex-col">
                           <span style={{ fontSize: 14, fontWeight: 600, color: "#18181b", lineHeight: 1.4 }}>{item.label}</span>
                           <span style={{ fontSize: 12.5, color: "#18181b", marginTop: 3, lineHeight: 1.5 }}>{item.desc}</span>
