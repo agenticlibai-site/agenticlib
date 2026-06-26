@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Inter, Schibsted_Grotesk, Space_Mono } from "next/fo
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
+import Navbar from "./components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -94,6 +95,8 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${schibstedGrotesk.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+
+        <Navbar />
 
         {/* Page content */}
         {children}

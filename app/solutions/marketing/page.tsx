@@ -25,7 +25,7 @@ export default function MarketingPage() {
           AI Agent Builder · Marketing
         </div>
         <h1 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: "#160F2E", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
-          Marketing Intelligence
+          Comparison Intelligence for Marketing AI Agents
         </h1>
         <p className="text-lg max-w-xl mx-auto" style={{ color: "rgba(22,15,46,0.6)", lineHeight: 1.6 }}>
           Track your marketing AI agent&apos;s features, visibility, and sentiment against competitors.
