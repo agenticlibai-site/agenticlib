@@ -1,5 +1,3 @@
-import Link from "next/link";
-
 export const metadata = {
   title: "Marketing – AgenticLib",
   description: "Track your marketing AI agent's features, visibility, and sentiment against competitors.",
@@ -8,14 +6,6 @@ export const metadata = {
 export default function MarketingPage() {
   return (
     <main className="min-h-screen">
-      <nav className="px-8 py-5">
-        <Link
-          href="/"
-          style={{ textDecoration: "none", background: "white", borderRadius: 8, padding: "8px 16px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)", color: "#7C3AED", fontSize: 14, fontWeight: 600 }}
-        >
-          ← AgenticLib
-        </Link>
-      </nav>
 
       <div className="max-w-4xl mx-auto px-8 py-20 text-center">
         <div
