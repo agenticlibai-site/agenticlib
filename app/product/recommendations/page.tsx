@@ -53,7 +53,7 @@ const FEATURES = [
 
 function SageIllustration() {
   return (
-    <div style={{ background: "radial-gradient(circle at 100% 8%, #FECFDE 0%, transparent 52%), radial-gradient(circle at 100% 100%, #EDCFF7 0%, transparent 55%), radial-gradient(circle at 0% 60%, #FBDAEA 0%, transparent 55%), radial-gradient(circle at 20% 0%, #FEF2F7 0%, transparent 50%), linear-gradient(135deg, #FCE7F2 0%, #FBF6FE 50%, #F6CFEA 100%)", borderRadius: 24, padding: "22px 22px 22px 22px", boxShadow: "0 20px 60px rgba(232,68,122,0.14), 0 4px 16px rgba(0,0,0,0.06)", fontFamily: "inherit" }}>
+    <div style={{ background: "white", borderRadius: 24, padding: "22px 22px 22px 22px", boxShadow: "0 20px 60px rgba(124,58,237,0.13), 0 4px 16px rgba(0,0,0,0.06)", fontFamily: "inherit" }}>
 
       {/* Search bar row */}
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
@@ -161,10 +161,11 @@ export default function RecommendationsPage() {
           overflow: "hidden",
           boxShadow: "0 8px 40px rgba(199,60,142,0.18)",
           background: [
-            "radial-gradient(circle at 0% 0%,   rgba(232,68,122,0.52) 0%, transparent 50%)",
-            "radial-gradient(circle at 100% 0%,  rgba(199,60,142,0.46) 0%, transparent 48%)",
-            "radial-gradient(circle at 50% 110%, rgba(240,97,122,0.28) 0%, transparent 55%)",
-            "linear-gradient(135deg, #F2C8DA 0%, #EDD5EF 45%, #F5E8FD 100%)",
+            "radial-gradient(circle at 100% 8%,   #FECFDE 0%, transparent 52%)",
+            "radial-gradient(circle at 100% 100%, #EDCFF7 0%, transparent 55%)",
+            "radial-gradient(circle at 0% 60%,    #FBDAEA 0%, transparent 55%)",
+            "radial-gradient(circle at 20% 0%,    #FEF2F7 0%, transparent 50%)",
+            "linear-gradient(135deg, #FCE7F2 0%, #FBF6FE 50%, #F6CFEA 100%)",
           ].join(", "),
         }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: 20, alignItems: "center", padding: "36px 48px 72px 72px", justifyContent: "center" }}>
