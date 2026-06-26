@@ -411,6 +411,12 @@ export async function persistSkincareResponseCanonicalBrands(entries: SkincareRe
 
 // ── Dashboard reads ────────────────────────────────────────────────────────────
 
+// Minimum thresholds for a brand to appear in chart/table output.
+// A brand must clear both bars over the look-back window to avoid one-off
+// hallucinations and single-prompt artefacts inflating the leaderboard.
+const BRAND_MIN_MENTIONS  = 5;   // total mention_count across all models in window
+const BRAND_MIN_PROMPTS   = 2;   // must appear in responses from at least this many distinct prompt_ids
+
 export async function getSkincareDailySummary(days = 7): Promise<
   { date: string; brand: string; model: string; mention_count: number; confidence: string }[]
 > {
@@ -420,9 +426,27 @@ export async function getSkincareDailySummary(days = 7): Promise<
   const cutoffStr = cutoff.toISOString().split("T")[0];
 
   const result = await sql`
+    WITH brand_prompt_counts AS (
+      SELECT rcb.canonical_brand AS brand,
+             COUNT(DISTINCT r.prompt_id) AS distinct_prompts
+      FROM skincare_response_canonical_brands rcb
+      JOIN skincare_raw_responses r ON r.id = rcb.response_id
+      WHERE r.date >= ${cutoffStr}::date
+      GROUP BY rcb.canonical_brand
+    ),
+    qualified AS (
+      SELECT ds.brand
+      FROM skincare_daily_summary ds
+      JOIN brand_prompt_counts bpc ON bpc.brand = ds.brand
+      WHERE ds.date >= ${cutoffStr}::date
+        AND bpc.distinct_prompts >= ${BRAND_MIN_PROMPTS}
+      GROUP BY ds.brand
+      HAVING SUM(ds.mention_count) >= ${BRAND_MIN_MENTIONS}
+    )
     SELECT date::text AS date, brand, model, mention_count, confidence
     FROM skincare_daily_summary
     WHERE date >= ${cutoffStr}::date
+      AND brand IN (SELECT brand FROM qualified)
     ORDER BY date ASC, mention_count DESC
   `;
   return result.rows as { date: string; brand: string; model: string; mention_count: number; confidence: string }[];
@@ -437,11 +461,29 @@ export async function getSkincareWeeklySummary(): Promise<
   const cutoffStr = cutoff.toISOString().split("T")[0];
 
   const result = await sql`
+    WITH brand_prompt_counts AS (
+      SELECT rcb.canonical_brand AS brand,
+             COUNT(DISTINCT r.prompt_id) AS distinct_prompts
+      FROM skincare_response_canonical_brands rcb
+      JOIN skincare_raw_responses r ON r.id = rcb.response_id
+      WHERE r.date >= ${cutoffStr}::date
+      GROUP BY rcb.canonical_brand
+    ),
+    qualified AS (
+      SELECT ds.brand
+      FROM skincare_daily_summary ds
+      JOIN brand_prompt_counts bpc ON bpc.brand = ds.brand
+      WHERE ds.date >= ${cutoffStr}::date
+        AND bpc.distinct_prompts >= ${BRAND_MIN_PROMPTS}
+      GROUP BY ds.brand
+      HAVING SUM(ds.mention_count) >= ${BRAND_MIN_MENTIONS}
+    )
     SELECT brand, model,
            SUM(mention_count)::int AS mention_count,
            CASE WHEN SUM(mention_count) < 5 THEN 'low' ELSE 'normal' END AS confidence
     FROM skincare_daily_summary
     WHERE date >= ${cutoffStr}::date
+      AND brand IN (SELECT brand FROM qualified)
     GROUP BY brand, model
     ORDER BY mention_count DESC
     LIMIT 2000
