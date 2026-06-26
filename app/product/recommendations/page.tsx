@@ -53,11 +53,11 @@ const FEATURES = [
 
 function SageIllustration() {
   return (
-    <div style={{ background: "white", borderRadius: 24, padding: "22px 22px 22px 22px", boxShadow: "0 20px 60px rgba(124,58,237,0.13), 0 4px 16px rgba(0,0,0,0.06)", fontFamily: "inherit" }}>
+    <div style={{ background: "white", borderRadius: 24, padding: "14px 14px 14px 14px", boxShadow: "0 20px 60px rgba(124,58,237,0.13), 0 4px 16px rgba(0,0,0,0.06)", fontFamily: "inherit" }}>
 
       {/* Search bar row */}
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-        <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 10, background: "#F5F3FF", borderRadius: 999, padding: "10px 16px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+        <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 10, background: "#F5F3FF", borderRadius: 999, padding: "7px 14px" }}>
           <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0 }}>
             <circle cx="6.5" cy="6.5" r="4.5" stroke="#7C3AED" strokeWidth="1.6"/>
             <path d="M10 10l2.8 2.8" stroke="#7C3AED" strokeWidth="1.6" strokeLinecap="round"/>
@@ -70,7 +70,7 @@ function SageIllustration() {
       </div>
 
       {/* Filter chips */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 14 }}>
+      <div style={{ display: "flex", gap: 8, marginBottom: 8 }}>
         <div style={{ background: "#EDE9FE", borderRadius: 999, padding: "5px 13px" }}>
           <span style={{ color: "#5B21B6", fontWeight: 700, fontSize: 12.5 }}>Marketing</span>
         </div>
@@ -83,7 +83,7 @@ function SageIllustration() {
       </div>
 
       {/* Card 1 — Top Match */}
-      <div style={{ background: "white", borderRadius: 16, border: "1.5px solid #7C3AED", padding: "13px 14px", marginBottom: 10, position: "relative", overflow: "hidden" }}>
+      <div style={{ background: "white", borderRadius: 16, border: "1.5px solid #7C3AED", padding: "9px 12px", marginBottom: 6, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, background: "linear-gradient(180deg, #7C3AED 0%, #E8447A 100%)", borderRadius: "4px 0 0 4px" }} />
         <div style={{ paddingLeft: 10 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 3 }}>
@@ -93,7 +93,7 @@ function SageIllustration() {
               <span style={{ color: "#5B21B6", fontWeight: 700, fontSize: 11.5 }}>Top Match</span>
             </div>
           </div>
-          <div style={{ fontSize: 12, color: "#9CA3AF", marginBottom: 9 }}>Marketing automation · 12 integrations</div>
+          <div style={{ fontSize: 12, color: "#9CA3AF", marginBottom: 5 }}>Marketing automation · 12 integrations</div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ flex: 1, height: 7, background: "#EDE9FE", borderRadius: 999 }}>
               <div style={{ width: "90%", height: "100%", background: "linear-gradient(90deg, #7C3AED, #E8447A)", borderRadius: 999 }} />
@@ -104,11 +104,11 @@ function SageIllustration() {
       </div>
 
       {/* Card 2 — Cortex AI Agent */}
-      <div style={{ background: "white", borderRadius: 16, border: "1px solid #F3F4F6", padding: "13px 14px", marginBottom: 10, position: "relative", overflow: "hidden" }}>
+      <div style={{ background: "white", borderRadius: 16, border: "1px solid #F3F4F6", padding: "9px 12px", marginBottom: 6, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, background: "#DB2777", borderRadius: "4px 0 0 4px" }} />
         <div style={{ paddingLeft: 10 }}>
           <div style={{ fontWeight: 700, fontSize: 14, color: "#0E1320", marginBottom: 3 }}>Cortex AI Agent</div>
-          <div style={{ fontSize: 12, color: "#9CA3AF", marginBottom: 9 }}>Finance · API-first · No-code workflows</div>
+          <div style={{ fontSize: 12, color: "#9CA3AF", marginBottom: 5 }}>Finance · API-first · No-code workflows</div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ flex: 1, height: 7, background: "#FCE7F3", borderRadius: 999 }}>
               <div style={{ width: "75%", height: "100%", background: "#DB2777", borderRadius: 999 }} />
@@ -119,7 +119,7 @@ function SageIllustration() {
       </div>
 
       {/* Card 3 — BuildAI Pro */}
-      <div style={{ background: "white", borderRadius: 16, border: "1px solid #F3F4F6", padding: "13px 14px", position: "relative", overflow: "hidden" }}>
+      <div style={{ background: "white", borderRadius: 16, border: "1px solid #F3F4F6", padding: "9px 12px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, background: "#C4BBDF", borderRadius: "4px 0 0 4px" }} />
         <div style={{ paddingLeft: 10 }}>
           <div style={{ fontWeight: 700, fontSize: 14, color: "#0E1320", marginBottom: 9 }}>BuildAI Pro</div>
@@ -176,7 +176,7 @@ export default function RecommendationsPage() {
                 Sage by AgenticLib
               </span>
 
-              <h1 style={{ fontSize: "clamp(42px, 5vw, 64px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.0, color: "#0E1320", margin: "0 0 20px" }}>
+              <h1 style={{ fontSize: "clamp(36px, 4.2vw, 54px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 0.96, color: "#0E1320", margin: "0 0 16px" }}>
                 <span style={{ display: "block" }}>Find the right</span>
                 <span style={{ display: "block" }}>
                   <span style={{ background: "linear-gradient(95deg, #7C3AED 15%, #E8447A 85%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>AI agent</span>
@@ -185,7 +185,7 @@ export default function RecommendationsPage() {
                 <span style={{ display: "block" }}>faster</span>
               </h1>
 
-              <p style={{ fontSize: 15.5, color: "#0E1320", lineHeight: 1.6, margin: "0 0 28px", maxWidth: 400 }}>
+              <p style={{ fontSize: 15.5, color: "#0E1320", lineHeight: 1.6, margin: "0 0 24px", maxWidth: 400 }}>
                 Sage AI turns a few questions about your workflow into matched, explainable agent recommendations. No browsing, no guesswork.
               </p>
 
@@ -197,7 +197,7 @@ export default function RecommendationsPage() {
             </div>
 
             {/* Right: illustration */}
-            <div style={{ width: "100%" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", maxWidth: 460, width: "100%" }}>
               <SageIllustration />
             </div>
 
