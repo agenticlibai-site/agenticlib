@@ -17,11 +17,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
   background: linear-gradient(
     170deg,
-    #FDE8F0 0%,
-    #FDDEE9 28%,
-    #FEF0F5 52%,
-    #FDE4EC 76%,
-    #FDE8F0 100%
+    #FEF0F5 0%,
+    #FDFAFF 28%,
+    #FFF8FC 52%,
+    #F8F3FF 76%,
+    #FEF0F5 100%
   );
   background-attachment: fixed;
 }

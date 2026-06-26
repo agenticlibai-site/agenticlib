@@ -96,11 +96,11 @@ export default function Home() {
               opacity: stateIdx === 0 ? 1 : 0,
               transition: "opacity 0.55s ease",
               background: [
-                "radial-gradient(circle at 2% 0%,    rgba(245,100,120,.72)  0%, transparent 48%)",
-                "radial-gradient(circle at 100% 4%,  rgba(240,110,100,.62)  0%, transparent 50%)",
-                "radial-gradient(circle at 98% 100%, rgba(248,120,100,.58)  0%, transparent 50%)",
-                "radial-gradient(circle at 0% 100%,  rgba(235,85,120,.52)   0%, transparent 50%)",
-                "radial-gradient(circle at 50% 50%,  rgba(255,210,215,.55)  0%, transparent 60%)",
+                "radial-gradient(circle at 2% 0%,    rgba(124,58,237,.65)  0%, transparent 48%)",
+                "radial-gradient(circle at 100% 4%,  rgba(94,108,232,.55)  0%, transparent 50%)",
+                "radial-gradient(circle at 98% 100%, rgba(240,97,122,.50)  0%, transparent 50%)",
+                "radial-gradient(circle at 0% 100%,  rgba(199,60,142,.45)  0%, transparent 50%)",
+                "radial-gradient(circle at 50% 50%,  rgba(250,217,236,.35) 0%, transparent 60%)",
               ].join(", "),
             }} />
             <div className="absolute inset-0" style={{
@@ -114,7 +114,7 @@ export default function Home() {
             <div className="absolute inset-0" style={{
               opacity: stateIdx > 0 ? 1 : 0,
               transition: "opacity 0.55s ease",
-              background: "linear-gradient(135deg, #F9BECE 0%, #F8C8D8 40%, #FDE4EE 100%)",
+              background: "linear-gradient(90deg, #A8B2F0 0%, #C8C0F8 25%, #ECEAFA 50%, #D8D0F8 75%, #B4BEEF 100%)",
             }} />
           </div>
 
