@@ -18,7 +18,7 @@
     },
     {
       "path": "/api/cron/daily-check-watchdog",
-      "schedule": "0 4 * * *"
+      "schedule": "45 5 * * *"
     },
     {
       "path": "/api/cron/skincare-visibility-collection?model=claude-haiku-4-5",
