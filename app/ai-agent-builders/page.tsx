@@ -65,7 +65,7 @@ export default function AIAgentBuildersPage() {
             <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(64px) saturate(140%)", WebkitBackdropFilter: "blur(64px) saturate(140%)", background: "rgba(255,255,255,.32)" }}></div>
           </div>
 
-          <div style={{ position: "relative", zIndex: 2, display: "grid", gridTemplateColumns: "minmax(0,1fr) minmax(0,1.05fr)", gap: 40, alignItems: "center", padding: "60px 56px" }}>
+          <div className="why-grid" style={{ position: "relative", zIndex: 2 }}>
             {/* LEFT: copy */}
             <div>
               <span style={{ display: "inline-block", border: "1px solid rgba(176,64,72,.30)", background: "rgba(255,255,255,.45)", color: "#5A1A22", fontSize: 13.5, fontWeight: 600, letterSpacing: ".01em", padding: "7px 15px", borderRadius: 9 }}>Why AgenticLib</span>
@@ -79,7 +79,7 @@ export default function AIAgentBuildersPage() {
             </div>
 
             {/* RIGHT: visual */}
-            <div style={{ position: "relative", height: 430, display: "flex", alignItems: "center", gap: 0, width: "100%", minWidth: 0 }}>
+            <div className="why-visual" style={{ position: "relative", height: 430, display: "flex", alignItems: "center", gap: 0, width: "100%", minWidth: 0 }}>
               <div style={{ position: "absolute", width: "82%", height: "60%", left: "50%", top: "50%", transform: "translate(-50%,-50%)", background: "radial-gradient(circle,rgba(240,97,122,.32),transparent 70%)", filter: "blur(16px)" }}></div>
 
               <div style={{ flex: "none", position: "relative", zIndex: 3, width: 138, borderRadius: 22, padding: "20px 14px", background: "linear-gradient(150deg,#F0617A 0%,#FF7E72 52%,#FF9E73 100%)", boxShadow: "0 18px 42px rgba(240,97,122,.42)", textAlign: "center" }}>
@@ -125,7 +125,7 @@ export default function AIAgentBuildersPage() {
             <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 600, letterSpacing: "-.03em", lineHeight: 1.06, margin: 0, color: "#0E1320" }}>Our analytics lead you to successful outcomes</h2>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, alignItems: "stretch" }}>
+          <div className="caps-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, alignItems: "stretch" }}>
 
             {/* 01 */}
             <div style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 14px 34px rgba(124,58,237,.08)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(124,58,237,.08), 0 0 40px 8px rgba(240,97,122,0.25)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(124,58,237,.08)"; }}>

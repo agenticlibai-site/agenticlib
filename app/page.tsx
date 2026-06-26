@@ -59,14 +59,9 @@ export default function Home() {
       <style>{`
         @media (max-width: 640px) {
           .hero-card-wrapper { margin: 8px 12px 16px !important; }
-          .hero-content { padding: 40px 20px 36px !important; min-height: 380px !important; }
-          .hero-tagline-text { font-size: 17px !important; }
-        }
-        @media (max-width: 768px) {
-          .why-grid { grid-template-columns: 1fr !important; }
-          .why-inner { padding: 32px 20px !important; }
-          .why-visual { display: none !important; }
-          .logo-tagline { display: none; }
+          .hero-content { padding: 36px 18px 32px !important; min-height: 360px !important; }
+          .hero-tagline-text { font-size: 16px !important; }
+          .hero-subhead { margin-top: 20px !important; font-size: 14px !important; }
         }
       `}</style>
 
@@ -123,7 +118,7 @@ export default function Home() {
 
             {/* Headline */}
             <h1
-              className="text-[40px] md:text-[54px] lg:text-[64px] mb-5"
+              className="text-[28px] sm:text-[36px] md:text-[54px] lg:text-[64px] mb-5"
               style={{ color: "#160F2E", fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.08 }}
             >
               Comparison intelligence for the{" "}
@@ -152,7 +147,7 @@ export default function Home() {
               </div>
 
               {/* Subhead */}
-              <p className="text-base md:text-lg mx-auto" style={{ color: "rgba(22,15,46,0.6)", maxWidth: "520px", lineHeight: 1.35, marginTop: "40px" }}>
+              <p className="hero-subhead text-base md:text-lg mx-auto" style={{ color: "rgba(22,15,46,0.6)", maxWidth: "520px", lineHeight: 1.35, marginTop: "40px" }}>
                 {stateIdx === 0
                   ? "Give product, engineering, and marketing teams an edge with hands-on intelligence on where your product features lead and what you can build next."
                   : BANNER2_SUB}

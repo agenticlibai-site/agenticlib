@@ -155,7 +155,7 @@ export default function RecommendationsPage() {
       {/* Nav */}
 
       {/* ── Hero — two-column split ── */}
-      <div style={{ maxWidth: 1200, margin: "24px auto 40px", padding: "0 32px" }}>
+      <div className="product-outer" style={{ maxWidth: 1200, margin: "24px auto 40px" }}>
         <div style={{
           borderRadius: 32,
           overflow: "hidden",
@@ -206,7 +206,7 @@ export default function RecommendationsPage() {
       </div>
 
       {/* Video */}
-      <div id="sage-demo" style={{ maxWidth: 900, margin: "0 auto 56px", padding: "0 32px" }}>
+      <div id="sage-demo" className="product-outer" style={{ maxWidth: 900, margin: "0 auto 56px" }}>
         <div style={{ borderRadius: 24, overflow: "hidden", boxShadow: "0 4px 8px rgba(0,0,0,0.04), 0 20px 60px rgba(124,58,237,0.10)" }}>
           <video
             src="/AgenticLib demo video.mp4"
@@ -219,7 +219,7 @@ export default function RecommendationsPage() {
       </div>
 
       {/* Feature cards */}
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 32px 80px" }}>
+      <div className="product-outer" style={{ maxWidth: 1200, margin: "0 auto", paddingBottom: "80px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto 40px", textAlign: "center" }}>
           <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, letterSpacing: ".22em", color: "#C2186A", margin: "0 0 14px" }}>WHAT MAKES SAGE UNIQUE</p>
           <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 600, letterSpacing: "-.03em", lineHeight: 1.06, margin: 0, color: "#0E1320" }}>Built to match you from the start</h2>
@@ -229,6 +229,7 @@ export default function RecommendationsPage() {
           {FEATURES.map(({ num, color, shadow, hoverShadow, iconBg, Icon, title, body }, i) => (
             <div
               key={title}
+              className={i === FEATURES.length - 1 ? "feature-card-last" : undefined}
               style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: shadow, transition: "box-shadow 0.3s ease", ...(i === FEATURES.length - 1 ? { gridColumn: "1 / -1", maxWidth: "calc(50% - 10px)", margin: "0 auto", width: "100%" } : {}) }}
               onMouseEnter={(e) => { e.currentTarget.style.boxShadow = hoverShadow; }}
               onMouseLeave={(e) => { e.currentTarget.style.boxShadow = shadow; }}
@@ -241,7 +242,7 @@ export default function RecommendationsPage() {
                 <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#0E1320" }}>{title}</h3>
                 <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#3A4256", margin: 0 }}>{body}</p>
               </div>
-              <div style={{ flex: "none", width: 110, height: 110, borderRadius: 18, background: iconBg, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 1px 0 rgba(255,255,255,.7)" }}>
+              <div className="feature-card-icon" style={{ flex: "none", width: 110, height: 110, borderRadius: 18, background: iconBg, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 1px 0 rgba(255,255,255,.7)" }}>
                 <Icon size={40} strokeWidth={1.5} style={{ color }} />
               </div>
             </div>

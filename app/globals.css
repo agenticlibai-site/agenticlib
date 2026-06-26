@@ -185,3 +185,33 @@ body {
   border-color: #6c4cf1;
   box-shadow: 0 0 0 3px rgba(108, 76, 241, 0.12);
 }
+
+/* ── Logo tagline — hide on mobile ── */
+@media (max-width: 768px) {
+  .logo-tagline { display: none !important; }
+}
+
+/* ── Product page outer padding wrapper ── */
+.product-outer { padding: 0 32px; }
+
+/* ── Why AgenticLib hero grid (ai-agent-builders) ── */
+.why-grid {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1.05fr);
+  gap: 40px;
+  align-items: center;
+  padding: 60px 56px;
+}
+
+/* ── Mobile overrides for product/solution pages ── */
+@media (max-width: 768px) {
+  .product-outer { padding: 0 16px !important; }
+  .feature-card-icon { display: none !important; }
+  .feature-card-last { max-width: 100% !important; margin: 0 !important; }
+  .why-grid {
+    grid-template-columns: 1fr !important;
+    padding: 32px 20px 36px !important;
+    gap: 0 !important;
+  }
+  .why-visual { display: none !important; }
+}
