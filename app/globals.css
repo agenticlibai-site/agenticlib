@@ -146,6 +146,22 @@ body {
   .caps-grid { grid-template-columns: 1fr !important; }
 }
 
+/* ── Hero two-column split — stack on mobile ── */
+.hero-split-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 32px;
+  align-items: center;
+  padding: 36px 24px 36px 68px;
+}
+@media (max-width: 768px) {
+  .hero-split-grid {
+    grid-template-columns: 1fr !important;
+    padding: 28px 20px 32px !important;
+    gap: 20px !important;
+  }
+}
+
 /* ── Agent preview step entrance animation ── */
 @keyframes stepFadeIn {
   from { opacity: 0; transform: translateY(8px); }
