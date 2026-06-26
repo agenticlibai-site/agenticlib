@@ -168,7 +168,7 @@ export default function RecommendationsPage() {
             "linear-gradient(135deg, #F9D5E8 0%, #FBF6FE 50%, #F2C4E2 100%)",
           ].join(", "),
         }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1.1fr", gap: 32, alignItems: "center", padding: "36px 24px 36px 68px" }}>
+          <div className="hero-split-grid">
 
             {/* Left: copy */}
             <div>
