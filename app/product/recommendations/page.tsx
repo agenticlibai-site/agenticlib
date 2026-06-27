@@ -53,7 +53,7 @@ const FEATURES = [
 
 function SageIllustration() {
   return (
-    <div style={{ background: "white", borderRadius: 24, padding: "14px 14px 14px 14px", boxShadow: "0 20px 60px rgba(124,58,237,0.13), 0 4px 16px rgba(0,0,0,0.06)", fontFamily: "inherit" }}>
+    <div style={{ background: "white", borderRadius: 24, padding: "16px 20px", width: "100%", boxShadow: "0 20px 60px rgba(124,58,237,0.13), 0 4px 16px rgba(0,0,0,0.06)", fontFamily: "inherit" }}>
 
       {/* Search bar row */}
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
