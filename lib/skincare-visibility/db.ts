@@ -435,6 +435,7 @@ export async function getSkincareDailySummary(days = 7): Promise<
       GROUP BY rcb.canonical_brand
     ),
     qualified AS (
+      -- brands that pass quantitative noise thresholds
       SELECT ds.brand
       FROM skincare_daily_summary ds
       JOIN brand_prompt_counts bpc ON bpc.brand = ds.brand
@@ -442,6 +443,9 @@ export async function getSkincareDailySummary(days = 7): Promise<
         AND bpc.distinct_prompts >= ${BRAND_MIN_PROMPTS}
       GROUP BY ds.brand
       HAVING SUM(ds.mention_count) >= ${BRAND_MIN_MENTIONS}
+      UNION
+      -- manually tracked brands always shown regardless of thresholds
+      SELECT brand_name AS brand FROM skincare_tracked_brands
     )
     SELECT date::text AS date, brand, model, mention_count, confidence
     FROM skincare_daily_summary
@@ -477,6 +481,8 @@ export async function getSkincareWeeklySummary(): Promise<
         AND bpc.distinct_prompts >= ${BRAND_MIN_PROMPTS}
       GROUP BY ds.brand
       HAVING SUM(ds.mention_count) >= ${BRAND_MIN_MENTIONS}
+      UNION
+      SELECT brand_name AS brand FROM skincare_tracked_brands
     )
     SELECT brand, model,
            SUM(mention_count)::int AS mention_count,
