@@ -176,7 +176,7 @@ export default function RecommendationsPage() {
                 Sage by AgenticLib
               </span>
 
-              <h1 style={{ fontSize: "clamp(36px, 4.2vw, 54px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 0.96, color: "#0E1320", margin: "0 0 16px" }}>
+              <h1 style={{ fontSize: "clamp(36px, 4.2vw, 54px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.12, color: "#0E1320", margin: "0 0 16px" }}>
                 <span style={{ display: "block" }}>Find the right</span>
                 <span style={{ display: "block" }}>
                   <span style={{ background: "linear-gradient(95deg, #7C3AED 15%, #E8447A 85%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>AI agent</span>
