@@ -152,8 +152,9 @@ export default function ResearchPage() {
           overflow: "hidden",
           boxShadow: "0 8px 48px rgba(94,108,232,0.16)",
           background: [
-            "radial-gradient(circle at 86% 12%, rgba(94,108,232,0.34) 0%, transparent 52%)",
-            "linear-gradient(112deg, #E4E8FF 0%, #EDE6FF 48%, #EAE2FF 100%)",
+            "radial-gradient(circle at 86% 12%, rgba(94,108,232,0.52) 0%, transparent 52%)",
+            "radial-gradient(circle at 10% 90%, rgba(124,58,237,0.28) 0%, transparent 50%)",
+            "linear-gradient(112deg, #C8CEFF 0%, #D4CAFF 48%, #CABEFF 100%)",
           ].join(", "),
         }}>
           <div className="hero-split-grid">
