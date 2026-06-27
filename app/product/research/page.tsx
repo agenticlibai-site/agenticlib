@@ -94,7 +94,7 @@ function VeraIllustration() {
 
       {/* Tab bar */}
       <text x="214" y="61" fontSize="11" fill="rgba(22,15,46,0.32)">Research</text>
-      <rect x="276" y="47" width="50" height="24" rx="7" fill="rgba(124,58,237,0.10)"/>
+      <rect x="265" y="47" width="72" height="24" rx="7" fill="rgba(124,58,237,0.10)"/>
       <text x="301" y="63" textAnchor="middle" fontSize="11" fontWeight="700" fill="#7C3AED">Compare</text>
       <line x1="186" y1="80" x2="454" y2="80" stroke="rgba(124,58,237,0.08)" strokeWidth="1"/>
 
