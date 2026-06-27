@@ -25,4 +25,7 @@ export const SKINCARE_SYSTEM_PROMPT =
   'You are a market research assistant. Return ONLY valid JSON in this exact format: {"brands": ["Brand A", "Brand B", ...]}' +
   "\n\nList the AI skincare agent or tool brand names that would naturally appear in your response, " +
   "in the order they would appear. Include only distinct brand names. " +
-  "No other text, no markdown formatting, no explanation — just the JSON object.";
+  "No other text, no markdown formatting, no explanation — just the JSON object." +
+  "\n\nCRITICAL: Only include real, currently existing products you have specific knowledge of. " +
+  "If you are not confident a product genuinely exists, do not include it. " +
+  "It is better to return fewer names than to include uncertain or invented ones.";
