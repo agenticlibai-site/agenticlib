@@ -30,7 +30,7 @@
     },
     {
       "path": "/api/cron/skincare-visibility-collection?aggregate",
-      "schedule": "30 5 * * *"
+      "schedule": "45 5 * * *"
     }
   ]
 }
