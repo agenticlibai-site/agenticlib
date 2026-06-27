@@ -180,9 +180,8 @@ export default function RecommendationsPage() {
                 <span style={{ display: "block" }}>Find the right</span>
                 <span style={{ display: "block" }}>
                   <span style={{ background: "linear-gradient(95deg, #7C3AED 15%, #E8447A 85%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>AI agent</span>
-                  <span style={{ color: "#0E1320" }}> -</span>
+                  <span style={{ color: "#0E1320" }}> - faster</span>
                 </span>
-                <span style={{ display: "block" }}>faster</span>
               </h1>
 
               <p style={{ fontSize: 15.5, color: "#0E1320", lineHeight: 1.6, margin: "0 0 24px", maxWidth: 400 }}>
