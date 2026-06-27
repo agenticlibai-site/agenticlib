@@ -77,8 +77,8 @@ function SageIllustration() {
         <div style={{ background: "white", border: "1px solid #FCE7F3", borderRadius: 999, padding: "5px 13px" }}>
           <span style={{ color: "#DB2777", fontWeight: 500, fontSize: 12.5 }}>Finance</span>
         </div>
-        <div style={{ background: "white", border: "1px solid #E5E7EB", borderRadius: 999, padding: "5px 13px" }}>
-          <span style={{ color: "#6B7280", fontWeight: 500, fontSize: 12.5 }}>Sales</span>
+        <div style={{ background: "white", border: "1px solid #BFDBFE", borderRadius: 999, padding: "5px 13px" }}>
+          <span style={{ color: "#2563EB", fontWeight: 500, fontSize: 12.5 }}>Sales</span>
         </div>
       </div>
 
