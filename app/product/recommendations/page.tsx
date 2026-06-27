@@ -62,7 +62,7 @@ function SageIllustration() {
             <circle cx="6.5" cy="6.5" r="4.5" stroke="#7C3AED" strokeWidth="1.6"/>
             <path d="M10 10l2.8 2.8" stroke="#7C3AED" strokeWidth="1.6" strokeLinecap="round"/>
           </svg>
-          <span style={{ flex: 1, fontSize: 11.5, color: "#9CA3AF", fontWeight: 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>Best marketing AI agent for...</span>
+          <span style={{ flex: 1, fontSize: 11.5, color: "#0E1320", fontWeight: 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>Best marketing AI agent for...</span>
         </div>
         <div style={{ flexShrink: 0, background: "#EDE9FE", borderRadius: 999, padding: "7px 13px" }}>
           <span style={{ color: "#6D28D9", fontWeight: 700, fontSize: 12.5 }}>3 matches</span>
@@ -78,7 +78,7 @@ function SageIllustration() {
           <span style={{ color: "#DB2777", fontWeight: 500, fontSize: 12.5 }}>Finance</span>
         </div>
         <div style={{ background: "white", border: "1px solid #E5E7EB", borderRadius: 999, padding: "5px 13px" }}>
-          <span style={{ color: "#6B7280", fontWeight: 500, fontSize: 12.5 }}>Automation</span>
+          <span style={{ color: "#6B7280", fontWeight: 500, fontSize: 12.5 }}>Sales</span>
         </div>
       </div>
 
