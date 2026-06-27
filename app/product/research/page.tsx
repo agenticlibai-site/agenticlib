@@ -154,7 +154,8 @@ export default function ResearchPage() {
           background: [
             "radial-gradient(circle at 86% 12%, rgba(94,108,232,0.52) 0%, transparent 52%)",
             "radial-gradient(circle at 10% 90%, rgba(124,58,237,0.28) 0%, transparent 50%)",
-            "linear-gradient(112deg, #C8CEFF 0%, #D4CAFF 48%, #CABEFF 100%)",
+            "radial-gradient(circle at 0% 50%, rgba(94,108,232,0.38) 0%, transparent 55%)",
+            "linear-gradient(112deg, #B0BAFF 0%, #CCCAFF 48%, #CABEFF 100%)",
           ].join(", "),
         }}>
           <div className="hero-split-grid">
