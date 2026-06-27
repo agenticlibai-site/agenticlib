@@ -47,7 +47,7 @@ const FEATURES = [
     iconBg: "linear-gradient(160deg,#EEF0FE,#E5E9FD)",
     Icon: BarChart2,
     title: "Comparison Analytics",
-    body: "See how AI agents are recommended, described, and rated across Claude and GPT-5 in real queries. AgenticLib tracks LLM visibility and sentiment so you deploy with confidence.",
+    body: "See how AI agents are recommended, described, and rated across Claude and GPT-5 in real queries. AgenticLib tracks brand visibility and sentiment so you deploy with confidence.",
   },
 ];
 
