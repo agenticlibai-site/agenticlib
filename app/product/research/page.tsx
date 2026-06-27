@@ -203,7 +203,7 @@ export default function ResearchPage() {
       {/* Feature cards */}
       <div className="product-outer" style={{ maxWidth: 1200, margin: "0 auto", paddingBottom: "80px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto 40px", textAlign: "center" }}>
-          <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, letterSpacing: ".22em", color: "#5E6CE8", margin: "0 0 14px" }}>WHAT MAKES VERA UNIQUE</p>
+          <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, letterSpacing: ".22em", color: "#5E6CE8", margin: "0 0 14px" }}>WHAT MAKES VERA AI UNIQUE</p>
           <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 600, letterSpacing: "-.03em", lineHeight: 1.06, margin: 0, color: "#0E1320" }}>Compare smarter, decide faster</h2>
         </div>
 
