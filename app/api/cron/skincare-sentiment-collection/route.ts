@@ -1,38 +1,11 @@
-// How AI models describe confirmed top-10 skincare agents — not verified user sentiment.
+// How AI models describe Curology and SkAI — structured sentiment + tag collection.
+// Scoped to 2 brands; 3 runs × 2 models = 12 calls/day. Runs 3 days then crons stay on
+// to keep the dashboard current as the window rolls forward.
 //
-// IMPORTANT: Do NOT add to vercel.json until:
-//   1. Discovery data (skincare_daily_summary) has run for ≥3 days
-//   2. Top 10 brands are confirmed and inserted into skincare_sentiment_brands
-//   3. Schema and run plan have been reviewed (see CONFIRMATION BLOCK below)
-//
-// ── CONFIRMATION BLOCK ────────────────────────────────────────────────────────
-// Schema: skincare_sentiment_responses (date, brand, model, run_number, sentiment, tags)
-//         skincare_sentiment_summary (window_start, window_end, brand, positive_pct,
-//           neutral_pct, negative_pct, top_tags [{tag, frequency, shared}], total_responses)
-//
-// Exact system prompt:
-//   "You will be asked to describe a specific AI skincare agent. Respond ONLY with valid
-//    JSON in this exact format: {"sentiment": "positive" | "neutral" | "negative",
-//    "tags": ["tag1", "tag2", "tag3", "tag4"]}. Tags should be short (1-3 words) and
-//    should describe what is genuinely distinctive or notable about THIS agent specifically
-//    — its actual features, focus area, strengths, or weaknesses. Do not invent a unique
-//    angle if the agent is genuinely similar to others; in that case use accurate general
-//    descriptors instead. No other text."
-//
-// Exact user prompt per brand:
-//   "Describe the AI skincare agent '{brand_name}' — what it does well, any concerns,
-//    and how it's generally perceived."
-//
-// Run plan: 10 brands × 3 runs × 2 models × 3 days = 180 calls total.
-//   Day 1–3: collect. After day 3 disable the sentiment cron entries in vercel.json.
-//   Expected rows per model per day: 10 brands × 3 runs = 30.
-//   Expected total per day: 60. EXPECTED_TOTAL = 60.
-//
-// Cron entries to add when ready (90-min buffer after discovery window ends at 05:30):
-//   { "path": "/api/cron/skincare-sentiment-collection?model=claude-haiku-4-5", "schedule": "0 7 * * *" }
-//   { "path": "/api/cron/skincare-sentiment-collection?model=gpt-4o-mini",      "schedule": "10 7 * * *" }
-//   { "path": "/api/cron/skincare-sentiment-collection?aggregate",               "schedule": "30 7 * * *" }
-// ─────────────────────────────────────────────────────────────────────────────
+// Cron schedule (vercel.json):
+//   07:00 UTC  → ?model=claude-haiku-4-5
+//   07:10 UTC  → ?model=gpt-4o-mini
+//   07:30 UTC  → ?aggregate
 
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
@@ -47,8 +20,9 @@ export const maxDuration = 300;
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
+const SENTIMENT_BRANDS = ["Curology", "SkAI"] as const;
 const RUNS_PER_BRAND = 3;
-const BATCH_CONCURRENCY = 5; // lower than discovery — each call is ~2× longer
+const BATCH_CONCURRENCY = 5;
 const BATCH_DELAY_MS = 200;
 
 // Exact prompt wording — do not change once collection has started.
@@ -103,6 +77,16 @@ async function callGPT(brandName: string): Promise<ModelResult> {
   return { text: res.choices[0]?.message?.content ?? "" };
 }
 
+async function withRetry<T>(fn: () => Promise<T>, retries = 2, delayMs = 600): Promise<T> {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try { return await fn(); } catch (err) {
+      if (attempt === retries) throw err;
+      await new Promise((r) => setTimeout(r, delayMs * (attempt + 1)));
+    }
+  }
+  throw new Error("unreachable");
+}
+
 async function runWithConcurrency<T>(tasks: (() => Promise<T>)[], concurrency: number, delayMs: number): Promise<T[]> {
   const results: T[] = [];
   for (let i = 0; i < tasks.length; i += concurrency) {
@@ -131,19 +115,10 @@ export async function GET(request: Request) {
 
   const jobLabel = aggregateOnly ? "sentiment-aggregation" : `sentiment-collection (${modelParam ?? "all"})`;
 
-  try {
-    // Load confirmed brand list — abort cleanly if not yet populated.
-    const brandRows = await sql`SELECT brand_name FROM skincare_sentiment_brands ORDER BY brand_name`;
-    const brands = brandRows.rows.map((r) => r.brand_name as string);
-    if (!brands.length) {
-      return Response.json({
-        mode: jobLabel,
-        skipped: true,
-        reason: "skincare_sentiment_brands is empty — insert confirmed top-10 brands first",
-      });
-    }
+  const brands = [...SENTIMENT_BRANDS];
 
-    // Window start = 2 days ago (covers 3-day sentiment collection run)
+  try {
+    // Window start = 2 days ago (rolling 3-day window)
     const windowStartDate = new Date(now);
     windowStartDate.setDate(windowStartDate.getDate() - 2);
     const windowStart = windowStartDate.toISOString().split("T")[0];
@@ -152,14 +127,14 @@ export async function GET(request: Request) {
     if (aggregateOnly) {
       await computeSkincareSentimentSummary(windowStart, today);
 
-      const statsResult = await sql`
+      const todayResult = await sql`
         SELECT COUNT(*) AS total FROM skincare_sentiment_responses
-        WHERE date BETWEEN ${windowStart}::date AND ${today}::date
+        WHERE date = ${today}::date
       `;
-      const totalRows = parseInt(statsResult.rows[0]?.total ?? "0", 10);
-      const EXPECTED_WINDOW_TOTAL = brands.length * RUNS_PER_BRAND * 2 * 3; // 10 × 3 × 2 × 3 = 180
+      const todayRows = parseInt(todayResult.rows[0]?.total ?? "0", 10);
+      const EXPECTED_TODAY = brands.length * RUNS_PER_BRAND * 2; // 2 brands × 3 runs × 2 models = 12
 
-      const healthy = totalRows === EXPECTED_WINDOW_TOTAL;
+      const healthy = todayRows >= EXPECTED_TODAY;
       if (!healthy) {
         await sendEmail({
           subject: `[AgenticLib] ALERT — Skincare Sentiment Aggregation (${today})`,
@@ -167,13 +142,13 @@ export async function GET(request: Request) {
             <h2>Skincare Sentiment — Aggregation Health Check</h2>
             <table style="border-collapse:collapse;font-family:monospace">
               <tr><td style="padding:4px 12px 4px 0"><strong>Timestamp</strong></td><td>${runTimestamp}</td></tr>
-              <tr><td style="padding:4px 12px 4px 0"><strong>Rows in window</strong></td><td>${totalRows} / ${EXPECTED_WINDOW_TOTAL}</td></tr>
+              <tr><td style="padding:4px 12px 4px 0"><strong>Rows today</strong></td><td>${todayRows} / ${EXPECTED_TODAY}</td></tr>
             </table>
           `,
         }).catch((e) => console.error("[alert] sentiment aggregation email failed:", e));
       }
 
-      return Response.json({ mode: "sentiment-aggregate", date: today, window_start: windowStart, total_rows: totalRows, healthy });
+      return Response.json({ mode: "sentiment-aggregate", date: today, window_start: windowStart, today_rows: todayRows, expected_today: EXPECTED_TODAY, healthy });
     }
 
     // ── Collection mode ──────────────────────────────────────────────────────
@@ -194,7 +169,9 @@ export async function GET(request: Request) {
 
           tasks.push(async () => {
             try {
-              const rawResult = m === "claude-haiku-4-5" ? await callClaude(b) : await callGPT(b);
+              const rawResult = m === "claude-haiku-4-5"
+                ? await withRetry(() => callClaude(b))
+                : await withRetry(() => callGPT(b));
               const { sentiment, tags } = parseSentimentResponse(rawResult.text);
 
               await sql`

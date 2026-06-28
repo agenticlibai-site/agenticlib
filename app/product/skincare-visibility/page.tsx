@@ -5,8 +5,10 @@ import {
   getSkincareWeeklySummary,
   getSkincareLLMVisibility,
   getSkincareUseCaseBuckets,
+  getSkincareSentimentSummary,
   initSkincareDB,
   type UseCaseBucketBrandRow,
+  type SkincareSentimentRow,
 } from "@/lib/skincare-visibility/db";
 import SkincareVisibilityCharts from "./SkincareVisibilityCharts";
 
@@ -23,11 +25,12 @@ async function getData() {
   try {
     await initSkincareDB();
     const today = new Date().toISOString().split("T")[0];
-    const [dailySummary, weeklySummary, llmVisibility, useCaseBuckets, rawResult, metaResult] = await Promise.all([
+    const [dailySummary, weeklySummary, llmVisibility, useCaseBuckets, sentimentData, rawResult, metaResult] = await Promise.all([
       getSkincareDailySummary(7),
       getSkincareWeeklySummary(),
       getSkincareLLMVisibility(),
       getSkincareUseCaseBuckets(),
+      getSkincareSentimentSummary(),
       // Direct read from raw_responses — available the moment collection runs, before aggregation
       sql`
         SELECT brand_name AS brand, model, COUNT(*)::int AS mentions
@@ -51,12 +54,13 @@ async function getData() {
       weeklySummary,
       llmVisibility,
       useCaseBuckets,
+      sentimentData,
       rawBrands: rawResult.rows as RawBrandRow[],
       rawMeta: metaResult.rows as { model: string; rows: number; last_write: string }[],
       today,
     };
   } catch {
-    return { dailySummary: [], weeklySummary: [], llmVisibility: [], useCaseBuckets: [] as UseCaseBucketBrandRow[], rawBrands: [], rawMeta: [], today: "" };
+    return { dailySummary: [], weeklySummary: [], llmVisibility: [], useCaseBuckets: [] as UseCaseBucketBrandRow[], sentimentData: [] as SkincareSentimentRow[], rawBrands: [], rawMeta: [], today: "" };
   }
 }
 
@@ -68,7 +72,7 @@ function fmtModel(m: string) {
 }
 
 export default async function SkincareVisibilityPage() {
-  const { dailySummary, weeklySummary, llmVisibility, useCaseBuckets, rawBrands, rawMeta, today } = await getData();
+  const { dailySummary, weeklySummary, llmVisibility, useCaseBuckets, sentimentData, rawBrands, rawMeta, today } = await getData();
 
   return (
     <main
@@ -200,6 +204,7 @@ export default async function SkincareVisibilityPage() {
           weeklySummary={weeklySummary}
           llmVisibility={llmVisibility}
           useCaseBuckets={useCaseBuckets}
+          sentimentData={sentimentData}
         />
       </div>
     </main>

@@ -31,6 +31,18 @@
     {
       "path": "/api/cron/skincare-visibility-collection?aggregate",
       "schedule": "45 5 * * *"
+    },
+    {
+      "path": "/api/cron/skincare-sentiment-collection?model=claude-haiku-4-5",
+      "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/skincare-sentiment-collection?model=gpt-4o-mini",
+      "schedule": "10 7 * * *"
+    },
+    {
+      "path": "/api/cron/skincare-sentiment-collection?aggregate",
+      "schedule": "30 7 * * *"
     }
   ]
 }
