@@ -12,7 +12,7 @@ export async function initSkincareDB(): Promise<void> {
     CREATE TABLE IF NOT EXISTS skincare_raw_responses (
       id             SERIAL PRIMARY KEY,
       date           DATE    NOT NULL,
-      prompt_id      INTEGER NOT NULL CHECK (prompt_id BETWEEN 1 AND 13),
+      prompt_id      INTEGER NOT NULL CHECK (prompt_id BETWEEN 1 AND 19),
       prompt_text    TEXT    NOT NULL,
       bucket_tag     TEXT    NOT NULL,
       model          TEXT    NOT NULL CHECK (model IN ('claude-haiku-4-5', 'gpt-4o-mini')),

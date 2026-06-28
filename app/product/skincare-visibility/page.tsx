@@ -131,7 +131,7 @@ export default async function SkincareVisibilityPage() {
             <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
               {(["claude-haiku-4-5", "gpt-4o-mini"] as const).map(m => {
                 const meta = rawMeta.find(r => r.model === m);
-                const done = meta && meta.rows >= 39;
+                const done = meta && meta.rows >= 152;
                 return (
                   <div key={m} style={{
                     display: "flex", alignItems: "center", gap: 6,
@@ -141,7 +141,7 @@ export default async function SkincareVisibilityPage() {
                   }}>
                     <span style={{ width: 7, height: 7, borderRadius: "50%", background: done ? "#059669" : "#94A3B8", flexShrink: 0, display: "inline-block" }} />
                     <span style={{ fontSize: 12, fontWeight: 600, color: done ? "#065f46" : "rgba(22,15,46,0.45)" }}>
-                      {fmtModel(m)} — {meta ? `${meta.rows}/39 rows` : "pending"}
+                      {fmtModel(m)} — {meta ? `${meta.rows}/152 rows` : "pending"}
                     </span>
                   </div>
                 );

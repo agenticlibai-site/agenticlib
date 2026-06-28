@@ -1,20 +1,26 @@
-// Fixed prompt list — do NOT modify once collection has started.
-// IDs 1–13 are skincare-pipeline-specific and do not overlap with the
+// IDs 1–19 are skincare-pipeline-specific and do not overlap with the
 // marketing pipeline's prompt IDs (1–22 in a separate table).
+// IDs 14–19 added to expand low-coverage buckets (personalized, condition-specific, tracking).
 export const SKINCARE_PROMPTS = [
-  { id: 1,  text: "What are the best AI skincare agents right now?",                                                                 tag: "discovery"    },
-  { id: 2,  text: "What AI agents can give me personalized skincare advice?",                                                        tag: "personalized" },
-  { id: 3,  text: "Recommend an AI skincare agent",                                                                                  tag: "discovery"    },
-  { id: 4,  text: "What are the top AI skincare agents for routines?",                                                               tag: "routines"     },
-  { id: 5,  text: "I have acne-prone skin, what AI skincare agent can help me build a routine?",                                     tag: "conditions"   },
-  { id: 6,  text: "What's the best AI skincare agent for sensitive skin?",                                                           tag: "conditions"   },
-  { id: 7,  text: "Can an AI skincare agent review my current routine and tell me what's not working?",                              tag: "routines"     },
-  { id: 8,  text: "What AI skincare agent checks if my products conflict with each other?",                                          tag: "ingredients"  },
-  { id: 9,  text: "What AI skincare agent asks questions before recommending a routine?",                                            tag: "personalized" },
-  { id: 10, text: "What AI skincare agent analyzes ingredients and tells me if a product suits my skin?",                            tag: "ingredients"  },
-  { id: 11, text: "Best AI skincare agent for checking if a product is safe for my skin type",                                       tag: "ingredients"  },
-  { id: 12, text: "What AI skincare agent gives evidence-based advice for acne or skin conditions, not just trends?",                tag: "conditions"   },
-  { id: 13, text: "Is there an AI skincare agent that tracks my progress and reminds me about my routine?",                          tag: "routines"     },
+  { id: 1,  text: "What are the best AI skincare agents right now?",                                                                         tag: "discovery"    },
+  { id: 2,  text: "What AI agents can give me personalized skincare advice?",                                                                tag: "personalized" },
+  { id: 3,  text: "Recommend an AI skincare agent",                                                                                          tag: "discovery"    },
+  { id: 4,  text: "What are the top AI skincare agents for routines?",                                                                       tag: "routines"     },
+  { id: 5,  text: "I have acne-prone skin, what AI skincare agent can help me build a routine?",                                             tag: "conditions"   },
+  { id: 6,  text: "What's the best AI skincare agent for sensitive skin?",                                                                   tag: "conditions"   },
+  { id: 7,  text: "Can an AI skincare agent review my current routine and tell me what's not working?",                                      tag: "routines"     },
+  { id: 8,  text: "What AI skincare agent checks if my products conflict with each other?",                                                  tag: "ingredients"  },
+  { id: 9,  text: "What AI skincare agent asks questions before recommending a routine?",                                                    tag: "personalized" },
+  { id: 10, text: "What AI skincare agent analyzes ingredients and tells me if a product suits my skin?",                                    tag: "ingredients"  },
+  { id: 11, text: "Best AI skincare agent for checking if a product is safe for my skin type",                                               tag: "ingredients"  },
+  { id: 12, text: "What AI skincare agent gives evidence-based advice for acne or skin conditions, not just trends?",                        tag: "conditions"   },
+  { id: 13, text: "Is there an AI skincare agent that tracks my progress and reminds me about my routine?",                                  tag: "routines"     },
+  { id: 14, text: "Which AI skincare app builds a personalised routine based on my skin type and specific concerns?",                        tag: "personalized" },
+  { id: 15, text: "What's the best AI tool for creating a fully custom skincare routine from scratch?",                                      tag: "personalized" },
+  { id: 16, text: "Which AI skincare agent is best for managing rosacea or other sensitive skin conditions?",                                tag: "conditions"   },
+  { id: 17, text: "What AI skincare tool gives science-backed recommendations for hyperpigmentation or dark spots?",                         tag: "conditions"   },
+  { id: 18, text: "Which AI skincare app lets me log my skin over time and see what's actually working?",                                    tag: "routines"     },
+  { id: 19, text: "What AI skincare agent helps me monitor changes in my skin and adjust my routine based on results?",                      tag: "routines"     },
 ] as const;
 
 export type SkincarePrompt = (typeof SKINCARE_PROMPTS)[number];
