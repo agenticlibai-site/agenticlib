@@ -329,11 +329,22 @@ interface LLMVisRow {
   total_responses: number;
 }
 
+interface SkincareSentimentTag { tag: string; frequency: number; shared: boolean; }
+interface SkincareSentimentRow {
+  brand: string;
+  positive_pct: number;
+  neutral_pct: number;
+  negative_pct: number;
+  top_tags: SkincareSentimentTag[];
+  total_responses: number;
+}
+
 interface Props {
   dailySummary: DailyRow[];
   weeklySummary: WeeklyRow[];
   llmVisibility: LLMVisRow[];
   useCaseBuckets: UseCaseBucketBrandRow[];
+  sentimentData: SkincareSentimentRow[];
 }
 
 function buildChartData(daily: DailyRow[]) {
@@ -432,7 +443,7 @@ function EmptySlate({ message = "Collecting data…" }: { message?: string }) {
   );
 }
 
-export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, llmVisibility, useCaseBuckets }: Props) {
+export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, llmVisibility, useCaseBuckets, sentimentData }: Props) {
   const hasReal = dailySummary.length > 0;
   const { brands: realBrands, rows: realRows } = buildChartData(dailySummary);
 
@@ -764,7 +775,101 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
         </div>
       </div>
 
-      {/* Row 5: Weekly brand table */}
+      {/* Row 5: Brand Sentiment */}
+      {sentimentData.length > 0 && (
+        <div style={{
+          background: "#fff",
+          borderRadius: 10,
+          boxShadow: "0 2px 8px rgba(22,15,46,0.07), 0 1px 2px rgba(22,15,46,0.04)",
+          overflow: "hidden",
+        }}>
+          <div style={{
+            padding: "16px 24px",
+            borderBottom: "1px solid rgba(22,15,46,0.07)",
+            display: "flex", alignItems: "baseline", gap: 12,
+          }}>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: DARK, letterSpacing: "-0.01em" }}>
+              Brand Sentiment
+            </h3>
+            <span style={{ fontSize: 12, color: "rgba(22,15,46,0.40)" }}>
+              AI model perception · 3 runs × 2 models · rolling 3-day window
+            </span>
+          </div>
+          <div style={{ padding: "20px 24px" }}>
+            {/* Legend */}
+            <div style={{ display: "flex", gap: 20, marginBottom: 24 }}>
+              {([
+                { label: "Positive", color: "#059669" },
+                { label: "Neutral",  color: "#D97706" },
+                { label: "Negative", color: "#DC2626" },
+              ] as const).map(({ label, color }) => (
+                <div key={label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ width: 10, height: 10, borderRadius: 2, background: color, flexShrink: 0, display: "inline-block" }} />
+                  <span style={{ fontSize: 12, color: "rgba(22,15,46,0.55)", fontWeight: 500 }}>{label}</span>
+                </div>
+              ))}
+            </div>
+            {/* Per-brand rows */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+              {sentimentData.map((row) => {
+                const posCount = Math.round(row.positive_pct / 100 * row.total_responses);
+                const negCount = Math.round(row.negative_pct / 100 * row.total_responses);
+                const neuCount = row.total_responses - posCount - negCount;
+                const accentColor = brandBarColor(row.brand);
+                return (
+                  <div key={row.brand} style={{ display: "flex", gap: 0, alignItems: "flex-start" }}>
+                    <div style={{ width: 3, borderRadius: 999, background: accentColor, alignSelf: "stretch", flexShrink: 0, marginRight: 16 }} />
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 10 }}>
+                        <span style={{ fontSize: 13, fontWeight: 700, color: accentColor, minWidth: 80, flexShrink: 0 }}>
+                          {row.brand}
+                        </span>
+                        <div style={{ flex: 1, height: 20, borderRadius: 4, overflow: "hidden", display: "flex", minWidth: 0 }}>
+                          {row.positive_pct > 0 && (
+                            <div style={{ width: `${row.positive_pct}%`, background: "#059669", flexShrink: 0 }} />
+                          )}
+                          {row.neutral_pct > 0 && (
+                            <div style={{ width: `${row.neutral_pct}%`, background: "#D97706", flexShrink: 0 }} />
+                          )}
+                          {row.negative_pct > 0 && (
+                            <div style={{ width: `${row.negative_pct}%`, background: "#DC2626", flexShrink: 0 }} />
+                          )}
+                        </div>
+                        <div style={{ display: "flex", gap: 10, flexShrink: 0 }}>
+                          <span style={{ fontSize: 13, fontWeight: 700, color: "#059669", fontVariantNumeric: "tabular-nums", minWidth: 16, textAlign: "right" as const }}>{posCount}</span>
+                          <span style={{ fontSize: 13, fontWeight: 700, color: "#D97706", fontVariantNumeric: "tabular-nums", minWidth: 16, textAlign: "right" as const }}>{neuCount}</span>
+                          <span style={{ fontSize: 13, fontWeight: 700, color: "#DC2626", fontVariantNumeric: "tabular-nums", minWidth: 16, textAlign: "right" as const }}>{negCount}</span>
+                        </div>
+                      </div>
+                      {row.top_tags.length > 0 && (
+                        <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 6 }}>
+                          {row.top_tags.map(({ tag, shared }) => (
+                            <span key={tag} style={{
+                              fontSize: 11, fontWeight: 500,
+                              padding: "3px 10px", borderRadius: 999,
+                              background: shared ? "rgba(22,15,46,0.04)" : "rgba(194,24,106,0.06)",
+                              border: `1px solid ${shared ? "rgba(22,15,46,0.10)" : "rgba(194,24,106,0.18)"}`,
+                              color: shared ? "rgba(22,15,46,0.50)" : ROSE,
+                            }}>
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <p style={{ marginTop: 16, fontSize: 11, color: "rgba(22,15,46,0.35)", lineHeight: 1.5 }}>
+              Tags in <span style={{ color: ROSE, fontWeight: 600 }}>rose</span> are unique to this brand.{" "}
+              <span style={{ color: "rgba(22,15,46,0.45)", fontWeight: 500 }}>Muted</span> tags also appear in other brands&apos; top 4 — shared descriptors.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Row 6: Weekly brand table */}
       {hasWeekly && (
         <div style={{
           background: "#fff",

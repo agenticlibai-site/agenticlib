@@ -596,3 +596,83 @@ export async function getSkincareDailyRunStats(date: string): Promise<{ success:
     activeErrors: parseInt(e.rows[0]?.count ?? "0", 10),
   };
 }
+
+// ── Sentiment collection ───────────────────────────────────────────────────────
+
+export async function insertSkincareSentimentResponse(row: {
+  date: string;
+  brand: string;
+  model: string;
+  runNumber: number;
+  sentiment: string;
+  tags: string[];
+}): Promise<void> {
+  await sql`
+    INSERT INTO skincare_sentiment_responses
+      (date, brand, model, run_number, sentiment, tags)
+    VALUES (
+      ${row.date}::date, ${row.brand}, ${row.model}, ${row.runNumber},
+      ${row.sentiment}, ${JSON.stringify(row.tags)}::jsonb
+    )
+    ON CONFLICT (date, brand, model, run_number) DO UPDATE SET
+      sentiment  = EXCLUDED.sentiment,
+      tags       = EXCLUDED.tags,
+      created_at = NOW()
+  `;
+}
+
+export async function insertSkincareSentimentError(row: {
+  date: string;
+  brand: string | null;
+  model: string | null;
+  runNumber: number | null;
+  rawResponse: string;
+  errorMessage: string;
+}): Promise<void> {
+  await sql`
+    INSERT INTO skincare_sentiment_errors
+      (date, brand, model, run_number, raw_response, error_message)
+    VALUES (
+      ${row.date}::date, ${row.brand}, ${row.model}, ${row.runNumber},
+      ${row.rawResponse}, ${row.errorMessage}
+    )
+  `;
+}
+
+export interface SkincareSentimentTag {
+  tag: string;
+  frequency: number;
+  shared: boolean;
+}
+
+export interface SkincareSentimentRow {
+  brand: string;
+  positive_pct: number;
+  neutral_pct: number;
+  negative_pct: number;
+  top_tags: SkincareSentimentTag[];
+  total_responses: number;
+}
+
+export async function getSkincareSentimentSummary(): Promise<SkincareSentimentRow[]> {
+  await initSkincareDB();
+  const result = await sql`
+    SELECT DISTINCT ON (brand)
+      brand,
+      positive_pct::float  AS positive_pct,
+      neutral_pct::float   AS neutral_pct,
+      negative_pct::float  AS negative_pct,
+      top_tags,
+      total_responses
+    FROM skincare_sentiment_summary
+    ORDER BY brand, window_end DESC
+  `;
+  return result.rows.map((r) => ({
+    brand: r.brand as string,
+    positive_pct: r.positive_pct as number,
+    neutral_pct: r.neutral_pct as number,
+    negative_pct: r.negative_pct as number,
+    top_tags: (r.top_tags as SkincareSentimentTag[]) ?? [],
+    total_responses: r.total_responses as number,
+  }));
+}
