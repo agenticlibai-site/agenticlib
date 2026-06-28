@@ -9,6 +9,9 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
 
 const ROSE   = "#C2186A";
@@ -39,6 +42,56 @@ const LINE_COLORS = [
 ];
 
 function lineColor(i: number) { return LINE_COLORS[Math.min(i, LINE_COLORS.length - 1)]; }
+
+// ── Use-case bucket pie chart config ────────────────────────────────────────
+
+interface UseCaseBucketBrandRow {
+  brand: string;
+  b1: number;
+  b2: number;
+  b3: number;
+  b4: number;
+  b5: number;
+}
+
+const BUCKET_DEFS = [
+  { key: "b1" as const, label: "Routine Audit",        sub: "prompts 7–8"   },
+  { key: "b2" as const, label: "Personalized Routine", sub: "prompt 9"      },
+  { key: "b3" as const, label: "Ingredient Analysis",  sub: "prompts 10–11" },
+  { key: "b4" as const, label: "Condition-Specific",   sub: "prompt 12"     },
+  { key: "b5" as const, label: "Tracking & Progress",  sub: "prompt 13"     },
+];
+
+const BRAND_PIE_COLORS: Record<string, string> = {
+  "Curology":       "#C2186A",
+  "SkAI":           "#6B4FBB",
+  "INCI Decoder":   "#2563EB",
+  "SkinSage":       "#059669",
+  "HelloAva":       "#DC2626",
+  "Clinique":       "#D97706",
+  "Think Dirty":    "#0891B2",
+  "SkinBetter":     "#C026D3",
+  "DermEngine":     "#EA580C",
+  "Dermatology AI": "#0D9488",
+  "Skincare.ai":    "#7C3AED",
+  "SkinGenie":      "#0369A1",
+  "Other":          "#CBD5E1",
+};
+
+function pieColor(name: string, idx: number): string {
+  return BRAND_PIE_COLORS[name] ?? LINE_COLORS[(idx + 5) % LINE_COLORS.length];
+}
+
+function buildPieData(rows: UseCaseBucketBrandRow[], key: "b1" | "b2" | "b3" | "b4" | "b5") {
+  const sorted = rows.filter(r => r[key] > 0).sort((a, b) => b[key] - a[key]);
+  const top = sorted.slice(0, 5);
+  const otherTotal = sorted.slice(5).reduce((s, r) => s + r[key], 0);
+  const data = top.map(r => ({ name: r.brand, value: r[key] }));
+  if (otherTotal > 0) data.push({ name: "Other", value: otherTotal });
+  return data;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 const SEED_BRANDS = ["PROVEN", "Curology", "Function of Beauty", "Atolla", "Skinsei", "Droplette"];
 const SEED_BASES  = [82, 64, 55, 42, 38, 34];
@@ -83,6 +136,7 @@ interface Props {
   dailySummary: DailyRow[];
   weeklySummary: WeeklyRow[];
   llmVisibility: LLMVisRow[];
+  useCaseBuckets: UseCaseBucketBrandRow[];
 }
 
 function buildChartData(daily: DailyRow[]) {
@@ -181,7 +235,7 @@ function EmptySlate({ message = "Collecting data…" }: { message?: string }) {
   );
 }
 
-export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, llmVisibility }: Props) {
+export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, llmVisibility, useCaseBuckets }: Props) {
   const hasReal = dailySummary.length > 0;
   const { brands: realBrands, rows: realRows } = buildChartData(dailySummary);
 
@@ -374,7 +428,103 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
         </div>
       </div>
 
-      {/* Row 3: Weekly brand table */}
+      {/* Row 3: Use-case share of voice */}
+      {useCaseBuckets.length > 0 && (
+        <div style={{
+          background: "#fff",
+          borderRadius: 10,
+          boxShadow: "0 2px 8px rgba(22,15,46,0.07), 0 1px 2px rgba(22,15,46,0.04)",
+          overflow: "hidden",
+        }}>
+          <div style={{
+            padding: "16px 24px",
+            borderBottom: "1px solid rgba(22,15,46,0.07)",
+            display: "flex",
+            alignItems: "baseline",
+            gap: 12,
+          }}>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: DARK, letterSpacing: "-0.01em" }}>
+              Use-Case Share of Voice
+            </h3>
+            <span style={{ fontSize: 12, color: "rgba(22,15,46,0.40)" }}>brand mentions by bucket · all data · both models</span>
+          </div>
+          <div style={{ padding: "20px 24px" }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
+              {BUCKET_DEFS.map(({ key, label, sub }) => {
+                const pieData = buildPieData(useCaseBuckets, key);
+                if (pieData.length === 0) return null;
+                const total = pieData.reduce((s, d) => s + d.value, 0);
+                return (
+                  <div key={key} style={{
+                    borderRadius: 8,
+                    border: "1px solid rgba(22,15,46,0.08)",
+                    padding: "14px 16px 16px",
+                  }}>
+                    <p style={{
+                      fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const,
+                      letterSpacing: "0.1em", color: ROSE, marginBottom: 2,
+                    }}>
+                      {label}
+                    </p>
+                    <p style={{ fontSize: 11, color: "rgba(22,15,46,0.38)", marginBottom: 10 }}>
+                      {sub} · {total} mentions
+                    </p>
+                    <ResponsiveContainer width="100%" height={150}>
+                      <PieChart>
+                        <Pie
+                          data={pieData}
+                          cx="50%"
+                          cy="50%"
+                          innerRadius={40}
+                          outerRadius={65}
+                          paddingAngle={2}
+                          dataKey="value"
+                          nameKey="name"
+                        >
+                          {pieData.map((entry, index) => (
+                            <Cell key={entry.name} fill={pieColor(entry.name, index)} />
+                          ))}
+                        </Pie>
+                        <Tooltip
+                          formatter={(value: unknown) => {
+                            const v = value as number;
+                            return [`${v} (${((v / total) * 100).toFixed(1)}%)`];
+                          }}
+                          contentStyle={{
+                            borderRadius: 8,
+                            border: "1px solid rgba(22,15,46,0.10)",
+                            fontSize: 12,
+                            boxShadow: "0 4px 12px rgba(22,15,46,0.10)",
+                            color: DARK,
+                          }}
+                        />
+                      </PieChart>
+                    </ResponsiveContainer>
+                    <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 5 }}>
+                      {pieData.map((entry, index) => (
+                        <div key={entry.name} style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                          <span style={{
+                            width: 7, height: 7, borderRadius: "50%", flexShrink: 0,
+                            background: pieColor(entry.name, index),
+                          }} />
+                          <span style={{ fontSize: 11, color: DARK, fontWeight: 500, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" as const }}>
+                            {entry.name}
+                          </span>
+                          <span style={{ fontSize: 11, color: "rgba(22,15,46,0.45)", fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>
+                            {entry.value} · {((entry.value / total) * 100).toFixed(0)}%
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Row 4: Weekly brand table */}
       {hasWeekly && (
         <div style={{
           background: "#fff",

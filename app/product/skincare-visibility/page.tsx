@@ -4,7 +4,9 @@ import {
   getSkincareDailySummary,
   getSkincareWeeklySummary,
   getSkincareLLMVisibility,
+  getSkincareUseCaseBuckets,
   initSkincareDB,
+  type UseCaseBucketBrandRow,
 } from "@/lib/skincare-visibility/db";
 import SkincareVisibilityCharts from "./SkincareVisibilityCharts";
 
@@ -21,10 +23,11 @@ async function getData() {
   try {
     await initSkincareDB();
     const today = new Date().toISOString().split("T")[0];
-    const [dailySummary, weeklySummary, llmVisibility, rawResult, metaResult] = await Promise.all([
+    const [dailySummary, weeklySummary, llmVisibility, useCaseBuckets, rawResult, metaResult] = await Promise.all([
       getSkincareDailySummary(7),
       getSkincareWeeklySummary(),
       getSkincareLLMVisibility(),
+      getSkincareUseCaseBuckets(),
       // Direct read from raw_responses — available the moment collection runs, before aggregation
       sql`
         SELECT brand_name AS brand, model, COUNT(*)::int AS mentions
@@ -47,12 +50,13 @@ async function getData() {
       dailySummary,
       weeklySummary,
       llmVisibility,
+      useCaseBuckets,
       rawBrands: rawResult.rows as RawBrandRow[],
       rawMeta: metaResult.rows as { model: string; rows: number; last_write: string }[],
       today,
     };
   } catch {
-    return { dailySummary: [], weeklySummary: [], llmVisibility: [], rawBrands: [], rawMeta: [], today: "" };
+    return { dailySummary: [], weeklySummary: [], llmVisibility: [], useCaseBuckets: [] as UseCaseBucketBrandRow[], rawBrands: [], rawMeta: [], today: "" };
   }
 }
 
@@ -64,7 +68,7 @@ function fmtModel(m: string) {
 }
 
 export default async function SkincareVisibilityPage() {
-  const { dailySummary, weeklySummary, llmVisibility, rawBrands, rawMeta, today } = await getData();
+  const { dailySummary, weeklySummary, llmVisibility, useCaseBuckets, rawBrands, rawMeta, today } = await getData();
 
   return (
     <main
@@ -141,7 +145,7 @@ export default async function SkincareVisibilityPage() {
                   }}>
                     <span style={{ width: 7, height: 7, borderRadius: "50%", background: done ? "#059669" : "#94A3B8", flexShrink: 0, display: "inline-block" }} />
                     <span style={{ fontSize: 12, fontWeight: 600, color: done ? "#065f46" : "rgba(22,15,46,0.45)" }}>
-                      {fmtModel(m)} — {meta ? `${meta.rows}/152 rows` : "pending"}
+                      {fmtModel(m)} — {meta ? `${meta.rows}/39 rows` : "pending"}
                     </span>
                   </div>
                 );
@@ -195,6 +199,7 @@ export default async function SkincareVisibilityPage() {
           dailySummary={dailySummary}
           weeklySummary={weeklySummary}
           llmVisibility={llmVisibility}
+          useCaseBuckets={useCaseBuckets}
         />
       </div>
     </main>
