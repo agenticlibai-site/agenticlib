@@ -510,6 +510,65 @@ export async function getSkincareLLMVisibility(): Promise<
   return result.rows as { window_start: string; window_end: string; model: string; visibility_pct: number; total_responses: number }[];
 }
 
+// ── Use-case bucket share of voice ────────────────────────────────────────────
+// Returns one row per brand with mention counts per bucket.
+// Skincare.ai is filtered to only responses where the raw string contains the dot
+// (i.e. "Skincare.ai" or "Skincare.AI") to avoid the canonical-rename inflation bug.
+
+export interface UseCaseBucketBrandRow {
+  brand: string;
+  b1: number; // routine-audit (p7,8)
+  b2: number; // personalized-routine (p9)
+  b3: number; // ingredient-analysis (p10,11)
+  b4: number; // condition-specific (p12)
+  b5: number; // tracking-progress (p13)
+}
+
+export async function getSkincareUseCaseBuckets(): Promise<UseCaseBucketBrandRow[]> {
+  await initSkincareDB();
+  const result = await sql`
+    WITH bucket_mentions AS (
+      SELECT srcb.canonical_brand AS brand, r.prompt_id, r.id AS response_id
+      FROM skincare_response_canonical_brands srcb
+      JOIN skincare_raw_responses r ON r.id = srcb.response_id
+      WHERE (
+        srcb.canonical_brand != 'Skincare.ai'
+        OR EXISTS (
+          SELECT 1 FROM jsonb_array_elements_text(r.brands) b
+          WHERE b IN ('Skincare.ai', 'Skincare.AI')
+        )
+      )
+      AND LOWER(srcb.canonical_brand) NOT IN (
+        SELECT LOWER(brand_name) FROM skincare_denylist
+      )
+    )
+    SELECT
+      brand,
+      COUNT(DISTINCT CASE WHEN prompt_id IN (7,8)   THEN response_id END)::int AS b1,
+      COUNT(DISTINCT CASE WHEN prompt_id IN (9)      THEN response_id END)::int AS b2,
+      COUNT(DISTINCT CASE WHEN prompt_id IN (10,11)  THEN response_id END)::int AS b3,
+      COUNT(DISTINCT CASE WHEN prompt_id IN (12)     THEN response_id END)::int AS b4,
+      COUNT(DISTINCT CASE WHEN prompt_id IN (13)     THEN response_id END)::int AS b5
+    FROM bucket_mentions
+    GROUP BY brand
+    HAVING (
+      COUNT(DISTINCT CASE WHEN prompt_id IN (7,8)   THEN response_id END) +
+      COUNT(DISTINCT CASE WHEN prompt_id IN (9)      THEN response_id END) +
+      COUNT(DISTINCT CASE WHEN prompt_id IN (10,11)  THEN response_id END) +
+      COUNT(DISTINCT CASE WHEN prompt_id IN (12)     THEN response_id END) +
+      COUNT(DISTINCT CASE WHEN prompt_id IN (13)     THEN response_id END)
+    ) > 0
+    ORDER BY (
+      COUNT(DISTINCT CASE WHEN prompt_id IN (7,8)   THEN response_id END) +
+      COUNT(DISTINCT CASE WHEN prompt_id IN (9)      THEN response_id END) +
+      COUNT(DISTINCT CASE WHEN prompt_id IN (10,11)  THEN response_id END) +
+      COUNT(DISTINCT CASE WHEN prompt_id IN (12)     THEN response_id END) +
+      COUNT(DISTINCT CASE WHEN prompt_id IN (13)     THEN response_id END)
+    ) DESC
+  `;
+  return result.rows as UseCaseBucketBrandRow[];
+}
+
 // ── Observability ──────────────────────────────────────────────────────────────
 
 export async function getSkincareDailyRunStats(date: string): Promise<{ success: number; activeErrors: number }> {
