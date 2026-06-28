@@ -27,7 +27,7 @@ export const maxDuration = 300;
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const RUNS_PER_PROMPT = 8;
+const RUNS_PER_PROMPT = 3;
 const BATCH_CONCURRENCY = 10;
 const BATCH_DELAY_MS = 150;
 

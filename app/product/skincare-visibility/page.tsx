@@ -131,7 +131,7 @@ export default async function SkincareVisibilityPage() {
             <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
               {(["claude-haiku-4-5", "gpt-4o-mini"] as const).map(m => {
                 const meta = rawMeta.find(r => r.model === m);
-                const done = meta && meta.rows >= 152;
+                const done = meta && meta.rows >= 39;
                 return (
                   <div key={m} style={{
                     display: "flex", alignItems: "center", gap: 6,
