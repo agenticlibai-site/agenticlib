@@ -256,6 +256,18 @@ export async function insertSkincareRawResponse(row: {
       model_snapshot = EXCLUDED.model_snapshot,
       created_at     = NOW()
   `;
+  // A successful insert means this (date, model, prompt_id, run_number) slot resolved.
+  // Archive any prior error for the same slot so the health check reflects reality.
+  // This is a no-op when there is no matching error — adds negligible overhead.
+  await sql`
+    UPDATE skincare_collection_errors
+    SET archived = TRUE
+    WHERE date      = ${row.date}::date
+      AND model      = ${row.model}
+      AND prompt_id  = ${row.promptId}
+      AND run_number = ${row.runNumber}
+      AND archived   = FALSE
+  `;
 }
 
 export async function insertSkincareCollectionError(row: {
