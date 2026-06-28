@@ -139,7 +139,6 @@ const FEATURE_COMPARISON: FeatureBucket[] = [
         description: "Substantive questionnaire covering skin type, concerns, lifestyle, budget, and goals.",
         competitors: [
           { name: "HelloAva",  score: 78, reasoning: "12-question chatbot classifying into 30 skin types — most granular in this set — with demographic cohort data and past purchase history." },
-          { name: "SkAI",      score: 71, reasoning: "Selfie scan plus questions that adapt to weekly photos, local weather, UV index, and hormonal changes — the only environmental layer." },
           { name: "SkinGenie", score: 62, reasoning: "Clean quiz covering type, concerns, lifestyle, and budget in under 2 minutes with a purchasable AM/PM routine output." },
         ],
       },
@@ -195,7 +194,6 @@ const FEATURE_COMPARISON: FeatureBucket[] = [
         competitors: [
           { name: "Dermatology AI", score: 82, reasoning: "Primary use case: condition ID from photos with mole/lesion malignancy risk scoring, trained on dermatologist-verified data; FDA/CE-cleared." },
           { name: "Clinique",       score: 72, reasoning: "Clinical Reality plots 80+ data points per scan against 1M+ face scans — strong scale and accuracy, but narrower condition range." },
-          { name: "SkAI",           score: 68, reasoning: "Real-time selfie detection of breakouts, pigmentation, hydration, texture, and dark circles with cross-session change tracking." },
         ],
       },
     ],
@@ -207,7 +205,6 @@ const FEATURE_COMPARISON: FeatureBucket[] = [
         label: "Routine check-off + habit reminders",
         description: "Daily step logging, scheduled reminders, and consistency feedback over time.",
         competitors: [
-          { name: "SkAI",      score: 72, reasoning: "Built-in daily AM/PM step check-off with a consistency score calculated from logged completions and step-level reminder notifications." },
           { name: "SkinGenie", score: 68, reasoning: "Push reminders for morning and evening routines with gamified badge streaks for completion — no consistency score documented." },
         ],
       },
@@ -215,7 +212,6 @@ const FEATURE_COMPARISON: FeatureBucket[] = [
         label: "Visual skin progress tracking",
         description: "Before/after selfie comparison or skin metric improvement visualised over weeks.",
         competitors: [
-          { name: "SkAI",     score: 78, reasoning: "Selfie-to-selfie overlay comparison across any two chosen dates, with skin metrics — texture, hydration, pigmentation — tracked per scan." },
           { name: "Clinique", score: 65, reasoning: "12-week simulated skin outcome preview — uniquely predictive rather than retrospective, but shows projected change, not actual measured improvement." },
           { name: "Curology", score: 40, reasoning: "Before/after photos exist in the clinical record and inform provider formula adjustments; no app-based self-serve selfie comparison." },
         ],
