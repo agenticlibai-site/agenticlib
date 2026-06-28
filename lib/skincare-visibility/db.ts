@@ -541,6 +541,9 @@ export async function getSkincareUseCaseBuckets(): Promise<UseCaseBucketBrandRow
       AND LOWER(srcb.canonical_brand) NOT IN (
         SELECT LOWER(brand_name) FROM skincare_denylist
       )
+      AND srcb.canonical_brand IN (
+        SELECT brand_name FROM skincare_tracked_brands
+      )
     )
     SELECT
       brand,
