@@ -31,6 +31,11 @@ const LINE_COLORS = [
   "#0369A1", // 13. dark blue
   "#92400E", // 14. brown
   "#BE185D", // 15. dark rose
+  "#0F766E", // 16. dark teal
+  "#B45309", // 17. dark amber
+  "#4338CA", // 18. indigo
+  "#047857", // 19. dark emerald
+  "#9D174D", // 20. dark pink
 ];
 
 function lineColor(i: number) { return LINE_COLORS[Math.min(i, LINE_COLORS.length - 1)]; }
@@ -180,7 +185,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
   const hasReal = dailySummary.length > 0;
   const { brands: realBrands, rows: realRows } = buildChartData(dailySummary);
 
-  const chartBrands = hasReal ? realBrands.slice(0, 15) : SEED_BRANDS;
+  const chartBrands = hasReal ? realBrands.slice(0, 20) : SEED_BRANDS;
   const chartRows   = hasReal ? realRows : makeSeedRows();
 
   const [hiddenBrands, setHiddenBrands] = useState<Set<string>>(new Set());
@@ -269,7 +274,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
               Brand Mentions — 7-Day Trend
             </h3>
             <p style={{ fontSize: 12, color: "rgba(22,15,46,0.42)" }}>
-              {hasReal ? "Top 15 brands by total mentions · both models combined" : "Sample data — live chart populates after daily collection"}
+              {hasReal ? "Top 20 brands by total mentions · both models combined" : "Sample data — live chart populates after daily collection"}
             </p>
           </div>
           {!hasReal && (
@@ -361,9 +366,9 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
               );
             })}
           </div>
-          {hasReal && realBrands.length > 15 && (
+          {hasReal && realBrands.length > 20 && (
             <p style={{ fontSize: 10, color: "rgba(22,15,46,0.30)", marginTop: 8 }}>
-              Showing top 15 of {realBrands.length} brands by mention volume.
+              Showing top 20 of {realBrands.length} brands by mention volume.
             </p>
           )}
         </div>
