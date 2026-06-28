@@ -1,6 +1,6 @@
-// How AI models describe Curology — structured sentiment + tag collection.
-// Scoped to 1 brand; 3 runs × 2 models = 6 calls/day. Crons run daily to keep
-// the rolling 3-day window current. SkAI removed: pre-launch, no public product.
+// How AI models describe each tracked skincare brand — structured sentiment + tag collection.
+// 8 brands × 3 runs × 2 models = 48 calls/day. Crons run daily to keep the
+// rolling 3-day window current. SkAI excluded: pre-launch, no public product.
 //
 // Cron schedule (vercel.json):
 //   07:00 UTC  → ?model=claude-haiku-4-5
@@ -20,7 +20,16 @@ export const maxDuration = 300;
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
-const SENTIMENT_BRANDS = ["Curology"] as const;
+const SENTIMENT_BRANDS = [
+  "Curology",
+  "HelloAva",
+  "Clinique",
+  "SkinSAFE",
+  "INCI Decoder",
+  "SkinGenie",
+  "Think Dirty",
+  "SkinAdvisor",
+] as const;
 const RUNS_PER_BRAND = 3;
 const BATCH_CONCURRENCY = 5;
 const BATCH_DELAY_MS = 200;
@@ -132,7 +141,7 @@ export async function GET(request: Request) {
         WHERE date = ${today}::date
       `;
       const todayRows = parseInt(todayResult.rows[0]?.total ?? "0", 10);
-      const EXPECTED_TODAY = brands.length * RUNS_PER_BRAND * 2; // 1 brand × 3 runs × 2 models = 6
+      const EXPECTED_TODAY = brands.length * RUNS_PER_BRAND * 2; // 8 brands × 3 runs × 2 models = 48
 
       const healthy = todayRows >= EXPECTED_TODAY;
       if (!healthy) {
