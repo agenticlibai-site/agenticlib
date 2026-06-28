@@ -5,11 +5,11 @@ import { initSkincareDB, loadSkincareDenylist } from "./db";
 // low_prompt_coverage: true when only 1 prompt backs the bucket — display as a caveat
 // badge in the UI (not buried in a footnote) since single-prompt buckets have high variance.
 export const USE_CASE_BUCKETS = {
-  "routine-audit":        { promptIds: [7, 8],   lowPromptCoverage: false },
-  "personalized-routine": { promptIds: [9],       lowPromptCoverage: true  },
-  "ingredient-analysis":  { promptIds: [10, 11], lowPromptCoverage: false  },
-  "condition-specific":   { promptIds: [12],      lowPromptCoverage: true  },
-  "tracking-progress":    { promptIds: [13],      lowPromptCoverage: true  },
+  "routine-audit":        { promptIds: [7, 8],         lowPromptCoverage: false },
+  "personalized-routine": { promptIds: [9, 14, 15],    lowPromptCoverage: false },
+  "ingredient-analysis":  { promptIds: [10, 11],       lowPromptCoverage: false },
+  "condition-specific":   { promptIds: [12, 16, 17],   lowPromptCoverage: false },
+  "tracking-progress":    { promptIds: [13, 18, 19],   lowPromptCoverage: false },
 } as const satisfies Record<string, { promptIds: number[]; lowPromptCoverage: boolean }>;
 
 // Computes share of voice per brand within each use-case bucket across the window.
