@@ -184,7 +184,7 @@ export default async function SkincareVisibilityPage() {
                     {top.map((row, i) => (
                       <div key={row.brand} style={{ display: "flex", alignItems: "center", gap: 12, padding: "7px 20px", borderBottom: i < top.length - 1 ? "1px solid rgba(22,15,46,0.04)" : undefined }}>
                         <span style={{ fontSize: 11, color: "rgba(22,15,46,0.28)", fontWeight: 700, minWidth: 18, textAlign: "right" }}>{i + 1}</span>
-                        <span style={{ fontSize: 13, fontWeight: 600, color: DARK, minWidth: 160 }}>{row.brand}</span>
+                        <span style={{ fontSize: 13, fontWeight: 600, color: DARK, minWidth: 160 }}>{row.brand === "SkinSage" ? "SkinSAFE" : row.brand}</span>
                         <div style={{ flex: 1, height: 5, background: "rgba(22,15,46,0.06)", borderRadius: 999 }}>
                           <div style={{ height: 5, borderRadius: 999, background: ROSE, width: `${(row.mentions / maxMentions) * 100}%`, opacity: 0.75 }} />
                         </div>
