@@ -73,7 +73,7 @@ const BRAND_PIE_COLORS: Record<string, string> = {
   "SkinBetter":     "#C026D3",
   "DermEngine":     "#EA580C",
   "Dermatology AI": "#0D9488",
-  "Skincare.ai":    "#7C3AED",
+  "Skincare.ai":    "#EAB308",
   "SkinGenie":      "#0369A1",
   "SkinAdvisor":    "#4338CA",
   "Other":          "#CBD5E1",
