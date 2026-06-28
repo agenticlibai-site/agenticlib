@@ -67,6 +67,7 @@ const BRAND_PIE_COLORS: Record<string, string> = {
   "SkAI":           "#6B4FBB",
   "INCI Decoder":   "#2563EB",
   "SkinSage":       "#059669",
+  "SkinSAFE":       "#059669",
   "HelloAva":       "#DC2626",
   "Clinique":       "#D97706",
   "Think Dirty":    "#0891B2",
@@ -83,6 +84,9 @@ function pieColor(name: string, idx: number): string {
   return BRAND_PIE_COLORS[name] ?? LINE_COLORS[(idx + 5) % LINE_COLORS.length];
 }
 
+const DISPLAY_NAMES: Record<string, string> = { "SkinSage": "SkinSAFE" };
+function displayName(brand: string): string { return DISPLAY_NAMES[brand] ?? brand; }
+
 function buildPieData(rows: UseCaseBucketBrandRow[], key: "b1" | "b2" | "b3" | "b4" | "b5") {
   const sorted = rows.filter(r => r[key] > 0).sort((a, b) => b[key] - a[key]);
   const top = sorted.slice(0, 5);
@@ -94,7 +98,7 @@ function buildPieData(rows: UseCaseBucketBrandRow[], key: "b1" | "b2" | "b3" | "
 
 // ── Product Feature Comparison ───────────────────────────────────────────────
 
-interface FeatureCompetitor { name: string; score: number; reasoning: string; }
+interface FeatureCompetitor { name: string; score: number; reasoning: string; tag?: "outdated" | "limited-docs"; }
 interface FeatureEntry {
   label: string;
   description: string;
@@ -221,6 +225,103 @@ const FEATURE_COMPARISON: FeatureBucket[] = [
   },
 ];
 
+// ── Technical & Operational Dimensions ────────────────────────────────────────
+
+const TECH_DIMENSIONS: FeatureBucket[] = [
+  {
+    bucket: "Technical Capabilities",
+    features: [
+      {
+        label: "Instruction following & constraint adherence",
+        description: "Does the tool reliably enforce user-stated constraints — budget, ingredient exclusions, allergens, skin goals — as documented in official materials?",
+        competitors: [
+          { name: "SkinSAFE",     score: 78, reasoning: "Pre-sets personal allergens, patch-test results, and 30+ wellness markers (fragrance-free, gluten-free, BabySAFE, etc.); every product scan enforced against the full profile." },
+          { name: "Curology",     score: 74, reasoning: "Intake form captures goals, allergies, and medical contraindications; licensed provider respects stated constraints at every formula adjustment." },
+          { name: "SkinGenie",    score: 72, reasoning: "Quiz captures skin type, concerns, lifestyle, and budget; outputs budget-appropriate routine with swap alternatives; Ingredient Checker supports exclusion filtering." },
+          { name: "Think Dirty",  score: 68, reasoning: "Pre-set personal allergen profile fires real-time Ingredient Alerts at scan time across carcinogens, allergens, and endocrine disruptors (premium feature)." },
+          { name: "HelloAva",     score: 62, reasoning: "11-question chatbot quiz captures skin constraints; licensed aesthetician structurally confirms every AI recommendation before checkout.", tag: "outdated" },
+          { name: "Clinique",     score: 32, reasoning: "Scan-and-recommend is system-driven; no documented mechanism for users to pre-set ingredient exclusions, budget caps, or other personal constraints." },
+          { name: "SkinAdvisor",  score: 28, reasoning: "Selfie scan generates AM/PM routine and health score; no documented budget filters or ingredient exclusion controls found in any public source.", tag: "limited-docs" },
+          { name: "INCI Decoder", score: 22, reasoning: "Developer API supports include/exclude ingredient filtering; the consumer-facing decode tool has no user constraint profile." },
+        ],
+      },
+      {
+        label: "Multi-step reasoning & conditional logic",
+        description: "Does the tool chain multiple decisions — adapting on follow-up answers, re-assessing across sessions, applying conditional logic based on new inputs?",
+        competitors: [
+          { name: "Curology",     score: 80, reasoning: "Documented lifecycle chain: intake → formula design → ongoing provider chat → reformulation as skin goals change. Multi-step structure is built into the subscription model." },
+          { name: "SkinGenie",    score: 74, reasoning: "Full session chain: questionnaire → selfie analysis → routine → swap options → Skin Journal cross-session tracking → routine refinement over time." },
+          { name: "HelloAva",     score: 62, reasoning: "AI generates → aesthetician reviews → customer approves or swaps → purchase history carried into future sessions.", tag: "outdated" },
+          { name: "SkinAdvisor",  score: 32, reasoning: "Skin Diary stores cross-session analysis history; no documented conditional reasoning chain or re-assessment triggers.", tag: "limited-docs" },
+          { name: "Think Dirty",  score: 18, reasoning: "Ingredient preference profile persists across sessions, but each individual scan is a standalone one-step pass with no documented inter-session chaining." },
+          { name: "Clinique",     score: 0,  reasoning: "Confirmed single-session tool: 30-second scan, one-shot recommendation output, no session memory. Source: clinique.com/clinicalreality" },
+          { name: "INCI Decoder", score: 0,  reasoning: "Confirmed single-step tool: paste ingredient list → per-ingredient decode in one pass, no session state. Source: incidecoder.com" },
+          { name: "SkinSAFE",     score: 0,  reasoning: "Scan → filter against persistent user profile. Profile persists but no chained reasoning or re-assessment logic between sessions. Source: skinsafeproducts.com" },
+        ],
+      },
+    ],
+  },
+  {
+    bucket: "Responsible AI · Security",
+    features: [
+      {
+        label: "Data privacy & compliance posture",
+        description: "How well-documented is the brand's data privacy posture — policy publication, regulatory certifications, and protections for sensitive health, photo, or biometric data?",
+        competitors: [
+          { name: "Curology",     score: 82, reasoning: "HIPAA treatment of Rx health data confirmed in state addenda; firewalls and cryptographic hashing documented; Washington State health privacy addendum published. No public SOC 2." },
+          { name: "Clinique",     score: 58, reasoning: "Estée Lauder parent policy with EU Standard Contractual Clauses; admin, technical, and physical safeguards documented. Not HIPAA-regulated (cosmetics). No public SOC 2." },
+          { name: "Think Dirty",  score: 48, reasoning: "Privacy policy published Sep 2022; SSL/HTTPS; GDPR EU rights addressed; no data sold to third parties stated. No SOC 2 or HIPAA." },
+          { name: "SkinSAFE",     score: 35, reasoning: "Privacy policy at skinsafeproducts.com/policies; US law governs; co-developed with Mayo Clinic but consumer product, not clinical tool; no SOC 2 or HIPAA." },
+          { name: "SkinGenie",    score: 28, reasoning: "\"Photos analyzed securely and deleted immediately\" stated on site; privacy policy linked. No HIPAA, GDPR, or SOC 2 certifications found." },
+          { name: "SkinAdvisor",  score: 15, reasoning: "Privacy policy URL in App Store links to a builder-preview subdomain; individual developer listed; no certifications.", tag: "limited-docs" },
+          { name: "HelloAva",     score: 10, reasoning: "No public privacy policy or compliance certifications found in any source, including the current website.", tag: "outdated" },
+          { name: "INCI Decoder", score: 8,  reasoning: "No privacy policy page or compliance certifications found in any public search. Free web tool with no apparent data governance documentation." },
+        ],
+      },
+      {
+        label: "Medical-grade & clinical data handling",
+        description: "Has the brand published verifiable documentation on medical-standard handling of sensitive health data, or obtained regulatory recognition for clinical-grade data practices?",
+        competitors: [
+          { name: "Curology",  score: 88, reasoning: "Licensed provider model: Rx PHI treated as HIPAA-covered data; state-specific privacy addenda published; only brand in this set prescribing regulated actives (tretinoin, clindamycin)." },
+          { name: "Clinique",  score: 60, reasoning: "50+ years of dermatological research; allergy-tested formulations with 6M+ application tests documented. Not classified as a medical device; handled under cosmetics/retail framework." },
+          { name: "SkinSAFE",  score: 42, reasoning: "Co-developed with Mayo Clinic; designed for patients with known allergens; healthcare provider group integration documented. Consumer app, not a clinical tool under HIPAA." },
+          { name: "SkinGenie", score: 15, reasoning: "No medical claims or clinical data handling practices documented beyond a general statement that photos are deleted immediately after analysis." },
+        ],
+      },
+    ],
+  },
+  {
+    bucket: "Cost Efficiency",
+    features: [
+      {
+        label: "Free tier accessibility & barrier to entry",
+        description: "How accessible is the tool for a new user without payment? High = full meaningful functionality available free. Low = hard paywall, subscription required, or high ongoing cost.",
+        competitors: [
+          { name: "INCI Decoder", score: 95, reasoning: "Fully free; no account required; 27,000+ ingredient database accessible in full without any payment. Zero barrier to entry." },
+          { name: "Clinique",     score: 88, reasoning: "Free to use on Clinique.com and partner retailer sites; Clinical Reality scan requires no payment; revenue comes from product purchase, not tool access." },
+          { name: "SkinSAFE",     score: 72, reasoning: "Free core tier with meaningful allergen filtering across 30+ wellness markers; Premium ($59.99/year) is clearly tiered, with genuine free entry." },
+          { name: "SkinGenie",    score: 68, reasoning: "Free tier includes 1 routine and 1 analysis per month; Pro at $2.99/month is the lowest monthly subscription price in this set." },
+          { name: "Think Dirty",  score: 60, reasoning: "Free tier includes basic scanning; allergen-alert premium feature at $28.99/year ($2.42/month effective rate)." },
+          { name: "HelloAva",     score: 52, reasoning: "$10 one-time fee documented in 2017–2019 sources; low barrier but current pricing unconfirmed.", tag: "outdated" },
+          { name: "SkinAdvisor",  score: 38, reasoning: "$9.99/month or $59.99/year; no confirmed free tier in public documentation; mid-range pricing for limited-documented features.", tag: "limited-docs" },
+          { name: "Curology",     score: 22, reasoning: "$19.95/month minimum ongoing after trial; prescription model means sustained cost; justified by clinical supervision but highest recurring cost in this set." },
+        ],
+      },
+      {
+        label: "Subscription value & feature depth per dollar",
+        description: "What do you get for the money? Scores reflect breadth and quality of documented features relative to cost — not price alone.",
+        competitors: [
+          { name: "Curology",    score: 78, reasoning: "Licensed provider supervision, actual prescription actives, formula adjustments, and clinical oversight included in the monthly fee — unique value not replicable by OTC tools." },
+          { name: "SkinGenie",   score: 75, reasoning: "$2.99/month delivers Sephora-integrated product catalogue, AI routine builder, Ingredient Checker, and cross-session Skin Journal. Best price-to-feature ratio in this set." },
+          { name: "Think Dirty", score: 68, reasoning: "$28.99/year ($48.99/year All Access) gives real-time allergen alerts, 850,000+ product database, Ingredient Alerts, and curated safe lists. Clear per-feature value." },
+          { name: "SkinSAFE",    score: 55, reasoning: "$59.99/year for Mayo Clinic-co-developed allergen engine with 30+ wellness markers and healthcare provider group integration. Defensible but not most affordable per feature." },
+          { name: "SkinAdvisor", score: 30, reasoning: "$59.99/year for a lightweight app with limited independently verified documented features. Pricing not justified by publicly confirmed capability.", tag: "limited-docs" },
+        ],
+      },
+    ],
+  },
+];
+
 function brandBarColor(name: string): string {
   return BRAND_PIE_COLORS[name] ?? ROSE;
 }
@@ -250,6 +351,12 @@ function FeatureCard({ feature }: { feature: FeatureEntry }) {
             <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 5 }}>
               <span style={{ fontSize: 11, fontWeight: 600, color: DARK, minWidth: 108, flexShrink: 0 }}>
                 {c.name}
+                {c.tag === "outdated" && (
+                  <span style={{ marginLeft: 5, fontSize: 9, fontWeight: 700, padding: "1px 5px", borderRadius: 999, background: "rgba(217,119,6,0.10)", color: "#D97706", letterSpacing: "0.03em", verticalAlign: "middle" }}>2017–19</span>
+                )}
+                {c.tag === "limited-docs" && (
+                  <span style={{ marginLeft: 5, fontSize: 9, fontWeight: 700, padding: "1px 5px", borderRadius: 999, background: "rgba(100,116,139,0.10)", color: "#475569", letterSpacing: "0.03em", verticalAlign: "middle" }}>limited docs</span>
+                )}
               </span>
               <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(22,15,46,0.07)", overflow: "hidden" }}>
                 <div style={{ height: 6, borderRadius: 999, width: `${c.score}%`, background: brandBarColor(c.name) }} />
@@ -622,7 +729,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
                     style={{ accentColor: color, width: 12, height: 12, cursor: "pointer", flexShrink: 0 }}
                   />
                   <span style={{ fontSize: 11, color: checked ? color : "rgba(22,15,46,0.28)", fontWeight: checked ? 600 : 400 }}>
-                    {brand}
+                    {displayName(brand)}
                   </span>
                 </label>
               );
@@ -716,7 +823,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
                             background: pieColor(entry.name, index),
                           }} />
                           <span style={{ fontSize: 11, color: DARK, fontWeight: 500, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" as const }}>
-                            {entry.name}
+                            {displayName(entry.name)}
                           </span>
                           <span style={{ fontSize: 11, color: "rgba(22,15,46,0.45)", fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>
                             {entry.value} · {((entry.value / total) * 100).toFixed(0)}%
@@ -775,7 +882,60 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
         </div>
       </div>
 
-      {/* Row 5: Brand Sentiment */}
+      {/* Row 5: Technical & Operational Intelligence */}
+      <div style={{
+        background: "#fff",
+        borderRadius: 10,
+        boxShadow: "0 2px 8px rgba(22,15,46,0.07), 0 1px 2px rgba(22,15,46,0.04)",
+        overflow: "hidden",
+      }}>
+        <div style={{
+          padding: "16px 24px",
+          borderBottom: "1px solid rgba(22,15,46,0.07)",
+          display: "flex", alignItems: "baseline", gap: 12,
+        }}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: DARK, letterSpacing: "-0.01em" }}>
+            Technical &amp; Operational Intelligence
+          </h3>
+          <span style={{ fontSize: 12, color: "rgba(22,15,46,0.40)" }}>
+            AI-scored 0–100 · verified sources only · all tracked brands (excl. pre-launch)
+          </span>
+        </div>
+        <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 28 }}>
+          {TECH_DIMENSIONS.map(({ bucket, features }) => (
+            <div key={bucket}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                <span style={{
+                  fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const,
+                  letterSpacing: "0.10em", color: ROSE,
+                  background: "rgba(194,24,106,0.08)",
+                  borderRadius: 999, padding: "3px 10px",
+                }}>
+                  {bucket}
+                </span>
+                <div style={{ flex: 1, height: 1, background: "rgba(22,15,46,0.07)" }} />
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
+                {features.map(f => (
+                  <FeatureCard key={f.label} feature={f} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+        <div style={{ padding: "10px 24px 14px", borderTop: "1px solid rgba(22,15,46,0.05)", display: "flex", gap: 20, flexWrap: "wrap" as const }}>
+          <span style={{ fontSize: 10, color: "rgba(22,15,46,0.40)", display: "flex", alignItems: "center", gap: 5 }}>
+            <span style={{ padding: "1px 5px", borderRadius: 999, background: "rgba(217,119,6,0.10)", color: "#D97706", fontWeight: 700, fontSize: 9 }}>2017–19</span>
+            HelloAva data sourced 2017–2019; may not reflect current product.
+          </span>
+          <span style={{ fontSize: 10, color: "rgba(22,15,46,0.40)", display: "flex", alignItems: "center", gap: 5 }}>
+            <span style={{ padding: "1px 5px", borderRadius: 999, background: "rgba(100,116,139,0.10)", color: "#475569", fontWeight: 700, fontSize: 9 }}>limited docs</span>
+            SkinAdvisor: limited public documentation; scores reflect best available sources only.
+          </span>
+        </div>
+      </div>
+
+      {/* Row 7: Brand Sentiment */}
       {sentimentData.length > 0 && (
         <div style={{
           background: "#fff",
@@ -869,7 +1029,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
         </div>
       )}
 
-      {/* Row 6: Weekly brand table */}
+      {/* Row 8: Weekly brand table */}
       {hasWeekly && (
         <div style={{
           background: "#fff",
@@ -927,7 +1087,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
                         display: "inline-block", width: 7, height: 7, borderRadius: "50%",
                         background: lineColor(i), marginRight: 8, verticalAlign: "middle",
                       }} />
-                      {brand}
+                      {displayName(brand)}
                     </td>
                     <td style={{ padding: "11px 20px", textAlign: "right", fontWeight: 700, color: ROSE }}>
                       {stats.mention_count.toLocaleString()}
