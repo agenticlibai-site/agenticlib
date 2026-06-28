@@ -31,6 +31,16 @@ const RUNS_PER_PROMPT = 3;
 const BATCH_CONCURRENCY = 10;
 const BATCH_DELAY_MS = 150;
 
+async function withRetry<T>(fn: () => Promise<T>, retries = 2, delayMs = 600): Promise<T> {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try { return await fn(); } catch (err) {
+      if (attempt === retries) throw err;
+      await new Promise(r => setTimeout(r, delayMs * (attempt + 1)));
+    }
+  }
+  throw new Error("unreachable");
+}
+
 const EXPECTED_PER_MODEL = SKINCARE_PROMPTS.length * RUNS_PER_PROMPT; // 39
 
 interface ModelResult { text: string; modelSnapshot: string; }
@@ -174,8 +184,8 @@ export async function GET(request: Request) {
           tasks.push(async () => {
             try {
               const result = m === "claude-haiku-4-5"
-                ? await callClaude(p.text)
-                : await callGPT(p.text);
+                ? await withRetry(() => callClaude(p.text))
+                : await withRetry(() => callGPT(p.text));
 
               const brands = parseBrands(result.text);
 

@@ -75,6 +75,7 @@ const BRAND_PIE_COLORS: Record<string, string> = {
   "Dermatology AI": "#0D9488",
   "Skincare.ai":    "#7C3AED",
   "SkinGenie":      "#0369A1",
+  "SkinAdvisor":    "#4338CA",
   "Other":          "#CBD5E1",
 };
 
@@ -89,6 +90,202 @@ function buildPieData(rows: UseCaseBucketBrandRow[], key: "b1" | "b2" | "b3" | "
   const data = top.map(r => ({ name: r.brand, value: r[key] }));
   if (otherTotal > 0) data.push({ name: "Other", value: otherTotal });
   return data;
+}
+
+// ── Product Feature Comparison ───────────────────────────────────────────────
+
+interface FeatureCompetitor { name: string; score: number; reasoning: string; }
+interface FeatureEntry {
+  label: string;
+  description: string;
+  competitors: FeatureCompetitor[];
+  callout?: string;
+}
+interface FeatureBucket { bucket: string; features: FeatureEntry[]; }
+
+const FEATURE_COMPARISON: FeatureBucket[] = [
+  {
+    bucket: "Routine Audit",
+    features: [
+      {
+        label: "Ingredient conflict & compatibility detection",
+        description: "Flags product-to-product clashes and incorrect layering order.",
+        competitors: [
+          { name: "INCI Decoder", score: 72, reasoning: "Explicit cross-product conflict detection with science-backed explanations of why specific ingredient combinations fail." },
+          { name: "SkinGenie",    score: 52, reasoning: "Profile-aware product scan with swap suggestions — functional but lacks explanation of why ingredients clash across products." },
+          { name: "Think Dirty",  score: 33, reasoning: "Flags hazards within a single product only; does not detect conflicts between two separate products in a routine." },
+        ],
+      },
+      {
+        label: "Routine structure audit",
+        description: "Evaluates step order, redundancy, over-exfoliation, and missing categories.",
+        competitors: [
+          { name: "Curology",    score: 71, reasoning: "Licensed provider reviews the full routine at intake and each adjustment, flagging actives that conflict with the prescription." },
+          { name: "SkinGenie",   score: 68, reasoning: "Builds AM/PM structure from scratch and identifies gaps and redundancies when auditing an uploaded routine." },
+          { name: "SkinAdvisor", score: 52, reasoning: "Step-by-step conversational review of layering sequence — present but thinner in documented specifics than the other two." },
+        ],
+      },
+    ],
+  },
+  {
+    bucket: "Personalized Routine",
+    features: [
+      {
+        label: "Multi-question personalization quiz",
+        description: "Substantive questionnaire covering skin type, concerns, lifestyle, budget, and goals.",
+        competitors: [
+          { name: "HelloAva",  score: 78, reasoning: "12-question chatbot classifying into 30 skin types — most granular in this set — with demographic cohort data and past purchase history." },
+          { name: "SkAI",      score: 71, reasoning: "Selfie scan plus questions that adapt to weekly photos, local weather, UV index, and hormonal changes — the only environmental layer." },
+          { name: "SkinGenie", score: 62, reasoning: "Clean quiz covering type, concerns, lifestyle, and budget in under 2 minutes with a purchasable AM/PM routine output." },
+        ],
+      },
+      {
+        label: "Expert-validated routine output",
+        description: "A licensed expert reviews and confirms AI recommendations before delivery.",
+        competitors: [
+          { name: "Curology", score: 87, reasoning: "Licensed dermatology provider reviews every prescription and can output actual Rx actives — tretinoin, clindamycin, azelaic acid — unique to this brand." },
+          { name: "HelloAva", score: 78, reasoning: "Licensed aesthetician structurally confirms every AI recommendation before checkout; human-in-the-loop is not optional for any customer." },
+          { name: "Clinique",  score: 55, reasoning: "Dermatologist-guided recommendations backed by 50+ years of research — but validation is brand-level product design, not per-customer review." },
+        ],
+      },
+    ],
+  },
+  {
+    bucket: "Ingredient Analysis",
+    features: [
+      {
+        label: "Allergen tracking & personalized ingredient alerts",
+        description: "User pre-sets allergens and receives automatic alerts on any flagged product.",
+        competitors: [
+          { name: "Think Dirty",  score: 72, reasoning: "Pre-set personal allergens once; real-time scan-time alerts for any flagged ingredient, covering carcinogens, allergens, and endocrine disruptors." },
+          { name: "INCI Decoder", score: 68, reasoning: "EU 80 mandatory fragrance allergens and CMR substances auto-flagged — but no user-configured personal alert profile for custom triggers." },
+          { name: "SkinGenie",    score: 30, reasoning: "Products filterable by fragrance-free and gluten-free, but no dedicated allergen-alert system or pre-set personal trigger workflow." },
+        ],
+      },
+      {
+        label: "Per-ingredient decode + skin-type suitability",
+        description: "Explains what each ingredient does and whether it suits the user's specific skin type.",
+        competitors: [
+          { name: "INCI Decoder", score: 80, reasoning: "27,000+ ingredient database with science-based explanation of function, irritancy, and skin-type fit — the most complete per-ingredient decode in this set." },
+          { name: "Think Dirty",  score: 55, reasoning: "0–10 Dirty Score with per-ingredient health concern detail — excellent for safety and toxicity but not optimised for skin-type compatibility." },
+          { name: "SkinGenie",    score: 40, reasoning: "Rates overall product suitability against a skin profile with swap suggestions; no standalone per-ingredient decode without product context." },
+        ],
+      },
+    ],
+  },
+  {
+    bucket: "Condition-Specific",
+    features: [
+      {
+        label: "Prescription-grade condition treatment",
+        description: "Clinically supported treatment recommendations for named skin conditions.",
+        competitors: [
+          { name: "Curology",       score: 84, reasoning: "The only brand prescribing Rx-only actives — tretinoin, clindamycin, azelaic acid — with a licensed provider adjusting formula as the condition responds." },
+          { name: "Clinique",       score: 60, reasoning: "Condition-specific, dermatologist-guided product recommendations backed by 50+ years of research — but product selection, not prescription." },
+          { name: "Dermatology AI", score: 55, reasoning: "Medical-grade identification of 44–68 skin conditions; FDA/CE-cleared in some implementations — diagnosis capability, not treatment delivery." },
+        ],
+      },
+      {
+        label: "Photo-based skin condition identification",
+        description: "Analyses a selfie to identify specific conditions rather than relying on self-report.",
+        competitors: [
+          { name: "Dermatology AI", score: 82, reasoning: "Primary use case: condition ID from photos with mole/lesion malignancy risk scoring, trained on dermatologist-verified data; FDA/CE-cleared." },
+          { name: "Clinique",       score: 72, reasoning: "Clinical Reality plots 80+ data points per scan against 1M+ face scans — strong scale and accuracy, but narrower condition range." },
+          { name: "SkAI",           score: 68, reasoning: "Real-time selfie detection of breakouts, pigmentation, hydration, texture, and dark circles with cross-session change tracking." },
+        ],
+      },
+    ],
+  },
+  {
+    bucket: "Tracking & Progress",
+    features: [
+      {
+        label: "Routine check-off + habit reminders",
+        description: "Daily step logging, scheduled reminders, and consistency feedback over time.",
+        competitors: [
+          { name: "SkAI",      score: 72, reasoning: "Built-in daily AM/PM step check-off with a consistency score calculated from logged completions and step-level reminder notifications." },
+          { name: "SkinGenie", score: 68, reasoning: "Push reminders for morning and evening routines with gamified badge streaks for completion — no consistency score documented." },
+        ],
+      },
+      {
+        label: "Visual skin progress tracking",
+        description: "Before/after selfie comparison or skin metric improvement visualised over weeks.",
+        competitors: [
+          { name: "SkAI",     score: 78, reasoning: "Selfie-to-selfie overlay comparison across any two chosen dates, with skin metrics — texture, hydration, pigmentation — tracked per scan." },
+          { name: "Clinique", score: 65, reasoning: "12-week simulated skin outcome preview — uniquely predictive rather than retrospective, but shows projected change, not actual measured improvement." },
+          { name: "Curology", score: 40, reasoning: "Before/after photos exist in the clinical record and inform provider formula adjustments; no app-based self-serve selfie comparison." },
+        ],
+        callout: "Clinique is the only tracked brand offering predictive (not retrospective) skin outcome visualization — its Clinical Reality 12-week simulation shows what your skin could look like after completing the routine. This is a genuine differentiator not captured by the raw score, which rewards evidence of actual change over projected outcomes.",
+      },
+    ],
+  },
+];
+
+function brandBarColor(name: string): string {
+  return BRAND_PIE_COLORS[name] ?? ROSE;
+}
+
+function FeatureCard({ feature }: { feature: FeatureEntry }) {
+  return (
+    <div style={{
+      background: "#fff",
+      borderRadius: 10,
+      border: "1px solid rgba(22,15,46,0.08)",
+      boxShadow: "0 2px 8px rgba(22,15,46,0.06)",
+      padding: "18px 20px",
+      display: "flex",
+      flexDirection: "column",
+    }}>
+      <div style={{ marginBottom: 4 }}>
+        <p style={{ fontSize: 13, fontWeight: 700, color: DARK, lineHeight: 1.35 }}>
+          {feature.label}
+        </p>
+      </div>
+      <p style={{ fontSize: 11, color: "rgba(22,15,46,0.45)", marginBottom: 16, lineHeight: 1.5 }}>
+        {feature.description}
+      </p>
+      <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        {feature.competitors.map(c => (
+          <div key={c.name}>
+            <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 5 }}>
+              <span style={{ fontSize: 11, fontWeight: 600, color: DARK, minWidth: 108, flexShrink: 0 }}>
+                {c.name}
+              </span>
+              <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(22,15,46,0.07)", overflow: "hidden" }}>
+                <div style={{ height: 6, borderRadius: 999, width: `${c.score}%`, background: brandBarColor(c.name) }} />
+              </div>
+              <span style={{
+                fontSize: 13, fontWeight: 700, color: brandBarColor(c.name),
+                minWidth: 24, textAlign: "right" as const, fontVariantNumeric: "tabular-nums",
+              }}>
+                {c.score}
+              </span>
+            </div>
+            <p style={{
+              fontSize: 11, color: "rgba(22,15,46,0.45)", lineHeight: 1.5,
+              paddingLeft: 117, margin: 0, fontStyle: "italic" as const,
+            }}>
+              {c.reasoning}
+            </p>
+          </div>
+        ))}
+      </div>
+      {feature.callout && (
+        <div style={{
+          marginTop: 12,
+          background: "rgba(217,119,6,0.07)",
+          border: "1px solid rgba(217,119,6,0.22)",
+          borderRadius: 8, padding: "10px 14px",
+          display: "flex", alignItems: "flex-start", gap: 8,
+        }}>
+          <span style={{ fontSize: 13, flexShrink: 0, color: "#D97706", lineHeight: 1.2 }}>★</span>
+          <p style={{ fontSize: 11, color: "#92400E", lineHeight: 1.55, margin: 0 }}>
+            <strong>Clinique — unique differentiator:</strong> {feature.callout}
+          </p>
+        </div>
+      )}
+    </div>
+  );
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -524,7 +721,50 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
         </div>
       )}
 
-      {/* Row 4: Weekly brand table */}
+      {/* Row 4: Product Feature Comparison */}
+      <div style={{
+        background: "#fff",
+        borderRadius: 10,
+        boxShadow: "0 2px 8px rgba(22,15,46,0.07), 0 1px 2px rgba(22,15,46,0.04)",
+        overflow: "hidden",
+      }}>
+        <div style={{
+          padding: "16px 24px",
+          borderBottom: "1px solid rgba(22,15,46,0.07)",
+          display: "flex", alignItems: "baseline", gap: 12,
+        }}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: DARK, letterSpacing: "-0.01em" }}>
+            Product Feature Comparison
+          </h3>
+          <span style={{ fontSize: 12, color: "rgba(22,15,46,0.40)" }}>
+            AI-scored 0–100 · facts-only rubric · top 2–3 competitors per feature
+          </span>
+        </div>
+        <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 28 }}>
+          {FEATURE_COMPARISON.map(({ bucket, features }) => (
+            <div key={bucket}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                <span style={{
+                  fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const,
+                  letterSpacing: "0.10em", color: ROSE,
+                  background: "rgba(194,24,106,0.08)",
+                  borderRadius: 999, padding: "3px 10px",
+                }}>
+                  {bucket}
+                </span>
+                <div style={{ flex: 1, height: 1, background: "rgba(22,15,46,0.07)" }} />
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
+                {features.map(f => (
+                  <FeatureCard key={f.label} feature={f} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Row 5: Weekly brand table */}
       {hasWeekly && (
         <div style={{
           background: "#fff",
