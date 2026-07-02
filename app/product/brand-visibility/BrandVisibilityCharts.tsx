@@ -162,10 +162,10 @@ function fmtDate(d: string) {
   });
 }
 
-const USE_CASE_CLUSTERS: { tag: string; label: string; promptHint: string }[] = [
+const USE_CASE_CLUSTERS: { tag: string; label: string; promptHint: string; disclaimer?: string }[] = [
   { tag: "ads",       label: "Ads & Paid Campaigns",   promptHint: "Meta, Google, TikTok paid ads · ad spend optimisation" },
   { tag: "content",   label: "Content & Brand Voice",  promptHint: "Marketing copy at scale · consistent brand voice" },
-  { tag: "overall",   label: "Overall Marketing ROI",  promptHint: "Best overall AI marketing agents by ROI" },
+  { tag: "overall",   label: "Overall LLM Visibility",  promptHint: "Which brands AI models mention most across general marketing queries", disclaimer: "Drift's share reflects general brand dominance across 7 broad prompts — not ROI performance specifically." },
   { tag: "lead-gen",  label: "Lead-Gen & Funnel",      promptHint: "Lead gen, outreach, funnel automation" },
   { tag: "analytics", label: "Analytics & Attribution",promptHint: "Marketing performance reporting and attribution" },
   { tag: "seo",       label: "SEO & Organic Content",  promptHint: "SEO and organic search visibility" },
@@ -353,6 +353,11 @@ function ClusterSOVCard({
           </div>
         ))}
       </div>
+      {cluster.disclaimer && (
+        <p style={{ marginTop: 10, fontSize: 10, fontStyle: "italic", color: "rgba(13,27,62,0.42)", lineHeight: 1.5 }}>
+          {cluster.disclaimer}
+        </p>
+      )}
     </div>
   );
 }
