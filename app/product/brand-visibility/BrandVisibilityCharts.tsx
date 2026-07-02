@@ -83,14 +83,9 @@ interface BrandPositionRow {
   brand_name: string;
   display_name: string;
   rank: number;
+  dominant_tag: string;
   overall_avg_pos: number | null;
-  ads_avg_pos: number | null;
-  content_avg_pos: number | null;
-  roi_avg_pos: number | null;
-  leadgen_avg_pos: number | null;
-  analytics_avg_pos: number | null;
-  seo_avg_pos: number | null;
-  social_avg_pos: number | null;
+  cluster_avg_pos: number | null;
 }
 
 interface WeeklyRow {
@@ -583,6 +578,70 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
         );
       })}
 
+      {/* ── Row 3a: Average position by use case ────────────────────────────── */}
+      {brandPositions.length > 0 && (() => {
+        const fmt = (v: number | string | null) => v != null ? Number(v).toFixed(1) : "—";
+        const clusterLabel = (tag: string) =>
+          USE_CASE_CLUSTERS.find(c => c.tag === tag)?.label ?? tag;
+        return (
+          <div style={{
+            background: "#fff",
+            borderRadius: 10,
+            boxShadow: "0 2px 8px rgba(13,27,62,0.07), 0 1px 2px rgba(13,27,62,0.04)",
+            overflow: "hidden",
+          }}>
+            <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(13,27,62,0.07)" }}>
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 2 }}>
+                Brand Position Summary
+              </h3>
+              <p style={{ fontSize: 12, color: "rgba(13,27,62,0.40)" }}>
+                Avg position in AI responses (1 = first mentioned). Lower is better.
+              </p>
+            </div>
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                <thead>
+                  <tr style={{ borderBottom: "1px solid rgba(13,27,62,0.07)" }}>
+                    {["#", "Brand", "Use Case", "Overall", "In Use Case"].map((h, i) => (
+                      <th key={h} style={{
+                        padding: "10px 20px",
+                        fontWeight: 600,
+                        fontSize: 11,
+                        textTransform: "uppercase" as const,
+                        letterSpacing: "0.07em",
+                        color: "rgba(13,27,62,0.45)",
+                        textAlign: i === 0 ? "center" : i >= 3 ? "right" : "left",
+                        background: "rgba(13,27,62,0.018)",
+                        whiteSpace: "nowrap",
+                      }}>{h}</th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {brandPositions.map((p, i) => {
+                    const color = brandColorMap[p.brand_name] ?? lineColor(i);
+                    return (
+                      <tr key={p.brand_name} style={{ borderBottom: i < brandPositions.length - 1 ? "1px solid rgba(13,27,62,0.05)" : undefined }}>
+                        <td style={{ padding: "11px 20px", textAlign: "center", color: "rgba(13,27,62,0.28)", fontWeight: 700, fontSize: 11 }}>{p.rank}</td>
+                        <td style={{ padding: "11px 20px", fontWeight: 600, color: NAVY, whiteSpace: "nowrap" }}>
+                          <span style={{ display: "inline-block", width: 7, height: 7, borderRadius: "50%", background: color, marginRight: 8, verticalAlign: "middle" }} />
+                          {p.display_name}
+                        </td>
+                        <td style={{ padding: "11px 20px", color: "rgba(13,27,62,0.55)", fontSize: 12 }}>
+                          {clusterLabel(p.dominant_tag)}
+                        </td>
+                        <td style={{ padding: "11px 20px", textAlign: "right", fontWeight: 700, color: PURPLE }}>{fmt(p.overall_avg_pos)}</td>
+                        <td style={{ padding: "11px 20px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.cluster_avg_pos)}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* ── Row 3: Weekly brand table (only when real data exists) ───────────── */}
       {hasWeekly && (
         <div style={{
@@ -685,68 +744,6 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
         </div>
       )}
 
-      {/* ── Row 4: Average position breakdown ────────────────────────────────── */}
-      {brandPositions.length > 0 && (
-        <div style={{
-          background: "#fff",
-          borderRadius: 10,
-          boxShadow: "0 2px 8px rgba(13,27,62,0.07), 0 1px 2px rgba(13,27,62,0.04)",
-          overflow: "hidden",
-        }}>
-          <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(13,27,62,0.07)" }}>
-            <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 2 }}>
-              Average Position by Use Case
-            </h3>
-            <p style={{ fontSize: 12, color: "rgba(13,27,62,0.40)" }}>
-              Position = average rank in AI response (1 = mentioned first). Lower is better.
-            </p>
-          </div>
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-              <thead>
-                <tr style={{ borderBottom: "1px solid rgba(13,27,62,0.07)" }}>
-                  {["#", "Brand", "All Prompts", "Ads", "Content", "ROI", "Lead-Gen", "Analytics", "SEO", "Social"].map((h, i) => (
-                    <th key={h} style={{
-                      padding: "10px 14px",
-                      fontWeight: 600,
-                      fontSize: 11,
-                      textTransform: "uppercase" as const,
-                      letterSpacing: "0.07em",
-                      color: "rgba(13,27,62,0.45)",
-                      textAlign: i <= 1 ? "left" : "right",
-                      background: "rgba(13,27,62,0.018)",
-                      whiteSpace: "nowrap",
-                    }}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {brandPositions.map((p, i) => {
-                  const color = brandColorMap[p.brand_name] ?? lineColor(i);
-                  const fmt = (v: number | string | null) => v != null ? Number(v).toFixed(1) : "—";
-                  return (
-                    <tr key={p.brand_name} style={{ borderBottom: i < brandPositions.length - 1 ? "1px solid rgba(13,27,62,0.05)" : undefined }}>
-                      <td style={{ padding: "10px 14px", color: "rgba(13,27,62,0.28)", fontWeight: 700, fontSize: 11 }}>{p.rank}</td>
-                      <td style={{ padding: "10px 14px", fontWeight: 600, color: NAVY, whiteSpace: "nowrap" }}>
-                        <span style={{ display: "inline-block", width: 7, height: 7, borderRadius: "50%", background: color, marginRight: 8, verticalAlign: "middle" }} />
-                        {p.display_name}
-                      </td>
-                      <td style={{ padding: "10px 14px", textAlign: "right", fontWeight: 700, color: PURPLE }}>{fmt(p.overall_avg_pos)}</td>
-                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.ads_avg_pos)}</td>
-                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.content_avg_pos)}</td>
-                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.roi_avg_pos)}</td>
-                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.leadgen_avg_pos)}</td>
-                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.analytics_avg_pos)}</td>
-                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.seo_avg_pos)}</td>
-                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.social_avg_pos)}</td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
