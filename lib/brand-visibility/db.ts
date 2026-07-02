@@ -651,6 +651,24 @@ export async function getLockedSOVByClusters(): Promise<SOVRow[]> {
   return result.rows as SOVRow[];
 }
 
+export async function getPrompt22ROI(): Promise<{ brand: string; total_appearances: number; sov_pct: number }[]> {
+  await initBrandVisibilityDB();
+  const result = await sql`
+    SELECT
+      rcb.canonical_brand AS brand,
+      COUNT(*)::int AS total_appearances,
+      ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 1) AS sov_pct
+    FROM response_canonical_brands rcb
+    JOIN raw_responses rr ON rr.id = rcb.response_id
+    JOIN locked_marketing_agents lma ON lma.brand_name = rcb.canonical_brand
+    WHERE rr.prompt_id = 22
+    AND rr.date >= NOW() - INTERVAL '7 days'
+    GROUP BY rcb.canonical_brand
+    ORDER BY COUNT(*) DESC
+  `;
+  return result.rows as { brand: string; total_appearances: number; sov_pct: number }[];
+}
+
 // ── Legacy cohort reads (top_15_brands) ───────────────────────────────────────
 // These functions mirror getDailySummary / getWeeklySummary but join against
 // top_15_brands so only the locked cohort is returned.
