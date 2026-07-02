@@ -186,10 +186,6 @@ body {
   box-shadow: 0 0 0 3px rgba(108, 76, 241, 0.12);
 }
 
-/* ── Logo tagline — hide on mobile ── */
-@media (max-width: 768px) {
-  .logo-tagline { display: none !important; }
-}
 
 /* ── Product page outer padding wrapper ── */
 .product-outer { padding: 0 32px; }
