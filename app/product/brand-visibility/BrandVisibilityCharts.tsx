@@ -16,7 +16,7 @@ const NAVY   = "#0D1B3E";
 const PURPLE = "#6B4FBB";
 const PINK   = "#E8447A";
 
-// 15 visually distinct colors, one per brand slot — no cycling, no repeats.
+// 22 visually distinct colors, one per brand slot — no cycling, no repeats.
 // Hues spread across the full wheel; lightness varied within similar-hue pairs
 // to keep them apart even on a white background.
 const LINE_COLORS = [
@@ -35,9 +35,16 @@ const LINE_COLORS = [
   "#0369A1", // 13. dark blue
   "#92400E", // 14. brown
   "#BE185D", // 15. dark rose
+  "#F43F5E", // 16. vivid rose
+  "#84CC16", // 17. chartreuse
+  "#FB923C", // 18. peach
+  "#818CF8", // 19. periwinkle
+  "#34D399", // 20. mint
+  "#F472B6", // 21. pink
+  "#38BDF8", // 22. sky blue
 ];
 
-function lineColor(i: number) { return LINE_COLORS[Math.min(i, LINE_COLORS.length - 1)]; }
+function lineColor(i: number) { return LINE_COLORS[i % LINE_COLORS.length]; }
 
 // ── Seed data: realistic placeholder shown when no real data is available ──────
 // Gives the chart visual content from day one instead of a dashed empty box.
@@ -68,6 +75,22 @@ interface DailyRow {
   mention_count: number;
   avg_position: number | null;
   confidence: string;
+  rank?: number;
+  dominant_tag?: string;
+}
+
+interface BrandPositionRow {
+  brand_name: string;
+  display_name: string;
+  rank: number;
+  overall_avg_pos: number | null;
+  ads_avg_pos: number | null;
+  content_avg_pos: number | null;
+  roi_avg_pos: number | null;
+  leadgen_avg_pos: number | null;
+  analytics_avg_pos: number | null;
+  seo_avg_pos: number | null;
+  social_avg_pos: number | null;
 }
 
 interface WeeklyRow {
@@ -88,6 +111,7 @@ interface Props {
   dailySummary: DailyRow[];
   weeklySummary: WeeklyRow[];
   llmVisibility: LLMVisRow[];
+  brandPositions: BrandPositionRow[];
 }
 
 // ── Chart data helpers ─────────────────────────────────────────────────────────
@@ -96,16 +120,22 @@ function buildChartData(daily: DailyRow[]) {
   const dateSet = new Set<string>();
   const brandSet = new Set<string>();
   const index: Record<string, Record<string, number>> = {};
+  const rankMap: Record<string, number> = {};
+  const tagMap: Record<string, string> = {};
 
   for (const row of daily) {
     dateSet.add(row.date);
     brandSet.add(row.brand);
     if (!index[row.date]) index[row.date] = {};
     index[row.date][row.brand] = (index[row.date][row.brand] ?? 0) + row.mention_count;
+    if (row.rank !== undefined && rankMap[row.brand] === undefined) rankMap[row.brand] = row.rank;
+    if (row.dominant_tag !== undefined && tagMap[row.brand] === undefined) tagMap[row.brand] = row.dominant_tag;
   }
 
   const dates = [...dateSet].sort();
+  const hasRanks = Object.keys(rankMap).length > 0;
   const brands = [...brandSet].sort((a, b) => {
+    if (hasRanks) return (rankMap[a] ?? 999) - (rankMap[b] ?? 999);
     const aT = dates.reduce((s, d) => s + (index[d]?.[a] ?? 0), 0);
     const bT = dates.reduce((s, d) => s + (index[d]?.[b] ?? 0), 0);
     return bT - aT;
@@ -117,13 +147,115 @@ function buildChartData(daily: DailyRow[]) {
     return row;
   });
 
-  return { dates, brands, rows };
+  return { dates, brands, rows, tagMap };
 }
 
 function fmtDate(d: string) {
   return new Date(d + "T00:00:00Z").toLocaleDateString("en-AU", {
     month: "short", day: "numeric", timeZone: "UTC",
   });
+}
+
+const USE_CASE_CLUSTERS: { tag: string; label: string; promptHint: string }[] = [
+  { tag: "ads",       label: "Ads & Paid Campaigns",   promptHint: "Meta, Google, TikTok paid ads · ad spend optimisation" },
+  { tag: "content",   label: "Content & Brand Voice",  promptHint: "Marketing copy at scale · consistent brand voice" },
+  { tag: "overall",   label: "Overall Marketing ROI",  promptHint: "Best overall AI marketing agents by ROI" },
+  { tag: "lead-gen",  label: "Lead-Gen & Funnel",      promptHint: "Lead gen, outreach, funnel automation" },
+  { tag: "analytics", label: "Analytics & Attribution",promptHint: "Marketing performance reporting and attribution" },
+  { tag: "seo",       label: "SEO & Organic Content",  promptHint: "SEO and organic search visibility" },
+  { tag: "social",    label: "Social Media",           promptHint: "End-to-end social media management" },
+];
+
+function ClusterTrendCard({
+  cluster, brands, rows, brandColor, getDisplayName,
+}: {
+  cluster: typeof USE_CASE_CLUSTERS[number];
+  brands: string[];
+  rows: Record<string, string | number>[];
+  brandColor: (b: string) => string;
+  getDisplayName: (b: string) => string;
+}) {
+  const [hidden, setHidden] = useState(new Set<string>());
+  const toggle = (b: string) => setHidden(prev => { const n = new Set(prev); n.has(b) ? n.delete(b) : n.add(b); return n; });
+
+  if (brands.length === 0) return null;
+
+  return (
+    <div style={{
+      background: "#fff",
+      borderRadius: 10,
+      boxShadow: "0 2px 8px rgba(13,27,62,0.07), 0 1px 2px rgba(13,27,62,0.04)",
+      padding: "24px 28px 16px",
+    }}>
+      <div style={{ marginBottom: 20 }}>
+        <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>
+          {cluster.label} — 7-Day Trend
+        </h3>
+        <p style={{ fontSize: 12, color: "rgba(13,27,62,0.42)" }}>{cluster.promptHint}</p>
+      </div>
+
+      <ResponsiveContainer width="100%" height={220}>
+        <LineChart data={rows} margin={{ top: 4, right: 8, left: -8, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="4 4" stroke="rgba(13,27,62,0.055)" vertical={false} />
+          <XAxis
+            dataKey="date"
+            tickFormatter={fmtDate}
+            tick={{ fontSize: 11, fill: "rgba(13,27,62,0.42)" }}
+            axisLine={false} tickLine={false} dy={6}
+          />
+          <YAxis
+            allowDecimals={false}
+            tick={{ fontSize: 11, fill: "rgba(13,27,62,0.42)" }}
+            axisLine={false} tickLine={false} width={30}
+          />
+          <Tooltip
+            contentStyle={{
+              borderRadius: 8,
+              border: "1px solid rgba(13,27,62,0.10)",
+              fontSize: 12,
+              boxShadow: "0 4px 16px rgba(13,27,62,0.12)",
+              color: NAVY,
+              background: "#fff",
+            }}
+            labelStyle={{ fontWeight: 700, marginBottom: 4 }}
+            labelFormatter={v => fmtDate(String(v))}
+            itemSorter={item => -(item.value as number)}
+            formatter={(value, name) => [value, getDisplayName(String(name))]}
+          />
+          {brands.map(brand => (
+            <Line
+              key={brand}
+              type="monotone"
+              dataKey={brand}
+              stroke={brandColor(brand)}
+              strokeWidth={2}
+              dot={false}
+              activeDot={{ r: 4, strokeWidth: 0 }}
+              hide={hidden.has(brand)}
+            />
+          ))}
+        </LineChart>
+      </ResponsiveContainer>
+
+      <div style={{ marginTop: 12, borderTop: "1px solid rgba(13,27,62,0.06)", paddingTop: 10, display: "flex", flexWrap: "wrap", gap: "5px 16px" }}>
+        {brands.map(brand => {
+          const color = brandColor(brand);
+          const checked = !hidden.has(brand);
+          return (
+            <label key={brand} style={{ display: "flex", alignItems: "center", gap: 5, cursor: "pointer" }}>
+              <input
+                type="checkbox" checked={checked} onChange={() => toggle(brand)}
+                style={{ accentColor: color, width: 12, height: 12, cursor: "pointer", flexShrink: 0 }}
+              />
+              <span style={{ fontSize: 11, color: checked ? color : "rgba(13,27,62,0.28)", fontWeight: checked ? 600 : 400 }}>
+                {getDisplayName(brand)}
+              </span>
+            </label>
+          );
+        })}
+      </div>
+    </div>
+  );
 }
 
 // ── Sub-components ─────────────────────────────────────────────────────────────
@@ -216,13 +348,21 @@ function PositionCell({ avg, confidence }: { avg: number | null; confidence: str
 
 // ── Main component ─────────────────────────────────────────────────────────────
 
-export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llmVisibility }: Props) {
+export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llmVisibility, brandPositions }: Props) {
   const hasReal = dailySummary.length > 0;
-  const { brands: realBrands, rows: realRows } = buildChartData(dailySummary);
+  const { brands: realBrands, rows: realRows, tagMap: realTagMap } = buildChartData(dailySummary);
+
+  const displayMap = Object.fromEntries(brandPositions.map(p => [p.brand_name, p.display_name]));
+  const getDisplayName = (b: string) => displayMap[b] ?? b;
 
   // Chart uses real data if available, seed data otherwise so chart always renders
-  const chartBrands = hasReal ? realBrands.slice(0, 15) : SEED_BRANDS;
-  const chartRows   = hasReal ? realRows : makeSeedRows();
+  const chartBrands  = hasReal ? realBrands.slice(0, 22) : SEED_BRANDS;
+  const chartRows    = hasReal ? realRows : makeSeedRows();
+  const chartTagMap  = hasReal ? realTagMap : {} as Record<string, string>;
+
+  // Stable color per brand (by rank order) so main and cluster charts share colours
+  const brandColorMap = Object.fromEntries(chartBrands.map((b, i) => [b, lineColor(i)]));
+  const brandColor    = (b: string) => brandColorMap[b] ?? lineColor(0);
 
   // Brand filter state — all visible by default; toggled client-side, no re-fetch
   const [hiddenBrands, setHiddenBrands] = useState<Set<string>>(new Set());
@@ -324,7 +464,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
               Brand Mentions — 7-Day Trend
             </h3>
             <p style={{ fontSize: 12, color: "rgba(13,27,62,0.42)" }}>
-              {hasReal ? "Top 15 brands by total mentions · both models combined" : "Sample data — live chart populates after daily collection"}
+              {hasReal ? "Top 22 locked AI marketing agents · both models combined" : "Sample data — live chart populates after daily collection"}
             </p>
           </div>
           {!hasReal && (
@@ -366,13 +506,14 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
               }}
               labelStyle={{ fontWeight: 700, marginBottom: 4 }}
               labelFormatter={v => fmtDate(String(v))}
+              formatter={(value, name) => [value, getDisplayName(String(name))]}
             />
-            {chartBrands.map((brand, i) => (
+            {chartBrands.map((brand) => (
               <Line
                 key={brand}
                 type="monotone"
                 dataKey={brand}
-                stroke={lineColor(i)}
+                stroke={brandColor(brand)}
                 strokeWidth={2}
                 dot={false}
                 activeDot={{ r: 4, strokeWidth: 0 }}
@@ -398,8 +539,8 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
             </div>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 20px" }}>
-            {chartBrands.map((brand, i) => {
-              const color = lineColor(i);
+            {chartBrands.map((brand) => {
+              const color = brandColor(brand);
               const checked = !hiddenBrands.has(brand);
               return (
                 <label
@@ -413,19 +554,34 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                     style={{ accentColor: color, width: 12, height: 12, cursor: "pointer", flexShrink: 0 }}
                   />
                   <span style={{ fontSize: 11, color: checked ? color : "rgba(13,27,62,0.28)", fontWeight: checked ? 600 : 400 }}>
-                    {brand}
+                    {getDisplayName(brand)}
                   </span>
                 </label>
               );
             })}
           </div>
-          {hasReal && realBrands.length > 15 && (
+          {hasReal && realBrands.length > 22 && (
             <p style={{ fontSize: 10, color: "rgba(13,27,62,0.30)", marginTop: 8 }}>
-              Showing top 15 of {realBrands.length} brands by mention volume.
+              Showing top 22 of {realBrands.length} locked marketing agents.
             </p>
           )}
         </div>
       </div>
+
+      {/* ── Rows 2b: Per-use-case cluster charts ────────────────────────────── */}
+      {hasReal && USE_CASE_CLUSTERS.map(cluster => {
+        const clusterBrands = chartBrands.filter(b => chartTagMap[b] === cluster.tag);
+        return (
+          <ClusterTrendCard
+            key={cluster.tag}
+            cluster={cluster}
+            brands={clusterBrands}
+            rows={chartRows}
+            brandColor={brandColor}
+            getDisplayName={getDisplayName}
+          />
+        );
+      })}
 
       {/* ── Row 3: Weekly brand table (only when real data exists) ───────────── */}
       {hasWeekly && (
@@ -523,6 +679,69 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                     </td>
                   </tr>
                 ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* ── Row 4: Average position breakdown ────────────────────────────────── */}
+      {brandPositions.length > 0 && (
+        <div style={{
+          background: "#fff",
+          borderRadius: 10,
+          boxShadow: "0 2px 8px rgba(13,27,62,0.07), 0 1px 2px rgba(13,27,62,0.04)",
+          overflow: "hidden",
+        }}>
+          <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(13,27,62,0.07)" }}>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 2 }}>
+              Average Position by Use Case
+            </h3>
+            <p style={{ fontSize: 12, color: "rgba(13,27,62,0.40)" }}>
+              Position = average rank in AI response (1 = mentioned first). Lower is better.
+            </p>
+          </div>
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+              <thead>
+                <tr style={{ borderBottom: "1px solid rgba(13,27,62,0.07)" }}>
+                  {["#", "Brand", "All Prompts", "Ads", "Content", "ROI", "Lead-Gen", "Analytics", "SEO", "Social"].map((h, i) => (
+                    <th key={h} style={{
+                      padding: "10px 14px",
+                      fontWeight: 600,
+                      fontSize: 11,
+                      textTransform: "uppercase" as const,
+                      letterSpacing: "0.07em",
+                      color: "rgba(13,27,62,0.45)",
+                      textAlign: i <= 1 ? "left" : "right",
+                      background: "rgba(13,27,62,0.018)",
+                      whiteSpace: "nowrap",
+                    }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {brandPositions.map((p, i) => {
+                  const color = brandColorMap[p.brand_name] ?? lineColor(i);
+                  const fmt = (v: number | null) => v != null ? v.toFixed(1) : "—";
+                  return (
+                    <tr key={p.brand_name} style={{ borderBottom: i < brandPositions.length - 1 ? "1px solid rgba(13,27,62,0.05)" : undefined }}>
+                      <td style={{ padding: "10px 14px", color: "rgba(13,27,62,0.28)", fontWeight: 700, fontSize: 11 }}>{p.rank}</td>
+                      <td style={{ padding: "10px 14px", fontWeight: 600, color: NAVY, whiteSpace: "nowrap" }}>
+                        <span style={{ display: "inline-block", width: 7, height: 7, borderRadius: "50%", background: color, marginRight: 8, verticalAlign: "middle" }} />
+                        {p.display_name}
+                      </td>
+                      <td style={{ padding: "10px 14px", textAlign: "right", fontWeight: 700, color: PURPLE }}>{fmt(p.overall_avg_pos)}</td>
+                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.ads_avg_pos)}</td>
+                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.content_avg_pos)}</td>
+                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.roi_avg_pos)}</td>
+                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.leadgen_avg_pos)}</td>
+                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.analytics_avg_pos)}</td>
+                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.seo_avg_pos)}</td>
+                      <td style={{ padding: "10px 14px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.social_avg_pos)}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>

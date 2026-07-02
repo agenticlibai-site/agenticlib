@@ -215,3 +215,42 @@ body {
   }
   .why-visual { display: none !important; }
 }
+
+/* ── Print / PDF styles (skincare-visibility report) ── */
+@media print {
+  /* Hide chrome */
+  nav,
+  .no-print,
+  [data-no-print] {
+    display: none !important;
+  }
+
+  /* Reset background to white for print */
+  body,
+  main,
+  [class*="min-h-screen"] {
+    background: #fff !important;
+  }
+
+  /* Remove fixed/absolute decorative elements */
+  .pointer-events-none {
+    display: none !important;
+  }
+
+  /* Page setup */
+  @page {
+    margin: 16mm 14mm;
+    size: A4;
+  }
+
+  /* Avoid breaking cards mid-page */
+  [style*="borderRadius"] {
+    break-inside: avoid;
+  }
+
+  /* Force black text on white for legibility */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

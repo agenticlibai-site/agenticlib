@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { getDailySummary, getWeeklySummary, getLLMVisibility, initBrandVisibilityDB } from "@/lib/brand-visibility/db";
-// TODO: Switch to getCohortDailySummary / getCohortWeeklySummary once top_15_brands is populated
-// (see getEligibleBrandsForTop15 in db.ts). Do not switch before ~7 days of data have accumulated.
+import { getLockedDailySummary, getLockedBrandPositions, getWeeklySummary, getLLMVisibility, initBrandVisibilityDB } from "@/lib/brand-visibility/db";
 import BrandVisibilityCharts from "./BrandVisibilityCharts";
 
 export const dynamic = "force-dynamic";
@@ -14,19 +12,20 @@ export const metadata = {
 async function getData() {
   try {
     await initBrandVisibilityDB();
-    const [dailySummary, weeklySummary, llmVisibility] = await Promise.all([
-      getDailySummary(7),
+    const [dailySummary, weeklySummary, llmVisibility, brandPositions] = await Promise.all([
+      getLockedDailySummary(7),
       getWeeklySummary(),
       getLLMVisibility(),
+      getLockedBrandPositions(),
     ]);
-    return { dailySummary, weeklySummary, llmVisibility };
+    return { dailySummary, weeklySummary, llmVisibility, brandPositions };
   } catch {
-    return { dailySummary: [], weeklySummary: [], llmVisibility: [] };
+    return { dailySummary: [], weeklySummary: [], llmVisibility: [], brandPositions: [] };
   }
 }
 
 export default async function BrandVisibilityPage() {
-  const { dailySummary, weeklySummary, llmVisibility } = await getData();
+  const { dailySummary, weeklySummary, llmVisibility, brandPositions } = await getData();
 
   return (
     <main
@@ -83,6 +82,7 @@ export default async function BrandVisibilityPage() {
           dailySummary={dailySummary}
           weeklySummary={weeklySummary}
           llmVisibility={llmVisibility}
+          brandPositions={brandPositions}
         />
       </div>
     </main>

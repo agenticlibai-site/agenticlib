@@ -563,7 +563,82 @@ export async function getWeeklySummary(): Promise<
   return result.rows as { window_start: string; window_end: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string }[];
 }
 
-// ── Cohort-filtered reads (Phase 3) ───────────────────────────────────────────
+// ── Locked-cohort reads ────────────────────────────────────────────────────────
+// Joins daily_summary / weekly_summary against locked_marketing_agents so only
+// the curated 22 marketing AI agents are returned. rank is passed through so
+// the chart can order its legend by locked rank rather than mention volume.
+
+export async function getLockedDailySummary(days = 7): Promise<
+  { date: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string; rank: number; dominant_tag: string }[]
+> {
+  await initBrandVisibilityDB();
+  const cutoff = new Date();
+  cutoff.setDate(cutoff.getDate() - days + 1);
+  const cutoffStr = cutoff.toISOString().split("T")[0];
+
+  const result = await sql`
+    SELECT ds.date::text AS date, ds.brand, ds.model,
+           ds.mention_count, ds.avg_position, ds.confidence,
+           lma.rank, lma.dominant_tag
+    FROM daily_summary ds
+    JOIN locked_marketing_agents lma ON lma.brand_name = ds.brand
+    WHERE ds.date >= ${cutoffStr}::date
+    ORDER BY ds.date ASC, lma.rank ASC
+  `;
+  return result.rows as { date: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string; rank: number; dominant_tag: string }[];
+}
+
+export interface BrandPositionRow {
+  brand_name: string;
+  display_name: string;
+  rank: number;
+  overall_avg_pos: number | null;
+  ads_avg_pos: number | null;
+  content_avg_pos: number | null;
+  roi_avg_pos: number | null;
+  leadgen_avg_pos: number | null;
+  analytics_avg_pos: number | null;
+  seo_avg_pos: number | null;
+  social_avg_pos: number | null;
+}
+
+export async function getLockedBrandPositions(): Promise<BrandPositionRow[]> {
+  await initBrandVisibilityDB();
+  const result = await sql`
+    WITH cluster_pos AS (
+      SELECT rcb.canonical_brand AS brand_name, rr.bucket_tag,
+        ROUND(AVG(rcb.position)::numeric, 1) AS avg_pos
+      FROM response_canonical_brands rcb
+      JOIN raw_responses rr ON rr.id = rcb.response_id
+      JOIN locked_marketing_agents lma ON lma.brand_name = rcb.canonical_brand
+      GROUP BY rcb.canonical_brand, rr.bucket_tag
+    ),
+    overall_pos AS (
+      SELECT ds.brand, ROUND(AVG(ds.avg_position)::numeric, 1) AS avg_pos
+      FROM daily_summary ds
+      JOIN locked_marketing_agents lma ON lma.brand_name = ds.brand
+      WHERE ds.avg_position IS NOT NULL
+      GROUP BY ds.brand
+    )
+    SELECT lma.brand_name, lma.display_name, lma.rank,
+      op.avg_pos AS overall_avg_pos,
+      MAX(CASE WHEN cp.bucket_tag = 'ads'       THEN cp.avg_pos END) AS ads_avg_pos,
+      MAX(CASE WHEN cp.bucket_tag = 'content'   THEN cp.avg_pos END) AS content_avg_pos,
+      MAX(CASE WHEN cp.bucket_tag = 'overall'   THEN cp.avg_pos END) AS roi_avg_pos,
+      MAX(CASE WHEN cp.bucket_tag = 'lead-gen'  THEN cp.avg_pos END) AS leadgen_avg_pos,
+      MAX(CASE WHEN cp.bucket_tag = 'analytics' THEN cp.avg_pos END) AS analytics_avg_pos,
+      MAX(CASE WHEN cp.bucket_tag = 'seo'       THEN cp.avg_pos END) AS seo_avg_pos,
+      MAX(CASE WHEN cp.bucket_tag = 'social'    THEN cp.avg_pos END) AS social_avg_pos
+    FROM locked_marketing_agents lma
+    LEFT JOIN overall_pos op ON op.brand = lma.brand_name
+    LEFT JOIN cluster_pos cp ON cp.brand_name = lma.brand_name
+    GROUP BY lma.brand_name, lma.display_name, lma.rank, op.avg_pos
+    ORDER BY lma.rank
+  `;
+  return result.rows as BrandPositionRow[];
+}
+
+// ── Legacy cohort reads (top_15_brands) ───────────────────────────────────────
 // These functions mirror getDailySummary / getWeeklySummary but join against
 // top_15_brands so only the locked cohort is returned.
 //
