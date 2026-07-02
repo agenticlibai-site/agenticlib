@@ -592,47 +592,35 @@ export interface BrandPositionRow {
   brand_name: string;
   display_name: string;
   rank: number;
+  dominant_tag: string;
   overall_avg_pos: number | null;
-  ads_avg_pos: number | null;
-  content_avg_pos: number | null;
-  roi_avg_pos: number | null;
-  leadgen_avg_pos: number | null;
-  analytics_avg_pos: number | null;
-  seo_avg_pos: number | null;
-  social_avg_pos: number | null;
+  cluster_avg_pos: number | null;
 }
 
 export async function getLockedBrandPositions(): Promise<BrandPositionRow[]> {
   await initBrandVisibilityDB();
   const result = await sql`
-    WITH cluster_pos AS (
+    WITH overall_pos AS (
+      SELECT ds.brand, ROUND(AVG(ds.avg_position)::numeric, 1) AS avg_pos
+      FROM daily_summary ds
+      JOIN locked_marketing_agents lma ON lma.brand_name = ds.brand
+      WHERE ds.avg_position IS NOT NULL
+      GROUP BY ds.brand
+    ),
+    cluster_pos AS (
       SELECT rcb.canonical_brand AS brand_name, rr.bucket_tag,
         ROUND(AVG(rcb.position)::numeric, 1) AS avg_pos
       FROM response_canonical_brands rcb
       JOIN raw_responses rr ON rr.id = rcb.response_id
       JOIN locked_marketing_agents lma ON lma.brand_name = rcb.canonical_brand
       GROUP BY rcb.canonical_brand, rr.bucket_tag
-    ),
-    overall_pos AS (
-      SELECT ds.brand, ROUND(AVG(ds.avg_position)::numeric, 1) AS avg_pos
-      FROM daily_summary ds
-      JOIN locked_marketing_agents lma ON lma.brand_name = ds.brand
-      WHERE ds.avg_position IS NOT NULL
-      GROUP BY ds.brand
     )
-    SELECT lma.brand_name, lma.display_name, lma.rank,
+    SELECT lma.brand_name, lma.display_name, lma.rank, lma.dominant_tag,
       op.avg_pos AS overall_avg_pos,
-      MAX(CASE WHEN cp.bucket_tag = 'ads'       THEN cp.avg_pos END) AS ads_avg_pos,
-      MAX(CASE WHEN cp.bucket_tag = 'content'   THEN cp.avg_pos END) AS content_avg_pos,
-      MAX(CASE WHEN cp.bucket_tag = 'overall'   THEN cp.avg_pos END) AS roi_avg_pos,
-      MAX(CASE WHEN cp.bucket_tag = 'lead-gen'  THEN cp.avg_pos END) AS leadgen_avg_pos,
-      MAX(CASE WHEN cp.bucket_tag = 'analytics' THEN cp.avg_pos END) AS analytics_avg_pos,
-      MAX(CASE WHEN cp.bucket_tag = 'seo'       THEN cp.avg_pos END) AS seo_avg_pos,
-      MAX(CASE WHEN cp.bucket_tag = 'social'    THEN cp.avg_pos END) AS social_avg_pos
+      cp.avg_pos AS cluster_avg_pos
     FROM locked_marketing_agents lma
     LEFT JOIN overall_pos op ON op.brand = lma.brand_name
-    LEFT JOIN cluster_pos cp ON cp.brand_name = lma.brand_name
-    GROUP BY lma.brand_name, lma.display_name, lma.rank, op.avg_pos
+    LEFT JOIN cluster_pos cp ON cp.brand_name = lma.brand_name AND cp.bucket_tag = lma.dominant_tag
     ORDER BY lma.rank
   `;
   return result.rows as BrandPositionRow[];
