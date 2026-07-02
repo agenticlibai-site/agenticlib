@@ -723,7 +723,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
               <tbody>
                 {brandPositions.map((p, i) => {
                   const color = brandColorMap[p.brand_name] ?? lineColor(i);
-                  const fmt = (v: number | null) => v != null ? v.toFixed(1) : "—";
+                  const fmt = (v: number | string | null) => v != null ? Number(v).toFixed(1) : "—";
                   return (
                     <tr key={p.brand_name} style={{ borderBottom: i < brandPositions.length - 1 ? "1px solid rgba(13,27,62,0.05)" : undefined }}>
                       <td style={{ padding: "10px 14px", color: "rgba(13,27,62,0.28)", fontWeight: 700, fontSize: 11 }}>{p.rank}</td>
