@@ -205,7 +205,11 @@ export default function Navbar() {
                 </a>
               ))}
               {/* For AI Agent Builders */}
-              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#71717a", textTransform: "uppercase", padding: "10px 20px 6px", borderTop: "1px solid #ebebeb" }}>For AI Agent Builders</p>
+              <Link href="/ai-agent-builders" onClick={() => setMobileOpen(false)}
+                style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#18181b", textTransform: "uppercase", textDecoration: "none", padding: "10px 20px 6px", borderTop: "1px solid #ebebeb" }}>
+                For AI Agent Builders
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5l4 3.5-4 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </Link>
               {[
                 { label: "Marketing", href: "/solutions/marketing" },
                 { label: "Skincare", href: "/solutions/skincare" },
