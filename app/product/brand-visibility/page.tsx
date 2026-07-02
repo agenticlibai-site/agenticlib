@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getLockedDailySummary, getLockedBrandPositions, getLockedSOVByClusters, getWeeklySummary, getLLMVisibility, initBrandVisibilityDB } from "@/lib/brand-visibility/db";
+import { getLockedDailySummary, getLockedBrandPositions, getLockedSOVByClusters, getPrompt22ROI, getWeeklySummary, getLLMVisibility, initBrandVisibilityDB } from "@/lib/brand-visibility/db";
 import BrandVisibilityCharts from "./BrandVisibilityCharts";
 
 export const dynamic = "force-dynamic";
@@ -12,21 +12,22 @@ export const metadata = {
 async function getData() {
   try {
     await initBrandVisibilityDB();
-    const [dailySummary, weeklySummary, llmVisibility, brandPositions, sovData] = await Promise.all([
+    const [dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData] = await Promise.all([
       getLockedDailySummary(7),
       getWeeklySummary(),
       getLLMVisibility(),
       getLockedBrandPositions(),
       getLockedSOVByClusters(),
+      getPrompt22ROI(),
     ]);
-    return { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData };
+    return { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData };
   } catch {
-    return { dailySummary: [], weeklySummary: [], llmVisibility: [], brandPositions: [], sovData: [] };
+    return { dailySummary: [], weeklySummary: [], llmVisibility: [], brandPositions: [], sovData: [], roiData: [] };
   }
 }
 
 export default async function BrandVisibilityPage() {
-  const { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData } = await getData();
+  const { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData } = await getData();
 
   return (
     <main
@@ -85,6 +86,7 @@ export default async function BrandVisibilityPage() {
           llmVisibility={llmVisibility}
           brandPositions={brandPositions}
           sovData={sovData}
+          roiData={roiData}
         />
       </div>
     </main>

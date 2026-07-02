@@ -118,6 +118,7 @@ interface Props {
   llmVisibility: LLMVisRow[];
   brandPositions: BrandPositionRow[];
   sovData: SOVRow[];
+  roiData: { brand: string; total_appearances: number; sov_pct: number }[];
 }
 
 // ── Chart data helpers ─────────────────────────────────────────────────────────
@@ -162,10 +163,10 @@ function fmtDate(d: string) {
   });
 }
 
-const USE_CASE_CLUSTERS: { tag: string; label: string; promptHint: string; disclaimer?: string }[] = [
+const USE_CASE_CLUSTERS: { tag: string; label: string; promptHint: string; promptLabel?: string }[] = [
   { tag: "ads",       label: "Ads & Paid Campaigns",   promptHint: "Meta, Google, TikTok paid ads · ad spend optimisation" },
   { tag: "content",   label: "Content & Brand Voice",  promptHint: "Marketing copy at scale · consistent brand voice" },
-  { tag: "overall",   label: "Overall LLM Visibility",  promptHint: "Which brands AI models mention most across general marketing queries", disclaimer: "Drift's share reflects general brand dominance across 7 broad prompts — not ROI performance specifically." },
+  { tag: "overall",   label: "Overall Marketing ROI",   promptHint: "Best overall AI marketing agents by ROI", promptLabel: "prompt 22 · ROI-specific" },
   { tag: "lead-gen",  label: "Lead-Gen & Funnel",      promptHint: "Lead gen, outreach, funnel automation" },
   { tag: "analytics", label: "Analytics & Attribution",promptHint: "Marketing performance reporting and attribution" },
   { tag: "seo",       label: "SEO & Organic Content",  promptHint: "SEO and organic search visibility" },
@@ -272,7 +273,7 @@ function ClusterSOVCard({
   cluster, clusterRows, brandColorFn, getDisplayName,
 }: {
   cluster: typeof USE_CASE_CLUSTERS[number];
-  clusterRows: SOVRow[];
+  clusterRows: { brand: string; sov_pct: number | string }[];
   brandColorFn: (b: string) => string;
   getDisplayName: (b: string) => string;
 }) {
@@ -307,6 +308,9 @@ function ClusterSOVCard({
           {cluster.label}
         </h3>
         <p style={{ fontSize: 11, color: "rgba(13,27,62,0.42)" }}>{cluster.promptHint}</p>
+        {cluster.promptLabel && (
+          <p style={{ fontSize: 10, color: "rgba(13,27,62,0.38)", marginTop: 3 }}>{cluster.promptLabel}</p>
+        )}
       </div>
 
       <ResponsiveContainer width="100%" height={170}>
@@ -353,11 +357,6 @@ function ClusterSOVCard({
           </div>
         ))}
       </div>
-      {cluster.disclaimer && (
-        <p style={{ marginTop: 10, fontSize: 10, fontStyle: "italic", color: "rgba(13,27,62,0.42)", lineHeight: 1.5 }}>
-          {cluster.disclaimer}
-        </p>
-      )}
     </div>
   );
 }
@@ -452,7 +451,7 @@ function PositionCell({ avg, confidence }: { avg: number | null; confidence: str
 
 // ── Main component ─────────────────────────────────────────────────────────────
 
-export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llmVisibility, brandPositions, sovData }: Props) {
+export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData }: Props) {
   const hasReal = dailySummary.length > 0;
   const { brands: realBrands, rows: realRows, tagMap: realTagMap } = buildChartData(dailySummary);
 
@@ -694,7 +693,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
             <ClusterSOVCard
               key={cluster.tag}
               cluster={cluster}
-              clusterRows={sovData.filter(r => r.bucket_tag === cluster.tag)}
+              clusterRows={cluster.tag === "overall" ? roiData : sovData.filter(r => r.bucket_tag === cluster.tag)}
               brandColorFn={brandColor}
               getDisplayName={getDisplayName}
             />
