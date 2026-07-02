@@ -246,6 +246,10 @@ export async function initBrandVisibilityDB(): Promise<void> {
   // Add archived column to collection_errors for per-run scoping (safe if already exists)
   await sql`ALTER TABLE collection_errors ADD COLUMN IF NOT EXISTS archived BOOLEAN NOT NULL DEFAULT FALSE`;
 
+  // Widen prompt_id constraint to accommodate prompts 23-24 added 2026-07-02
+  await sql`ALTER TABLE raw_responses DROP CONSTRAINT IF EXISTS raw_responses_prompt_id_check`;
+  await sql`ALTER TABLE raw_responses ADD CONSTRAINT raw_responses_prompt_id_check CHECK (prompt_id BETWEEN 1 AND 24)`;
+
   // One-time cleanup: archive errors for any (date, model) pair that already has a full
   // set of 110 successful raw_responses rows — those errors were from superseded failed runs.
   await sql`
@@ -651,7 +655,7 @@ export async function getLockedSOVByClusters(): Promise<SOVRow[]> {
   return result.rows as SOVRow[];
 }
 
-export async function getPrompt22ROI(): Promise<{ brand: string; total_appearances: number; sov_pct: number }[]> {
+export async function getROIDonutSOV(): Promise<{ brand: string; total_appearances: number; sov_pct: number }[]> {
   await initBrandVisibilityDB();
   const result = await sql`
     SELECT
@@ -661,7 +665,7 @@ export async function getPrompt22ROI(): Promise<{ brand: string; total_appearanc
     FROM response_canonical_brands rcb
     JOIN raw_responses rr ON rr.id = rcb.response_id
     JOIN locked_marketing_agents lma ON lma.brand_name = rcb.canonical_brand
-    WHERE rr.prompt_id = 22
+    WHERE rr.prompt_id IN (22, 23, 24)
     AND rr.date >= NOW() - INTERVAL '7 days'
     GROUP BY rcb.canonical_brand
     ORDER BY COUNT(*) DESC
