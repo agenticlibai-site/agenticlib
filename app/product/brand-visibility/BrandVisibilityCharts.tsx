@@ -9,6 +9,9 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
 } from "recharts";
 
 // ── Palette ────────────────────────────────────────────────────────────────────
@@ -79,6 +82,13 @@ interface DailyRow {
   dominant_tag?: string;
 }
 
+interface SOVRow {
+  brand: string;
+  bucket_tag: string;
+  total_appearances: number;
+  sov_pct: number;
+}
+
 interface BrandPositionRow {
   brand_name: string;
   display_name: string;
@@ -107,6 +117,7 @@ interface Props {
   weeklySummary: WeeklyRow[];
   llmVisibility: LLMVisRow[];
   brandPositions: BrandPositionRow[];
+  sovData: SOVRow[];
 }
 
 // ── Chart data helpers ─────────────────────────────────────────────────────────
@@ -253,6 +264,99 @@ function ClusterTrendCard({
   );
 }
 
+const SOV_OTHER_COLOR = "#CBD5E1";
+const SOV_MIN_PCT = 3;
+const SOV_CLUSTERS = ["ads", "content", "overall", "lead-gen"];
+
+function ClusterSOVCard({
+  cluster, clusterRows, brandColorFn, getDisplayName,
+}: {
+  cluster: typeof USE_CASE_CLUSTERS[number];
+  clusterRows: SOVRow[];
+  brandColorFn: (b: string) => string;
+  getDisplayName: (b: string) => string;
+}) {
+  if (clusterRows.length === 0) return null;
+
+  const sorted = [...clusterRows].sort((a, b) => Number(b.sov_pct) - Number(a.sov_pct));
+  const main   = sorted.filter(r => Number(r.sov_pct) >= SOV_MIN_PCT);
+  const others = sorted.filter(r => Number(r.sov_pct) <  SOV_MIN_PCT);
+  const otherPct = others.reduce((s, r) => s + Number(r.sov_pct), 0);
+
+  const slices = [
+    ...main.map(r => ({
+      name:  getDisplayName(r.brand),
+      brand: r.brand,
+      value: Number(r.sov_pct),
+      color: brandColorFn(r.brand),
+    })),
+    ...(otherPct > 0 ? [{ name: "Other", brand: "_other", value: Math.round(otherPct * 10) / 10, color: SOV_OTHER_COLOR }] : []),
+  ];
+
+  return (
+    <div style={{
+      background: "#fff",
+      borderRadius: 10,
+      boxShadow: "0 2px 8px rgba(13,27,62,0.07), 0 1px 2px rgba(13,27,62,0.04)",
+      padding: "20px 20px 16px",
+      display: "flex",
+      flexDirection: "column",
+    }}>
+      <div style={{ marginBottom: 8 }}>
+        <h3 style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>
+          {cluster.label}
+        </h3>
+        <p style={{ fontSize: 11, color: "rgba(13,27,62,0.42)" }}>{cluster.promptHint}</p>
+      </div>
+
+      <ResponsiveContainer width="100%" height={170}>
+        <PieChart>
+          <Pie
+            data={slices}
+            cx="50%"
+            cy="50%"
+            innerRadius="52%"
+            outerRadius="78%"
+            dataKey="value"
+            nameKey="name"
+            stroke="none"
+            paddingAngle={1}
+          >
+            {slices.map((s, i) => <Cell key={i} fill={s.color} />)}
+          </Pie>
+          <Tooltip
+            contentStyle={{
+              borderRadius: 8,
+              border: "1px solid rgba(13,27,62,0.10)",
+              fontSize: 12,
+              boxShadow: "0 4px 16px rgba(13,27,62,0.12)",
+              color: NAVY,
+              background: "#fff",
+            }}
+            formatter={(value, name) => [`${Number(value).toFixed(1)}%`, String(name)]}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+
+      <div style={{ marginTop: 8, display: "flex", flexDirection: "column", gap: 5 }}>
+        {slices.map(s => (
+          <div key={s.name} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6, minWidth: 0 }}>
+              <span style={{ flexShrink: 0, display: "inline-block", width: 7, height: 7, borderRadius: "50%", background: s.color }} />
+              <span style={{ fontSize: 11, color: NAVY, fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                {s.name}
+              </span>
+            </div>
+            <span style={{ fontSize: 11, fontWeight: 700, color: s.brand === "_other" ? "rgba(13,27,62,0.45)" : s.color, flexShrink: 0 }}>
+              {s.value.toFixed(1)}%
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // ── Sub-components ─────────────────────────────────────────────────────────────
 
 function Card({
@@ -343,7 +447,7 @@ function PositionCell({ avg, confidence }: { avg: number | null; confidence: str
 
 // ── Main component ─────────────────────────────────────────────────────────────
 
-export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llmVisibility, brandPositions }: Props) {
+export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llmVisibility, brandPositions, sovData }: Props) {
   const hasReal = dailySummary.length > 0;
   const { brands: realBrands, rows: realRows, tagMap: realTagMap } = buildChartData(dailySummary);
 
@@ -577,6 +681,21 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
           />
         );
       })}
+
+      {/* ── Row 2c: Share of Voice donut charts (ads, content, overall, lead-gen) */}
+      {hasReal && sovData.length > 0 && (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
+          {USE_CASE_CLUSTERS.filter(c => SOV_CLUSTERS.includes(c.tag)).map(cluster => (
+            <ClusterSOVCard
+              key={cluster.tag}
+              cluster={cluster}
+              clusterRows={sovData.filter(r => r.bucket_tag === cluster.tag)}
+              brandColorFn={brandColor}
+              getDisplayName={getDisplayName}
+            />
+          ))}
+        </div>
+      )}
 
       {/* ── Row 3a: Average position by use case ────────────────────────────── */}
       {brandPositions.length > 0 && (() => {
