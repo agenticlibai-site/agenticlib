@@ -11,11 +11,12 @@ import {
   type SkincareSentimentRow,
 } from "@/lib/skincare-visibility/db";
 import SkincareVisibilityCharts from "./SkincareVisibilityCharts";
+import PrintButton from "./PrintButton";
 
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Skincare Brand Visibility",
+  title: "Dewwie Report: Skincare Comparison Intelligence",
   description: "Track how AI skincare agent brands appear across Claude and GPT-4o mini responses over time.",
 };
 
@@ -26,7 +27,7 @@ async function getData() {
     await initSkincareDB();
     const today = new Date().toISOString().split("T")[0];
     const [dailySummary, weeklySummary, llmVisibility, useCaseBuckets, sentimentData, rawResult, metaResult] = await Promise.all([
-      getSkincareDailySummary(7),
+      getSkincareDailySummary(6),
       getSkincareWeeklySummary(),
       getSkincareLLMVisibility(),
       getSkincareUseCaseBuckets(),
@@ -64,7 +65,7 @@ async function getData() {
   }
 }
 
-const ROSE = "#C2186A";
+const ROSE = "#3B4DBE";
 const DARK = "#160F2E";
 
 function fmtModel(m: string) {
@@ -77,7 +78,7 @@ export default async function SkincareVisibilityPage() {
   return (
     <main
       className="min-h-screen relative overflow-hidden"
-      style={{ background: "linear-gradient(160deg, #FDE8F2 0%, #FFF0F8 45%, #FFF8FC 100%)" }}
+      style={{ background: "linear-gradient(160deg, #EEF0FD 0%, #F4F5FD 45%, #F9FAFE 100%)" }}
     >
       {/* Background grain */}
       <svg className="pointer-events-none fixed inset-0 w-full h-full z-0" style={{ opacity: 0.10 }} aria-hidden="true">
@@ -90,19 +91,20 @@ export default async function SkincareVisibilityPage() {
 
       {/* Decorative blobs */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">
-        <div style={{ position: "absolute", top: "-80px", right: "-120px", width: "600px", height: "600px", borderRadius: "50%", background: "rgba(194,24,106,0.07)", filter: "blur(80px)" }} />
-        <div style={{ position: "absolute", bottom: "-100px", left: "-100px", width: "400px", height: "400px", borderRadius: "50%", background: "rgba(232,68,122,0.06)", filter: "blur(70px)" }} />
+        <div style={{ position: "absolute", top: "-80px", right: "-120px", width: "600px", height: "600px", borderRadius: "50%", background: "rgba(59,77,190,0.07)", filter: "blur(80px)" }} />
+        <div style={{ position: "absolute", bottom: "-100px", left: "-100px", width: "400px", height: "400px", borderRadius: "50%", background: "rgba(80,107,208,0.05)", filter: "blur(70px)" }} />
       </div>
 
       {/* Nav */}
-      <nav className="relative z-10 px-6 py-5 flex items-center">
+      <nav className="relative z-10 px-6 py-5 flex items-center justify-between">
         <Link
           href="/"
           className="inline-flex items-center gap-2 text-sm font-semibold transition-colors"
-          style={{ textDecoration: "none", background: "white", borderRadius: 8, padding: "8px 16px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)", color: "#C2186A" }}
+          style={{ textDecoration: "none", background: "white", borderRadius: 8, padding: "8px 16px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)", color: "#3B4DBE" }}
         >
           ← AgenticLib
         </Link>
+        <PrintButton />
       </nav>
 
       {/* Content */}
@@ -110,17 +112,13 @@ export default async function SkincareVisibilityPage() {
         <div className="mb-10">
           <div
             className="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4"
-            style={{ background: "rgba(194,24,106,0.10)", color: "#C2186A" }}
+            style={{ background: "rgba(59,77,190,0.10)", color: "#3B4DBE" }}
           >
             Skincare Intelligence
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: "#160F2E", letterSpacing: "-0.02em" }}>
-            Skincare Brand Visibility
+            Dewwie Report: Skincare Comparison Intelligence
           </h1>
-          <p className="text-base max-w-xl" style={{ color: "rgba(22,15,46,0.6)", lineHeight: 1.6 }}>
-            How AI skincare agent brands appear in Claude and GPT-4o mini responses across 13 prompts,
-            3 runs each, collected daily.
-          </p>
         </div>
 
         {/* ── Today's raw collection — always visible, no aggregate needed ── */}
