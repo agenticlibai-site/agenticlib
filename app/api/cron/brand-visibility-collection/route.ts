@@ -152,7 +152,7 @@ export async function GET(request: Request) {
     await runAllAggregations(today, windowStart);
     const stats = await getDailyRunStats(today);
 
-    const EXPECTED_TOTAL = 220;
+    const EXPECTED_TOTAL = PROMPTS.length * RUNS_PER_PROMPT * 2; // 2 models
     const healthy = stats.success === EXPECTED_TOTAL && stats.activeErrors === 0;
 
     if (!healthy) {

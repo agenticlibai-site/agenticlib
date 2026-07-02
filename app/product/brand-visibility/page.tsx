@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getLockedDailySummary, getLockedBrandPositions, getLockedSOVByClusters, getPrompt22ROI, getWeeklySummary, getLLMVisibility, initBrandVisibilityDB } from "@/lib/brand-visibility/db";
+import { getLockedDailySummary, getLockedBrandPositions, getLockedSOVByClusters, getROIDonutSOV, getWeeklySummary, getLLMVisibility, initBrandVisibilityDB } from "@/lib/brand-visibility/db";
 import BrandVisibilityCharts from "./BrandVisibilityCharts";
 
 export const dynamic = "force-dynamic";
@@ -18,7 +18,7 @@ async function getData() {
       getLLMVisibility(),
       getLockedBrandPositions(),
       getLockedSOVByClusters(),
-      getPrompt22ROI(),
+      getROIDonutSOV(),
     ]);
     return { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData };
   } catch {

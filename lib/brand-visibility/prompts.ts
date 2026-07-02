@@ -1,4 +1,5 @@
-// Fixed prompt list — do NOT modify or regenerate. All 7 days of collection use this exact set.
+// Core prompt list. Prompts 1-22 have been live since launch.
+// Prompts 23-24 added 2026-07-02 under bucket_tag 'overall-roi' — do not backfill.
 export const PROMPTS = [
   { id: 1,  text: "What are the best AI marketing agents right now?",                                      tag: "overall"   },
   { id: 2,  text: "Give me the top 15 AI marketing agents for business growth.",                           tag: "overall"   },
@@ -21,7 +22,9 @@ export const PROMPTS = [
   { id: 19, text: "What's the best AI for SEO and content optimization?",                                 tag: "seo"       },
   { id: 20, text: "Which AI agents help improve organic search visibility?",                              tag: "seo"       },
   { id: 21, text: "Can an AI agent manage my social media accounts end-to-end?",                          tag: "social"    },
-  { id: 22, text: "Which AI marketing agents have the best ROI?",                                         tag: "overall"   },
+  { id: 22, text: "Which AI marketing agents have the best ROI?",                                         tag: "overall"      },
+  { id: 23, text: "What AI marketing tools deliver the best return on investment for small and mid-size businesses?", tag: "overall-roi" },
+  { id: 24, text: "Which AI agents justify their cost for marketing teams running performance campaigns?", tag: "overall-roi"  },
 ] as const;
 
 export type Prompt = (typeof PROMPTS)[number];
