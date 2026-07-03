@@ -91,9 +91,7 @@ function parseFeatureResponse(raw: string): {
   parsed:         object | null;
   parseError:     boolean;
 } {
-  try {
-    const cleaned = raw.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
-    const obj = JSON.parse(cleaned);
+  function extract(obj: Record<string, unknown>) {
     return {
       has_capability: typeof obj.has_capability === "string" ? obj.has_capability : null,
       evidence:       typeof obj.evidence       === "string" ? obj.evidence       : null,
@@ -102,9 +100,24 @@ function parseFeatureResponse(raw: string): {
       parsed:         obj,
       parseError:     false,
     };
-  } catch {
-    return { has_capability: null, evidence: null, limitations: null, confidence: null, parsed: null, parseError: true };
   }
+
+  // Pass 1: strip markdown fences and try direct parse
+  const cleaned = raw.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
+  try {
+    return extract(JSON.parse(cleaned) as Record<string, unknown>);
+  } catch { /* fall through */ }
+
+  // Pass 2: extract first { … last } and try again
+  const first = cleaned.indexOf("{");
+  const last  = cleaned.lastIndexOf("}");
+  if (first !== -1 && last > first) {
+    try {
+      return extract(JSON.parse(cleaned.slice(first, last + 1)) as Record<string, unknown>);
+    } catch { /* fall through */ }
+  }
+
+  return { has_capability: null, evidence: null, limitations: null, confidence: null, parsed: null, parseError: true };
 }
 
 async function runWithConcurrency<T>(

@@ -138,6 +138,7 @@ export const FEATURES: Feature[] = [
     applies_to:   "all",
     prompt: `I need whatever tool I choose to connect with my existing stack — CRM, ad platforms, email tools. What CRM, ad platform, or marketing stack integrations does [BRAND] natively support — built-in, without needing middleware like Zapier?
 [GROUNDING INSTRUCTION]
+Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
 [JSON OUTPUT]`,
   },
   {
@@ -178,6 +179,7 @@ export const FEATURES: Feature[] = [
     applies_to:   "all",
     prompt: `I want to try [BRAND] before committing budget. Is there a free tier or trial available — and if so, what can I actually do with it without paying? Not a sales demo, but genuine self-serve access to the product.
 [GROUNDING INSTRUCTION]
+Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
 [JSON OUTPUT]`,
   },
   {
@@ -187,6 +189,7 @@ export const FEATURES: Feature[] = [
     applies_to:   "all",
     prompt: `I need to build a business case for adopting [BRAND]. Is the pricing publicly documented — and what does the entry-level paid tier actually cost and include? If pricing requires a sales call to obtain, note that.
 [GROUNDING INSTRUCTION]
+Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
 [JSON OUTPUT]`,
   },
 ];
