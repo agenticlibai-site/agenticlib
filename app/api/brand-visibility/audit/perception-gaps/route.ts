@@ -18,6 +18,26 @@ export async function GET(request: Request) {
   }
 
   try {
+    // Step 1 — raw_responses bucket_tag distribution for Persado
+    const persadoRaw = await sql`
+      SELECT rr.bucket_tag, COUNT(*)::int AS row_count
+      FROM raw_responses rr
+      WHERE EXISTS (
+        SELECT 1 FROM response_canonical_brands rcb
+        WHERE rcb.response_id = rr.id AND rcb.canonical_brand = 'Persado'
+      )
+      GROUP BY rr.bucket_tag
+      ORDER BY row_count DESC
+    `;
+
+    // Step 2 — locked_marketing_agents for Persado and Phrasee
+    const lockedCheck = await sql`
+      SELECT brand_name, dominant_tag
+      FROM locked_marketing_agents
+      WHERE brand_name IN ('Persado', 'Phrasee')
+      ORDER BY brand_name
+    `;
+
     const full = await sql`
       WITH locked_appearances AS (
         SELECT rcb.canonical_brand AS brand_name,
@@ -72,6 +92,11 @@ export async function GET(request: Request) {
     const flagged = full.rows.filter((r) => r.would_flag);
 
     return Response.json({
+      // Step 1 — raw_responses bucket_tag distribution for Persado
+      persado_raw_responses: persadoRaw.rows,
+      // Step 2 — locked_marketing_agents for Persado and Phrasee
+      locked_agents_check: lockedCheck.rows,
+      // Full brand SOV table
       all_brands: full.rows,
       flagged_gaps: flagged,
       flagged_count: flagged.length,
