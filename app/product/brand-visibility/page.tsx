@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getLockedDailySummary, getLockedBrandPositions, getLockedSOVByClusters, getROIDonutSOV, getWeeklySummary, getLLMVisibility, initBrandVisibilityDB } from "@/lib/brand-visibility/db";
+import { getLockedDailySummary, getLockedBrandPositions, getLockedSOVByClusters, getROIDonutSOV, getWeeklySummary, getLLMVisibility, getPerceptionGaps, initBrandVisibilityDB } from "@/lib/brand-visibility/db";
 import BrandVisibilityCharts from "./BrandVisibilityCharts";
 
 export const dynamic = "force-dynamic";
@@ -12,22 +12,23 @@ export const metadata = {
 async function getData() {
   try {
     await initBrandVisibilityDB();
-    const [dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData] = await Promise.all([
+    const [dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps] = await Promise.all([
       getLockedDailySummary(7),
       getWeeklySummary(),
       getLLMVisibility(),
       getLockedBrandPositions(),
       getLockedSOVByClusters(),
       getROIDonutSOV(),
+      getPerceptionGaps(),
     ]);
-    return { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData };
+    return { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps };
   } catch {
-    return { dailySummary: [], weeklySummary: [], llmVisibility: [], brandPositions: [], sovData: [], roiData: [] };
+    return { dailySummary: [], weeklySummary: [], llmVisibility: [], brandPositions: [], sovData: [], roiData: [], perceptionGaps: [] };
   }
 }
 
 export default async function BrandVisibilityPage() {
-  const { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData } = await getData();
+  const { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps } = await getData();
 
   return (
     <main
@@ -87,6 +88,7 @@ export default async function BrandVisibilityPage() {
           brandPositions={brandPositions}
           sovData={sovData}
           roiData={roiData}
+          perceptionGaps={perceptionGaps}
         />
       </div>
     </main>

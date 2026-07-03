@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { PerceptionGap } from "@/lib/brand-visibility/db";
 import {
   LineChart,
   Line,
@@ -119,6 +120,7 @@ interface Props {
   brandPositions: BrandPositionRow[];
   sovData: SOVRow[];
   roiData: { brand: string; total_appearances: number; sov_pct: number }[];
+  perceptionGaps: PerceptionGap[];
 }
 
 // ── Chart data helpers ─────────────────────────────────────────────────────────
@@ -474,7 +476,9 @@ const TAG_OVERRIDES: Record<string, string> = {
 
 // ── Main component ─────────────────────────────────────────────────────────────
 
-export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData }: Props) {
+const clusterLabel = (tag: string) => USE_CASE_CLUSTERS.find(c => c.tag === tag)?.label ?? tag;
+
+export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps }: Props) {
   const hasReal = dailySummary.length > 0;
   const { brands: realBrands, rows: realRows, tagMap: realTagMap } = buildChartData(dailySummary);
 
@@ -729,11 +733,63 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
         </div>
       )}
 
+      {/* ── Row 2d: Perception Gaps ─────────────────────────────────────────── */}
+      {perceptionGaps.length > 0 && (
+        <div style={{
+          background: "#fff",
+          borderRadius: 10,
+          boxShadow: "0 2px 8px rgba(13,27,62,0.07), 0 1px 2px rgba(13,27,62,0.04)",
+          overflow: "hidden",
+        }}>
+          <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(13,27,62,0.07)" }}>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 2 }}>
+              Perception Gaps — where LLM visibility and reality diverge
+            </h3>
+            <p style={{ fontSize: 12, color: "rgba(13,27,62,0.40)" }}>
+              Brands where AI share of voice and documented capability tell different stories.
+            </p>
+          </div>
+          <div style={{ padding: "16px 24px", display: "flex", flexDirection: "column", gap: 12 }}>
+            {perceptionGaps.map((gap, i) => {
+              const label = clusterLabel(gap.cluster_tag);
+              const explanation = gap.gap_type === "sov_gap"
+                ? `${gap.display_name} appears consistently in ${label} brand coverage but holds less than 3% share of voice when buyers ask specifically about ${label} — present in the conversation but not owning it.`
+                : `${gap.display_name} receives ${Number(gap.sov_pct).toFixed(1)}% share of voice in ${label} queries but has no documented ${label} capability in verified feature data — AI models recommend it for a job it may not do.`;
+              return (
+                <div key={`${gap.brand_name}-${gap.gap_type}-${i}`} style={{
+                  borderLeft: "3px solid #F59E0B",
+                  background: "rgba(245,158,11,0.04)",
+                  borderRadius: "0 6px 6px 0",
+                  padding: "12px 16px",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 4,
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: NAVY }}>{gap.display_name}</span>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const,
+                      letterSpacing: "0.07em", padding: "2px 7px", borderRadius: 4,
+                      background: gap.gap_type === "sov_gap" ? "rgba(245,158,11,0.12)" : "rgba(239,68,68,0.10)",
+                      color: gap.gap_type === "sov_gap" ? "#B45309" : "#DC2626",
+                    }}>
+                      {gap.gap_type === "sov_gap" ? "SOV gap" : "Capability gap"}
+                    </span>
+                    <span style={{ fontSize: 11, color: "rgba(13,27,62,0.40)" }}>{label}</span>
+                  </div>
+                  <p style={{ fontSize: 12, color: "rgba(13,27,62,0.65)", lineHeight: 1.55, margin: 0 }}>
+                    {explanation}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       {/* ── Row 3a: Average position by use case ────────────────────────────── */}
       {overriddenPositions.length > 0 && (() => {
         const fmt = (v: number | string | null) => v != null ? Number(v).toFixed(1) : "—";
-        const clusterLabel = (tag: string) =>
-          USE_CASE_CLUSTERS.find(c => c.tag === tag)?.label ?? tag;
         return (
           <div style={{
             background: "#fff",
