@@ -267,7 +267,7 @@ function ClusterTrendCard({
 
 const SOV_OTHER_COLOR = "#CBD5E1";
 const SOV_MIN_PCT = 3;
-const SOV_CLUSTERS = ["ads", "content", "overall", "lead-gen"];
+const SOV_CLUSTERS = ["ads", "content", "lifecycle", "lead-gen"];
 
 function ClusterSOVCard({
   cluster, clusterRows, brandColorFn, getDisplayName,
