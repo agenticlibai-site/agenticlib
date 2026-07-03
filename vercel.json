@@ -19,6 +19,30 @@
     {
       "path": "/api/cron/daily-check-watchdog",
       "schedule": "45 5 * * *"
+    },
+    {
+      "path": "/api/cron/feature-scoring-collection?model=claude-haiku-4-5",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/feature-scoring-collection?model=gpt-4o-mini",
+      "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/feature-scoring-aggregate",
+      "schedule": "30 12 * * *"
+    },
+    {
+      "path": "/api/cron/sentiment-collection?model=claude-haiku-4-5",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/sentiment-collection?model=gpt-4o-mini",
+      "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/cron/sentiment-aggregate",
+      "schedule": "0 1 * * 0"
     }
   ]
 }

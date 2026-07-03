@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
  * End-to-end verification after a cron run. Defaults to today's date.
  * Returns five sections:
  *
- * 1. coverage          — rows collected per model vs. the 220 expected (22 × 5 × 2)
+ * 1. coverage          — rows collected per model vs. the expected total (prompts × runs × models)
  * 2. missing_cells     — any (prompt_id, model) combinations with fewer than 5 runs
  * 3. model_snapshots   — distinct model_snapshot strings seen, so you can confirm the
  *                        exact API version used (e.g. "claude-haiku-4-5-20241022")
@@ -28,6 +28,11 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url);
   const date = searchParams.get("date") ?? new Date().toISOString().split("T")[0];
+  // Update PROMPT_COUNT when new prompts are added to prompts.ts
+  const PROMPT_COUNT    = 24;
+  const RUNS_PER_PROMPT = 5;
+  const MODEL_COUNT     = 2;
+  const EXPECTED_TOTAL  = PROMPT_COUNT * RUNS_PER_PROMPT * MODEL_COUNT;
 
   const [
     coverageResult,
@@ -37,15 +42,15 @@ export async function GET(request: Request) {
     summaryResult,
   ] = await Promise.all([
 
-    // 1. Row count per model (expect 110 each = 22 prompts × 5 runs)
+    // 1. Row count per model (expect 120 each = 24 prompts × 5 runs)
     sql`
       SELECT
         model,
         COUNT(*)::int                                          AS rows_stored,
         COUNT(DISTINCT prompt_id)::int                         AS distinct_prompts,
         COUNT(DISTINCT run_number)::int                        AS distinct_runs,
-        110                                                    AS expected_rows,
-        22                                                     AS expected_prompts
+        ${PROMPT_COUNT * RUNS_PER_PROMPT}                      AS expected_rows,
+        ${PROMPT_COUNT}                                        AS expected_prompts
       FROM raw_responses
       WHERE date = ${date}::date
       GROUP BY model
@@ -56,7 +61,7 @@ export async function GET(request: Request) {
     sql`
       WITH expected AS (
         SELECT g.prompt_id, m.model
-        FROM generate_series(1, 22) AS g(prompt_id)
+        FROM generate_series(1, ${PROMPT_COUNT}) AS g(prompt_id)
         CROSS JOIN (VALUES ('claude-haiku-4-5'), ('gpt-4o-mini')) AS m(model)
       ),
       actual AS (
@@ -121,8 +126,8 @@ export async function GET(request: Request) {
     date,
     health: {
       total_rows_stored: totalRows,
-      expected_total: 220,
-      complete: totalRows === 220 && missingResult.rows.length === 0,
+      expected_total: EXPECTED_TOTAL,
+      complete: totalRows >= EXPECTED_TOTAL && missingResult.rows.length === 0,
       missing_cells: missingResult.rows.length,
       // active errors only — errors from superseded failed runs are archived and not counted
       error_count: errorsResult.rows.length,

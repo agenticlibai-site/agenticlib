@@ -264,6 +264,68 @@ export async function initBrandVisibilityDB(): Promise<void> {
       ) = 110
   `;
 
+  // ── Sentiment pipeline tables ──────────────────────────────────────────────
+
+  // One row per brand+prompt+model+run_date. prompt_id: 1=overall, 2=ads,
+  // 3=content, 4=lead-gen, 5=overall-roi (assigned in collection route).
+  await sql`
+    CREATE TABLE IF NOT EXISTS sentiment_responses (
+      id          SERIAL PRIMARY KEY,
+      brand_name  TEXT    NOT NULL,
+      prompt_id   INTEGER NOT NULL,
+      bucket_tag  TEXT    NOT NULL,
+      model       TEXT    NOT NULL,
+      run_date    DATE    NOT NULL DEFAULT CURRENT_DATE,
+      sentiment   TEXT    CHECK (sentiment IN ('positive', 'neutral', 'negative')),
+      confidence  TEXT    CHECK (confidence IN ('high', 'medium', 'low')),
+      descriptors TEXT[],
+      raw_json    JSONB,
+      parse_error BOOLEAN DEFAULT FALSE,
+      created_at  TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE UNIQUE INDEX IF NOT EXISTS sentiment_responses_unique
+    ON sentiment_responses (brand_name, prompt_id, model, run_date)
+  `;
+
+  // Weekly sentiment aggregate per brand+bucket_tag.
+  // unique_flags maps 1:1 with top_descriptors — 'true' if the descriptor
+  // is unique to this brand in this bucket_tag (not in any other brand's top 5).
+  await sql`
+    CREATE TABLE IF NOT EXISTS sentiment_scores (
+      id              SERIAL PRIMARY KEY,
+      brand_name      TEXT    NOT NULL,
+      bucket_tag      TEXT    NOT NULL,
+      positive_count  INTEGER DEFAULT 0,
+      neutral_count   INTEGER DEFAULT 0,
+      negative_count  INTEGER DEFAULT 0,
+      total_count     INTEGER DEFAULT 0,
+      top_descriptors TEXT[],
+      unique_flags    TEXT[],
+      week_start      DATE    NOT NULL,
+      scored_at       TIMESTAMP DEFAULT NOW(),
+      UNIQUE (brand_name, bucket_tag, week_start)
+    )
+  `;
+
+  // Week-on-week sentiment drift detection.
+  await sql`
+    CREATE TABLE IF NOT EXISTS sentiment_drift (
+      id           SERIAL PRIMARY KEY,
+      brand_name   TEXT          NOT NULL,
+      bucket_tag   TEXT          NOT NULL,
+      week_start   DATE          NOT NULL,
+      positive_pct NUMERIC(5, 2),
+      neutral_pct  NUMERIC(5, 2),
+      negative_pct NUMERIC(5, 2),
+      drift_flag   BOOLEAN       DEFAULT FALSE,
+      drift_reason TEXT,
+      created_at   TIMESTAMP     DEFAULT NOW(),
+      UNIQUE (brand_name, bucket_tag, week_start)
+    )
+  `;
+
   dbInitialised = true;
 }
 
@@ -737,4 +799,242 @@ export async function getDailyRunStats(date: string): Promise<{ success: number;
     success: parseInt(successResult.rows[0]?.count ?? "0", 10),
     activeErrors: parseInt(errorResult.rows[0]?.count ?? "0", 10),
   };
+}
+
+// ── Feature pipeline ───────────────────────────────────────────────────────────
+
+export interface LockedBrand {
+  brand_name:   string;
+  display_name: string;
+  rank:         number;
+  dominant_tag: string;
+}
+
+export async function loadLockedBrands(): Promise<LockedBrand[]> {
+  await initBrandVisibilityDB();
+  const result = await sql`
+    SELECT brand_name, display_name, rank, dominant_tag
+    FROM locked_marketing_agents
+    ORDER BY rank
+  `;
+  return result.rows as LockedBrand[];
+}
+
+export async function insertFeatureResponse(row: {
+  brand_name:     string;
+  feature_id:     string;
+  feature_tag:    string;
+  model:          string;
+  run_number:     number;
+  run_date:       string;
+  has_capability: string | null;
+  evidence:       string | null;
+  limitations:    string | null;
+  confidence:     string | null;
+  raw_json:       object | null;
+  parse_error:    boolean;
+}): Promise<void> {
+  await sql`
+    INSERT INTO feature_responses
+      (brand_name, feature_id, feature_tag, model, run_number, run_date,
+       has_capability, evidence, limitations, confidence, raw_json, parse_error)
+    VALUES
+      (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.model},
+       ${row.run_number}, ${row.run_date}::date, ${row.has_capability},
+       ${row.evidence}, ${row.limitations}, ${row.confidence},
+       ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error})
+  `;
+}
+
+export async function getFeatureResponsesForScoring(runDate: string): Promise<{
+  brand_name:     string;
+  feature_id:     string;
+  feature_tag:    string;
+  model:          string;
+  has_capability: string | null;
+  evidence:       string | null;
+  confidence:     string | null;
+  parse_error:    boolean;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, feature_id, feature_tag, model,
+           has_capability, evidence, confidence, parse_error
+    FROM feature_responses
+    WHERE run_date = ${runDate}::date
+    ORDER BY brand_name, feature_id, model, run_number
+  `;
+  return result.rows as {
+    brand_name: string; feature_id: string; feature_tag: string; model: string;
+    has_capability: string | null; evidence: string | null; confidence: string | null; parse_error: boolean;
+  }[];
+}
+
+export async function upsertFeatureScore(row: {
+  brand_name:         string;
+  feature_id:         string;
+  feature_tag:        string;
+  score:              number | null;
+  score_band:         string;
+  runs_agreeing:      number | null;
+  runs_total:         number;
+  flagged_for_review: boolean;
+  flag_reason:        string | null;
+  notes:              string | null;
+}): Promise<void> {
+  await sql`
+    INSERT INTO feature_scores
+      (brand_name, feature_id, feature_tag, score, score_band,
+       runs_agreeing, runs_total, flagged_for_review, flag_reason, notes, scored_at)
+    VALUES
+      (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.score},
+       ${row.score_band}, ${row.runs_agreeing}, ${row.runs_total},
+       ${row.flagged_for_review}, ${row.flag_reason}, ${row.notes}, NOW())
+    ON CONFLICT (brand_name, feature_id) DO UPDATE SET
+      feature_tag        = EXCLUDED.feature_tag,
+      score              = EXCLUDED.score,
+      score_band         = EXCLUDED.score_band,
+      runs_agreeing      = EXCLUDED.runs_agreeing,
+      runs_total         = EXCLUDED.runs_total,
+      flagged_for_review = EXCLUDED.flagged_for_review,
+      flag_reason        = EXCLUDED.flag_reason,
+      notes              = EXCLUDED.notes,
+      scored_at          = NOW()
+  `;
+}
+
+// ── Sentiment pipeline ─────────────────────────────────────────────────────────
+
+export async function insertSentimentResponse(row: {
+  brand_name:  string;
+  prompt_id:   number;
+  bucket_tag:  string;
+  model:       string;
+  run_date:    string;
+  sentiment:   string | null;
+  confidence:  string | null;
+  descriptors: string[] | null;
+  raw_json:    object | null;
+  parse_error: boolean;
+}): Promise<void> {
+  // descriptors is TEXT[] — passed via JSON cast to stay within @vercel/postgres Primitive types
+  const descriptorsJson = JSON.stringify(row.descriptors ?? []);
+  await sql`
+    INSERT INTO sentiment_responses
+      (brand_name, prompt_id, bucket_tag, model, run_date,
+       sentiment, confidence, descriptors, raw_json, parse_error)
+    VALUES
+      (${row.brand_name}, ${row.prompt_id}, ${row.bucket_tag}, ${row.model},
+       ${row.run_date}::date, ${row.sentiment}, ${row.confidence},
+       ARRAY(SELECT jsonb_array_elements_text(${descriptorsJson}::jsonb)),
+       ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb,
+       ${row.parse_error})
+    ON CONFLICT (brand_name, prompt_id, model, run_date) DO UPDATE SET
+      bucket_tag  = EXCLUDED.bucket_tag,
+      sentiment   = EXCLUDED.sentiment,
+      confidence  = EXCLUDED.confidence,
+      descriptors = EXCLUDED.descriptors,
+      raw_json    = EXCLUDED.raw_json,
+      parse_error = EXCLUDED.parse_error
+  `;
+}
+
+export async function getSentimentResponsesForWeek(weekStart: string, weekEnd: string): Promise<{
+  brand_name:  string;
+  bucket_tag:  string;
+  sentiment:   string | null;
+  confidence:  string | null;
+  descriptors: string[] | null;
+  parse_error: boolean;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, bucket_tag, sentiment, confidence, descriptors, parse_error
+    FROM sentiment_responses
+    WHERE run_date >= ${weekStart}::date AND run_date < ${weekEnd}::date
+    ORDER BY brand_name, bucket_tag, run_date
+  `;
+  return result.rows as {
+    brand_name: string; bucket_tag: string; sentiment: string | null;
+    confidence: string | null; descriptors: string[] | null; parse_error: boolean;
+  }[];
+}
+
+export async function getPreviousWeekSentimentScores(prevWeekStart: string): Promise<{
+  brand_name:     string;
+  bucket_tag:     string;
+  positive_count: number;
+  neutral_count:  number;
+  negative_count: number;
+  total_count:    number;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, bucket_tag, positive_count, neutral_count, negative_count, total_count
+    FROM sentiment_scores
+    WHERE week_start = ${prevWeekStart}::date
+  `;
+  return result.rows as {
+    brand_name: string; bucket_tag: string;
+    positive_count: number; neutral_count: number; negative_count: number; total_count: number;
+  }[];
+}
+
+export async function upsertSentimentScore(row: {
+  brand_name:      string;
+  bucket_tag:      string;
+  positive_count:  number;
+  neutral_count:   number;
+  negative_count:  number;
+  total_count:     number;
+  top_descriptors: string[];
+  unique_flags:    string[];
+  week_start:      string;
+}): Promise<void> {
+  const topDescJson   = JSON.stringify(row.top_descriptors);
+  const uniqueFlagJson = JSON.stringify(row.unique_flags);
+  await sql`
+    INSERT INTO sentiment_scores
+      (brand_name, bucket_tag, positive_count, neutral_count, negative_count,
+       total_count, top_descriptors, unique_flags, week_start)
+    VALUES
+      (${row.brand_name}, ${row.bucket_tag}, ${row.positive_count},
+       ${row.neutral_count}, ${row.negative_count}, ${row.total_count},
+       ARRAY(SELECT jsonb_array_elements_text(${topDescJson}::jsonb)),
+       ARRAY(SELECT jsonb_array_elements_text(${uniqueFlagJson}::jsonb)),
+       ${row.week_start}::date)
+    ON CONFLICT (brand_name, bucket_tag, week_start) DO UPDATE SET
+      positive_count  = EXCLUDED.positive_count,
+      neutral_count   = EXCLUDED.neutral_count,
+      negative_count  = EXCLUDED.negative_count,
+      total_count     = EXCLUDED.total_count,
+      top_descriptors = EXCLUDED.top_descriptors,
+      unique_flags    = EXCLUDED.unique_flags,
+      scored_at       = NOW()
+  `;
+}
+
+export async function upsertSentimentDrift(row: {
+  brand_name:   string;
+  bucket_tag:   string;
+  week_start:   string;
+  positive_pct: number;
+  neutral_pct:  number;
+  negative_pct: number;
+  drift_flag:   boolean;
+  drift_reason: string | null;
+}): Promise<void> {
+  await sql`
+    INSERT INTO sentiment_drift
+      (brand_name, bucket_tag, week_start, positive_pct, neutral_pct,
+       negative_pct, drift_flag, drift_reason)
+    VALUES
+      (${row.brand_name}, ${row.bucket_tag}, ${row.week_start}::date,
+       ${row.positive_pct}, ${row.neutral_pct}, ${row.negative_pct},
+       ${row.drift_flag}, ${row.drift_reason})
+    ON CONFLICT (brand_name, bucket_tag, week_start) DO UPDATE SET
+      positive_pct = EXCLUDED.positive_pct,
+      neutral_pct  = EXCLUDED.neutral_pct,
+      negative_pct = EXCLUDED.negative_pct,
+      drift_flag   = EXCLUDED.drift_flag,
+      drift_reason = EXCLUDED.drift_reason,
+      created_at   = NOW()
+  `;
 }
