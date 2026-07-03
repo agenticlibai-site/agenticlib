@@ -841,7 +841,6 @@ export async function getPerceptionGaps(): Promise<PerceptionGap[]> {
           SELECT 1 FROM feature_scores fs
           WHERE fs.brand_name = s.brand_name
             AND fs.feature_tag = s.cluster_tag
-            AND fs.has_capability != 'not_documented'
             AND fs.score IS NOT NULL
         )
       ORDER BY s.sov_pct DESC
