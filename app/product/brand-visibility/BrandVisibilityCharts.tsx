@@ -5,6 +5,8 @@ import type { PerceptionGap } from "@/lib/brand-visibility/db";
 import {
   LineChart,
   Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -166,10 +168,10 @@ function fmtDate(d: string) {
 }
 
 const USE_CASE_CLUSTERS: { tag: string; label: string; promptHint: string; promptLabel?: string }[] = [
-  { tag: "ads",       label: "Ads & Paid Campaigns",   promptHint: "Meta, Google, TikTok paid ads · ad spend optimisation" },
-  { tag: "content",   label: "Content & Brand Voice",  promptHint: "Marketing copy at scale · consistent brand voice" },
-  { tag: "lifecycle", label: "Lifecycle & Retention Automation", promptHint: "Post-acquisition messaging — nurture, retain, and re-engage contacts across email, chat, and messaging channels", promptLabel: "3 prompts · data from 2 Jul 2026" },
-  { tag: "lead-gen",  label: "Lead-Gen & Funnel",      promptHint: "Lead gen, outreach, funnel automation", promptLabel: "3 prompts · treat directionally" },
+  { tag: "ads",       label: "Ads & Paid Campaigns",   promptHint: "Paid media run across platforms like Meta, Google, and TikTok, where you set a budget and pay to reach a targeted audience — with performance measured by how efficiently that spend converts into clicks, leads, or sales." },
+  { tag: "content",   label: "Content & Brand Voice",  promptHint: "Marketing copy and creative — emails, ads, landing pages, and social posts — written and delivered in a consistent tone that reflects how a brand wants to sound to its audience." },
+  { tag: "lifecycle", label: "Lifecycle & Retention Automation", promptHint: "Ongoing communication with existing contacts after they first engage — covering nurture sequences, re-engagement campaigns, and retention messaging sent through email, chat, or SMS." },
+  { tag: "lead-gen",  label: "Lead-Gen & Funnel",      promptHint: "The process of attracting potential customers, qualifying whether they are a good fit, and moving them through a structured sequence of touchpoints until they are ready to speak with sales." },
   { tag: "analytics", label: "Analytics & Attribution",promptHint: "Marketing performance reporting and attribution" },
   { tag: "seo",       label: "SEO & Organic Content",  promptHint: "SEO and organic search visibility" },
   { tag: "social",    label: "Social Media",           promptHint: "End-to-end social media management" },
@@ -200,7 +202,7 @@ function ClusterTrendCard({
         <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>
           {cluster.label} — 7-Day Trend
         </h3>
-        <p style={{ fontSize: 12, color: "rgba(13,27,62,0.42)" }}>{cluster.promptHint}</p>
+        <p style={{ fontSize: 12, color: NAVY }}>{cluster.promptHint}</p>
       </div>
 
       <ResponsiveContainer width="100%" height={220}>
@@ -309,7 +311,7 @@ function ClusterSOVCard({
         <h3 style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>
           {cluster.label}
         </h3>
-        <p style={{ fontSize: 11, color: "rgba(13,27,62,0.42)" }}>{cluster.promptHint}</p>
+        <p style={{ fontSize: 11, color: NAVY }}>{cluster.promptHint}</p>
         {cluster.promptLabel && (
           <p style={{ fontSize: 10, color: "rgba(13,27,62,0.38)", marginTop: 3 }}>{cluster.promptLabel}</p>
         )}
@@ -472,6 +474,7 @@ function PositionCell({ avg, confidence }: { avg: number | null; confidence: str
 // Update the DB via /api/brand-visibility/audit/patch-locked-agent to make permanent.
 const TAG_OVERRIDES: Record<string, string> = {
   Persado: "content",
+  Phrasee: "content",
 };
 
 // ── Main component ─────────────────────────────────────────────────────────────
@@ -533,6 +536,23 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
     .filter(([, s]) => s.avg_position != null)
     .sort((a, b) => (a[1].avg_position ?? 99) - (b[1].avg_position ?? 99))
     .slice(0, 6);
+
+  // Per-brand 7-day mentions split by model
+  const modelMentionsByBrand: Record<string, { claude: number; gpt: number }> = {};
+  for (const row of dailySummary) {
+    if (!modelMentionsByBrand[row.brand]) modelMentionsByBrand[row.brand] = { claude: 0, gpt: 0 };
+    if (row.model === "claude-haiku-4-5") modelMentionsByBrand[row.brand].claude += row.mention_count;
+    else modelMentionsByBrand[row.brand].gpt += row.mention_count;
+  }
+  const modelMentionsData = chartBrands
+    .map(b => ({
+      brand: b,
+      name: getDisplayName(b),
+      claude: modelMentionsByBrand[b]?.claude ?? 0,
+      gpt:    modelMentionsByBrand[b]?.gpt    ?? 0,
+    }))
+    .filter(d => d.claude + d.gpt > 0)
+    .sort((a, b) => (b.claude + b.gpt) - (a.claude + a.gpt));
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
@@ -703,7 +723,60 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
         </div>
       </div>
 
-      {/* ── Rows 2b: Per-use-case cluster charts ────────────────────────────── */}
+      {/* ── Row 2b: Brand mentions by model ─────────────────────────────────── */}
+      {hasReal && modelMentionsData.length > 0 && (
+        <div style={{
+          background: "#fff",
+          borderRadius: 10,
+          boxShadow: "0 2px 8px rgba(13,27,62,0.07), 0 1px 2px rgba(13,27,62,0.04)",
+          padding: "24px 28px 20px",
+        }}>
+          <div style={{ marginBottom: 16 }}>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>
+              Brand Mentions · 7 Days · by Model
+            </h3>
+            <p style={{ fontSize: 12, color: "rgba(13,27,62,0.42)" }}>
+              Total mentions per brand across Claude Haiku and GPT-4o mini
+            </p>
+          </div>
+          <div style={{ display: "flex", gap: 20, marginBottom: 14 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <div style={{ width: 10, height: 10, borderRadius: 2, background: PURPLE, flexShrink: 0 }} />
+              <span style={{ fontSize: 11, fontWeight: 600, color: NAVY }}>Claude Haiku</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <div style={{ width: 10, height: 10, borderRadius: 2, background: NAVY, flexShrink: 0 }} />
+              <span style={{ fontSize: 11, fontWeight: 600, color: NAVY }}>GPT-4o mini</span>
+            </div>
+          </div>
+          <ResponsiveContainer width="100%" height={modelMentionsData.length * 28 + 10}>
+            <BarChart
+              layout="vertical"
+              data={modelMentionsData}
+              margin={{ top: 0, right: 48, left: 0, bottom: 0 }}
+              barSize={14}
+            >
+              <XAxis type="number" hide />
+              <YAxis
+                type="category"
+                dataKey="name"
+                width={130}
+                tick={{ fontSize: 11, fill: NAVY }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <Tooltip
+                contentStyle={{ borderRadius: 8, border: "1px solid rgba(13,27,62,0.10)", fontSize: 12, color: NAVY }}
+                formatter={(value, name) => [value, name === "claude" ? "Claude Haiku" : "GPT-4o mini"]}
+              />
+              <Bar dataKey="claude" stackId="a" fill={PURPLE} radius={[0, 0, 0, 0]} />
+              <Bar dataKey="gpt"    stackId="a" fill={NAVY}   radius={[3, 3, 3, 3]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
+      )}
+
+      {/* ── Rows 2c: Per-use-case cluster charts ────────────────────────────── */}
       {hasReal && USE_CASE_CLUSTERS.map(cluster => {
         const clusterBrands = chartBrands.filter(b => chartTagMap[b] === cluster.tag);
         return (
