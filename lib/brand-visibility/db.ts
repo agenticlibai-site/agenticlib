@@ -810,45 +810,7 @@ export async function getPerceptionGaps(): Promise<PerceptionGap[]> {
     ORDER BY sov_pct ASC, brand_name
   `;
 
-  // Condition B: only run when feature_scores has data (avoids false positives on an empty table)
-  const fsCount = await sql`SELECT COUNT(*)::int AS count FROM feature_scores`;
-  let condBRows: PerceptionGap[] = [];
-  if ((fsCount.rows[0].count as number) > 0) {
-    const condB = await sql`
-      WITH raw AS (
-        SELECT rcb.canonical_brand AS brand_name,
-               rr.bucket_tag       AS cluster_tag,
-               COUNT(*)            AS cnt
-        FROM response_canonical_brands rcb
-        JOIN raw_responses rr            ON rr.id = rcb.response_id
-        JOIN locked_marketing_agents lma ON lma.brand_name = rcb.canonical_brand
-        WHERE rr.date >= NOW() - INTERVAL '7 days'
-          AND rr.bucket_tag = lma.dominant_tag
-        GROUP BY rcb.canonical_brand, rr.bucket_tag
-      ),
-      sov AS (
-        SELECT brand_name, cluster_tag,
-               ROUND(cnt * 100.0 / SUM(cnt) OVER (PARTITION BY cluster_tag), 1) AS sov_pct
-        FROM raw
-      )
-      SELECT s.brand_name, lma.display_name, s.cluster_tag,
-             'capability_gap' AS gap_type,
-             s.sov_pct::float, NULL::int AS cluster_appearances
-      FROM sov s
-      JOIN locked_marketing_agents lma ON lma.brand_name = s.brand_name
-      WHERE s.sov_pct >= 3.0
-        AND NOT EXISTS (
-          SELECT 1 FROM feature_scores fs
-          WHERE fs.brand_name = s.brand_name
-            AND fs.feature_tag = s.cluster_tag
-            AND fs.score IS NOT NULL
-        )
-      ORDER BY s.sov_pct DESC
-    `;
-    condBRows = condB.rows as PerceptionGap[];
-  }
-
-  return [...condA.rows as PerceptionGap[], ...condBRows];
+  return condA.rows as PerceptionGap[];
 }
 
 // ── Legacy cohort reads (top_15_brands) ───────────────────────────────────────

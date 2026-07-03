@@ -830,11 +830,9 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
             )}
             {perceptionGaps.map((gap, i) => {
               const label = clusterLabel(gap.cluster_tag);
-              const explanation = gap.gap_type === "sov_gap"
-                ? `${gap.display_name} appears consistently in ${label} brand coverage but holds less than 3% share of voice when buyers ask specifically about ${label} — present in the conversation but not owning it.`
-                : `${gap.display_name} receives ${Number(gap.sov_pct).toFixed(1)}% share of voice in ${label} queries but has no documented ${label} capability in verified feature data — AI models recommend it for a job it may not do.`;
+              const explanation = `${gap.display_name} appears consistently in ${label} brand coverage but holds less than 3% share of voice when buyers ask specifically about ${label} — present in the conversation but not owning it.`;
               return (
-                <div key={`${gap.brand_name}-${gap.gap_type}-${i}`} style={{
+                <div key={`${gap.brand_name}-${i}`} style={{
                   borderLeft: "3px solid #F59E0B",
                   background: "rgba(245,158,11,0.04)",
                   borderRadius: "0 6px 6px 0",
@@ -848,10 +846,10 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                     <span style={{
                       fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const,
                       letterSpacing: "0.07em", padding: "2px 7px", borderRadius: 4,
-                      background: gap.gap_type === "sov_gap" ? "rgba(245,158,11,0.12)" : "rgba(239,68,68,0.10)",
-                      color: gap.gap_type === "sov_gap" ? "#B45309" : "#DC2626",
+                      background: "rgba(245,158,11,0.12)",
+                      color: "#B45309",
                     }}>
-                      {gap.gap_type === "sov_gap" ? "SOV gap" : "Capability gap"}
+                      SOV gap
                     </span>
                     <span style={{ fontSize: 11, color: "rgba(13,27,62,0.40)" }}>{label}</span>
                   </div>
