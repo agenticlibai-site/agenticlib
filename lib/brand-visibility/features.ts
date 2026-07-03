@@ -100,23 +100,23 @@ export const FEATURES: Feature[] = [
 [JSON OUTPUT]`,
   },
 
-  // ── Overall-ROI (2 features × 7 brands = 14 brand+feature pairs) ─────────────
-  // Drift and Conversica intentionally appear in both lead-gen and overall-roi clusters.
+  // ── Lifecycle & Retention Automation (2 features × 7 brands = 14 brand+feature pairs) ─────────────
+  // Drift and Conversica intentionally appear in both lead-gen and lifecycle clusters.
   {
     feature_id:   "roi_attribution",
-    feature_tag:  "overall-roi",
-    feature_name: "ROI tracking and attribution",
+    feature_tag:  "lifecycle",
+    feature_name: "Lifecycle performance tracking",
     applies_to:   ROI_BRANDS,
-    prompt: `Before I commit budget to a marketing AI tool I need to know it can show me what's working. Does [BRAND] provide ROI tracking or attribution reporting — specifically, can it show which campaigns, channels, or actions drove measurable revenue or pipeline outcomes?
+    prompt: `I run lifecycle campaigns across email, chat, and messaging and I need to know what's actually moving the needle. Does [BRAND] track performance across lifecycle campaigns — for example, showing which messages, sequences, or channels drove opens, replies, conversions, or retention outcomes?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
   {
     feature_id:   "roi_self_optimising",
-    feature_tag:  "overall-roi",
-    feature_name: "Self-optimising campaigns",
+    feature_tag:  "lifecycle",
+    feature_name: "Autonomous message and journey optimisation",
     applies_to:   ROI_BRANDS,
-    prompt: `I want a tool that doesn't just report what happened but actually fixes what isn't working on its own. Does [BRAND] automatically adjust campaigns or messaging strategy based on live performance data — without me having to manually intervene and make the change myself?
+    prompt: `I want my lifecycle campaigns to improve on their own — adjusting send times, message variants, or channel sequencing based on how contacts are actually responding. Does [BRAND] automatically optimise messaging or journey steps based on live engagement data, without me having to manually make each adjustment?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },

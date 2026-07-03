@@ -267,7 +267,7 @@ export async function initBrandVisibilityDB(): Promise<void> {
   // ── Sentiment pipeline tables ──────────────────────────────────────────────
 
   // One row per brand+prompt+model+run_date. prompt_id: 1=overall, 2=ads,
-  // 3=content, 4=lead-gen, 5=overall-roi (assigned in collection route).
+  // 3=content, 4=lead-gen, 5=lifecycle (assigned in collection route).
   await sql`
     CREATE TABLE IF NOT EXISTS sentiment_responses (
       id          SERIAL PRIMARY KEY,
