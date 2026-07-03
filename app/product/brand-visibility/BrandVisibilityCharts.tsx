@@ -734,7 +734,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
       )}
 
       {/* ── Row 2d: Perception Gaps ─────────────────────────────────────────── */}
-      {perceptionGaps.length > 0 && (
+      {hasReal && (
         <div style={{
           background: "#fff",
           borderRadius: 10,
@@ -750,6 +750,11 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
             </p>
           </div>
           <div style={{ padding: "16px 24px", display: "flex", flexDirection: "column", gap: 12 }}>
+            {perceptionGaps.length === 0 && (
+              <p style={{ fontSize: 13, color: "rgba(13,27,62,0.38)", fontStyle: "italic" }}>
+                No perception gaps detected — check /api/brand-visibility/audit/perception-gaps for diagnostics.
+              </p>
+            )}
             {perceptionGaps.map((gap, i) => {
               const label = clusterLabel(gap.cluster_tag);
               const explanation = gap.gap_type === "sov_gap"
