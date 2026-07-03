@@ -213,7 +213,7 @@ function ClusterTrendCard({
           <YAxis
             allowDecimals={false}
             tick={{ fontSize: 11, fill: "rgba(13,27,62,0.42)" }}
-            axisLine={false} tickLine={false} width={30}
+            axisLine={false} tickLine={false} width={36}
           />
           <Tooltip
             contentStyle={{
@@ -325,6 +325,22 @@ function ClusterSOVCard({
             nameKey="name"
             stroke="none"
             paddingAngle={1}
+            labelLine={false}
+            label={(props) => {
+              const { cx, cy, midAngle, innerRadius, outerRadius, value } = props as {
+                cx: number; cy: number; midAngle: number;
+                innerRadius: number; outerRadius: number; value: number;
+              };
+              const RADIAN = Math.PI / 180;
+              const r = (innerRadius + outerRadius) / 2;
+              const x = cx + r * Math.cos(-midAngle * RADIAN);
+              const y = cy + r * Math.sin(-midAngle * RADIAN);
+              return (
+                <text x={x} y={y} fill="#fff" textAnchor="middle" dominantBaseline="central" fontSize={9} fontWeight={700}>
+                  {`${value.toFixed(0)}%`}
+                </text>
+              );
+            }}
           >
             {slices.map((s, i) => <Cell key={i} fill={s.color} />)}
           </Pie>
@@ -449,6 +465,13 @@ function PositionCell({ avg, confidence }: { avg: number | null; confidence: str
   );
 }
 
+// ── dominant_tag overrides ─────────────────────────────────────────────────────
+// Applied client-side when the DB value doesn't match the desired grouping.
+// Update the DB via /api/brand-visibility/audit/patch-locked-agent to make permanent.
+const TAG_OVERRIDES: Record<string, string> = {
+  Persado: "content",
+};
+
 // ── Main component ─────────────────────────────────────────────────────────────
 
 export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData }: Props) {
@@ -461,7 +484,12 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
   // Chart uses real data if available, seed data otherwise so chart always renders
   const chartBrands  = hasReal ? realBrands.slice(0, 22) : SEED_BRANDS;
   const chartRows    = hasReal ? realRows : makeSeedRows();
-  const chartTagMap  = hasReal ? realTagMap : {} as Record<string, string>;
+  const chartTagMap  = { ...(hasReal ? realTagMap : {} as Record<string, string>), ...TAG_OVERRIDES };
+
+  // Apply TAG_OVERRIDES to brandPositions for the position table grouping
+  const overriddenPositions = brandPositions.map(p =>
+    TAG_OVERRIDES[p.brand_name] ? { ...p, dominant_tag: TAG_OVERRIDES[p.brand_name] } : p
+  );
 
   // Stable color per brand (by rank order) so main and cluster charts share colours
   const brandColorMap = Object.fromEntries(chartBrands.map((b, i) => [b, lineColor(i)]));
@@ -597,7 +625,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
               tick={{ fontSize: 11, fill: "rgba(13,27,62,0.42)" }}
               axisLine={false}
               tickLine={false}
-              width={30}
+              width={36}
             />
             <Tooltip
               contentStyle={{
@@ -702,7 +730,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
       )}
 
       {/* ── Row 3a: Average position by use case ────────────────────────────── */}
-      {brandPositions.length > 0 && (() => {
+      {overriddenPositions.length > 0 && (() => {
         const fmt = (v: number | string | null) => v != null ? Number(v).toFixed(1) : "—";
         const clusterLabel = (tag: string) =>
           USE_CASE_CLUSTERS.find(c => c.tag === tag)?.label ?? tag;
@@ -741,23 +769,48 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                   </tr>
                 </thead>
                 <tbody>
-                  {brandPositions.map((p, i) => {
-                    const color = brandColorMap[p.brand_name] ?? lineColor(i);
-                    return (
-                      <tr key={p.brand_name} style={{ borderBottom: i < brandPositions.length - 1 ? "1px solid rgba(13,27,62,0.05)" : undefined }}>
-                        <td style={{ padding: "11px 20px", textAlign: "center", color: "rgba(13,27,62,0.28)", fontWeight: 700, fontSize: 11 }}>{p.rank}</td>
-                        <td style={{ padding: "11px 20px", fontWeight: 600, color: NAVY, whiteSpace: "nowrap" }}>
-                          <span style={{ display: "inline-block", width: 7, height: 7, borderRadius: "50%", background: color, marginRight: 8, verticalAlign: "middle" }} />
-                          {p.display_name}
+                  {(() => {
+                    const tagOrder = USE_CASE_CLUSTERS.map(c => c.tag);
+                    const knownTags = new Set(tagOrder);
+                    const grouped = [
+                      ...tagOrder.map(tag => ({
+                        tag,
+                        brands: overriddenPositions.filter(p => p.dominant_tag === tag).sort((a, b) => a.rank - b.rank),
+                      })).filter(g => g.brands.length > 0),
+                      ...(overriddenPositions.some(p => !knownTags.has(p.dominant_tag))
+                        ? [{ tag: "_other", brands: overriddenPositions.filter(p => !knownTags.has(p.dominant_tag)).sort((a, b) => a.rank - b.rank) }]
+                        : []),
+                    ];
+                    return grouped.map((group, gi) => [
+                      <tr key={`hdr-${group.tag}`} style={{
+                        background: "rgba(13,27,62,0.025)",
+                        borderTop: gi > 0 ? "1px solid rgba(13,27,62,0.09)" : undefined,
+                        borderBottom: "1px solid rgba(13,27,62,0.07)",
+                      }}>
+                        <td colSpan={5} style={{ padding: "5px 20px", fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: "rgba(13,27,62,0.45)" }}>
+                          {clusterLabel(group.tag)}
                         </td>
-                        <td style={{ padding: "11px 20px", color: "rgba(13,27,62,0.55)", fontSize: 12 }}>
-                          {clusterLabel(p.dominant_tag)}
-                        </td>
-                        <td style={{ padding: "11px 20px", textAlign: "right", fontWeight: 700, color: PURPLE }}>{fmt(p.overall_avg_pos)}</td>
-                        <td style={{ padding: "11px 20px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.cluster_avg_pos)}</td>
-                      </tr>
-                    );
-                  })}
+                      </tr>,
+                      ...group.brands.map((p, i) => {
+                        const color = brandColorMap[p.brand_name] ?? lineColor(overriddenPositions.findIndex(b => b.brand_name === p.brand_name));
+                        const isLast = gi === grouped.length - 1 && i === group.brands.length - 1;
+                        return (
+                          <tr key={p.brand_name} style={{ borderBottom: !isLast ? "1px solid rgba(13,27,62,0.05)" : undefined }}>
+                            <td style={{ padding: "11px 20px", textAlign: "center", color: "rgba(13,27,62,0.28)", fontWeight: 700, fontSize: 11 }}>{p.rank}</td>
+                            <td style={{ padding: "11px 20px", fontWeight: 600, color: NAVY, whiteSpace: "nowrap" }}>
+                              <span style={{ display: "inline-block", width: 7, height: 7, borderRadius: "50%", background: color, marginRight: 8, verticalAlign: "middle" }} />
+                              {p.display_name}
+                            </td>
+                            <td style={{ padding: "11px 20px", color: "rgba(13,27,62,0.55)", fontSize: 12 }}>
+                              {clusterLabel(p.dominant_tag)}
+                            </td>
+                            <td style={{ padding: "11px 20px", textAlign: "right", fontWeight: 700, color: PURPLE }}>{fmt(p.overall_avg_pos)}</td>
+                            <td style={{ padding: "11px 20px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.cluster_avg_pos)}</td>
+                          </tr>
+                        );
+                      }),
+                    ]);
+                  })()}
                 </tbody>
               </table>
             </div>

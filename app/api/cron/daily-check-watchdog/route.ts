@@ -15,7 +15,7 @@ export const maxDuration = 30;
  * FUNCTION_INVOCATION_TIMEOUT that kills the job before any catch block runs.
  *
  * Logic:
- *  - raw_responses for today must have 220 rows (both models, all prompts/runs)
+ *  - raw_responses for today must have >= EXPECTED_ROWS (prompts × runs × models)
  *  - daily_summary for today must have at least one row (aggregation ran)
  *  - If either condition fails: send a WATCHDOG alert email
  *  - If both pass: exit silently
@@ -54,7 +54,9 @@ export async function GET(request: Request) {
 
     const rawRows = rowsResult.rows[0].count as number;
     const summaryRows = summaryResult.rows[0].count as number;
-    const complete = rawRows === 220 && summaryRows > 0;
+    // Update PROMPT_COUNT when new prompts are added to prompts.ts
+    const EXPECTED_ROWS = 24 * 5 * 2; // prompts × runs × models
+    const complete = rawRows >= EXPECTED_ROWS && summaryRows > 0;
 
     if (complete) {
       return Response.json({
@@ -104,7 +106,7 @@ export async function GET(request: Request) {
         <table style="border-collapse:collapse;font-family:monospace">
           <tr><td style="padding:4px 12px 4px 0"><strong>Date checked</strong></td><td>${targetDate}</td></tr>
           <tr><td style="padding:4px 12px 4px 0"><strong>Check time</strong></td><td>${checkTime}</td></tr>
-          <tr><td style="padding:4px 12px 4px 0"><strong>raw_responses rows</strong></td><td>${rawRows} / 220</td></tr>
+          <tr><td style="padding:4px 12px 4px 0"><strong>raw_responses rows</strong></td><td>${rawRows} / ${EXPECTED_ROWS}</td></tr>
           <tr><td style="padding:4px 12px 4px 0"><strong>daily_summary rows</strong></td><td>${summaryRows} (expected > 0)</td></tr>
           <tr><td style="padding:4px 12px 4px 0"><strong>Last write activity</strong></td><td>${lastWrite ? lastWrite.toISOString() : "none"}</td></tr>
           <tr><td style="padding:4px 12px 4px 0"><strong>complete</strong></td><td>false</td></tr>
