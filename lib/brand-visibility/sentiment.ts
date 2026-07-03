@@ -16,11 +16,11 @@ const CONTEXT_PHRASES: Record<string, string> = {
   "ads":         "as a potential tool for managing and optimising our paid advertising campaigns on Meta, Google, and TikTok",
   "content":     "as a potential tool for creating and scaling our marketing copy and brand voice",
   "lead-gen":    "as a potential tool for automating our lead generation, outreach, and sales funnel",
-  "overall-roi": "as a potential tool to drive measurable ROI across our marketing activities",
+  "lifecycle":   "as a potential tool for automating lifecycle messaging, lead nurture, and customer retention across email, chat, and messaging channels",
 };
 
 // ── Cluster definitions ────────────────────────────────────────────────────────
-// prompt_id: 1=overall, 2=ads, 3=content, 4=lead-gen, 5=overall-roi.
+// prompt_id: 1=overall, 2=ads, 3=content, 4=lead-gen, 5=lifecycle.
 // Use brand_name (DB key). Drift + Conversica + Phrasee + Persado + ManyChat
 // intentionally appear in multiple use-case clusters.
 
@@ -40,7 +40,7 @@ export const SENTIMENT_CLUSTERS: SentimentCluster[] = [
   { bucket_tag: "ads",         prompt_id: 2, brands: ADS_BRANDS     },
   { bucket_tag: "content",     prompt_id: 3, brands: CONTENT_BRANDS },
   { bucket_tag: "lead-gen",    prompt_id: 4, brands: LEADGEN_BRANDS },
-  { bucket_tag: "overall-roi", prompt_id: 5, brands: ROI_BRANDS     },
+  { bucket_tag: "lifecycle",   prompt_id: 5, brands: ROI_BRANDS     },
 ];
 
 export function getSentimentClustersForBrand(brandName: string): SentimentCluster[] {

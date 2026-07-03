@@ -166,7 +166,7 @@ function fmtDate(d: string) {
 const USE_CASE_CLUSTERS: { tag: string; label: string; promptHint: string; promptLabel?: string }[] = [
   { tag: "ads",       label: "Ads & Paid Campaigns",   promptHint: "Meta, Google, TikTok paid ads · ad spend optimisation" },
   { tag: "content",   label: "Content & Brand Voice",  promptHint: "Marketing copy at scale · consistent brand voice" },
-  { tag: "overall",   label: "Overall Marketing ROI",   promptHint: "Best overall AI marketing agents by ROI", promptLabel: "3 prompts · data from 2 Jul 2026" },
+  { tag: "lifecycle", label: "Lifecycle & Retention Automation", promptHint: "Post-acquisition messaging — nurture, retain, and re-engage contacts across email, chat, and messaging channels", promptLabel: "3 prompts · data from 2 Jul 2026" },
   { tag: "lead-gen",  label: "Lead-Gen & Funnel",      promptHint: "Lead gen, outreach, funnel automation", promptLabel: "3 prompts · treat directionally" },
   { tag: "analytics", label: "Analytics & Attribution",promptHint: "Marketing performance reporting and attribution" },
   { tag: "seo",       label: "SEO & Organic Content",  promptHint: "SEO and organic search visibility" },
@@ -721,7 +721,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
             <ClusterSOVCard
               key={cluster.tag}
               cluster={cluster}
-              clusterRows={cluster.tag === "overall" ? roiData : sovData.filter(r => r.bucket_tag === cluster.tag)}
+              clusterRows={cluster.tag === "lifecycle" ? roiData : sovData.filter(r => r.bucket_tag === cluster.tag)}
               brandColorFn={brandColor}
               getDisplayName={getDisplayName}
             />
