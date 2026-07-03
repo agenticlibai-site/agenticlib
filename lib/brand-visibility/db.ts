@@ -749,42 +749,64 @@ export interface PerceptionGap {
 export async function getPerceptionGaps(): Promise<PerceptionGap[]> {
   await initBrandVisibilityDB();
 
-  // Condition A: brand is tracked in a cluster but has < 3% SOV in that cluster's prompts.
-  // Starts from ALL locked brands so brands with 0 appearances are caught too (true gap).
+  // Condition A: brand tracked in a cluster but SOV < 3% using the same locked-brand
+  // denominator as the donut chart, plus two additional signal-quality guards.
+  // All three must be true:
+  //   1. sov_pct < 3.0       — below donut named-brand threshold
+  //   2. mention_count > 10  — brand has enough data to be meaningful
+  //   3. cluster_rank <= 5   — brand is a top-5 player in that cluster (a rank-8 brand
+  //                            being at < 3% is expected noise, not a gap)
   const condA = await sql`
-    WITH appearances AS (
+    WITH locked_appearances AS (
+      -- Appearances of locked brands only — same denominator as the SOV donut
       SELECT rcb.canonical_brand AS brand_name,
              rr.bucket_tag       AS cluster_tag,
              COUNT(*)            AS cnt
       FROM response_canonical_brands rcb
-      JOIN raw_responses rr ON rr.id = rcb.response_id
+      JOIN raw_responses rr            ON rr.id = rcb.response_id
+      JOIN locked_marketing_agents lma ON lma.brand_name = rcb.canonical_brand
       WHERE rr.date >= NOW() - INTERVAL '7 days'
       GROUP BY rcb.canonical_brand, rr.bucket_tag
     ),
     cluster_totals AS (
       SELECT cluster_tag, SUM(cnt) AS total
-      FROM appearances
+      FROM locked_appearances
       GROUP BY cluster_tag
+    ),
+    total_mentions AS (
+      -- Overall brand mention count across all prompts for quality gate
+      SELECT brand, SUM(mention_count)::int AS mention_count
+      FROM daily_summary
+      WHERE date >= NOW() - INTERVAL '7 days'
+      GROUP BY brand
     ),
     brand_sov AS (
       SELECT lma.brand_name,
              lma.display_name,
-             lma.dominant_tag                           AS cluster_tag,
-             COALESCE(a.cnt, 0)::int                   AS cluster_appearances,
+             lma.dominant_tag                                   AS cluster_tag,
+             COALESCE(la.cnt, 0)::int                          AS cluster_appearances,
              CASE WHEN ct.total > 0
-               THEN ROUND(COALESCE(a.cnt, 0) * 100.0 / ct.total, 1)
+               THEN ROUND(COALESCE(la.cnt, 0) * 100.0 / ct.total, 1)
                ELSE 0
-             END                                        AS sov_pct
+             END                                                AS sov_pct,
+             RANK() OVER (
+               PARTITION BY lma.dominant_tag
+               ORDER BY COALESCE(la.cnt, 0) DESC
+             )                                                  AS cluster_rank,
+             COALESCE(tm.mention_count, 0)                     AS mention_count
       FROM locked_marketing_agents lma
-      LEFT JOIN appearances   a  ON a.brand_name  = lma.brand_name
-                                 AND a.cluster_tag = lma.dominant_tag
-      LEFT JOIN cluster_totals ct ON ct.cluster_tag = lma.dominant_tag
+      LEFT JOIN locked_appearances la ON la.brand_name  = lma.brand_name
+                                      AND la.cluster_tag = lma.dominant_tag
+      LEFT JOIN cluster_totals     ct ON ct.cluster_tag  = lma.dominant_tag
+      LEFT JOIN total_mentions     tm ON tm.brand         = lma.brand_name
     )
     SELECT brand_name, display_name, cluster_tag,
            'sov_gap'::text AS gap_type,
-           sov_pct::float, cluster_appearances
+           sov_pct::float, cluster_appearances, mention_count::int, cluster_rank::int
     FROM brand_sov
     WHERE sov_pct < 3.0
+      AND mention_count > 10
+      AND cluster_rank <= 5
     ORDER BY sov_pct ASC, brand_name
   `;
 
