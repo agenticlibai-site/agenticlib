@@ -749,31 +749,43 @@ export interface PerceptionGap {
 export async function getPerceptionGaps(): Promise<PerceptionGap[]> {
   await initBrandVisibilityDB();
 
-  // Condition A: brand mentioned in its dominant cluster but SOV < 3%
+  // Condition A: brand is tracked in a cluster but has < 3% SOV in that cluster's prompts.
+  // Starts from ALL locked brands so brands with 0 appearances are caught too (true gap).
   const condA = await sql`
-    WITH raw AS (
+    WITH appearances AS (
       SELECT rcb.canonical_brand AS brand_name,
              rr.bucket_tag       AS cluster_tag,
              COUNT(*)            AS cnt
       FROM response_canonical_brands rcb
-      JOIN raw_responses rr            ON rr.id = rcb.response_id
-      JOIN locked_marketing_agents lma ON lma.brand_name = rcb.canonical_brand
+      JOIN raw_responses rr ON rr.id = rcb.response_id
       WHERE rr.date >= NOW() - INTERVAL '7 days'
-        AND rr.bucket_tag = lma.dominant_tag
       GROUP BY rcb.canonical_brand, rr.bucket_tag
     ),
-    sov AS (
-      SELECT brand_name, cluster_tag, cnt,
-             ROUND(cnt * 100.0 / SUM(cnt) OVER (PARTITION BY cluster_tag), 1) AS sov_pct
-      FROM raw
+    cluster_totals AS (
+      SELECT cluster_tag, SUM(cnt) AS total
+      FROM appearances
+      GROUP BY cluster_tag
+    ),
+    brand_sov AS (
+      SELECT lma.brand_name,
+             lma.display_name,
+             lma.dominant_tag                           AS cluster_tag,
+             COALESCE(a.cnt, 0)::int                   AS cluster_appearances,
+             CASE WHEN ct.total > 0
+               THEN ROUND(COALESCE(a.cnt, 0) * 100.0 / ct.total, 1)
+               ELSE 0
+             END                                        AS sov_pct
+      FROM locked_marketing_agents lma
+      LEFT JOIN appearances   a  ON a.brand_name  = lma.brand_name
+                                 AND a.cluster_tag = lma.dominant_tag
+      LEFT JOIN cluster_totals ct ON ct.cluster_tag = lma.dominant_tag
     )
-    SELECT s.brand_name, lma.display_name, s.cluster_tag,
-           'sov_gap'      AS gap_type,
-           s.sov_pct::float, s.cnt::int AS cluster_appearances
-    FROM sov s
-    JOIN locked_marketing_agents lma ON lma.brand_name = s.brand_name
-    WHERE s.sov_pct < 3.0
-    ORDER BY s.sov_pct ASC
+    SELECT brand_name, display_name, cluster_tag,
+           'sov_gap'::text AS gap_type,
+           sov_pct::float, cluster_appearances
+    FROM brand_sov
+    WHERE sov_pct < 3.0
+    ORDER BY sov_pct ASC, brand_name
   `;
 
   // Condition B: only run when feature_scores has data (avoids false positives on an empty table)
