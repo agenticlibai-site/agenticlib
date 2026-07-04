@@ -12,7 +12,7 @@ import {
 } from "recharts";
 
 // ── Palette ────────────────────────────────────────────────────────────────────
-const NAVY   = "#0D1B3E";
+const NAVY   = "#000000";
 const ROSE   = "#C2186A";
 const PINK   = "#E8447A";
 
