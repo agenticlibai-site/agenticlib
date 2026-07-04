@@ -58,16 +58,6 @@ export default async function DomainSeoPage({
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
 
-      {/* Navbar */}
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-zinc-100">
-        <div className="max-w-5xl mx-auto px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <img src="/logo.png" alt="AgenticLib" className="h-6 w-auto" />
-            <span className="text-base font-semibold tracking-tight">AgenticLib</span>
-          </Link>
-        </div>
-      </header>
-
       <main className="max-w-5xl mx-auto px-6 py-12">
 
         {/* Breadcrumb */}
