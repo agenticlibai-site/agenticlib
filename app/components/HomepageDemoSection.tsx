@@ -172,12 +172,41 @@ export default function HomepageDemoSection() {
   const [data,    setData]    = useState<DemoData | null>(null);
   const [loading, setLoading] = useState(true);
 
+  const [showModal,   setShowModal]   = useState(false);
+  const [emailInput,  setEmailInput]  = useState("");
+  const [submitted,   setSubmitted]   = useState(false);
+  const [submitting,  setSubmitting]  = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
   useEffect(() => {
     fetch("/api/homepage/demo-data")
       .then((r) => r.json())
       .then((d: DemoData) => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
   }, []);
+
+  async function handleRequestReport(e: React.FormEvent) {
+    e.preventDefault();
+    setSubmitError("");
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/homepage/request-report", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: emailInput }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setSubmitError((data as { error?: string }).error ?? "Something went wrong. Please try again.");
+      } else {
+        setSubmitted(true);
+      }
+    } catch {
+      setSubmitError("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   // Stat card values
   const totalMentions = data?.totalMentions ?? 0;
@@ -380,9 +409,14 @@ export default function HomepageDemoSection() {
 
         {/* ── Product Feature Scores ── */}
         <div style={{ marginBottom: 10 }}>
-          <h3 style={{ fontSize: 20, fontWeight: 800, color: NAVY, letterSpacing: "-0.015em", marginBottom: 5 }}>
-            Product Feature Scores
-          </h3>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap", marginBottom: 5 }}>
+            <h3 style={{ fontSize: 20, fontWeight: 800, color: NAVY, letterSpacing: "-0.015em", margin: 0 }}>
+              Product Feature Scores
+            </h3>
+            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "rgba(22,15,46,0.38)", background: "rgba(22,15,46,0.06)", borderRadius: 999, padding: "3px 9px" }}>
+              Sample data
+            </span>
+          </div>
           <p style={{ fontSize: 13, color: "rgba(22,15,46,0.50)", lineHeight: 1.55, maxWidth: 580, marginBottom: 20 }}>
             Each brand is scored 0–100 through product feature prompting — AI models are asked about specific capabilities over time, and scores reflect how consistently each brand is recognised as delivering that feature. Builders can see exactly where their agent needs to improve.
           </p>
@@ -451,28 +485,124 @@ export default function HomepageDemoSection() {
           textAlign: "center",
         }}>
           <p style={{ fontSize: 15, color: "rgba(255,255,255,0.88)", lineHeight: 1.6, marginBottom: 20, maxWidth: 520, margin: "0 auto 20px" }}>
-            This is a live sample from our marketing AI agent pipeline — updated daily across Claude Haiku and GPT-4o-mini.
+            We turn your product feature gaps into a roadmap to help you show up where buyers are asking.
           </p>
-          <a
-            href="#contact"
+          <button
+            onClick={() => { setShowModal(true); setSubmitted(false); setEmailInput(""); setSubmitError(""); }}
             style={{
               display: "inline-flex", alignItems: "center", gap: 6,
               fontSize: 14, fontWeight: 700,
               color: ACCENT,
               background: "#fff",
+              border: "none",
               borderRadius: 999, padding: "12px 28px",
-              textDecoration: "none",
+              cursor: "pointer",
               boxShadow: "0 2px 12px rgba(0,0,0,0.15)",
               transition: "opacity 0.15s ease",
+              fontFamily: "inherit",
             }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "0.90"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "1"; }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "0.90"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = "1"; }}
           >
             Request your brand&apos;s report →
-          </a>
+          </button>
         </div>
 
       </div>
+
+      {/* ── Email capture modal ── */}
+      {showModal && (
+        <div
+          style={{ position: "fixed", inset: 0, background: "rgba(22,15,46,0.55)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}
+          onClick={() => { setShowModal(false); setSubmitted(false); setEmailInput(""); setSubmitError(""); }}
+        >
+          <div
+            style={{ background: "#fff", borderRadius: 20, padding: "36px 32px 32px", maxWidth: 420, width: "100%", boxShadow: "0 20px 60px rgba(22,15,46,0.22)", position: "relative" }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => { setShowModal(false); setSubmitted(false); setEmailInput(""); setSubmitError(""); }}
+              style={{ position: "absolute", top: 16, right: 16, background: "none", border: "none", cursor: "pointer", color: "rgba(22,15,46,0.35)", fontSize: 20, lineHeight: 1, padding: "4px 8px" }}
+              aria-label="Close"
+            >✕</button>
+
+            {!submitted ? (
+              <>
+                <div style={{ marginBottom: 20 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: ACCENT, background: "rgba(124,58,237,0.08)", borderRadius: 999, padding: "4px 10px" }}>
+                    Brand Report
+                  </span>
+                </div>
+                <h3 style={{ fontSize: 22, fontWeight: 800, color: NAVY, letterSpacing: "-0.015em", marginBottom: 8 }}>
+                  Request your brand&apos;s report
+                </h3>
+                <p style={{ fontSize: 14, color: "rgba(22,15,46,0.55)", lineHeight: 1.55, marginBottom: 24 }}>
+                  Share your email and we&apos;ll be in touch to discuss your report needs.
+                </p>
+                <form onSubmit={handleRequestReport} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                  <input
+                    type="email"
+                    required
+                    placeholder="your@email.com"
+                    value={emailInput}
+                    onChange={(e) => setEmailInput(e.target.value)}
+                    style={{
+                      border: "1.5px solid rgba(22,15,46,0.14)",
+                      borderRadius: 10,
+                      padding: "12px 14px",
+                      fontSize: 14,
+                      color: NAVY,
+                      outline: "none",
+                      transition: "border-color 0.15s ease",
+                      fontFamily: "inherit",
+                    }}
+                    onFocus={(e) => { (e.target as HTMLInputElement).style.borderColor = ACCENT; }}
+                    onBlur={(e) => { (e.target as HTMLInputElement).style.borderColor = "rgba(22,15,46,0.14)"; }}
+                  />
+                  {submitError && (
+                    <p style={{ fontSize: 13, color: "#DC2626", margin: 0 }}>{submitError}</p>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    style={{
+                      background: "linear-gradient(135deg, #7C3AED 0%, #C2186A 100%)",
+                      color: "#fff",
+                      border: "none",
+                      borderRadius: 999,
+                      padding: "13px 28px",
+                      fontSize: 14,
+                      fontWeight: 700,
+                      cursor: submitting ? "not-allowed" : "pointer",
+                      opacity: submitting ? 0.7 : 1,
+                      transition: "opacity 0.15s ease",
+                      fontFamily: "inherit",
+                    }}
+                  >
+                    {submitting ? "Sending…" : "Send request →"}
+                  </button>
+                </form>
+              </>
+            ) : (
+              <div style={{ textAlign: "center", padding: "16px 0 8px" }}>
+                <div style={{ fontSize: 40, marginBottom: 16 }}>✓</div>
+                <h3 style={{ fontSize: 22, fontWeight: 800, color: NAVY, letterSpacing: "-0.015em", marginBottom: 10 }}>
+                  We&apos;ll be in touch
+                </h3>
+                <p style={{ fontSize: 14, color: "rgba(22,15,46,0.55)", lineHeight: 1.55, marginBottom: 24 }}>
+                  Thanks! We&apos;ve received your request and will contact you about your brand&apos;s report shortly.
+                </p>
+                <button
+                  onClick={() => { setShowModal(false); setSubmitted(false); setEmailInput(""); }}
+                  style={{ background: "rgba(124,58,237,0.08)", color: ACCENT, border: "none", borderRadius: 999, padding: "11px 28px", fontSize: 14, fontWeight: 700, cursor: "pointer", fontFamily: "inherit" }}
+                >
+                  Close
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   );
 }
