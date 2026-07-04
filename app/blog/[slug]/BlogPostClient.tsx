@@ -124,14 +124,14 @@ function BlogContent({ content }: { content: string }) {
                   {block.n}
                 </span>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-zinc-900 leading-snug !mb-0">
+                  <p className="font-semibold text-black leading-snug !mb-0">
                     {block.lead}
                     {block.rest && !longRest && (
-                      <span className="font-normal text-zinc-600"> - {block.rest}</span>
+                      <span className="font-normal text-black"> - {block.rest}</span>
                     )}
                   </p>
                   {block.rest && longRest && (
-                    <p className="mt-2 text-zinc-700 leading-relaxed !mb-0">
+                    <p className="mt-2 text-black leading-relaxed !mb-0">
                       {block.rest.split("\n").map((line, j, arr) => (
                         <span key={j}>
                           <Linkified text={line} />
@@ -147,7 +147,7 @@ function BlogContent({ content }: { content: string }) {
 
           case "p":
             return (
-              <p key={i} className="text-zinc-800 leading-[1.9]">
+              <p key={i} className="text-black leading-[1.9]">
                 {block.text.split("\n").map((line, j, arr) => (
                   <span key={j}>
                     <Linkified text={line} />
@@ -161,7 +161,7 @@ function BlogContent({ content }: { content: string }) {
             return (
               <ul key={i} className="space-y-2.5 pl-1 mb-6">
                 {block.items.map((item, j) => (
-                  <li key={j} className="flex gap-3 text-zinc-800 leading-relaxed">
+                  <li key={j} className="flex gap-3 text-black leading-relaxed">
                     <span className="flex-shrink-0 mt-[0.65em] w-1.5 h-1.5 rounded-full bg-violet-500 flex-none" />
                     <span>
                       <Linkified text={item} />
@@ -188,7 +188,7 @@ const CATEGORY_COLORS: Record<string, string> = {
   Comparison:  "bg-fuchsia-100 text-fuchsia-700 border-fuchsia-200",
 };
 const catClass = (c: string) =>
-  CATEGORY_COLORS[c] ?? "bg-zinc-100 text-zinc-600 border-zinc-200";
+  CATEGORY_COLORS[c] ?? "bg-zinc-100 text-black border-zinc-200";
 
 // ─── Client component ─────────────────────────────────────────────────────────
 
@@ -221,7 +221,7 @@ export default function BlogPostClient({ blog, related }: Props) {
             <span className="text-lg font-semibold tracking-tight">AgenticLib</span>
           </Link>
           <div className="flex items-center gap-6">
-            <Link href="/blog" className="text-sm text-zinc-500 hover:text-zinc-900 transition">
+            <Link href="/blog" className="text-sm text-black/60 hover:text-black transition">
               ← All articles
             </Link>
             <a
@@ -252,13 +252,13 @@ export default function BlogPostClient({ blog, related }: Props) {
             <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${catClass(blog.category)}`}>
               {blog.category}
             </span>
-            <span className="text-xs text-zinc-400">{blog.date} · {blog.read}</span>
+            <span className="text-xs text-black/50">{blog.date} · {blog.read}</span>
           </div>
 
-          <h1 className="text-3xl md:text-4xl font-semibold text-zinc-900 leading-tight mb-4 tracking-tight">
+          <h1 className="text-3xl md:text-4xl font-semibold text-black leading-tight mb-4 tracking-tight">
             {blog.title}
           </h1>
-          <p className="text-zinc-500 leading-relaxed mb-6">{blog.description}</p>
+          <p className="text-black/60 leading-relaxed mb-6">{blog.description}</p>
 
           <div className="flex items-center gap-3 pt-5 border-t border-zinc-100">
             <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-500
@@ -266,8 +266,8 @@ export default function BlogPostClient({ blog, related }: Props) {
               A
             </div>
             <div>
-              <p className="text-sm font-medium text-zinc-800">{blog.author}</p>
-              <p className="text-xs text-zinc-400">{blog.authorRole}</p>
+              <p className="text-sm font-medium text-black">{blog.author}</p>
+              <p className="text-xs text-black/50">{blog.authorRole}</p>
             </div>
           </div>
         </div>
@@ -305,11 +305,11 @@ export default function BlogPostClient({ blog, related }: Props) {
                     <span className="text-[10px] font-semibold text-violet-600 uppercase tracking-wide mb-1">
                       {rel.category}
                     </span>
-                    <p className="text-sm font-semibold text-zinc-800 leading-snug
+                    <p className="text-sm font-semibold text-black leading-snug
                                   group-hover:text-violet-700 transition-colors line-clamp-2">
                       {rel.title}
                     </p>
-                    <p className="text-xs text-zinc-400 mt-1">{rel.date}</p>
+                    <p className="text-xs text-black/50 mt-1">{rel.date}</p>
                   </div>
                 </Link>
               ))}
@@ -324,7 +324,7 @@ export default function BlogPostClient({ blog, related }: Props) {
         </div>
       </div>
 
-      <footer className="relative z-10 py-10 text-center text-sm text-zinc-400 border-t border-white/30">
+      <footer className="relative z-10 py-10 text-center text-sm text-black/50 border-t border-white/30">
         © 2026 AgenticLib
       </footer>
 

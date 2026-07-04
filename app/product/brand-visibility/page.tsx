@@ -71,10 +71,10 @@ export default async function BrandVisibilityPage() {
           >
             Brand Intelligence
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: "#160F2E", letterSpacing: "-0.02em" }}>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: "#000000", letterSpacing: "-0.02em" }}>
             Brand Visibility
           </h1>
-          <p className="text-base max-w-xl" style={{ color: "rgba(22,15,46,0.6)", lineHeight: 1.6 }}>
+          <p className="text-base max-w-xl" style={{ color: "#000000", lineHeight: 1.6 }}>
             How AI marketing agent brands appear in Claude and GPT-4o mini responses across 22 prompts,
             5 runs each, collected daily.
           </p>

@@ -29,23 +29,23 @@ function splitIntoSections(markdown: string): { heading: string | null; content:
 
 const mdComponents = {
   p: ({ children }: MDProps) => (
-    <p className="text-gray-700 leading-relaxed mb-3 text-sm">{children}</p>
+    <p className="text-black leading-relaxed mb-3 text-sm">{children}</p>
   ),
   h1: ({ children }: MDProps) => (
-    <h1 className="text-xl font-semibold text-gray-900 mb-3">{children}</h1>
+    <h1 className="text-xl font-semibold text-black mb-3">{children}</h1>
   ),
   h3: ({ children }: MDProps) => (
-    <h3 className="text-base font-semibold text-gray-800 mb-2 mt-3">{children}</h3>
+    <h3 className="text-base font-semibold text-black mb-2 mt-3">{children}</h3>
   ),
   ul: ({ children }: MDProps) => (
-    <ul className="list-disc list-outside pl-5 space-y-1 mb-3 text-sm text-gray-700">{children}</ul>
+    <ul className="list-disc list-outside pl-5 space-y-1 mb-3 text-sm text-black">{children}</ul>
   ),
   ol: ({ children }: MDProps) => (
-    <ol className="list-decimal list-outside pl-5 space-y-1 mb-3 text-sm text-gray-700">{children}</ol>
+    <ol className="list-decimal list-outside pl-5 space-y-1 mb-3 text-sm text-black">{children}</ol>
   ),
   li: ({ children }: MDProps) => <li className="leading-relaxed">{children}</li>,
   strong: ({ children }: MDProps) => (
-    <strong className="font-semibold text-gray-900">{children}</strong>
+    <strong className="font-semibold text-black">{children}</strong>
   ),
   table: ({ children }: MDProps) => (
     <div className="w-full my-3 rounded-xl overflow-hidden border border-gray-200">
@@ -55,7 +55,7 @@ const mdComponents = {
   thead: ({ children }: MDProps) => <thead className="bg-gray-50">{children}</thead>,
   tbody: ({ children }: MDProps) => <tbody>{children}</tbody>,
   th: ({ children }: MDProps) => (
-    <th className="p-2.5 text-left text-xs font-semibold text-gray-500 uppercase tracking-wide break-words whitespace-normal border-b border-gray-200">
+    <th className="p-2.5 text-left text-xs font-semibold text-black/60 uppercase tracking-wide break-words whitespace-normal border-b border-gray-200">
       {children}
     </th>
   ),
@@ -65,7 +65,7 @@ const mdComponents = {
     </tr>
   ),
   td: ({ children }: MDProps) => (
-    <td className="p-2.5 text-gray-700 break-words whitespace-normal leading-relaxed align-top text-sm">
+    <td className="p-2.5 text-black break-words whitespace-normal leading-relaxed align-top text-sm">
       {children}
     </td>
   ),
@@ -132,7 +132,7 @@ function AIOutput({ content }: { content: string }) {
             {section.heading && (
               <h2
                 className={`text-lg font-semibold mb-4 ${
-                  isFinal ? "text-white" : "text-gray-800"
+                  isFinal ? "text-white" : "text-black"
                 }`}
               >
                 {section.heading}
@@ -242,7 +242,7 @@ const handleSubmit = async () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 flex flex-col items-center px-6">
 
       {/* Title */}
-      <h1 className="text-4xl font-semibold mb-8 text-center text-gray-900">
+      <h1 className="text-4xl font-semibold mb-8 text-center text-black">
         Find the best AI agent for your use case
       </h1>
 
@@ -279,7 +279,7 @@ const handleSubmit = async () => {
               {msg.role === "user" ? (
                 <div className="bg-purple-100 text-black max-w-[70%] px-5 py-3 rounded-2xl shadow-sm">
                   <p className="text-xs font-semibold text-purple-600 mb-1 uppercase tracking-wide">You</p>
-                  <p className="text-sm text-gray-800 leading-relaxed">{msg.content}</p>
+                  <p className="text-sm text-black leading-relaxed">{msg.content}</p>
                 </div>
               ) : (
                 <div className="w-full">

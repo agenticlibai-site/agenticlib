@@ -62,7 +62,7 @@ function SageIllustration() {
             <circle cx="6.5" cy="6.5" r="4.5" stroke="#7C3AED" strokeWidth="1.6"/>
             <path d="M10 10l2.8 2.8" stroke="#7C3AED" strokeWidth="1.6" strokeLinecap="round"/>
           </svg>
-          <span style={{ flex: 1, fontSize: 11.5, color: "#0E1320", fontWeight: 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>Best marketing AI agent for...</span>
+          <span style={{ flex: 1, fontSize: 11.5, color: "#000000", fontWeight: 400, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>Best marketing AI agent for...</span>
         </div>
         <div style={{ flexShrink: 0, background: "#EDE9FE", borderRadius: 999, padding: "7px 13px" }}>
           <span style={{ color: "#6D28D9", fontWeight: 700, fontSize: 12.5 }}>3 matches</span>
@@ -87,13 +87,13 @@ function SageIllustration() {
         <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, background: "linear-gradient(180deg, #7C3AED 0%, #E8447A 100%)", borderRadius: "4px 0 0 4px" }} />
         <div style={{ paddingLeft: 10 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 3 }}>
-            <span style={{ fontWeight: 700, fontSize: 14, color: "#0E1320" }}>Jasper Workflow AI</span>
+            <span style={{ fontWeight: 700, fontSize: 14, color: "#000000" }}>Jasper Workflow AI</span>
             <div style={{ display: "flex", alignItems: "center", gap: 4, background: "#EDE9FE", borderRadius: 999, padding: "4px 10px", flexShrink: 0 }}>
               <span style={{ color: "#6D28D9", fontSize: 11 }}>★</span>
               <span style={{ color: "#5B21B6", fontWeight: 700, fontSize: 11.5 }}>Top Match</span>
             </div>
           </div>
-          <div style={{ fontSize: 12, color: "#9CA3AF", marginBottom: 5 }}>Marketing automation · 12 integrations</div>
+          <div style={{ fontSize: 12, color: "#000000", marginBottom: 5 }}>Marketing automation · 12 integrations</div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ flex: 1, height: 7, background: "#EDE9FE", borderRadius: 999 }}>
               <div style={{ width: "90%", height: "100%", background: "linear-gradient(90deg, #7C3AED, #E8447A)", borderRadius: 999 }} />
@@ -107,8 +107,8 @@ function SageIllustration() {
       <div style={{ background: "white", borderRadius: 16, border: "1px solid #F3F4F6", padding: "9px 12px", marginBottom: 6, position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, background: "#DB2777", borderRadius: "4px 0 0 4px" }} />
         <div style={{ paddingLeft: 10 }}>
-          <div style={{ fontWeight: 700, fontSize: 14, color: "#0E1320", marginBottom: 3 }}>Cortex AI Agent</div>
-          <div style={{ fontSize: 12, color: "#9CA3AF", marginBottom: 5 }}>Finance · API-first · No-code workflows</div>
+          <div style={{ fontWeight: 700, fontSize: 14, color: "#000000", marginBottom: 3 }}>Cortex AI Agent</div>
+          <div style={{ fontSize: 12, color: "#000000", marginBottom: 5 }}>Finance · API-first · No-code workflows</div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ flex: 1, height: 7, background: "#FCE7F3", borderRadius: 999 }}>
               <div style={{ width: "75%", height: "100%", background: "#DB2777", borderRadius: 999 }} />
@@ -122,12 +122,12 @@ function SageIllustration() {
       <div style={{ background: "white", borderRadius: 16, border: "1px solid #F3F4F6", padding: "9px 12px", position: "relative", overflow: "hidden" }}>
         <div style={{ position: "absolute", left: 0, top: 0, bottom: 0, width: 4, background: "#C4BBDF", borderRadius: "4px 0 0 4px" }} />
         <div style={{ paddingLeft: 10 }}>
-          <div style={{ fontWeight: 700, fontSize: 14, color: "#0E1320", marginBottom: 9 }}>BuildAI Pro</div>
+          <div style={{ fontWeight: 700, fontSize: 14, color: "#000000", marginBottom: 9 }}>BuildAI Pro</div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <div style={{ flex: 1, height: 7, background: "#F3F4F6", borderRadius: 999 }}>
               <div style={{ width: "62%", height: "100%", background: "#D1D5DB", borderRadius: 999 }} />
             </div>
-            <span style={{ fontWeight: 700, fontSize: 13, color: "#9CA3AF", minWidth: 34, textAlign: "right" }}>62%</span>
+            <span style={{ fontWeight: 700, fontSize: 13, color: "#000000", minWidth: 34, textAlign: "right" }}>62%</span>
           </div>
         </div>
       </div>
@@ -176,20 +176,20 @@ export default function RecommendationsPage() {
                 Sage by AgenticLib
               </span>
 
-              <h1 style={{ fontSize: "clamp(36px, 4.2vw, 54px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.12, color: "#0E1320", margin: "0 0 16px" }}>
+              <h1 style={{ fontSize: "clamp(36px, 4.2vw, 54px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.12, color: "#000000", margin: "0 0 16px" }}>
                 <span style={{ display: "block" }}>Find the right</span>
                 <span style={{ display: "block" }}>
                   <span style={{ background: "linear-gradient(95deg, #7C3AED 15%, #E8447A 85%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>AI agent</span>
-                  <span style={{ color: "#0E1320" }}> - faster</span>
+                  <span style={{ color: "#000000" }}> - faster</span>
                 </span>
               </h1>
 
-              <p style={{ fontSize: 15.5, color: "#0E1320", lineHeight: 1.6, margin: "0 0 24px", maxWidth: 400 }}>
+              <p style={{ fontSize: 15.5, color: "#000000", lineHeight: 1.6, margin: "0 0 24px", maxWidth: 400 }}>
                 Sage AI turns a few questions about your workflow into matched, explainable agent recommendations. No browsing, no guesswork.
               </p>
 
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                <a href="#sage-demo" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.80)", border: "1.5px solid rgba(124,58,237,0.22)", borderRadius: 9999, padding: "12px 26px", fontSize: 14.5, fontWeight: 700, color: "#0E1320", textDecoration: "none", letterSpacing: "-0.01em" }}>
+                <a href="#sage-demo" style={{ display: "inline-flex", alignItems: "center", gap: 6, background: "rgba(255,255,255,0.80)", border: "1.5px solid rgba(124,58,237,0.22)", borderRadius: 9999, padding: "12px 26px", fontSize: 14.5, fontWeight: 700, color: "#000000", textDecoration: "none", letterSpacing: "-0.01em" }}>
                   Watch Demo ›
                 </a>
               </div>
@@ -221,7 +221,7 @@ export default function RecommendationsPage() {
       <div className="product-outer" style={{ maxWidth: 1200, margin: "0 auto", paddingBottom: "80px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto 40px", textAlign: "center" }}>
           <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, letterSpacing: ".22em", color: "#C2186A", margin: "0 0 14px" }}>WHAT MAKES SAGE AI UNIQUE</p>
-          <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 600, letterSpacing: "-.03em", lineHeight: 1.06, margin: 0, color: "#0E1320" }}>Built to match you from the start</h2>
+          <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 600, letterSpacing: "-.03em", lineHeight: 1.06, margin: 0, color: "#000000" }}>Built to match you from the start</h2>
         </div>
 
         <div className="caps-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
@@ -238,8 +238,8 @@ export default function RecommendationsPage() {
                   <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color }}>{num}</span>
                   <span style={{ height: 1, flex: 1, background: `linear-gradient(90deg,${color}55,transparent)`, display: "block" }} />
                 </div>
-                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#0E1320" }}>{title}</h3>
-                <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#3A4256", margin: 0 }}>{body}</p>
+                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>{title}</h3>
+                <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#000000", margin: 0 }}>{body}</p>
               </div>
               <div className="feature-card-icon" style={{ flex: "none", width: 110, height: 110, borderRadius: 18, background: iconBg, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 1px 0 rgba(255,255,255,.7)" }}>
                 <Icon size={40} strokeWidth={1.5} style={{ color }} />

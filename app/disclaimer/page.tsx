@@ -12,24 +12,24 @@ export default function DisclaimerPage() {
       {/* Header */}
       <div className="border-b border-zinc-100 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <Link href="/" className="text-sm text-zinc-500 hover:text-zinc-900 transition">
+          <Link href="/" className="text-sm text-black/60 hover:text-black transition">
             &larr; Back to AgenticLib
           </Link>
-          <span className="text-xs text-zinc-400">Last updated: June 2026</span>
+          <span className="text-xs text-black/50">Last updated: June 2026</span>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-3xl mx-auto px-6 py-14 space-y-10 text-zinc-700 leading-relaxed">
+      <div className="max-w-3xl mx-auto px-6 py-14 space-y-10 text-black leading-relaxed">
 
         <div>
-          <h1 className="text-3xl font-bold text-zinc-900 mb-3">Web Disclaimer</h1>
-          <p className="text-sm text-zinc-500">Last updated: June 2026</p>
+          <h1 className="text-3xl font-bold text-black mb-3">Web Disclaimer</h1>
+          <p className="text-sm text-black/60">Last updated: June 2026</p>
         </div>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900 uppercase tracking-wide text-sm">No warranties</h2>
-          <p className="font-medium text-zinc-800">
+          <h2 className="text-xl font-semibold text-black uppercase tracking-wide text-sm">No warranties</h2>
+          <p className="font-medium text-black">
             ALL CONTENT, AGENT LISTINGS, RECOMMENDATIONS, AND RELATED INFORMATION ON THIS WEBSITE ARE PROVIDED
             FOR INFORMATIONAL PURPOSES ONLY. AGENTICLIB MAKES NO WARRANTIES, EXPRESS, IMPLIED, OR STATUTORY,
             REGARDING THE ACCURACY, COMPLETENESS, OR SUITABILITY OF ANY INFORMATION PUBLISHED ON THIS PLATFORM.
@@ -37,7 +37,7 @@ export default function DisclaimerPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">Informational purposes only</h2>
+          <h2 className="text-xl font-semibold text-black">Informational purposes only</h2>
           <p>
             The information contained on AgenticLib - including AI agent profiles, domain categorisations,
             capability comparisons, and recommendation outputs - represents AgenticLib&apos;s view as of the date
@@ -48,7 +48,7 @@ export default function DisclaimerPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">Third-party agents &amp; services</h2>
+          <h2 className="text-xl font-semibold text-black">Third-party agents &amp; services</h2>
           <p>
             AgenticLib does not own, operate, or endorse any of the AI agents listed on this platform. We do
             not control the services, pricing, data practices, or terms of any third-party agent provider.
@@ -59,7 +59,7 @@ export default function DisclaimerPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">Recommendation engine</h2>
+          <h2 className="text-xl font-semibold text-black">Recommendation engine</h2>
           <p>
             AgenticLib&apos;s AI-powered recommendation engine generates suggestions based on user-provided inputs
             and our internal knowledge base. These outputs are automated and do not constitute professional,
@@ -69,7 +69,7 @@ export default function DisclaimerPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">Changes to content</h2>
+          <h2 className="text-xl font-semibold text-black">Changes to content</h2>
           <p>
             AgenticLib may at any time update, revise, add, or remove agent listings, domain categories,
             platform features, and any other content on this website. Where material changes are made, an
@@ -79,8 +79,8 @@ export default function DisclaimerPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">Limitation of liability</h2>
-          <p className="font-medium text-zinc-800">
+          <h2 className="text-xl font-semibold text-black">Limitation of liability</h2>
+          <p className="font-medium text-black">
             TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, AGENTICLIB AND ITS AFFILIATES, OFFICERS,
             EMPLOYEES, AND AGENTS SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, OR
             CONSEQUENTIAL DAMAGES ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF THIS PLATFORM OR RELIANCE
@@ -92,10 +92,10 @@ export default function DisclaimerPage() {
 
       {/* Footer */}
       <div className="border-t border-zinc-100 px-6 py-6">
-        <div className="max-w-3xl mx-auto flex flex-wrap gap-x-6 gap-y-2 text-xs text-zinc-400">
-          <Link href="/privacy" className="hover:text-zinc-700 transition">Privacy Policy</Link>
-          <Link href="/terms"   className="hover:text-zinc-700 transition">Terms &amp; Conditions</Link>
-          <Link href="/disclaimer" className="hover:text-zinc-700 transition">Web Disclaimer</Link>
+        <div className="max-w-3xl mx-auto flex flex-wrap gap-x-6 gap-y-2 text-xs text-black/50">
+          <Link href="/privacy" className="hover:text-black transition">Privacy Policy</Link>
+          <Link href="/terms"   className="hover:text-black transition">Terms &amp; Conditions</Link>
+          <Link href="/disclaimer" className="hover:text-black transition">Web Disclaimer</Link>
         </div>
       </div>
     </div>

@@ -14,13 +14,13 @@ export default function MarketingPage() {
         >
           AI Agent Builder · Marketing
         </div>
-        <h1 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: "#160F2E", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
+        <h1 className="text-4xl md:text-5xl font-bold mb-6" style={{ color: "#000000", letterSpacing: "-0.02em", lineHeight: 1.1 }}>
           Comparison Intelligence for Marketing AI Agents
         </h1>
-        <p className="text-lg max-w-xl mx-auto" style={{ color: "rgba(22,15,46,0.6)", lineHeight: 1.6 }}>
+        <p className="text-lg max-w-xl mx-auto" style={{ color: "#000000", lineHeight: 1.6 }}>
           Track your marketing AI agent&apos;s features, visibility, and sentiment against competitors.
         </p>
-        <p className="mt-16 text-sm" style={{ color: "rgba(22,15,46,0.35)" }}>Coming soon</p>
+        <p className="mt-16 text-sm" style={{ color: "#000000" }}>Coming soon</p>
       </div>
     </main>
   );

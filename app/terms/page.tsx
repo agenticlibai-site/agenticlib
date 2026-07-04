@@ -12,17 +12,17 @@ export default function TermsPage() {
       {/* Header */}
       <div className="border-b border-zinc-100 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
-          <Link href="/" className="text-sm text-zinc-500 hover:text-zinc-900 transition">
+          <Link href="/" className="text-sm text-black/60 hover:text-black transition">
             ← Back to AgenticLib
           </Link>
-          <span className="text-xs text-zinc-400">Last updated: January 2026</span>
+          <span className="text-xs text-black/50">Last updated: January 2026</span>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-3xl mx-auto px-6 py-14 space-y-8 text-zinc-700 leading-relaxed">
+      <div className="max-w-3xl mx-auto px-6 py-14 space-y-8 text-black leading-relaxed">
         <div>
-          <h1 className="text-3xl font-bold text-zinc-900 mb-3">Terms &amp; Conditions</h1>
+          <h1 className="text-3xl font-bold text-black mb-3">Terms &amp; Conditions</h1>
           <p>
             Welcome to AgenticLib. These Terms and Conditions ("Terms") govern your use of our website:{" "}
             <a href="https://www.agenticlib.com" className="text-violet-600 underline underline-offset-2">
@@ -37,7 +37,7 @@ export default function TermsPage() {
         </div>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">1. Use of Our Services</h2>
+          <h2 className="text-xl font-semibold text-black">1. Use of Our Services</h2>
           <p>You must use our Services only for lawful purposes and in accordance with these Terms.</p>
           <p>You agree not to:</p>
           <ul className="list-disc pl-6 space-y-1">
@@ -52,7 +52,7 @@ export default function TermsPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">2. Intellectual Property</h2>
+          <h2 className="text-xl font-semibold text-black">2. Intellectual Property</h2>
           <p>
             All content, design, features, and functionality on AgenticLib — including logos, text, graphics,
             software, and data — are the intellectual property of AgenticLib and are protected by copyright,
@@ -64,7 +64,7 @@ export default function TermsPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">3. User Accounts</h2>
+          <h2 className="text-xl font-semibold text-black">3. User Accounts</h2>
           <p>If you create an account with us:</p>
           <ul className="list-disc pl-6 space-y-1">
             <li>You are responsible for maintaining the confidentiality of your login credentials.</li>
@@ -75,7 +75,7 @@ export default function TermsPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">4. Third-Party Links</h2>
+          <h2 className="text-xl font-semibold text-black">4. Third-Party Links</h2>
           <p>
             AgenticLib may contain links to third-party websites or services. We are not responsible for the
             content, privacy policies, or practices of those third parties. Accessing such links is at your own
@@ -84,7 +84,7 @@ export default function TermsPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">5. Disclaimers</h2>
+          <h2 className="text-xl font-semibold text-black">5. Disclaimers</h2>
           <p>AgenticLib provides information and listings "as is" and "as available."</p>
           <p>We make no warranties or representations, express or implied, about:</p>
           <ul className="list-disc pl-6 space-y-1">
@@ -96,7 +96,7 @@ export default function TermsPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">6. Limitation of Liability</h2>
+          <h2 className="text-xl font-semibold text-black">6. Limitation of Liability</h2>
           <p>
             To the maximum extent permitted by law, AgenticLib and its affiliates shall not be liable for any
             indirect, incidental, or consequential damages arising from your use of the Site or Services,
@@ -105,7 +105,7 @@ export default function TermsPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">7. Indemnification</h2>
+          <h2 className="text-xl font-semibold text-black">7. Indemnification</h2>
           <p>
             You agree to indemnify and hold harmless AgenticLib, its founders, employees, and affiliates from
             any claims, losses, or damages resulting from your breach of these Terms or misuse of the Services.
@@ -113,7 +113,7 @@ export default function TermsPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">8. Changes to These Terms</h2>
+          <h2 className="text-xl font-semibold text-black">8. Changes to These Terms</h2>
           <p>
             We may update these Terms from time to time. Any changes will be posted on this page with the
             updated "Last Updated" date. Continued use of the Services after updates constitutes your acceptance
@@ -122,7 +122,7 @@ export default function TermsPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">9. Governing Law</h2>
+          <h2 className="text-xl font-semibold text-black">9. Governing Law</h2>
           <p>
             These Terms are governed by and construed in accordance with the laws of New South Wales, Australia,
             without regard to conflict of law principles.
@@ -130,7 +130,7 @@ export default function TermsPage() {
         </section>
 
         <section className="space-y-3">
-          <h2 className="text-xl font-semibold text-zinc-900">10. Contact Us</h2>
+          <h2 className="text-xl font-semibold text-black">10. Contact Us</h2>
           <p>If you have any questions about these Terms, please contact us at:</p>
           <p>
             📧{" "}
@@ -147,9 +147,9 @@ export default function TermsPage() {
       </div>
 
       {/* Footer */}
-      <div className="border-t border-zinc-100 px-6 py-6 text-center text-xs text-zinc-400">
+      <div className="border-t border-zinc-100 px-6 py-6 text-center text-xs text-black/50">
         © 2026 AgenticLib ·{" "}
-        <Link href="/privacy" className="hover:text-zinc-600 transition">
+        <Link href="/privacy" className="hover:text-black transition">
           Privacy Policy
         </Link>
       </div>

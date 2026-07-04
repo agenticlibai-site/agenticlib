@@ -66,7 +66,7 @@ async function getData() {
 }
 
 const ROSE = "#3B4DBE";
-const DARK = "#160F2E";
+const DARK = "#000000";
 
 function fmtModel(m: string) {
   return m === "claude-haiku-4-5" ? "Claude Haiku" : m === "gpt-4o-mini" ? "GPT-4o mini" : m;
@@ -116,7 +116,7 @@ export default async function SkincareVisibilityPage() {
           >
             Skincare Intelligence
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: "#160F2E", letterSpacing: "-0.02em" }}>
+          <h1 className="text-3xl md:text-4xl font-bold mb-3" style={{ color: "#000000", letterSpacing: "-0.02em" }}>
             Dewwie Report: Skincare Comparison Intelligence
           </h1>
         </div>
@@ -141,20 +141,20 @@ export default async function SkincareVisibilityPage() {
                 return (
                   <div key={m} style={{
                     display: "flex", alignItems: "center", gap: 6,
-                    background: done ? "rgba(5,150,105,0.08)" : "rgba(22,15,46,0.05)",
-                    border: `1px solid ${done ? "rgba(5,150,105,0.20)" : "rgba(22,15,46,0.10)"}`,
+                    background: done ? "rgba(5,150,105,0.08)" : "rgba(0,0,0,0.05)",
+                    border: `1px solid ${done ? "rgba(5,150,105,0.20)" : "rgba(0,0,0,0.10)"}`,
                     borderRadius: 999, padding: "5px 12px",
                   }}>
                     <span style={{ width: 7, height: 7, borderRadius: "50%", background: done ? "#059669" : "#94A3B8", flexShrink: 0, display: "inline-block" }} />
-                    <span style={{ fontSize: 12, fontWeight: 600, color: done ? "#065f46" : "rgba(22,15,46,0.45)" }}>
+                    <span style={{ fontSize: 12, fontWeight: 600, color: done ? "#065f46" : "#000000" }}>
                       {fmtModel(m)} — {meta ? `${meta.rows}/39 rows` : "pending"}
                     </span>
                   </div>
                 );
               })}
-              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(22,15,46,0.04)", border: "1px solid rgba(22,15,46,0.09)", borderRadius: 999, padding: "5px 12px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.09)", borderRadius: 999, padding: "5px 12px" }}>
                 <span style={{ width: 7, height: 7, borderRadius: "50%", background: dailySummary.length > 0 ? "#059669" : "#94A3B8", flexShrink: 0, display: "inline-block" }} />
-                <span style={{ fontSize: 12, fontWeight: 600, color: dailySummary.length > 0 ? "#065f46" : "rgba(22,15,46,0.45)" }}>
+                <span style={{ fontSize: 12, fontWeight: 600, color: dailySummary.length > 0 ? "#065f46" : "#000000" }}>
                   Aggregate — {dailySummary.length > 0 ? "complete" : "pending"}
                 </span>
               </div>
@@ -170,20 +170,20 @@ export default async function SkincareVisibilityPage() {
                 <div key={model} style={{
                   background: "#fff",
                   borderRadius: 10,
-                  boxShadow: "0 2px 8px rgba(22,15,46,0.07)",
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
                   marginBottom: 14,
                   overflow: "hidden",
                 }}>
-                  <div style={{ padding: "12px 20px", borderBottom: "1px solid rgba(22,15,46,0.07)", background: "rgba(22,15,46,0.018)", display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{ padding: "12px 20px", borderBottom: "1px solid rgba(0,0,0,0.07)", background: "rgba(0,0,0,0.018)", display: "flex", alignItems: "center", gap: 10 }}>
                     <span style={{ fontSize: 13, fontWeight: 700, color: DARK }}>{fmtModel(model)}</span>
-                    <span style={{ fontSize: 11, color: "rgba(22,15,46,0.40)" }}>raw mentions today · pre-aggregation · top 20</span>
+                    <span style={{ fontSize: 11, color: "#000000" }}>raw mentions today · pre-aggregation · top 20</span>
                   </div>
                   <div style={{ padding: "6px 0" }}>
                     {top.map((row, i) => (
-                      <div key={row.brand} style={{ display: "flex", alignItems: "center", gap: 12, padding: "7px 20px", borderBottom: i < top.length - 1 ? "1px solid rgba(22,15,46,0.04)" : undefined }}>
-                        <span style={{ fontSize: 11, color: "rgba(22,15,46,0.28)", fontWeight: 700, minWidth: 18, textAlign: "right" }}>{i + 1}</span>
+                      <div key={row.brand} style={{ display: "flex", alignItems: "center", gap: 12, padding: "7px 20px", borderBottom: i < top.length - 1 ? "1px solid rgba(0,0,0,0.04)" : undefined }}>
+                        <span style={{ fontSize: 11, color: "#000000", fontWeight: 700, minWidth: 18, textAlign: "right" }}>{i + 1}</span>
                         <span style={{ fontSize: 13, fontWeight: 600, color: DARK, minWidth: 160 }}>{row.brand === "SkinSage" ? "SkinSAFE" : row.brand}</span>
-                        <div style={{ flex: 1, height: 5, background: "rgba(22,15,46,0.06)", borderRadius: 999 }}>
+                        <div style={{ flex: 1, height: 5, background: "rgba(0,0,0,0.06)", borderRadius: 999 }}>
                           <div style={{ height: 5, borderRadius: 999, background: ROSE, width: `${(row.mentions / maxMentions) * 100}%`, opacity: 0.75 }} />
                         </div>
                         <span style={{ fontSize: 13, fontWeight: 700, color: ROSE, minWidth: 28, textAlign: "right" }}>{row.mentions}</span>

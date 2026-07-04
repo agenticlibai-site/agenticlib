@@ -10,7 +10,7 @@ export default function ProductPage() {
     <main className="min-h-screen">
       {/* Nav */}
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 px-6 py-3 flex items-center gap-4">
-        <Link href="/" className="font-semibold text-zinc-900 text-sm hover:text-violet-600 transition-colors">
+        <Link href="/" className="font-semibold text-black text-sm hover:text-violet-600 transition-colors">
           ← AgenticLib
         </Link>
       </nav>
@@ -19,8 +19,8 @@ export default function ProductPage() {
 
         {/* Demo 1 */}
         <section className="text-center">
-          <h2 className="text-4xl font-semibold mb-3 text-zinc-900">See how it works</h2>
-          <p className="text-zinc-600 text-base mb-8">
+          <h2 className="text-4xl font-semibold mb-3 text-black">See how it works</h2>
+          <p className="text-black text-base mb-8">
             Watch how AgenticLib turns a few simple questions into tailored AI agent recommendations.
           </p>
           <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200">
@@ -35,8 +35,8 @@ export default function ProductPage() {
 
         {/* Demo 2 */}
         <section className="text-center">
-          <h2 className="text-4xl font-semibold mb-3 text-zinc-900">Where we&apos;re headed</h2>
-          <p className="text-zinc-600 text-base mb-8">
+          <h2 className="text-4xl font-semibold mb-3 text-black">Where we&apos;re headed</h2>
+          <p className="text-black text-base mb-8">
             Compare, research, and decide — all in one place.
           </p>
           <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200">

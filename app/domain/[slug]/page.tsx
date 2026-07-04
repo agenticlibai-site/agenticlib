@@ -71,28 +71,28 @@ export default async function DomainSeoPage({
       <main className="max-w-5xl mx-auto px-6 py-12">
 
         {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-zinc-400">
+        <nav aria-label="Breadcrumb" className="mb-6 text-sm text-black/50">
           <ol className="flex items-center gap-2">
-            <li><Link href="/" className="hover:text-zinc-600 transition">Home</Link></li>
+            <li><Link href="/" className="hover:text-black transition">Home</Link></li>
             <li>/</li>
-            <li><Link href="/explore" className="hover:text-zinc-600 transition">Domains</Link></li>
+            <li><Link href="/explore" className="hover:text-black transition">Domains</Link></li>
             <li>/</li>
-            <li className="text-zinc-600">{domain.name}</li>
+            <li className="text-black">{domain.name}</li>
           </ol>
         </nav>
 
         {/* Hero - short intro */}
         <section className="mb-10">
-          <h1 className="text-4xl md:text-5xl font-bold text-zinc-900 tracking-tight mb-4">
+          <h1 className="text-4xl md:text-5xl font-bold text-black tracking-tight mb-4">
             {domain.h1}
           </h1>
-          <p className="text-lg text-zinc-600 leading-relaxed max-w-2xl">{domain.intro}</p>
+          <p className="text-lg text-black leading-relaxed max-w-2xl">{domain.intro}</p>
         </section>
 
         {/* ── AGENT CARDS - primary conversion area ─────────────────────────── */}
         {agents.length > 0 && (
           <section className="mb-14">
-            <h2 className="text-xl font-semibold text-zinc-900 mb-5">
+            <h2 className="text-xl font-semibold text-black mb-5">
               {domain.name} AI Agents
             </h2>
             <div className="grid md:grid-cols-2 gap-4">
@@ -113,7 +113,7 @@ export default async function DomainSeoPage({
                                   bg-gradient-to-br from-blue-50/90 to-white/95
                                   backdrop-blur-md">
                     <div>
-                      <p className="text-xl font-semibold text-zinc-900 group-hover:text-blue-700 transition-colors">
+                      <p className="text-xl font-semibold text-black group-hover:text-blue-700 transition-colors">
                         {agent.name}
                       </p>
                       <p className="text-sm text-blue-400/80 mt-0.5">Visit official site</p>
@@ -132,14 +132,14 @@ export default async function DomainSeoPage({
 
         {/* Why AI Matters */}
         <section className="mb-12 pt-4 border-t border-zinc-100">
-          <h2 className="text-xl font-semibold text-zinc-900 mb-3">
+          <h2 className="text-xl font-semibold text-black mb-3">
             Why AI Matters in {domain.name}
           </h2>
           <ul className="space-y-2 max-w-3xl">
             {domain.whyAiMatters.map((point, i) => (
               <li key={i} className="flex gap-3">
                 <span className="flex-shrink-0 w-1.5 h-1.5 rounded-full bg-blue-400 mt-[7px]" />
-                <span className="text-sm text-zinc-600 leading-relaxed">{point}</span>
+                <span className="text-sm text-black leading-relaxed">{point}</span>
               </li>
             ))}
           </ul>
@@ -147,7 +147,7 @@ export default async function DomainSeoPage({
 
         {/* Use Cases */}
         <section className="mb-12">
-          <h2 className="text-xl font-semibold text-zinc-900 mb-5">
+          <h2 className="text-xl font-semibold text-black mb-5">
             Top Use Cases
           </h2>
           <div className="grid sm:grid-cols-2 gap-4">
@@ -163,8 +163,8 @@ export default async function DomainSeoPage({
                 <div className="rounded-2xl px-6 py-5 h-full
                                 bg-gradient-to-br from-blue-50/90 to-white/95
                                 backdrop-blur-md">
-                  <p className="text-sm font-semibold text-zinc-900 mb-1.5">{uc.title}</p>
-                  <p className="text-sm text-zinc-500 leading-relaxed">{uc.description}</p>
+                  <p className="text-sm font-semibold text-black mb-1.5">{uc.title}</p>
+                  <p className="text-sm text-black/60 leading-relaxed">{uc.description}</p>
                 </div>
               </div>
             ))}
@@ -174,7 +174,7 @@ export default async function DomainSeoPage({
         {/* ── RELATED DOMAINS ───────────────────────────────────────────────── */}
         {domain.relatedSlugs.length > 0 && (
           <section className="mb-12">
-            <h2 className="text-xl font-semibold text-zinc-900 mb-5">Related Domains</h2>
+            <h2 className="text-xl font-semibold text-black mb-5">Related Domains</h2>
             <div className="flex flex-wrap gap-3">
               {domain.relatedSlugs.map((relSlug) => {
                 const rel = seoDomains.find((d) => d.slug === relSlug);
@@ -198,14 +198,14 @@ export default async function DomainSeoPage({
 
       </main>
 
-      <footer className="border-t border-zinc-100 py-8 text-center text-sm text-zinc-400">
+      <footer className="border-t border-zinc-100 py-8 text-center text-sm text-black/50">
         <p>© {new Date().getFullYear()} AgenticLib - The AI Agent Discovery Platform</p>
         <p className="mt-1">
-          <Link href="/" className="hover:text-zinc-600 transition">Home</Link>
+          <Link href="/" className="hover:text-black transition">Home</Link>
           {" · "}
-          <Link href="/explore" className="hover:text-zinc-600 transition">Browse Domains</Link>
+          <Link href="/explore" className="hover:text-black transition">Browse Domains</Link>
           {" · "}
-          <Link href="/blog" className="hover:text-zinc-600 transition">Blog</Link>
+          <Link href="/blog" className="hover:text-black transition">Blog</Link>
         </p>
       </footer>
 

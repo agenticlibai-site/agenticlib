@@ -2,7 +2,7 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
 }
 
 @theme inline {
@@ -77,13 +77,13 @@ body {
   font-family: var(--font-inter), var(--font-geist-sans), system-ui, sans-serif;
   font-size: 1.0625rem;    /* 17px */
   line-height: 1.9;
-  color: #27272a;           /* zinc-800 */
+  color: #000000;
 }
 
 .blog-content h2 {
   font-size: 1.5rem;        /* 24px */
   font-weight: 700;
-  color: #18181b;           /* zinc-900 */
+  color: #000000;
   margin-top: 2.75rem;
   margin-bottom: 0.875rem;
   letter-spacing: -0.02em;
@@ -97,7 +97,7 @@ body {
 .blog-content h3 {
   font-size: 1.2rem;        /* ~19px */
   font-weight: 600;
-  color: #18181b;
+  color: #000000;
   margin-top: 2rem;
   margin-bottom: 0.5rem;
   letter-spacing: -0.01em;

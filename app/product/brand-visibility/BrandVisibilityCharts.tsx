@@ -258,7 +258,7 @@ function ClusterTrendCard({
                 type="checkbox" checked={checked} onChange={() => toggle(brand)}
                 style={{ accentColor: color, width: 12, height: 12, cursor: "pointer", flexShrink: 0 }}
               />
-              <span style={{ fontSize: 11, color: checked ? color : "rgba(13,27,62,0.28)", fontWeight: checked ? 600 : 400 }}>
+              <span style={{ fontSize: 11, color: checked ? color : "#000000", fontWeight: checked ? 600 : 400 }}>
                 {getDisplayName(brand)}
               </span>
             </label>
@@ -313,7 +313,7 @@ function ClusterSOVCard({
         </h3>
         <p style={{ fontSize: 11, color: NAVY }}>{cluster.promptHint}</p>
         {cluster.promptLabel && (
-          <p style={{ fontSize: 10, color: "rgba(13,27,62,0.38)", marginTop: 3 }}>{cluster.promptLabel}</p>
+          <p style={{ fontSize: 10, color: "#000000", marginTop: 3 }}>{cluster.promptLabel}</p>
         )}
       </div>
 
@@ -371,7 +371,7 @@ function ClusterSOVCard({
                 {s.name}
               </span>
             </div>
-            <span style={{ fontSize: 11, fontWeight: 700, color: s.brand === "_other" ? "rgba(13,27,62,0.45)" : s.color, flexShrink: 0 }}>
+            <span style={{ fontSize: 11, fontWeight: 700, color: s.brand === "_other" ? "#000000" : s.color, flexShrink: 0 }}>
               {s.value.toFixed(1)}%
             </span>
           </div>
@@ -438,7 +438,7 @@ function BigNumber({ value, sub }: { value: string | number; sub?: string }) {
         {value}
       </p>
       {sub && (
-        <p style={{ fontSize: 12, color: "rgba(13,27,62,0.45)" }}>{sub}</p>
+        <p style={{ fontSize: 12, color: "#000000" }}>{sub}</p>
       )}
     </>
   );
@@ -454,7 +454,7 @@ function EmptySlate({ message = "Collecting data…" }: { message?: string }) {
         <rect x="10" y="1" width="4" height="15" rx="1" fill={PURPLE} opacity="0.55" />
         <rect x="15" y="6" width="3" height="10" rx="1" fill={PURPLE} opacity="0.35" />
       </svg>
-      <p style={{ fontSize: 13, color: "rgba(13,27,62,0.38)" }}>{message}</p>
+      <p style={{ fontSize: 13, color: "#000000" }}>{message}</p>
     </div>
   );
 }
@@ -585,7 +585,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                 return (
                   <div key={model}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
-                      <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(13,27,62,0.55)", textTransform: "uppercase" as const, letterSpacing: "0.06em" }}>
+                      <span style={{ fontSize: 11, fontWeight: 600, color: "#000000", textTransform: "uppercase" as const, letterSpacing: "0.06em" }}>
                         {label}
                       </span>
                       <span style={{ fontSize: 28, fontWeight: 800, color, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
@@ -595,7 +595,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                     <div style={{ height: 5, borderRadius: 999, background: "rgba(13,27,62,0.07)" }}>
                       <div style={{ height: 5, borderRadius: 999, width: `${Math.min(pct, 100)}%`, background: color }} />
                     </div>
-                    <p style={{ fontSize: 10, color: "rgba(13,27,62,0.38)", marginTop: 4 }}>
+                    <p style={{ fontSize: 10, color: "#000000", marginTop: 4 }}>
                       {total} responses
                     </p>
                   </div>
@@ -618,7 +618,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
             <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>
               Brand Mentions — 7-Day Trend
             </h3>
-            <p style={{ fontSize: 12, color: "rgba(13,27,62,0.42)" }}>
+            <p style={{ fontSize: 12, color: "#000000" }}>
               {hasReal ? "Top 22 locked AI marketing agents · both models combined" : "Sample data — live chart populates after daily collection"}
             </p>
           </div>
@@ -681,7 +681,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
         {/* Interactive brand filter */}
         <div style={{ marginTop: 14, borderTop: "1px solid rgba(13,27,62,0.06)", paddingTop: 12 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-            <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: "rgba(13,27,62,0.32)" }}>
+            <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: "#000000" }}>
               Brands
             </span>
             <div style={{ display: "flex", gap: 10 }}>
@@ -708,7 +708,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                     onChange={() => toggleBrand(brand)}
                     style={{ accentColor: color, width: 12, height: 12, cursor: "pointer", flexShrink: 0 }}
                   />
-                  <span style={{ fontSize: 11, color: checked ? color : "rgba(13,27,62,0.28)", fontWeight: checked ? 600 : 400 }}>
+                  <span style={{ fontSize: 11, color: checked ? color : "#000000", fontWeight: checked ? 600 : 400 }}>
                     {getDisplayName(brand)}
                   </span>
                 </label>
@@ -716,7 +716,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
             })}
           </div>
           {hasReal && realBrands.length > 22 && (
-            <p style={{ fontSize: 10, color: "rgba(13,27,62,0.30)", marginTop: 8 }}>
+            <p style={{ fontSize: 10, color: "#000000", marginTop: 8 }}>
               Showing top 22 of {realBrands.length} locked marketing agents.
             </p>
           )}
@@ -735,7 +735,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
             <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>
               Brand Mentions · 7 Days · by Model
             </h3>
-            <p style={{ fontSize: 12, color: "rgba(13,27,62,0.42)" }}>
+            <p style={{ fontSize: 12, color: "#000000" }}>
               Total mentions per brand across Claude Haiku and GPT-4o mini
             </p>
           </div>
@@ -818,13 +818,13 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
             <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 2 }}>
               Perception Gaps — where LLM visibility and reality diverge
             </h3>
-            <p style={{ fontSize: 12, color: "rgba(13,27,62,0.40)" }}>
+            <p style={{ fontSize: 12, color: "#000000" }}>
               Brands where AI share of voice and documented capability tell different stories.
             </p>
           </div>
           <div style={{ padding: "16px 24px", display: "flex", flexDirection: "column", gap: 12 }}>
             {perceptionGaps.length === 0 && (
-              <p style={{ fontSize: 13, color: "rgba(13,27,62,0.38)", fontStyle: "italic" }}>
+              <p style={{ fontSize: 13, color: "#000000", fontStyle: "italic" }}>
                 No perception gaps detected — check /api/brand-visibility/audit/perception-gaps for diagnostics.
               </p>
             )}
@@ -851,9 +851,9 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                     }}>
                       SOV gap
                     </span>
-                    <span style={{ fontSize: 11, color: "rgba(13,27,62,0.40)" }}>{label}</span>
+                    <span style={{ fontSize: 11, color: "#000000" }}>{label}</span>
                   </div>
-                  <p style={{ fontSize: 12, color: "rgba(13,27,62,0.65)", lineHeight: 1.55, margin: 0 }}>
+                  <p style={{ fontSize: 12, color: "#000000", lineHeight: 1.55, margin: 0 }}>
                     {explanation}
                   </p>
                 </div>
@@ -877,7 +877,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
               <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 2 }}>
                 Brand Position Summary
               </h3>
-              <p style={{ fontSize: 12, color: "rgba(13,27,62,0.40)" }}>
+              <p style={{ fontSize: 12, color: "#000000" }}>
                 Avg position in AI responses (1 = first mentioned). Lower is better.
               </p>
             </div>
@@ -892,7 +892,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                         fontSize: 11,
                         textTransform: "uppercase" as const,
                         letterSpacing: "0.07em",
-                        color: "rgba(13,27,62,0.45)",
+                        color: "#000000",
                         textAlign: i === 0 ? "center" : i >= 3 ? "right" : "left",
                         background: "rgba(13,27,62,0.018)",
                         whiteSpace: "nowrap",
@@ -919,7 +919,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                         borderTop: gi > 0 ? "1px solid rgba(13,27,62,0.09)" : undefined,
                         borderBottom: "1px solid rgba(13,27,62,0.07)",
                       }}>
-                        <td colSpan={5} style={{ padding: "5px 20px", fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: "rgba(13,27,62,0.45)" }}>
+                        <td colSpan={5} style={{ padding: "5px 20px", fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: "#000000" }}>
                           {clusterLabel(group.tag)}
                         </td>
                       </tr>,
@@ -928,16 +928,16 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                         const isLast = gi === grouped.length - 1 && i === group.brands.length - 1;
                         return (
                           <tr key={p.brand_name} style={{ borderBottom: !isLast ? "1px solid rgba(13,27,62,0.05)" : undefined }}>
-                            <td style={{ padding: "11px 20px", textAlign: "center", color: "rgba(13,27,62,0.28)", fontWeight: 700, fontSize: 11 }}>{p.rank}</td>
+                            <td style={{ padding: "11px 20px", textAlign: "center", color: "#000000", fontWeight: 700, fontSize: 11 }}>{p.rank}</td>
                             <td style={{ padding: "11px 20px", fontWeight: 600, color: NAVY, whiteSpace: "nowrap" }}>
                               <span style={{ display: "inline-block", width: 7, height: 7, borderRadius: "50%", background: color, marginRight: 8, verticalAlign: "middle" }} />
                               {p.display_name}
                             </td>
-                            <td style={{ padding: "11px 20px", color: "rgba(13,27,62,0.55)", fontSize: 12 }}>
+                            <td style={{ padding: "11px 20px", color: "#000000", fontSize: 12 }}>
                               {clusterLabel(p.dominant_tag)}
                             </td>
                             <td style={{ padding: "11px 20px", textAlign: "right", fontWeight: 700, color: PURPLE }}>{fmt(p.overall_avg_pos)}</td>
-                            <td style={{ padding: "11px 20px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>{fmt(p.cluster_avg_pos)}</td>
+                            <td style={{ padding: "11px 20px", textAlign: "right", color: "#000000" }}>{fmt(p.cluster_avg_pos)}</td>
                           </tr>
                         );
                       }),
@@ -969,7 +969,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
             <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em" }}>
               7-Day Brand Summary
             </h3>
-            <span style={{ fontSize: 12, color: "rgba(13,27,62,0.40)" }}>
+            <span style={{ fontSize: 12, color: "#000000" }}>
               all models combined
             </span>
           </div>
@@ -987,7 +987,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                         fontSize: 11,
                         textTransform: "uppercase" as const,
                         letterSpacing: "0.07em",
-                        color: "rgba(13,27,62,0.45)",
+                        color: "#000000",
                         textAlign: i === 0 ? "center" : i >= 2 ? "right" : "left",
                         background: "rgba(13,27,62,0.018)",
                       }}
@@ -1006,7 +1006,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                       transition: "background 0.1s",
                     }}
                   >
-                    <td style={{ padding: "11px 20px", textAlign: "center", color: "rgba(13,27,62,0.28)", fontWeight: 700, fontSize: 11 }}>
+                    <td style={{ padding: "11px 20px", textAlign: "center", color: "#000000", fontWeight: 700, fontSize: 11 }}>
                       {i + 1}
                     </td>
                     <td style={{ padding: "11px 20px", fontWeight: 600, color: NAVY }}>
@@ -1026,7 +1026,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                     <td style={{ padding: "11px 20px", textAlign: "right", fontWeight: 700, color: PURPLE }}>
                       {stats.mention_count.toLocaleString()}
                     </td>
-                    <td style={{ padding: "11px 20px", textAlign: "right", color: "rgba(13,27,62,0.65)" }}>
+                    <td style={{ padding: "11px 20px", textAlign: "right", color: "#000000" }}>
                       <PositionCell avg={stats.avg_position} confidence={stats.confidence} />
                     </td>
                     <td style={{ padding: "11px 20px", textAlign: "right" }}>
