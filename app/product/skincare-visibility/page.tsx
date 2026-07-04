@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { sql } from "@vercel/postgres";
 import {
-  getSkincareDailySummary,
+  getDewwieReportDailySummary,
   getSkincareWeeklySummary,
   getSkincareLLMVisibility,
   getSkincareUseCaseBuckets,
@@ -27,7 +27,7 @@ async function getData() {
     await initSkincareDB();
     const today = new Date().toISOString().split("T")[0];
     const [dailySummary, weeklySummary, llmVisibility, useCaseBuckets, sentimentData, rawResult, metaResult] = await Promise.all([
-      getSkincareDailySummary(6),
+      getDewwieReportDailySummary(),
       getSkincareWeeklySummary(),
       getSkincareLLMVisibility(),
       getSkincareUseCaseBuckets(),

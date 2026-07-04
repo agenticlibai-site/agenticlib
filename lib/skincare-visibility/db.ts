@@ -429,6 +429,31 @@ export async function persistSkincareResponseCanonicalBrands(entries: SkincareRe
 const BRAND_MIN_MENTIONS  = 5;   // total mention_count across all models in window
 const BRAND_MIN_PROMPTS   = 2;   // must appear in responses from at least this many distinct prompt_ids
 
+// ── Dewwie report: fixed June 26–30 2026, exactly 9 brands ───────────────────
+// Static historical window — not a rolling query.
+// SkinSAFE is stored as "SkinSage" in the DB; SkincareVisibilityCharts maps it
+// back to "SkinSAFE" via its DISPLAY_NAMES constant.
+const DEWWIE_BRANDS_JSON = JSON.stringify([
+  "Curology", "HelloAva", "Clinique", "INCI Decoder", "SkinSage",
+  "Think Dirty", "SkinGenie", "SkinAdvisor", "Dermatology AI",
+]);
+const DEWWIE_START = "2026-06-26";
+const DEWWIE_END   = "2026-06-30";
+
+export async function getDewwieReportDailySummary(): Promise<
+  { date: string; brand: string; model: string; mention_count: number; confidence: string }[]
+> {
+  await initSkincareDB();
+  const result = await sql`
+    SELECT date::text AS date, brand, model, mention_count, confidence
+    FROM skincare_daily_summary
+    WHERE date BETWEEN ${DEWWIE_START}::date AND ${DEWWIE_END}::date
+      AND brand = ANY(ARRAY(SELECT jsonb_array_elements_text(${DEWWIE_BRANDS_JSON}::jsonb)))
+    ORDER BY date ASC, mention_count DESC
+  `;
+  return result.rows as { date: string; brand: string; model: string; mention_count: number; confidence: string }[];
+}
+
 export async function getSkincareDailySummary(days = 7): Promise<
   { date: string; brand: string; model: string; mention_count: number; confidence: string }[]
 > {
