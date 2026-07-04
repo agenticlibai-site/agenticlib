@@ -243,9 +243,17 @@ export default function Home() {
               </a>
             ))}
           </div>
-          <span className="inline-block text-xs font-medium px-4 py-1.5 rounded-full" style={{ background: "#EEF0FF", color: "#5B5BD6" }}>
+          <a
+            href="https://www.blackbird.vc/giants"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block text-xs font-medium px-4 py-1.5 rounded-full transition-colors duration-150"
+            style={{ background: "#EEF0FF", color: "#5B5BD6" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#DDE0FF"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#EEF0FF"; }}
+          >
             Backed by Blackbird VC Giants Program
-          </span>
+          </a>
         </div>
       </section>
 
