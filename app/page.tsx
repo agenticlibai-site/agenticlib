@@ -56,7 +56,7 @@ export default function Home() {
   const pathname = usePathname();
 
   return (
-    <div className="page-bg relative text-zinc-900 font-sans">
+    <div className="page-bg relative text-black font-sans">
       <style>{`
         @media (max-width: 640px) {
           .hero-card-wrapper { margin: 8px 12px 16px !important; }
@@ -133,7 +133,7 @@ export default function Home() {
             {/* Headline */}
             <h1
               className="text-[28px] sm:text-[36px] md:text-[54px] lg:text-[64px] mb-5"
-              style={{ color: "#160F2E", fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.08 }}
+              style={{ color: "#000000", fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.08 }}
             >
               Comparison intelligence for the{" "}
               <span style={{ display: "inline-block", background: "linear-gradient(95deg, #6B4FBB 15%, #E8447A 85%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", paddingBottom: "0.15em" }}>
@@ -147,7 +147,7 @@ export default function Home() {
 
               {/* Tagline + pill */}
               <div style={{ margin: "32px 0" }}>
-                <span className="hero-tagline-text" style={{ fontSize: "22px", fontWeight: 500, color: "#160F2E" }}>AgenticLib, the hub for </span>
+                <span className="hero-tagline-text" style={{ fontSize: "22px", fontWeight: 500, color: "#000000" }}>AgenticLib, the hub for </span>
                 {stateIdx === 0 ? (
                   <span style={{ fontSize: "22px", fontWeight: 500, color: "#7C3AED", background: "rgba(124,58,237,0.10)", borderRadius: 4, padding: "2px 8px" }}>
                     AI Agent Builders
@@ -161,7 +161,7 @@ export default function Home() {
               </div>
 
               {/* Subhead */}
-              <p className="hero-subhead text-base md:text-lg mx-auto" style={{ color: "rgba(22,15,46,0.6)", maxWidth: "520px", lineHeight: 1.35, marginTop: "40px" }}>
+              <p className="hero-subhead text-base md:text-lg mx-auto" style={{ color: "#000000", maxWidth: "520px", lineHeight: 1.35, marginTop: "40px" }}>
                 {stateIdx === 0
                   ? "Give product, engineering, and marketing teams an edge with hands-on intelligence on where your product features lead and what you can build next."
                   : BANNER2_SUB}
@@ -173,7 +173,7 @@ export default function Home() {
                   <a
                     href="/ai-agent-builders"
                     className="inline-flex items-center gap-2 font-semibold transition-all"
-                    style={{ background: "rgba(124,58,237,0.18)", border: "1.5px solid rgba(124,58,237,0.35)", borderRadius: 9999, padding: "14px 28px", fontSize: "15px", textDecoration: "none", letterSpacing: "-0.01em", color: "#160F2E", fontWeight: 600 }}
+                    style={{ background: "rgba(124,58,237,0.18)", border: "1.5px solid rgba(124,58,237,0.35)", borderRadius: 9999, padding: "14px 28px", fontSize: "15px", textDecoration: "none", letterSpacing: "-0.01em", color: "#000000", fontWeight: 600 }}
                     onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.28)"; }}
                     onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.18)"; }}
                   >
@@ -219,7 +219,7 @@ export default function Home() {
           >
             Stay connected
           </h2>
-          <p className="text-zinc-500 text-base mb-10">Follow along as we build.</p>
+          <p className="text-black/60 text-base mb-10">Follow along as we build.</p>
           <div className="flex flex-wrap justify-center gap-3 mb-10">
             {[
               { href: "https://www.linkedin.com/company/108024233/", Icon: Share2, label: "LinkedIn" },

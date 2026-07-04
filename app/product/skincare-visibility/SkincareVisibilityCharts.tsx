@@ -16,7 +16,7 @@ import {
 
 const ROSE   = "#3B4DBE";
 const PINK   = "#6677CC";
-const DARK   = "#160F2E";
+const DARK   = "#000000";
 
 const LINE_COLORS = [
   "#C2186A", // 1.  rose
@@ -477,8 +477,8 @@ function FeatureCard({ feature }: { feature: FeatureEntry }) {
     <div style={{
       background: "#fff",
       borderRadius: 10,
-      border: "1px solid rgba(22,15,46,0.08)",
-      boxShadow: "0 2px 8px rgba(22,15,46,0.06)",
+      border: "1px solid rgba(0,0,0,0.08)",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.06)",
       padding: "18px 20px",
       display: "flex",
       flexDirection: "column",
@@ -504,7 +504,7 @@ function FeatureCard({ feature }: { feature: FeatureEntry }) {
                   <span style={{ marginLeft: 5, fontSize: 9, fontWeight: 700, padding: "1px 5px", borderRadius: 999, background: "rgba(100,116,139,0.10)", color: "#475569", letterSpacing: "0.03em", verticalAlign: "middle" }}>limited docs</span>
                 )}
               </span>
-              <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(22,15,46,0.07)", overflow: "hidden" }}>
+              <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(0,0,0,0.07)", overflow: "hidden" }}>
                 <div style={{ height: 6, borderRadius: 999, width: `${c.score}%`, background: brandBarColor(c.name) }} />
               </div>
               <span style={{
@@ -565,7 +565,7 @@ function FeatureCard({ feature }: { feature: FeatureEntry }) {
       {feature.definitions && feature.definitions.length > 0 && (
         <div style={{
           marginTop: 14,
-          borderTop: "1px solid rgba(22,15,46,0.07)",
+          borderTop: "1px solid rgba(0,0,0,0.07)",
           paddingTop: 12,
           display: "flex",
           flexDirection: "column",
@@ -682,7 +682,7 @@ function Card({ children, accent = ROSE }: { children: React.ReactNode; accent?:
       background: "#fff",
       borderRadius: 10,
       borderLeft: `4px solid ${accent}`,
-      boxShadow: "0 2px 8px rgba(22,15,46,0.07), 0 1px 2px rgba(22,15,46,0.04)",
+      boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
       padding: "20px 24px",
     }}>
       {children}
@@ -824,7 +824,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
               display: "flex",
               flexDirection: "column",
               gap: 6,
-              boxShadow: "0 1px 4px rgba(22,15,46,0.06)",
+              boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
             }}>
               <p style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.09em", color: ROSE }}>{label}</p>
               <p style={{ fontSize: 16, fontWeight: 800, color: DARK }}>{value}</p>
@@ -867,7 +867,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
                         {pct.toFixed(1)}%
                       </span>
                     </div>
-                    <div style={{ height: 5, borderRadius: 999, background: "rgba(22,15,46,0.07)" }}>
+                    <div style={{ height: 5, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
                       <div style={{ height: 5, borderRadius: 999, width: `${Math.min(pct, 100)}%`, background: color }} />
                     </div>
                     <p style={{ fontSize: 12, color: DARK, marginTop: 4 }}>{total} responses</p>
@@ -883,7 +883,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
       <div style={{
         background: "#fff",
         borderRadius: 10,
-        boxShadow: "0 2px 8px rgba(22,15,46,0.07), 0 1px 2px rgba(22,15,46,0.04)",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
         padding: "24px 28px 16px",
       }}>
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 20 }}>
@@ -908,7 +908,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
 
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={chartRows} margin={{ top: 4, right: 8, left: -8, bottom: 0 }}>
-            <CartesianGrid strokeDasharray="4 4" stroke="rgba(22,15,46,0.055)" vertical={false} />
+            <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,0,0,0.055)" vertical={false} />
             <XAxis
               dataKey="date"
               ticks={chartDates}
@@ -928,9 +928,9 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
             <Tooltip
               contentStyle={{
                 borderRadius: 8,
-                border: "1px solid rgba(22,15,46,0.10)",
+                border: "1px solid rgba(0,0,0,0.10)",
                 fontSize: 14,
-                boxShadow: "0 4px 16px rgba(22,15,46,0.12)",
+                boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
                 color: DARK,
                 background: "#fff",
               }}
@@ -959,11 +959,11 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
           <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
             <thead>
               <tr>
-                <th style={{ textAlign: "left", padding: "6px 12px 6px 0", fontSize: 12, fontWeight: 700, color: "rgba(22,15,46,0.45)", letterSpacing: "0.06em", textTransform: "uppercase" as const, borderBottom: "2px solid rgba(22,15,46,0.08)", whiteSpace: "nowrap" as const }}>
+                <th style={{ textAlign: "left", padding: "6px 12px 6px 0", fontSize: 12, fontWeight: 700, color: "#000000", letterSpacing: "0.06em", textTransform: "uppercase" as const, borderBottom: "2px solid rgba(0,0,0,0.08)", whiteSpace: "nowrap" as const }}>
                   Brand
                 </th>
                 {chartDates.map(date => (
-                  <th key={date} style={{ textAlign: "right", padding: "6px 10px", fontSize: 12, fontWeight: 700, color: "rgba(22,15,46,0.45)", letterSpacing: "0.06em", textTransform: "uppercase" as const, borderBottom: "2px solid rgba(22,15,46,0.08)", whiteSpace: "nowrap" as const, minWidth: 72 }}>
+                  <th key={date} style={{ textAlign: "right", padding: "6px 10px", fontSize: 12, fontWeight: 700, color: "#000000", letterSpacing: "0.06em", textTransform: "uppercase" as const, borderBottom: "2px solid rgba(0,0,0,0.08)", whiteSpace: "nowrap" as const, minWidth: 72 }}>
                     {fmtDate(date)}
                   </th>
                 ))}
@@ -976,7 +976,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
                 .map(({ brand, origIdx }) => {
                   const color = brandLineColor(brand, origIdx);
                   return (
-                    <tr key={brand} style={{ borderBottom: "1px solid rgba(22,15,46,0.04)" }}>
+                    <tr key={brand} style={{ borderBottom: "1px solid rgba(0,0,0,0.04)" }}>
                       <td style={{ padding: "8px 12px 8px 0", whiteSpace: "nowrap" as const }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
                           <span style={{ width: 8, height: 8, borderRadius: "50%", background: color, flexShrink: 0, display: "inline-block" }} />
@@ -986,7 +986,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
                       {chartDates.map(date => {
                         const val = (chartRowByDate[date]?.[brand] as number) ?? 0;
                         return (
-                          <td key={date} style={{ padding: "8px 10px", textAlign: "right", fontSize: 13, fontWeight: val > 0 ? 700 : 400, color: val > 0 ? color : "rgba(22,15,46,0.18)" }}>
+                          <td key={date} style={{ padding: "8px 10px", textAlign: "right", fontSize: 13, fontWeight: val > 0 ? 700 : 400, color: val > 0 ? color : "#000000" }}>
                             {val > 0 ? val : "—"}
                           </td>
                         );
@@ -999,7 +999,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
         </div>
 
         {/* Brand filter */}
-        <div style={{ marginTop: 14, borderTop: "1px solid rgba(22,15,46,0.06)", paddingTop: 12 }}>
+        <div style={{ marginTop: 14, borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 12 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
             <span style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: DARK }}>
               Brands
@@ -1045,12 +1045,12 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
         <div style={{
           background: "#fff",
           borderRadius: 10,
-          boxShadow: "0 2px 8px rgba(22,15,46,0.07), 0 1px 2px rgba(22,15,46,0.04)",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
           overflow: "hidden",
         }}>
           <div style={{
             padding: "16px 24px",
-            borderBottom: "1px solid rgba(22,15,46,0.07)",
+            borderBottom: "1px solid rgba(0,0,0,0.07)",
             display: "flex",
             alignItems: "baseline",
             gap: 12,
@@ -1072,7 +1072,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
                 return (
                   <div key={key} style={{
                     borderRadius: 8,
-                    border: "1px solid rgba(22,15,46,0.08)",
+                    border: "1px solid rgba(0,0,0,0.08)",
                     padding: "14px 16px 16px",
                   }}>
                     <p style={{
@@ -1125,9 +1125,9 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
                           }}
                           contentStyle={{
                             borderRadius: 8,
-                            border: "1px solid rgba(22,15,46,0.10)",
+                            border: "1px solid rgba(0,0,0,0.10)",
                             fontSize: 14,
-                            boxShadow: "0 4px 12px rgba(22,15,46,0.10)",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.10)",
                             color: DARK,
                           }}
                         />
@@ -1161,12 +1161,12 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
       <div style={{
         background: "#fff",
         borderRadius: 10,
-        boxShadow: "0 2px 8px rgba(22,15,46,0.07), 0 1px 2px rgba(22,15,46,0.04)",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
         overflow: "hidden",
       }}>
         <div style={{
           padding: "16px 24px",
-          borderBottom: "1px solid rgba(22,15,46,0.07)",
+          borderBottom: "1px solid rgba(0,0,0,0.07)",
           display: "flex", alignItems: "baseline", gap: 12,
         }}>
           <h3 style={{ fontSize: 17, fontWeight: 700, color: DARK, letterSpacing: "-0.01em" }}>
@@ -1188,7 +1188,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
                 }}>
                   {bucket}
                 </span>
-                <div style={{ flex: 1, height: 1, background: "rgba(22,15,46,0.07)" }} />
+                <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.07)" }} />
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
                 {features.map(f => (
@@ -1204,12 +1204,12 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
       <div style={{
         background: "#fff",
         borderRadius: 10,
-        boxShadow: "0 2px 8px rgba(22,15,46,0.07), 0 1px 2px rgba(22,15,46,0.04)",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
         overflow: "hidden",
       }}>
         <div style={{
           padding: "16px 24px",
-          borderBottom: "1px solid rgba(22,15,46,0.07)",
+          borderBottom: "1px solid rgba(0,0,0,0.07)",
           display: "flex", alignItems: "baseline", gap: 12,
         }}>
           <h3 style={{ fontSize: 17, fontWeight: 700, color: DARK, letterSpacing: "-0.01em" }}>
@@ -1231,7 +1231,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
                 }}>
                   {bucket}
                 </span>
-                <div style={{ flex: 1, height: 1, background: "rgba(22,15,46,0.07)" }} />
+                <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.07)" }} />
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
                 {features.map(f => (
@@ -1241,7 +1241,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
             </div>
           ))}
         </div>
-        <div style={{ padding: "10px 24px 14px", borderTop: "1px solid rgba(22,15,46,0.05)", display: "flex", gap: 20, flexWrap: "wrap" as const }}>
+        <div style={{ padding: "10px 24px 14px", borderTop: "1px solid rgba(0,0,0,0.05)", display: "flex", gap: 20, flexWrap: "wrap" as const }}>
           <span style={{ fontSize: 12, color: DARK, display: "flex", alignItems: "center", gap: 5 }}>
             <span style={{ padding: "1px 5px", borderRadius: 999, background: "rgba(100,116,139,0.10)", color: "#475569", fontWeight: 700, fontSize: 9 }}>limited docs</span>
             SkinAdvisor: limited public documentation; scores reflect best available sources only.
@@ -1254,12 +1254,12 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
         <div style={{
           background: "#fff",
           borderRadius: 10,
-          boxShadow: "0 2px 8px rgba(22,15,46,0.07), 0 1px 2px rgba(22,15,46,0.04)",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
           overflow: "hidden",
         }}>
           <div style={{
             padding: "16px 24px",
-            borderBottom: "1px solid rgba(22,15,46,0.07)",
+            borderBottom: "1px solid rgba(0,0,0,0.07)",
             display: "flex", alignItems: "baseline", gap: 12,
           }}>
             <h3 style={{ fontSize: 17, fontWeight: 700, color: DARK, letterSpacing: "-0.01em" }}>
@@ -1322,8 +1322,8 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
                             <span key={tag} style={{
                               fontSize: 13, fontWeight: 500,
                               padding: "3px 10px", borderRadius: 999,
-                              background: shared ? "rgba(22,15,46,0.04)" : "rgba(59,77,190,0.06)",
-                              border: `1px solid ${shared ? "rgba(22,15,46,0.10)" : "rgba(59,77,190,0.18)"}`,
+                              background: shared ? "rgba(0,0,0,0.04)" : "rgba(59,77,190,0.06)",
+                              border: `1px solid ${shared ? "rgba(0,0,0,0.10)" : "rgba(59,77,190,0.18)"}`,
                               color: shared ? DARK : ROSE,
                             }}>
                               {tag}
@@ -1347,10 +1347,10 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
       <div style={{
         background: "#fff",
         borderRadius: 10,
-        boxShadow: "0 2px 8px rgba(22,15,46,0.07), 0 1px 2px rgba(22,15,46,0.04)",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
         overflow: "hidden",
       }}>
-        <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(22,15,46,0.07)", display: "flex", alignItems: "baseline", gap: 12 }}>
+        <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)", display: "flex", alignItems: "baseline", gap: 12 }}>
           <h3 style={{ fontSize: 17, fontWeight: 700, color: DARK, letterSpacing: "-0.01em" }}>
             Product Feature Opportunity
           </h3>
@@ -1366,7 +1366,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
             {BRAND_HIGHLIGHTS.map(({ brand, feature, detail }) => (
               <div key={brand} style={{
                 borderRadius: 8,
-                border: "1px solid rgba(22,15,46,0.08)",
+                border: "1px solid rgba(0,0,0,0.08)",
                 padding: "14px 16px",
                 display: "flex",
                 flexDirection: "column",
@@ -1429,7 +1429,7 @@ export default function SkincareVisibilityCharts({ dailySummary, weeklySummary, 
 
       {/* Legal disclaimer */}
       <div style={{
-        borderTop: "1px solid rgba(22,15,46,0.08)",
+        borderTop: "1px solid rgba(0,0,0,0.08)",
         paddingTop: 20,
         display: "flex",
         flexDirection: "column",

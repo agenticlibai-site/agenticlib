@@ -22,7 +22,7 @@ const BRAND_COLORS: Record<DemoBrand, string> = {
 
 const DONUT_PALETTE = ["#7C3AED", "#C2186A", "#2563EB", "#059669", "#B45309", "#94A3B8"];
 
-const NAVY   = "#160F2E";
+const NAVY   = "#000000";
 const ACCENT = "#7C3AED";
 
 // ── Sample feature clusters (hardcoded for demo) ───────────────────────────────
@@ -93,7 +93,7 @@ function buildChartRows(trend: DemoData["trend"]): ChartRow[] {
 // ── Skeleton ──────────────────────────────────────────────────────────────────
 
 function Sk({ w = "100%", h = 14, r = 6 }: { w?: string | number; h?: number; r?: number }) {
-  return <div style={{ width: w, height: h, borderRadius: r, background: "rgba(22,15,46,0.07)", animation: "skpulse 1.4s ease-in-out infinite" }} />;
+  return <div style={{ width: w, height: h, borderRadius: r, background: "rgba(0,0,0,0.07)", animation: "skpulse 1.4s ease-in-out infinite" }} />;
 }
 
 // ── Stat card ─────────────────────────────────────────────────────────────────
@@ -102,8 +102,8 @@ function StatCard({
   label, value, sub, subGreen = false, loading,
 }: { label: string; value: string; sub: string; subGreen?: boolean; loading: boolean }) {
   return (
-    <div style={{ background: "#fff", borderRadius: 12, border: "1px solid rgba(22,15,46,0.08)", padding: "18px 20px", boxShadow: "0 1px 4px rgba(22,15,46,0.05)" }}>
-      <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "rgba(22,15,46,0.40)", marginBottom: 10 }}>
+    <div style={{ background: "#fff", borderRadius: 12, border: "1px solid rgba(0,0,0,0.08)", padding: "18px 20px", boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}>
+      <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "#000000", marginBottom: 10 }}>
         {label}
       </p>
       {loading ? (
@@ -113,7 +113,7 @@ function StatCard({
           <p style={{ fontSize: 34, fontWeight: 800, color: NAVY, letterSpacing: "-0.025em", lineHeight: 1.1, marginBottom: 6 }}>
             {value}
           </p>
-          <p style={{ fontSize: 12, fontWeight: 500, color: subGreen ? "#059669" : "rgba(22,15,46,0.45)" }}>
+          <p style={{ fontSize: 12, fontWeight: 500, color: subGreen ? "#059669" : "#000000" }}>
             {sub}
           </p>
         </>
@@ -127,7 +127,7 @@ function StatCard({
 function MiniDonut({ title, rows, loading }: { title: string; rows: SOVRow[]; loading: boolean }) {
   const data = rows.map((r, i) => ({ name: r.brand, value: r.sov_pct, color: DONUT_PALETTE[i] ?? "#94A3B8" }));
   return (
-    <div style={{ background: "#fff", borderRadius: 12, border: "1px solid rgba(22,15,46,0.08)", padding: "16px 18px", boxShadow: "0 1px 4px rgba(22,15,46,0.05)" }}>
+    <div style={{ background: "#fff", borderRadius: 12, border: "1px solid rgba(0,0,0,0.08)", padding: "16px 18px", boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}>
       <p style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 14, letterSpacing: "-0.01em" }}>{title}</p>
       {loading ? (
         <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
@@ -137,7 +137,7 @@ function MiniDonut({ title, rows, loading }: { title: string; rows: SOVRow[]; lo
           </div>
         </div>
       ) : rows.length === 0 ? (
-        <p style={{ fontSize: 13, color: "rgba(22,15,46,0.30)", padding: "24px 0" }}>No data</p>
+        <p style={{ fontSize: 13, color: "#000000", padding: "24px 0" }}>No data</p>
       ) : (
         <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
           <div style={{ flexShrink: 0, width: 120, height: 120 }}>
@@ -147,7 +147,7 @@ function MiniDonut({ title, rows, loading }: { title: string; rows: SOVRow[]; lo
               </Pie>
               <Tooltip
                 formatter={(v) => [`${v}%`, "SOV"]}
-                contentStyle={{ borderRadius: 8, border: "1px solid rgba(22,15,46,0.10)", fontSize: 11, background: "#fff" }}
+                contentStyle={{ borderRadius: 8, border: "1px solid rgba(0,0,0,0.10)", fontSize: 11, background: "#fff" }}
               />
             </PieChart>
           </div>
@@ -243,7 +243,7 @@ export default function HomepageDemoSection() {
           <h2 style={{ fontSize: 24, fontWeight: 800, color: NAVY, letterSpacing: "-0.02em", marginBottom: 6 }}>
             Marketing AI Agents — Visibility Overview
           </h2>
-          <p style={{ fontSize: 14, color: "rgba(22,15,46,0.50)" }}>
+          <p style={{ fontSize: 14, color: "#000000" }}>
             Brand mentions, positioning, and feature coverage across AI answer engines.
           </p>
         </div>
@@ -276,14 +276,14 @@ export default function HomepageDemoSection() {
           <h3 style={{ fontSize: 20, fontWeight: 800, color: NAVY, letterSpacing: "-0.015em", marginBottom: 5 }}>
             Brand Coverage Over Time
           </h3>
-          <p style={{ fontSize: 13, color: "rgba(22,15,46,0.50)", lineHeight: 1.55, maxWidth: 580, marginBottom: 20 }}>
+          <p style={{ fontSize: 13, color: "#000000", lineHeight: 1.55, maxWidth: 580, marginBottom: 20 }}>
             How often each brand appears in AI-generated responses over the past 7 days, tracked across Claude Haiku and GPT-4o-mini. A higher count means AI models are recommending that brand more frequently.
           </p>
         </div>
 
         <div className="demo-chart-grid" style={{ display: "grid", gridTemplateColumns: "1fr 280px", gap: 20, marginBottom: 44 }}>
           {/* Area + line chart */}
-          <div style={{ background: "#fff", borderRadius: 12, border: "1px solid rgba(22,15,46,0.08)", padding: "20px 20px 14px", boxShadow: "0 1px 4px rgba(22,15,46,0.05)" }}>
+          <div style={{ background: "#fff", borderRadius: 12, border: "1px solid rgba(0,0,0,0.08)", padding: "20px 20px 14px", boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}>
             {loading ? (
               <div style={{ height: 240, display: "flex", flexDirection: "column", justifyContent: "flex-end", gap: 8, paddingBottom: 28 }}>
                 {[50, 65, 45, 75, 55].map((h, i) => <Sk key={i} w="100%" h={h} r={4} />)}
@@ -291,21 +291,21 @@ export default function HomepageDemoSection() {
             ) : chartRows.length > 0 ? (
               <ResponsiveContainer width="100%" height={240}>
                 <ComposedChart data={chartRows} margin={{ top: 4, right: 4, left: -18, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="4 4" stroke="rgba(22,15,46,0.055)" vertical={false} />
+                  <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,0,0,0.055)" vertical={false} />
                   <XAxis
                     dataKey="date"
                     ticks={chartDates}
                     tickFormatter={fmtDate}
-                    tick={{ fontSize: 11, fill: "rgba(22,15,46,0.45)" }}
+                    tick={{ fontSize: 11, fill: "rgba(0,0,0,0.45)" }}
                     axisLine={false} tickLine={false} dy={8}
                   />
                   <YAxis
                     allowDecimals={false}
-                    tick={{ fontSize: 11, fill: "rgba(22,15,46,0.45)" }}
+                    tick={{ fontSize: 11, fill: "rgba(0,0,0,0.45)" }}
                     axisLine={false} tickLine={false} width={30}
                   />
                   <Tooltip
-                    contentStyle={{ borderRadius: 8, border: "1px solid rgba(22,15,46,0.10)", fontSize: 12, boxShadow: "0 4px 16px rgba(22,15,46,0.10)", color: NAVY, background: "#fff" }}
+                    contentStyle={{ borderRadius: 8, border: "1px solid rgba(0,0,0,0.10)", fontSize: 12, boxShadow: "0 4px 16px rgba(0,0,0,0.10)", color: NAVY, background: "#fff" }}
                     labelFormatter={(v) => fmtDate(String(v))}
                     itemSorter={(item) => -(item.value as number)}
                   />
@@ -317,7 +317,7 @@ export default function HomepageDemoSection() {
               </ResponsiveContainer>
             ) : (
               <div style={{ height: 240, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <p style={{ fontSize: 14, color: "rgba(22,15,46,0.30)" }}>No data available</p>
+                <p style={{ fontSize: 14, color: "#000000" }}>No data available</p>
               </div>
             )}
             <div style={{ display: "flex", flexWrap: "wrap", gap: "5px 18px", marginTop: 14 }}>
@@ -333,8 +333,8 @@ export default function HomepageDemoSection() {
           {/* Right stat cards */}
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {/* LLM Visibility */}
-            <div style={{ flex: 1, background: "#fff", borderRadius: 12, border: "1px solid rgba(22,15,46,0.08)", padding: "16px 18px", boxShadow: "0 1px 4px rgba(22,15,46,0.05)" }}>
-              <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "rgba(22,15,46,0.40)", marginBottom: 12 }}>
+            <div style={{ flex: 1, background: "#fff", borderRadius: 12, border: "1px solid rgba(0,0,0,0.08)", padding: "16px 18px", boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}>
+              <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "#000000", marginBottom: 12 }}>
                 LLM Visibility · 7 Days
               </p>
               <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
@@ -352,7 +352,7 @@ export default function HomepageDemoSection() {
                           <span style={{ fontSize: 12, fontWeight: 600, color: NAVY, flex: 1 }}>{row.brand}</span>
                           <span style={{ fontSize: 12, fontWeight: 700, color, fontVariantNumeric: "tabular-nums" }}>{row.total_mentions.toLocaleString()}</span>
                         </div>
-                        <div style={{ height: 3, borderRadius: 999, background: "rgba(22,15,46,0.07)", marginLeft: 14 }}>
+                        <div style={{ height: 3, borderRadius: 999, background: "rgba(0,0,0,0.07)", marginLeft: 14 }}>
                           <div style={{ height: 3, borderRadius: 999, background: color, width: `${(row.total_mentions / max) * 100}%`, opacity: 0.65 }} />
                         </div>
                       </div>
@@ -362,11 +362,11 @@ export default function HomepageDemoSection() {
             </div>
 
             {/* Avg Position */}
-            <div style={{ flex: 1, background: "#fff", borderRadius: 12, border: "1px solid rgba(22,15,46,0.08)", padding: "16px 18px", boxShadow: "0 1px 4px rgba(22,15,46,0.05)" }}>
-              <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "rgba(22,15,46,0.40)", marginBottom: 2 }}>
+            <div style={{ flex: 1, background: "#fff", borderRadius: 12, border: "1px solid rgba(0,0,0,0.08)", padding: "16px 18px", boxShadow: "0 1px 4px rgba(0,0,0,0.05)" }}>
+              <p style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.12em", color: "#000000", marginBottom: 2 }}>
                 Avg Brand Position · 7 Days
               </p>
-              <p style={{ fontSize: 10, color: "rgba(22,15,46,0.35)", marginBottom: 10 }}>(lower is better)</p>
+              <p style={{ fontSize: 10, color: "#000000", marginBottom: 10 }}>(lower is better)</p>
               <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
                 {loading
                   ? Array.from({ length: 5 }, (_, i) => (
@@ -392,7 +392,7 @@ export default function HomepageDemoSection() {
           <h3 style={{ fontSize: 20, fontWeight: 800, color: NAVY, letterSpacing: "-0.015em", marginBottom: 5 }}>
             Use Case Share of Voice
           </h3>
-          <p style={{ fontSize: 13, color: "rgba(22,15,46,0.50)", lineHeight: 1.55, maxWidth: 580, marginBottom: 20 }}>
+          <p style={{ fontSize: 13, color: "#000000", lineHeight: 1.55, maxWidth: 580, marginBottom: 20 }}>
             Which brand dominates AI recommendations within each marketing use case cluster — paid ads, content, lifecycle, and lead-gen. A higher share means that brand is recommended more than its competitors for that specific job.
           </p>
         </div>
@@ -403,7 +403,7 @@ export default function HomepageDemoSection() {
           <MiniDonut title="Lifecycle & Retention Automation" rows={data?.sovLifecycle ?? []} loading={loading} />
           <MiniDonut title="Lead-Gen & Funnel"            rows={data?.sovLeadgen   ?? []} loading={loading} />
         </div>
-        <p style={{ fontSize: 12, color: "rgba(22,15,46,0.38)", fontStyle: "italic", textAlign: "center", marginBottom: 44 }}>
+        <p style={{ fontSize: 12, color: "#000000", fontStyle: "italic", textAlign: "center", marginBottom: 44 }}>
           4 use case clusters tracked · 22 AI marketing agent brands · updated daily
         </p>
 
@@ -413,20 +413,20 @@ export default function HomepageDemoSection() {
             <h3 style={{ fontSize: 20, fontWeight: 800, color: NAVY, letterSpacing: "-0.015em", margin: 0 }}>
               Product Feature Scores
             </h3>
-            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "rgba(22,15,46,0.38)", background: "rgba(22,15,46,0.06)", borderRadius: 999, padding: "3px 9px" }}>
+            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "#000000", background: "rgba(0,0,0,0.06)", borderRadius: 999, padding: "3px 9px" }}>
               Sample data
             </span>
           </div>
-          <p style={{ fontSize: 13, color: "rgba(22,15,46,0.50)", lineHeight: 1.55, maxWidth: 580, marginBottom: 20 }}>
+          <p style={{ fontSize: 13, color: "#000000", lineHeight: 1.55, maxWidth: 580, marginBottom: 20 }}>
             Each brand is scored 0–100 through product feature prompting — AI models are asked about specific capabilities over time, and scores reflect how consistently each brand is recognised as delivering that feature. Builders can see exactly where their agent needs to improve.
           </p>
         </div>
 
-        <div className="demo-feature-scroll" style={{ background: "#fff", borderRadius: 12, border: "1px solid rgba(22,15,46,0.08)", padding: "4px 24px 20px", boxShadow: "0 1px 4px rgba(22,15,46,0.05)", marginBottom: 44 }}>
+        <div className="demo-feature-scroll" style={{ background: "#fff", borderRadius: 12, border: "1px solid rgba(0,0,0,0.08)", padding: "4px 24px 20px", boxShadow: "0 1px 4px rgba(0,0,0,0.05)", marginBottom: 44 }}>
           <table style={{ width: "100%", borderCollapse: "collapse", minWidth: 640 }}>
             <thead>
-              <tr style={{ borderBottom: "2px solid rgba(22,15,46,0.07)" }}>
-                <th style={{ textAlign: "left", padding: "16px 16px 12px 0", fontSize: 10, fontWeight: 700, color: "rgba(22,15,46,0.35)", textTransform: "uppercase" as const, letterSpacing: "0.09em", minWidth: 180 }}>
+              <tr style={{ borderBottom: "2px solid rgba(0,0,0,0.07)" }}>
+                <th style={{ textAlign: "left", padding: "16px 16px 12px 0", fontSize: 10, fontWeight: 700, color: "#000000", textTransform: "uppercase" as const, letterSpacing: "0.09em", minWidth: 180 }}>
                   Feature
                 </th>
                 {DEMO_BRANDS.map((brand) => (
@@ -446,7 +446,7 @@ export default function HomepageDemoSection() {
                     </td>
                   </tr>
                   {cluster.features.map((feature, fi) => (
-                    <tr key={`${cluster.label}-${fi}`} style={{ borderBottom: "1px solid rgba(22,15,46,0.045)" }}>
+                    <tr key={`${cluster.label}-${fi}`} style={{ borderBottom: "1px solid rgba(0,0,0,0.045)" }}>
                       <td style={{ padding: "10px 16px 10px 0", fontSize: 13, fontWeight: 600, color: NAVY }}>
                         {feature.name}
                       </td>
@@ -456,7 +456,7 @@ export default function HomepageDemoSection() {
                         return (
                           <td key={brand} style={{ padding: "10px 8px", verticalAlign: "middle" }}>
                             <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
-                              <div style={{ width: 60, height: 5, background: "rgba(22,15,46,0.07)", borderRadius: 999, flexShrink: 0 }}>
+                              <div style={{ width: 60, height: 5, background: "rgba(0,0,0,0.07)", borderRadius: 999, flexShrink: 0 }}>
                                 <div style={{ width: `${score}%`, height: 5, background: color, borderRadius: 999 }} />
                               </div>
                               <span style={{ fontSize: 13, fontWeight: 700, color: NAVY, fontVariantNumeric: "tabular-nums" }}>
@@ -472,7 +472,7 @@ export default function HomepageDemoSection() {
               ))}
             </tbody>
           </table>
-          <p style={{ fontSize: 11, color: "rgba(22,15,46,0.38)", fontStyle: "italic", marginTop: 16, borderTop: "1px solid rgba(22,15,46,0.06)", paddingTop: 14 }}>
+          <p style={{ fontSize: 11, color: "#000000", fontStyle: "italic", marginTop: 16, borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 14 }}>
             6 capabilities scored per brand · verified across Claude Haiku and GPT-4o-mini · updated daily
           </p>
         </div>
@@ -513,16 +513,16 @@ export default function HomepageDemoSection() {
       {/* ── Email capture modal ── */}
       {showModal && (
         <div
-          style={{ position: "fixed", inset: 0, background: "rgba(22,15,46,0.55)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}
+          style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.55)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px" }}
           onClick={() => { setShowModal(false); setSubmitted(false); setEmailInput(""); setSubmitError(""); }}
         >
           <div
-            style={{ background: "#fff", borderRadius: 20, padding: "36px 32px 32px", maxWidth: 420, width: "100%", boxShadow: "0 20px 60px rgba(22,15,46,0.22)", position: "relative" }}
+            style={{ background: "#fff", borderRadius: 20, padding: "36px 32px 32px", maxWidth: 420, width: "100%", boxShadow: "0 20px 60px rgba(0,0,0,0.22)", position: "relative" }}
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => { setShowModal(false); setSubmitted(false); setEmailInput(""); setSubmitError(""); }}
-              style={{ position: "absolute", top: 16, right: 16, background: "none", border: "none", cursor: "pointer", color: "rgba(22,15,46,0.35)", fontSize: 20, lineHeight: 1, padding: "4px 8px" }}
+              style={{ position: "absolute", top: 16, right: 16, background: "none", border: "none", cursor: "pointer", color: "#000000", fontSize: 20, lineHeight: 1, padding: "4px 8px" }}
               aria-label="Close"
             >✕</button>
 
@@ -536,7 +536,7 @@ export default function HomepageDemoSection() {
                 <h3 style={{ fontSize: 22, fontWeight: 800, color: NAVY, letterSpacing: "-0.015em", marginBottom: 8 }}>
                   Request your brand&apos;s report
                 </h3>
-                <p style={{ fontSize: 14, color: "rgba(22,15,46,0.55)", lineHeight: 1.55, marginBottom: 24 }}>
+                <p style={{ fontSize: 14, color: "#000000", lineHeight: 1.55, marginBottom: 24 }}>
                   Share your email and we&apos;ll be in touch to discuss your report needs.
                 </p>
                 <form onSubmit={handleRequestReport} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
@@ -547,7 +547,7 @@ export default function HomepageDemoSection() {
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
                     style={{
-                      border: "1.5px solid rgba(22,15,46,0.14)",
+                      border: "1.5px solid rgba(0,0,0,0.14)",
                       borderRadius: 10,
                       padding: "12px 14px",
                       fontSize: 14,
@@ -557,7 +557,7 @@ export default function HomepageDemoSection() {
                       fontFamily: "inherit",
                     }}
                     onFocus={(e) => { (e.target as HTMLInputElement).style.borderColor = ACCENT; }}
-                    onBlur={(e) => { (e.target as HTMLInputElement).style.borderColor = "rgba(22,15,46,0.14)"; }}
+                    onBlur={(e) => { (e.target as HTMLInputElement).style.borderColor = "rgba(0,0,0,0.14)"; }}
                   />
                   {submitError && (
                     <p style={{ fontSize: 13, color: "#DC2626", margin: 0 }}>{submitError}</p>
@@ -589,7 +589,7 @@ export default function HomepageDemoSection() {
                 <h3 style={{ fontSize: 22, fontWeight: 800, color: NAVY, letterSpacing: "-0.015em", marginBottom: 10 }}>
                   We&apos;ll be in touch
                 </h3>
-                <p style={{ fontSize: 14, color: "rgba(22,15,46,0.55)", lineHeight: 1.55, marginBottom: 24 }}>
+                <p style={{ fontSize: 14, color: "#000000", lineHeight: 1.55, marginBottom: 24 }}>
                   Thanks! We&apos;ve received your request and will contact you about your brand&apos;s report shortly.
                 </p>
                 <button

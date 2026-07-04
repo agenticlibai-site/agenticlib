@@ -19,8 +19,8 @@ function DomainSearch() {
     <div style={{ marginTop: 32, maxWidth: 300, position: "relative", zIndex: 20 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, background: "rgba(255,255,255,0.90)", borderRadius: open ? "12px 12px 0 0" : 12, border: "1.5px solid rgba(240,97,122,0.30)", borderBottom: open ? "1px solid rgba(240,97,122,0.12)" : "1.5px solid rgba(240,97,122,0.30)", padding: "11px 16px", boxShadow: open ? "0 2px 10px rgba(90,26,50,.08)" : "0 2px 10px rgba(90,26,50,.10)", transition: "border-radius 0.1s" }}>
         <svg width="15" height="15" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, opacity: 0.4 }}>
-          <circle cx="6.5" cy="6.5" r="4.5" stroke="#5A1A22" strokeWidth="1.6"/>
-          <path d="M10 10l3 3" stroke="#5A1A22" strokeWidth="1.6" strokeLinecap="round"/>
+          <circle cx="6.5" cy="6.5" r="4.5" stroke="#000000" strokeWidth="1.6"/>
+          <path d="M10 10l3 3" stroke="#000000" strokeWidth="1.6" strokeLinecap="round"/>
         </svg>
         <input
           value={query}
@@ -28,16 +28,16 @@ function DomainSearch() {
           onFocus={() => setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
           placeholder="Search for your domain..."
-          style={{ border: "none", outline: "none", background: "transparent", fontSize: 13.5, fontWeight: 500, color: "#5A1A22", width: "100%", fontFamily: "inherit" }}
+          style={{ border: "none", outline: "none", background: "transparent", fontSize: 13.5, fontWeight: 500, color: "#000000", width: "100%", fontFamily: "inherit" }}
         />
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ flexShrink: 0, opacity: 0.4, transform: open ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>
-          <path d="M2 4l4 4 4-4" stroke="#5A1A22" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+          <path d="M2 4l4 4 4-4" stroke="#000000" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
         </svg>
       </div>
       {open && filtered.length > 0 && (
         <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "white", borderRadius: "0 0 12px 12px", border: "1.5px solid rgba(240,97,122,0.30)", borderTop: "none", boxShadow: "0 8px 24px rgba(90,26,50,.14)", overflow: "hidden" }}>
           {filtered.map(d => (
-            <Link key={d.href} href={d.href} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "11px 16px", textDecoration: "none", color: "#5A1A22", fontSize: 13.5, fontWeight: 600 }}
+            <Link key={d.href} href={d.href} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "11px 16px", textDecoration: "none", color: "#000000", fontSize: 13.5, fontWeight: 600 }}
               onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(240,97,122,0.06)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
               {d.label}
@@ -68,13 +68,13 @@ export default function AIAgentBuildersPage() {
           <div className="why-grid" style={{ position: "relative", zIndex: 2 }}>
             {/* LEFT: copy */}
             <div>
-              <span style={{ display: "inline-block", border: "1px solid rgba(176,64,72,.30)", background: "rgba(255,255,255,.45)", color: "#5A1A22", fontSize: 13.5, fontWeight: 600, letterSpacing: ".01em", padding: "7px 15px", borderRadius: 9 }}>Why AgenticLib</span>
-              <h2 style={{ fontSize: "clamp(28px,3.2vw,42px)", fontWeight: 600, lineHeight: 1.14, letterSpacing: "-.025em", color: "#5A1A22", margin: "26px 0 0", maxWidth: "18ch" }}>
+              <span style={{ display: "inline-block", border: "1px solid rgba(176,64,72,.30)", background: "rgba(255,255,255,.45)", color: "#000000", fontSize: 13.5, fontWeight: 600, letterSpacing: ".01em", padding: "7px 15px", borderRadius: 9 }}>Why AgenticLib</span>
+              <h2 style={{ fontSize: "clamp(28px,3.2vw,42px)", fontWeight: 600, lineHeight: 1.14, letterSpacing: "-.025em", color: "#000000", margin: "26px 0 0", maxWidth: "18ch" }}>
                 {"Insightful comparison intelligence on "}
                 <span style={{ background: "linear-gradient(100deg,#E0506A,#D14B86 70%,#C24D9E)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", color: "transparent", WebkitBoxDecorationBreak: "clone", boxDecorationBreak: "clone" }}>brand and product</span>
                 {" for AI agent builders"}
               </h2>
-              <p style={{ fontSize: 17, lineHeight: 1.62, color: "rgba(74,17,25,.82)", margin: "22px 0 0", maxWidth: "52ch" }}>AgenticLib traces your agent brand from business domain to product feature, benchmarks your visibility against competition and turns your feature gaps into a roadmap - so you show up where your buyers are actually asking.</p>
+              <p style={{ fontSize: 17, lineHeight: 1.62, color: "#000000", margin: "22px 0 0", maxWidth: "52ch" }}>AgenticLib traces your agent brand from business domain to product feature, benchmarks your visibility against competition and turns your feature gaps into a roadmap - so you show up where your buyers are actually asking.</p>
               <DomainSearch />
             </div>
 
@@ -108,7 +108,7 @@ export default function AIAgentBuildersPage() {
                 ].map(({ label, icon }) => (
                   <div key={label} style={{ display: "flex", alignItems: "center", gap: 13, background: "rgba(255,255,255,.58)", backdropFilter: "blur(20px) saturate(150%)", WebkitBackdropFilter: "blur(20px) saturate(150%)", border: "1px solid rgba(255,255,255,.85)", borderRadius: 16, padding: "13px 16px 13px 13px", boxShadow: "0 10px 26px rgba(90,26,50,.14)" }}>
                     <span style={{ width: 44, height: 44, flex: "none", borderRadius: 13, background: "rgba(240,97,122,.13)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{icon}</span>
-                    <div style={{ fontWeight: 700, fontSize: 14.5, color: "#5A1A22", letterSpacing: "-.01em" }}>{label}</div>
+                    <div style={{ fontWeight: 700, fontSize: 14.5, color: "#000000", letterSpacing: "-.01em" }}>{label}</div>
                   </div>
                 ))}
               </div>
@@ -122,7 +122,7 @@ export default function AIAgentBuildersPage() {
         <div style={{ maxWidth: 1180, margin: "0 auto" }}>
           <div style={{ maxWidth: 720, margin: "0 auto 40px", textAlign: "center" }}>
             <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, letterSpacing: ".22em", color: "#C2186A", margin: "0 0 14px" }}>WHAT YOU GET</p>
-            <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 600, letterSpacing: "-.03em", lineHeight: 1.06, margin: 0, color: "#0E1320" }}>Our analytics lead you to successful outcomes</h2>
+            <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 600, letterSpacing: "-.03em", lineHeight: 1.06, margin: 0, color: "#000000" }}>Our analytics lead you to successful outcomes</h2>
           </div>
 
           <div className="caps-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, alignItems: "stretch" }}>
@@ -134,8 +134,8 @@ export default function AIAgentBuildersPage() {
                   <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color: "#7C3AED" }}>01</span>
                   <span style={{ height: 1, flex: 1, background: "linear-gradient(90deg,rgba(124,58,237,.34),transparent)", display: "block" }}></span>
                 </div>
-                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#0E1320" }}>Product Feature Analytics</h3>
-                <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#3A4256", margin: 0 }}>Feature analytics across security, integrations, task capability, pricing and coverage — mapped to the domain and use case each one actually serves.</p>
+                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>Product Feature Analytics</h3>
+                <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#000000", margin: 0 }}>Feature analytics across security, integrations, task capability, pricing and coverage — mapped to the domain and use case each one actually serves.</p>
               </div>
               <div className="feature-card-icon" style={{ flex: "none", width: 150, height: 120, borderRadius: 16, background: "linear-gradient(160deg,#F3EEFE,#EDE6FD)", display: "flex", alignItems: "center", justifyContent: "center", padding: 18, boxShadow: "inset 0 1px 0 rgba(255,255,255,.7)" }}>
                 <svg width="118" height="84" viewBox="0 0 118 84" fill="none">
@@ -160,8 +160,8 @@ export default function AIAgentBuildersPage() {
                   <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color: "#5E6CE8" }}>02</span>
                   <span style={{ height: 1, flex: 1, background: "linear-gradient(90deg,rgba(94,108,232,.34),transparent)", display: "block" }}></span>
                 </div>
-                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#0E1320" }}>Brand &amp; Use Case Benchmarking</h3>
-                <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#3A4256", margin: 0 }}>Benchmark your brand against the landscape, by use case — share of voice, where rivals lead, and how your feature cluster stacks up.</p>
+                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>Brand &amp; Use Case Benchmarking</h3>
+                <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#000000", margin: 0 }}>Benchmark your brand against the landscape, by use case — share of voice, where rivals lead, and how your feature cluster stacks up.</p>
               </div>
               <div className="feature-card-icon" style={{ flex: "none", width: 150, height: 120, borderRadius: 16, background: "linear-gradient(160deg,#EEF0FE,#E5E9FD)", display: "flex", alignItems: "flex-end", justifyContent: "center", padding: "18px 16px", boxShadow: "inset 0 1px 0 rgba(255,255,255,.7)" }}>
                 <svg width="120" height="84" viewBox="0 0 120 84" fill="none">
@@ -183,8 +183,8 @@ export default function AIAgentBuildersPage() {
                   <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color: "#C2186A" }}>03</span>
                   <span style={{ height: 1, flex: 1, background: "linear-gradient(90deg,rgba(194,24,106,.34),transparent)", display: "block" }}></span>
                 </div>
-                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#0E1320" }}>Sentiment &amp; Brand Coverage</h3>
-                <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#3A4256", margin: 0 }}>Prompt sentiment and brand coverage — tracking the tags and language an LLM uses to describe your agent to a real user.</p>
+                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>Sentiment &amp; Brand Coverage</h3>
+                <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#000000", margin: 0 }}>Prompt sentiment and brand coverage — tracking the tags and language an LLM uses to describe your agent to a real user.</p>
               </div>
               <div className="feature-card-icon" style={{ flex: "none", width: 150, height: 120, borderRadius: 16, background: "linear-gradient(160deg,#FCEAF3,#F8DFEC)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 1px 0 rgba(255,255,255,.7)" }}>
                 <svg width="110" height="90" viewBox="0 0 110 90" fill="none" stroke="url(#aab-capNode)" strokeWidth="2.4">
@@ -208,8 +208,8 @@ export default function AIAgentBuildersPage() {
                   <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color: "#E0506A" }}>04</span>
                   <span style={{ height: 1, flex: 1, background: "linear-gradient(90deg,rgba(224,80,106,.4),transparent)", display: "block" }}></span>
                 </div>
-                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#0E1320" }}>Improvements Report</h3>
-                <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#3A4256", margin: 0 }}>An action plan and roadmap — exactly how to improve your features so your agent surfaces where your buyers are actually asking.</p>
+                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>Improvements Report</h3>
+                <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#000000", margin: 0 }}>An action plan and roadmap — exactly how to improve your features so your agent surfaces where your buyers are actually asking.</p>
               </div>
               <div className="feature-card-icon" style={{ flex: "none", width: 150, height: 120, borderRadius: 16, background: "linear-gradient(160deg,#FFF1F4,#FCE4EC)", border: "1px solid #F6D8E2", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 1px 0 rgba(255,255,255,.8)" }}>
                 <span style={{ position: "absolute", top: 11, right: 11, fontFamily: "var(--font-space-mono), monospace", fontSize: 11, fontWeight: 700, color: "#fff", background: "linear-gradient(100deg,#F0617A,#FF9E73)", padding: "3px 9px", borderRadius: 999, boxShadow: "0 4px 10px rgba(240,97,122,.35)" }}>+47%</span>

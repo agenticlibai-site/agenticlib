@@ -14,7 +14,7 @@ const CATEGORY_COLORS: Record<string, string> = {
 };
 
 function categoryClass(cat: string) {
-  return CATEGORY_COLORS[cat] ?? "bg-zinc-100 text-zinc-600 border-zinc-200";
+  return CATEGORY_COLORS[cat] ?? "bg-zinc-100 text-black border-zinc-200";
 }
 
 function BlogCarousel({ items, onNavigate }: { items: Blog[]; onNavigate: (slug: string, title: string) => void }) {
@@ -53,12 +53,12 @@ function BlogCarousel({ items, onNavigate }: { items: Blog[]; onNavigate: (slug:
 
               {/* Body */}
               <div className="p-5 flex flex-col flex-1">
-                <p className="text-xs text-zinc-400 mb-2">{blog.date} · {blog.read}</p>
-                <h3 className="text-sm font-semibold text-zinc-900 leading-snug mb-2 flex-1
+                <p className="text-xs text-black/50 mb-2">{blog.date} · {blog.read}</p>
+                <h3 className="text-sm font-semibold text-black leading-snug mb-2 flex-1
                                group-hover:text-violet-700 transition-colors line-clamp-2">
                   {blog.title}
                 </h3>
-                <p className="text-xs text-zinc-500 leading-relaxed line-clamp-2 mb-4">
+                <p className="text-xs text-black/60 leading-relaxed line-clamp-2 mb-4">
                   {blog.description}
                 </p>
                 <div className="flex items-center justify-between pt-3 border-t border-zinc-100/80">
@@ -128,15 +128,15 @@ export default function BlogPage() {
 
           {/* Hero */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-white/60 border border-white/40 text-zinc-600 text-xs px-3 py-1.5 rounded-full mb-6">
+            <div className="inline-flex items-center gap-2 bg-white/60 border border-white/40 text-black text-xs px-3 py-1.5 rounded-full mb-6">
               <span className="w-1.5 h-1.5 rounded-full bg-violet-500" />
               The AgenticLib Blog
             </div>
-            <h1 className="text-5xl md:text-6xl font-semibold tracking-tight text-zinc-900 mb-4">
+            <h1 className="text-5xl md:text-6xl font-semibold tracking-tight text-black mb-4">
               Insights on{" "}
               <span className="gradient-text">AI Agents</span>
             </h1>
-            <p className="text-lg text-zinc-500 max-w-lg mx-auto leading-relaxed">
+            <p className="text-lg text-black/60 max-w-lg mx-auto leading-relaxed">
               Expert guides, industry analysis, and news from the world of AI agents and automation.
             </p>
           </div>
@@ -159,7 +159,7 @@ export default function BlogPage() {
                   </span>
                   <div className="flex-1 h-px bg-gradient-to-r from-fuchsia-200 to-transparent" />
                 </div>
-                <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-zinc-900 mb-6">
+                <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-black mb-6">
                   Everyday, Made{" "}
                   <span className="gradient-text">Easier with AI Agents</span>
                 </h2>
@@ -195,11 +195,11 @@ export default function BlogPage() {
 
                   {/* Body */}
                   <div className="p-5 flex flex-col flex-1">
-                    <p className="text-xs text-zinc-400 mb-2">{blog.date} · {blog.read}</p>
-                    <h3 className="text-base font-semibold text-zinc-900 leading-snug mb-2 group-hover:text-violet-700 transition-colors flex-1">
+                    <p className="text-xs text-black/50 mb-2">{blog.date} · {blog.read}</p>
+                    <h3 className="text-base font-semibold text-black leading-snug mb-2 group-hover:text-violet-700 transition-colors flex-1">
                       {blog.title}
                     </h3>
-                    <p className="text-xs text-zinc-500 leading-relaxed mb-4 line-clamp-2">
+                    <p className="text-xs text-black/60 leading-relaxed mb-4 line-clamp-2">
                       {blog.description}
                     </p>
                     <div className="flex items-center justify-between pt-3 border-t border-zinc-100/80">
@@ -217,7 +217,7 @@ export default function BlogPage() {
         </div>
       </main>
 
-      <footer className="relative z-10 py-10 text-center text-sm text-zinc-400 border-t border-white/30">
+      <footer className="relative z-10 py-10 text-center text-sm text-black/50 border-t border-white/30">
         © 2026 AgenticLib
       </footer>
 
@@ -255,10 +255,10 @@ function AuthorChip({
         A
       </div>
       <div>
-        <p className={`font-medium text-zinc-700 ${size === "sm" ? "text-[11px]" : "text-xs"}`}>
+        <p className={`font-medium text-black ${size === "sm" ? "text-[11px]" : "text-xs"}`}>
           {name}
         </p>
-        {role && <p className="text-[10px] text-zinc-400">{role}</p>}
+        {role && <p className="text-[10px] text-black/50">{role}</p>}
       </div>
     </div>
   );

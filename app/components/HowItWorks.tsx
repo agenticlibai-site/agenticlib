@@ -63,10 +63,10 @@ function WizardVisual({ active }: { active: boolean }) {
       <div style={{ opacity: phaseOpacity, transition: "opacity 0.25s ease" }}>
         {phase === "domain" ? (
           <>
-            <p className="text-base font-bold text-gray-900 leading-snug mb-0.5">
+            <p className="text-base font-bold text-black leading-snug mb-0.5">
               What&apos;s your business domain?
             </p>
-            <p className="text-xs text-gray-400 mb-4">
+            <p className="text-xs text-black/50 mb-4">
               Select the industry you want to find an agent in.
             </p>
             <div className="grid grid-cols-2 gap-2.5">
@@ -88,8 +88,8 @@ function WizardVisual({ active }: { active: boolean }) {
                       <Icon size={16} strokeWidth={1.8} color={d.iconColor} />
                     </div>
                     <div className="px-3 py-2" style={{ background: sel ? `${d.iconBg}66` : "white" }}>
-                      <p className="text-xs font-bold text-gray-900 leading-tight">{d.label}</p>
-                      <p className="text-[10px] text-gray-400 leading-tight mt-0.5">{d.desc}</p>
+                      <p className="text-xs font-bold text-black leading-tight">{d.label}</p>
+                      <p className="text-[10px] text-black/50 leading-tight mt-0.5">{d.desc}</p>
                     </div>
                   </div>
                 );
@@ -98,10 +98,10 @@ function WizardVisual({ active }: { active: boolean }) {
           </>
         ) : (
           <>
-            <p className="text-base font-bold text-gray-900 leading-snug mb-0.5">
+            <p className="text-base font-bold text-black leading-snug mb-0.5">
               What is your primary marketing goal?
             </p>
-            <p className="text-xs text-gray-400 mb-3">Select all that apply.</p>
+            <p className="text-xs text-black/50 mb-3">Select all that apply.</p>
             <div className="flex flex-col">
               {GOALS.map((goal, i) => (
                 <div key={goal}>
@@ -127,7 +127,7 @@ function WizardVisual({ active }: { active: boolean }) {
                     <span
                       className="text-xs leading-snug"
                       style={{
-                        color: checked[i] ? "#111827" : "#6B7280",
+                        color: checked[i] ? "#000000" : "#000000",
                         fontWeight: checked[i] ? 600 : 400,
                         transition: "all 0.2s",
                       }}
@@ -192,7 +192,7 @@ function RecommendVisual({ active }: { active: boolean }) {
       className="w-full max-w-sm rounded-2xl bg-white p-6"
       style={{ boxShadow: "0 4px 24px rgba(91,91,214,0.10)", border: "1px solid #e8e8f0" }}
     >
-      <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-4">Top match</p>
+      <p className="text-xs font-semibold uppercase tracking-wide text-black/50 mb-4">Top match</p>
       <div className="flex items-center gap-4 mb-5">
         <div className="relative flex-shrink-0">
           <svg width="72" height="72" viewBox="0 0 72 72">
@@ -207,13 +207,13 @@ function RecommendVisual({ active }: { active: boolean }) {
             />
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-xl font-bold text-gray-900 leading-none">{score}</span>
-            <span className="text-[9px] text-gray-400 mt-0.5">score</span>
+            <span className="text-xl font-bold text-black leading-none">{score}</span>
+            <span className="text-[9px] text-black/50 mt-0.5">score</span>
           </div>
         </div>
         <div style={{ opacity: showName ? 1 : 0, transform: showName ? "translateY(0)" : "translateY(8px)", transition: "opacity 0.5s ease, transform 0.5s ease" }}>
-          <p className="text-lg font-bold text-gray-900">Jasper AI</p>
-          <p className="text-xs text-gray-400">Marketing copywriting agent</p>
+          <p className="text-lg font-bold text-black">Jasper AI</p>
+          <p className="text-xs text-black/50">Marketing copywriting agent</p>
         </div>
       </div>
       <div className="flex flex-wrap gap-2">
@@ -264,7 +264,7 @@ function CompareVisual({ active }: { active: boolean }) {
       className="w-full max-w-sm rounded-2xl bg-white p-6"
       style={{ boxShadow: "0 4px 24px rgba(91,91,214,0.10)", border: "1px solid #e8e8f0" }}
     >
-      <p className="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-4">
+      <p className="text-xs font-semibold uppercase tracking-wide text-black/50 mb-4">
         Top matches for Marketing
       </p>
       <div className="flex flex-col gap-2.5">
@@ -281,8 +281,8 @@ function CompareVisual({ active }: { active: boolean }) {
             }}
           >
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-gray-900 truncate">{agent.name}</p>
-              <p className="text-[10px] text-gray-400 leading-tight mt-0.5">{agent.category}</p>
+              <p className="text-sm font-bold text-black truncate">{agent.name}</p>
+              <p className="text-[10px] text-black/50 leading-tight mt-0.5">{agent.category}</p>
             </div>
             <span
               className="text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0 text-white"
@@ -304,8 +304,8 @@ function StepText({ num, title, body }: { num: string; title: string; body: stri
       <p className="text-6xl font-bold leading-none mb-3" style={{ color: "#8B5CF6", opacity: 0.15 }}>
         {num}
       </p>
-      <h3 className="text-2xl font-semibold text-zinc-900 mb-3 leading-snug">{title}</h3>
-      <p className="text-zinc-500 text-lg leading-relaxed">{body}</p>
+      <h3 className="text-2xl font-semibold text-black mb-3 leading-snug">{title}</h3>
+      <p className="text-black/60 text-lg leading-relaxed">{body}</p>
     </div>
   );
 }
@@ -336,8 +336,8 @@ export default function HowItWorks() {
   return (
     <section style={{ background: "#F8F8FF", paddingTop: "80px", paddingBottom: "80px" }}>
       <div className="max-w-5xl mx-auto px-6">
-        <h2 className="text-3xl font-semibold text-zinc-900 mb-2">How It Works</h2>
-        <p className="text-zinc-500 text-lg mb-16">Three steps from use case to the right agent.</p>
+        <h2 className="text-3xl font-semibold text-black mb-2">How It Works</h2>
+        <p className="text-black/60 text-lg mb-16">Three steps from use case to the right agent.</p>
 
         <div className="flex flex-col gap-20">
           {/* Step 01 - visual right, text left */}

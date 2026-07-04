@@ -54,7 +54,7 @@ function VeraIllustration() {
       {/* Tab bar */}
       <rect x="29" y="24" width="58" height="24" rx="7" fill="rgba(94,108,232,0.10)"/>
       <text x="58" y="40" textAnchor="middle" fontSize="11" fontWeight="700" fill="#5E6CE8">Research</text>
-      <text x="114" y="40" textAnchor="middle" fontSize="11" fill="rgba(22,15,46,0.32)">Compare</text>
+      <text x="114" y="40" textAnchor="middle" fontSize="11" fill="rgba(0,0,0,0.32)">Compare</text>
       <line x1="8" y1="56" x2="230" y2="56" stroke="rgba(94,108,232,0.09)" strokeWidth="1"/>
 
       {/* User msg 1 — right-aligned within visible area */}
@@ -93,7 +93,7 @@ function VeraIllustration() {
       <rect x="186" y="34" width="268" height="260" rx="14" fill="white" stroke="rgba(124,58,237,0.18)" strokeWidth="1.5"/>
 
       {/* Tab bar */}
-      <text x="214" y="61" fontSize="11" fill="rgba(22,15,46,0.32)">Research</text>
+      <text x="214" y="61" fontSize="11" fill="rgba(0,0,0,0.32)">Research</text>
       <rect x="265" y="47" width="72" height="24" rx="7" fill="rgba(124,58,237,0.10)"/>
       <text x="301" y="63" textAnchor="middle" fontSize="11" fontWeight="700" fill="#7C3AED">Compare</text>
       <line x1="186" y1="80" x2="454" y2="80" stroke="rgba(124,58,237,0.08)" strokeWidth="1"/>
@@ -107,18 +107,18 @@ function VeraIllustration() {
       <circle cx="256" cy="174" r="44" stroke="#5E6CE8" strokeWidth="17" fill="none"
         strokeDasharray={`${dA} ${C - dA}`} strokeDashoffset={off} strokeLinecap="round"/>
       <text x="256" y="170" textAnchor="middle" fontSize="16" fontWeight="800" fill="#5E6CE8">78%</text>
-      <text x="256" y="185" textAnchor="middle" fontSize="9" fill="rgba(22,15,46,0.42)">Score</text>
+      <text x="256" y="185" textAnchor="middle" fontSize="9" fill="rgba(0,0,0,0.42)">Score</text>
 
       {/* Donut B — Cortex AI — centred in right half of compare panel */}
       <circle cx="386" cy="174" r="44" stroke="rgba(124,58,237,0.11)" strokeWidth="17" fill="none"/>
       <circle cx="386" cy="174" r="44" stroke="#8E63D6" strokeWidth="17" fill="none"
         strokeDasharray={`${dB} ${C - dB}`} strokeDashoffset={off} strokeLinecap="round"/>
       <text x="386" y="170" textAnchor="middle" fontSize="16" fontWeight="800" fill="#8E63D6">62%</text>
-      <text x="386" y="185" textAnchor="middle" fontSize="9" fill="rgba(22,15,46,0.42)">Score</text>
+      <text x="386" y="185" textAnchor="middle" fontSize="9" fill="rgba(0,0,0,0.42)">Score</text>
 
       {/* Agent name labels */}
-      <text x="256" y="238" textAnchor="middle" fontSize="11" fontWeight="700" fill="#160F2E">Jasper AI</text>
-      <text x="386" y="238" textAnchor="middle" fontSize="11" fontWeight="700" fill="#160F2E">Cortex AI</text>
+      <text x="256" y="238" textAnchor="middle" fontSize="11" fontWeight="700" fill="#000000">Jasper AI</text>
+      <text x="386" y="238" textAnchor="middle" fontSize="11" fontWeight="700" fill="#000000">Cortex AI</text>
 
       {/* Top match badge — centred under Jasper AI */}
       <rect x="218" y="250" width="76" height="18" rx="9" fill="rgba(94,108,232,0.10)"/>
@@ -159,10 +159,10 @@ export default function ResearchPage() {
           <div className="hero-split-grid">
             {/* Left: copy */}
             <div>
-              <span style={{ display: "inline-block", background: "rgba(255,255,255,0.90)", border: "1px solid rgba(94,108,232,0.18)", borderRadius: 8, padding: "6px 14px", fontSize: 13, fontWeight: 700, color: "#160F2E", letterSpacing: "0.01em", marginBottom: 14 }}>
+              <span style={{ display: "inline-block", background: "rgba(255,255,255,0.90)", border: "1px solid rgba(94,108,232,0.18)", borderRadius: 8, padding: "6px 14px", fontSize: 13, fontWeight: 700, color: "#000000", letterSpacing: "0.01em", marginBottom: 14 }}>
                 Vera AI
               </span>
-              <h1 style={{ fontSize: "clamp(36px, 4.2vw, 54px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 0.96, margin: "0 0 16px", color: "#160F2E" }}>
+              <h1 style={{ fontSize: "clamp(36px, 4.2vw, 54px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 0.96, margin: "0 0 16px", color: "#000000" }}>
                 <span style={{ display: "block" }}>Research &amp;</span>
                 <span style={{ display: "block" }}>
                   <span style={{ background: "linear-gradient(90deg, #5E6CE8 0%, #9B6ED8 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>compare agents</span>
@@ -170,11 +170,11 @@ export default function ResearchPage() {
                 </span>
                 <span style={{ display: "block" }}>in one view</span>
               </h1>
-              <p style={{ fontSize: 15.5, color: "#0E1320", lineHeight: 1.6, margin: "0 0 24px", maxWidth: 400, fontWeight: 400 }}>
+              <p style={{ fontSize: 15.5, color: "#000000", lineHeight: 1.6, margin: "0 0 24px", maxWidth: 400, fontWeight: 400 }}>
                 Ask anything about any agent. Get a curated breakdown - capabilities, pricing, and visibility. Compare side by side with visual metrics and a verdict.
               </p>
               <div style={{ display: "flex", gap: 12 }}>
-                <a href="#vera-demo" style={{ display: "inline-flex", alignItems: "center", borderRadius: 9999, padding: "11px 24px", fontSize: 14.5, fontWeight: 700, color: "#160F2E", textDecoration: "none", background: "rgba(255,255,255,0.88)", border: "1.5px solid rgba(94,108,232,0.18)", letterSpacing: "-0.01em" }}>
+                <a href="#vera-demo" style={{ display: "inline-flex", alignItems: "center", borderRadius: 9999, padding: "11px 24px", fontSize: 14.5, fontWeight: 700, color: "#000000", textDecoration: "none", background: "rgba(255,255,255,0.88)", border: "1.5px solid rgba(94,108,232,0.18)", letterSpacing: "-0.01em" }}>
                   Watch Demo ›
                 </a>
               </div>
@@ -204,7 +204,7 @@ export default function ResearchPage() {
       <div className="product-outer" style={{ maxWidth: 1200, margin: "0 auto", paddingBottom: "80px" }}>
         <div style={{ maxWidth: 720, margin: "0 auto 40px", textAlign: "center" }}>
           <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, letterSpacing: ".22em", color: "#5E6CE8", margin: "0 0 14px" }}>WHAT MAKES VERA AI UNIQUE</p>
-          <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 600, letterSpacing: "-.03em", lineHeight: 1.06, margin: 0, color: "#0E1320" }}>Compare smarter, decide faster</h2>
+          <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 600, letterSpacing: "-.03em", lineHeight: 1.06, margin: 0, color: "#000000" }}>Compare smarter, decide faster</h2>
         </div>
 
         <div className="caps-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
@@ -221,8 +221,8 @@ export default function ResearchPage() {
                   <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color }}>{num}</span>
                   <span style={{ height: 1, flex: 1, background: `linear-gradient(90deg,${color}55,transparent)`, display: "block" }} />
                 </div>
-                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#0E1320" }}>{title}</h3>
-                <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#3A4256", margin: 0 }}>{body}</p>
+                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>{title}</h3>
+                <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#000000", margin: 0 }}>{body}</p>
               </div>
               <div className="feature-card-icon" style={{ flex: "none", width: 110, height: 110, borderRadius: 18, background: iconBg, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 1px 0 rgba(255,255,255,.7)" }}>
                 <Icon size={40} strokeWidth={1.5} style={{ color }} />

@@ -88,10 +88,10 @@ export default function ExplorePage() {
 <main className="max-w-5xl mx-auto px-6 pt-6 pb-16">
 
           <div className="mb-10">
-            <h1 className="text-4xl font-bold text-zinc-900 tracking-tight mb-3">
+            <h1 className="text-4xl font-bold text-black tracking-tight mb-3">
               Browse by Business Domain
             </h1>
-            <p className="text-zinc-500 text-lg mb-8">
+            <p className="text-black/60 text-lg mb-8">
               Explore AI agents curated for your specific business domain
             </p>
 
@@ -131,7 +131,7 @@ export default function ExplorePage() {
             </div>
 
             {search && (
-              <p className="mt-3 text-sm text-zinc-400">
+              <p className="mt-3 text-sm text-black/50">
                 {filtered.length} result{filtered.length !== 1 ? "s" : ""} for &ldquo;{search}&rdquo;
               </p>
             )}
@@ -146,14 +146,14 @@ export default function ExplorePage() {
               >
                 <span className="text-2xl">{icon}</span>
                 <div>
-                  <p className="text-sm font-semibold text-zinc-800 group-hover:text-violet-700 transition-colors">
+                  <p className="text-sm font-semibold text-black group-hover:text-violet-700 transition-colors">
                     {label}
                   </p>
-                  <p className="text-xs text-zinc-500">Browse AI Agents</p>
+                  <p className="text-xs text-black/60">Browse AI Agents</p>
                 </div>
               </Link>
             )) : (
-              <div className="col-span-2 sm:col-span-3 py-16 text-center text-zinc-400 text-sm">
+              <div className="col-span-2 sm:col-span-3 py-16 text-center text-black/50 text-sm">
                 No domains match &ldquo;{search}&rdquo;
               </div>
             )}
@@ -161,7 +161,7 @@ export default function ExplorePage() {
 
         </main>
 
-        <footer className="border-t border-zinc-100 py-8 text-center text-sm text-zinc-400">
+        <footer className="border-t border-zinc-100 py-8 text-center text-sm text-black/50">
           <p>© {new Date().getFullYear()} AgenticLib - The AI Agent Discovery Platform</p>
         </footer>
 

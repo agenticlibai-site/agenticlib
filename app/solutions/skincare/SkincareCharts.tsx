@@ -177,7 +177,7 @@ function BigNumber({ value, sub }: { value: string | number; sub?: string }) {
         {value}
       </p>
       {sub && (
-        <p style={{ fontSize: 12, color: "rgba(13,27,62,0.45)" }}>{sub}</p>
+        <p style={{ fontSize: 12, color: "#000000" }}>{sub}</p>
       )}
     </>
   );
@@ -192,7 +192,7 @@ function EmptySlate({ message = "Collecting data…" }: { message?: string }) {
         <rect x="10" y="1" width="4" height="15" rx="1" fill={ROSE} opacity="0.55" />
         <rect x="15" y="6" width="3" height="10" rx="1" fill={ROSE} opacity="0.35" />
       </svg>
-      <p style={{ fontSize: 13, color: "rgba(13,27,62,0.38)" }}>{message}</p>
+      <p style={{ fontSize: 13, color: "#000000" }}>{message}</p>
     </div>
   );
 }
@@ -264,7 +264,7 @@ export default function SkincareCharts({ dailySummary, weeklySummary, llmVisibil
                 return (
                   <div key={model}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
-                      <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(13,27,62,0.55)", textTransform: "uppercase" as const, letterSpacing: "0.06em" }}>
+                      <span style={{ fontSize: 11, fontWeight: 600, color: "#000000", textTransform: "uppercase" as const, letterSpacing: "0.06em" }}>
                         {label}
                       </span>
                       <span style={{ fontSize: 28, fontWeight: 800, color, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>
@@ -274,7 +274,7 @@ export default function SkincareCharts({ dailySummary, weeklySummary, llmVisibil
                     <div style={{ height: 5, borderRadius: 999, background: "rgba(13,27,62,0.07)" }}>
                       <div style={{ height: 5, borderRadius: 999, width: `${Math.min(pct, 100)}%`, background: color }} />
                     </div>
-                    <p style={{ fontSize: 10, color: "rgba(13,27,62,0.38)", marginTop: 4 }}>
+                    <p style={{ fontSize: 10, color: "#000000", marginTop: 4 }}>
                       {total} responses
                     </p>
                   </div>
@@ -297,7 +297,7 @@ export default function SkincareCharts({ dailySummary, weeklySummary, llmVisibil
             <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>
               Brand Mentions — 7-Day Trend
             </h3>
-            <p style={{ fontSize: 12, color: "rgba(13,27,62,0.42)" }}>
+            <p style={{ fontSize: 12, color: "#000000" }}>
               {hasReal ? "Top 15 brands by total mentions · both models combined" : "Sample data — live chart populates after daily collection"}
             </p>
           </div>
@@ -359,7 +359,7 @@ export default function SkincareCharts({ dailySummary, weeklySummary, llmVisibil
         {/* Interactive brand filter */}
         <div style={{ marginTop: 14, borderTop: "1px solid rgba(13,27,62,0.06)", paddingTop: 12 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-            <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: "rgba(13,27,62,0.32)" }}>
+            <span style={{ fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const, letterSpacing: "0.08em", color: "#000000" }}>
               Brands
             </span>
             <div style={{ display: "flex", gap: 10 }}>
@@ -386,7 +386,7 @@ export default function SkincareCharts({ dailySummary, weeklySummary, llmVisibil
                     onChange={() => toggleBrand(brand)}
                     style={{ accentColor: color, width: 12, height: 12, cursor: "pointer", flexShrink: 0 }}
                   />
-                  <span style={{ fontSize: 11, color: checked ? color : "rgba(13,27,62,0.28)", fontWeight: checked ? 600 : 400 }}>
+                  <span style={{ fontSize: 11, color: checked ? color : "#000000", fontWeight: checked ? 600 : 400 }}>
                     {brand}
                   </span>
                 </label>
@@ -394,7 +394,7 @@ export default function SkincareCharts({ dailySummary, weeklySummary, llmVisibil
             })}
           </div>
           {hasReal && realBrands.length > 15 && (
-            <p style={{ fontSize: 10, color: "rgba(13,27,62,0.30)", marginTop: 8 }}>
+            <p style={{ fontSize: 10, color: "#000000", marginTop: 8 }}>
               Showing top 15 of {realBrands.length} brands by mention volume.
             </p>
           )}
@@ -419,7 +419,7 @@ export default function SkincareCharts({ dailySummary, weeklySummary, llmVisibil
             <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em" }}>
               7-Day Brand Summary
             </h3>
-            <span style={{ fontSize: 12, color: "rgba(13,27,62,0.40)" }}>
+            <span style={{ fontSize: 12, color: "#000000" }}>
               all models combined
             </span>
           </div>
@@ -437,7 +437,7 @@ export default function SkincareCharts({ dailySummary, weeklySummary, llmVisibil
                         fontSize: 11,
                         textTransform: "uppercase" as const,
                         letterSpacing: "0.07em",
-                        color: "rgba(13,27,62,0.45)",
+                        color: "#000000",
                         textAlign: i === 0 ? "center" : i >= 2 ? "right" : "left",
                         background: "rgba(13,27,62,0.018)",
                       }}
@@ -455,7 +455,7 @@ export default function SkincareCharts({ dailySummary, weeklySummary, llmVisibil
                       borderBottom: i < weeklyBrands.length - 1 ? "1px solid rgba(13,27,62,0.05)" : undefined,
                     }}
                   >
-                    <td style={{ padding: "11px 20px", textAlign: "center", color: "rgba(13,27,62,0.28)", fontWeight: 700, fontSize: 11 }}>
+                    <td style={{ padding: "11px 20px", textAlign: "center", color: "#000000", fontWeight: 700, fontSize: 11 }}>
                       {i + 1}
                     </td>
                     <td style={{ padding: "11px 20px", fontWeight: 600, color: NAVY }}>
