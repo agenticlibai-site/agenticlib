@@ -71,6 +71,7 @@ const domains = [
   { label: "Production Orchestration", slug: "production-orchestration", icon: "⚙️" },
   { label: "Productivity", slug: "productivity", icon: "🗂️" },
   { label: "Sales", slug: "sales", icon: "📣" },
+  { label: "Skincare", slug: "skincare", icon: "✨" },
 ];
 
 export default function ExplorePage() {

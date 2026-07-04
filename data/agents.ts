@@ -750,6 +750,27 @@ export const domains = [
 },
 
 {
+  name: "Skincare",
+  slug: "skincare",
+  agents: [
+    { name: "Dewwie", url: "https://www.dewwie.com/" },
+    { name: "Haut.ai", url: "https://haut.ai/" },
+    { name: "Revieve", url: "https://www.revieve.com/" },
+    { name: "PROVEN Skincare", url: "https://www.provenskincare.com/" },
+    { name: "Curology", url: "https://curology.com/" },
+    { name: "Function of Beauty", url: "https://www.functionofbeauty.com/" },
+    { name: "HelloAva", url: "https://www.helloava.com/" },
+    { name: "INCI Decoder", url: "https://incidecoder.com/" },
+    { name: "Clinique", url: "https://www.clinique.com/" },
+    { name: "SkinSAFE", url: "https://www.skinsafeproducts.com/" },
+    { name: "Think Dirty", url: "https://www.thinkdirtyapp.com/" },
+    { name: "SkinGenie", url: "https://www.skingenie.com/" },
+    { name: "SkinAdvisor", url: "https://www.loreal.com/en/innovation-research/for-our-consumers/skinexpert-powered-by-loreal/" },
+    { name: "Dermatology AI", url: "https://dermatologyai.com/" },
+  ],
+},
+
+{
   name: "Productivity",
   slug: "productivity",
   agents: [

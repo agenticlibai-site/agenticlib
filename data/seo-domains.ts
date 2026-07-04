@@ -2717,6 +2717,47 @@ export const seoDomains: SeoDomain[] = [
     agentLibrarySlug: "sales",
     relatedSlugs: ["marketing", "ecommerce", "recruitment"],
   },
+
+  {
+    slug: "skincare",
+    name: "Skincare",
+    metaTitle: "Best AI Agents for Skincare | AgenticLib",
+    metaDescription:
+      "Discover the top AI agents for skincare — from personalised skin analysis and ingredient decoding to virtual try-on, regimen building, and AI-powered dermatology tools.",
+    h1: "AI Agents for Skincare",
+    intro:
+      "Finding the right skincare routine is genuinely hard — ingredients interact, skin changes seasonally, and dermatologist access is expensive. AI agents close that gap by analysing individual skin data, decoding ingredient lists, and building personalised regimens at scale.",
+    whyAiMatters: [
+      "Skincare purchases are high-frequency, high-uncertainty decisions — consumers buy products repeatedly but rarely know whether they are working or why breakouts occur, creating a massive demand for personalised guidance that human dermatologists cannot serve at scale.",
+      "The global skincare market is littered with conflicting advice and marketing-driven claims; AI agents trained on dermatological data can cut through the noise and give consumers evidence-based ingredient and product guidance.",
+      "AI skin analysis via smartphone camera can assess hydration, texture, pigmentation, and sensitivity in minutes — delivering insights that previously required a clinic visit with specialised equipment.",
+      "Subscription skincare brands using AI personalisation see meaningfully lower churn because customers receive formulas matched to their specific profile rather than mass-market products that produce inconsistent results.",
+    ],
+    useCases: [
+      {
+        title: "Personalised Skin Analysis",
+        description:
+          "Analyse selfies or questionnaire data to assess skin type, concerns, and condition over time — building a skin profile that drives product and ingredient recommendations tailored to the individual.",
+      },
+      {
+        title: "Ingredient Decoder and Safety Checker",
+        description:
+          "Parse INCI ingredient lists and flag allergens, irritants, and interactions for a user's specific profile — turning opaque product labels into plain-language guidance.",
+      },
+      {
+        title: "AI-Powered Regimen Builder",
+        description:
+          "Generate a morning and evening skincare routine from a skin profile, climate, lifestyle inputs, and budget — with product recommendations ranked by compatibility and evidence.",
+      },
+      {
+        title: "Virtual Consultation and Triage",
+        description:
+          "Answer dermatology-adjacent questions, identify common conditions from images, and recommend whether a concern warrants a professional appointment — extending access to skincare expertise beyond clinic hours.",
+      },
+    ],
+    agentLibrarySlug: "skincare",
+    relatedSlugs: ["healthcare", "ecommerce", "retail"],
+  },
 ];
 
 export function getSeoDomain(slug: string): SeoDomain | undefined {
