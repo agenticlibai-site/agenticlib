@@ -206,7 +206,7 @@ function ClusterTrendCard({
       </div>
 
       <ResponsiveContainer width="100%" height={220}>
-        <LineChart data={rows} margin={{ top: 4, right: 8, left: -8, bottom: 0 }}>
+        <LineChart data={rows} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="4 4" stroke="rgba(13,27,62,0.055)" vertical={false} />
           <XAxis
             dataKey="date"
@@ -217,7 +217,7 @@ function ClusterTrendCard({
           <YAxis
             allowDecimals={false}
             tick={{ fontSize: 11, fill: "rgba(13,27,62,0.42)" }}
-            axisLine={false} tickLine={false} width={36}
+            axisLine={false} tickLine={false} width={44}
           />
           <Tooltip
             contentStyle={{
@@ -634,7 +634,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
         </div>
 
         <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={chartRows} margin={{ top: 4, right: 8, left: -8, bottom: 0 }}>
+          <LineChart data={chartRows} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="4 4" stroke="rgba(13,27,62,0.055)" vertical={false} />
             <XAxis
               dataKey="date"
@@ -649,7 +649,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
               tick={{ fontSize: 11, fill: "rgba(13,27,62,0.42)" }}
               axisLine={false}
               tickLine={false}
-              width={36}
+              width={44}
             />
             <Tooltip
               contentStyle={{
