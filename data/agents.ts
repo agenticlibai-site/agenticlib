@@ -813,7 +813,8 @@ export const domains = [
     { name: "Leap AI", url: "https://www.tryleap.ai/", category: "AI API Platform for Sales Tools" },
     { name: "Lumi AI", url: "https://www.lumi-ai.com/customer-insights-sales-analytics", category: "Customer Insight AI" },
     { name: "REP", url: "https://www.hellorep.ai/product", category: "AI Sales Engagement" },
-    { name: "HappySales", url: "https://www.happysales.ai/autonomous-prospecting", category: "Autonomous Prospecting AI" }
+    { name: "HappySales", url: "https://www.happysales.ai/autonomous-prospecting", category: "Autonomous Prospecting AI" },
+    { name: "Lamigo", url: "https://lamigo.ai/", category: "AI Sales Assistant" },
   ],
 }
 
