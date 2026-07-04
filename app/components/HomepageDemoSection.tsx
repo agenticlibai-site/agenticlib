@@ -44,6 +44,16 @@ const FEATURE_CLUSTERS = [
     { name: "ROI Attribution",          scores: { Drift: 90, "Copy.ai": 70, Conversica: 80, Writesonic: 58, Albert: 72 } },
     { name: "Self-Optimising Workflows", scores: { Drift: 85, "Copy.ai": 66, Conversica: 77, Writesonic: 53, Albert: 68 } },
   ]},
+  { label: "TECHNICAL CAPABILITIES", features: [
+    { name: "Instruction Following", scores: { Drift: 84, "Copy.ai": 88, Conversica: 79, Writesonic: 83, Albert: 72 } },
+    { name: "Multi-Step Reasoning",  scores: { Drift: 78, "Copy.ai": 71, Conversica: 82, Writesonic: 65, Albert: 69 } },
+  ]},
+  { label: "RESPONSIBLE AI", features: [
+    { name: "Security & Compliance", scores: { Drift: 88, "Copy.ai": 80, Conversica: 91, Writesonic: 75, Albert: 70 } },
+  ]},
+  { label: "COST EFFICIENCY", features: [
+    { name: "Cost Efficiency Score", scores: { Drift: 74, "Copy.ai": 82, Conversica: 68, Writesonic: 90, Albert: 71 } },
+  ]},
 ] as const;
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -129,16 +139,18 @@ function MiniDonut({ title, rows, loading }: { title: string; rows: SOVRow[]; lo
       ) : rows.length === 0 ? (
         <p style={{ fontSize: 13, color: "rgba(22,15,46,0.30)", padding: "24px 0" }}>No data</p>
       ) : (
-        <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
-          <PieChart width={100} height={100}>
-            <Pie data={data} cx={50} cy={50} innerRadius={32} outerRadius={48} paddingAngle={2} dataKey="value" startAngle={90} endAngle={-270}>
-              {data.map((e, i) => <Cell key={i} fill={e.color} stroke="none" />)}
-            </Pie>
-            <Tooltip
-              formatter={(v) => [`${v}%`, "SOV"]}
-              contentStyle={{ borderRadius: 8, border: "1px solid rgba(22,15,46,0.10)", fontSize: 11, background: "#fff" }}
-            />
-          </PieChart>
+        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+          <div style={{ flexShrink: 0, width: 120, height: 120 }}>
+            <PieChart width={120} height={120}>
+              <Pie data={data} cx={60} cy={60} innerRadius={38} outerRadius={56} paddingAngle={2} dataKey="value" startAngle={90} endAngle={-270}>
+                {data.map((e, i) => <Cell key={i} fill={e.color} stroke="none" />)}
+              </Pie>
+              <Tooltip
+                formatter={(v) => [`${v}%`, "SOV"]}
+                contentStyle={{ borderRadius: 8, border: "1px solid rgba(22,15,46,0.10)", fontSize: 11, background: "#fff" }}
+              />
+            </PieChart>
+          </div>
           <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 7 }}>
             {data.map((entry) => (
               <div key={entry.name} style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -185,11 +197,11 @@ export default function HomepageDemoSection() {
       <style>{`
         @keyframes skpulse{0%,100%{opacity:1}50%{opacity:.45}}
         @media(max-width:900px){
-          .demo-stat-grid{grid-template-columns:repeat(2,1fr)!important}
+          .demo-stat-grid{grid-template-columns:repeat(3,1fr)!important}
           .demo-chart-grid{grid-template-columns:1fr!important}
           .demo-sov-grid{grid-template-columns:1fr!important}
         }
-        @media(max-width:560px){
+        @media(max-width:640px){
           .demo-stat-grid{grid-template-columns:1fr!important}
           .demo-feature-scroll{overflow-x:auto}
         }
@@ -208,7 +220,7 @@ export default function HomepageDemoSection() {
         </div>
 
         {/* ── Stat cards ── */}
-        <div className="demo-stat-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 14, marginBottom: 36 }}>
+        <div className="demo-stat-grid" style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 14, marginBottom: 36 }}>
           <StatCard
             label="Total Brand Mentions"
             value={loading ? "—" : totalMentions.toLocaleString()}
@@ -226,13 +238,6 @@ export default function HomepageDemoSection() {
             label="Use Case Clusters"
             value="4"
             sub="22 brands tracked"
-            loading={false}
-          />
-          <StatCard
-            label="Avg Feature Score"
-            value="80"
-            sub="across 8 features"
-            subGreen
             loading={false}
           />
         </div>
