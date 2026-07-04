@@ -1089,6 +1089,106 @@ export async function upsertSentimentScore(row: {
   `;
 }
 
+// ── Sales visibility pipeline ─────────────────────────────────────────────────
+
+let salesDbInitialised = false;
+
+export async function initSalesVisibilityDB(): Promise<void> {
+  if (salesDbInitialised) return;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS sales_raw_responses (
+      id             SERIAL PRIMARY KEY,
+      date           DATE    NOT NULL,
+      prompt_id      INTEGER NOT NULL,
+      prompt_text    TEXT    NOT NULL,
+      bucket_tag     TEXT    NOT NULL,
+      model          TEXT    NOT NULL,
+      model_snapshot TEXT,
+      run_number     INTEGER NOT NULL,
+      brands         JSONB   NOT NULL DEFAULT '[]',
+      created_at     TIMESTAMP DEFAULT NOW(),
+      UNIQUE (date, prompt_id, model, run_number)
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS sales_response_canonical_brands (
+      response_id     INTEGER NOT NULL REFERENCES sales_raw_responses(id) ON DELETE CASCADE,
+      canonical_brand TEXT    NOT NULL,
+      position        INTEGER NOT NULL,
+      PRIMARY KEY (response_id, canonical_brand)
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS sales_daily_summary (
+      id            SERIAL PRIMARY KEY,
+      date          DATE    NOT NULL,
+      brand         TEXT    NOT NULL,
+      model         TEXT    NOT NULL,
+      mention_count INTEGER NOT NULL DEFAULT 0,
+      avg_position  FLOAT,
+      created_at    TIMESTAMP DEFAULT NOW(),
+      UNIQUE (date, brand, model)
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS locked_sales_agents (
+      id           SERIAL PRIMARY KEY,
+      brand_name   TEXT    NOT NULL UNIQUE,
+      display_name TEXT    NOT NULL,
+      rank         INTEGER NOT NULL,
+      bucket_tag   TEXT    NOT NULL DEFAULT 'sales-overall',
+      created_at   TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  salesDbInitialised = true;
+}
+
+export async function insertSalesRawResponse(row: {
+  date:          string;
+  promptId:      number;
+  promptText:    string;
+  bucketTag:     string;
+  model:         string;
+  modelSnapshot: string;
+  runNumber:     number;
+  brands:        string[];
+}): Promise<void> {
+  await sql`
+    INSERT INTO sales_raw_responses
+      (date, prompt_id, prompt_text, bucket_tag, model, model_snapshot, run_number, brands)
+    VALUES (
+      ${row.date}::date, ${row.promptId}, ${row.promptText}, ${row.bucketTag},
+      ${row.model}, ${row.modelSnapshot}, ${row.runNumber}, ${JSON.stringify(row.brands)}::jsonb
+    )
+    ON CONFLICT (date, prompt_id, model, run_number) DO UPDATE SET
+      brands         = EXCLUDED.brands,
+      model_snapshot = EXCLUDED.model_snapshot,
+      created_at     = NOW()
+  `;
+}
+
+export interface LockedSalesAgent {
+  brand_name:   string;
+  display_name: string;
+  rank:         number;
+  bucket_tag:   string;
+}
+
+export async function loadLockedSalesAgents(): Promise<LockedSalesAgent[]> {
+  await initSalesVisibilityDB();
+  const result = await sql`
+    SELECT brand_name, display_name, rank, bucket_tag
+    FROM locked_sales_agents
+    ORDER BY rank
+  `;
+  return result.rows as LockedSalesAgent[];
+}
+
 export async function upsertSentimentDrift(row: {
   brand_name:   string;
   bucket_tag:   string;
