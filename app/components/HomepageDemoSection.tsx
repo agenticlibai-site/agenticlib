@@ -384,7 +384,7 @@ export default function HomepageDemoSection() {
             Product Feature Scores
           </h3>
           <p style={{ fontSize: 13, color: "rgba(22,15,46,0.50)", lineHeight: 1.55, maxWidth: 580, marginBottom: 20 }}>
-            Each brand is scored 0–100 on agent capability, verified by asking AI models to assess documented features. Scores reflect how consistently AI describes each brand as having that capability — not a subjective rating.
+            Each brand is scored 0–100 through product feature prompting — AI models are asked about specific capabilities over time, and scores reflect how consistently each brand is recognised as delivering that feature. Builders can see exactly where their agent needs to improve.
           </p>
         </div>
 
