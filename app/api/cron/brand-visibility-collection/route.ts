@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
+import { sql } from "@vercel/postgres";
 import { PROMPTS, COLLECTION_SYSTEM_PROMPT } from "@/lib/brand-visibility/prompts";
 import {
   initBrandVisibilityDB,
@@ -156,20 +157,41 @@ export async function GET(request: Request) {
     const healthy = stats.success === EXPECTED_TOTAL && stats.activeErrors === 0;
 
     if (!healthy) {
-      await sendEmail({
-        subject: `[AgenticLib] ALERT — Brand Visibility Aggregation failed (${today})`,
-        html: `
-          <h2>Brand Visibility Pipeline — Aggregation Health Check Failed</h2>
-          <table style="border-collapse:collapse;font-family:monospace">
-            <tr><td style="padding:4px 12px 4px 0"><strong>Run timestamp</strong></td><td>${runTimestamp}</td></tr>
-            <tr><td style="padding:4px 12px 4px 0"><strong>Date</strong></td><td>${today}</td></tr>
-            <tr><td style="padding:4px 12px 4px 0"><strong>Rows stored</strong></td><td>${stats.success} / ${EXPECTED_TOTAL}</td></tr>
-            <tr><td style="padding:4px 12px 4px 0"><strong>Active errors</strong></td><td>${stats.activeErrors}</td></tr>
-            <tr><td style="padding:4px 12px 4px 0"><strong>complete</strong></td><td>${stats.success === EXPECTED_TOTAL ? "true" : "false"}</td></tr>
-          </table>
-          <p>Check <code>/api/brand-visibility/audit/daily-check</code> for details.</p>
-        `,
-      }).catch((e) => console.error("[alert] aggregation failure email failed:", e));
+      const lastWriteResult = await sql`
+        SELECT MAX(created_at) AS last_write
+        FROM raw_responses
+        WHERE date = ${today}::date
+      `;
+      const lastWrite: Date | null = lastWriteResult.rows[0].last_write
+        ? new Date(lastWriteResult.rows[0].last_write as string)
+        : null;
+      const minutesSinceLastWrite = lastWrite
+        ? (Date.now() - lastWrite.getTime()) / 60_000
+        : Infinity;
+      const collectionInProgress = minutesSinceLastWrite < 30;
+
+      if (collectionInProgress) {
+        console.log(
+          `[aggregate] Aggregate skipped — collection still in progress. ` +
+          `Last write ${Math.round(minutesSinceLastWrite)}m ago. Will retry at next scheduled run.`
+        );
+      } else {
+        await sendEmail({
+          subject: `[AgenticLib] ALERT — Brand Visibility Aggregation failed (${today})`,
+          html: `
+            <h2>Brand Visibility Pipeline — Aggregation Health Check Failed</h2>
+            <table style="border-collapse:collapse;font-family:monospace">
+              <tr><td style="padding:4px 12px 4px 0"><strong>Run timestamp</strong></td><td>${runTimestamp}</td></tr>
+              <tr><td style="padding:4px 12px 4px 0"><strong>Date</strong></td><td>${today}</td></tr>
+              <tr><td style="padding:4px 12px 4px 0"><strong>Rows stored</strong></td><td>${stats.success} / ${EXPECTED_TOTAL}</td></tr>
+              <tr><td style="padding:4px 12px 4px 0"><strong>Active errors</strong></td><td>${stats.activeErrors}</td></tr>
+              <tr><td style="padding:4px 12px 4px 0"><strong>complete</strong></td><td>${stats.success === EXPECTED_TOTAL ? "true" : "false"}</td></tr>
+              <tr><td style="padding:4px 12px 4px 0"><strong>Last write</strong></td><td>${lastWrite ? lastWrite.toISOString() : "none"}</td></tr>
+            </table>
+            <p>Check <code>/api/brand-visibility/audit/daily-check</code> for details.</p>
+          `,
+        }).catch((e) => console.error("[alert] aggregation failure email failed:", e));
+      }
     }
 
     return Response.json({
