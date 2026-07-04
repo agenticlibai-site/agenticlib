@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Share2, Mail, X as XIcon, ArrowUp, MessageCircle } from "lucide-react";
+import HomepageDemoSection from "@/app/components/HomepageDemoSection";
 
 const BANNER2_SUB = "Get agent recommendations matched to your specific workflows, backed by comparison analytics.";
 const BANNER2_WORDS = ["Individuals", "Businesses"] as const;
@@ -207,6 +208,8 @@ export default function Home() {
         </div>
 
       </main>
+
+      <HomepageDemoSection />
 
       <section id="contact" style={{ background: "transparent", paddingTop: "80px", paddingBottom: "80px" }}>
         <div className="max-w-3xl mx-auto px-6 text-center">
