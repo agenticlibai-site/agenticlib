@@ -18,7 +18,7 @@ import {
 } from "recharts";
 
 // ── Palette ────────────────────────────────────────────────────────────────────
-const NAVY   = "#0D1B3E";
+const NAVY   = "#000000";
 const PURPLE = "#6B4FBB";
 const PINK   = "#E8447A";
 
