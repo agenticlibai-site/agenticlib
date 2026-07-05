@@ -46,8 +46,10 @@ export async function GET(request: Request) {
       SELECT
         ${today}::date,
         CASE t.brand_name
-          WHEN 'SalesLoft' THEN 'Salesloft'
-          WHEN 'Chorus.ai' THEN 'Chorus'
+          WHEN 'SalesLoft'  THEN 'Salesloft'
+          WHEN 'Chorus.ai'  THEN 'Chorus'
+          WHEN 'People.ai'  THEN 'Backstory.ai'
+          WHEN 'People.AI'  THEN 'Backstory.ai'
           ELSE t.brand_name
         END,
         r.model,
@@ -59,8 +61,10 @@ export async function GET(request: Request) {
         AND LENGTH(TRIM(t.brand_name)) > 0
         AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
       GROUP BY CASE t.brand_name
-        WHEN 'SalesLoft' THEN 'Salesloft'
-        WHEN 'Chorus.ai' THEN 'Chorus'
+        WHEN 'SalesLoft'  THEN 'Salesloft'
+        WHEN 'Chorus.ai'  THEN 'Chorus'
+        WHEN 'People.ai'  THEN 'Backstory.ai'
+        WHEN 'People.AI'  THEN 'Backstory.ai'
         ELSE t.brand_name
       END, r.model
       ON CONFLICT (date, brand, model) DO UPDATE SET
