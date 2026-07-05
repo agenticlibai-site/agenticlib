@@ -134,8 +134,8 @@ export default function TermsPage() {
           <p>If you have any questions about these Terms, please contact us at:</p>
           <p>
             📧{" "}
-            <a href="mailto:agenticlib.ai@gmail.com" className="text-violet-600 underline underline-offset-2">
-              agenticlib.ai@gmail.com
+            <a href="mailto:srinidhi.murali@agenticlib.com" className="text-violet-600 underline underline-offset-2">
+              srinidhi.murali@agenticlib.com
             </a>
             <br />
             🌐{" "}

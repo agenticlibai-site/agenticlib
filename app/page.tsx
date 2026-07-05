@@ -223,7 +223,7 @@ export default function Home() {
           <div className="flex flex-wrap justify-center gap-3 mb-10">
             {[
               { href: "https://www.linkedin.com/company/108024233/", Icon: Share2, label: "LinkedIn" },
-              { href: "mailto:agenticlib.ai@gmail.com", Icon: Mail, label: "Email" },
+              { href: "mailto:srinidhi.murali@agenticlib.com", Icon: Mail, label: "Email" },
               { href: "https://x.com/AgenticLibAI/status/1960527278087266557", Icon: XIcon, label: "X" },
               { href: "https://www.producthunt.com/p/self-promotion/agenticlib-simplifying-your-ai-agent-discovery-journey", Icon: ArrowUp, label: "Product Hunt" },
               { href: "https://www.reddit.com/r/SideProject/comments/1m6bfy1/agenticlib_simplifying_your_ai_agent_discovery/", Icon: MessageCircle, label: "Reddit" },

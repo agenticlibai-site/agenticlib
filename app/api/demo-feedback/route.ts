@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
   try {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: "agenticlib.ai@gmail.com",
+      to: "srinidhi.murali@agenticlib.com",
       subject: "New demo feedback received",
       html: `
         <h2 style="font-family:sans-serif;color:#18181b;">New Demo Feedback</h2>
