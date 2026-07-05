@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getLockedDailySummary, getLockedBrandPositions, getLockedSOVByClusters, getROIDonutSOV, getWeeklySummary, getLLMVisibility, getPerceptionGaps, initBrandVisibilityDB } from "@/lib/brand-visibility/db";
+import { getLockedDailySummary, getLockedBrandPositions, getLockedSOVByClusters, getROIDonutSOV, getWeeklySummary, getLLMVisibility, getPerceptionGaps, getFeatureScores, initBrandVisibilityDB } from "@/lib/brand-visibility/db";
 import BrandVisibilityCharts from "./BrandVisibilityCharts";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +12,7 @@ export const metadata = {
 async function getData() {
   try {
     await initBrandVisibilityDB();
-    const [dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps] = await Promise.all([
+    const [dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps, featureScores] = await Promise.all([
       getLockedDailySummary(7),
       getWeeklySummary(),
       getLLMVisibility(),
@@ -20,15 +20,16 @@ async function getData() {
       getLockedSOVByClusters(),
       getROIDonutSOV(),
       getPerceptionGaps(),
+      getFeatureScores(),
     ]);
-    return { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps };
+    return { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps, featureScores };
   } catch {
-    return { dailySummary: [], weeklySummary: [], llmVisibility: [], brandPositions: [], sovData: [], roiData: [], perceptionGaps: [] };
+    return { dailySummary: [], weeklySummary: [], llmVisibility: [], brandPositions: [], sovData: [], roiData: [], perceptionGaps: [], featureScores: [] };
   }
 }
 
 export default async function BrandVisibilityPage() {
-  const { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps } = await getData();
+  const { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps, featureScores } = await getData();
 
   return (
     <main
@@ -89,6 +90,7 @@ export default async function BrandVisibilityPage() {
           sovData={sovData}
           roiData={roiData}
           perceptionGaps={perceptionGaps}
+          featureScores={featureScores}
         />
       </div>
     </main>

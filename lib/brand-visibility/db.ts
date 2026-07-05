@@ -326,6 +326,10 @@ export async function initBrandVisibilityDB(): Promise<void> {
     )
   `;
 
+  // ── Feature pipeline — web-search grounding columns ──────────────────────────
+  await sql`ALTER TABLE feature_responses ADD COLUMN IF NOT EXISTS grounded BOOLEAN DEFAULT FALSE`;
+  await sql`ALTER TABLE feature_scores    ADD COLUMN IF NOT EXISTS grounded_source BOOLEAN DEFAULT FALSE`;
+
   dbInitialised = true;
 }
 
@@ -911,16 +915,19 @@ export async function insertFeatureResponse(row: {
   confidence:     string | null;
   raw_json:       object | null;
   parse_error:    boolean;
+  grounded?:      boolean;
 }): Promise<void> {
+  const grounded = row.grounded ?? false;
   await sql`
     INSERT INTO feature_responses
       (brand_name, feature_id, feature_tag, model, run_number, run_date,
-       has_capability, evidence, limitations, confidence, raw_json, parse_error)
+       has_capability, evidence, limitations, confidence, raw_json, parse_error, grounded)
     VALUES
       (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.model},
        ${row.run_number}, ${row.run_date}::date, ${row.has_capability},
        ${row.evidence}, ${row.limitations}, ${row.confidence},
-       ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error})
+       ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error}, ${grounded})
+    ON CONFLICT DO NOTHING
   `;
 }
 
@@ -933,17 +940,20 @@ export async function getFeatureResponsesForScoring(runDate: string): Promise<{
   evidence:       string | null;
   confidence:     string | null;
   parse_error:    boolean;
+  grounded:       boolean;
 }[]> {
   const result = await sql`
     SELECT brand_name, feature_id, feature_tag, model,
-           has_capability, evidence, confidence, parse_error
+           has_capability, evidence, confidence, parse_error,
+           COALESCE(grounded, FALSE) AS grounded
     FROM feature_responses
     WHERE run_date = ${runDate}::date
-    ORDER BY brand_name, feature_id, model, run_number
+    ORDER BY brand_name, feature_id, model, grounded ASC, run_number
   `;
   return result.rows as {
     brand_name: string; feature_id: string; feature_tag: string; model: string;
-    has_capability: string | null; evidence: string | null; confidence: string | null; parse_error: boolean;
+    has_capability: string | null; evidence: string | null; confidence: string | null;
+    parse_error: boolean; grounded: boolean;
   }[];
 }
 
@@ -958,15 +968,19 @@ export async function upsertFeatureScore(row: {
   flagged_for_review: boolean;
   flag_reason:        string | null;
   notes:              string | null;
+  grounded_source?:   boolean;
 }): Promise<void> {
+  const grounded_source = row.grounded_source ?? false;
   await sql`
     INSERT INTO feature_scores
       (brand_name, feature_id, feature_tag, score, score_band,
-       runs_agreeing, runs_total, flagged_for_review, flag_reason, notes, scored_at)
+       runs_agreeing, runs_total, flagged_for_review, flag_reason, notes,
+       grounded_source, scored_at)
     VALUES
       (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.score},
        ${row.score_band}, ${row.runs_agreeing}, ${row.runs_total},
-       ${row.flagged_for_review}, ${row.flag_reason}, ${row.notes}, NOW())
+       ${row.flagged_for_review}, ${row.flag_reason}, ${row.notes},
+       ${grounded_source}, NOW())
     ON CONFLICT (brand_name, feature_id) DO UPDATE SET
       feature_tag        = EXCLUDED.feature_tag,
       score              = EXCLUDED.score,
@@ -976,6 +990,7 @@ export async function upsertFeatureScore(row: {
       flagged_for_review = EXCLUDED.flagged_for_review,
       flag_reason        = EXCLUDED.flag_reason,
       notes              = EXCLUDED.notes,
+      grounded_source    = EXCLUDED.grounded_source,
       scored_at          = NOW()
   `;
 }
@@ -1296,6 +1311,29 @@ export async function getSalesSOVData(): Promise<
 }
 
 export { SALES_CANONICAL };
+
+// ── Feature scores read (for brand-visibility page) ───────────────────────────
+
+export interface FeatureScoreRow {
+  brand_name:     string;
+  feature_id:     string;
+  feature_tag:    string;
+  score:          number;
+  score_band:     string;
+  grounded_source: boolean;
+}
+
+export async function getFeatureScores(): Promise<FeatureScoreRow[]> {
+  await initBrandVisibilityDB();
+  const result = await sql`
+    SELECT brand_name, feature_id, feature_tag, score, score_band,
+           COALESCE(grounded_source, FALSE) AS grounded_source
+    FROM feature_scores
+    WHERE score IS NOT NULL
+    ORDER BY feature_tag, feature_id, score DESC
+  `;
+  return result.rows as FeatureScoreRow[];
+}
 
 export async function upsertSentimentDrift(row: {
   brand_name:   string;

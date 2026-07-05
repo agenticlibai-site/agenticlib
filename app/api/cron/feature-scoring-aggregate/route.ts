@@ -74,7 +74,11 @@ export async function GET(request: Request) {
 
       try {
         const result = computeScore(rows);
-        await upsertFeatureScore({ brand_name, feature_id, feature_tag, ...result });
+        await upsertFeatureScore({
+          brand_name, feature_id, feature_tag,
+          ...result,
+          grounded_source: result.grounded_source,
+        });
         scored++;
         if (result.flagged_for_review) flagged++;
       } catch (err) {

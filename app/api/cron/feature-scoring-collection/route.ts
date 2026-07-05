@@ -5,11 +5,13 @@ import {
   FEATURE_SYSTEM_PROMPT,
   getFeaturesForBrand,
   buildPrompt,
+  type Feature,
 } from "@/lib/brand-visibility/features";
 import {
   initBrandVisibilityDB,
   loadLockedBrands,
   insertFeatureResponse,
+  type LockedBrand,
 } from "@/lib/brand-visibility/db";
 import { sendEmail } from "@/lib/email";
 
@@ -120,6 +122,39 @@ function parseFeatureResponse(raw: string): {
   return { has_capability: null, evidence: null, limitations: null, confidence: null, parsed: null, parseError: true };
 }
 
+// ── Grounding helpers ──────────────────────────────────────────────────────────
+
+type RunSummary = { has_capability: string | null; confidence: string | null; parse_error: boolean };
+
+// Returns true when the standard runs for a brand+feature are too uncertain to score reliably.
+// Triggers a single web-search grounded follow-up call.
+function needsGrounding(runs: RunSummary[]): boolean {
+  const valid = runs.filter((r) => !r.parse_error && r.has_capability !== null);
+  if (valid.length === 0) return true;
+  const majority = Math.ceil(valid.length / 2);
+  const notDoc   = valid.filter((r) => r.has_capability === "not_documented").length;
+  const lowConf  = valid.filter((r) => r.confidence === "low").length;
+  return notDoc >= majority || lowConf >= majority;
+}
+
+// One Claude+web_search call for a specific brand+feature.
+// Only runs from the claude-haiku-4-5 job — web_search_20250305 requires Anthropic models.
+async function callClaudeGrounded(brand: LockedBrand, feature: Feature): Promise<string> {
+  const featurePrompt = buildPrompt(feature, brand.brand_name);
+  const res = await anthropic.messages.create({
+    model:      "claude-haiku-4-5-20251001",
+    max_tokens: 1024,
+    tools:      [{ type: "web_search_20250305" as const, name: "web_search" as const }],
+    messages:   [{
+      role:    "user",
+      content: `Search for information about ${brand.brand_name}'s product features, specifically: ${feature.feature_name}. Then answer this question about ${brand.brand_name} only, based on what you find:\n\n${featurePrompt}`,
+    }],
+  });
+  // Response may contain web_search result blocks before the final text block.
+  const textBlocks = res.content.filter((b): b is Anthropic.TextBlock => b.type === "text");
+  return textBlocks[textBlocks.length - 1]?.text ?? "";
+}
+
 async function runWithConcurrency<T>(
   tasks: (() => Promise<T>)[],
   concurrency: number,
@@ -162,11 +197,19 @@ export async function GET(request: Request) {
     await initBrandVisibilityDB();
     const brands = await loadLockedBrands();
 
+    // pairResults: tracks standard-run outcomes per brand+feature for grounding trigger.
+    // pairMeta: stores brand+feature refs to build grounding tasks without re-deriving them.
+    const pairResults = new Map<string, RunSummary[]>();
+    const pairMeta    = new Map<string, { brand: LockedBrand; feature: Feature }>();
+
     const tasks: (() => Promise<{ success: boolean }>)[] = [];
 
     for (const brand of brands) {
       const features = getFeaturesForBrand(brand.brand_name);
       for (const feature of features) {
+        const pairKey = `${brand.brand_name}::${feature.feature_id}`;
+        pairMeta.set(pairKey, { brand, feature });
+
         for (let run = 1; run <= RUNS_PER_FEATURE; run++) {
           const b = brand;
           const f = feature;
@@ -196,7 +239,11 @@ export async function GET(request: Request) {
                 confidence,
                 raw_json:       parseError ? { raw: rawText.slice(0, 2000) } : parsed,
                 parse_error:    parseError,
+                grounded:       false,
               });
+
+              if (!pairResults.has(pairKey)) pairResults.set(pairKey, []);
+              pairResults.get(pairKey)!.push({ has_capability, confidence, parse_error: parseError });
 
               return { success: true };
             } catch (err) {
@@ -204,6 +251,8 @@ export async function GET(request: Request) {
                 `[feature-collection] error: ${brand.brand_name}/${feature.feature_id}/run${run} (${model}):`,
                 err,
               );
+              if (!pairResults.has(pairKey)) pairResults.set(pairKey, []);
+              pairResults.get(pairKey)!.push({ has_capability: null, confidence: null, parse_error: true });
               return { success: false };
             }
           });
@@ -215,6 +264,58 @@ export async function GET(request: Request) {
     const results   = await runWithConcurrency(tasks, BATCH_CONCURRENCY, BATCH_DELAY_MS);
     const succeeded = results.filter((r) => r.success).length;
     const failed    = expected - succeeded;
+
+    // ── Grounding pass (claude model only — web_search_20250305 is Anthropic-only) ──
+    let groundingRan = 0;
+    let groundingFailed = 0;
+
+    if (model === "claude-haiku-4-5") {
+      const groundingTasks: (() => Promise<void>)[] = [];
+
+      for (const [pairKey, runs] of pairResults) {
+        if (!needsGrounding(runs)) continue;
+        const meta = pairMeta.get(pairKey);
+        if (!meta) continue;
+        const { brand: b, feature: f } = meta;
+
+        groundingTasks.push(async () => {
+          try {
+            const rawText = await withRetry(
+              () => callClaudeGrounded(b, f),
+              `${b.brand_name}/${f.feature_id}/grounded`,
+            );
+            const { has_capability, evidence, limitations, confidence, parsed, parseError } =
+              parseFeatureResponse(rawText);
+
+            // run_number = 0 marks the grounded pass (distinct from standard runs 1-3).
+            await insertFeatureResponse({
+              brand_name:     b.brand_name,
+              feature_id:     f.feature_id,
+              feature_tag:    f.feature_tag,
+              model:          "claude-haiku-4-5",
+              run_number:     0,
+              run_date:       today,
+              has_capability,
+              evidence,
+              limitations,
+              confidence,
+              raw_json:       parseError ? { raw: rawText.slice(0, 2000) } : parsed,
+              parse_error:    parseError,
+              grounded:       true,
+            });
+            groundingRan++;
+          } catch (err) {
+            console.error(`[feature-collection] grounding error: ${b.brand_name}/${f.feature_id}:`, err);
+            groundingFailed++;
+          }
+        });
+      }
+
+      if (groundingTasks.length > 0) {
+        console.log(`[feature-collection] grounding pass: ${groundingTasks.length} uncertain pairs`);
+        await runWithConcurrency(groundingTasks, BATCH_CONCURRENCY, BATCH_DELAY_MS);
+      }
+    }
 
     if (failed > 0) {
       await sendEmail({
@@ -234,14 +335,16 @@ export async function GET(request: Request) {
     }
 
     return Response.json({
-      mode: "feature_collection",
+      mode:             "feature_collection",
       model,
-      date:      today,
-      brands:    brands.length,
-      features:  FEATURES.length,
+      date:             today,
+      brands:           brands.length,
+      features:         FEATURES.length,
       expected,
       succeeded,
       failed,
+      grounding_ran:    groundingRan,
+      grounding_failed: groundingFailed,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);

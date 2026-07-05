@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { PerceptionGap } from "@/lib/brand-visibility/db";
+import type { PerceptionGap, FeatureScoreRow } from "@/lib/brand-visibility/db";
 import {
   LineChart,
   Line,
@@ -20,7 +20,6 @@ import {
 // ── Palette ────────────────────────────────────────────────────────────────────
 const NAVY   = "#000000";
 const PURPLE = "#6B4FBB";
-const PINK   = "#E8447A";
 
 // 22 visually distinct colors, one per brand slot — no cycling, no repeats.
 // Hues spread across the full wheel; lightness varied within similar-hue pairs
@@ -123,6 +122,7 @@ interface Props {
   sovData: SOVRow[];
   roiData: { brand: string; total_appearances: number; sov_pct: number }[];
   perceptionGaps: PerceptionGap[];
+  featureScores: FeatureScoreRow[];
 }
 
 // ── Chart data helpers ─────────────────────────────────────────────────────────
@@ -459,13 +459,149 @@ function EmptySlate({ message = "Collecting data…" }: { message?: string }) {
   );
 }
 
-function PositionCell({ avg, confidence }: { avg: number | null; confidence: string }) {
-  const isLow = confidence === "low";
+
+// ── Feature Scores Preview ─────────────────────────────────────────────────────
+
+const FEATURE_TAG_ORDER = ["ads", "content", "lead-gen", "lifecycle", "technical", "responsible-ai", "cost"];
+const FEATURE_TAG_LABEL: Record<string, string> = {
+  "ads":            "Paid Advertising",
+  "content":        "Content & Copy",
+  "lead-gen":       "Lead Generation",
+  "lifecycle":      "Lifecycle & Retention",
+  "technical":      "Technical Capabilities",
+  "responsible-ai": "Responsible AI",
+  "cost":           "Cost Efficiency",
+};
+const FEATURE_LABEL: Record<string, string> = {
+  ads_autonomous_bidding:         "Autonomous bid optimisation",
+  ads_cross_platform:             "Cross-platform campaign management",
+  content_brand_voice:            "Brand voice enforcement",
+  content_predictive_performance: "Predictive copy performance scoring",
+  leadgen_outreach_sequencing:    "Automated outreach sequencing",
+  leadgen_qualification:          "Automated lead qualification",
+  roi_attribution:                "Lifecycle performance tracking",
+  roi_self_optimising:            "Autonomous message and journey optimisation",
+  tech_instruction_following:     "Instruction following and constraint adherence",
+  tech_integrations:              "Native integrations",
+  tech_multistep_reasoning:       "Multi-step reasoning and workflow chaining",
+  rai_data_privacy:               "Data privacy and compliance posture",
+  rai_explainability:             "Decision transparency and explainability",
+  cost_free_tier:                 "Free tier accessibility",
+  cost_pricing_transparency:      "Pricing transparency",
+};
+
+function scoreBarColor(score: number): string {
+  if (score >= 75) return "#059669";
+  if (score >= 50) return "#2563EB";
+  if (score >= 25) return "#D97706";
+  return "#DC2626";
+}
+
+function FeatureScoresSection({ featureScores }: { featureScores: FeatureScoreRow[] }) {
+  const [open, setOpen] = useState(true);
+
+  const grouped = new Map<string, Map<string, { brand_name: string; score: number; grounded_source: boolean }[]>>();
+  for (const row of featureScores) {
+    if (!grouped.has(row.feature_tag)) grouped.set(row.feature_tag, new Map());
+    const fMap = grouped.get(row.feature_tag)!;
+    if (!fMap.has(row.feature_id)) fMap.set(row.feature_id, []);
+    fMap.get(row.feature_id)!.push({ brand_name: row.brand_name, score: row.score, grounded_source: row.grounded_source });
+  }
+
+  const orderedTags = FEATURE_TAG_ORDER.filter(t => grouped.has(t));
+  if (orderedTags.length === 0) return null;
+
   return (
-    <span style={{ opacity: isLow ? 0.45 : 1 }} title={isLow ? "Low confidence (<5 mentions)" : undefined}>
-      {avg != null ? avg.toFixed(1) : "—"}
-      {isLow && <sup style={{ fontSize: 9, marginLeft: 1 }}>*</sup>}
-    </span>
+    <div style={{ marginTop: 40 }}>
+      <div style={{ background: "white", borderRadius: 16, boxShadow: "0 2px 12px rgba(0,0,0,0.08)", overflow: "hidden" }}>
+        <button
+          onClick={() => setOpen(o => !o)}
+          style={{
+            width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+            padding: "20px 28px", background: "none", border: "none", cursor: "pointer",
+            borderBottom: open ? "1px solid rgba(0,0,0,0.06)" : "none",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <span style={{ fontSize: 15, fontWeight: 700, color: "#000000" }}>Product Feature Scores</span>
+            <span style={{
+              fontSize: 10, fontWeight: 700, letterSpacing: "0.06em",
+              textTransform: "uppercase" as const,
+              background: "rgba(124,58,237,0.10)", color: "#7C3AED",
+              padding: "2px 8px", borderRadius: 4,
+            }}>
+              Preview
+            </span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <span style={{ fontSize: 11, color: "rgba(0,0,0,0.4)", fontWeight: 500 }}>
+              2 days of data · scores update daily
+            </span>
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+              style={{ transition: "transform 0.2s", transform: open ? "rotate(180deg)" : "rotate(0deg)", flexShrink: 0 }}
+            >
+              <path d="M4 6l4 4 4-4" stroke="#6B4FBB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+        </button>
+
+        {open && (
+          <div style={{ padding: "24px 28px", display: "flex", flexDirection: "column", gap: 32 }}>
+            {orderedTags.map(tag => {
+              const fMap = grouped.get(tag)!;
+              return (
+                <div key={tag}>
+                  <div style={{
+                    fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                    textTransform: "uppercase" as const, color: "#7C3AED", marginBottom: 16,
+                  }}>
+                    {FEATURE_TAG_LABEL[tag] ?? tag}
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+                    {[...fMap.entries()].map(([featureId, brands]) => {
+                      const sorted = [...brands].sort((a, b) => b.score - a.score);
+                      return (
+                        <div key={featureId}>
+                          <div style={{ fontSize: 12, fontWeight: 600, color: "#000000", marginBottom: 10 }}>
+                            {FEATURE_LABEL[featureId] ?? featureId}
+                          </div>
+                          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                            {sorted.map(({ brand_name, score, grounded_source }) => (
+                              <div key={brand_name} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                                <div style={{ width: 120, fontSize: 11, color: "rgba(0,0,0,0.55)", flexShrink: 0, textAlign: "right" }}>
+                                  {brand_name}
+                                </div>
+                                <div style={{ flex: 1, background: "rgba(0,0,0,0.06)", borderRadius: 4, height: 8, overflow: "hidden" }}>
+                                  <div style={{
+                                    width: `${score}%`, height: "100%",
+                                    background: scoreBarColor(score), borderRadius: 4,
+                                  }} />
+                                </div>
+                                <div style={{ width: 40, fontSize: 11, fontWeight: 700, color: scoreBarColor(score), textAlign: "right", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 3 }}>
+                                  {score}
+                                  {grounded_source && (
+                                    <span
+                                      title="Score informed by live web search of product documentation"
+                                      style={{ fontSize: 10, cursor: "help", lineHeight: 1 }}
+                                    >
+                                      🔍
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
@@ -481,7 +617,7 @@ const TAG_OVERRIDES: Record<string, string> = {
 
 const clusterLabel = (tag: string) => USE_CASE_CLUSTERS.find(c => c.tag === tag)?.label ?? tag;
 
-export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps }: Props) {
+export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps, featureScores }: Props) {
   const hasReal = dailySummary.length > 0;
   const { brands: realBrands, rows: realRows, tagMap: realTagMap } = buildChartData(dailySummary);
 
@@ -950,107 +1086,8 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
         );
       })()}
 
-      {/* ── Row 3: Weekly brand table (only when real data exists) ───────────── */}
-      {hasWeekly && (
-        <div style={{
-          background: "#fff",
-          borderRadius: 10,
-          boxShadow: "0 2px 8px rgba(13,27,62,0.07), 0 1px 2px rgba(13,27,62,0.04)",
-          overflow: "hidden",
-        }}>
-          {/* Table header */}
-          <div style={{
-            padding: "16px 24px",
-            borderBottom: "1px solid rgba(13,27,62,0.07)",
-            display: "flex",
-            alignItems: "baseline",
-            gap: 12,
-          }}>
-            <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em" }}>
-              7-Day Brand Summary
-            </h3>
-            <span style={{ fontSize: 12, color: "#000000" }}>
-              all models combined
-            </span>
-          </div>
 
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-              <thead>
-                <tr style={{ borderBottom: "1px solid rgba(13,27,62,0.07)" }}>
-                  {["#", "Brand", "Mentions", "Avg Position", "Confidence"].map((h, i) => (
-                    <th
-                      key={h}
-                      style={{
-                        padding: "10px 20px",
-                        fontWeight: 600,
-                        fontSize: 11,
-                        textTransform: "uppercase" as const,
-                        letterSpacing: "0.07em",
-                        color: "#000000",
-                        textAlign: i === 0 ? "center" : i >= 2 ? "right" : "left",
-                        background: "rgba(13,27,62,0.018)",
-                      }}
-                    >
-                      {h}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {weeklyBrands.map(([brand, stats], i) => (
-                  <tr
-                    key={brand}
-                    style={{
-                      borderBottom: i < weeklyBrands.length - 1 ? "1px solid rgba(13,27,62,0.05)" : undefined,
-                      transition: "background 0.1s",
-                    }}
-                  >
-                    <td style={{ padding: "11px 20px", textAlign: "center", color: "#000000", fontWeight: 700, fontSize: 11 }}>
-                      {i + 1}
-                    </td>
-                    <td style={{ padding: "11px 20px", fontWeight: 600, color: NAVY }}>
-                      <span
-                        style={{
-                          display: "inline-block",
-                          width: 7,
-                          height: 7,
-                          borderRadius: "50%",
-                          background: lineColor(i),
-                          marginRight: 8,
-                          verticalAlign: "middle",
-                        }}
-                      />
-                      {brand}
-                    </td>
-                    <td style={{ padding: "11px 20px", textAlign: "right", fontWeight: 700, color: PURPLE }}>
-                      {stats.mention_count.toLocaleString()}
-                    </td>
-                    <td style={{ padding: "11px 20px", textAlign: "right", color: "#000000" }}>
-                      <PositionCell avg={stats.avg_position} confidence={stats.confidence} />
-                    </td>
-                    <td style={{ padding: "11px 20px", textAlign: "right" }}>
-                      <span style={{
-                        display: "inline-block",
-                        padding: "2px 9px",
-                        borderRadius: 999,
-                        fontSize: 11,
-                        fontWeight: 600,
-                        ...(stats.confidence === "low"
-                          ? { background: "rgba(232,68,122,0.10)", color: PINK }
-                          : { background: "rgba(107,79,187,0.10)", color: PURPLE }
-                        ),
-                      }}>
-                        {stats.confidence}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+      <FeatureScoresSection featureScores={featureScores} />
 
     </div>
   );
