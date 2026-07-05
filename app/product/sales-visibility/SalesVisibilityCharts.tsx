@@ -51,7 +51,7 @@ const BRAND_TYPE: Record<string, "AI-native" | "Traditional AI"> = {
   "Drift":        "AI-native",
   "Clay":         "AI-native",
   "Avoma":        "AI-native",
-  "People.ai":    "AI-native",
+  "Backstory.ai": "AI-native",
   "6sense":       "AI-native",
   "Tact.ai":      "AI-native",
   "ExecVision":   "AI-native",
