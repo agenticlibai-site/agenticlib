@@ -1189,6 +1189,105 @@ export async function loadLockedSalesAgents(): Promise<LockedSalesAgent[]> {
   return result.rows as LockedSalesAgent[];
 }
 
+// ── Sales visibility read queries ─────────────────────────────────────────────
+
+const SALES_CANONICAL: Record<string, string> = {
+  "SalesLoft": "Salesloft",
+  "Chorus.ai": "Chorus",
+};
+
+function salesCutoff(days: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() - days);
+  return d.toISOString().split("T")[0];
+}
+
+export async function getSalesDailySummary(days = 7): Promise<
+  { date: string; brand: string; model: string; mention_count: number; avg_position: number | null }[]
+> {
+  await initSalesVisibilityDB();
+  const cutoff = salesCutoff(days);
+  const result = await sql`
+    SELECT date::text AS date, brand, model, mention_count, avg_position
+    FROM sales_daily_summary
+    WHERE date >= ${cutoff}::date
+    ORDER BY date ASC, mention_count DESC
+  `;
+  return result.rows as { date: string; brand: string; model: string; mention_count: number; avg_position: number | null }[];
+}
+
+export async function getSalesWeeklySummary(): Promise<
+  { brand: string; model: string; mention_count: number; avg_position: number | null }[]
+> {
+  await initSalesVisibilityDB();
+  const cutoff = salesCutoff(7);
+  const result = await sql`
+    SELECT brand, model,
+      SUM(mention_count)::int AS mention_count,
+      AVG(avg_position)       AS avg_position
+    FROM sales_daily_summary
+    WHERE date >= ${cutoff}::date
+    GROUP BY brand, model
+    ORDER BY SUM(mention_count) DESC
+  `;
+  return result.rows as { brand: string; model: string; mention_count: number; avg_position: number | null }[];
+}
+
+export async function getSalesLLMVisibility(): Promise<
+  { model: string; visibility_pct: number; total_responses: number }[]
+> {
+  await initSalesVisibilityDB();
+  const cutoff = salesCutoff(7);
+  const result = await sql`
+    SELECT model,
+      ROUND(
+        COUNT(CASE WHEN jsonb_array_length(brands) > 0 THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0),
+        1
+      )::float AS visibility_pct,
+      COUNT(*)::int AS total_responses
+    FROM sales_raw_responses
+    WHERE date >= ${cutoff}::date
+    GROUP BY model
+    ORDER BY model
+  `;
+  return result.rows as { model: string; visibility_pct: number; total_responses: number }[];
+}
+
+export async function getSalesSOVData(): Promise<
+  { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[]
+> {
+  await initSalesVisibilityDB();
+  const cutoff = salesCutoff(7);
+  const result = await sql`
+    SELECT
+      r.bucket_tag,
+      CASE t.brand_name
+        WHEN 'SalesLoft' THEN 'Salesloft'
+        WHEN 'Chorus.ai' THEN 'Chorus'
+        ELSE t.brand_name
+      END AS brand,
+      COUNT(*)::int AS total_appearances,
+      ROUND(
+        COUNT(*) * 100.0 / NULLIF(SUM(COUNT(*)) OVER (PARTITION BY r.bucket_tag), 0),
+        1
+      )::float AS sov_pct
+    FROM sales_raw_responses r,
+         jsonb_array_elements_text(r.brands) AS t(brand_name)
+    WHERE r.date >= ${cutoff}::date
+      AND LENGTH(TRIM(t.brand_name)) > 0
+    GROUP BY r.bucket_tag,
+      CASE t.brand_name
+        WHEN 'SalesLoft' THEN 'Salesloft'
+        WHEN 'Chorus.ai' THEN 'Chorus'
+        ELSE t.brand_name
+      END
+    ORDER BY r.bucket_tag, COUNT(*) DESC
+  `;
+  return result.rows as { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
+}
+
+export { SALES_CANONICAL };
+
 export async function upsertSentimentDrift(row: {
   brand_name:   string;
   bucket_tag:   string;

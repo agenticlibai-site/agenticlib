@@ -45,7 +45,11 @@ export async function GET(request: Request) {
       INSERT INTO sales_daily_summary (date, brand, model, mention_count, avg_position)
       SELECT
         ${today}::date,
-        t.brand_name,
+        CASE t.brand_name
+          WHEN 'SalesLoft' THEN 'Salesloft'
+          WHEN 'Chorus.ai' THEN 'Chorus'
+          ELSE t.brand_name
+        END,
         r.model,
         COUNT(*)::int                   AS mention_count,
         AVG(t.ordinality)::float        AS avg_position
@@ -53,7 +57,11 @@ export async function GET(request: Request) {
            jsonb_array_elements_text(r.brands) WITH ORDINALITY AS t(brand_name, ordinality)
       WHERE r.date = ${today}::date
         AND LENGTH(TRIM(t.brand_name)) > 0
-      GROUP BY t.brand_name, r.model
+      GROUP BY CASE t.brand_name
+        WHEN 'SalesLoft' THEN 'Salesloft'
+        WHEN 'Chorus.ai' THEN 'Chorus'
+        ELSE t.brand_name
+      END, r.model
       ON CONFLICT (date, brand, model) DO UPDATE SET
         mention_count = EXCLUDED.mention_count,
         avg_position  = EXCLUDED.avg_position
