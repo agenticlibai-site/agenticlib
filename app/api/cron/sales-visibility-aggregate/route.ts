@@ -57,6 +57,7 @@ export async function GET(request: Request) {
            jsonb_array_elements_text(r.brands) WITH ORDINALITY AS t(brand_name, ordinality)
       WHERE r.date = ${today}::date
         AND LENGTH(TRIM(t.brand_name)) > 0
+        AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
       GROUP BY CASE t.brand_name
         WHEN 'SalesLoft' THEN 'Salesloft'
         WHEN 'Chorus.ai' THEN 'Chorus'

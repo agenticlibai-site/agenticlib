@@ -1145,6 +1145,12 @@ export async function initSalesVisibilityDB(): Promise<void> {
     )
   `;
 
+  await sql`
+    CREATE TABLE IF NOT EXISTS sales_denylist (
+      brand_name TEXT NOT NULL UNIQUE
+    )
+  `;
+
   salesDbInitialised = true;
 }
 
@@ -1211,6 +1217,7 @@ export async function getSalesDailySummary(days = 7): Promise<
     SELECT date::text AS date, brand, model, mention_count, avg_position
     FROM sales_daily_summary
     WHERE date >= ${cutoff}::date
+      AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
     ORDER BY date ASC, mention_count DESC
   `;
   return result.rows as { date: string; brand: string; model: string; mention_count: number; avg_position: number | null }[];
@@ -1227,6 +1234,7 @@ export async function getSalesWeeklySummary(): Promise<
       AVG(avg_position)       AS avg_position
     FROM sales_daily_summary
     WHERE date >= ${cutoff}::date
+      AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
     GROUP BY brand, model
     ORDER BY SUM(mention_count) DESC
   `;
@@ -1275,6 +1283,7 @@ export async function getSalesSOVData(): Promise<
          jsonb_array_elements_text(r.brands) AS t(brand_name)
     WHERE r.date >= ${cutoff}::date
       AND LENGTH(TRIM(t.brand_name)) > 0
+      AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
     GROUP BY r.bucket_tag,
       CASE t.brand_name
         WHEN 'SalesLoft' THEN 'Salesloft'
