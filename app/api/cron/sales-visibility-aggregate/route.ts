@@ -72,7 +72,7 @@ export async function GET(request: Request) {
     const brandsWritten = upsertResult.rows.length;
 
     // Health check: both models should have completed collection
-    const EXPECTED_RAW = SALES_PROMPTS.length * 5 * 2; // 20 prompts × 5 runs × 2 models
+    const EXPECTED_RAW = SALES_PROMPTS.length * 5 * 2; // prompts × 5 runs × 2 models
     const healthy = rawCount >= EXPECTED_RAW;
 
     if (!healthy) {

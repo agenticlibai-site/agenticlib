@@ -54,7 +54,7 @@ export default async function SalesVisibilityPage() {
 
         {/* Data source note */}
         <p style={{ fontSize: 11, color: "rgba(0,0,0,0.4)", marginTop: 32, textAlign: "center" }}>
-          Based on {20} daily prompts across Claude Haiku and GPT-4o-mini · Sales AI agent category · collecting since July 2026
+          Based on {23} daily prompts across Claude Haiku and GPT-4o-mini · Sales AI agent category · collecting since July 2026
         </p>
 
       </div>
