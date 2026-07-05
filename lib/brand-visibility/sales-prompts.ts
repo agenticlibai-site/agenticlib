@@ -35,13 +35,16 @@ export const SALES_PROMPTS: SalesPrompt[] = [
   { id: 13, tag: "sales-pipeline",   text: "What AI agents give the most accurate sales pipeline forecasting and deal health scoring?" },
   { id: 14, tag: "sales-pipeline",   text: "Which AI agents flag when a deal has gone quiet or a champion has gone dark — catching risks a human manager would miss?" },
 
-  // ── AI SDR & outreach sequencing · sales-outreach (3 prompts) ────────────
+  // ── AI SDR & outreach sequencing · sales-outreach (5 prompts) ────────────
   { id: 15, tag: "sales-outreach",   text: "Which AI agents automate sales outreach sequences — sending personalised emails and follow-ups without manual input between steps?" },
   { id: 16, tag: "sales-outreach",   text: "What AI SDR tools can prospect, reach out, and qualify leads autonomously without a human sales rep involved?" },
   { id: 17, tag: "sales-outreach",   text: "Which AI agents are best for automating cold outreach at scale while keeping messages personalised?" },
+  { id: 21, tag: "sales-outreach",   text: "What are the best autonomous AI SDR platforms that work 24/7 — identifying prospects, writing personalised outreach, and booking meetings without human intervention?" },
+  { id: 22, tag: "sales-outreach",   text: "Which AI agent platforms have built a fully autonomous AI sales rep or AI SDR that replaces or augments a human outbound rep?" },
 
-  // ── Sales enablement & follow-up · sales-enablement (3 prompts) ──────────
+  // ── Sales enablement & follow-up · sales-enablement (4 prompts) ──────────
   { id: 18, tag: "sales-enablement", text: "Which AI agents help sales reps send better follow-up emails faster — drafting messages in the rep's voice based on what happened in the call?" },
   { id: 19, tag: "sales-enablement", text: "What AI agents help sales reps track commitments made in calls and automatically follow up when deadlines approach?" },
   { id: 20, tag: "sales-enablement", text: "Which AI agents give sales reps the right content, battlecards, or talk tracks at the right moment during a sales conversation?" },
+  { id: 23, tag: "sales-enablement", text: "Which AI platforms use revenue intelligence to help sales leaders coach reps, improve win rates, and surface pipeline risks in real time?" },
 ];
