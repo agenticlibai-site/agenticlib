@@ -1,6 +1,6 @@
 import nodemailer from "nodemailer";
 
-const TO = "agenticlib.ai@gmail.com";
+const TO = "srinidhi.murali@agenticlib.com";
 
 interface SendEmailOptions {
   subject: string;

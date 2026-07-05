@@ -125,8 +125,8 @@ export default function PrivacyPage() {
           </ul>
           <p>
             You can contact us at{" "}
-            <a href="mailto:agenticlib.ai@gmail.com" className="text-violet-600 underline underline-offset-2">
-              agenticlib.ai@gmail.com
+            <a href="mailto:srinidhi.murali@agenticlib.com" className="text-violet-600 underline underline-offset-2">
+              srinidhi.murali@agenticlib.com
             </a>{" "}
             to exercise these rights.
           </p>
@@ -153,8 +153,8 @@ export default function PrivacyPage() {
           <p>If you have questions or concerns about this Privacy Policy, please contact us at:</p>
           <p>
             📧{" "}
-            <a href="mailto:agenticlib.ai@gmail.com" className="text-violet-600 underline underline-offset-2">
-              agenticlib.ai@gmail.com
+            <a href="mailto:srinidhi.murali@agenticlib.com" className="text-violet-600 underline underline-offset-2">
+              srinidhi.murali@agenticlib.com
             </a>
             <br />
             🌐{" "}

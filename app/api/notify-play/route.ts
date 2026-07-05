@@ -20,7 +20,7 @@ export async function POST(req: Request) {
 
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: "agenticlib.ai@gmail.com",
+      to: "srinidhi.murali@agenticlib.com",
       subject: `Someone just played the demo video — ${source}`,
       text: `A visitor clicked play on the demo video.\n\nSource: ${source}\nTime: ${new Date().toUTCString()}\nLocation: ${location}`,
       html: `<p>A visitor clicked <strong>play</strong> on the AgenticLib demo video.</p>
