@@ -41,6 +41,60 @@ interface Props {
   sovData:       SOVRow[];
 }
 
+// ── Brand classification ──────────────────────────────────────────────────────
+const BRAND_TYPE: Record<string, "AI-native" | "Traditional AI"> = {
+  // AI-native
+  "Chorus":       "AI-native",
+  "Gong":         "AI-native",
+  "Clari":        "AI-native",
+  "Conversica":   "AI-native",
+  "Drift":        "AI-native",
+  "Clay":         "AI-native",
+  "Avoma":        "AI-native",
+  "People.ai":    "AI-native",
+  "6sense":       "AI-native",
+  "Tact.ai":      "AI-native",
+  "ExecVision":   "AI-native",
+  "Nudge.ai":     "AI-native",
+  "Crystal":      "AI-native",
+  // Traditional AI
+  "Outreach":     "Traditional AI",
+  "Salesloft":    "Traditional AI",
+  "Revenue.io":   "Traditional AI",
+  "Apollo":       "Traditional AI",
+  "ZoomInfo":     "Traditional AI",
+  "Lemlist":      "Traditional AI",
+  "Reply.io":     "Traditional AI",
+  "Seamless.ai":  "Traditional AI",
+  "Hunter":       "Traditional AI",
+  "Smartlead":    "Traditional AI",
+  "Mindtickle":   "Traditional AI",
+  "Highspot":     "Traditional AI",
+};
+
+function TypeBadge({ brand, small }: { brand: string; small?: boolean }) {
+  const type = BRAND_TYPE[brand];
+  if (!type) return null;
+  const isNative = type === "AI-native";
+  return (
+    <span style={{
+      display: "inline-block",
+      padding: small ? "1px 5px" : "2px 7px",
+      borderRadius: 4,
+      fontSize: small ? 9 : 10,
+      fontWeight: 700,
+      letterSpacing: "0.04em",
+      textTransform: "uppercase" as const,
+      background: isNative ? "rgba(37,99,235,0.10)" : "rgba(0,0,0,0.06)",
+      color: isNative ? BLUE : "rgba(0,0,0,0.5)",
+      whiteSpace: "nowrap" as const,
+      flexShrink: 0,
+    }}>
+      {isNative ? "AI-native" : "Traditional"}
+    </span>
+  );
+}
+
 // ── SOV clusters ──────────────────────────────────────────────────────────────
 const SOV_CLUSTERS = [
   { tag: "sales-overall",   label: "Overall Sales AI" },
@@ -307,6 +361,7 @@ export default function SalesVisibilityCharts({ dailySummary, weeklySummary, llm
                   >
                     <span style={{ width: 8, height: 8, borderRadius: "50%", background: checked ? brandColor(brand) : "rgba(0,0,0,0.2)", flexShrink: 0 }} />
                     {brand}
+                    <TypeBadge brand={brand} small />
                   </button>
                 );
               })}
@@ -355,7 +410,7 @@ export default function SalesVisibilityCharts({ dailySummary, weeklySummary, llm
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
               <thead>
                 <tr style={{ background: "rgba(0,0,0,0.025)" }}>
-                  {["Rank", "Brand", "Avg Position", "7-Day Mentions"].map(h => (
+                  {["Rank", "Brand", "Type", "Avg Position", "7-Day Mentions"].map(h => (
                     <th key={h} style={{ padding: "10px 20px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "rgba(0,0,0,0.45)", textTransform: "uppercase" as const, letterSpacing: "0.07em", whiteSpace: "nowrap" }}>{h}</th>
                   ))}
                 </tr>
@@ -365,6 +420,7 @@ export default function SalesVisibilityCharts({ dailySummary, weeklySummary, llm
                   <tr key={row.brand} style={{ borderTop: "1px solid rgba(0,0,0,0.05)", background: i % 2 === 0 ? "transparent" : "rgba(0,0,0,0.012)" }}>
                     <td style={{ padding: "11px 20px", color: "rgba(0,0,0,0.4)", fontWeight: 600 }}>#{row.rank}</td>
                     <td style={{ padding: "11px 20px", fontWeight: 600, color: NAVY }}>{row.brand}</td>
+                    <td style={{ padding: "11px 20px" }}><TypeBadge brand={row.brand} /></td>
                     <td style={{ padding: "11px 20px", color: NAVY }}>
                       <span style={{
                         display: "inline-block", padding: "2px 8px", borderRadius: 4,
