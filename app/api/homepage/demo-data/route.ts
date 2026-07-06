@@ -19,6 +19,7 @@ function sovQuery(bucketTag: string) {
       JOIN locked_marketing_agents  lma ON lma.brand_name = rcb.canonical_brand
       WHERE rr.bucket_tag = ${bucketTag}
         AND rr.date >= CURRENT_DATE - INTERVAL '7 days'
+        AND rr.date < CURRENT_DATE
       GROUP BY rcb.canonical_brand
     )
     SELECT
@@ -51,6 +52,7 @@ export async function GET() {
         FROM daily_summary
         WHERE brand = ANY(ARRAY(SELECT jsonb_array_elements_text(${DEMO_BRANDS_JSON}::jsonb)))
           AND date >= CURRENT_DATE - INTERVAL '7 days'
+          AND date < CURRENT_DATE
         GROUP BY brand, date
         ORDER BY date, brand
       `,
@@ -61,6 +63,7 @@ export async function GET() {
         FROM daily_summary
         WHERE brand = ANY(ARRAY(SELECT jsonb_array_elements_text(${DEMO_BRANDS_JSON}::jsonb)))
           AND date >= CURRENT_DATE - INTERVAL '7 days'
+          AND date < CURRENT_DATE
         GROUP BY brand
         ORDER BY total_mentions DESC
       `,
@@ -73,6 +76,7 @@ export async function GET() {
         JOIN raw_responses rr ON rr.id = rcb.response_id
         WHERE rcb.canonical_brand = ANY(ARRAY(SELECT jsonb_array_elements_text(${DEMO_BRANDS_JSON}::jsonb)))
           AND rr.date >= CURRENT_DATE - INTERVAL '7 days'
+          AND rr.date < CURRENT_DATE
         GROUP BY rcb.canonical_brand
         ORDER BY avg_position ASC
       `,
@@ -83,6 +87,7 @@ export async function GET() {
         FROM daily_summary ds
         JOIN locked_marketing_agents lma ON lma.brand_name = ds.brand
         WHERE ds.date >= CURRENT_DATE - INTERVAL '7 days'
+          AND ds.date < CURRENT_DATE
       `,
 
       // ALL locked brands — prior week total mentions (for % change)
