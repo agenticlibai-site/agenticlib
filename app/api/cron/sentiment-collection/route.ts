@@ -41,9 +41,10 @@ async function withRetry<T>(fn: () => Promise<T>, label: string): Promise<T> {
       return await fn();
     } catch (err) {
       const status = (err as { status?: number })?.status;
-      if (status === 429 && attempt < RETRY_DELAYS_MS.length) {
+      const isRetryable = status === 429 || (status != null && status >= 500);
+      if (isRetryable && attempt < RETRY_DELAYS_MS.length) {
         const delay = RETRY_DELAYS_MS[attempt];
-        console.warn(`[sentiment-collection] 429 on ${label} — retry ${attempt + 1}/3 in ${delay}ms`);
+        console.warn(`[sentiment-collection] ${status} on ${label} — retry ${attempt + 1}/3 in ${delay}ms`);
         await new Promise((r) => setTimeout(r, delay));
         lastErr = err;
         continue;
