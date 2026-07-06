@@ -55,6 +55,26 @@
     {
       "path": "/api/cron/sales-visibility-aggregate",
       "schedule": "45 4 * * *"
+    },
+    {
+      "path": "/api/cron/sales-feature-collection?model=claude-haiku-4-5",
+      "schedule": "0 7 * * *"
+    },
+    {
+      "path": "/api/cron/sales-feature-collection?model=gpt-4o-mini",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/sales-feature-aggregate",
+      "schedule": "30 9 * * *"
+    },
+    {
+      "path": "/api/cron/sales-sentiment-collection?model=claude-haiku-4-5",
+      "schedule": "0 11 * * *"
+    },
+    {
+      "path": "/api/cron/sales-sentiment-collection?model=gpt-4o-mini",
+      "schedule": "0 15 * * *"
     }
   ]
 }

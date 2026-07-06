@@ -1166,6 +1166,69 @@ export async function initSalesVisibilityDB(): Promise<void> {
     )
   `;
 
+  await sql`
+    CREATE TABLE IF NOT EXISTS sales_feature_responses (
+      id             SERIAL PRIMARY KEY,
+      brand_name     TEXT    NOT NULL,
+      feature_id     TEXT    NOT NULL,
+      feature_tag    TEXT    NOT NULL,
+      model          TEXT    NOT NULL,
+      run_number     INTEGER NOT NULL,
+      run_date       DATE    NOT NULL,
+      has_capability TEXT,
+      evidence       TEXT,
+      limitations    TEXT,
+      confidence     TEXT,
+      raw_json       JSONB,
+      parse_error    BOOLEAN NOT NULL DEFAULT FALSE,
+      grounded       BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at     TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS sales_feature_scores (
+      id                 SERIAL PRIMARY KEY,
+      brand_name         TEXT    NOT NULL,
+      feature_id         TEXT    NOT NULL,
+      feature_tag        TEXT    NOT NULL,
+      score              NUMERIC,
+      score_band         TEXT,
+      runs_agreeing      INTEGER,
+      runs_total         INTEGER NOT NULL DEFAULT 0,
+      flagged_for_review BOOLEAN NOT NULL DEFAULT FALSE,
+      flag_reason        TEXT,
+      notes              TEXT,
+      grounded_source    BOOLEAN DEFAULT FALSE,
+      scored_at          TIMESTAMP DEFAULT NOW(),
+      UNIQUE (brand_name, feature_id)
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS sales_sentiment_responses (
+      id          SERIAL PRIMARY KEY,
+      brand_name  TEXT    NOT NULL,
+      prompt_id   INTEGER NOT NULL,
+      bucket_tag  TEXT    NOT NULL,
+      model       TEXT    NOT NULL,
+      run_date    DATE    NOT NULL DEFAULT CURRENT_DATE,
+      sentiment   TEXT    CHECK (sentiment IN ('positive', 'neutral', 'negative')),
+      confidence  TEXT    CHECK (confidence IN ('high', 'medium', 'low')),
+      descriptors TEXT[],
+      raw_json    JSONB,
+      parse_error BOOLEAN DEFAULT FALSE,
+      created_at  TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE UNIQUE INDEX IF NOT EXISTS sales_sentiment_responses_unique
+    ON sales_sentiment_responses (brand_name, prompt_id, model, run_date)
+  `;
+
+  await sql`ALTER TABLE sales_feature_responses ADD COLUMN IF NOT EXISTS grounded BOOLEAN NOT NULL DEFAULT FALSE`;
+  await sql`ALTER TABLE sales_feature_scores    ADD COLUMN IF NOT EXISTS grounded_source BOOLEAN DEFAULT FALSE`;
+
   salesDbInitialised = true;
 }
 
@@ -1333,6 +1396,136 @@ export async function getFeatureScores(): Promise<FeatureScoreRow[]> {
     ORDER BY feature_tag, feature_id, score DESC
   `;
   return result.rows as FeatureScoreRow[];
+}
+
+// ── Sales feature pipeline ────────────────────────────────────────────────────
+
+export async function insertSalesFeatureResponse(row: {
+  brand_name:     string;
+  feature_id:     string;
+  feature_tag:    string;
+  model:          string;
+  run_number:     number;
+  run_date:       string;
+  has_capability: string | null;
+  evidence:       string | null;
+  limitations:    string | null;
+  confidence:     string | null;
+  raw_json:       object | null;
+  parse_error:    boolean;
+  grounded?:      boolean;
+}): Promise<void> {
+  const grounded = row.grounded ?? false;
+  await sql`
+    INSERT INTO sales_feature_responses
+      (brand_name, feature_id, feature_tag, model, run_number, run_date,
+       has_capability, evidence, limitations, confidence, raw_json, parse_error, grounded)
+    VALUES
+      (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.model},
+       ${row.run_number}, ${row.run_date}::date, ${row.has_capability},
+       ${row.evidence}, ${row.limitations}, ${row.confidence},
+       ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error}, ${grounded})
+    ON CONFLICT DO NOTHING
+  `;
+}
+
+export async function getSalesFeatureResponsesForScoring(runDate: string): Promise<{
+  brand_name:     string;
+  feature_id:     string;
+  feature_tag:    string;
+  model:          string;
+  has_capability: string | null;
+  evidence:       string | null;
+  confidence:     string | null;
+  parse_error:    boolean;
+  grounded:       boolean;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, feature_id, feature_tag, model,
+           has_capability, evidence, confidence, parse_error,
+           COALESCE(grounded, FALSE) AS grounded
+    FROM sales_feature_responses
+    WHERE run_date = ${runDate}::date
+    ORDER BY brand_name, feature_id, model, grounded ASC, run_number
+  `;
+  return result.rows as {
+    brand_name: string; feature_id: string; feature_tag: string; model: string;
+    has_capability: string | null; evidence: string | null; confidence: string | null;
+    parse_error: boolean; grounded: boolean;
+  }[];
+}
+
+export async function upsertSalesFeatureScore(row: {
+  brand_name:         string;
+  feature_id:         string;
+  feature_tag:        string;
+  score:              number | null;
+  score_band:         string;
+  runs_agreeing:      number | null;
+  runs_total:         number;
+  flagged_for_review: boolean;
+  flag_reason:        string | null;
+  notes:              string | null;
+  grounded_source?:   boolean;
+}): Promise<void> {
+  const grounded_source = row.grounded_source ?? false;
+  await sql`
+    INSERT INTO sales_feature_scores
+      (brand_name, feature_id, feature_tag, score, score_band,
+       runs_agreeing, runs_total, flagged_for_review, flag_reason, notes,
+       grounded_source, scored_at)
+    VALUES
+      (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.score},
+       ${row.score_band}, ${row.runs_agreeing}, ${row.runs_total},
+       ${row.flagged_for_review}, ${row.flag_reason}, ${row.notes},
+       ${grounded_source}, NOW())
+    ON CONFLICT (brand_name, feature_id) DO UPDATE SET
+      feature_tag        = EXCLUDED.feature_tag,
+      score              = EXCLUDED.score,
+      score_band         = EXCLUDED.score_band,
+      runs_agreeing      = EXCLUDED.runs_agreeing,
+      runs_total         = EXCLUDED.runs_total,
+      flagged_for_review = EXCLUDED.flagged_for_review,
+      flag_reason        = EXCLUDED.flag_reason,
+      notes              = EXCLUDED.notes,
+      grounded_source    = EXCLUDED.grounded_source,
+      scored_at          = NOW()
+  `;
+}
+
+// ── Sales sentiment pipeline ──────────────────────────────────────────────────
+
+export async function insertSalesSentimentResponse(row: {
+  brand_name:  string;
+  prompt_id:   number;
+  bucket_tag:  string;
+  model:       string;
+  run_date:    string;
+  sentiment:   string | null;
+  confidence:  string | null;
+  descriptors: string[] | null;
+  raw_json:    object | null;
+  parse_error: boolean;
+}): Promise<void> {
+  const descriptorsJson = JSON.stringify(row.descriptors ?? []);
+  await sql`
+    INSERT INTO sales_sentiment_responses
+      (brand_name, prompt_id, bucket_tag, model, run_date,
+       sentiment, confidence, descriptors, raw_json, parse_error)
+    VALUES
+      (${row.brand_name}, ${row.prompt_id}, ${row.bucket_tag}, ${row.model},
+       ${row.run_date}::date, ${row.sentiment}, ${row.confidence},
+       ARRAY(SELECT jsonb_array_elements_text(${descriptorsJson}::jsonb)),
+       ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb,
+       ${row.parse_error})
+    ON CONFLICT (brand_name, prompt_id, model, run_date) DO UPDATE SET
+      bucket_tag  = EXCLUDED.bucket_tag,
+      sentiment   = EXCLUDED.sentiment,
+      confidence  = EXCLUDED.confidence,
+      descriptors = EXCLUDED.descriptors,
+      raw_json    = EXCLUDED.raw_json,
+      parse_error = EXCLUDED.parse_error
+  `;
 }
 
 export async function upsertSentimentDrift(row: {
