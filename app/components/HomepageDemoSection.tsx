@@ -90,6 +90,16 @@ function buildChartRows(trend: DemoData["trend"]): ChartRow[] {
   return [...map.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([, v]) => v as ChartRow);
 }
 
+function getLast7Days(): string[] {
+  const dates: string[] = [];
+  const today = new Date();
+  for (let i = 7; i >= 1; i--) {
+    const d = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() - i));
+    dates.push(d.toISOString().split("T")[0]);
+  }
+  return dates;
+}
+
 // ── Skeleton ──────────────────────────────────────────────────────────────────
 
 function Sk({ w = "100%", h = 14, r = 6 }: { w?: string | number; h?: number; r?: number }) {
@@ -219,7 +229,7 @@ export default function HomepageDemoSection() {
     : null;
 
   const chartRows  = data ? buildChartRows(data.trend) : [];
-  const chartDates = chartRows.map((r) => r.date);
+  const chartDates = getLast7Days();
 
   return (
     <section style={{ padding: "48px 0 0" }}>
@@ -290,7 +300,7 @@ export default function HomepageDemoSection() {
               </div>
             ) : chartRows.length > 0 ? (
               <ResponsiveContainer width="100%" height={240}>
-                <ComposedChart data={chartRows} margin={{ top: 4, right: 16, left: -18, bottom: 0 }}>
+                <ComposedChart data={chartRows} margin={{ top: 4, right: 16, left: 4, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,0,0,0.055)" vertical={false} />
                   <XAxis
                     dataKey="date"
@@ -303,7 +313,7 @@ export default function HomepageDemoSection() {
                   <YAxis
                     allowDecimals={false}
                     tick={{ fontSize: 11, fill: "rgba(0,0,0,0.45)" }}
-                    axisLine={false} tickLine={false} width={30}
+                    axisLine={false} tickLine={false} width={40}
                   />
                   <Tooltip
                     contentStyle={{ borderRadius: 8, border: "1px solid rgba(0,0,0,0.10)", fontSize: 12, boxShadow: "0 4px 16px rgba(0,0,0,0.10)", color: NAVY, background: "#fff" }}
