@@ -3,7 +3,6 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Share2, Mail, X as XIcon, ArrowUp, MessageCircle } from "lucide-react";
-import HomepageDemoSection from "@/app/components/HomepageDemoSection";
 
 const BANNER2_SUB = "Get agent recommendations matched to your specific workflows, backed by comparison analytics.";
 const BANNER2_WORDS = ["Individuals", "Businesses"] as const;
@@ -64,6 +63,18 @@ export default function Home() {
           .hero-tagline-text { font-size: 16px !important; }
           .hero-subhead { margin-top: 20px !important; font-size: 14px !important; }
         }
+        .dewwie-logo {
+          font-family: Georgia, 'Times New Roman', serif;
+          font-style: italic;
+          font-weight: 400;
+          font-size: 30px;
+          color: rgba(0,0,0,0.28);
+          letter-spacing: 0.01em;
+          line-height: 1;
+          cursor: default;
+          transition: color 0.2s ease;
+        }
+        .dewwie-logo:hover { color: #0c00b0; }
       `}</style>
 
       {/* Background blobs */}
@@ -209,7 +220,21 @@ export default function Home() {
 
       </main>
 
-      <HomepageDemoSection />
+      {/* ── Trusted By ────────────────────────────────────────────────────── */}
+      <section style={{ padding: "44px 24px 52px" }}>
+        <div style={{ maxWidth: 860, margin: "0 auto" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
+            <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
+            <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "#000", whiteSpace: "nowrap" }}>
+              Trusted by
+            </span>
+            <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
+          </div>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 48, flexWrap: "wrap" }}>
+            <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" className="dewwie-logo" style={{ textDecoration: "none" }}>dewwie</a>
+          </div>
+        </div>
+      </section>
 
       <section id="contact" style={{ background: "transparent", paddingTop: "80px", paddingBottom: "80px" }}>
         <div className="max-w-3xl mx-auto px-6 text-center">

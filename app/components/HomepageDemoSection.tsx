@@ -222,7 +222,7 @@ export default function HomepageDemoSection() {
   const chartDates = chartRows.map((r) => r.date);
 
   return (
-    <section style={{ background: "linear-gradient(160deg, #EEF0FD 0%, #F4F5FD 45%, #F9FAFE 100%)", padding: "48px 0 0" }}>
+    <section style={{ padding: "48px 0 0" }}>
       <style>{`
         @keyframes skpulse{0%,100%{opacity:1}50%{opacity:.45}}
         @media(max-width:900px){
@@ -290,7 +290,7 @@ export default function HomepageDemoSection() {
               </div>
             ) : chartRows.length > 0 ? (
               <ResponsiveContainer width="100%" height={240}>
-                <ComposedChart data={chartRows} margin={{ top: 4, right: 4, left: -18, bottom: 0 }}>
+                <ComposedChart data={chartRows} margin={{ top: 4, right: 16, left: -18, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,0,0,0.055)" vertical={false} />
                   <XAxis
                     dataKey="date"
@@ -298,6 +298,7 @@ export default function HomepageDemoSection() {
                     tickFormatter={fmtDate}
                     tick={{ fontSize: 11, fill: "rgba(0,0,0,0.45)" }}
                     axisLine={false} tickLine={false} dy={8}
+                    padding={{ left: 0, right: 0 }}
                   />
                   <YAxis
                     allowDecimals={false}
