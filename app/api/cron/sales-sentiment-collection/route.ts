@@ -181,9 +181,11 @@ export async function GET(request: Request) {
     }
 
     const expected  = tasks.length;
+    console.log(`[sales-sentiment-collection] start — model=${model}, date=${today}, brands=${brands.length}, expected=${expected} tasks`);
     const results   = await runWithConcurrency(tasks, BATCH_CONCURRENCY, BATCH_DELAY_MS);
     const succeeded = results.filter((r) => r.success).length;
     const failed    = expected - succeeded;
+    console.log(`[sales-sentiment-collection] done — model=${model}, succeeded=${succeeded}/${expected}, failed=${failed}`);
 
     if (failed > 0) {
       await sendEmail({
