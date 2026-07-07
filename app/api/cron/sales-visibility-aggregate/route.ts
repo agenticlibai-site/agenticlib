@@ -77,9 +77,24 @@ export async function GET(request: Request) {
 
     // Health check: both models should have completed collection
     const EXPECTED_RAW = SALES_PROMPTS.length * 5 * 2; // prompts × 5 runs × 2 models
+    const EXPECTED_PER_MODEL = SALES_PROMPTS.length * 5;
     const healthy = rawCount >= EXPECTED_RAW;
 
     if (!healthy) {
+      const perModelResult = await sql`
+        SELECT model, COUNT(*)::int AS rows_stored
+        FROM sales_raw_responses
+        WHERE date = ${today}::date
+        GROUP BY model
+      `;
+      const perModelMap: Record<string, number> = Object.fromEntries(
+        perModelResult.rows.map((r) => [r.model as string, r.rows_stored as number])
+      );
+      const modelRows = (["claude-haiku-4-5", "gpt-4o-mini"] as const).map(m => {
+        const stored = perModelMap[m] ?? 0;
+        return `<tr><td style="padding:4px 12px 4px 0"><strong>${m}</strong></td><td>${stored} / ${EXPECTED_PER_MODEL} ${stored >= EXPECTED_PER_MODEL ? "✓" : "✗"}</td></tr>`;
+      }).join("");
+
       await sendEmail({
         subject: `[AgenticLib] ALERT — Sales Visibility Aggregate incomplete (${today})`,
         html: `
@@ -88,6 +103,7 @@ export async function GET(request: Request) {
             <tr><td style="padding:4px 12px 4px 0"><strong>Run timestamp</strong></td><td>${runTimestamp}</td></tr>
             <tr><td style="padding:4px 12px 4px 0"><strong>Date</strong></td><td>${today}</td></tr>
             <tr><td style="padding:4px 12px 4px 0"><strong>Raw rows</strong></td><td>${rawCount} / ${EXPECTED_RAW} expected</td></tr>
+            ${modelRows}
             <tr><td style="padding:4px 12px 4px 0"><strong>Brands written</strong></td><td>${brandsWritten}</td></tr>
           </table>
           <p>Collection may not have completed for one or both models. Check Vercel function logs.</p>

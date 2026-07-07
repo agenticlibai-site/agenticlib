@@ -1,5 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
 import OpenAI from "openai";
+import { sql } from "@vercel/postgres";
 import { SKINCARE_PROMPTS, SKINCARE_SYSTEM_PROMPT } from "@/lib/skincare-visibility/prompts";
 import {
   initSkincareDB,
@@ -134,19 +135,48 @@ export async function GET(request: Request) {
       const healthy = stats.success === EXPECTED_TOTAL && stats.activeErrors === 0;
 
       if (!healthy) {
-        await sendEmail({
-          subject: `[AgenticLib] ALERT — Skincare Visibility Aggregation failed (${today})`,
-          html: `
-            <h2>Skincare Visibility Pipeline — Aggregation Health Check Failed</h2>
-            <table style="border-collapse:collapse;font-family:monospace">
-              <tr><td style="padding:4px 12px 4px 0"><strong>Run timestamp</strong></td><td>${runTimestamp}</td></tr>
-              <tr><td style="padding:4px 12px 4px 0"><strong>Date</strong></td><td>${today}</td></tr>
-              <tr><td style="padding:4px 12px 4px 0"><strong>Rows stored</strong></td><td>${stats.success} / ${EXPECTED_TOTAL}</td></tr>
-              <tr><td style="padding:4px 12px 4px 0"><strong>Active errors</strong></td><td>${stats.activeErrors}</td></tr>
-              <tr><td style="padding:4px 12px 4px 0"><strong>Complete</strong></td><td>${stats.success === EXPECTED_TOTAL ? "true" : "false"}</td></tr>
-            </table>
-          `,
-        }).catch((e) => console.error("[alert] skincare aggregation failure email failed:", e));
+        const [lastWriteResult, perModelResult] = await Promise.all([
+          sql`SELECT MAX(created_at) AS last_write FROM skincare_raw_responses WHERE date = ${today}::date`,
+          sql`SELECT model, COUNT(*)::int AS rows_stored FROM skincare_raw_responses WHERE date = ${today}::date GROUP BY model`,
+        ]);
+        const lastWrite: Date | null = lastWriteResult.rows[0].last_write
+          ? new Date(lastWriteResult.rows[0].last_write as string)
+          : null;
+        const minutesSinceLastWrite = lastWrite
+          ? (Date.now() - lastWrite.getTime()) / 60_000
+          : Infinity;
+        const collectionInProgress = minutesSinceLastWrite < 30;
+
+        if (collectionInProgress) {
+          console.log(
+            `[skincare-aggregate] skipped — collection still in progress. ` +
+            `Last write ${Math.round(minutesSinceLastWrite)}m ago.`
+          );
+        } else {
+          const perModelMap: Record<string, number> = Object.fromEntries(
+            perModelResult.rows.map((r) => [r.model as string, r.rows_stored as number])
+          );
+          const modelRows = (["claude-haiku-4-5", "gpt-4o-mini"] as const).map(m => {
+            const stored = perModelMap[m] ?? 0;
+            return `<tr><td style="padding:4px 12px 4px 0"><strong>${m}</strong></td><td>${stored} / ${EXPECTED_PER_MODEL} ${stored >= EXPECTED_PER_MODEL ? "✓" : "✗"}</td></tr>`;
+          }).join("");
+
+          await sendEmail({
+            subject: `[AgenticLib] ALERT — Skincare Visibility Aggregation failed (${today})`,
+            html: `
+              <h2>Skincare Visibility Pipeline — Aggregation Health Check Failed</h2>
+              <table style="border-collapse:collapse;font-family:monospace">
+                <tr><td style="padding:4px 12px 4px 0"><strong>Run timestamp</strong></td><td>${runTimestamp}</td></tr>
+                <tr><td style="padding:4px 12px 4px 0"><strong>Date</strong></td><td>${today}</td></tr>
+                <tr><td style="padding:4px 12px 4px 0"><strong>Rows stored</strong></td><td>${stats.success} / ${EXPECTED_TOTAL}</td></tr>
+                ${modelRows}
+                <tr><td style="padding:4px 12px 4px 0"><strong>Active errors</strong></td><td>${stats.activeErrors}</td></tr>
+                <tr><td style="padding:4px 12px 4px 0"><strong>Complete</strong></td><td>${stats.success === EXPECTED_TOTAL ? "true" : "false"}</td></tr>
+                <tr><td style="padding:4px 12px 4px 0"><strong>Last write</strong></td><td>${lastWrite ? lastWrite.toISOString() : "none"}</td></tr>
+              </table>
+            `,
+          }).catch((e) => console.error("[alert] skincare aggregation failure email failed:", e));
+        }
       }
 
       return Response.json({
