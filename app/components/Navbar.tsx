@@ -146,17 +146,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Company */}
-          <Link
-            href="/company"
-            className="transition px-3 py-1.5 rounded-lg"
-            style={{ fontSize: "15.5px", fontWeight: 400, color: "#000000", textDecoration: "none" }}
-            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}
-          >
-            Company
-          </Link>
-
           {/* Contact Us */}
           <Link
             href="/#contact"
@@ -261,11 +250,6 @@ export default function Navbar() {
               ))}
             </div>
           )}
-          <Link href="/company" onClick={() => setMobileOpen(false)}
-            className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
-            style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
-            Company
-          </Link>
           <a href="/#contact" onClick={() => setMobileOpen(false)}
             className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
             style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
