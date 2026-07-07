@@ -157,11 +157,10 @@ export async function GET(request: Request) {
     const healthy = stats.success === EXPECTED_TOTAL && stats.activeErrors === 0;
 
     if (!healthy) {
-      const lastWriteResult = await sql`
-        SELECT MAX(created_at) AS last_write
-        FROM raw_responses
-        WHERE date = ${today}::date
-      `;
+      const [lastWriteResult, perModelResult] = await Promise.all([
+        sql`SELECT MAX(created_at) AS last_write FROM raw_responses WHERE date = ${today}::date`,
+        sql`SELECT model, COUNT(*)::int AS rows_stored FROM raw_responses WHERE date = ${today}::date GROUP BY model`,
+      ]);
       const lastWrite: Date | null = lastWriteResult.rows[0].last_write
         ? new Date(lastWriteResult.rows[0].last_write as string)
         : null;
@@ -176,6 +175,15 @@ export async function GET(request: Request) {
           `Last write ${Math.round(minutesSinceLastWrite)}m ago. Will retry at next scheduled run.`
         );
       } else {
+        const EXPECTED_PER_MODEL = PROMPTS.length * RUNS_PER_PROMPT;
+        const perModelMap: Record<string, number> = Object.fromEntries(
+          perModelResult.rows.map((r) => [r.model as string, r.rows_stored as number])
+        );
+        const modelRows = (["claude-haiku-4-5", "gpt-4o-mini"] as const).map(m => {
+          const stored = perModelMap[m] ?? 0;
+          return `<tr><td style="padding:4px 12px 4px 0"><strong>${m}</strong></td><td>${stored} / ${EXPECTED_PER_MODEL} ${stored >= EXPECTED_PER_MODEL ? "✓" : "✗"}</td></tr>`;
+        }).join("");
+
         await sendEmail({
           subject: `[AgenticLib] ALERT — Brand Visibility Aggregation failed (${today})`,
           html: `
@@ -184,6 +192,7 @@ export async function GET(request: Request) {
               <tr><td style="padding:4px 12px 4px 0"><strong>Run timestamp</strong></td><td>${runTimestamp}</td></tr>
               <tr><td style="padding:4px 12px 4px 0"><strong>Date</strong></td><td>${today}</td></tr>
               <tr><td style="padding:4px 12px 4px 0"><strong>Rows stored</strong></td><td>${stats.success} / ${EXPECTED_TOTAL}</td></tr>
+              ${modelRows}
               <tr><td style="padding:4px 12px 4px 0"><strong>Active errors</strong></td><td>${stats.activeErrors}</td></tr>
               <tr><td style="padding:4px 12px 4px 0"><strong>complete</strong></td><td>${stats.success === EXPECTED_TOTAL ? "true" : "false"}</td></tr>
               <tr><td style="padding:4px 12px 4px 0"><strong>Last write</strong></td><td>${lastWrite ? lastWrite.toISOString() : "none"}</td></tr>
@@ -214,6 +223,8 @@ export async function GET(request: Request) {
     : ["claude-haiku-4-5", "gpt-4o-mini"];
 
   const expected = PROMPTS.length * RUNS_PER_PROMPT * modelsToRun.length;
+
+  console.log(`[brand-visibility-collection] start — model=${modelParam ?? "all"}, date=${today}, expected=${expected} tasks`);
 
   // Archive any errors from previous attempts for these models before retrying.
   // This scopes error_count to the current run only.
@@ -270,6 +281,7 @@ export async function GET(request: Request) {
   const results = await runWithConcurrency(tasks, BATCH_CONCURRENCY, BATCH_DELAY_MS);
   const succeeded = results.filter((r) => r.success).length;
   const failed = expected - succeeded;
+  console.log(`[brand-visibility-collection] done — model=${modelParam ?? "all"}, succeeded=${succeeded}/${expected}, failed=${failed}`);
 
   if (failed > 0) {
     await sendEmail({
