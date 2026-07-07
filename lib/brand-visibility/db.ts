@@ -1229,6 +1229,11 @@ export async function initSalesVisibilityDB(): Promise<void> {
   await sql`ALTER TABLE sales_feature_responses ADD COLUMN IF NOT EXISTS grounded BOOLEAN NOT NULL DEFAULT FALSE`;
   await sql`ALTER TABLE sales_feature_scores    ADD COLUMN IF NOT EXISTS grounded_source BOOLEAN DEFAULT FALSE`;
 
+  await sql`
+    CREATE UNIQUE INDEX IF NOT EXISTS sales_feature_responses_unique
+    ON sales_feature_responses (brand_name, feature_id, model, run_number, run_date)
+  `;
+
   salesDbInitialised = true;
 }
 
@@ -1373,6 +1378,38 @@ export async function getSalesSOVData(): Promise<
   return result.rows as { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
 }
 
+export async function getSalesClusterBrandPositions(): Promise<
+  { bucket_tag: string; brand: string; avg_position: number; appearances: number }[]
+> {
+  await initSalesVisibilityDB();
+  const cutoff = salesCutoff(7);
+  const result = await sql`
+    SELECT
+      r.bucket_tag,
+      CASE t.brand_name
+        WHEN 'SalesLoft' THEN 'Salesloft'
+        WHEN 'Chorus.ai' THEN 'Chorus'
+        ELSE t.brand_name
+      END AS brand,
+      ROUND(AVG(t.pos)::numeric, 1)::float AS avg_position,
+      COUNT(*)::int AS appearances
+    FROM sales_raw_responses r,
+         LATERAL jsonb_array_elements_text(r.brands) WITH ORDINALITY AS t(brand_name, pos)
+    WHERE r.date >= ${cutoff}::date
+      AND r.bucket_tag != 'sales-overall'
+      AND LENGTH(TRIM(t.brand_name)) > 0
+      AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
+    GROUP BY r.bucket_tag,
+      CASE t.brand_name
+        WHEN 'SalesLoft' THEN 'Salesloft'
+        WHEN 'Chorus.ai' THEN 'Chorus'
+        ELSE t.brand_name
+      END
+    ORDER BY r.bucket_tag, AVG(t.pos) ASC
+  `;
+  return result.rows as { bucket_tag: string; brand: string; avg_position: number; appearances: number }[];
+}
+
 export { SALES_CANONICAL };
 
 // ── Feature scores read (for brand-visibility page) ───────────────────────────
@@ -1452,6 +1489,26 @@ export async function getSalesFeatureResponsesForScoring(runDate: string): Promi
     brand_name: string; feature_id: string; feature_tag: string; model: string;
     has_capability: string | null; evidence: string | null; confidence: string | null;
     parse_error: boolean; grounded: boolean;
+  }[];
+}
+
+export async function getSalesFeatureScores(): Promise<{
+  brand_name:         string;
+  feature_id:         string;
+  feature_tag:        string;
+  score:              number;
+  score_band:         string;
+  flagged_for_review: boolean;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, feature_id, feature_tag, score, score_band, flagged_for_review
+    FROM sales_feature_scores
+    WHERE score IS NOT NULL
+    ORDER BY feature_tag, score DESC
+  `;
+  return result.rows as {
+    brand_name: string; feature_id: string; feature_tag: string;
+    score: number; score_band: string; flagged_for_review: boolean;
   }[];
 }
 

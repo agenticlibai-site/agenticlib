@@ -61,12 +61,16 @@
       "schedule": "0 7 * * *"
     },
     {
-      "path": "/api/cron/sales-feature-collection?model=gpt-4o-mini",
+      "path": "/api/cron/sales-feature-collection?model=gpt-4o-mini&half=1",
       "schedule": "0 9 * * *"
     },
     {
+      "path": "/api/cron/sales-feature-collection?model=gpt-4o-mini&half=2",
+      "schedule": "15 9 * * *"
+    },
+    {
       "path": "/api/cron/sales-feature-aggregate",
-      "schedule": "30 9 * * *"
+      "schedule": "0 10 * * *"
     },
     {
       "path": "/api/cron/sales-sentiment-collection?model=claude-haiku-4-5",
