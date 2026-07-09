@@ -288,6 +288,7 @@ export async function initBrandVisibilityDB(): Promise<void> {
     CREATE UNIQUE INDEX IF NOT EXISTS sentiment_responses_unique
     ON sentiment_responses (brand_name, prompt_id, model, run_date)
   `;
+  await sql`ALTER TABLE sentiment_responses ADD COLUMN IF NOT EXISTS limitations text[]`;
 
   // Weekly sentiment aggregate per brand+bucket_tag.
   // unique_flags maps 1:1 with top_descriptors — 'true' if the descriptor
@@ -1006,19 +1007,21 @@ export async function insertSentimentResponse(row: {
   sentiment:   string | null;
   confidence:  string | null;
   descriptors: string[] | null;
+  limitations: string[] | null;
   raw_json:    object | null;
   parse_error: boolean;
 }): Promise<void> {
-  // descriptors is TEXT[] — passed via JSON cast to stay within @vercel/postgres Primitive types
-  const descriptorsJson = JSON.stringify(row.descriptors ?? []);
+  const descriptorsJson  = JSON.stringify(row.descriptors  ?? []);
+  const limitationsJson  = JSON.stringify(row.limitations  ?? []);
   await sql`
     INSERT INTO sentiment_responses
       (brand_name, prompt_id, bucket_tag, model, run_date,
-       sentiment, confidence, descriptors, raw_json, parse_error)
+       sentiment, confidence, descriptors, limitations, raw_json, parse_error)
     VALUES
       (${row.brand_name}, ${row.prompt_id}, ${row.bucket_tag}, ${row.model},
        ${row.run_date}::date, ${row.sentiment}, ${row.confidence},
        ARRAY(SELECT jsonb_array_elements_text(${descriptorsJson}::jsonb)),
+       ARRAY(SELECT jsonb_array_elements_text(${limitationsJson}::jsonb)),
        ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb,
        ${row.parse_error})
     ON CONFLICT (brand_name, prompt_id, model, run_date) DO UPDATE SET
@@ -1026,6 +1029,7 @@ export async function insertSentimentResponse(row: {
       sentiment   = EXCLUDED.sentiment,
       confidence  = EXCLUDED.confidence,
       descriptors = EXCLUDED.descriptors,
+      limitations = EXCLUDED.limitations,
       raw_json    = EXCLUDED.raw_json,
       parse_error = EXCLUDED.parse_error
   `;
@@ -1226,6 +1230,7 @@ export async function initSalesVisibilityDB(): Promise<void> {
     ON sales_sentiment_responses (brand_name, prompt_id, model, run_date)
   `;
 
+  await sql`ALTER TABLE sales_sentiment_responses ADD COLUMN IF NOT EXISTS limitations text[]`;
   await sql`ALTER TABLE sales_feature_responses ADD COLUMN IF NOT EXISTS grounded BOOLEAN NOT NULL DEFAULT FALSE`;
   await sql`ALTER TABLE sales_feature_scores    ADD COLUMN IF NOT EXISTS grounded_source BOOLEAN DEFAULT FALSE`;
 
@@ -1561,18 +1566,21 @@ export async function insertSalesSentimentResponse(row: {
   sentiment:   string | null;
   confidence:  string | null;
   descriptors: string[] | null;
+  limitations: string[] | null;
   raw_json:    object | null;
   parse_error: boolean;
 }): Promise<void> {
   const descriptorsJson = JSON.stringify(row.descriptors ?? []);
+  const limitationsJson = JSON.stringify(row.limitations ?? []);
   await sql`
     INSERT INTO sales_sentiment_responses
       (brand_name, prompt_id, bucket_tag, model, run_date,
-       sentiment, confidence, descriptors, raw_json, parse_error)
+       sentiment, confidence, descriptors, limitations, raw_json, parse_error)
     VALUES
       (${row.brand_name}, ${row.prompt_id}, ${row.bucket_tag}, ${row.model},
        ${row.run_date}::date, ${row.sentiment}, ${row.confidence},
        ARRAY(SELECT jsonb_array_elements_text(${descriptorsJson}::jsonb)),
+       ARRAY(SELECT jsonb_array_elements_text(${limitationsJson}::jsonb)),
        ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb,
        ${row.parse_error})
     ON CONFLICT (brand_name, prompt_id, model, run_date) DO UPDATE SET
@@ -1580,9 +1588,93 @@ export async function insertSalesSentimentResponse(row: {
       sentiment   = EXCLUDED.sentiment,
       confidence  = EXCLUDED.confidence,
       descriptors = EXCLUDED.descriptors,
+      limitations = EXCLUDED.limitations,
       raw_json    = EXCLUDED.raw_json,
       parse_error = EXCLUDED.parse_error
   `;
+}
+
+export async function getSalesSentimentData(): Promise<{
+  rows: {
+    brand_name:      string;
+    bucket_tag:      string;
+    positive_count:  number;
+    neutral_count:   number;
+    negative_count:  number;
+    total_count:     number;
+    top_descriptors: string[];
+  }[];
+  meta: { dual_model_dates: number; earliest_date: string | null; latest_date: string | null };
+}> {
+  await initSalesVisibilityDB();
+
+  // Count dates where BOTH models ran — gate threshold is 3.
+  const metaResult = await sql`
+    SELECT COUNT(*)::int AS dual_model_dates,
+      MIN(run_date)::text AS earliest_date,
+      MAX(run_date)::text AS latest_date
+    FROM (
+      SELECT run_date
+      FROM sales_sentiment_responses
+      WHERE run_date >= CURRENT_DATE - 7 AND NOT parse_error
+      GROUP BY run_date
+      HAVING COUNT(DISTINCT model) >= 2
+    ) d
+  `;
+  const meta = metaResult.rows[0] as {
+    dual_model_dates: number; earliest_date: string | null; latest_date: string | null;
+  };
+
+  if ((meta.dual_model_dates ?? 0) < 3) {
+    return { rows: [], meta };
+  }
+
+  const result = await sql`
+    WITH base AS (
+      SELECT brand_name, bucket_tag, sentiment, descriptors
+      FROM sales_sentiment_responses
+      WHERE run_date >= CURRENT_DATE - 7 AND NOT parse_error
+    ),
+    sentiments AS (
+      SELECT brand_name, bucket_tag,
+        COUNT(*) FILTER (WHERE sentiment='positive')::int AS positive_count,
+        COUNT(*) FILTER (WHERE sentiment='neutral')::int  AS neutral_count,
+        COUNT(*) FILTER (WHERE sentiment='negative')::int AS negative_count,
+        COUNT(*)::int AS total_count
+      FROM base
+      GROUP BY brand_name, bucket_tag
+    ),
+    desc_flat AS (
+      SELECT brand_name, bucket_tag, d, COUNT(*) AS cnt
+      FROM base, LATERAL UNNEST(descriptors) AS d
+      WHERE descriptors IS NOT NULL
+      GROUP BY brand_name, bucket_tag, d
+    ),
+    ranked AS (
+      SELECT *, ROW_NUMBER() OVER (PARTITION BY brand_name, bucket_tag ORDER BY cnt DESC) AS rn
+      FROM desc_flat
+    ),
+    top_descs AS (
+      SELECT brand_name, bucket_tag,
+        ARRAY_AGG(d ORDER BY cnt DESC) AS top_descriptors
+      FROM ranked WHERE rn <= 5
+      GROUP BY brand_name, bucket_tag
+    )
+    SELECT s.brand_name, s.bucket_tag,
+      s.positive_count, s.neutral_count, s.negative_count, s.total_count,
+      COALESCE(d.top_descriptors, ARRAY[]::text[]) AS top_descriptors
+    FROM sentiments s
+    LEFT JOIN top_descs d USING (brand_name, bucket_tag)
+    ORDER BY s.bucket_tag, s.brand_name
+  `;
+  return {
+    rows: result.rows as {
+      brand_name: string; bucket_tag: string;
+      positive_count: number; neutral_count: number; negative_count: number; total_count: number;
+      top_descriptors: string[];
+    }[],
+    meta,
+  };
 }
 
 export async function upsertSentimentDrift(row: {

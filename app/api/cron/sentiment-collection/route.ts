@@ -85,6 +85,7 @@ function parseSentimentResponse(raw: string): {
   sentiment:   string | null;
   confidence:  string | null;
   descriptors: string[] | null;
+  limitations: string[] | null;
   parsed:      object | null;
   parseError:  boolean;
 } {
@@ -94,15 +95,19 @@ function parseSentimentResponse(raw: string): {
     const descriptors = Array.isArray(obj.descriptors)
       ? (obj.descriptors as unknown[]).filter((d): d is string => typeof d === "string")
       : null;
+    const limitations = Array.isArray(obj.limitations)
+      ? (obj.limitations as unknown[]).filter((d): d is string => typeof d === "string")
+      : null;
     return {
       sentiment:   typeof obj.sentiment  === "string" ? obj.sentiment  : null,
       confidence:  typeof obj.confidence === "string" ? obj.confidence : null,
       descriptors: descriptors?.length ? descriptors : null,
+      limitations: limitations?.length  ? limitations : null,
       parsed:      obj,
       parseError:  false,
     };
   } catch {
-    return { sentiment: null, confidence: null, descriptors: null, parsed: null, parseError: true };
+    return { sentiment: null, confidence: null, descriptors: null, limitations: null, parsed: null, parseError: true };
   }
 }
 
@@ -164,7 +169,7 @@ export async function GET(request: Request) {
               ? await withRetry(() => callClaude(promptText), callLabel)
               : await withRetry(() => callGPT(promptText),   callLabel);
 
-            const { sentiment, confidence, descriptors, parsed, parseError } =
+            const { sentiment, confidence, descriptors, limitations, parsed, parseError } =
               parseSentimentResponse(rawText);
 
             await insertSentimentResponse({
@@ -176,6 +181,7 @@ export async function GET(request: Request) {
               sentiment,
               confidence,
               descriptors,
+              limitations,
               raw_json:    parseError ? { raw: rawText.slice(0, 2000) } : parsed,
               parse_error: parseError,
             });

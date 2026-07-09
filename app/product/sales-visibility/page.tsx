@@ -5,6 +5,7 @@ import {
   getSalesSOVData,
   getSalesClusterBrandPositions,
   getSalesFeatureScores,
+  getSalesSentimentData,
 } from "@/lib/brand-visibility/db";
 import SalesVisibilityCharts from "./SalesVisibilityCharts";
 
@@ -17,13 +18,14 @@ export const metadata = {
 };
 
 export default async function SalesVisibilityPage() {
-  const [dailySummary, weeklySummary, llmVisibility, sovData, clusterPositions, featureScores] = await Promise.all([
+  const [dailySummary, weeklySummary, llmVisibility, sovData, clusterPositions, featureScores, sentimentData] = await Promise.all([
     getSalesDailySummary(7),
     getSalesWeeklySummary(),
     getSalesLLMVisibility(),
     getSalesSOVData(),
     getSalesClusterBrandPositions(),
     getSalesFeatureScores(),
+    getSalesSentimentData(),
   ]);
 
   return (
@@ -56,6 +58,7 @@ export default async function SalesVisibilityPage() {
           sovData={sovData}
           clusterPositions={clusterPositions}
           featureScores={featureScores}
+          sentimentData={sentimentData}
         />
 
         {/* Data source note */}
