@@ -67,6 +67,8 @@ interface LLMVisRow       { model: string; visibility_pct: number; total_respons
 interface SOVRow          { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }
 interface ClusterPosRow   { bucket_tag: string; brand: string; avg_position: number; appearances: number }
 interface FeatureScoreRow { brand_name: string; feature_id: string; feature_tag: string; score: number; score_band: string; flagged_for_review: boolean }
+interface SentimentRow  { brand_name: string; bucket_tag: string; positive_count: number; neutral_count: number; negative_count: number; total_count: number; top_descriptors: string[] }
+interface SentimentMeta { dual_model_dates: number; earliest_date: string | null; latest_date: string | null }
 
 interface Props {
   dailySummary:     DailyRow[];
@@ -75,6 +77,7 @@ interface Props {
   sovData:          SOVRow[];
   clusterPositions: ClusterPosRow[];
   featureScores:    FeatureScoreRow[];
+  sentimentData:    { rows: SentimentRow[]; meta: SentimentMeta };
 }
 
 // ── Feature scores config ──────────────────────────────────────────────────────
@@ -114,6 +117,14 @@ const SOV_CLUSTERS = [
   { tag: "sales-pipeline",   label: "Deal Risk & Pipeline Forecasting" },
   { tag: "sales-outreach",   label: "AI SDR & Outreach" },
   { tag: "sales-enablement", label: "Sales Enablement & Follow-up" },
+];
+
+const SENTIMENT_CLUSTERS = [
+  { tag: "sales-call",       label: "Call Intelligence & Coaching" },
+  { tag: "sales-crm",        label: "CRM Automation" },
+  { tag: "sales-pipeline",   label: "Pipeline & Forecasting" },
+  { tag: "sales-outreach",   label: "AI SDR & Outreach" },
+  { tag: "sales-enablement", label: "Enablement & Follow-up" },
 ];
 
 // ── Combined chart tooltip ────────────────────────────────────────────────────
@@ -248,10 +259,11 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function SalesVisibilityCharts({
-  dailySummary, weeklySummary, llmVisibility, sovData, clusterPositions, featureScores,
+  dailySummary, weeklySummary, llmVisibility, sovData, clusterPositions, featureScores, sentimentData,
 }: Props) {
   const hasReal = dailySummary.length > 0;
-  const [featureOpen, setFeatureOpen] = useState(false);
+  const [featureOpen,    setFeatureOpen]    = useState(false);
+  const [sentimentOpen,  setSentimentOpen]  = useState(false);
 
   // ── Build chart rows — filter to locked brands only ────────────────────────
   const dateSet = new Set<string>();
@@ -706,6 +718,131 @@ export default function SalesVisibilityCharts({
           )}
         </div>
       )}
+
+      {/* ── Row 8: AI Model Perception (sentiment descriptors) ─────────────── */}
+      {(() => {
+        const { rows: sentimentRows, meta: sentimentMeta } = sentimentData;
+        const GATE = 3;
+        const daysHave = sentimentMeta.dual_model_dates ?? 0;
+        const ready    = daysHave >= GATE;
+
+        // Build a human-readable date range label from actual data coverage.
+        function sentimentDateLabel() {
+          const e = sentimentMeta.earliest_date;
+          const l = sentimentMeta.latest_date;
+          if (!e || !l) return "";
+          const fmt = (d: string) => new Date(d + "T00:00:00Z").toLocaleDateString("en-AU", { month: "short", day: "numeric", timeZone: "UTC" });
+          return e === l ? fmt(e) : `${fmt(e)} – ${fmt(l)}`;
+        }
+
+        return (
+          <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
+            <button
+              onClick={() => setSentimentOpen(o => !o)}
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                width: "100%", padding: "16px 24px",
+                background: "none", border: "none", cursor: "pointer",
+                borderBottom: sentimentOpen ? "1px solid rgba(0,0,0,0.07)" : "none",
+                fontFamily: "inherit",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
+                  AI Model Perception
+                </h3>
+                <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.4)", background: "rgba(0,0,0,0.06)", borderRadius: 999, padding: "3px 8px" }}>
+                  {ready ? "Preview" : "Collecting"}
+                </span>
+              </div>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform: sentimentOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", flexShrink: 0 }}>
+                <path d="M4 6l4 4 4-4" stroke="rgba(0,0,0,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+
+            {sentimentOpen && !ready && (
+              <div style={{ padding: "28px 24px", textAlign: "center" as const }}>
+                <p style={{ fontSize: 14, fontWeight: 600, color: NAVY, marginBottom: 8 }}>
+                  Collecting data — {daysHave} of {GATE} minimum days
+                </p>
+                <p style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", maxWidth: 380, margin: "0 auto" }}>
+                  Sentiment bars appear once both Claude Haiku and GPT-4o-mini have collected on {GATE} separate days.
+                  Check back in {GATE - daysHave} day{GATE - daysHave !== 1 ? "s" : ""}.
+                </p>
+              </div>
+            )}
+
+            {sentimentOpen && ready && (
+              <div style={{ padding: "20px 24px" }}>
+                <p style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", marginBottom: 24 }}>
+                  How Claude Haiku and GPT-4o-mini describe each brand · {sentimentDateLabel()}
+                </p>
+                {SENTIMENT_CLUSTERS.map(cluster => {
+                  const brands = sentimentRows
+                    .filter(r => r.bucket_tag === cluster.tag)
+                    .sort((a, b) => b.positive_count - a.positive_count);
+                  if (brands.length === 0) return null;
+                  return (
+                    <div key={cluster.tag} style={{ marginBottom: 28 }}>
+                      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: BLUE, marginBottom: 14 }}>
+                        {cluster.label}
+                      </p>
+                      <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+                        {brands.map(brand => {
+                          const total = brand.total_count || 1;
+                          const posPct = Math.round((brand.positive_count / total) * 100);
+                          const neuPct = Math.round((brand.neutral_count  / total) * 100);
+                          const negPct = 100 - posPct - neuPct;
+                          return (
+                            <div key={brand.brand_name}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 7 }}>
+                                <span style={{ fontSize: 12, fontWeight: 600, color: NAVY, width: 110, flexShrink: 0 }}>
+                                  {brand.brand_name}
+                                </span>
+                                <div style={{ flex: 1, height: 8, borderRadius: 999, background: "rgba(0,0,0,0.06)", overflow: "hidden", display: "flex" }}>
+                                  {posPct > 0 && <div style={{ width: `${posPct}%`, height: "100%", background: "#16a34a" }} />}
+                                  {neuPct > 0 && <div style={{ width: `${neuPct}%`, height: "100%", background: "#d97706" }} />}
+                                  {negPct > 0 && <div style={{ width: `${negPct}%`, height: "100%", background: "#dc2626" }} />}
+                                </div>
+                                <span style={{ fontSize: 11, fontWeight: 700, color: "#16a34a", width: 34, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>
+                                  {posPct}%
+                                </span>
+                              </div>
+                              <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 5, paddingLeft: 120 }}>
+                                {brand.top_descriptors.slice(0, 4).map((d, i) => (
+                                  <span key={i} style={{
+                                    fontSize: 11, color: "rgba(0,0,0,0.55)",
+                                    background: "rgba(0,0,0,0.04)",
+                                    border: "1px solid rgba(0,0,0,0.08)",
+                                    borderRadius: 4, padding: "2px 7px",
+                                  }}>
+                                    {d}
+                                  </span>
+                                ))}
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+                <div style={{ display: "flex", gap: 16, borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 12, marginTop: 4 }}>
+                  {[["#16a34a", "Positive"], ["#d97706", "Neutral"], ["#dc2626", "Negative"]].map(([color, label]) => (
+                    <div key={label} style={{ display: "flex", alignItems: "center", gap: 5 }}>
+                      <div style={{ width: 10, height: 10, borderRadius: 2, background: color, flexShrink: 0 }} />
+                      <span style={{ fontSize: 11, color: "rgba(0,0,0,0.45)" }}>{label}</span>
+                    </div>
+                  ))}
+                  <span style={{ fontSize: 11, color: "rgba(0,0,0,0.35)", marginLeft: "auto" }}>
+                    Both models · updates daily
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
     </div>
   );

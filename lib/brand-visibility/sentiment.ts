@@ -53,16 +53,19 @@ export function getSentimentClustersForBrand(brandName: string): SentimentCluste
 
 export function buildSentimentPrompt(brandName: string, bucketTag: string): string {
   const phrase = CONTEXT_PHRASES[bucketTag] ?? CONTEXT_PHRASES["overall"];
-  return `I'm researching ${brandName} ${phrase}. Based on what you know about ${brandName}, how would you describe it overall?
+  return `I'm researching ${brandName} ${phrase}. Based on what you know about ${brandName}, describe both its strengths AND its limitations or concerns. Be specific — vague praise is not useful.
 
-Only describe ${brandName} specifically — do not compare it to other tools in this response.
+Only describe ${brandName} specifically — you may reference how it compares to typical alternatives in this category if relevant to explaining a limitation.
 
 Respond in JSON only:
 {
   "sentiment": "positive|neutral|negative",
   "confidence": "high|medium|low",
-  "descriptors": ["3 to 5 short phrases that characterise how you would describe ${brandName} to someone evaluating it — these should reflect the tone and substance of your description, not generic category labels"]
-}`;
+  "descriptors": ["3 to 5 short phrases characterising ${brandName} — include at least 1 limitation or concern if any exist"],
+  "limitations": ["0 to 3 short phrases describing weaknesses, gaps, or concerns — empty array if genuinely none known"]
+}
+
+Guidance: return "neutral" if evidence is mixed, thin, or the brand is under-documented. Return "negative" only if there are specific known concerns (not just absence of praise).`;
 }
 
 // ── Aggregation ────────────────────────────────────────────────────────────────
