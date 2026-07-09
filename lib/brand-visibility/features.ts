@@ -40,133 +40,186 @@ export interface Feature {
 }
 
 export const FEATURES: Feature[] = [
-  // ── Ads (2 features × 9 brands = 18 brand+feature pairs) ─────────────────────
+  // ── Ads (3 features × 9 brands = 27 brand+feature pairs) ─────────────────────
   {
-    feature_id:   "ads_autonomous_bidding",
+    feature_id:   "ads_meta_google_native",
     feature_tag:  "ads",
-    feature_name: "Autonomous bid optimisation",
+    feature_name: "Meta + Google native management",
     applies_to:   ADS_BRANDS,
-    prompt: `I'm evaluating [BRAND] for managing our paid ad campaigns and want to know if it handles bid adjustments automatically. Does [BRAND] autonomously optimise bids across ad campaigns without requiring manual input for each adjustment — for example, automatically raising or lowering bids based on conversion signals or ROAS targets?
+    prompt: `I want to manage Meta Ads and Google Ads from one place. Does [BRAND] support both Meta Ads and Google Ads natively — meaning you can create, edit, and optimise campaigns on both platforms directly within [BRAND]'s interface, not just view reporting?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
   {
-    feature_id:   "ads_cross_platform",
+    feature_id:   "ads_tiktok_support",
     feature_tag:  "ads",
-    feature_name: "Cross-platform campaign management",
+    feature_name: "TikTok Ads support",
     applies_to:   ADS_BRANDS,
-    prompt: `I run ads on Meta, Google, and TikTok and I'm looking for one tool to manage all three. Does [BRAND] support managing paid campaigns across Meta, Google, and TikTok from a single interface — not just reporting, but actual campaign management and optimisation?
+    prompt: `TikTok is now a significant channel for our campaigns. Does [BRAND] support TikTok Ads in its platform — can you manage, optimise, or create campaigns for TikTok directly within [BRAND], or is TikTok absent from its channel coverage?
+[GROUNDING INSTRUCTION]
+[JSON OUTPUT]`,
+  },
+  {
+    feature_id:   "ads_budget_pacing",
+    feature_tag:  "ads",
+    feature_name: "Automated cross-channel budget pacing",
+    applies_to:   ADS_BRANDS,
+    prompt: `I run campaigns across multiple channels with a shared monthly budget and I need spend to be reallocated automatically as performance shifts. Does [BRAND] include automated budget pacing or reallocation — where it shifts spend between campaigns, ad sets, or channels within a flight based on live performance data, without manual intervention?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
 
-  // ── Content (2 features × 6 brands = 12 brand+feature pairs) ─────────────────
+  // ── Content (3 features × 6 brands = 18 brand+feature pairs) ─────────────────
   {
-    feature_id:   "content_brand_voice",
+    feature_id:   "content_style_training",
     feature_tag:  "content",
-    feature_name: "Brand voice enforcement",
+    feature_name: "Custom brand style training",
     applies_to:   CONTENT_BRANDS,
-    prompt: `We have strict brand guidelines and I need a tool that keeps every piece of content on-voice. Does [BRAND] enforce consistent brand voice across content outputs — for example, through a trained style profile, tone settings, or a brand voice layer that applies automatically to all generated content?
+    prompt: `We have a brand voice guide that all our copy needs to follow. Can [BRAND] be trained or configured using our own style guide, example copy, or brand voice document — so that all generated content reflects our specific tone rather than a generic default?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
   {
-    feature_id:   "content_predictive_performance",
+    feature_id:   "content_variant_testing",
     feature_tag:  "content",
-    feature_name: "Predictive copy performance scoring",
+    feature_name: "Copy variant generation and performance testing",
     applies_to:   CONTENT_BRANDS,
-    prompt: `Before I publish a piece of copy I want to know which variant is most likely to convert — not after the fact, but before I spend budget on it. Does [BRAND] score or predict the performance of marketing copy before it goes live — for example, predicting click-through rate, engagement, or conversion likelihood across variants so I can choose the strongest one before publishing?
-[GROUNDING INSTRUCTION]
-[JSON OUTPUT]`,
-  },
-
-  // ── Lead-gen (2 features × 5 brands = 10 brand+feature pairs) ────────────────
-  {
-    feature_id:   "leadgen_outreach_sequencing",
-    feature_tag:  "lead-gen",
-    feature_name: "Automated outreach sequencing",
-    applies_to:   LEADGEN_BRANDS,
-    prompt: `I want to automate my outreach so leads move through a sequence — first email, follow-up, LinkedIn touch — without me manually triggering each step. Does [BRAND] automate multi-step outreach sequences end-to-end, where the next step triggers automatically based on the previous step's outcome?
+    prompt: `I need to test copy variants before picking a winner. Does [BRAND] generate multiple distinct copy variants for the same brief — and does it support A/B or multivariate testing, either by tracking which variants perform better or by automatically selecting the winner based on engagement data?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
   {
-    feature_id:   "leadgen_qualification",
-    feature_tag:  "lead-gen",
-    feature_name: "Automated lead qualification",
-    applies_to:   LEADGEN_BRANDS,
-    prompt: `I get a lot of inbound leads and need a way to automatically filter and score them before they reach my sales team. Does [BRAND] automatically qualify or score leads based on their behaviour, profile data, or engagement — reducing the manual triage work before leads reach a human?
+    feature_id:   "content_channel_formats",
+    feature_tag:  "content",
+    feature_name: "Channel-specific output formats",
+    applies_to:   CONTENT_BRANDS,
+    prompt: `I need copy for email subject lines, social captions, and display ads — all from the same brief but formatted correctly for each channel. Does [BRAND] produce channel-specific copy variants natively — outputting appropriately formatted versions for email, social, display, or landing pages from a single content request?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
 
-  // ── Lifecycle & Retention Automation (2 features × 7 brands = 14 brand+feature pairs) ─────────────
+  // ── Lead-gen (4 features × 5 brands = 20 brand+feature pairs) ────────────────
+  {
+    feature_id:   "leadgen_email_deliverability",
+    feature_tag:  "lead-gen",
+    feature_name: "Email deliverability tooling",
+    applies_to:   LEADGEN_BRANDS,
+    prompt: `I'm building outreach sequences and sender reputation is critical. Does [BRAND] include built-in email deliverability features — for example, inbox warming, bounce monitoring, spam score checking, or dedicated sending domains — as part of its own product rather than a third-party add-on?
+[GROUNDING INSTRUCTION]
+[JSON OUTPUT]`,
+  },
+  {
+    feature_id:   "leadgen_ab_testing",
+    feature_tag:  "lead-gen",
+    feature_name: "Native A/B testing for sequences",
+    applies_to:   LEADGEN_BRANDS,
+    prompt: `Before scaling an outreach campaign I need to know which message variant performs better. Does [BRAND] support A/B or multivariate testing of outreach messages or sequences natively — without exporting to another tool — and does it report results per variant (open rate, reply rate, or similar)?
+[GROUNDING INSTRUCTION]
+[JSON OUTPUT]`,
+  },
+  {
+    feature_id:   "leadgen_crm_sync",
+    feature_tag:  "lead-gen",
+    feature_name: "CRM sync without middleware",
+    applies_to:   LEADGEN_BRANDS,
+    prompt: `I need sequence activity to flow back into my CRM automatically. Does [BRAND] sync contact activity, sequence status, and reply data directly to a CRM (such as HubSpot or Salesforce) via a native integration — without requiring Zapier or similar middleware?
+[GROUNDING INSTRUCTION]
+[JSON OUTPUT]`,
+  },
+  {
+    feature_id:   "leadgen_intent_signals",
+    feature_tag:  "lead-gen",
+    feature_name: "Engagement-based lead prioritisation",
+    applies_to:   LEADGEN_BRANDS,
+    prompt: `I want to know which leads to contact next based on how they've been engaging. Does [BRAND] rank or score contacts based on engagement signals — such as email opens, link clicks, or reply intent — to surface which leads are most worth pursuing right now?
+[GROUNDING INSTRUCTION]
+[JSON OUTPUT]`,
+  },
+
+  // ── Lifecycle (3 features × 7 brands = 21 brand+feature pairs) ───────────────
   // Drift and Conversica intentionally appear in both lead-gen and lifecycle clusters.
   {
-    feature_id:   "roi_attribution",
+    feature_id:   "lifecycle_send_time",
     feature_tag:  "lifecycle",
-    feature_name: "Lifecycle performance tracking",
+    feature_name: "Per-contact send time optimisation",
     applies_to:   ROI_BRANDS,
-    prompt: `I run lifecycle campaigns across email, chat, and messaging and I need to know what's actually moving the needle. Does [BRAND] track performance across lifecycle campaigns — for example, showing which messages, sequences, or channels drove opens, replies, conversions, or retention outcomes?
+    prompt: `I want messages to reach each contact when they're most likely to open them, not just at a fixed broadcast time. Does [BRAND] automatically determine and apply the optimal send time per individual contact — based on their own past engagement history — rather than sending to all contacts at the same time?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
   {
-    feature_id:   "roi_self_optimising",
+    feature_id:   "lifecycle_channel_orchestration",
     feature_tag:  "lifecycle",
-    feature_name: "Autonomous message and journey optimisation",
+    feature_name: "Multi-channel journey coordination",
     applies_to:   ROI_BRANDS,
-    prompt: `I want my lifecycle campaigns to improve on their own — adjusting send times, message variants, or channel sequencing based on how contacts are actually responding. Does [BRAND] automatically optimise messaging or journey steps based on live engagement data, without me having to manually make each adjustment?
+    prompt: `My lifecycle journeys run across email, SMS, and in-app messages and I need them to work as one coordinated flow. Does [BRAND] coordinate messaging across multiple channels — email, SMS, push, in-app — as part of a single automated journey, where the channel used at each step is managed by [BRAND] rather than manually configured separately per channel?
+[GROUNDING INSTRUCTION]
+[JSON OUTPUT]`,
+  },
+  {
+    feature_id:   "lifecycle_churn_detection",
+    feature_tag:  "lifecycle",
+    feature_name: "Churn and disengagement detection",
+    applies_to:   ROI_BRANDS,
+    prompt: `I want to catch disengaging contacts before they unsubscribe or churn. Does [BRAND] identify contacts at risk of disengaging or churning — for example by flagging declining open rates, predicting unsubscribes, or surfacing a re-engagement segment — before the contact has already lapsed?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
 
   // ── Technical (3 features × all 22 brands = 66 brand+feature pairs) ──────────
   {
-    feature_id:   "tech_instruction_following",
+    feature_id:   "tech_public_api",
     feature_tag:  "technical",
-    feature_name: "Instruction following and constraint adherence",
+    feature_name: "Documented public API",
     applies_to:   "all",
-    prompt: `I have specific constraints every campaign must follow — budget caps, audience exclusions, content restrictions. Does [BRAND] reliably enforce user-defined constraints throughout a campaign — for example, respecting a budget ceiling or excluding specific audience segments without needing to be reminded each session?
+    prompt: `My team wants to build automations on top of [BRAND]. Does [BRAND] offer a documented public API — not just webhooks or Zapier triggers, but an actual developer API with authentication, endpoints, and published documentation that third-party developers can use to read or write data programmatically?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
   {
-    feature_id:   "tech_integrations",
+    feature_id:   "tech_webhook_support",
     feature_tag:  "technical",
-    feature_name: "Native integrations",
+    feature_name: "Outbound webhook support",
     applies_to:   "all",
-    prompt: `I need whatever tool I choose to connect with my existing stack — CRM, ad platforms, email tools. What CRM, ad platform, or marketing stack integrations does [BRAND] natively support — built-in, without needing middleware like Zapier?
+    prompt: `I need [BRAND] to push data to our internal systems when things happen — campaign completes, lead status changes, score threshold crossed. Does [BRAND] support outbound webhooks — where [BRAND] sends a real-time HTTP push to a URL you configure, triggered by events in the platform?
 [GROUNDING INSTRUCTION]
-Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
 [JSON OUTPUT]`,
   },
   {
-    feature_id:   "tech_multistep_reasoning",
+    feature_id:   "tech_sso_enterprise",
     feature_tag:  "technical",
-    feature_name: "Multi-step reasoning and workflow chaining",
+    feature_name: "Enterprise SSO authentication",
     applies_to:   "all",
-    prompt: `I want an AI that can handle a full workflow, not just a single task. Does [BRAND] chain multiple decisions autonomously — for example: analyse campaign performance, identify underperforming segments, adjust targeting or creative, then report on the change — without requiring human sign-off at each step?
+    prompt: `Our IT team requires SSO before approving any new tool. Does [BRAND] support enterprise Single Sign-On — for example, SAML 2.0 or OAuth via an identity provider like Okta, Azure AD, or Google Workspace — documented as a supported feature for business accounts?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
 
-  // ── Responsible AI (2 features × all 22 brands = 44 brand+feature pairs) ─────
+  // ── Responsible AI (3 features × all 22 brands = 66 brand+feature pairs) ─────
   {
-    feature_id:   "rai_data_privacy",
+    feature_id:   "rai_soc2_gdpr",
     feature_tag:  "responsible-ai",
-    feature_name: "Data privacy and compliance posture",
+    feature_name: "SOC 2 and GDPR compliance documentation",
     applies_to:   "all",
-    prompt: `Before we bring any AI tool into our marketing stack our legal team will ask about data handling. Has [BRAND] published documentation on how it handles campaign data, customer data, or user data? Are there any GDPR, SOC 2, or other compliance certifications or commitments documented publicly?
+    prompt: `Our legal and security team will ask for compliance documentation before approving [BRAND]. Is [BRAND] SOC 2 Type II certified — or does it publish GDPR compliance documentation, a Data Processing Agreement, or equivalent enterprise data security commitments in its public documentation or trust centre?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
   {
-    feature_id:   "rai_explainability",
+    feature_id:   "rai_data_retention",
     feature_tag:  "responsible-ai",
-    feature_name: "Decision transparency and explainability",
+    feature_name: "Published data retention policy",
     applies_to:   "all",
-    prompt: `When [BRAND] makes a recommendation or takes an autonomous action, does it explain why — for example, showing which signal triggered a bid change or why a specific audience segment was prioritised? Or does it only surface the output without the reasoning?
+    prompt: `We need to know how long [BRAND] holds our data before we can sign off on procurement. Does [BRAND] publish a clear data retention policy — specifying how long it stores campaign data, contact records, or user data before deletion — either in its privacy policy, terms of service, or a dedicated security page?
+[GROUNDING INSTRUCTION]
+[JSON OUTPUT]`,
+  },
+  {
+    feature_id:   "rai_change_log",
+    feature_tag:  "responsible-ai",
+    feature_name: "AI action audit trail",
+    applies_to:   "all",
+    prompt: `When [BRAND] changes something autonomously — a bid, an audience, a message variant — I need to know what it did and why. Does [BRAND] provide an audit log, activity feed, or change history that records what actions the AI took — for example which campaigns it modified, what bids it changed, or which segments it updated — so you can review its decisions after the fact?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
