@@ -330,6 +330,10 @@ export async function initBrandVisibilityDB(): Promise<void> {
   // ── Feature pipeline — web-search grounding columns ──────────────────────────
   await sql`ALTER TABLE feature_responses ADD COLUMN IF NOT EXISTS grounded BOOLEAN DEFAULT FALSE`;
   await sql`ALTER TABLE feature_scores    ADD COLUMN IF NOT EXISTS grounded_source BOOLEAN DEFAULT FALSE`;
+  await sql`
+    CREATE UNIQUE INDEX IF NOT EXISTS feature_responses_unique
+    ON feature_responses (brand_name, feature_id, model, run_number, run_date)
+  `;
 
   dbInitialised = true;
 }

@@ -19,12 +19,14 @@ export const dynamic = "force-dynamic";
 export const maxDuration = 300;
 
 // ── Split-job design ───────────────────────────────────────────────────────────
-// 208 brand+feature pairs × 3 runs = 624 API calls per model, ~5 min at concurrency 10.
+// 262 brand+feature pairs × 3 runs = 786 API calls per model.
 //
-//   ?model=claude-haiku-4-5  →  Job 1, 6:00 AM UTC
-//   ?model=gpt-4o-mini       →  Job 2, 12:00 PM UTC  (6h after Job 1)
+//   ?model=claude-haiku-4-5         →  Job 1, 6:00 AM UTC (all brands, ~4 min)
+//   ?model=gpt-4o-mini&half=1       →  Job 2, 12:00 UTC (brands 0..mid, ~2.5 min)
+//   ?model=gpt-4o-mini&half=2       →  Job 3, 12:15 UTC (brands mid..end, ~2.5 min)
 //
-// Scoring runs 30 min after Job 2 via feature-scoring-aggregate.
+// GPT split prevents the 5-min maxDuration timeout (786 tasks at concurrency 10).
+// Scoring runs at 13:00 UTC via feature-scoring-aggregate.
 // ──────────────────────────────────────────────────────────────────────────────
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -186,16 +188,26 @@ export async function GET(request: Request) {
 
   const { searchParams } = new URL(request.url);
   const modelParam = searchParams.get("model");
+  const halfParam  = searchParams.get("half");
 
   if (!modelParam || !["claude-haiku-4-5", "gpt-4o-mini"].includes(modelParam)) {
     return Response.json({ error: "?model= required: claude-haiku-4-5 or gpt-4o-mini" }, { status: 400 });
   }
 
-  const model = modelParam as "claude-haiku-4-5" | "gpt-4o-mini";
+  const model     = modelParam as "claude-haiku-4-5" | "gpt-4o-mini";
+  const half      = halfParam === "1" ? 1 : halfParam === "2" ? 2 : null;
+  const halfLabel = half !== null ? ` half=${half}` : "";
 
   try {
     await initBrandVisibilityDB();
-    const brands = await loadLockedBrands();
+    const allBrands = await loadLockedBrands();
+
+    // GPT jobs split by brand half to stay within maxDuration=300s.
+    // Claude runs all brands in one job (fast enough with lower task count).
+    const mid    = Math.ceil(allBrands.length / 2);
+    const brands = (model === "gpt-4o-mini" && half !== null)
+      ? (half === 1 ? allBrands.slice(0, mid) : allBrands.slice(mid))
+      : allBrands;
 
     // pairResults: tracks standard-run outcomes per brand+feature for grounding trigger.
     // pairMeta: stores brand+feature refs to build grounding tasks without re-deriving them.
@@ -261,9 +273,11 @@ export async function GET(request: Request) {
     }
 
     const expected  = tasks.length;
+    console.log(`[feature-collection] start — model=${model}${halfLabel}, date=${today}, brands=${brands.length}, expected=${expected} tasks`);
     const results   = await runWithConcurrency(tasks, BATCH_CONCURRENCY, BATCH_DELAY_MS);
     const succeeded = results.filter((r) => r.success).length;
     const failed    = expected - succeeded;
+    console.log(`[feature-collection] done — model=${model}${halfLabel}, succeeded=${succeeded}/${expected}, failed=${failed}`);
 
     // ── Grounding pass (claude model only — web_search_20250305 is Anthropic-only) ──
     let groundingRan = 0;
@@ -319,12 +333,12 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Feature Scoring Collection failed (${model}, ${today})`,
+        subject: `[AgenticLib] ALERT — Feature Scoring Collection failed (${model}${halfLabel}, ${today})`,
         html: `
           <h2>Feature Scoring Pipeline — Collection Failures</h2>
           <table style="border-collapse:collapse;font-family:monospace">
             <tr><td style="padding:4px 12px 4px 0"><strong>Run timestamp</strong></td><td>${runTimestamp}</td></tr>
-            <tr><td style="padding:4px 12px 4px 0"><strong>Model</strong></td><td>${model}</td></tr>
+            <tr><td style="padding:4px 12px 4px 0"><strong>Model</strong></td><td>${model}${halfLabel}</td></tr>
             <tr><td style="padding:4px 12px 4px 0"><strong>Date</strong></td><td>${today}</td></tr>
             <tr><td style="padding:4px 12px 4px 0"><strong>Succeeded</strong></td><td>${succeeded} / ${expected}</td></tr>
             <tr><td style="padding:4px 12px 4px 0"><strong>Failed</strong></td><td>${failed}</td></tr>
@@ -337,6 +351,7 @@ export async function GET(request: Request) {
     return Response.json({
       mode:             "feature_collection",
       model,
+      half:             half ?? "all",
       date:             today,
       brands:           brands.length,
       features:         FEATURES.length,
@@ -348,14 +363,14 @@ export async function GET(request: Request) {
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error(`[cron] feature-scoring-collection crashed (${model}):`, message);
+    console.error(`[cron] feature-scoring-collection crashed (${model}${halfLabel}):`, message);
 
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Feature Scoring Collection (${model}, ${today})`,
+      subject: `[AgenticLib] CRASH — Feature Scoring Collection (${model}${halfLabel}, ${today})`,
       html: `
         <h2>Feature Scoring Pipeline — Unhandled Crash</h2>
         <table style="border-collapse:collapse;font-family:monospace">
-          <tr><td style="padding:4px 12px 4px 0"><strong>Model</strong></td><td>${model}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0"><strong>Model</strong></td><td>${model}${halfLabel}</td></tr>
           <tr><td style="padding:4px 12px 4px 0"><strong>Timestamp</strong></td><td>${runTimestamp}</td></tr>
           <tr><td style="padding:4px 12px 4px 0"><strong>Error</strong></td><td>${message}</td></tr>
         </table>

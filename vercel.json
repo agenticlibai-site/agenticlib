@@ -25,12 +25,16 @@
       "schedule": "0 6 * * *"
     },
     {
-      "path": "/api/cron/feature-scoring-collection?model=gpt-4o-mini",
+      "path": "/api/cron/feature-scoring-collection?model=gpt-4o-mini&half=1",
       "schedule": "0 12 * * *"
     },
     {
+      "path": "/api/cron/feature-scoring-collection?model=gpt-4o-mini&half=2",
+      "schedule": "15 12 * * *"
+    },
+    {
       "path": "/api/cron/feature-scoring-aggregate",
-      "schedule": "30 12 * * *"
+      "schedule": "0 13 * * *"
     },
     {
       "path": "/api/cron/sentiment-collection?model=claude-haiku-4-5",
