@@ -21,12 +21,17 @@ export const maxDuration = 300;
 // ── Split-job design ───────────────────────────────────────────────────────────
 // 262 brand+feature pairs × 3 runs = 786 API calls per model.
 //
-//   ?model=claude-haiku-4-5         →  Job 1, 6:00 AM UTC (all brands, ~4 min)
+//   ?model=claude-haiku-4-5         →  Job 1, 8:30 UTC (all brands, ~4 min)
 //   ?model=gpt-4o-mini&half=1       →  Job 2, 12:00 UTC (brands 0..mid, ~2.5 min)
 //   ?model=gpt-4o-mini&half=2       →  Job 3, 12:15 UTC (brands mid..end, ~2.5 min)
 //
+// Claude runs at 8:30 (not 6:00) to give brand-intelligence (02:00) time to finish
+// writing all brands to locked_marketing_agents before feature-scoring reads it.
 // GPT split prevents the 5-min maxDuration timeout (786 tasks at concurrency 10).
 // Scoring runs at 13:00 UTC via feature-scoring-aggregate.
+//
+// Optional: ?date=YYYY-MM-DD — override run_date for historical backfill.
+//   Re-running an existing date is safe: ON CONFLICT DO NOTHING prevents duplicates.
 // ──────────────────────────────────────────────────────────────────────────────
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -183,12 +188,15 @@ export async function GET(request: Request) {
   }
 
   const now   = new Date();
-  const today = now.toISOString().split("T")[0];
   const runTimestamp = now.toISOString().replace("T", " ").slice(0, 19) + " UTC";
 
   const { searchParams } = new URL(request.url);
   const modelParam = searchParams.get("model");
   const halfParam  = searchParams.get("half");
+  const dateParam  = searchParams.get("date");
+  const today = (dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam))
+    ? dateParam
+    : now.toISOString().split("T")[0];
 
   if (!modelParam || !["claude-haiku-4-5", "gpt-4o-mini"].includes(modelParam)) {
     return Response.json({ error: "?model= required: claude-haiku-4-5 or gpt-4o-mini" }, { status: 400 });
