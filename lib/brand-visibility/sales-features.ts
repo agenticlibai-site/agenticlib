@@ -42,22 +42,43 @@ export interface Feature {
 
 export const FEATURES: Feature[] = [
 
-  // ── Sales-Call (2 features × 4 brands = 8 brand+feature pairs) ───────────────
+  // ── Sales-Call (4 features × 4 brands = 16 brand+feature pairs) ──────────────
+  // Rewritten 2026-07-10 (day-0): split 2 broad features into 4 narrower ones
+  // to break score ceiling (75% of brands were hitting 90 on prior prompts).
+  // Distribution check scheduled for 2026-07-13 (stddev, ceiling %).
   {
-    feature_id:   "call_recording_analysis",
+    feature_id:   "call_transcription_timestamps",
     feature_tag:  "sales-call",
-    feature_name: "Call recording and conversation analysis",
+    feature_name: "Speaker-labeled transcription with searchable timestamps",
     applies_to:   CALL_BRANDS,
-    prompt: `I want to improve how my sales reps perform on calls. Does [BRAND] automatically record, transcribe, and analyse sales calls — identifying talk patterns, objections raised, and coaching opportunities without a manager having to listen to every recording manually?
+    prompt: `My reps sometimes dispute what was said on a call — or I need to find the exact moment a prospect raised a concern without replaying the whole recording. Does [BRAND] produce a speaker-labeled, timestamped transcript of every call automatically — identifying who said what and when, with the ability to search for a keyword or topic and jump directly to that moment in the recording?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
   {
-    feature_id:   "call_coaching_automation",
+    feature_id:   "call_talk_time_analytics",
     feature_tag:  "sales-call",
-    feature_name: "Automated rep coaching and performance scoring",
+    feature_name: "Talk-time ratio and communication pattern metrics",
     applies_to:   CALL_BRANDS,
-    prompt: `I need my reps to get better faster without me having to coach each one individually. Does [BRAND] automatically score rep performance on calls and surface specific coaching recommendations — for example flagging when a rep talked too much, missed an objection, or failed to ask discovery questions?
+    prompt: `I want to know if my reps are dominating calls or actually listening. Does [BRAND] measure and report specific per-call communication metrics — such as talk-time ratio between rep and prospect, filler word frequency, longest uninterrupted monologue, or question rate — broken down per rep and trackable over time?
+[GROUNDING INSTRUCTION]
+[JSON OUTPUT]`,
+  },
+  {
+    feature_id:   "call_coaching_scorecard",
+    feature_tag:  "sales-call",
+    feature_name: "Automated per-rep coaching scorecard per call",
+    applies_to:   CALL_BRANDS,
+    prompt: `I want every rep to receive written coaching feedback after each call without me having to listen to recordings. Does [BRAND] automatically generate a per-rep coaching scorecard after each call — written feedback on specific observed behaviors such as discovery depth, objection handling, and next steps clarity — that a rep can review and act on without manager input?
+[GROUNDING INSTRUCTION]
+[JSON OUTPUT]`,
+  },
+  {
+    feature_id:   "call_competitor_objection_detection",
+    feature_tag:  "sales-call",
+    feature_name: "Automatic competitor mention and objection flagging",
+    applies_to:   CALL_BRANDS,
+    prompt: `My reps often forget to log when a competitor came up or a prospect raised a pricing objection. Does [BRAND] automatically detect and categorise competitor mentions and objection types during or after a call — without a rep having to manually tag anything — so I can see across all calls which competitors come up most and what objections are blocking deals?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
