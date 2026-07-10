@@ -26,7 +26,7 @@
     },
     {
       "path": "/api/cron/feature-scoring-collection?model=claude-haiku-4-5",
-      "schedule": "0 6 * * *"
+      "schedule": "30 8 * * *"
     },
     {
       "path": "/api/cron/feature-scoring-collection?model=gpt-4o-mini&half=1",
