@@ -114,13 +114,16 @@ export async function GET(request: Request) {
   // Compute metadata before the try block so the crash handler has access to them
   // even if an early step (e.g. initBrandVisibilityDB) throws.
   const now = new Date();
-  const today = now.toISOString().split("T")[0];
   const runTimestamp = now.toISOString().replace("T", " ").slice(0, 19) + " UTC";
 
   const { searchParams } = new URL(request.url);
   const modelParam = searchParams.get("model");
   const aggregateOnly = searchParams.has("aggregate");
   const testAlert = searchParams.has("test_alert");
+  const dateParam = searchParams.get("date");
+  const today = (dateParam && /^\d{4}-\d{2}-\d{2}$/.test(dateParam))
+    ? dateParam
+    : now.toISOString().split("T")[0];
 
   const jobLabel = aggregateOnly ? "aggregation"
     : testAlert ? "test_alert"

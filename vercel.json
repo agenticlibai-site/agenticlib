@@ -1,32 +1,12 @@
 {
   "crons": [
     {
-      "path": "/api/cron/brand-intelligence",
-      "schedule": "0 2 * * *"
-    },
-    {
-      "path": "/api/cron/brand-visibility-collection?model=claude-haiku-4-5",
-      "schedule": "0 3 * * *"
-    },
-    {
-      "path": "/api/cron/brand-visibility-collection?model=gpt-4o-mini",
-      "schedule": "10 3 * * *"
-    },
-    {
-      "path": "/api/cron/brand-visibility-collection?aggregate",
-      "schedule": "45 3 * * *"
-    },
-    {
       "path": "/api/cron/daily-check-watchdog",
       "schedule": "45 5 * * *"
     },
     {
       "path": "/api/cron/daily-check-watchdog?check=gpt-sentiment",
       "schedule": "0 16 * * *"
-    },
-    {
-      "path": "/api/cron/feature-scoring-collection?model=claude-haiku-4-5",
-      "schedule": "30 8 * * *"
     },
     {
       "path": "/api/cron/feature-scoring-collection?model=gpt-4o-mini&half=1",
@@ -41,32 +21,12 @@
       "schedule": "0 13 * * *"
     },
     {
-      "path": "/api/cron/sentiment-collection?model=claude-haiku-4-5",
-      "schedule": "0 8 * * *"
-    },
-    {
       "path": "/api/cron/sentiment-collection?model=gpt-4o-mini",
       "schedule": "0 14 * * *"
     },
     {
       "path": "/api/cron/sentiment-aggregate",
       "schedule": "0 1 * * 0"
-    },
-    {
-      "path": "/api/cron/sales-visibility-collection?model=claude-haiku-4-5",
-      "schedule": "0 4 * * *"
-    },
-    {
-      "path": "/api/cron/sales-visibility-collection?model=gpt-4o-mini",
-      "schedule": "10 4 * * *"
-    },
-    {
-      "path": "/api/cron/sales-visibility-aggregate",
-      "schedule": "45 4 * * *"
-    },
-    {
-      "path": "/api/cron/sales-feature-collection?model=claude-haiku-4-5",
-      "schedule": "0 7 * * *"
     },
     {
       "path": "/api/cron/sales-feature-collection?model=gpt-4o-mini&half=1",
