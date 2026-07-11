@@ -1,0 +1,17 @@
+name: Sales Visibility Aggregate
+
+on:
+  schedule:
+    - cron: '45 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Trigger sales visibility aggregate
+        run: |
+          curl --max-time 70 --fail-with-body \
+            "https://agenticlib.com/api/cron/sales-visibility-aggregate" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
