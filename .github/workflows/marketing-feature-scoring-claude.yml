@@ -8,10 +8,16 @@ on:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 7
+    timeout-minutes: 12
     steps:
-      - name: Trigger marketing feature scoring
+      - name: Trigger marketing feature scoring (half 1)
         run: |
           curl --max-time 310 --fail-with-body \
-            "https://agenticlib.com/api/cron/feature-scoring-collection?model=claude-haiku-4-5" \
+            "https://agenticlib.com/api/cron/feature-scoring-collection?model=claude-haiku-4-5&half=1" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
+      - name: Trigger marketing feature scoring (half 2)
+        if: always()
+        run: |
+          curl --max-time 310 --fail-with-body \
+            "https://agenticlib.com/api/cron/feature-scoring-collection?model=claude-haiku-4-5&half=2" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
