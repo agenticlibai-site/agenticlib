@@ -89,25 +89,36 @@ const BAND_COLORS: Record<string, string> = {
 };
 
 const FEATURE_NAMES: Record<string, string> = {
-  call_recording_analysis:   "Call recording & analysis",
-  call_coaching_automation:  "Automated rep coaching",
-  pipeline_forecasting:      "AI pipeline forecasting",
-  outreach_sequencing:       "Multi-step outreach sequencing",
-  ai_personalisation:        "AI-personalised outreach at scale",
-  tech_crm_integration:      "Native CRM integration",
-  rai_data_privacy:          "Data privacy & compliance",
-  rai_explainability:        "Decision transparency",
-  cost_pricing_transparency: "Pricing transparency",
-  cost_free_trial:           "Free trial / self-serve access",
+  call_transcription_timestamps:       "Call transcription & timestamps",
+  call_talk_time_analytics:            "Talk-time analytics",
+  call_coaching_scorecard:             "Rep coaching scorecard",
+  call_competitor_objection_detection: "Competitor objection detection",
+  pipeline_forecasting:                "AI pipeline forecasting",
+  deal_risk_detection:                 "Deal risk detection",
+  outreach_sequencing:                 "Multi-step outreach sequencing",
+  ai_personalisation:                  "AI-personalised outreach at scale",
+  crm_auto_update:                     "Automated CRM updates",
+  crm_data_accuracy:                   "CRM data accuracy",
+  followup_drafting:                   "Follow-up email drafting",
+  sales_content_delivery:              "Sales content delivery",
+  tech_crm_integration:                "Native CRM integration",
+  tech_instruction_following:          "Instruction following",
+  tech_workflow_automation:            "Workflow automation",
+  rai_data_privacy:                    "Data privacy & compliance",
+  rai_explainability:                  "Decision transparency",
+  cost_pricing_transparency:           "Pricing transparency",
+  cost_free_trial:                     "Free trial / self-serve access",
 };
 
 const FEATURE_GROUPS = [
-  { label: "Call Intelligence & Coaching", features: ["call_recording_analysis", "call_coaching_automation"] },
-  { label: "Deal Risk & Pipeline",         features: ["pipeline_forecasting"] },
+  { label: "Call Intelligence & Coaching", features: ["call_transcription_timestamps", "call_talk_time_analytics", "call_coaching_scorecard", "call_competitor_objection_detection"] },
+  { label: "Deal Risk & Pipeline",         features: ["pipeline_forecasting", "deal_risk_detection"] },
   { label: "AI SDR & Outreach",            features: ["outreach_sequencing", "ai_personalisation"] },
-  { label: "Technical Capabilities",       features: ["tech_crm_integration"] },
-  { label: "Responsible AI",              features: ["rai_data_privacy", "rai_explainability"] },
-  { label: "Cost Efficiency",             features: ["cost_pricing_transparency", "cost_free_trial"] },
+  { label: "CRM Automation",               features: ["crm_auto_update", "crm_data_accuracy"] },
+  { label: "Sales Enablement",             features: ["followup_drafting", "sales_content_delivery"] },
+  { label: "Technical Capabilities",       features: ["tech_crm_integration", "tech_instruction_following", "tech_workflow_automation"] },
+  { label: "Responsible AI",               features: ["rai_data_privacy", "rai_explainability"] },
+  { label: "Cost Efficiency",              features: ["cost_pricing_transparency", "cost_free_trial"] },
 ];
 
 // ── Use case clusters ─────────────────────────────────────────────────────────

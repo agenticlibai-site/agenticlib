@@ -210,10 +210,9 @@ export async function GET(request: Request) {
     await initBrandVisibilityDB();
     const allBrands = await loadLockedBrands();
 
-    // GPT jobs split by brand half to stay within maxDuration=300s.
-    // Claude runs all brands in one job (fast enough with lower task count).
+    // Both models split by brand half to stay within maxDuration=300s.
     const mid    = Math.ceil(allBrands.length / 2);
-    const brands = (model === "gpt-4o-mini" && half !== null)
+    const brands = (half !== null)
       ? (half === 1 ? allBrands.slice(0, mid) : allBrands.slice(mid))
       : allBrands;
 
