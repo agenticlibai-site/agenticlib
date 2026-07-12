@@ -272,11 +272,12 @@ export default function Home() {
             href="https://www.blackbird.vc/giants"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block text-xs font-medium px-4 py-1.5 rounded-full transition-colors duration-150"
+            className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full transition-colors duration-150"
             style={{ background: "#EEF0FF", color: "#5B5BD6" }}
             onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#DDE0FF"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#EEF0FF"; }}
           >
+            <img src="/blackbird-logo.svg" alt="Blackbird VC" style={{ width: 18, height: 18, borderRadius: 3, flexShrink: 0 }} />
             Backed by Blackbird VC Giants Program
           </a>
         </div>
