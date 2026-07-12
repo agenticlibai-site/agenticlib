@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getLockedDailySummary, getLockedBrandPositions, getLockedSOVByClusters, getROIDonutSOV, getWeeklySummary, getLLMVisibility, getPerceptionGaps, getFeatureScores, initBrandVisibilityDB } from "@/lib/brand-visibility/db";
+import { getLockedDailySummary, getLockedBrandPositions, getLockedSOVByClusters, getROIDonutSOV, getWeeklySummary, getLLMVisibility, getPerceptionGaps, getFeatureScores, getMarketingSentimentData, initBrandVisibilityDB } from "@/lib/brand-visibility/db";
 import BrandVisibilityCharts from "./BrandVisibilityCharts";
 
 export const dynamic = "force-dynamic";
@@ -12,7 +12,7 @@ export const metadata = {
 async function getData() {
   try {
     await initBrandVisibilityDB();
-    const [dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps, featureScores] = await Promise.all([
+    const [dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps, featureScores, sentimentData] = await Promise.all([
       getLockedDailySummary(7),
       getWeeklySummary(),
       getLLMVisibility(),
@@ -21,15 +21,16 @@ async function getData() {
       getROIDonutSOV(),
       getPerceptionGaps(),
       getFeatureScores(),
+      getMarketingSentimentData(),
     ]);
-    return { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps, featureScores };
+    return { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps, featureScores, sentimentData };
   } catch {
-    return { dailySummary: [], weeklySummary: [], llmVisibility: [], brandPositions: [], sovData: [], roiData: [], perceptionGaps: [], featureScores: [] };
+    return { dailySummary: [], weeklySummary: [], llmVisibility: [], brandPositions: [], sovData: [], roiData: [], perceptionGaps: [], featureScores: [], sentimentData: { rows: [], meta: { dual_model_dates: 0, earliest_date: null, latest_date: null } } };
   }
 }
 
 export default async function BrandVisibilityPage() {
-  const { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps, featureScores } = await getData();
+  const { dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps, featureScores, sentimentData } = await getData();
 
   return (
     <main
@@ -91,6 +92,7 @@ export default async function BrandVisibilityPage() {
           roiData={roiData}
           perceptionGaps={perceptionGaps}
           featureScores={featureScores}
+          sentimentData={sentimentData}
         />
       </div>
     </main>
