@@ -1608,6 +1608,88 @@ export async function insertSalesSentimentResponse(row: {
   `;
 }
 
+export async function getMarketingSentimentData(): Promise<{
+  rows: {
+    brand_name:      string;
+    bucket_tag:      string;
+    positive_count:  number;
+    neutral_count:   number;
+    negative_count:  number;
+    total_count:     number;
+    top_descriptors: string[];
+  }[];
+  meta: { dual_model_dates: number; earliest_date: string | null; latest_date: string | null };
+}> {
+  await initBrandVisibilityDB();
+
+  const metaResult = await sql`
+    SELECT COUNT(*)::int AS dual_model_dates,
+      MIN(run_date)::text AS earliest_date,
+      MAX(run_date)::text AS latest_date
+    FROM (
+      SELECT run_date
+      FROM sentiment_responses
+      WHERE run_date >= CURRENT_DATE - 7 AND NOT parse_error
+      GROUP BY run_date
+      HAVING COUNT(DISTINCT model) >= 2
+    ) d
+  `;
+  const meta = metaResult.rows[0] as {
+    dual_model_dates: number; earliest_date: string | null; latest_date: string | null;
+  };
+
+  if ((meta.dual_model_dates ?? 0) < 3) {
+    return { rows: [], meta };
+  }
+
+  const result = await sql`
+    WITH base AS (
+      SELECT brand_name, bucket_tag, sentiment, descriptors
+      FROM sentiment_responses
+      WHERE run_date >= CURRENT_DATE - 7 AND NOT parse_error
+    ),
+    sentiments AS (
+      SELECT brand_name, bucket_tag,
+        COUNT(*) FILTER (WHERE sentiment='positive')::int AS positive_count,
+        COUNT(*) FILTER (WHERE sentiment='neutral')::int  AS neutral_count,
+        COUNT(*) FILTER (WHERE sentiment='negative')::int AS negative_count,
+        COUNT(*)::int AS total_count
+      FROM base
+      GROUP BY brand_name, bucket_tag
+    ),
+    desc_flat AS (
+      SELECT brand_name, bucket_tag, d, COUNT(*) AS cnt
+      FROM base, LATERAL UNNEST(descriptors) AS d
+      WHERE descriptors IS NOT NULL
+      GROUP BY brand_name, bucket_tag, d
+    ),
+    ranked AS (
+      SELECT *, ROW_NUMBER() OVER (PARTITION BY brand_name, bucket_tag ORDER BY cnt DESC) AS rn
+      FROM desc_flat
+    ),
+    top_descs AS (
+      SELECT brand_name, bucket_tag,
+        ARRAY_AGG(d ORDER BY cnt DESC) AS top_descriptors
+      FROM ranked WHERE rn <= 5
+      GROUP BY brand_name, bucket_tag
+    )
+    SELECT s.brand_name, s.bucket_tag,
+      s.positive_count, s.neutral_count, s.negative_count, s.total_count,
+      COALESCE(d.top_descriptors, ARRAY[]::text[]) AS top_descriptors
+    FROM sentiments s
+    LEFT JOIN top_descs d USING (brand_name, bucket_tag)
+    ORDER BY s.bucket_tag, s.positive_count DESC, s.brand_name
+  `;
+  return {
+    rows: result.rows as {
+      brand_name: string; bucket_tag: string;
+      positive_count: number; neutral_count: number; negative_count: number; total_count: number;
+      top_descriptors: string[];
+    }[],
+    meta,
+  };
+}
+
 export async function getSalesSentimentData(): Promise<{
   rows: {
     brand_name:      string;
