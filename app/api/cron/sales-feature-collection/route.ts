@@ -21,11 +21,15 @@ export const maxDuration = 300;
 // ── Split-job design ───────────────────────────────────────────────────────────
 // ~178 brand+feature pairs × 3 runs = 534 API calls per model.
 //
-//   ?model=claude-haiku-4-5         →  Job 1, 7:00 UTC (all brands, ~2 min)
-//   ?model=gpt-4o-mini&half=1       →  Job 2, 9:00 UTC (brands 0..mid, ~2.5 min)
-//   ?model=gpt-4o-mini&half=2       →  Job 3, 9:15 UTC (brands mid..end, ~2.5 min)
+//   ?model=claude-haiku-4-5&half=1  →  Job 1a, 7:00 UTC (brands 0..4,  ~2.5 min)
+//   ?model=claude-haiku-4-5&half=2  →  Job 1b, after 1a (brands 5..9,  ~2.5 min)
+//   ?model=claude-haiku-4-5&half=3  →  Job 1c, after 1b (brands 10..14, ~2.5 min)
+//   ?model=claude-haiku-4-5&half=4  →  Job 1d, after 1c (brands 15..19, ~2.5 min)
+//   ?model=gpt-4o-mini&half=1       →  Job 2, 9:00 UTC (brands 0..9,  ~2.5 min)
+//   ?model=gpt-4o-mini&half=2       →  Job 3, 9:15 UTC (brands 10..19, ~2.5 min)
 //
-// GPT split prevents the 5-minute maxDuration timeout (534 tasks × ~3.5s each).
+// Claude uses 4-way quarter split; GPT uses 2-way half split.
+// Both keep each Vercel invocation under maxDuration=300s.
 // Scoring runs at 10:00 UTC via sales-feature-aggregate.
 // ──────────────────────────────────────────────────────────────────────────────
 
@@ -177,17 +181,23 @@ export async function GET(request: Request) {
     return Response.json({ error: "?model= required: claude-haiku-4-5 or gpt-4o-mini" }, { status: 400 });
   }
 
-  const model = modelParam as "claude-haiku-4-5" | "gpt-4o-mini";
-  const half  = halfParam === "1" ? 1 : halfParam === "2" ? 2 : null;
-  const halfLabel = half !== null ? ` half=${half}` : "";
+  const model        = modelParam as "claude-haiku-4-5" | "gpt-4o-mini";
+  const half         = halfParam === "1" ? 1 : halfParam === "2" ? 2 : null;
+  const quarterParam = searchParams.get("quarter");
+  const quarter      = ["1","2","3","4"].includes(quarterParam ?? "") ? Number(quarterParam) as 1|2|3|4 : null;
+  const halfLabel    = quarter !== null ? ` quarter=${quarter}` : half !== null ? ` half=${half}` : "";
 
   try {
     await initSalesVisibilityDB();
     const allBrands = await loadLockedSalesAgents();
 
-    // Both models split by brand half to stay within maxDuration=300s.
-    const mid = Math.ceil(allBrands.length / 2);
-    const brands = (half !== null)
+    // Claude: 4-way quarter split (~5 brands each) to stay under maxDuration=300s.
+    // GPT:    2-way half split — existing behaviour, half=1 or half=2.
+    const mid   = Math.ceil(allBrands.length / 2);
+    const qSize = Math.ceil(allBrands.length / 4);
+    const brands = quarter !== null
+      ? allBrands.slice((quarter - 1) * qSize, quarter * qSize)
+      : half !== null
       ? (half === 1 ? allBrands.slice(0, mid) : allBrands.slice(mid))
       : allBrands;
 
@@ -329,7 +339,7 @@ export async function GET(request: Request) {
     return Response.json({
       mode:             "sales_feature_collection",
       model,
-      half:             half ?? "all",
+      segment:          quarter !== null ? `quarter=${quarter}` : half !== null ? `half=${half}` : "all",
       date:             today,
       brands:           brands.length,
       features:         FEATURES.length,
