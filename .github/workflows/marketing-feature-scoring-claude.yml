@@ -8,15 +8,9 @@ on:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 24
+    timeout-minutes: 20
     steps:
-      - name: Trigger marketing feature scoring (quarter 1)
-        run: |
-          curl --max-time 310 --fail-with-body \
-            "https://agenticlib.com/api/cron/feature-scoring-collection?model=claude-haiku-4-5&quarter=1" \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
       - name: Trigger marketing feature scoring (quarter 2)
-        if: always()
         run: |
           curl --max-time 310 --fail-with-body \
             "https://agenticlib.com/api/cron/feature-scoring-collection?model=claude-haiku-4-5&quarter=2" \
