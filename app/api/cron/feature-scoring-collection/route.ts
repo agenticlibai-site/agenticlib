@@ -202,17 +202,23 @@ export async function GET(request: Request) {
     return Response.json({ error: "?model= required: claude-haiku-4-5 or gpt-4o-mini" }, { status: 400 });
   }
 
-  const model     = modelParam as "claude-haiku-4-5" | "gpt-4o-mini";
-  const half      = halfParam === "1" ? 1 : halfParam === "2" ? 2 : null;
-  const halfLabel = half !== null ? ` half=${half}` : "";
+  const model        = modelParam as "claude-haiku-4-5" | "gpt-4o-mini";
+  const half         = halfParam === "1" ? 1 : halfParam === "2" ? 2 : null;
+  const quarterParam = searchParams.get("quarter");
+  const quarter      = ["1","2","3","4"].includes(quarterParam ?? "") ? Number(quarterParam) as 1|2|3|4 : null;
+  const halfLabel    = quarter !== null ? ` quarter=${quarter}` : half !== null ? ` half=${half}` : "";
 
   try {
     await initBrandVisibilityDB();
     const allBrands = await loadLockedBrands();
 
-    // Both models split by brand half to stay within maxDuration=300s.
-    const mid    = Math.ceil(allBrands.length / 2);
-    const brands = (half !== null)
+    // Claude: 4-way quarter split (~6 brands each for 23 brands) to stay under maxDuration=300s.
+    // GPT:    2-way half split — existing behaviour, half=1 or half=2.
+    const mid   = Math.ceil(allBrands.length / 2);
+    const qSize = Math.ceil(allBrands.length / 4);
+    const brands = quarter !== null
+      ? allBrands.slice((quarter - 1) * qSize, quarter * qSize)
+      : half !== null
       ? (half === 1 ? allBrands.slice(0, mid) : allBrands.slice(mid))
       : allBrands;
 
@@ -358,7 +364,7 @@ export async function GET(request: Request) {
     return Response.json({
       mode:             "feature_collection",
       model,
-      half:             half ?? "all",
+      segment:          quarter !== null ? `quarter=${quarter}` : half !== null ? `half=${half}` : "all",
       date:             today,
       brands:           brands.length,
       features:         FEATURES.length,

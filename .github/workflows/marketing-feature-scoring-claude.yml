@@ -8,16 +8,28 @@ on:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 12
+    timeout-minutes: 24
     steps:
-      - name: Trigger marketing feature scoring (half 1)
+      - name: Trigger marketing feature scoring (quarter 1)
         run: |
           curl --max-time 310 --fail-with-body \
-            "https://agenticlib.com/api/cron/feature-scoring-collection?model=claude-haiku-4-5&half=1" \
+            "https://agenticlib.com/api/cron/feature-scoring-collection?model=claude-haiku-4-5&quarter=1" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
-      - name: Trigger marketing feature scoring (half 2)
+      - name: Trigger marketing feature scoring (quarter 2)
         if: always()
         run: |
           curl --max-time 310 --fail-with-body \
-            "https://agenticlib.com/api/cron/feature-scoring-collection?model=claude-haiku-4-5&half=2" \
+            "https://agenticlib.com/api/cron/feature-scoring-collection?model=claude-haiku-4-5&quarter=2" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
+      - name: Trigger marketing feature scoring (quarter 3)
+        if: always()
+        run: |
+          curl --max-time 310 --fail-with-body \
+            "https://agenticlib.com/api/cron/feature-scoring-collection?model=claude-haiku-4-5&quarter=3" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
+      - name: Trigger marketing feature scoring (quarter 4)
+        if: always()
+        run: |
+          curl --max-time 310 --fail-with-body \
+            "https://agenticlib.com/api/cron/feature-scoring-collection?model=claude-haiku-4-5&quarter=4" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
