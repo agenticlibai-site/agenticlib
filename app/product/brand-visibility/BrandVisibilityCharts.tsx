@@ -1150,6 +1150,8 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
         const GATE = 3;
         const daysHave = sentimentMeta.dual_model_dates ?? 0;
         const ready    = daysHave >= GATE;
+        const globalDescFreq = new Map<string, number>();
+        for (const r of sentimentRows) for (const d of r.top_descriptors) globalDescFreq.set(d, (globalDescFreq.get(d) ?? 0) + 1);
 
         function sentimentDateLabel() {
           const e = sentimentMeta.earliest_date;
@@ -1204,8 +1206,6 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                 {MARKETING_SENTIMENT_CLUSTERS.map(cluster => {
                   const brands = sentimentRows.filter(r => r.bucket_tag === cluster.tag);
                   if (brands.length === 0) return null;
-                  const descFreq = new Map<string, number>();
-                  for (const b of brands) for (const d of b.top_descriptors) descFreq.set(d, (descFreq.get(d) ?? 0) + 1);
                   return (
                     <div key={cluster.tag} style={{ marginBottom: 28 }}>
                       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: PURPLE, marginBottom: 14 }}>
@@ -1235,7 +1235,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                               {brand.top_descriptors.length > 0 && (
                                 <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 5, paddingLeft: 130 }}>
                                   {brand.top_descriptors.slice(0, 4).map((d, i) => {
-                                    const unique = descFreq.get(d) === 1;
+                                    const unique = globalDescFreq.get(d) === 1;
                                     return (
                                       <span key={i} style={{
                                         fontSize: 11,
