@@ -536,7 +536,7 @@ function cleanEvidence(raw: string | null): string | null {
   const LIMIT = 300;
   if (stripped.length <= LIMIT) return stripped;
   const cut = stripped.lastIndexOf('. ', LIMIT);
-  return cut > LIMIT / 2 ? stripped.slice(0, cut + 1) : stripped.slice(0, LIMIT) + '…';
+  return cut > 0 ? stripped.slice(0, cut + 1) : stripped;
 }
 
 function scoreBarColor(score: number): string {

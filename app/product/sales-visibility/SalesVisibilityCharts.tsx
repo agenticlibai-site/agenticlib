@@ -99,7 +99,8 @@ function cleanEvidence(raw: string | null): string | null {
   const LIMIT = 300;
   if (stripped.length <= LIMIT) return stripped;
   const cut = stripped.lastIndexOf('. ', LIMIT);
-  return cut > LIMIT / 2 ? stripped.slice(0, cut + 1) : stripped.slice(0, LIMIT) + '…';
+  // Never hard-cut mid-sentence — if no boundary found, return the full text.
+  return cut > 0 ? stripped.slice(0, cut + 1) : stripped;
 }
 
 // ── Feature scores config ──────────────────────────────────────────────────────
@@ -990,7 +991,7 @@ export default function SalesVisibilityCharts({
                     {bonus && (
                       <p style={{ fontSize: 11, color: "rgba(0,0,0,0.5)", lineHeight: 1.45, margin: 0 }}>
                         <span style={{ fontWeight: 600 }}>{FEATURE_NAMES[bonus.featureId] ?? bonus.featureId}:</span>{" "}
-                        {bonus.evidence.length > 160 ? bonus.evidence.slice(0, 160) + "…" : bonus.evidence}
+                        {(() => { const cut = bonus.evidence.indexOf('. '); return cut > 0 ? bonus.evidence.slice(0, cut + 1) : bonus.evidence; })()}
                       </p>
                     )}
                   </div>
