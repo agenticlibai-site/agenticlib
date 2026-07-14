@@ -775,6 +775,9 @@ export default function SalesVisibilityCharts({
         const GATE = 3;
         const daysHave = sentimentMeta.dual_model_dates ?? 0;
         const ready    = daysHave >= GATE;
+        // Global frequency: a descriptor is only "unique" if no other brand uses it anywhere.
+        const globalDescFreq = new Map<string, number>();
+        for (const r of sentimentRows) for (const d of r.top_descriptors) globalDescFreq.set(d, (globalDescFreq.get(d) ?? 0) + 1);
 
         // Build a human-readable date range label from actual data coverage.
         function sentimentDateLabel() {
@@ -832,8 +835,6 @@ export default function SalesVisibilityCharts({
                     .filter(r => r.bucket_tag === cluster.tag)
                     .sort((a, b) => b.positive_count - a.positive_count);
                   if (brands.length === 0) return null;
-                  const descFreq = new Map<string, number>();
-                  for (const b of brands) for (const d of b.top_descriptors) descFreq.set(d, (descFreq.get(d) ?? 0) + 1);
                   return (
                     <div key={cluster.tag} style={{ marginBottom: 28 }}>
                       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: BLUE, marginBottom: 14 }}>
@@ -862,7 +863,7 @@ export default function SalesVisibilityCharts({
                               </div>
                               <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 5, paddingLeft: 120 }}>
                                 {brand.top_descriptors.slice(0, 4).map((d, i) => {
-                                  const unique = descFreq.get(d) === 1;
+                                  const unique = globalDescFreq.get(d) === 1;
                                   return (
                                     <span key={i} style={{
                                       fontSize: 11,
