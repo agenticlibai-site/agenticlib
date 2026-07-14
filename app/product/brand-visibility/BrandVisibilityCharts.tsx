@@ -517,11 +517,26 @@ const FEATURE_LABEL: Record<string, string> = {
   cost_pricing_transparency:       "Pricing transparency",
 };
 
-function truncateEvidence(text: string): string {
+function cleanEvidence(raw: string | null): string | null {
+  if (!raw) return null;
+  const stripped = raw.replace(/<cite[^>]*>/g, '').replace(/<\/cite>/g, '').trim();
+  if (!stripped) return null;
+  const lower = stripped.toLowerCase();
+  if (
+    lower.includes('not explicitly document') ||
+    lower.includes('does not document') ||
+    lower.includes('no specific documentation') ||
+    lower.includes('without clear documentation') ||
+    lower.includes('documentation not available') ||
+    lower.includes('not documented') ||
+    lower.includes('cannot be confirmed from') ||
+    lower.includes('no available information') ||
+    lower.includes('does not provide documentation')
+  ) return null;
   const LIMIT = 300;
-  if (text.length <= LIMIT) return text;
-  const cut = text.lastIndexOf('. ', LIMIT);
-  return cut > LIMIT / 2 ? text.slice(0, cut + 1) : text.slice(0, LIMIT) + '…';
+  if (stripped.length <= LIMIT) return stripped;
+  const cut = stripped.lastIndexOf('. ', LIMIT);
+  return cut > LIMIT / 2 ? stripped.slice(0, cut + 1) : stripped.slice(0, LIMIT) + '…';
 }
 
 function scoreBarColor(score: number): string {
@@ -624,11 +639,9 @@ function FeatureScoresSection({ featureScores }: { featureScores: FeatureScoreRo
                                     )}
                                   </div>
                                 </div>
-                                {evidence && (
-                                  <p style={{ paddingLeft: 130, fontSize: 11, color: "rgba(0,0,0,0.4)", lineHeight: 1.4, margin: "3px 0 0" }}>
-                                    {truncateEvidence(evidence)}
-                                  </p>
-                                )}
+                                {(() => { const ev = cleanEvidence(evidence); return ev ? (
+                                  <p style={{ paddingLeft: 130, fontSize: 11, color: "#000", lineHeight: 1.4, margin: "3px 0 0" }}>{ev}</p>
+                                ) : null; })()}
                               </div>
                             ))}
                           </div>
@@ -1191,6 +1204,8 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                 {MARKETING_SENTIMENT_CLUSTERS.map(cluster => {
                   const brands = sentimentRows.filter(r => r.bucket_tag === cluster.tag);
                   if (brands.length === 0) return null;
+                  const descFreq = new Map<string, number>();
+                  for (const b of brands) for (const d of b.top_descriptors) descFreq.set(d, (descFreq.get(d) ?? 0) + 1);
                   return (
                     <div key={cluster.tag} style={{ marginBottom: 28 }}>
                       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: PURPLE, marginBottom: 14 }}>
@@ -1219,16 +1234,20 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                               </div>
                               {brand.top_descriptors.length > 0 && (
                                 <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 5, paddingLeft: 130 }}>
-                                  {brand.top_descriptors.slice(0, 4).map((d, i) => (
-                                    <span key={i} style={{
-                                      fontSize: 11, color: "rgba(0,0,0,0.55)",
-                                      background: "rgba(0,0,0,0.04)",
-                                      border: "1px solid rgba(0,0,0,0.08)",
-                                      borderRadius: 4, padding: "2px 7px",
-                                    }}>
-                                      {d}
-                                    </span>
-                                  ))}
+                                  {brand.top_descriptors.slice(0, 4).map((d, i) => {
+                                    const unique = descFreq.get(d) === 1;
+                                    return (
+                                      <span key={i} style={{
+                                        fontSize: 11,
+                                        color: unique ? "#2563eb" : "rgba(0,0,0,0.55)",
+                                        background: unique ? "rgba(37,99,235,0.08)" : "rgba(0,0,0,0.04)",
+                                        border: `1px solid ${unique ? "rgba(37,99,235,0.25)" : "rgba(0,0,0,0.08)"}`,
+                                        borderRadius: 4, padding: "2px 7px", fontWeight: unique ? 600 : 400,
+                                      }}>
+                                        {d}
+                                      </span>
+                                    );
+                                  })}
                                 </div>
                               )}
                             </div>
