@@ -1434,22 +1434,37 @@ export { SALES_CANONICAL };
 // ── Feature scores read (for brand-visibility page) ───────────────────────────
 
 export interface FeatureScoreRow {
-  brand_name:     string;
-  feature_id:     string;
-  feature_tag:    string;
-  score:          number;
-  score_band:     string;
+  brand_name:      string;
+  feature_id:      string;
+  feature_tag:     string;
+  score:           number;
+  score_band:      string;
   grounded_source: boolean;
+  evidence:        string | null;
 }
 
 export async function getFeatureScores(): Promise<FeatureScoreRow[]> {
   await initBrandVisibilityDB();
   const result = await sql`
-    SELECT brand_name, feature_id, feature_tag, score, score_band,
-           COALESCE(grounded_source, FALSE) AS grounded_source
-    FROM feature_scores
-    WHERE score IS NOT NULL
-    ORDER BY feature_tag, feature_id, score DESC
+    WITH best_evidence AS (
+      SELECT DISTINCT ON (brand_name, feature_id)
+        brand_name, feature_id, evidence
+      FROM feature_responses
+      WHERE parse_error = false
+        AND evidence IS NOT NULL AND evidence != ''
+      ORDER BY brand_name, feature_id,
+        run_date DESC,
+        grounded DESC,
+        CASE confidence WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END,
+        model
+    )
+    SELECT fs.brand_name, fs.feature_id, fs.feature_tag, fs.score, fs.score_band,
+           COALESCE(fs.grounded_source, FALSE) AS grounded_source,
+           be.evidence
+    FROM feature_scores fs
+    LEFT JOIN best_evidence be ON be.brand_name = fs.brand_name AND be.feature_id = fs.feature_id
+    WHERE fs.score IS NOT NULL
+    ORDER BY fs.feature_tag, fs.feature_id, fs.score DESC
   `;
   return result.rows as FeatureScoreRow[];
 }
@@ -1518,16 +1533,32 @@ export async function getSalesFeatureScores(): Promise<{
   score:              number;
   score_band:         string;
   flagged_for_review: boolean;
+  evidence:           string | null;
 }[]> {
   const result = await sql`
-    SELECT brand_name, feature_id, feature_tag, score, score_band, flagged_for_review
-    FROM sales_feature_scores
-    WHERE score IS NOT NULL
-    ORDER BY feature_tag, score DESC
+    WITH best_evidence AS (
+      SELECT DISTINCT ON (brand_name, feature_id)
+        brand_name, feature_id, evidence
+      FROM sales_feature_responses
+      WHERE parse_error = false
+        AND evidence IS NOT NULL AND evidence != ''
+      ORDER BY brand_name, feature_id,
+        run_date DESC,
+        grounded DESC,
+        CASE confidence WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END,
+        model
+    )
+    SELECT s.brand_name, s.feature_id, s.feature_tag, s.score, s.score_band, s.flagged_for_review,
+           be.evidence
+    FROM sales_feature_scores s
+    LEFT JOIN best_evidence be ON be.brand_name = s.brand_name AND be.feature_id = s.feature_id
+    WHERE s.score IS NOT NULL
+    ORDER BY s.feature_tag, s.score DESC
   `;
   return result.rows as {
     brand_name: string; feature_id: string; feature_tag: string;
     score: number; score_band: string; flagged_for_review: boolean;
+    evidence: string | null;
   }[];
 }
 
