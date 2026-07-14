@@ -121,6 +121,17 @@ const FEATURE_GROUPS = [
   { label: "Cost Efficiency",              features: ["cost_pricing_transparency", "cost_free_trial"] },
 ];
 
+// Hidden pending P3 parsing fixes + broader brand coverage.
+// These features show ≤4 of 20 brands or are flat at ceiling — not a real finding yet.
+const HIDDEN_FEATURE_IDS = new Set([
+  "call_transcription_timestamps",
+  "pipeline_forecasting",
+  "deal_risk_detection",
+  "crm_auto_update",
+  "sales_content_delivery",
+  "tech_instruction_following",
+]);
+
 // ── Use case clusters ─────────────────────────────────────────────────────────
 const SOV_CLUSTERS = [
   { tag: "sales-call",       label: "Call Intelligence & Coaching" },
@@ -687,6 +698,7 @@ export default function SalesVisibilityCharts({
               </p>
               {FEATURE_GROUPS.map(group => {
                 const groupFeatures = group.features.flatMap(featureId => {
+                  if (HIDDEN_FEATURE_IDS.has(featureId)) return [];
                   const rows = featureScores
                     .filter(r => r.feature_id === featureId)
                     .sort((a, b) => b.score - a.score)
