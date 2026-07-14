@@ -1453,6 +1453,7 @@ export async function getFeatureScores(): Promise<FeatureScoreRow[]> {
       WHERE parse_error = false
         AND evidence IS NOT NULL AND evidence != ''
       ORDER BY brand_name, feature_id,
+        CASE has_capability WHEN 'yes' THEN 0 WHEN 'partial' THEN 1 ELSE 2 END,
         run_date DESC,
         grounded DESC,
         CASE confidence WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END,
@@ -1543,6 +1544,7 @@ export async function getSalesFeatureScores(): Promise<{
       WHERE parse_error = false
         AND evidence IS NOT NULL AND evidence != ''
       ORDER BY brand_name, feature_id,
+        CASE has_capability WHEN 'yes' THEN 0 WHEN 'partial' THEN 1 ELSE 2 END,
         run_date DESC,
         grounded DESC,
         CASE confidence WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END,
