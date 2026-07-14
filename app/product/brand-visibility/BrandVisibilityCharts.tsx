@@ -517,6 +517,13 @@ const FEATURE_LABEL: Record<string, string> = {
   cost_pricing_transparency:       "Pricing transparency",
 };
 
+function truncateEvidence(text: string): string {
+  const LIMIT = 300;
+  if (text.length <= LIMIT) return text;
+  const cut = text.lastIndexOf('. ', LIMIT);
+  return cut > LIMIT / 2 ? text.slice(0, cut + 1) : text.slice(0, LIMIT) + '…';
+}
+
 function scoreBarColor(score: number): string {
   if (score >= 75) return "#059669";
   if (score >= 50) return "#2563EB";
@@ -619,7 +626,7 @@ function FeatureScoresSection({ featureScores }: { featureScores: FeatureScoreRo
                                 </div>
                                 {evidence && (
                                   <p style={{ paddingLeft: 130, fontSize: 11, color: "rgba(0,0,0,0.4)", lineHeight: 1.4, margin: "3px 0 0" }}>
-                                    {evidence.length > 200 ? evidence.slice(0, 200) + "…" : evidence}
+                                    {truncateEvidence(evidence)}
                                   </p>
                                 )}
                               </div>

@@ -80,6 +80,13 @@ interface Props {
   sentimentData:    { rows: SentimentRow[]; meta: SentimentMeta };
 }
 
+function truncateEvidence(text: string): string {
+  const LIMIT = 300;
+  if (text.length <= LIMIT) return text;
+  const cut = text.lastIndexOf('. ', LIMIT);
+  return cut > LIMIT / 2 ? text.slice(0, cut + 1) : text.slice(0, LIMIT) + '…';
+}
+
 // ── Feature scores config ──────────────────────────────────────────────────────
 const BAND_COLORS: Record<string, string> = {
   strong:  "#16a34a",
@@ -730,7 +737,7 @@ export default function SalesVisibilityCharts({
                               </div>
                               {r.evidence && (
                                 <p style={{ paddingLeft: 140, fontSize: 11, color: "rgba(0,0,0,0.4)", lineHeight: 1.4, margin: "3px 0 0" }}>
-                                  {r.evidence.length > 200 ? r.evidence.slice(0, 200) + "…" : r.evidence}
+                                  {truncateEvidence(r.evidence)}
                                 </p>
                               )}
                             </div>
