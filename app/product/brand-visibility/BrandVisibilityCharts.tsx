@@ -527,12 +527,12 @@ function scoreBarColor(score: number): string {
 function FeatureScoresSection({ featureScores }: { featureScores: FeatureScoreRow[] }) {
   const [open, setOpen] = useState(true);
 
-  const grouped = new Map<string, Map<string, { brand_name: string; score: number; grounded_source: boolean }[]>>();
+  const grouped = new Map<string, Map<string, { brand_name: string; score: number; grounded_source: boolean; evidence: string | null }[]>>();
   for (const row of featureScores) {
     if (!grouped.has(row.feature_tag)) grouped.set(row.feature_tag, new Map());
     const fMap = grouped.get(row.feature_tag)!;
     if (!fMap.has(row.feature_id)) fMap.set(row.feature_id, []);
-    fMap.get(row.feature_id)!.push({ brand_name: row.brand_name, score: row.score, grounded_source: row.grounded_source });
+    fMap.get(row.feature_id)!.push({ brand_name: row.brand_name, score: row.score, grounded_source: row.grounded_source, evidence: row.evidence });
   }
 
   const orderedTags = FEATURE_TAG_ORDER.filter(t => grouped.has(t));
@@ -593,28 +593,35 @@ function FeatureScoresSection({ featureScores }: { featureScores: FeatureScoreRo
                             {FEATURE_LABEL[featureId] ?? featureId}
                           </div>
                           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                            {sorted.map(({ brand_name, score, grounded_source }) => (
-                              <div key={brand_name} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                                <div style={{ width: 120, fontSize: 11, color: "rgba(0,0,0,0.55)", flexShrink: 0, textAlign: "right" }}>
-                                  {brand_name}
+                            {sorted.map(({ brand_name, score, grounded_source, evidence }) => (
+                              <div key={brand_name}>
+                                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                                  <div style={{ width: 120, fontSize: 11, color: "rgba(0,0,0,0.55)", flexShrink: 0, textAlign: "right" }}>
+                                    {brand_name}
+                                  </div>
+                                  <div style={{ flex: 1, background: "rgba(0,0,0,0.06)", borderRadius: 4, height: 8, overflow: "hidden" }}>
+                                    <div style={{
+                                      width: `${score}%`, height: "100%",
+                                      background: scoreBarColor(score), borderRadius: 4,
+                                    }} />
+                                  </div>
+                                  <div style={{ width: 40, fontSize: 11, fontWeight: 700, color: scoreBarColor(score), textAlign: "right", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 3 }}>
+                                    {score}
+                                    {grounded_source && (
+                                      <span
+                                        title="Score informed by live web search of product documentation"
+                                        style={{ fontSize: 10, cursor: "help", lineHeight: 1 }}
+                                      >
+                                        🔍
+                                      </span>
+                                    )}
+                                  </div>
                                 </div>
-                                <div style={{ flex: 1, background: "rgba(0,0,0,0.06)", borderRadius: 4, height: 8, overflow: "hidden" }}>
-                                  <div style={{
-                                    width: `${score}%`, height: "100%",
-                                    background: scoreBarColor(score), borderRadius: 4,
-                                  }} />
-                                </div>
-                                <div style={{ width: 40, fontSize: 11, fontWeight: 700, color: scoreBarColor(score), textAlign: "right", flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "flex-end", gap: 3 }}>
-                                  {score}
-                                  {grounded_source && (
-                                    <span
-                                      title="Score informed by live web search of product documentation"
-                                      style={{ fontSize: 10, cursor: "help", lineHeight: 1 }}
-                                    >
-                                      🔍
-                                    </span>
-                                  )}
-                                </div>
+                                {evidence && (
+                                  <p style={{ paddingLeft: 130, fontSize: 11, color: "rgba(0,0,0,0.4)", lineHeight: 1.4, margin: "3px 0 0" }}>
+                                    {evidence.length > 200 ? evidence.slice(0, 200) + "…" : evidence}
+                                  </p>
+                                )}
                               </div>
                             ))}
                           </div>

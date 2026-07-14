@@ -66,7 +66,7 @@ interface WeeklyRow       { brand: string; model: string; mention_count: number;
 interface LLMVisRow       { model: string; visibility_pct: number; total_responses: number }
 interface SOVRow          { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }
 interface ClusterPosRow   { bucket_tag: string; brand: string; avg_position: number; appearances: number }
-interface FeatureScoreRow { brand_name: string; feature_id: string; feature_tag: string; score: number; score_band: string; flagged_for_review: boolean }
+interface FeatureScoreRow { brand_name: string; feature_id: string; feature_tag: string; score: number; score_band: string; flagged_for_review: boolean; evidence: string | null }
 interface SentimentRow  { brand_name: string; bucket_tag: string; positive_count: number; neutral_count: number; negative_count: number; total_count: number; top_descriptors: string[] }
 interface SentimentMeta { dual_model_dates: number; earliest_date: string | null; latest_date: string | null }
 
@@ -718,14 +718,21 @@ export default function SalesVisibilityCharts({
                         </p>
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                           {rows.map(r => (
-                            <div key={r.brand_name} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                              <span style={{ fontSize: 12, fontWeight: 500, color: NAVY, width: 130, flexShrink: 0 }}>{r.brand_name}</span>
-                              <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
-                                <div style={{ width: `${r.score}%`, height: 6, borderRadius: 999, background: BAND_COLORS[r.score_band] ?? "#94a3b8" }} />
+                            <div key={r.brand_name}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                                <span style={{ fontSize: 12, fontWeight: 500, color: NAVY, width: 130, flexShrink: 0 }}>{r.brand_name}</span>
+                                <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
+                                  <div style={{ width: `${r.score}%`, height: 6, borderRadius: 999, background: BAND_COLORS[r.score_band] ?? "#94a3b8" }} />
+                                </div>
+                                <span style={{ fontSize: 12, fontWeight: 700, color: BAND_COLORS[r.score_band] ?? NAVY, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>
+                                  {r.score}
+                                </span>
                               </div>
-                              <span style={{ fontSize: 12, fontWeight: 700, color: BAND_COLORS[r.score_band] ?? NAVY, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>
-                                {r.score}
-                              </span>
+                              {r.evidence && (
+                                <p style={{ paddingLeft: 140, fontSize: 11, color: "rgba(0,0,0,0.4)", lineHeight: 1.4, margin: "3px 0 0" }}>
+                                  {r.evidence.length > 200 ? r.evidence.slice(0, 200) + "…" : r.evidence}
+                                </p>
+                              )}
                             </div>
                           ))}
                         </div>
