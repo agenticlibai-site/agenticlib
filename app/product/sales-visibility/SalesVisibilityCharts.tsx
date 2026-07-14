@@ -308,6 +308,7 @@ export default function SalesVisibilityCharts({
   const hasReal = dailySummary.length > 0;
   const [featureOpen,    setFeatureOpen]    = useState(false);
   const [sentimentOpen,  setSentimentOpen]  = useState(false);
+  const [spotlightOpen,  setSpotlightOpen]  = useState(true);
 
   // ── Build chart rows — filter to locked brands only ────────────────────────
   const dateSet = new Set<string>();
@@ -895,6 +896,69 @@ export default function SalesVisibilityCharts({
                     Both models · updates daily
                   </span>
                 </div>
+              </div>
+            )}
+          </div>
+        );
+      })()}
+
+      {/* ── Row 9: Brand Capability Spotlight ────────────────────────────────── */}
+      {(() => {
+        // For each brand: highest-scoring non-hidden feature that has usable evidence.
+        const seen = new Set<string>();
+        const spotlights: { brand: string; featureId: string; scoreBand: string; evidence: string }[] = [];
+        const sorted = [...featureScores]
+          .filter(r => !HIDDEN_FEATURE_IDS.has(r.feature_id))
+          .sort((a, b) => b.score - a.score);
+        for (const row of sorted) {
+          if (seen.has(row.brand_name)) continue;
+          const ev = cleanEvidence(row.evidence);
+          if (!ev) continue;
+          seen.add(row.brand_name);
+          spotlights.push({ brand: row.brand_name, featureId: row.feature_id, scoreBand: row.score_band, evidence: ev });
+        }
+        if (spotlights.length === 0) return null;
+        spotlights.sort((a, b) => a.brand.localeCompare(b.brand));
+        return (
+          <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
+            <button
+              onClick={() => setSpotlightOpen(o => !o)}
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                width: "100%", padding: "16px 24px",
+                background: "none", border: "none", cursor: "pointer",
+                borderBottom: spotlightOpen ? "1px solid rgba(0,0,0,0.07)" : "none",
+                fontFamily: "inherit",
+              }}
+            >
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
+                Brand Capability Spotlight
+              </h3>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform: spotlightOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", flexShrink: 0 }}>
+                <path d="M4 6l4 4 4-4" stroke="rgba(0,0,0,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            {spotlightOpen && (
+              <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 0 }}>
+                {spotlights.map(({ brand, featureId, scoreBand, evidence }, idx) => (
+                  <div key={brand} style={{
+                    padding: "14px 0",
+                    borderBottom: idx < spotlights.length - 1 ? "1px solid rgba(0,0,0,0.05)" : "none",
+                  }}>
+                    <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 5 }}>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: NAVY }}>{brand}</span>
+                      <span style={{
+                        fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const,
+                        color: BAND_COLORS[scoreBand] ?? BLUE,
+                        background: `${BAND_COLORS[scoreBand] ?? BLUE}18`,
+                        borderRadius: 4, padding: "1px 6px", flexShrink: 0,
+                      }}>
+                        {FEATURE_NAMES[featureId] ?? featureId}
+                      </span>
+                    </div>
+                    <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: 0 }}>{evidence}</p>
+                  </div>
+                ))}
               </div>
             )}
           </div>
