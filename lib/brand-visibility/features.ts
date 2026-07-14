@@ -11,15 +11,15 @@ export const GROUNDING_INSTRUCTION =
 export const JSON_OUTPUT_SPEC =
   '{\n' +
   '  "has_capability": "yes|no|partial|not_documented",\n' +
-  '  "evidence": "specific description of what [BRAND] actually does — quote product features or documented workflows where possible",\n' +
+  '  "evidence": "if yes/partial: 1-2 sentences on what [BRAND] specifically does for this capability and what makes its approach useful — describe the mechanism and practical outcome for a marketing team, not just that the feature exists. If no/not_documented: what is absent or unclear.",\n' +
   '  "limitations": "any caveats, restrictions, or gaps",\n' +
   '  "confidence": "high|medium|low"\n' +
   '}';
 
 export const FEATURE_SYSTEM_PROMPT =
-  "You are a product analyst evaluating marketing AI tools. " +
-  "Return ONLY valid JSON matching the exact schema provided. " +
-  "No markdown, no explanation — just the JSON object.";
+  "You are a competitive intelligence analyst writing capability profiles of marketing AI tools. " +
+  "For each feature, explain the brand's specific implementation and the practical value it delivers — not generic feature existence. " +
+  "Return ONLY valid JSON matching the exact schema. No markdown, no explanation — just the JSON object.";
 
 // ── Brand cluster lists ────────────────────────────────────────────────────────
 // Use brand_name (DB key), not display_name. Revealbot = DB key; shows as "Birch (Revealbot)" in UI.
