@@ -144,6 +144,90 @@ const FEATURE_NAMES: Record<string, string> = {
   cost_free_trial:                     "Free trial / self-serve access",
 };
 
+// ── G2-sourced spotlight evidence (fallback when DB has no scored data) ────────
+const G2_EVIDENCE: Record<string, { featureLabel: string; evidence: string }> = {
+  "Backstory.ai": {
+    featureLabel: "Revenue Activity Capture",
+    evidence: "Backstory (formerly People.ai) is a Revenue Answers Platform grounded in 100% of actual sales activity — connecting every signal to accounts and opportunities so reps can query deal context inside Salesforce, Claude, or Copilot without relying on what got manually logged.",
+  },
+  "Tact.ai": {
+    featureLabel: "Mobile CRM Automation",
+    evidence: "Tact's patented Edge AI gives field sellers frictionless mobile access to Salesforce — logging activities, surfacing next-step recommendations, and automating multi-step workflows so Fortune 500 teams at Honeywell and Cisco can work deals without touching a laptop.",
+  },
+  "Avoma": {
+    featureLabel: "AI Meeting Intelligence",
+    evidence: "Avoma records, transcribes, and AI-scores every sales call (9.5/10 on G2 for call recording), then auto-extracts action items and coaching scorecards and syncs them to CRM — eliminating post-call admin for reps entirely.",
+  },
+  "Chorus": {
+    featureLabel: "Conversation Intelligence",
+    evidence: "Chorus captures every call, email, and video meeting with AI sentiment analysis and automatic CRM sync, giving managers rep-by-rep visibility into deal risks and coachable moments without manual logging or post-call data entry.",
+  },
+  "Revenue.io": {
+    featureLabel: "Real-Time Call Guidance",
+    evidence: "Revenue.io surfaces AI-powered guidance on live calls in real time — not in post-call reviews — so reps receive the right play at the exact moment a buying signal or objection appears, while natively logging every interaction in Salesforce automatically.",
+  },
+  "Gong": {
+    featureLabel: "Revenue AI Operating System",
+    evidence: "Gong's Revenue AI OS analyzes 100% of customer conversations to surface deal risk, coaching opportunities, and competitive intelligence — ranked G2's #1 Best Software Product for multiple years, with users citing searchable call archives and real-time deal alerts as its defining advantage.",
+  },
+  "Salesloft": {
+    featureLabel: "AI Sales Engagement",
+    evidence: "Salesloft's cadence engine automates multi-touch sequences across email, phone, and LinkedIn with ML-driven engagement recommendations based on historical buyer behavior — 11,000+ G2 reviews make it the #1 rated sales engagement platform, with teams reporting 20–30% productivity gains.",
+  },
+  "Outreach": {
+    featureLabel: "AI Deal Management",
+    evidence: "Outreach's Kaia AI delivers real-time notes, action items, and competitive battlecards mid-call, while the Deal Agent automatically surfaces AI-recommended CRM field updates — eliminating manual pipeline hygiene so reps stay focused on customer conversations.",
+  },
+  "Clari": {
+    featureLabel: "AI Pipeline Forecasting",
+    evidence: "Clari automatically captures activity from emails and meetings so managers never need to chase reps for CRM updates, with predictive AI scoring deal risk in real time and live forecast management that G2 users consistently rate as the cleanest interface in revenue software.",
+  },
+  "6sense": {
+    featureLabel: "Predictive Account Intelligence",
+    evidence: "6sense's 6AI engine scores accounts by buying stage and purchase intent, surfacing up to 1,000 daily signals across 15+ signal types per seller — so sales teams engage the right accounts at exactly the right moment, with 98% of G2 reviewers rating it 4 or 5 stars.",
+  },
+  "Apollo": {
+    featureLabel: "AI GTM Platform",
+    evidence: "Apollo combines a 210M+ contact database with agentic AI workflows for lead scoring, personalized message generation, and send-time optimization — the first GTM platform to reach 9,000+ G2 reviews, holding #1 rankings across sales intelligence and engagement in the Winter 2026 report.",
+  },
+  "Clay": {
+    featureLabel: "AI Data Enrichment & Outreach",
+    evidence: "Clay's Claygent AI enriches prospects with 300+ attributes across 100+ data sources, then generates hyper-personalized outreach at scale — users report replacing multiple data provider subscriptions and cutting manual research time by 60–70% per campaign.",
+  },
+  "Conversica": {
+    featureLabel: "Autonomous AI Sales Assistant",
+    evidence: "Conversica's AI Assistants engage leads in human-like two-way dialogue with 98% claimed accuracy across email, SMS, and chat — qualifying prospects and booking meetings autonomously while syncing all conversation history to Salesforce, with users reporting 98% reduction in time-to-first-contact.",
+  },
+  "Reply.io": {
+    featureLabel: "AI SDR Agent",
+    evidence: "Reply.io's AI SDR Agent learns your product, sources prospects from a 1B+ verified contact database, and autonomously runs multi-channel sequences across email, LinkedIn, SMS, and WhatsApp — with built-in deliverability infrastructure including email warm-up and DMARC monitoring.",
+  },
+  "Lemlist": {
+    featureLabel: "Personalized Multi-Channel Outreach",
+    evidence: "Lemlist's AI mines job title, industry, and social signals to generate unique intro lines for each prospect at scale, with native ChatGPT/Gemini integration for message personalization and built-in Lemwarm deliverability infrastructure — rated a top cold outreach tool across 1,400+ G2 reviews.",
+  },
+  "ZoomInfo": {
+    featureLabel: "GTM Intelligence Platform",
+    evidence: "ZoomInfo's Pulse Feed surfaces up to 1,000 daily signals per seller across 15+ types — intent, job changes, funding rounds, hiring activity — so reps see exactly which accounts changed and what to do next, with the platform ranked #1 in Sales Intelligence with a perfect G2 satisfaction score of 100.",
+  },
+  "Seamless.ai": {
+    featureLabel: "Real-Time Contact Intelligence",
+    evidence: "Seamless.ai crawls the web in real time to find verified emails and direct dials across 1.7B+ contacts with 98% claimed accuracy, with a Chrome Extension that syncs leads from LinkedIn directly to Salesforce, HubSpot, or Outreach with a single click.",
+  },
+  "Drift": {
+    featureLabel: "Conversational AI & Buying Signals",
+    evidence: "Drift's enterprise Bionic Chatbots engage website visitors in AI-driven conversations powered by company content, while Drift Prospector forecasts buying signals within target accounts by blending direct engagement, third-party intent data, and Salesforce pipeline — converting inbound traffic to qualified pipeline without rep involvement.",
+  },
+  "Mindtickle": {
+    featureLabel: "AI Sales Coaching & Readiness",
+    evidence: "Mindtickle is G2's #1-rated sales onboarding and training platform, using AI to deliver personalized role-play simulations so reps practice high-stakes conversations before they happen — managers review recorded pitches with skill-gap analytics and a 100% G2 satisfaction score backs its coaching depth.",
+  },
+  "Highspot": {
+    featureLabel: "AI Sales Enablement",
+    evidence: "Highspot's patented semantic search surfaces the right content to sellers at the right moment in any deal, while its Deal Agent spots risk and recommends next moves in every active opportunity — AI Role Play lets teams rehearse difficult conversations before they happen.",
+  },
+};
+
 const FEATURE_GROUPS = [
   { label: "Call Intelligence & Coaching", features: ["call_transcription_timestamps", "call_talk_time_analytics", "call_coaching_scorecard", "call_competitor_objection_detection"] },
   { label: "Deal Risk & Pipeline",         features: ["pipeline_forecasting", "deal_risk_detection"] },
@@ -987,6 +1071,8 @@ export default function SalesVisibilityCharts({
               <div style={{ padding: "20px 24px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                 {spotlights.map(([brand, { primary, bonus }], idx) => {
                   const color = BRAND_COLORS[idx % BRAND_COLORS.length];
+                  const g2 = G2_EVIDENCE[brand];
+                  const usingG2 = !primary && !!g2;
                   return (
                   <div key={brand} style={{
                     border: "1px solid rgba(0,0,0,0.08)", borderRadius: 10, padding: "16px 18px",
@@ -996,18 +1082,28 @@ export default function SalesVisibilityCharts({
                       <div style={{ width: 8, height: 8, borderRadius: "50%", background: color, flexShrink: 0 }} />
                       <span style={{ fontSize: 13, fontWeight: 700, color }}>{brand}</span>
                     </div>
-                    {/* Feature name as card heading */}
-                    {primary && (
-                      <p style={{ fontSize: 13, fontWeight: 700, color: NAVY, margin: "0 0 8px", lineHeight: 1.3 }}>
-                        {featureName(primary.featureId)}
-                      </p>
+                    {/* Feature heading — DB feature name or G2 category label */}
+                    {(primary || g2) && (
+                      <div style={{ display: "flex", alignItems: "center", gap: 7, margin: "0 0 8px" }}>
+                        <p style={{ fontSize: 13, fontWeight: 700, color: NAVY, margin: 0, lineHeight: 1.3 }}>
+                          {primary ? featureName(primary.featureId) : g2!.featureLabel}
+                        </p>
+                        {usingG2 && (
+                          <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.38)", background: "rgba(0,0,0,0.06)", borderRadius: 4, padding: "2px 5px", flexShrink: 0 }}>
+                            G2
+                          </span>
+                        )}
+                      </div>
                     )}
-                    {/* Evidence */}
+                    {/* Evidence — DB or G2 fallback */}
                     {primary && (
                       <p style={{ fontSize: 12, color: "#000", lineHeight: 1.6, margin: 0 }}>{primary.evidence}</p>
                     )}
-                    {/* Placeholder for brands with no scored data yet */}
-                    {!primary && !bonus && (
+                    {usingG2 && (
+                      <p style={{ fontSize: 12, color: "#000", lineHeight: 1.6, margin: 0 }}>{g2!.evidence}</p>
+                    )}
+                    {/* Placeholder only when neither DB nor G2 has data */}
+                    {!primary && !g2 && !bonus && (
                       <p style={{ fontSize: 12, color: "rgba(0,0,0,0.32)", fontStyle: "italic", lineHeight: 1.5, margin: 0 }}>
                         Capability data collecting — check back after the next daily run.
                       </p>
