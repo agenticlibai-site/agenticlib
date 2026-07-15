@@ -1452,6 +1452,15 @@ export async function getFeatureScores(): Promise<FeatureScoreRow[]> {
       FROM feature_responses
       WHERE parse_error = false
         AND evidence IS NOT NULL AND evidence != ''
+        AND evidence NOT ILIKE '%not explicitly document%'
+        AND evidence NOT ILIKE '%does not document%'
+        AND evidence NOT ILIKE '%no specific documentation%'
+        AND evidence NOT ILIKE '%without clear documentation%'
+        AND evidence NOT ILIKE '%documentation not available%'
+        AND evidence NOT ILIKE '%not documented%'
+        AND evidence NOT ILIKE '%cannot be confirmed from%'
+        AND evidence NOT ILIKE '%no available information%'
+        AND evidence NOT ILIKE '%does not provide documentation%'
       ORDER BY brand_name, feature_id,
         CASE has_capability WHEN 'yes' THEN 0 WHEN 'partial' THEN 1 ELSE 2 END,
         run_date DESC,
@@ -1543,6 +1552,15 @@ export async function getSalesFeatureScores(): Promise<{
       FROM sales_feature_responses
       WHERE parse_error = false
         AND evidence IS NOT NULL AND evidence != ''
+        AND evidence NOT ILIKE '%not explicitly document%'
+        AND evidence NOT ILIKE '%does not document%'
+        AND evidence NOT ILIKE '%no specific documentation%'
+        AND evidence NOT ILIKE '%without clear documentation%'
+        AND evidence NOT ILIKE '%documentation not available%'
+        AND evidence NOT ILIKE '%not documented%'
+        AND evidence NOT ILIKE '%cannot be confirmed from%'
+        AND evidence NOT ILIKE '%no available information%'
+        AND evidence NOT ILIKE '%does not provide documentation%'
       ORDER BY brand_name, feature_id,
         CASE has_capability WHEN 'yes' THEN 0 WHEN 'partial' THEN 1 ELSE 2 END,
         run_date DESC,
