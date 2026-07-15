@@ -111,6 +111,10 @@ const BAND_COLORS: Record<string, string> = {
   weak:    "#dc2626",
 };
 
+function featureName(id: string): string {
+  return FEATURE_NAMES[id] ?? id.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+}
+
 const FEATURE_NAMES: Record<string, string> = {
   call_transcription_timestamps:       "Call transcription & timestamps",
   call_talk_time_analytics:            "Talk-time analytics",
@@ -738,7 +742,7 @@ export default function SalesVisibilityCharts({
                     {groupFeatures.map(({ featureId, rows }) => (
                       <div key={featureId} style={{ marginBottom: 18 }}>
                         <p style={{ fontSize: 12, fontWeight: 600, color: NAVY, marginBottom: 10 }}>
-                          {FEATURE_NAMES[featureId] ?? featureId}
+                          {featureName(featureId)}
                         </p>
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                           {rows.map(r => (
@@ -912,11 +916,6 @@ export default function SalesVisibilityCharts({
           "#818CF8", "#34D399",
         ];
 
-        const SALES_CORE = new Set([
-          "call_talk_time_analytics", "call_coaching_scorecard", "call_competitor_objection_detection",
-          "outreach_sequencing", "ai_personalisation", "crm_data_accuracy", "followup_drafting",
-          "tech_crm_integration", "tech_workflow_automation",
-        ]);
         const BONUS = new Set(["rai_data_privacy", "rai_explainability"]);
 
         type SpotEntry = { featureId: string; evidence: string } | null;
@@ -925,21 +924,28 @@ export default function SalesVisibilityCharts({
           if (!brandMap.has(row.brand_name)) brandMap.set(row.brand_name, { primary: null, bonus: null });
         }
 
-        const sorted = [...featureScores]
-          .filter(r => !HIDDEN_FEATURE_IDS.has(r.feature_id))
+        // Primary: highest-scoring non-hidden, non-bonus feature with real evidence
+        const primarySorted = [...featureScores]
+          .filter(r => !HIDDEN_FEATURE_IDS.has(r.feature_id) && !BONUS.has(r.feature_id))
           .sort((a, b) => b.score - a.score);
 
-        for (const row of sorted) {
+        for (const row of primarySorted) {
           const entry = brandMap.get(row.brand_name)!;
+          if (entry.primary) continue;
           const ev = cleanEvidence(row.evidence);
-          if (!ev) continue;
-          if (SALES_CORE.has(row.feature_id) && !entry.primary) {
-            entry.primary = { featureId: row.feature_id, evidence: ev };
-          } else if (BONUS.has(row.feature_id) && !entry.bonus) {
-            entry.bonus = { featureId: row.feature_id, evidence: ev };
-          } else if (!SALES_CORE.has(row.feature_id) && !BONUS.has(row.feature_id) && !entry.primary) {
-            entry.primary = { featureId: row.feature_id, evidence: ev };
-          }
+          if (ev) entry.primary = { featureId: row.feature_id, evidence: ev };
+        }
+
+        // Bonus: best BONUS feature with real evidence
+        const bonusSorted = [...featureScores]
+          .filter(r => BONUS.has(r.feature_id))
+          .sort((a, b) => b.score - a.score);
+
+        for (const row of bonusSorted) {
+          const entry = brandMap.get(row.brand_name)!;
+          if (entry.bonus) continue;
+          const ev = cleanEvidence(row.evidence);
+          if (ev) entry.bonus = { featureId: row.feature_id, evidence: ev };
         }
 
         const spotlights = [...brandMap.entries()]
@@ -982,19 +988,30 @@ export default function SalesVisibilityCharts({
                     {/* Feature name as card heading */}
                     {primary && (
                       <p style={{ fontSize: 13, fontWeight: 700, color: NAVY, margin: "0 0 8px", lineHeight: 1.3 }}>
-                        {FEATURE_NAMES[primary.featureId] ?? primary.featureId}
+                        {featureName(primary.featureId)}
                       </p>
                     )}
                     {/* Evidence */}
                     {primary && (
                       <p style={{ fontSize: 12, color: "#000", lineHeight: 1.6, margin: 0 }}>{primary.evidence}</p>
                     )}
-                    {/* Bonus compliance note */}
+                    {/* Bonus compliance callout */}
                     {bonus && (
-                      <p style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", lineHeight: 1.45, margin: "10px 0 0" }}>
-                        <span style={{ fontWeight: 600 }}>{FEATURE_NAMES[bonus.featureId] ?? bonus.featureId}:</span>{" "}
-                        {(() => { const cut = bonus.evidence.indexOf('. '); return cut > 0 ? bonus.evidence.slice(0, cut + 1) : bonus.evidence; })()}
-                      </p>
+                      <div style={{
+                        background: "rgba(0,0,0,0.025)",
+                        border: "1px solid rgba(0,0,0,0.08)",
+                        borderLeft: "3px solid rgba(0,0,0,0.13)",
+                        borderRadius: "0 6px 6px 0",
+                        padding: "8px 12px",
+                        marginTop: 12,
+                      }}>
+                        <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.38)", margin: "0 0 4px" }}>
+                          {featureName(bonus.featureId)}
+                        </p>
+                        <p style={{ fontSize: 11, color: "rgba(0,0,0,0.55)", lineHeight: 1.5, margin: 0 }}>
+                          {(() => { const cut = bonus.evidence.indexOf('. '); return cut > 0 ? bonus.evidence.slice(0, cut + 1) : bonus.evidence; })()}
+                        </p>
+                      </div>
                     )}
                   </div>
                   );
