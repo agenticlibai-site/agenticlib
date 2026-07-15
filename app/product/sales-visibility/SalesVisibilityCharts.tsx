@@ -364,7 +364,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
       <h3 style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 4, letterSpacing: "-0.01em" }}>
         {cluster.label}
       </h3>
-      <p style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", marginBottom: 16 }}>Share of voice · last 7 days</p>
+      <p style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", marginBottom: 16 }}>Share of voice · last 14 days</p>
       <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
         <div style={{ flexShrink: 0 }}>
           <PieChart width={150} height={150}>
@@ -618,7 +618,7 @@ export default function SalesVisibilityCharts({
                   }}
                 >
                   <h4 style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>{label}</h4>
-                  <p style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", marginBottom: 14 }}>7-day mentions · both models</p>
+                  <p style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", marginBottom: 14 }}>14-day mentions · both models</p>
                   <ResponsiveContainer width="100%" height={220}>
                     <LineChart data={rows} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,0,0,0.055)" vertical={false} />
