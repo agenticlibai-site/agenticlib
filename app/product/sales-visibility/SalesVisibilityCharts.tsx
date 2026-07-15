@@ -965,7 +965,7 @@ export default function SalesVisibilityCharts({
                                 </span>
                               </div>
                               <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 5, paddingLeft: 120 }}>
-                                {brand.top_descriptors.slice(0, 4).map((d, i) => {
+                                {[...new Set(brand.top_descriptors)].slice(0, 4).map((d, i) => {
                                   const unique = globalDescFreq.get(d) === 1;
                                   return (
                                     <span key={i} style={{
