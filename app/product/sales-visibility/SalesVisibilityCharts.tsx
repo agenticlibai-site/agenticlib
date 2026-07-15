@@ -239,13 +239,14 @@ const FEATURE_GROUPS = [
   { label: "Cost Efficiency",              features: ["cost_pricing_transparency", "cost_free_trial"] },
 ];
 
-// Hidden pending P3 parsing fixes + broader brand coverage.
-// These features show ≤4 of 20 brands or are flat at ceiling — not a real finding yet.
+// Hidden features: either flat-ceiling (call_transcription_timestamps), not collected
+// (sales_content_delivery, tech_instruction_following), or genuinely not_documented for
+// all brands in the cluster (crm_data_accuracy).
+// pipeline_forecasting, deal_risk_detection, crm_auto_update: reinstated — confirmed
+// valid scores for all brands in their cluster (2/2 for pipeline, 2/2 for CRM).
 const HIDDEN_FEATURE_IDS = new Set([
   "call_transcription_timestamps",
-  "pipeline_forecasting",
-  "deal_risk_detection",
-  "crm_auto_update",
+  "crm_data_accuracy",
   "sales_content_delivery",
   "tech_instruction_following",
 ]);
