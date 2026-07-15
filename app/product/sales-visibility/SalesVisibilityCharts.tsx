@@ -743,12 +743,12 @@ export default function SalesVisibilityCharts({
                 if (groupFeatures.length === 0) return null;
                 return (
                   <div key={group.label} style={{ marginBottom: 28 }}>
-                    <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: BLUE, marginBottom: 14 }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: BLUE, marginBottom: 14 }}>
                       {group.label}
                     </p>
                     {groupFeatures.map(({ featureId, rows }) => (
                       <div key={featureId} style={{ marginBottom: 18 }}>
-                        <p style={{ fontSize: 12, fontWeight: 600, color: NAVY, marginBottom: 10 }}>
+                        <p style={{ fontSize: 14, fontWeight: 600, color: NAVY, marginBottom: 10 }}>
                           {featureName(featureId)}
                         </p>
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -767,7 +767,7 @@ export default function SalesVisibilityCharts({
                                 const ev = cleanEvidence(r.evidence);
                                 const text = ev ?? BAND_FALLBACK[r.score_band];
                                 return text ? (
-                                  <p style={{ paddingLeft: 140, fontSize: 11, color: ev ? "#000" : "rgba(0,0,0,0.42)", lineHeight: 1.4, margin: "3px 0 0", fontStyle: ev ? "normal" : "italic" }}>{text}</p>
+                                  <p style={{ paddingLeft: 140, fontSize: 13, color: ev ? "#000" : "rgba(0,0,0,0.42)", lineHeight: 1.5, margin: "4px 0 0", fontStyle: ev ? "normal" : "italic" }}>{text}</p>
                                 ) : null;
                               })()}
                             </div>
@@ -854,7 +854,7 @@ export default function SalesVisibilityCharts({
                   if (brands.length === 0) return null;
                   return (
                     <div key={cluster.tag} style={{ marginBottom: 28 }}>
-                      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: BLUE, marginBottom: 14 }}>
+                      <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: BLUE, marginBottom: 14 }}>
                         {cluster.label}
                       </p>
                       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
@@ -931,8 +931,9 @@ export default function SalesVisibilityCharts({
 
         type SpotEntry = { featureId: string; evidence: string } | null;
         const brandMap = new Map<string, { primary: SpotEntry; bonus: SpotEntry }>();
-        for (const row of featureScores) {
-          if (!brandMap.has(row.brand_name)) brandMap.set(row.brand_name, { primary: null, bonus: null });
+        // Seed every locked brand so brands with no feature scores still get a card
+        for (const brand of LOCKED_SALES_BRANDS) {
+          brandMap.set(brand, { primary: null, bonus: null });
         }
 
         // Primary: highest-scoring non-hidden, non-bonus feature with real evidence
@@ -960,7 +961,6 @@ export default function SalesVisibilityCharts({
         }
 
         const spotlights = [...brandMap.entries()]
-          .filter(([, v]) => v.primary || v.bonus)
           .sort(([a], [b]) => a.localeCompare(b));
 
         if (spotlights.length === 0) return null;
@@ -1005,6 +1005,12 @@ export default function SalesVisibilityCharts({
                     {/* Evidence */}
                     {primary && (
                       <p style={{ fontSize: 12, color: "#000", lineHeight: 1.6, margin: 0 }}>{primary.evidence}</p>
+                    )}
+                    {/* Placeholder for brands with no scored data yet */}
+                    {!primary && !bonus && (
+                      <p style={{ fontSize: 12, color: "rgba(0,0,0,0.32)", fontStyle: "italic", lineHeight: 1.5, margin: 0 }}>
+                        Capability data collecting — check back after the next daily run.
+                      </p>
                     )}
                     {/* Bonus compliance callout */}
                     {bonus && (
