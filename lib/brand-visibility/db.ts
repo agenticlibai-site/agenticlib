@@ -1318,7 +1318,7 @@ export async function getSalesDailySummary(days = 7): Promise<
   const result = await sql`
     SELECT date::text AS date, brand, model, mention_count, avg_position
     FROM sales_daily_summary
-    WHERE date >= ${cutoff}::date
+    WHERE date >= GREATEST(${cutoff}::date, '2026-07-06'::date)
       AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
     ORDER BY date ASC, mention_count DESC
   `;
