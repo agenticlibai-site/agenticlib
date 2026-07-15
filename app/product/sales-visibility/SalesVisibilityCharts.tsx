@@ -111,6 +111,13 @@ const BAND_COLORS: Record<string, string> = {
   weak:    "#dc2626",
 };
 
+const BAND_FALLBACK: Record<string, string> = {
+  strong:  "Strong capability confirmed — the platform demonstrates this feature comprehensively across assessed dimensions.",
+  present: "Capability confirmed and present in the core product offering.",
+  partial: "Partial capability detected — the platform shows some support for this feature but depth, differentiation, or documentation may be limited.",
+  weak:    "Limited capability based on available assessment information — core functionality may be absent or underdeveloped.",
+};
+
 function featureName(id: string): string {
   return FEATURE_NAMES[id] ?? id.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
 }
@@ -756,9 +763,13 @@ export default function SalesVisibilityCharts({
                                   {r.score}
                                 </span>
                               </div>
-                              {(() => { const ev = cleanEvidence(r.evidence); return ev ? (
-                                <p style={{ paddingLeft: 140, fontSize: 11, color: "#000", lineHeight: 1.4, margin: "3px 0 0" }}>{ev}</p>
-                              ) : null; })()}
+                              {(() => {
+                                const ev = cleanEvidence(r.evidence);
+                                const text = ev ?? BAND_FALLBACK[r.score_band];
+                                return text ? (
+                                  <p style={{ paddingLeft: 140, fontSize: 11, color: ev ? "#000" : "rgba(0,0,0,0.42)", lineHeight: 1.4, margin: "3px 0 0", fontStyle: ev ? "normal" : "italic" }}>{text}</p>
+                                ) : null;
+                              })()}
                             </div>
                           ))}
                         </div>
