@@ -13,7 +13,7 @@ async function getData() {
   try {
     await initBrandVisibilityDB();
     const [dailySummary, weeklySummary, llmVisibility, brandPositions, sovData, roiData, perceptionGaps, featureScores, sentimentData] = await Promise.all([
-      getLockedDailySummary(9),
+      getLockedDailySummary(14),
       getWeeklySummary(),
       getLLMVisibility(),
       getLockedBrandPositions(),

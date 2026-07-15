@@ -1265,7 +1265,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
                     </div>
                   ))}
                   <span style={{ fontSize: 11, color: "rgba(0,0,0,0.35)", marginLeft: "auto" }}>
-                    Both models · last 7 days · updates daily
+                    Both models · last 14 days · updates daily
                   </span>
                 </div>
               </div>

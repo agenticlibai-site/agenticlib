@@ -19,7 +19,7 @@ export const metadata = {
 
 export default async function SalesVisibilityPage() {
   const [dailySummary, weeklySummary, llmVisibility, sovData, clusterPositions, featureScores, sentimentData] = await Promise.all([
-    getSalesDailySummary(7),
+    getSalesDailySummary(14),
     getSalesWeeklySummary(),
     getSalesLLMVisibility(),
     getSalesSOVData(),
