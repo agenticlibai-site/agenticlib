@@ -65,6 +65,9 @@ export default async function SalesVisibilityPage() {
         <p style={{ fontSize: 11, color: "rgba(0,0,0,0.4)", marginTop: 32, textAlign: "center" }}>
           Based on {23} daily prompts across Claude Haiku and GPT-4o-mini · Sales AI agent category · collecting since July 2026
         </p>
+        <p style={{ fontSize: 11, color: "rgba(0,0,0,0.35)", marginTop: 10, textAlign: "center", maxWidth: 680, margin: "10px auto 0" }}>
+          Scores require agreement between both AI models. When models disagree, we take the more conservative rating — so a lower score sometimes means models disagree, not that documentation is absent. Check the evidence text for the fuller picture.
+        </p>
 
       </div>
     </main>
