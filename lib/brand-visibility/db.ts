@@ -1709,10 +1709,10 @@ export async function getMarketingSentimentData(): Promise<{
       GROUP BY brand_name, bucket_tag
     ),
     desc_flat AS (
-      SELECT brand_name, bucket_tag, d, COUNT(*) AS cnt
+      SELECT brand_name, bucket_tag, LOWER(TRIM(d)) AS d, COUNT(*) AS cnt
       FROM base, LATERAL UNNEST(descriptors) AS d
       WHERE descriptors IS NOT NULL
-      GROUP BY brand_name, bucket_tag, d
+      GROUP BY brand_name, bucket_tag, LOWER(TRIM(d))
     ),
     ranked AS (
       SELECT *, ROW_NUMBER() OVER (PARTITION BY brand_name, bucket_tag ORDER BY cnt DESC) AS rn
@@ -1792,10 +1792,10 @@ export async function getSalesSentimentData(): Promise<{
       GROUP BY brand_name, bucket_tag
     ),
     desc_flat AS (
-      SELECT brand_name, bucket_tag, d, COUNT(*) AS cnt
+      SELECT brand_name, bucket_tag, LOWER(TRIM(d)) AS d, COUNT(*) AS cnt
       FROM base, LATERAL UNNEST(descriptors) AS d
       WHERE descriptors IS NOT NULL
-      GROUP BY brand_name, bucket_tag, d
+      GROUP BY brand_name, bucket_tag, LOWER(TRIM(d))
     ),
     ranked AS (
       SELECT *, ROW_NUMBER() OVER (PARTITION BY brand_name, bucket_tag ORDER BY cnt DESC) AS rn
