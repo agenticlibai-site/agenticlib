@@ -905,16 +905,21 @@ export default function SalesVisibilityCharts({
 
       {/* ── Row 9: Brand Capability Spotlight ────────────────────────────────── */}
       {(() => {
-        // Sales-core features — shown as the primary capability for each brand.
+        const BRAND_COLORS = [
+          "#6B4FBB", "#E8447A", "#2563EB", "#059669", "#DC2626", "#D97706",
+          "#0891B2", "#C026D3", "#EA580C", "#0D9488", "#7C3AED", "#65A30D",
+          "#0369A1", "#92400E", "#BE185D", "#F43F5E", "#84CC16", "#FB923C",
+          "#818CF8", "#34D399",
+        ];
+
         const SALES_CORE = new Set([
           "call_talk_time_analytics", "call_coaching_scorecard", "call_competitor_objection_detection",
           "outreach_sequencing", "ai_personalisation", "crm_data_accuracy", "followup_drafting",
           "tech_crm_integration", "tech_workflow_automation",
         ]);
-        // Bonus features — shown as a secondary line when available.
         const BONUS = new Set(["rai_data_privacy", "rai_explainability"]);
 
-        type SpotEntry = { featureId: string; scoreBand: string; evidence: string } | null;
+        type SpotEntry = { featureId: string; evidence: string } | null;
         const brandMap = new Map<string, { primary: SpotEntry; bonus: SpotEntry }>();
         for (const row of featureScores) {
           if (!brandMap.has(row.brand_name)) brandMap.set(row.brand_name, { primary: null, bonus: null });
@@ -929,12 +934,11 @@ export default function SalesVisibilityCharts({
           const ev = cleanEvidence(row.evidence);
           if (!ev) continue;
           if (SALES_CORE.has(row.feature_id) && !entry.primary) {
-            entry.primary = { featureId: row.feature_id, scoreBand: row.score_band, evidence: ev };
+            entry.primary = { featureId: row.feature_id, evidence: ev };
           } else if (BONUS.has(row.feature_id) && !entry.bonus) {
-            entry.bonus = { featureId: row.feature_id, scoreBand: row.score_band, evidence: ev };
+            entry.bonus = { featureId: row.feature_id, evidence: ev };
           } else if (!SALES_CORE.has(row.feature_id) && !BONUS.has(row.feature_id) && !entry.primary) {
-            // last-resort fallback so every brand with any data appears
-            entry.primary = { featureId: row.feature_id, scoreBand: row.score_band, evidence: ev };
+            entry.primary = { featureId: row.feature_id, evidence: ev };
           }
         }
 
@@ -963,39 +967,38 @@ export default function SalesVisibilityCharts({
               </svg>
             </button>
             {spotlightOpen && (
-              <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column" }}>
-                {spotlights.map(([brand, { primary, bonus }], idx) => (
+              <div style={{ padding: "20px 24px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                {spotlights.map(([brand, { primary, bonus }], idx) => {
+                  const color = BRAND_COLORS[idx % BRAND_COLORS.length];
+                  return (
                   <div key={brand} style={{
-                    padding: "14px 0",
-                    borderBottom: idx < spotlights.length - 1 ? "1px solid rgba(0,0,0,0.05)" : "none",
+                    border: "1px solid rgba(0,0,0,0.08)", borderRadius: 10, padding: "16px 18px",
                   }}>
-                    {/* Brand name + sales feature badge */}
-                    <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5, flexWrap: "wrap" as const }}>
-                      <span style={{ fontSize: 13, fontWeight: 700, color: NAVY }}>{brand}</span>
-                      {primary && (
-                        <span style={{
-                          fontSize: 10, fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" as const,
-                          color: BAND_COLORS[primary.scoreBand] ?? BLUE,
-                          background: `${BAND_COLORS[primary.scoreBand] ?? BLUE}18`,
-                          borderRadius: 4, padding: "2px 7px",
-                        }}>
-                          {FEATURE_NAMES[primary.featureId] ?? primary.featureId}
-                        </span>
-                      )}
+                    {/* Coloured dot + brand name */}
+                    <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 10 }}>
+                      <div style={{ width: 8, height: 8, borderRadius: "50%", background: color, flexShrink: 0 }} />
+                      <span style={{ fontSize: 13, fontWeight: 700, color }}>{brand}</span>
                     </div>
-                    {/* Primary sales capability evidence */}
+                    {/* Feature name as card heading */}
                     {primary && (
-                      <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>{primary.evidence}</p>
+                      <p style={{ fontSize: 13, fontWeight: 700, color: NAVY, margin: "0 0 8px", lineHeight: 1.3 }}>
+                        {FEATURE_NAMES[primary.featureId] ?? primary.featureId}
+                      </p>
                     )}
-                    {/* Bonus: compliance/transparency — secondary grey line */}
+                    {/* Evidence */}
+                    {primary && (
+                      <p style={{ fontSize: 12, color: "#000", lineHeight: 1.6, margin: 0 }}>{primary.evidence}</p>
+                    )}
+                    {/* Bonus compliance note */}
                     {bonus && (
-                      <p style={{ fontSize: 11, color: "rgba(0,0,0,0.5)", lineHeight: 1.45, margin: 0 }}>
+                      <p style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", lineHeight: 1.45, margin: "10px 0 0" }}>
                         <span style={{ fontWeight: 600 }}>{FEATURE_NAMES[bonus.featureId] ?? bonus.featureId}:</span>{" "}
                         {(() => { const cut = bonus.evidence.indexOf('. '); return cut > 0 ? bonus.evidence.slice(0, cut + 1) : bonus.evidence; })()}
                       </p>
                     )}
                   </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
