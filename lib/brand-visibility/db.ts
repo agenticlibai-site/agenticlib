@@ -1763,7 +1763,7 @@ export async function getSalesSentimentData(): Promise<{
     FROM (
       SELECT run_date
       FROM sales_sentiment_responses
-      WHERE run_date >= CURRENT_DATE - 7 AND NOT parse_error
+      WHERE run_date >= CURRENT_DATE - 14 AND NOT parse_error
       GROUP BY run_date
       HAVING COUNT(DISTINCT model) >= 2
     ) d
@@ -1780,7 +1780,7 @@ export async function getSalesSentimentData(): Promise<{
     WITH base AS (
       SELECT brand_name, bucket_tag, sentiment, descriptors
       FROM sales_sentiment_responses
-      WHERE run_date >= CURRENT_DATE - 7 AND NOT parse_error
+      WHERE run_date >= CURRENT_DATE - 14 AND NOT parse_error
     ),
     sentiments AS (
       SELECT brand_name, bucket_tag,
