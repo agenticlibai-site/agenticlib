@@ -1463,8 +1463,8 @@ export async function getFeatureScores(): Promise<FeatureScoreRow[]> {
         AND evidence NOT ILIKE '%does not provide documentation%'
       ORDER BY brand_name, feature_id,
         CASE has_capability WHEN 'yes' THEN 0 WHEN 'partial' THEN 1 ELSE 2 END,
-        run_date DESC,
         grounded DESC,
+        run_date DESC,
         CASE confidence WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END,
         model
     )
@@ -1563,8 +1563,8 @@ export async function getSalesFeatureScores(): Promise<{
         AND evidence NOT ILIKE '%does not provide documentation%'
       ORDER BY brand_name, feature_id,
         CASE has_capability WHEN 'yes' THEN 0 WHEN 'partial' THEN 1 ELSE 2 END,
-        run_date DESC,
         grounded DESC,
+        run_date DESC,
         CASE confidence WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END,
         model
     )
