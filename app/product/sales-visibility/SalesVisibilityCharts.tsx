@@ -1317,6 +1317,23 @@ export default function SalesVisibilityCharts({
             yourData: "Deal risk detection 80, Pipeline forecasting 60 (both real, non-ceiling scores). 9 discovery mentions.",
             takeaway: "This is the cheapest, fastest-to-replicate lever of the four — pairing a small number of sharp, named-competitor pages with steady content, rather than trying to out-publish everyone. It's built to win specific comparison moments (\"6sense vs. Demandbase\") rather than to maximise overall mention count.",
           },
+          {
+            brand: "Backstory.ai",
+            tactic: "The Other Side of the Question: Why It's Invisible",
+            whyLabel: "Why it's invisible:",
+            whyVisible: "A real, funded competitor in your exact category (CRM auto-update from sales calls) — with none of the visibility tactics above in play, and confirmed through three independent methods to be functionally unfindable by AI models.",
+            how: "Backstory.ai publishes modestly, runs no comparison content, has essentially no community presence, and has spent its recent marketing effort on a rebrand rather than category-specific content.",
+            points: [
+              { text: "Publishes lightly — about 1-2 posts a month, all dated within the last 6 months (no older archive visible). Content leans toward broad \"pipeline visibility\" thought leadership, not specific \"how we auto-update Salesforce\" guides.", cite: "backstory.ai/blog" },
+              { text: "Zero Reddit or forum presence found. Every search — r/sales, r/RevOps, r/salesforce, broad Reddit search — returned nothing relevant." },
+              { text: "The one real PR moment was a rebrand, not a product story. Renamed from People.ai to Backstory in April 2026. No funding news since a 2021 Series D.", cite: "Rebrand announcement" },
+              { text: "Publishes no \"Backstory vs. X\" pages of its own — every comparison URL 404s. Its posture toward Gong is co-existence, not competition: it's an official Gong Collective integration partner, processing Gong's call transcripts rather than competing with Gong directly.", cite: "Gong Collective listing" },
+              { text: "Real customers, real product — NVIDIA, OpenAI, Red Hat, and Zscaler are named on the customer page, and blog content is current as of last month. This isn't a dead company — it's a real, actively maintained product that simply isn't showing up.", cite: "backstory.ai/customers" },
+              { text: "No public pricing, no public changelog — /pricing, /changelog, and /release-notes all 404, and the newsroom page exists but is empty. Marketing effort has gone into the site's surface, not into ongoing documentation." },
+            ],
+            yourData: "0 discovery mentions across 179 tracked prompts over 6 days, despite prompts describing this exact category in buyer language (\"update CRM records after sales calls,\" \"post-call admin,\" \"Salesforce/HubSpot data entry\"). A second, independent test — feature-scoring prompts naming Backstory.ai directly, with web search enabled — returned not_documented on every run. Sentiment data agrees: \"unable to verify current product offerings.\"",
+            takeaway: "Three separate methods, one conclusion — this is a real, well-funded, actively-used competitor in your exact category that AI models currently cannot find. It's the clearest evidence in this report that having a real product and real customers isn't enough on its own. None of the other four brands' tactics (volume, targeted comparisons, acquisition equity, or aggressive confrontation) are present here at all — which is likely a large part of why it's invisible.",
+          },
         ];
 
         return (
@@ -1349,7 +1366,7 @@ export default function SalesVisibilityCharts({
                     </p>
 
                     <p style={{ fontSize: 12, color: "#000", lineHeight: 1.6, margin: "0 0 10px" }}>
-                      <span style={{ fontWeight: 700 }}>Why it's visible: </span>{pb.whyVisible}
+                      <span style={{ fontWeight: 700 }}>{"whyLabel" in pb ? pb.whyLabel : "Why it's visible:"} </span>{pb.whyVisible}
                     </p>
 
                     <p style={{ fontSize: 12, color: "#000", lineHeight: 1.6, margin: "0 0 10px" }}>
