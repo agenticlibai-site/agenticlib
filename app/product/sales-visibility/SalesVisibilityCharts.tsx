@@ -523,10 +523,11 @@ export default function SalesVisibilityCharts({
   const featureScores = featureScoresRaw.filter(r => r.brand_name !== "Drift");
   const sentimentData = { ...sentimentDataRaw, rows: sentimentDataRaw.rows.filter(r => r.brand_name !== "Drift") };
   const hasReal = dailySummary.length > 0;
-  const [featureOpen,    setFeatureOpen]    = useState(false);
-  const [sentimentOpen,  setSentimentOpen]  = useState(false);
-  const [spotlightOpen,  setSpotlightOpen]  = useState(true);
-  const [visibilityOpen, setVisibilityOpen] = useState(true);
+  const [featureOpen,       setFeatureOpen]       = useState(false);
+  const [sentimentOpen,     setSentimentOpen]     = useState(false);
+  const [spotlightOpen,     setSpotlightOpen]     = useState(true);
+  const [visibilityOpen,    setVisibilityOpen]    = useState(true);
+  const [improvementsOpen,  setImprovementsOpen]  = useState(true);
 
   // ── Build chart rows — filter to locked brands only ────────────────────────
   const dateSet = new Set<string>();
@@ -1417,14 +1418,76 @@ export default function SalesVisibilityCharts({
         );
       })()}
 
-      {/* Product Feature Improvement Opportunities for Lamigo — content pending */}
-      <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
-        <div style={{ padding: "16px 24px" }}>
-          <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
-            Product Feature Improvement Opportunities for Lamigo
-          </h3>
-        </div>
-      </div>
+      {/* Product Feature Improvement Opportunities for Lamigo */}
+      {(() => {
+        const IMPROVEMENTS = [
+          {
+            title: "Stakeholder change detection",
+            current: "Lamigo tracks champions and technical evaluators per deal, and already surfaces new stakeholders during pre-call prep (e.g. flagging \"Lucas Ferretti, VP Eng, joining for the first time\").",
+            improvement: "Turn this into a standalone, proactive alert — not just something surfaced before a call, but a real-time notification the moment a new stakeholder appears in a thread or CC line, with a short profile (\"new VP Eng joined, ex-Datadog, likely cares about integrations\"). Right now this only shows up as call-prep context; making it its own alert extends \"catches what you'd miss\" beyond scheduled calls into ongoing deal activity.",
+          },
+          {
+            title: "Cross-deal pattern learning",
+            current: "Lamigo reasons per-deal — flagging Brightwave as at-risk based on that deal's own signals (no reply in 4 days, CFO disengaged).",
+            improvement: "Layer in reasoning across deals, using closed-deal history as a reference point — e.g. \"deals that go quiet after a competitive breakdown is sent have historically slipped 40% more often.\" This builds directly on the memory system already in development and turns single-deal alerts into predictions backed by real pattern data.",
+          },
+          {
+            title: "Pre-send message risk check",
+            current: "Lamigo drafts follow-up emails in the rep's own voice and tracks every commitment made in a deal.",
+            improvement: "Add a quick check before a drafted message goes out — flag tone mismatches, over-promising language, or a commitment that was made earlier but isn't reflected in the draft. Since commitment tracking already exists, this is a small addition that cross-references what's already being tracked against what's about to be sent, reducing the risk of a rep sending something inconsistent with earlier promises.",
+          },
+        ];
+
+        return (
+          <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
+            <button
+              onClick={() => setImprovementsOpen(o => !o)}
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                width: "100%", padding: "16px 24px",
+                background: "none", border: "none", cursor: "pointer",
+                borderBottom: improvementsOpen ? "1px solid rgba(0,0,0,0.07)" : "none",
+                fontFamily: "inherit",
+              }}
+            >
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
+                Product Feature Improvement Opportunities for Lamigo
+              </h3>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform: improvementsOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", flexShrink: 0 }}>
+                <path d="M4 6l4 4 4-4" stroke="rgba(0,0,0,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            {improvementsOpen && (
+              <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
+                {IMPROVEMENTS.map((item, i) => (
+                  <div key={i} style={{ border: "1px solid rgba(0,0,0,0.08)", borderRadius: 10, padding: "18px 20px" }}>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: NAVY, margin: "0 0 12px", lineHeight: 1.3 }}>
+                      {item.title}
+                    </p>
+                    <p style={{ fontSize: 12, color: "#000", lineHeight: 1.6, margin: "0 0 10px" }}>
+                      <span style={{ fontWeight: 700 }}>Currently: </span>{item.current}
+                    </p>
+                    <div style={{
+                      background: "rgba(37,99,235,0.04)",
+                      border: "1px solid rgba(37,99,235,0.12)",
+                      borderLeft: "3px solid rgba(37,99,235,0.35)",
+                      borderRadius: "0 6px 6px 0",
+                      padding: "8px 12px",
+                    }}>
+                      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "rgba(37,99,235,0.55)", margin: "0 0 4px" }}>
+                        Improvement
+                      </p>
+                      <p style={{ fontSize: 11, color: "rgba(0,0,0,0.6)", lineHeight: 1.55, margin: 0 }}>
+                        {item.improvement}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
     </div>
   );
