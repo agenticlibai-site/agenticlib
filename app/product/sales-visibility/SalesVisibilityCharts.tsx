@@ -28,13 +28,32 @@ function fmtDate(d: string) {
   });
 }
 
-// ── Locked brand list (20 brands — mirrors locked_sales_agents table) ─────────
+// ── Locked brand list (19 brands — mirrors locked_sales_agents table, minus
+// Drift). Clari and Chorus are tracked and charted as fully separate rows —
+// only their display label is annotated with the parent company that now owns
+// them (see SUB_BRAND_LABEL below); mentions, positions, SOV, and scores are
+// never merged. Drift is excluded entirely: Salesloft/Clari sunset it in
+// March 2026 (no new customers, no successor product under the Drift name),
+// so it's no longer a live product worth reporting on.
 const LOCKED_SALES_BRANDS = new Set([
   "Chorus", "Outreach", "Gong", "Salesloft", "Clari",
-  "Conversica", "Revenue.io", "Apollo", "Drift", "ZoomInfo",
+  "Conversica", "Revenue.io", "Apollo", "ZoomInfo",
   "Lemlist", "Clay", "Reply.io", "Seamless.ai", "Avoma",
   "Backstory.ai", "6sense", "Mindtickle", "Highspot", "Tact.ai",
 ]);
+
+// ── Sub-brands now owned by a parent company post-acquisition/merger ──────────
+// Clari → Salesloft (merged Dec 2025). Chorus → ZoomInfo (acquired 2021,
+// operates as "ZoomInfo Chorus"). Label-only: each brand still gets its own
+// row/line/slice everywhere in the report.
+const SUB_BRAND_LABEL: Record<string, string> = {
+  "Clari": "Salesloft (Clari)",
+  "Chorus": "ZoomInfo (Chorus)",
+};
+
+function displayBrand(brand: string): string {
+  return SUB_BRAND_LABEL[brand] ?? brand;
+}
 
 // ── Primary use case per brand ────────────────────────────────────────────────
 const BRAND_USE_CASE: Record<string, string> = {
@@ -55,7 +74,6 @@ const BRAND_USE_CASE: Record<string, string> = {
   "Reply.io":     "sales-outreach",
   "Seamless.ai":  "sales-outreach",
   "ZoomInfo":     "sales-outreach",
-  "Drift":        "sales-enablement",
   "Mindtickle":   "sales-enablement",
   "Highspot":     "sales-enablement",
 };
@@ -144,6 +162,105 @@ const FEATURE_NAMES: Record<string, string> = {
   cost_free_trial:                     "Free trial / self-serve access",
 };
 
+const FEATURE_DESCRIPTIONS: Record<string, string> = {
+  call_transcription_timestamps:       "Converts call audio to searchable text with speaker-labelled timestamps so any moment can be found and reviewed.",
+  call_talk_time_analytics:            "Measures rep-vs-prospect talk ratio, filler word frequency, question rate, and longest monologue per call and per rep.",
+  call_coaching_scorecard:             "Auto-scores rep calls against a defined rubric and surfaces the highest-priority coaching moments for managers.",
+  call_competitor_objection_detection: "Detects competitor mentions and buyer objections in real time or post-call so reps can respond and managers can coach.",
+  pipeline_forecasting:                "Predicts close probability and revenue using engagement signals and AI — not just rep-submitted forecast numbers.",
+  deal_risk_detection:                 "Flags stalled or at-risk deals by detecting champion silence, engagement drops, or stage stagnation.",
+  outreach_sequencing:                 "Automates multi-touch email, call, and LinkedIn cadences with AI-optimised timing and branching step logic.",
+  ai_personalisation:                  "Generates unique opening lines or message personalisation from prospect data (title, industry, signals) at scale.",
+  crm_auto_update:                     "Writes call outcomes, next steps, and deal stage changes to CRM fields automatically — no manual rep entry required.",
+  crm_data_accuracy:                   "Validates and enriches CRM records to reduce stale, incomplete, or duplicate contact and account data.",
+  followup_drafting:                   "Drafts post-call follow-up emails that summarise key discussion points, commitments made, and agreed next steps.",
+  sales_content_delivery:              "Surfaces the right pitch decks, case studies, or battlecards at the right moment based on deal context and stage.",
+  tech_crm_integration:                "Connects natively to Salesforce, HubSpot, or other CRMs without custom middleware or third-party connectors.",
+  tech_instruction_following:          "Accurately executes multi-step natural-language instructions from reps or admins without hallucinating steps.",
+  tech_workflow_automation:            "Triggers downstream actions in email, CRM, Slack, or other tools automatically based on call or deal events.",
+  rai_data_privacy:                    "Documents how prospect data, call recordings, and CRM data are stored, encrypted, retained, and governed.",
+  rai_explainability:                  "Explains why a deal was scored a certain way, a risk was flagged, or a specific recommendation was surfaced.",
+  cost_pricing_transparency:           "Publishes clear pricing tiers or per-seat costs publicly — without requiring a sales call to get a number.",
+  cost_free_trial:                     "Offers a self-serve trial or freemium tier that can be activated without a mandatory demo or sales conversation.",
+};
+
+// Hand-curated evidence for brand/feature combos where grounded DB rows don't exist
+// but diagnostic queries found specific detail in Haiku partial rows, or where the
+// model's generic output needed replacing with what the brand's own docs actually say.
+const EVIDENCE_OVERRIDE: Record<string, Record<string, string>> = {
+  rai_data_privacy: {
+    "Gong": "SOC 2 Type II, ISO 27001/27017/27018/27701/42001, HIPAA, and PCI DSS certified. Lets customers pin call/prospect data to a US or EU AWS region, with the customer as data controller and Gong as processor — a region-choice + controller/processor split worth copying for any agent handling call recordings. Access is gated by MFA and least-privilege roles, with real-time threat monitoring layered on top. In-product, admins can build do-not-record exclusion lists by domain, email, or title keyword (e.g. flagging \"sensitive\" in a meeting name). Automatic redaction strips payment-card and ID numbers from new recordings, and retention is capped at three years or the contract term via a single Admin Center toggle.",
+    "Outreach": "SOC 2 Type II, ISO 27001/27701 certified. TLS 1.2+ at rest and in transit, hard data-minimisation (nothing retained past service need), and 24-hour RTO/RPO disaster-recovery targets. DPAs with EU/UK Standard Contractual Clauses extend to its own subprocessors too — a clean template for subprocessor accountability, not just first-party compliance. Admins get a self-service console for single-record Right-to-be-Forgotten requests and selective CSV export for other data subject access requests. A deeper \"Compliance Delete\" scrubs a person's data across every Outreach system beyond what a standard delete reaches, with one-time or recurring retention schedules configurable per org.",
+    "Chorus": "SOC 2 Type II, ISO 27001/27701 certified via ZoomInfo's shared trust program. AES-256 at rest, TLS 1.2+ in transit, SHA-256 salted password hashes, MFA/SSO required for access. 24/7 SOC monitoring with 90-day log retention, plus WAF/DDoS/intrusion-detection at the network edge — a solid reference stack for any agent ingesting call recordings at volume. Recordings persist until manually deleted or, if an admin enables it, auto-purge after 180 days. Visibility is scoped through hierarchical team permissions, and every call has its own settings panel for adjusting privacy on a per-recording basis rather than only at the org level.",
+    "Avoma": "SOC 2 Type II certified with annual third-party pen testing. TLS-only connections, at-rest encryption via AWS-managed keys, app servers isolated in their own VPC behind restricted security groups. Standout piece: jurisdiction-aware recording-consent prompts (one-party vs. two-party) built directly into the product UX, not just described in a policy doc — worth replicating for any agent that records calls. Every meeting is auto-classified internal or external by attendee email domain and gets one of four privacy tiers applied by default with no manual tagging required. Avoma also commits contractually to deleting customer data within 30 days of contract termination or on request.",
+    "Clari": "SOC 2 Type II (zero exceptions), ISO 27001/27701, HIPAA, GDPR/CCPA. Encrypts at rest and in transit, though exact algorithms aren't public — depth requires requesting the whitepaper. Two cheap, high-trust signals worth adopting regardless of certification stage: a public vulnerability-disclosure program and a live status page. Governance is enforced through role-based plus field-level permissions with an audit log tracking who changed what and when. Some customers flag the audit trail as too coarse for detailed compliance reporting, though — worth validating before relying on it as a sole compliance record.",
+  },
+  call_talk_time_analytics: {
+    "Gong": "Gong provides detailed communication metrics, including the talk-time ratio, which allows sales managers to see how much time each rep spends speaking versus listening during calls. This metric helps teams understand engagement levels in their conversations, emphasising the importance of listening for effective selling. It also scores \"Patience\" — the median pause before a rep responds, with 0.6–1 second flagged as the ideal \"golden pause\" — and \"Interactivity,\" a 0–10 score for how often speakers switch per minute. Longest monologue and question rate round out the same dashboard, so coaching isn't limited to a single ratio.",
+    "Chorus": "Chorus provides detailed call analytics that include metrics like talk-time ratio between reps and prospects, enabling sales managers to assess how well reps balance talking and listening during calls. This tracking allows teams to identify coaching opportunities and improve communication skills over time. The same dashboard tracks filler words, question count, and topic coverage, and can be customised around CRM fields like deal stage or size rather than a single fixed view. Reps can be benchmarked against top performers on each metric individually, not just an overall score.",
+    "Avoma": "Avoma provides detailed per-call communication metrics, including talk-time ratios, filler word frequency, longest uninterrupted monologue, and question rates. This allows sales teams to analyse individual performance against key metrics, facilitating targeted coaching and enhancing listening skills for improved sales conversations. Its Conversation Insights dashboard flags calls against a 40–60% talk-time benchmark and lets managers drill into which specific filler words a rep overuses, not just a raw count. A dedicated coaching view rolls talk-to-listen ratio, monologue length, and sentiment up per rep over time, rather than showing only a single-call snapshot.",
+  },
+  call_coaching_scorecard: {
+    "Revenue.io": "Every qualifying sales call is automatically scored by AI using predefined criteria, generating objective feedback across key sales behaviours like discovery, objection handling, and closing. A personalised coaching card is generated for each rep on every call. Scorecards can be built per role or sales motion and mapped to a named methodology like GAP Selling or MEDDIC rather than a generic rubric — discovery quality alone is scored on its own 0–5 scale. A dedicated Coaching Feedback tab surfaces the AI's reasoning behind each score, so managers coach from specifics instead of a bare number.",
+    "Avoma": "Avoma automatically generates post-call scorecards that detail coaching feedback on observed behaviours such as discovery depth, objection handling, and next-steps clarity. This is accomplished through AI-driven analysis that identifies key aspects of each call, enabling reps to receive personalised insights for improvement without requiring manager involvement. Scoring runs against pre-built templates for MEDDIC, BANT, SPICED, and SPIN, or fully custom scorecards a team builds itself, with every score backed by a timestamped clip as evidence. Managers also get weekly digests summarising each rep's strongest and weakest areas, plus coaching playlists curated by role.",
+  },
+  call_competitor_objection_detection: {
+    "Gong": "Gong automatically detects and categorises competitor mentions and objection types during calls using advanced speech recognition and natural language processing. Sales teams receive insights into which competitors are mentioned most frequently and the common objections faced, enabling leaders to identify patterns and adjust strategies effectively. Detection runs on two layers: Keyword Trackers for exact terms, including a pre-built \"Competitors\" tracker seeded with named rivals, plus Smart Trackers that catch a concept regardless of phrasing — a discount request gets flagged whether a prospect says \"best price\" or \"any wiggle room.\" Both feed the same win/loss analytics without a rep tagging anything manually.",
+    "Chorus": "Chorus employs advanced AI algorithms to automatically detect and categorise competitor mentions and pricing objections during calls. This functionality allows sales teams to gain insights into which competitors are frequently mentioned and what specific objections are hindering progress in deals, enabling teams to strategise more effectively against competition and tailor their responses to common objections. Trackers fire on competitor names, pricing terms, and named features out of the box, so a report can be built around every call where a specific rival came up. High-stakes moments — churn risk, pricing pushback, negative sentiment — can be configured to auto-escalate to a manager instead of waiting for a scheduled review.",
+    "Revenue.io": "Revenue.io's Conversation Agents extract objections, next steps, and competitive mentions from every call — writing results to Salesforce fields automatically. The instant a competitor is mentioned, an objection surfaces, or a qualifying question goes unasked, a targeted notification fires in the rep's dialer. This live-notification layer, called Moments™, works mid-call rather than in a post-call review, and can surface a matching talk track to the rep in the same moment. Because everything writes to Salesforce automatically, competitor-mention reporting doesn't depend on reps logging it themselves.",
+  },
+  pipeline_forecasting: {
+    "Clari": "Clari uses AI-driven insights to analyse historical data, deal progress, and engagement metrics, which allows it to provide a more accurate forecast of pipeline and revenue outcomes. This approach aggregates diverse data points beyond just rep-submitted numbers, enabling sales teams to gain a clearer picture of the likelihood of closing deals in the current quarter. Clari claims its forecasts reach roughly 98% accuracy by the second week of the quarter, and its Scenario Forecasting tool lets managers pull deals in or out of a model to test what-if scenarios before committing a number. A newly shipped MCP server also exposes the same pipeline data to Claude, ChatGPT, and other AI assistants, so forecast context isn't locked inside a single dashboard.",
+    "6sense": "6sense employs AI to analyse intent data, historical trends, and engagement signals to forecast pipeline and predict revenue outcomes. This data-driven approach allows sales teams to gain a clearer understanding of potential close rates, enabling better allocation of resources and targeted strategies for upcoming quarters. Its predictive engine scores accounts against 50+ buying signals — website visits, content consumption, technology changes, competitor research — and sorts each into a named buying stage (Awareness, Consideration, Decision, Purchase) rather than a single blended score. A monthly Predictive Model Insights Report then back-tests those predictions against actual outcomes on a 90-day lookback, so forecast accuracy is auditable rather than a black box.",
+  },
+  deal_risk_detection: {
+    "Clari": "Clari utilises predictive analytics to identify at-risk deals by monitoring engagement metrics such as communication frequency, deal stage duration, and the activity levels of team members, including champions. This proactive flagging allows sales teams to prioritise at-risk opportunities and take action before they fall through, ensuring a more strategic approach to sales management. Clari Inspect backs each risk flag with an AI opportunity score, Activity Insights pulled from outside the CRM, and a Details Panel that checks whether the deal is following a named methodology like MEDDIC or Sandler. It can also surface why a deal moved, tying the shift to specific detected activity — or the lack of it — rather than leaving the change unexplained.",
+    "6sense": "6sense utilises predictive analytics to automatically flag at-risk deals by monitoring key engagement metrics, such as a drop in communication with the champion or stagnation at certain deal stages. This enables sales teams to proactively address potential issues before deals fall through, allowing them to focus their efforts on high-risk opportunities. Each account sits in a Predictive Buying Stage — Target, Awareness, Consideration, or Decision — built from patterns across web, content, and search signals rather than a single risk score. Teams can configure email or Slack alerts so a newly at-risk deal surfaces the same day the signal changes, instead of waiting on a manual pipeline review.",
+  },
+  outreach_sequencing: {
+    "Conversica": "Conversica automates multi-step outreach sequences using AI-driven assistants that manage the outreach process. The system triggers the next step automatically based on the response or engagement level of the prospect, ensuring follow-ups occur in a timely manner and freeing sales reps to focus on higher-value activities. Unlike template-blast sequencing tools, its NLP actually reads and interprets each reply — handling objections and follow-up questions in a genuine two-way exchange — before deciding the next step, rather than branching on opens and clicks alone. A lead is only routed to a human rep once a real buying signal emerges, so reps aren't chasing sequence steps that never showed intent.",
+    "Lemlist": "Lemlist's conditional logic lets you branch sequences based on whether someone opened an email, clicked a link, or replied, so engaged prospects get a different follow-up path than cold ones. Timed conditions like \"Within\" and \"Wait Until\" automate the pacing of each step without manual input, including branching to a LinkedIn touch if an email goes unopened. Multi-channel sequences can combine several of these conditions across a single campaign, so a prospect's path adapts to every interaction rather than following one fixed script. This makes Lemlist better suited to smaller, condition-heavy sequences than the high-volume, CRM-anchored sequencing Outreach and Conversica are built for.",
+    "Outreach": "Outreach provides a feature called \"Sequences\" that automates multi-step outreach campaigns. Reps can design a sequence that includes emails, calls, and LinkedIn touches, and Outreach automatically navigates through these steps based on recipient interactions such as email opens or responses. ML-driven A/B testing is built directly into the sequence layer, letting teams test subject lines, message variants, and send timing with statistical tracking baked in. Buyer sentiment analysis also classifies each reply as positive, neutral, an objection, or an unsubscribe, so a sequence can branch on how a prospect responded, not just whether they responded.",
+  },
+  ai_personalisation: {
+    "Outreach": "Outreach employs AI-driven personalisation algorithms that automatically reference a prospect's recent activities, industry news, and role context to customise outreach messages. This ensures that sales teams can maintain a personal touch even when sending high volumes of emails, significantly enhancing engagement rates and relevance for recipients. Smart Data Enrichment pulls third-party account, contact, and intent data from providers like ZoomInfo directly into the workflow, giving the personalisation engine richer context than what's already sitting in the CRM. The same enrichment now extends to AI-generated subject lines, not just message bodies, through the Personalization Agent.",
+    "Reply.io": "Reply.io utilises AI to analyse a prospect's public social media activity, company updates, and relevant news articles to tailor outreach messages automatically. This feature helps sales teams create personalised communications at scale, enhancing engagement and making interactions feel relevant to the recipient. Jason AI lets reps pick up to three personalisation points tied to specific value props or case studies, and its AI Variables act as smart placeholders that generate custom copy per contact from a short instruction rather than a single fixed template. Every personalised claim is validated against its source, with reps able to see exactly which data point Jason used to make it.",
+    "Apollo": "Apollo utilises AI to analyse recent activities, company news, and relevant role context to automatically personalise outreach messages. This allows sales teams to send tailored communications at scale, improving engagement rates by making each message feel relevant and timely based on the prospect's current situation. Its AI assistant reads a prospect's LinkedIn profile, recent company news, and published articles to generate custom \"Icebreaker\" opening lines, with reps using it reporting roughly 30% less time spent writing. Apollo pairs this with an intent-data engine that flags when an account enters a \"buying window,\" so personalised outreach can be triggered by a real-time signal instead of a scheduled send.",
+  },
+  crm_auto_update: {
+    "Tact.ai": "Tact.ai utilises AI-driven voice and messaging interfaces that automatically log call details and update Salesforce fields, including contacts, notes, and next steps. This reduces manual entry time for sales reps, allowing them to focus more on selling and engaging with clients. Its Edge AI architecture gives field reps a single pane of glass over CRM, email, calendar, and other scattered data sources, so updates and next-step nudges surface directly on a phone or tablet without needing a desktop CRM session. The platform reports handling roughly 80% of field customisations automatically, which is the detail worth copying for any agent aimed at mobile-first sales teams.",
+    "Backstory.ai": "Backstory.ai automatically captures conversation details from sales calls and populates relevant fields in Salesforce, such as contacts, next steps, deal stage, and notes. This helps sales reps save time as they no longer need to manually input information after each call, allowing them to focus on selling rather than administrative tasks. It rebranded from People.ai in April 2026, shifting from raw activity capture toward reasoning over that data to answer specific deal questions directly inside Salesforce, Claude, or Copilot. Because activity is ingested and matched to the right account automatically, the CRM reflects what's actually happening in a deal without a rep changing anything.",
+  },
+  sales_content_delivery: {
+    "Highspot": "Highspot automatically surfaces relevant content, such as battlecards and case studies, during sales conversations by analysing the specific context of the interaction, including the prospect's details and the deal stage. This intelligent content recommendation ensures that sales reps are equipped with the most pertinent information at the right moment, enhancing their effectiveness in real-time discussions. Its Deal Agent unifies CRM activity, buyer engagement, meeting transcripts, and manager feedback into one view, then auto-generates a branded Digital Sales Room for a specific deal in minutes using that live context. The same signals drive AI Role Play, letting reps rehearse against realistic objections and personas before a call rather than only receiving static content afterwards.",
+    "Mindtickle": "Mindtickle automatically surfaces relevant battlecards, case studies, and talk tracks based on real-time analysis of deal stages and competitor mentions during sales calls. This capability allows sales reps to access tailored content at crucial moments, improving their responsiveness and confidence in addressing specific customer concerns. Recommendations factor in industry, persona, deal stage, and a rep's own past engagement history, not just the immediate call context, and can surface directly inside the CRM so reps don't have to leave their workflow to find it. This makes content delivery function more like just-in-time coaching than a static content library search.",
+  },
+  tech_crm_integration: {
+    "Drift": "Drift natively integrates with both Salesforce and HubSpot, allowing seamless data sharing without needing middleware. This means that conversations are automatically logged, and leads can be qualified and routed directly into the CRM, enabling sales teams to act quickly on fresh leads and data insights. The Salesforce integration is bidirectional — conversation engagement updates lead scores in real time, and reps can view full chat transcripts directly inside Salesforce records rather than switching tools. Because Drift was built Salesforce-first, teams report its routing, attribution, and pipeline tracking perform noticeably better there than in a HubSpot-primary setup.",
+    "Chorus": "Chorus natively integrates with both Salesforce and HubSpot, allowing sales teams to seamlessly sync call data, meeting notes, and performance metrics directly into their CRM systems. This integration ensures that sales reps have immediate access to critical customer interactions, enhancing their ability to track engagement and improve follow-up strategies effectively. Every synced call also pushes a completed Salesforce task with a link to the recording, attendee list, topics discussed, and next steps, so the activity trail is reconstructable without opening Chorus itself. Its Momentum Insights layer surfaces the same pipeline and relationship visibility directly on ZoomInfo's own company and contact pages, not just inside Chorus.",
+    "Reply.io": "Reply.io provides native integrations with both Salesforce and HubSpot that allow users to sync contacts, track interactions, and automate workflows directly without requiring any third-party middleware. This built-in capability means sales teams can ensure their CRM systems are always up to date with minimal manual overhead, enhancing productivity and streamlining engagement tracking. Worth noting for anyone building on this: the sync is one-directional, from Reply.io into the CRM, so updates made in Salesforce or HubSpot don't flow back automatically. Teams needing bidirectional sync typically layer on Zapier or the open API rather than relying on the native connector alone.",
+  },
+  tech_workflow_automation: {
+    "6sense": "6sense's Intelligent Workflows feature includes an intuitive drag-and-drop canvas for building multi-step campaigns, with conditional logic and parallel workflows for flexibility. The tool lets you create intelligent branches based on any buyer signal and route buyers to the perfect next step based on any set of conditions, including deploying AI-personalised emails, pushing hot leads straight into Salesloft or Outreach sequences, and keeping technographic and firmographic data accurate across every connected system. This puts the branching logic on buyer behaviour rather than a fixed send schedule, so a workflow can react the same day an account's intent signal changes rather than at the next scheduled touch.",
+    "Revenue.io": "Revenue.io automates multi-step sales workflows by intelligently analysing call data, updating CRM records, drafting follow-up communications, and flagging potential risks without human intervention. This seamless integration allows sales teams to save time on administrative tasks, focus more on selling, and reduce errors that can occur from manual processes. Its Moments feature fires live coaching notifications the instant a call connects — talk tracks, objection responses, compliance reminders — rather than surfacing guidance only after the call ends. RevAI is trained on the org's own Salesforce fields, pipeline, and rep behaviour rather than a generic model, so scorecards and coaching feedback reference the team's actual playbooks.",
+    "Clari": "Clari automates multi-step sales workflows by leveraging its AI-driven insights and integrations with platforms like CRM systems. This allows Clari to analyse call data, automatically update the CRM with relevant information, draft follow-up emails, and flag risks without requiring manual input from sales reps, resulting in a seamless and efficient process that minimises administrative burdens. Smart Follow-Up Emails generate contextually accurate, personalised drafts based on the specifics of each conversation rather than a generic template. Clari Copilot handles the Salesforce updates directly, and RevGPT can draft the follow-up email, summarise the call, and identify next steps as one combined post-call action.",
+  },
+  rai_explainability: {
+    "Chorus": "Chorus provides detailed insights when it flags a deal as at-risk by highlighting specific call behaviours and customer signals that contributed to the flag. For example, it can show indications such as objections raised during the call or a lack of engagement from the prospect, allowing sales teams to understand and address the issues proactively. Its Deal Recommendation Engine ties these flags to concrete signals — declining meeting frequency, negative sentiment trends, stalled commitment phrases — rather than a single opaque score, and lets teams set custom alert thresholds around them. Recommendations are also grounded in ZoomInfo's buying-committee data, so a stalled deal comes with a suggested contact to re-engage, not just a warning.",
+    "Revenue.io": "Revenue.io provides insights into why a deal is flagged as at-risk by showing specific signals that triggered the alert, such as negative trends in interaction metrics. This clarity allows sales teams to take informed actions based on actual data, enhancing their ability to strategise on high-risk deals effectively. Deal Health Scores update daily from CRM data, activity signals, engagement recency, and actual conversation content combined, rather than from CRM fields alone. Its Conversation Agents also extract the specific objections, next steps, and competitor mentions behind a score and write them straight to Salesforce, so the explanation is attached to the record itself, not locked in a separate dashboard.",
+    "Gong": "Gong provides detailed explanations when flagging a deal as at-risk by highlighting the specific signals that triggered the alert, such as lack of engagement or decreased communication frequency. This insight allows sales teams to understand the context behind the risk flag and take informed actions to address the issues. Its Deal Likelihood Score draws on 300+ buying signals to output a Low/Medium/High rating alongside a plain-language explanation of the contributing factors, rather than a bare number. Named risk warnings — such as a red-flagged email, no prospect activity for a set number of days, or a single-threaded relationship — are colour-coded and individually configurable, so a manager can see exactly which condition tripped the alert.",
+  },
+  cost_free_trial: {
+    "Reply.io": "Reply.io offers a 14-day free trial with no credit card required. The trial provides access to core platform features including a B2B database, multichannel sequences (email, LinkedIn, SMS, calls), reports, analytics, and API access with integrations like Salesforce and HubSpot. Users can start the trial directly at reply.io without requiring a sales call or demo, and pricing stays transparent beyond the trial too — plans run $49/user for email-only, up to $139/user for the full AI SDR tier. That published, self-serve pricing is worth copying regardless of trial length; it lets a buyer size up cost before ever talking to sales.",
+    "Apollo": "Apollo offers a free trial that allows users to access its platform and utilise its sales intelligence tools. This self-serve approach enables sales teams to explore features such as lead generation, email tracking, and engagement metrics without requiring a sales call, making it easy for potential customers to evaluate the tool's effectiveness directly. Beyond the trial, Apollo actually runs a free-forever Starter plan with the full 210M+ contact database, fair-use email sending, and a handful of mobile and export credits each month — not just a time-boxed trial that expires. The trade-off is real: as of late 2025 the free tier's email allowance was cut from 10,000 to 100 credits a month, and it excludes CRM integrations, so it's best treated as a data-quality test rather than an ongoing prospecting tool.",
+    "Drift": "Drift discontinued its free trial and self-serve plan in 2023 — there is no sandbox or trial period today, only a guided demo gated behind a sales call. Pricing now starts around $2,500/month for the entry-level Premium plan, scaling to $6,000–10,000+/month at Enterprise, which puts it in a different buying category from the self-serve tools in this cluster. Worth flagging for any team evaluating this group: Drift is the one product here that can't be tested hands-on before a sales conversation, which matters if fast, low-commitment evaluation is a priority.",
+  },
+};
+
+function evidenceFor(featureId: string, brand: string, raw: string | null): string | null {
+  return EVIDENCE_OVERRIDE[featureId]?.[brand] ?? cleanEvidence(raw);
+}
+
 // ── G2-sourced spotlight evidence (fallback when DB has no scored data) ────────
 const G2_EVIDENCE: Record<string, { featureLabel: string; evidence: string }> = {
   "Backstory.ai": {
@@ -168,11 +285,11 @@ const G2_EVIDENCE: Record<string, { featureLabel: string; evidence: string }> = 
   },
   "Gong": {
     featureLabel: "Revenue AI Operating System",
-    evidence: "Gong's Revenue AI OS analyzes 100% of customer conversations to surface deal risk, coaching opportunities, and competitive intelligence — ranked G2's #1 Best Software Product for multiple years, with users citing searchable call archives and real-time deal alerts as its defining advantage.",
+    evidence: "Gong's Revenue AI OS analyses 100% of customer conversations to surface deal risk, coaching opportunities, and competitive intelligence — ranked G2's #1 Best Software Product for multiple years, with users citing searchable call archives and real-time deal alerts as its defining advantage.",
   },
   "Salesloft": {
     featureLabel: "AI Sales Engagement",
-    evidence: "Salesloft's cadence engine automates multi-touch sequences across email, phone, and LinkedIn with ML-driven engagement recommendations based on historical buyer behavior — 11,000+ G2 reviews make it the #1 rated sales engagement platform, with teams reporting 20–30% productivity gains.",
+    evidence: "Salesloft's cadence engine automates multi-touch sequences across email, phone, and LinkedIn with ML-driven engagement recommendations based on historical buyer behaviour — 11,000+ G2 reviews make it the #1 rated sales engagement platform, with teams reporting 20–30% productivity gains.",
   },
   "Outreach": {
     featureLabel: "AI Deal Management",
@@ -188,11 +305,11 @@ const G2_EVIDENCE: Record<string, { featureLabel: string; evidence: string }> = 
   },
   "Apollo": {
     featureLabel: "AI GTM Platform",
-    evidence: "Apollo combines a 210M+ contact database with agentic AI workflows for lead scoring, personalized message generation, and send-time optimization — the first GTM platform to reach 9,000+ G2 reviews, holding #1 rankings across sales intelligence and engagement in the Winter 2026 report.",
+    evidence: "Apollo combines a 210M+ contact database with agentic AI workflows for lead scoring, personalised message generation, and send-time optimisation — the first GTM platform to reach 9,000+ G2 reviews, holding #1 rankings across sales intelligence and engagement in the Winter 2026 report.",
   },
   "Clay": {
     featureLabel: "AI Data Enrichment & Outreach",
-    evidence: "Clay's Claygent AI enriches prospects with 300+ attributes across 100+ data sources, then generates hyper-personalized outreach at scale — users report replacing multiple data provider subscriptions and cutting manual research time by 60–70% per campaign.",
+    evidence: "Clay's Claygent AI enriches prospects with 300+ attributes across 100+ data sources, then generates hyper-personalised outreach at scale — users report replacing multiple data provider subscriptions and cutting manual research time by 60–70% per campaign.",
   },
   "Conversica": {
     featureLabel: "Autonomous AI Sales Assistant",
@@ -203,8 +320,8 @@ const G2_EVIDENCE: Record<string, { featureLabel: string; evidence: string }> = 
     evidence: "Reply.io's AI SDR Agent learns your product, sources prospects from a 1B+ verified contact database, and autonomously runs multi-channel sequences across email, LinkedIn, SMS, and WhatsApp — with built-in deliverability infrastructure including email warm-up and DMARC monitoring.",
   },
   "Lemlist": {
-    featureLabel: "Personalized Multi-Channel Outreach",
-    evidence: "Lemlist's AI mines job title, industry, and social signals to generate unique intro lines for each prospect at scale, with native ChatGPT/Gemini integration for message personalization and built-in Lemwarm deliverability infrastructure — rated a top cold outreach tool across 1,400+ G2 reviews.",
+    featureLabel: "Personalised Multi-Channel Outreach",
+    evidence: "Lemlist's AI mines job title, industry, and social signals to generate unique intro lines for each prospect at scale, with native ChatGPT/Gemini integration for message personalisation and built-in Lemwarm deliverability infrastructure — rated a top cold outreach tool across 1,400+ G2 reviews.",
   },
   "ZoomInfo": {
     featureLabel: "GTM Intelligence Platform",
@@ -214,13 +331,9 @@ const G2_EVIDENCE: Record<string, { featureLabel: string; evidence: string }> = 
     featureLabel: "Real-Time Contact Intelligence",
     evidence: "Seamless.ai crawls the web in real time to find verified emails and direct dials across 1.7B+ contacts with 98% claimed accuracy, with a Chrome Extension that syncs leads from LinkedIn directly to Salesforce, HubSpot, or Outreach with a single click.",
   },
-  "Drift": {
-    featureLabel: "Conversational AI & Buying Signals",
-    evidence: "Drift's enterprise Bionic Chatbots engage website visitors in AI-driven conversations powered by company content, while Drift Prospector forecasts buying signals within target accounts by blending direct engagement, third-party intent data, and Salesforce pipeline — converting inbound traffic to qualified pipeline without rep involvement.",
-  },
   "Mindtickle": {
     featureLabel: "AI Sales Coaching & Readiness",
-    evidence: "Mindtickle is G2's #1-rated sales onboarding and training platform, using AI to deliver personalized role-play simulations so reps practice high-stakes conversations before they happen — managers review recorded pitches with skill-gap analytics and a 100% G2 satisfaction score backs its coaching depth.",
+    evidence: "Mindtickle is G2's #1-rated sales onboarding and training platform, using AI to deliver personalised role-play simulations so reps practise high-stakes conversations before they happen — managers review recorded pitches with skill-gap analytics and a 100% G2 satisfaction score backs its coaching depth.",
   },
   "Highspot": {
     featureLabel: "AI Sales Enablement",
@@ -284,7 +397,7 @@ function CombinedTooltip({ active, payload, label }: any) {
       {sorted.map((item: any) => (
         <div key={item.dataKey} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>
           <span style={{ width: 7, height: 7, borderRadius: "50%", background: item.color, flexShrink: 0, display: "inline-block" }} />
-          <span style={{ color: item.color }}>{item.dataKey} : {item.value}</span>
+          <span style={{ color: item.color }}>{displayBrand(String(item.dataKey))} : {item.value}</span>
         </div>
       ))}
     </div>
@@ -381,7 +494,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
             </Pie>
             <Tooltip
               contentStyle={{ borderRadius: 8, fontSize: 11, border: "1px solid rgba(0,0,0,0.1)" }}
-              formatter={(_v, _n, p) => [`${(p.payload as SOVRow & { sov_pct: number }).sov_pct}%`, (p.payload as SOVRow).brand]}
+              formatter={(_v, _n, p) => [`${(p.payload as SOVRow & { sov_pct: number }).sov_pct}%`, displayBrand((p.payload as SOVRow).brand)]}
             />
           </PieChart>
         </div>
@@ -389,7 +502,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
           {top.slice(0, 7).map((r) => (
             <div key={r.brand} style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <div style={{ width: 8, height: 8, borderRadius: 2, flexShrink: 0, background: colorMap[r.brand] }} />
-              <span style={{ fontSize: 11, color: NAVY, flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{r.brand}</span>
+              <span style={{ fontSize: 11, color: NAVY, flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{displayBrand(r.brand)}</span>
               <span style={{ fontSize: 11, fontWeight: 600, color: "rgba(0,0,0,0.55)", flexShrink: 0 }}>{r.sov_pct}%</span>
             </div>
           ))}
@@ -401,12 +514,19 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function SalesVisibilityCharts({
-  dailySummary, weeklySummary, llmVisibility, sovData, clusterPositions, featureScores, sentimentData,
+  dailySummary, weeklySummary, llmVisibility, sovData, clusterPositions,
+  featureScores: featureScoresRaw, sentimentData: sentimentDataRaw,
 }: Props) {
+  // featureScores/sentimentData aren't scoped to LOCKED_SALES_BRANDS server-side (unlike
+  // dailySummary/weeklySummary/sovData/clusterPositions), so Drift needs an explicit filter
+  // here too — otherwise its rows would still show up in Feature Scores and Sentiment Analysis.
+  const featureScores = featureScoresRaw.filter(r => r.brand_name !== "Drift");
+  const sentimentData = { ...sentimentDataRaw, rows: sentimentDataRaw.rows.filter(r => r.brand_name !== "Drift") };
   const hasReal = dailySummary.length > 0;
   const [featureOpen,    setFeatureOpen]    = useState(false);
   const [sentimentOpen,  setSentimentOpen]  = useState(false);
   const [spotlightOpen,  setSpotlightOpen]  = useState(true);
+  const [visibilityOpen, setVisibilityOpen] = useState(true);
 
   // ── Build chart rows — filter to locked brands only ────────────────────────
   const dateSet = new Set<string>();
@@ -461,8 +581,9 @@ export default function SalesVisibilityCharts({
   const totalMentions = Object.values(weeklyTotals).reduce((s, v) => s + v.mentions, 0);
   const hasWeekly = Object.keys(weeklyTotals).length > 0;
 
-  // Top brand = highest total mentions
-  const topByMentions = brands[0];
+  // Top brand: hardcoded to Outreach per explicit request (overrides the highest-mentions
+  // brand, which is otherwise `brands[0]`).
+  const topByMentions = "Outreach";
   const topMentionData = topByMentions ? weeklyTotals[topByMentions] : null;
 
   // ── LLM visibility ────────────────────────────────────────────────────────
@@ -558,7 +679,7 @@ export default function SalesVisibilityCharts({
           {topByMentions && topMentionData ? (
             <>
               <p style={{ fontSize: 24, fontWeight: 800, color: NAVY, lineHeight: 1.2, marginBottom: 4 }}>
-                {topByMentions}
+                {displayBrand(topByMentions)}
               </p>
               <p style={{ fontSize: 11, color: "rgba(0,0,0,0.5)" }}>
                 {topMentionData.mentions.toLocaleString()} mentions
@@ -592,7 +713,7 @@ export default function SalesVisibilityCharts({
             {brands.map(b => (
               <span key={b} style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11, color: NAVY }}>
                 <span style={{ width: 8, height: 8, borderRadius: "50%", background: brandColor(b), flexShrink: 0, display: "inline-block" }} />
-                {b}
+                {displayBrand(b)}
               </span>
             ))}
           </div>
@@ -618,7 +739,7 @@ export default function SalesVisibilityCharts({
                   }}
                 >
                   <h4 style={{ fontSize: 13, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>{label}</h4>
-                  <p style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", marginBottom: 14 }}>14-day mentions · both models</p>
+                  <p style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", marginBottom: 14 }}>7-day mentions · both models</p>
                   <ResponsiveContainer width="100%" height={220}>
                     <LineChart data={rows} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,0,0,0.055)" vertical={false} />
@@ -631,7 +752,7 @@ export default function SalesVisibilityCharts({
                         formatter={(value, name) => [value, String(name)]}
                       />
                       {clusterBrands.map(b => (
-                        <Line key={b} type="monotone" dataKey={b} stroke={brandColor(b)} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 0 }} />
+                        <Line key={b} type="monotone" dataKey={b} name={displayBrand(b)} stroke={brandColor(b)} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 0 }} />
                       ))}
                     </LineChart>
                   </ResponsiveContainer>
@@ -639,7 +760,7 @@ export default function SalesVisibilityCharts({
                     {clusterBrands.map(b => (
                       <span key={b} style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 11, color: NAVY }}>
                         <span style={{ width: 8, height: 8, borderRadius: "50%", background: brandColor(b), flexShrink: 0, display: "inline-block" }} />
-                        {b}
+                        {displayBrand(b)}
                       </span>
                     ))}
                   </div>
@@ -670,8 +791,8 @@ export default function SalesVisibilityCharts({
           <ResponsiveContainer width="100%" height={modelMentionsData.length * 28 + 10}>
             <BarChart layout="vertical" data={modelMentionsData} margin={{ top: 0, right: 48, left: 0, bottom: 0 }} barSize={14}>
               <XAxis type="number" hide />
-              <YAxis type="category" dataKey="brand" width={130} tick={{ fontSize: 11, fill: NAVY }} axisLine={false} tickLine={false} />
-              <Tooltip contentStyle={{ borderRadius: 8, border: "1px solid rgba(0,0,0,0.10)", fontSize: 12, color: NAVY }} formatter={(value, name) => [value, name === "claude" ? "Claude Haiku" : "GPT-4o mini"]} />
+              <YAxis type="category" dataKey="brand" width={130} tickFormatter={displayBrand} tick={{ fontSize: 11, fill: NAVY }} axisLine={false} tickLine={false} />
+              <Tooltip contentStyle={{ borderRadius: 8, border: "1px solid rgba(0,0,0,0.10)", fontSize: 12, color: NAVY }} labelFormatter={(label) => displayBrand(String(label))} formatter={(value, name) => [value, name === "claude" ? "Claude Haiku" : "GPT-4o mini"]} />
               <Bar dataKey="claude" stackId="a" fill={BLUE}   radius={[0, 0, 0, 0]} />
               <Bar dataKey="gpt"    stackId="a" fill={INDIGO} radius={[3, 3, 3, 3]} />
             </BarChart>
@@ -702,7 +823,7 @@ export default function SalesVisibilityCharts({
                     <td style={{ padding: "11px 20px", fontWeight: 600, color: NAVY }}>
                       <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
                         <span style={{ width: 8, height: 8, borderRadius: "50%", background: brandColor(row.brand), flexShrink: 0, display: "inline-block" }} />
-                        {row.brand}
+                        {displayBrand(row.brand)}
                       </span>
                     </td>
                     <td style={{ padding: "11px 20px", color: NAVY }}>
@@ -749,7 +870,7 @@ export default function SalesVisibilityCharts({
                   {cluster.brands.map(({ brand, avg_position }) => (
                     <div key={brand} style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <span style={{ width: 8, height: 8, borderRadius: "50%", background: brandColor(brand), flexShrink: 0, display: "inline-block" }} />
-                      <span style={{ flex: 1, fontSize: 12, fontWeight: 600, color: NAVY }}>{brand}</span>
+                      <span style={{ flex: 1, fontSize: 12, fontWeight: 600, color: NAVY }}>{displayBrand(brand)}</span>
                       {avg_position != null ? (
                         <span style={{
                           padding: "2px 7px", borderRadius: 4, fontSize: 11, fontWeight: 700,
@@ -803,9 +924,6 @@ export default function SalesVisibilityCharts({
               <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
                 Product Feature Scores
               </h3>
-              <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.4)", background: "rgba(0,0,0,0.06)", borderRadius: 999, padding: "3px 8px" }}>
-                Preview
-              </span>
             </div>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform: featureOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", flexShrink: 0 }}>
               <path d="M4 6l4 4 4-4" stroke="rgba(0,0,0,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -834,14 +952,21 @@ export default function SalesVisibilityCharts({
                     </p>
                     {groupFeatures.map(({ featureId, rows }) => (
                       <div key={featureId} style={{ marginBottom: 18 }}>
-                        <p style={{ fontSize: 14, fontWeight: 600, color: NAVY, marginBottom: 10 }}>
+                        <p style={{ fontSize: 14, fontWeight: 600, color: NAVY, marginBottom: 2 }}>
                           {featureName(featureId)}
                         </p>
+                        {FEATURE_DESCRIPTIONS[featureId] && (
+                          <p style={{ fontSize: 12, color: "rgba(0,0,0,0.5)", lineHeight: 1.5, margin: "0 0 10px" }}>
+                            {FEATURE_DESCRIPTIONS[featureId]}
+                          </p>
+                        )}
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                           {rows.map(r => (
                             <div key={r.brand_name}>
                               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                                <span style={{ fontSize: 12, fontWeight: 500, color: NAVY, width: 130, flexShrink: 0 }}>{r.brand_name}</span>
+                                <span style={{ fontSize: 12, fontWeight: 500, color: NAVY, width: 168, flexShrink: 0, lineHeight: 1.3 }}>
+                                  {displayBrand(r.brand_name)}
+                                </span>
                                 <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
                                   <div style={{ width: `${r.score}%`, height: 6, borderRadius: 999, background: BAND_COLORS[r.score_band] ?? "#94a3b8" }} />
                                 </div>
@@ -850,10 +975,10 @@ export default function SalesVisibilityCharts({
                                 </span>
                               </div>
                               {(() => {
-                                const ev = cleanEvidence(r.evidence);
+                                const ev = evidenceFor(featureId, r.brand_name, r.evidence);
                                 const text = ev ?? BAND_FALLBACK[r.score_band];
                                 return text ? (
-                                  <p style={{ paddingLeft: 140, fontSize: 13, color: ev ? "#000" : "rgba(0,0,0,0.42)", lineHeight: 1.5, margin: "4px 0 0", fontStyle: ev ? "normal" : "italic" }}>{text}</p>
+                                  <p style={{ paddingLeft: 178, fontSize: 13, color: ev ? "#000" : "rgba(0,0,0,0.42)", lineHeight: 1.5, margin: "4px 0 0", fontStyle: ev ? "normal" : "italic" }}>{text}</p>
                                 ) : null;
                               })()}
                             </div>
@@ -872,7 +997,7 @@ export default function SalesVisibilityCharts({
         </div>
       )}
 
-      {/* ── Row 8: AI Model Perception (sentiment descriptors) ─────────────── */}
+      {/* ── Row 8: Sentiment Analysis (sentiment descriptors) ─────────────── */}
       {(() => {
         const { rows: sentimentRows, meta: sentimentMeta } = sentimentData;
         const GATE = 3;
@@ -905,11 +1030,13 @@ export default function SalesVisibilityCharts({
             >
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
-                  AI Model Perception
+                  Sentiment Analysis
                 </h3>
-                <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.4)", background: "rgba(0,0,0,0.06)", borderRadius: 999, padding: "3px 8px" }}>
-                  {ready ? "Preview" : "Collecting"}
-                </span>
+                {!ready && (
+                  <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.4)", background: "rgba(0,0,0,0.06)", borderRadius: 999, padding: "3px 8px" }}>
+                    Collecting
+                  </span>
+                )}
               </div>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform: sentimentOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", flexShrink: 0 }}>
                 <path d="M4 6l4 4 4-4" stroke="rgba(0,0,0,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -952,8 +1079,8 @@ export default function SalesVisibilityCharts({
                           return (
                             <div key={brand.brand_name}>
                               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 7 }}>
-                                <span style={{ fontSize: 12, fontWeight: 600, color: NAVY, width: 110, flexShrink: 0 }}>
-                                  {brand.brand_name}
+                                <span style={{ fontSize: 12, fontWeight: 600, color: NAVY, width: 148, flexShrink: 0, lineHeight: 1.25 }}>
+                                  {displayBrand(brand.brand_name)}
                                 </span>
                                 <div style={{ flex: 1, height: 8, borderRadius: 999, background: "rgba(0,0,0,0.06)", overflow: "hidden", display: "flex" }}>
                                   {posPct > 0 && <div style={{ width: `${posPct}%`, height: "100%", background: "#16a34a" }} />}
@@ -964,7 +1091,7 @@ export default function SalesVisibilityCharts({
                                   {posPct}%
                                 </span>
                               </div>
-                              <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 5, paddingLeft: 120 }}>
+                              <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 5, paddingLeft: 158 }}>
                                 {[...new Set(brand.top_descriptors)].slice(0, 4).map((d, i) => {
                                   const unique = globalDescFreq.get(d) === 1;
                                   return (
@@ -1030,7 +1157,7 @@ export default function SalesVisibilityCharts({
         for (const row of primarySorted) {
           const entry = brandMap.get(row.brand_name)!;
           if (entry.primary) continue;
-          const ev = cleanEvidence(row.evidence);
+          const ev = evidenceFor(row.feature_id, row.brand_name, row.evidence);
           if (ev) entry.primary = { featureId: row.feature_id, evidence: ev };
         }
 
@@ -1042,8 +1169,22 @@ export default function SalesVisibilityCharts({
         for (const row of bonusSorted) {
           const entry = brandMap.get(row.brand_name)!;
           if (entry.bonus) continue;
-          const ev = cleanEvidence(row.evidence);
+          const ev = evidenceFor(row.feature_id, row.brand_name, row.evidence);
           if (ev) entry.bonus = { featureId: row.feature_id, evidence: ev };
+        }
+
+        // Fallback: hand-curated RAI evidence for brands with no scored DB row yet.
+        // Lemlist has no rai_data_privacy/rai_explainability row, but its Trust Center
+        // and published GDPR docs give real, citable detail.
+        const RAI_FALLBACK: Record<string, { featureId: string; evidence: string }> = {
+          "Lemlist": {
+            featureId: "rai_data_privacy",
+            evidence: "Lemlist's Trust Center (trust.lemlist.com) documents a SOC 2 Type II report covering 58 controls spanning cloud security, access management, and application security, though full detail requires a trust-portal access request. Per lemlist's own GDPR help documentation, all data — including LinkedIn-sourced prospect data — is stored exclusively on servers in France hosted by OVH within the EEA, with no transfers outside it; only publicly available LinkedIn fields (name, job title, company, employment history) are stored by default, with email and phone captured only when a user enriches or supplies them. Customers are the data controller under a Data Processing Addendum (lemlist.com/legal/dpa) with lemlist acting as processor, and recipients can request deletion directly through lemlist's privacy team.",
+          },
+        };
+        for (const [brand, fallback] of Object.entries(RAI_FALLBACK)) {
+          const entry = brandMap.get(brand);
+          if (entry && !entry.bonus) entry.bonus = fallback;
         }
 
         const spotlights = [...brandMap.entries()]
@@ -1082,7 +1223,7 @@ export default function SalesVisibilityCharts({
                     {/* Coloured dot + brand name */}
                     <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 10 }}>
                       <div style={{ width: 8, height: 8, borderRadius: "50%", background: color, flexShrink: 0 }} />
-                      <span style={{ fontSize: 13, fontWeight: 700, color }}>{brand}</span>
+                      <span style={{ fontSize: 13, fontWeight: 700, color }}>{displayBrand(brand)}</span>
                     </div>
                     {/* Feature heading — DB feature name or G2 category label */}
                     {(primary || g2) && (
@@ -1136,6 +1277,137 @@ export default function SalesVisibilityCharts({
           </div>
         );
       })()}
+
+      {/* Building AI Visibility — competitor playbooks for earning AI-search visibility */}
+      {(() => {
+        const VISIBILITY_PLAYBOOKS = [
+          {
+            brand: "Highspot",
+            tactic: "Volume + Direct Confrontation",
+            whyVisible: "The most aggressive combination of the four — high content volume and named-competitor takedown pages simultaneously.",
+            how: "Highspot does everything at once — publishes a lot AND runs multiple named-competitor takedown pages.",
+            points: [
+              { text: "Publishes heavily — 100+ posts in 18 months, roughly 5-10 per month.", cite: "highspot.com/blog" },
+              { text: "Backs it up with 171 case studies naming real enterprise customers (HSBC, Visa, Siemens).", cite: "highspot.com/success-stories" },
+              {
+                text: "Runs three separate “us vs. them” pages, each following the same playbook — paint the rival as fragmented, position Highspot as the unified alternative:",
+                sub: [
+                  "vs. Seismic — claims 85+ companies switched from Seismic, “+15% win rates”",
+                  "vs. Showpad",
+                  "vs. Gong — frames Gong as narrow (“just call intelligence”) compared to Highspot's broader platform",
+                ],
+              },
+              { text: "Shipped 3 major product launches in the last year (mid-2025 through mid-2026), each reinforcing an “AI-powered” narrative." },
+            ],
+            yourData: "Sales content delivery 90 (strong, real evidence). Discovery mentions not pulled for this brand (different cluster — sales-enablement, not your category). 88% positive sentiment — highest of the four.",
+            takeaway: "Different category from yours (content enablement, not deal execution), but the tactic — pairing real content volume with direct named-competitor pages — is the most complete playbook here. Worth studying the mechanism even though Highspot itself isn't a competitor.",
+          },
+          {
+            brand: "6sense",
+            tactic: "Narrow, Named-Competitor Content as the Wedge",
+            whyVisible: "A much smaller content operation than Clari's, but with one sharp, deliberate asset: a dedicated head-to-head page.",
+            how: "6sense runs a focused content operation built around a small number of pages that directly name and take on specific rivals.",
+            points: [
+              { text: "Publishes steadily — around 15-20 posts visible at a time.", cite: "6sense.com/blog" },
+              { text: "Builds dedicated pages to win specific comparisons — a \"6sense vs. Demandbase: See Why 6sense is #1\" landing page built to own that exact search.", cite: "6sense.com/cp/demandbase" },
+              { text: "Runs a second comparison page, naming UserGems directly.", cite: "6sense.com/blog/6sense-vs-usergems" },
+              { text: "Keeps it sharp, not broad — two targeted pages instead of a \"compare us to everyone\" hub, each aimed at winning one specific matchup." },
+              { text: "Repositioning toward \"AI agent platform\" framing, moving beyond \"pipeline forecasting\" as the sole pitch.", cite: "6sense.com/guides/pipeline-forecasting" },
+            ],
+            yourData: "Deal risk detection 80, Pipeline forecasting 60 (both real, non-ceiling scores). 9 discovery mentions.",
+            takeaway: "This is the cheapest, fastest-to-replicate lever of the four — pairing a small number of sharp, named-competitor pages with steady content, rather than trying to out-publish everyone. It's built to win specific comparison moments (\"6sense vs. Demandbase\") rather than to maximise overall mention count.",
+          },
+        ];
+
+        return (
+          <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
+            <button
+              onClick={() => setVisibilityOpen(o => !o)}
+              style={{
+                display: "flex", alignItems: "center", justifyContent: "space-between",
+                width: "100%", padding: "16px 24px",
+                background: "none", border: "none", cursor: "pointer",
+                borderBottom: visibilityOpen ? "1px solid rgba(0,0,0,0.07)" : "none",
+                fontFamily: "inherit",
+              }}
+            >
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
+                Building AI Visibility
+              </h3>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform: visibilityOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", flexShrink: 0 }}>
+                <path d="M4 6l4 4 4-4" stroke="rgba(0,0,0,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            {visibilityOpen && (
+              <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 20 }}>
+                {VISIBILITY_PLAYBOOKS.map((pb) => (
+                  <div key={pb.brand} style={{
+                    border: "1px solid rgba(0,0,0,0.08)", borderRadius: 10, padding: "18px 20px",
+                  }}>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: NAVY, margin: "0 0 12px", lineHeight: 1.3 }}>
+                      {pb.brand} — {pb.tactic}
+                    </p>
+
+                    <p style={{ fontSize: 12, color: "#000", lineHeight: 1.6, margin: "0 0 10px" }}>
+                      <span style={{ fontWeight: 700 }}>Why it's visible: </span>{pb.whyVisible}
+                    </p>
+
+                    <p style={{ fontSize: 12, color: "#000", lineHeight: 1.6, margin: "0 0 10px" }}>
+                      <span style={{ fontWeight: 700 }}>How: </span>{pb.how}
+                    </p>
+
+                    <ul style={{ margin: "0 0 12px", paddingLeft: 18, display: "flex", flexDirection: "column", gap: 8 }}>
+                      {pb.points.map((point, i) => (
+                        <li key={i} style={{ fontSize: 12, color: "#000", lineHeight: 1.6 }}>
+                          {point.text}
+                          {"cite" in point && point.cite && (
+                            <span style={{ color: "rgba(0,0,0,0.4)" }}> {point.cite}</span>
+                          )}
+                          {"sub" in point && point.sub && (
+                            <ul style={{ margin: "6px 0 0", paddingLeft: 18, display: "flex", flexDirection: "column", gap: 4 }}>
+                              {point.sub.map((s, j) => (
+                                <li key={j} style={{ fontSize: 12, color: "rgba(0,0,0,0.7)", lineHeight: 1.6 }}>{s}</li>
+                              ))}
+                            </ul>
+                          )}
+                        </li>
+                      ))}
+                    </ul>
+
+                    <p style={{ fontSize: 12, color: "#000", lineHeight: 1.6, margin: "0 0 10px" }}>
+                      <span style={{ fontWeight: 700 }}>Your data: </span>{pb.yourData}
+                    </p>
+
+                    <div style={{
+                      background: "rgba(0,0,0,0.025)",
+                      border: "1px solid rgba(0,0,0,0.08)",
+                      borderLeft: "3px solid rgba(0,0,0,0.13)",
+                      borderRadius: "0 6px 6px 0",
+                      padding: "8px 12px",
+                    }}>
+                      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.38)", margin: "0 0 4px" }}>
+                        Takeaway
+                      </p>
+                      <p style={{ fontSize: 11, color: "rgba(0,0,0,0.55)", lineHeight: 1.5, margin: 0 }}>
+                        {pb.takeaway}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      })()}
+
+      {/* Product Feature Improvement Opportunities for Lamigo — content pending */}
+      <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
+        <div style={{ padding: "16px 24px" }}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
+            Product Feature Improvement Opportunities for Lamigo
+          </h3>
+        </div>
+      </div>
 
     </div>
   );

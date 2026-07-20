@@ -15,7 +15,7 @@ export default function Navbar() {
 
         {/* LOGO */}
         <Link href="/" style={{ textDecoration: "none", color: "inherit" }} className="flex items-center gap-2 flex-shrink-0">
-          <img src="/dewwie-logo.png" alt="dewwie logo" className="h-7 w-auto" />
+          <img src="/logo.png" alt="AgenticLib logo" className="h-6 w-auto" />
           <div className="flex flex-col leading-none">
             <span className="text-lg font-semibold tracking-tight">AgenticLib</span>
             <span className="logo-tagline" style={{ fontSize: 10.5, fontWeight: 500, color: "#000000", letterSpacing: "0.01em", marginTop: 1 }}>Comparison Intelligence Platform</span>

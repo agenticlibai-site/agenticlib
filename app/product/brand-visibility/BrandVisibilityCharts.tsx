@@ -573,14 +573,6 @@ function FeatureScoresSection({ featureScores }: { featureScores: FeatureScoreRo
         >
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <span style={{ fontSize: 15, fontWeight: 700, color: "#000000" }}>Product Feature Scores</span>
-            <span style={{
-              fontSize: 10, fontWeight: 700, letterSpacing: "0.06em",
-              textTransform: "uppercase" as const,
-              background: "rgba(124,58,237,0.10)", color: "#7C3AED",
-              padding: "2px 8px", borderRadius: 4,
-            }}>
-              Preview
-            </span>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <span style={{ fontSize: 11, color: "rgba(0,0,0,0.4)", fontWeight: 500 }}>
@@ -813,15 +805,6 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
               {hasReal ? "Top 22 locked AI marketing agents · both models combined" : "Sample data — live chart populates after daily collection"}
             </p>
           </div>
-          {!hasReal && (
-            <span style={{
-              fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const,
-              letterSpacing: "0.08em", color: PURPLE, background: "rgba(107,79,187,0.10)",
-              padding: "3px 8px", borderRadius: 999,
-            }}>
-              Preview
-            </span>
-          )}
         </div>
 
         <ResponsiveContainer width="100%" height={300}>
@@ -1144,7 +1127,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
 
       <FeatureScoresSection featureScores={featureScores} />
 
-      {/* ── AI Model Perception (marketing sentiment) ────────────────────────── */}
+      {/* ── Sentiment Analysis (marketing sentiment) ────────────────────────── */}
       {(() => {
         const { rows: sentimentRows, meta: sentimentMeta } = sentimentData;
         const GATE = 3;
@@ -1175,7 +1158,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
             >
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                 <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
-                  AI Model Perception
+                  Sentiment Analysis
                 </h3>
                 <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.4)", background: "rgba(0,0,0,0.06)", borderRadius: 999, padding: "3px 8px" }}>
                   {ready ? "Live" : "Collecting"}
