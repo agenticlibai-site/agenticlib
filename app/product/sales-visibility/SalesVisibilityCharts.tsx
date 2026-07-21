@@ -1316,7 +1316,8 @@ export default function SalesVisibilityCharts({
               { text: "Keeps it sharp, not broad — two targeted pages instead of a \"compare us to everyone\" hub, each aimed at winning one specific matchup." },
               { text: "Repositioning toward \"AI agent platform\" framing, moving beyond \"pipeline forecasting\" as the sole pitch.", cite: "6sense.com/guides/pipeline-forecasting" },
             ],
-            yourData: "Deal risk detection 80, Pipeline forecasting 60 (both real, non-ceiling scores). 9 discovery mentions.",
+            dataLabel: "6sense data:",
+            yourData: "Deal risk detection 90 — the evidence text cited three actual 6sense product names (Predictive Buying Stage system with named stages Target/Awareness/Consideration/Decision, plus email and Slack alert configuration) as proof the feature exists and works in a particular way. Pipeline forecasting 60 — evidence cited the 50+ buying signal engine and a monthly Predictive Model Insights Report with a 90-day lookback. 83% positive sentiment. 9 discovery mentions in the Deal Risk & Pipeline Forecasting cluster.",
             takeaway: "This is the cheapest, fastest-to-replicate lever of the four — pairing a small number of sharp, named-competitor pages with steady content, rather than trying to out-publish everyone. It's built to win specific comparison moments (\"6sense vs. Demandbase\") rather than to maximise overall mention count.",
           },
           {
