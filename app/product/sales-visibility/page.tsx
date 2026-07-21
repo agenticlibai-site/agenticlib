@@ -143,7 +143,7 @@ export default async function SalesVisibilityPage() {
             Disclaimer &amp; Terms of Use
           </p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
-            This report was created by <strong>AgenticLib</strong> (agenticlib.com). All data, scores, rankings, sentiment analysis, and commentary contained herein are generated and owned by AgenticLib. Unauthorised reproduction, distribution, or commercial use of this report or any portion of it without the prior written consent of AgenticLib is strictly prohibited.
+            This report was created by <strong>AgenticLib</strong>. All data, scores, rankings, sentiment analysis, and commentary contained herein are generated and owned by AgenticLib. Unauthorised reproduction, distribution, or commercial use of this report or any portion of it without the prior written consent of AgenticLib is strictly prohibited.
           </p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
             Brand mentions, feature scores, and sentiment data are derived from automated AI model queries (Claude Haiku and GPT-4o-mini) and reflect how those models respond to standardised prompts at the time of collection. They do not constitute an endorsement of, or negative judgment on, any brand. Scores and rankings may change as AI models are updated and new data is collected.
