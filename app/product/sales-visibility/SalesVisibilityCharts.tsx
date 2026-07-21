@@ -1300,7 +1300,8 @@ export default function SalesVisibilityCharts({
               },
               { text: "Shipped 3 major product launches in the last year (mid-2025 through mid-2026), each reinforcing an “AI-powered” narrative." },
             ],
-            yourData: "Sales content delivery 90 (strong, real evidence). Discovery mentions not pulled for this brand (different cluster — sales-enablement, not your category). 88% positive sentiment — highest of the four.",
+            dataLabel: "Highspot data:",
+            yourData: "Sales content delivery 90 — highest score in the Sales Enablement cluster, grounded in real evidence (Deal Agent, AI Role Play, Digital Sales Rooms). 89% positive sentiment — highest of all brands tracked in this report. Top AI descriptors: \"robust content management\", \"user-friendly interface\", \"effective coaching tools\". Appears consistently in the Sales Enablement & Follow-up mention trend. Discovery mentions tracked within the sales-enablement cluster, separate from the CRM/pipeline clusters.",
             takeaway: "Different category from yours (content enablement, not deal execution), but the tactic — pairing real content volume with direct named-competitor pages — is the most complete playbook here. Worth studying the mechanism even though Highspot itself isn't a competitor.",
           },
           {
@@ -1404,8 +1405,16 @@ export default function SalesVisibilityCharts({
                       ))}
                     </ul>
 
-                    <p style={{ fontSize: 14, color: "#000", lineHeight: 1.6, margin: "0 0 10px" }}>
-                      <span style={{ fontWeight: 700 }}>Your data: </span>{pb.yourData}
+                    <p style={{
+                      fontSize: 14, color: "#000", lineHeight: 1.6, margin: "0 0 10px",
+                      ...("dataLabel" in pb ? {
+                        background: "rgba(250,204,21,0.15)",
+                        border: "1px solid rgba(250,204,21,0.4)",
+                        borderRadius: 6,
+                        padding: "8px 12px",
+                      } : {}),
+                    }}>
+                      <span style={{ fontWeight: 700 }}>{"dataLabel" in pb ? pb.dataLabel : "Your data:"} </span>{pb.yourData}
                     </p>
 
                     <div style={{
