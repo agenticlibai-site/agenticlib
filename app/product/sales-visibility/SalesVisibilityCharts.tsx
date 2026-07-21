@@ -785,12 +785,7 @@ export default function SalesVisibilityCharts({
                       <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,0,0,0.055)" vertical={false} />
                       <XAxis dataKey="date" tickFormatter={fmtDate} tick={{ fontSize: 14, fill: "#000" }} axisLine={false} tickLine={false} dy={6} />
                       <YAxis allowDecimals={false} tick={{ fontSize: 14, fill: "#000" }} axisLine={false} tickLine={false} width={32} />
-                      <Tooltip
-                        contentStyle={{ borderRadius: 8, border: "1px solid rgba(0,0,0,0.10)", fontSize: 15, boxShadow: "0 4px 16px rgba(0,0,0,0.12)", color: NAVY }}
-                        labelStyle={{ fontWeight: 700, marginBottom: 4 }}
-                        labelFormatter={v => fmtDate(String(v))}
-                        formatter={(value, name) => [value, String(name)]}
-                      />
+                      <Tooltip content={<CombinedTooltip />} wrapperStyle={{ zIndex: 100 }} />
                       {clusterBrands.map(b => (
                         <Line key={b} type="monotone" dataKey={b} name={displayBrand(b)} stroke={brandColor(b)} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 0 }} />
                       ))}
