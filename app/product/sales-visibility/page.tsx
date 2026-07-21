@@ -44,7 +44,7 @@ export default async function SalesVisibilityPage() {
             className="text-3xl md:text-4xl font-bold mb-3"
             style={{ color: "#000000", letterSpacing: "-0.02em", lineHeight: 1.15 }}
           >
-            Sales AI Agent Visibility
+            Lamigo Report: Sales AI Agent Visibility
           </h1>
           <p className="text-base" style={{ color: "#000000", lineHeight: 1.6, maxWidth: 560 }}>
             How AI models recommend and describe sales AI agent brands across Claude and GPT-4o-mini, updated daily.
