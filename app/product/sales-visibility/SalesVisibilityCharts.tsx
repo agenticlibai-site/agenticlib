@@ -164,10 +164,10 @@ const BAND_COLORS: Record<string, string> = {
 };
 
 const BAND_FALLBACK: Record<string, string> = {
-  strong:  "Strong capability confirmed — the platform demonstrates this feature comprehensively across assessed dimensions.",
+  strong:  "Strong capability confirmed. The platform demonstrates this feature comprehensively across assessed dimensions.",
   present: "Capability confirmed and present in the core product offering.",
-  partial: "Partial capability detected — the platform shows some support for this feature but depth, differentiation, or documentation may be limited.",
-  weak:    "Limited capability based on available assessment information — core functionality may be absent or underdeveloped.",
+  partial: "Partial capability detected. The platform shows some support for this feature but depth, differentiation, or documentation may be limited.",
+  weak:    "Limited capability based on available assessment information. Core functionality may be absent or underdeveloped.",
 };
 
 function featureName(id: string): string {
@@ -201,11 +201,11 @@ const FEATURE_DESCRIPTIONS: Record<string, string> = {
   call_talk_time_analytics:            "Measures rep-vs-prospect talk ratio, filler word frequency, question rate, and longest monologue per call and per rep.",
   call_coaching_scorecard:             "Auto-scores rep calls against a defined rubric and surfaces the highest-priority coaching moments for managers.",
   call_competitor_objection_detection: "Detects competitor mentions and buyer objections in real time or post-call so reps can respond and managers can coach.",
-  pipeline_forecasting:                "Predicts close probability and revenue using engagement signals and AI — not just rep-submitted forecast numbers.",
+  pipeline_forecasting:                "Predicts close probability and revenue using engagement signals and AI, not just rep-submitted forecast numbers.",
   deal_risk_detection:                 "Flags stalled or at-risk deals by detecting champion silence, engagement drops, or stage stagnation.",
   outreach_sequencing:                 "Automates multi-touch email, call, and LinkedIn cadences with AI-optimised timing and branching step logic.",
   ai_personalisation:                  "Generates unique opening lines or message personalisation from prospect data (title, industry, signals) at scale.",
-  crm_auto_update:                     "Writes call outcomes, next steps, and deal stage changes to CRM fields automatically — no manual rep entry required.",
+  crm_auto_update:                     "Writes call outcomes, next steps, and deal stage changes to CRM fields automatically, with no manual rep entry required.",
   crm_data_accuracy:                   "Validates and enriches CRM records to reduce stale, incomplete, or duplicate contact and account data.",
   followup_drafting:                   "Drafts post-call follow-up emails that summarise key discussion points, commitments made, and agreed next steps.",
   sales_content_delivery:              "Surfaces the right pitch decks, case studies, or battlecards at the right moment based on deal context and stage.",
@@ -214,7 +214,7 @@ const FEATURE_DESCRIPTIONS: Record<string, string> = {
   tech_workflow_automation:            "Triggers downstream actions in email, CRM, Slack, or other tools automatically based on call or deal events.",
   rai_data_privacy:                    "Documents how prospect data, call recordings, and CRM data are stored, encrypted, retained, and governed.",
   rai_explainability:                  "Explains why a deal was scored a certain way, a risk was flagged, or a specific recommendation was surfaced.",
-  cost_pricing_transparency:           "Publishes clear pricing tiers or per-seat costs publicly — without requiring a sales call to get a number.",
+  cost_pricing_transparency:           "Publishes clear pricing tiers or per-seat costs publicly, without requiring a sales call to get a number.",
   cost_free_trial:                     "Offers a self-serve trial or freemium tier that can be activated without a mandatory demo or sales conversation.",
 };
 
@@ -223,36 +223,36 @@ const FEATURE_DESCRIPTIONS: Record<string, string> = {
 // model's generic output needed replacing with what the brand's own docs actually say.
 const EVIDENCE_OVERRIDE: Record<string, Record<string, string>> = {
   rai_data_privacy: {
-    "Gong": "SOC 2 Type II, ISO 27001/27017/27018/27701/42001, HIPAA, and PCI DSS certified. Lets customers pin call/prospect data to a US or EU AWS region, with the customer as data controller and Gong as processor — a region-choice + controller/processor split worth copying for any agent handling call recordings. Access is gated by MFA and least-privilege roles, with real-time threat monitoring layered on top. In-product, admins can build do-not-record exclusion lists by domain, email, or title keyword (e.g. flagging \"sensitive\" in a meeting name). Automatic redaction strips payment-card and ID numbers from new recordings, and retention is capped at three years or the contract term via a single Admin Center toggle.",
-    "Outreach": "SOC 2 Type II, ISO 27001/27701 certified. TLS 1.2+ at rest and in transit, hard data-minimisation (nothing retained past service need), and 24-hour RTO/RPO disaster-recovery targets. DPAs with EU/UK Standard Contractual Clauses extend to its own subprocessors too — a clean template for subprocessor accountability, not just first-party compliance. Admins get a self-service console for single-record Right-to-be-Forgotten requests and selective CSV export for other data subject access requests. A deeper \"Compliance Delete\" scrubs a person's data across every Outreach system beyond what a standard delete reaches, with one-time or recurring retention schedules configurable per org.",
-    "Chorus": "SOC 2 Type II, ISO 27001/27701 certified via ZoomInfo's shared trust program. AES-256 at rest, TLS 1.2+ in transit, SHA-256 salted password hashes, MFA/SSO required for access. 24/7 SOC monitoring with 90-day log retention, plus WAF/DDoS/intrusion-detection at the network edge — a solid reference stack for any agent ingesting call recordings at volume. Recordings persist until manually deleted or, if an admin enables it, auto-purge after 180 days. Visibility is scoped through hierarchical team permissions, and every call has its own settings panel for adjusting privacy on a per-recording basis rather than only at the org level.",
-    "Avoma": "SOC 2 Type II certified with annual third-party pen testing. TLS-only connections, at-rest encryption via AWS-managed keys, app servers isolated in their own VPC behind restricted security groups. Standout piece: jurisdiction-aware recording-consent prompts (one-party vs. two-party) built directly into the product UX, not just described in a policy doc — worth replicating for any agent that records calls. Every meeting is auto-classified internal or external by attendee email domain and gets one of four privacy tiers applied by default with no manual tagging required. Avoma also commits contractually to deleting customer data within 30 days of contract termination or on request.",
-    "Clari": "SOC 2 Type II (zero exceptions), ISO 27001/27701, HIPAA, GDPR/CCPA. Encrypts at rest and in transit, though exact algorithms aren't public — depth requires requesting the whitepaper. Two cheap, high-trust signals worth adopting regardless of certification stage: a public vulnerability-disclosure program and a live status page. Governance is enforced through role-based plus field-level permissions with an audit log tracking who changed what and when. Some customers flag the audit trail as too coarse for detailed compliance reporting, though — worth validating before relying on it as a sole compliance record.",
+    "Gong": "SOC 2 Type II, ISO 27001/27017/27018/27701/42001, HIPAA, and PCI DSS certified. Lets customers pin call/prospect data to a US or EU AWS region, with the customer as data controller and Gong as processor, a region-choice + controller/processor split worth copying for any agent handling call recordings. Access is gated by MFA and least-privilege roles, with real-time threat monitoring layered on top. In-product, admins can build do-not-record exclusion lists by domain, email, or title keyword (e.g. flagging \"sensitive\" in a meeting name). Automatic redaction strips payment-card and ID numbers from new recordings, and retention is capped at three years or the contract term via a single Admin Center toggle.",
+    "Outreach": "SOC 2 Type II, ISO 27001/27701 certified. TLS 1.2+ at rest and in transit, hard data-minimisation (nothing retained past service need), and 24-hour RTO/RPO disaster-recovery targets. DPAs with EU/UK Standard Contractual Clauses extend to its own subprocessors too, a clean template for subprocessor accountability, not just first-party compliance. Admins get a self-service console for single-record Right-to-be-Forgotten requests and selective CSV export for other data subject access requests. A deeper \"Compliance Delete\" scrubs a person's data across every Outreach system beyond what a standard delete reaches, with one-time or recurring retention schedules configurable per org.",
+    "Chorus": "SOC 2 Type II, ISO 27001/27701 certified via ZoomInfo's shared trust program. AES-256 at rest, TLS 1.2+ in transit, SHA-256 salted password hashes, MFA/SSO required for access. 24/7 SOC monitoring with 90-day log retention, plus WAF/DDoS/intrusion-detection at the network edge, a solid reference stack for any agent ingesting call recordings at volume. Recordings persist until manually deleted or, if an admin enables it, auto-purge after 180 days. Visibility is scoped through hierarchical team permissions, and every call has its own settings panel for adjusting privacy on a per-recording basis rather than only at the org level.",
+    "Avoma": "SOC 2 Type II certified with annual third-party pen testing. TLS-only connections, at-rest encryption via AWS-managed keys, app servers isolated in their own VPC behind restricted security groups. Standout piece: jurisdiction-aware recording-consent prompts (one-party vs. two-party) built directly into the product UX, not just described in a policy doc. Worth replicating for any agent that records calls. Every meeting is auto-classified internal or external by attendee email domain and gets one of four privacy tiers applied by default with no manual tagging required. Avoma also commits contractually to deleting customer data within 30 days of contract termination or on request.",
+    "Clari": "SOC 2 Type II (zero exceptions), ISO 27001/27701, HIPAA, GDPR/CCPA. Encrypts at rest and in transit, though exact algorithms aren't public. Depth requires requesting the whitepaper. Two cheap, high-trust signals worth adopting regardless of certification stage: a public vulnerability-disclosure program and a live status page. Governance is enforced through role-based plus field-level permissions with an audit log tracking who changed what and when. Some customers flag the audit trail as too coarse for detailed compliance reporting, though. Worth validating before relying on it as a sole compliance record.",
   },
   call_talk_time_analytics: {
-    "Gong": "Gong provides detailed communication metrics, including the talk-time ratio, which allows sales managers to see how much time each rep spends speaking versus listening during calls. This metric helps teams understand engagement levels in their conversations, emphasising the importance of listening for effective selling. It also scores \"Patience\" — the median pause before a rep responds, with 0.6–1 second flagged as the ideal \"golden pause\" — and \"Interactivity,\" a 0–10 score for how often speakers switch per minute. Longest monologue and question rate round out the same dashboard, so coaching isn't limited to a single ratio.",
+    "Gong": "Gong provides detailed communication metrics, including the talk-time ratio, which allows sales managers to see how much time each rep spends speaking versus listening during calls. This metric helps teams understand engagement levels in their conversations, emphasising the importance of listening for effective selling. It also scores \"Patience\" (the median pause before a rep responds, with 0.6–1 second flagged as the ideal \"golden pause\") and \"Interactivity,\" a 0–10 score for how often speakers switch per minute. Longest monologue and question rate round out the same dashboard, so coaching isn't limited to a single ratio.",
     "Chorus": "Chorus provides detailed call analytics that include metrics like talk-time ratio between reps and prospects, enabling sales managers to assess how well reps balance talking and listening during calls. This tracking allows teams to identify coaching opportunities and improve communication skills over time. The same dashboard tracks filler words, question count, and topic coverage, and can be customised around CRM fields like deal stage or size rather than a single fixed view. Reps can be benchmarked against top performers on each metric individually, not just an overall score.",
     "Avoma": "Avoma provides detailed per-call communication metrics, including talk-time ratios, filler word frequency, longest uninterrupted monologue, and question rates. This allows sales teams to analyse individual performance against key metrics, facilitating targeted coaching and enhancing listening skills for improved sales conversations. Its Conversation Insights dashboard flags calls against a 40–60% talk-time benchmark and lets managers drill into which specific filler words a rep overuses, not just a raw count. A dedicated coaching view rolls talk-to-listen ratio, monologue length, and sentiment up per rep over time, rather than showing only a single-call snapshot.",
   },
   call_coaching_scorecard: {
-    "Revenue.io": "Every qualifying sales call is automatically scored by AI using predefined criteria, generating objective feedback across key sales behaviours like discovery, objection handling, and closing. A personalised coaching card is generated for each rep on every call. Scorecards can be built per role or sales motion and mapped to a named methodology like GAP Selling or MEDDIC rather than a generic rubric — discovery quality alone is scored on its own 0–5 scale. A dedicated Coaching Feedback tab surfaces the AI's reasoning behind each score, so managers coach from specifics instead of a bare number.",
+    "Revenue.io": "Every qualifying sales call is automatically scored by AI using predefined criteria, generating objective feedback across key sales behaviours like discovery, objection handling, and closing. A personalised coaching card is generated for each rep on every call. Scorecards can be built per role or sales motion and mapped to a named methodology like GAP Selling or MEDDIC rather than a generic rubric. Discovery quality alone is scored on its own 0–5 scale. A dedicated Coaching Feedback tab surfaces the AI's reasoning behind each score, so managers coach from specifics instead of a bare number.",
     "Avoma": "Avoma automatically generates post-call scorecards that detail coaching feedback on observed behaviours such as discovery depth, objection handling, and next-steps clarity. This is accomplished through AI-driven analysis that identifies key aspects of each call, enabling reps to receive personalised insights for improvement without requiring manager involvement. Scoring runs against pre-built templates for MEDDIC, BANT, SPICED, and SPIN, or fully custom scorecards a team builds itself, with every score backed by a timestamped clip as evidence. Managers also get weekly digests summarising each rep's strongest and weakest areas, plus coaching playlists curated by role.",
   },
   call_competitor_objection_detection: {
-    "Gong": "Gong automatically detects and categorises competitor mentions and objection types during calls using advanced speech recognition and natural language processing. Sales teams receive insights into which competitors are mentioned most frequently and the common objections faced, enabling leaders to identify patterns and adjust strategies effectively. Detection runs on two layers: Keyword Trackers for exact terms, including a pre-built \"Competitors\" tracker seeded with named rivals, plus Smart Trackers that catch a concept regardless of phrasing — a discount request gets flagged whether a prospect says \"best price\" or \"any wiggle room.\" Both feed the same win/loss analytics without a rep tagging anything manually.",
-    "Chorus": "Chorus employs advanced AI algorithms to automatically detect and categorise competitor mentions and pricing objections during calls. This functionality allows sales teams to gain insights into which competitors are frequently mentioned and what specific objections are hindering progress in deals, enabling teams to strategise more effectively against competition and tailor their responses to common objections. Trackers fire on competitor names, pricing terms, and named features out of the box, so a report can be built around every call where a specific rival came up. High-stakes moments — churn risk, pricing pushback, negative sentiment — can be configured to auto-escalate to a manager instead of waiting for a scheduled review.",
-    "Revenue.io": "Revenue.io's Conversation Agents extract objections, next steps, and competitive mentions from every call — writing results to Salesforce fields automatically. The instant a competitor is mentioned, an objection surfaces, or a qualifying question goes unasked, a targeted notification fires in the rep's dialer. This live-notification layer, called Moments™, works mid-call rather than in a post-call review, and can surface a matching talk track to the rep in the same moment. Because everything writes to Salesforce automatically, competitor-mention reporting doesn't depend on reps logging it themselves.",
+    "Gong": "Gong automatically detects and categorises competitor mentions and objection types during calls using advanced speech recognition and natural language processing. Sales teams receive insights into which competitors are mentioned most frequently and the common objections faced, enabling leaders to identify patterns and adjust strategies effectively. Detection runs on two layers: Keyword Trackers for exact terms, including a pre-built \"Competitors\" tracker seeded with named rivals, plus Smart Trackers that catch a concept regardless of phrasing. A discount request gets flagged whether a prospect says \"best price\" or \"any wiggle room.\" Both feed the same win/loss analytics without a rep tagging anything manually.",
+    "Chorus": "Chorus employs advanced AI algorithms to automatically detect and categorise competitor mentions and pricing objections during calls. This functionality allows sales teams to gain insights into which competitors are frequently mentioned and what specific objections are hindering progress in deals, enabling teams to strategise more effectively against competition and tailor their responses to common objections. Trackers fire on competitor names, pricing terms, and named features out of the box, so a report can be built around every call where a specific rival came up. High-stakes moments, including churn risk, pricing pushback, and negative sentiment, can be configured to auto-escalate to a manager instead of waiting for a scheduled review.",
+    "Revenue.io": "Revenue.io's Conversation Agents extract objections, next steps, and competitive mentions from every call, writing results to Salesforce fields automatically. The instant a competitor is mentioned, an objection surfaces, or a qualifying question goes unasked, a targeted notification fires in the rep's dialer. This live-notification layer, called Moments™, works mid-call rather than in a post-call review, and can surface a matching talk track to the rep in the same moment. Because everything writes to Salesforce automatically, competitor-mention reporting doesn't depend on reps logging it themselves.",
   },
   pipeline_forecasting: {
     "Clari": "Clari uses AI-driven insights to analyse historical data, deal progress, and engagement metrics, which allows it to provide a more accurate forecast of pipeline and revenue outcomes. This approach aggregates diverse data points beyond just rep-submitted numbers, enabling sales teams to gain a clearer picture of the likelihood of closing deals in the current quarter. Clari claims its forecasts reach roughly 98% accuracy by the second week of the quarter, and its Scenario Forecasting tool lets managers pull deals in or out of a model to test what-if scenarios before committing a number. A newly shipped MCP server also exposes the same pipeline data to Claude, ChatGPT, and other AI assistants, so forecast context isn't locked inside a single dashboard.",
-    "6sense": "6sense employs AI to analyse intent data, historical trends, and engagement signals to forecast pipeline and predict revenue outcomes. This data-driven approach allows sales teams to gain a clearer understanding of potential close rates, enabling better allocation of resources and targeted strategies for upcoming quarters. Its predictive engine scores accounts against 50+ buying signals — website visits, content consumption, technology changes, competitor research — and sorts each into a named buying stage (Awareness, Consideration, Decision, Purchase) rather than a single blended score. A monthly Predictive Model Insights Report then back-tests those predictions against actual outcomes on a 90-day lookback, so forecast accuracy is auditable rather than a black box.",
+    "6sense": "6sense employs AI to analyse intent data, historical trends, and engagement signals to forecast pipeline and predict revenue outcomes. This data-driven approach allows sales teams to gain a clearer understanding of potential close rates, enabling better allocation of resources and targeted strategies for upcoming quarters. Its predictive engine scores accounts against 50+ buying signals, including website visits, content consumption, technology changes, competitor research, then sorts each into a named buying stage (Awareness, Consideration, Decision, Purchase) rather than a single blended score. A monthly Predictive Model Insights Report then back-tests those predictions against actual outcomes on a 90-day lookback, so forecast accuracy is auditable rather than a black box.",
   },
   deal_risk_detection: {
-    "Clari": "Clari utilises predictive analytics to identify at-risk deals by monitoring engagement metrics such as communication frequency, deal stage duration, and the activity levels of team members, including champions. This proactive flagging allows sales teams to prioritise at-risk opportunities and take action before they fall through, ensuring a more strategic approach to sales management. Clari Inspect backs each risk flag with an AI opportunity score, Activity Insights pulled from outside the CRM, and a Details Panel that checks whether the deal is following a named methodology like MEDDIC or Sandler. It can also surface why a deal moved, tying the shift to specific detected activity — or the lack of it — rather than leaving the change unexplained.",
-    "6sense": "6sense utilises predictive analytics to automatically flag at-risk deals by monitoring key engagement metrics, such as a drop in communication with the champion or stagnation at certain deal stages. This enables sales teams to proactively address potential issues before deals fall through, allowing them to focus their efforts on high-risk opportunities. Each account sits in a Predictive Buying Stage — Target, Awareness, Consideration, or Decision — built from patterns across web, content, and search signals rather than a single risk score. Teams can configure email or Slack alerts so a newly at-risk deal surfaces the same day the signal changes, instead of waiting on a manual pipeline review.",
+    "Clari": "Clari utilises predictive analytics to identify at-risk deals by monitoring engagement metrics such as communication frequency, deal stage duration, and the activity levels of team members, including champions. This proactive flagging allows sales teams to prioritise at-risk opportunities and take action before they fall through, ensuring a more strategic approach to sales management. Clari Inspect backs each risk flag with an AI opportunity score, Activity Insights pulled from outside the CRM, and a Details Panel that checks whether the deal is following a named methodology like MEDDIC or Sandler. It can also surface why a deal moved, tying the shift to specific detected activity, or the lack of it, rather than leaving the change unexplained.",
+    "6sense": "6sense utilises predictive analytics to automatically flag at-risk deals by monitoring key engagement metrics, such as a drop in communication with the champion or stagnation at certain deal stages. This enables sales teams to proactively address potential issues before deals fall through, allowing them to focus their efforts on high-risk opportunities. Each account sits in a Predictive Buying Stage (Target, Awareness, Consideration, or Decision), built from patterns across web, content, and search signals rather than a single risk score. Teams can configure email or Slack alerts so a newly at-risk deal surfaces the same day the signal changes, instead of waiting on a manual pipeline review.",
   },
   outreach_sequencing: {
-    "Conversica": "Conversica automates multi-step outreach sequences using AI-driven assistants that manage the outreach process. The system triggers the next step automatically based on the response or engagement level of the prospect, ensuring follow-ups occur in a timely manner and freeing sales reps to focus on higher-value activities. Unlike template-blast sequencing tools, its NLP actually reads and interprets each reply — handling objections and follow-up questions in a genuine two-way exchange — before deciding the next step, rather than branching on opens and clicks alone. A lead is only routed to a human rep once a real buying signal emerges, so reps aren't chasing sequence steps that never showed intent.",
+    "Conversica": "Conversica automates multi-step outreach sequences using AI-driven assistants that manage the outreach process. The system triggers the next step automatically based on the response or engagement level of the prospect, ensuring follow-ups occur in a timely manner and freeing sales reps to focus on higher-value activities. Unlike template-blast sequencing tools, its NLP actually reads and interprets each reply, handling objections and follow-up questions in a genuine two-way exchange, before deciding the next step, rather than branching on opens and clicks alone. A lead is only routed to a human rep once a real buying signal emerges, so reps aren't chasing sequence steps that never showed intent.",
     "Lemlist": "Lemlist's conditional logic lets you branch sequences based on whether someone opened an email, clicked a link, or replied, so engaged prospects get a different follow-up path than cold ones. Timed conditions like \"Within\" and \"Wait Until\" automate the pacing of each step without manual input, including branching to a LinkedIn touch if an email goes unopened. Multi-channel sequences can combine several of these conditions across a single campaign, so a prospect's path adapts to every interaction rather than following one fixed script. This makes Lemlist better suited to smaller, condition-heavy sequences than the high-volume, CRM-anchored sequencing Outreach and Conversica are built for.",
     "Outreach": "Outreach provides a feature called \"Sequences\" that automates multi-step outreach campaigns. Reps can design a sequence that includes emails, calls, and LinkedIn touches, and Outreach automatically navigates through these steps based on recipient interactions such as email opens or responses. ML-driven A/B testing is built directly into the sequence layer, letting teams test subject lines, message variants, and send timing with statistical tracking baked in. Buyer sentiment analysis also classifies each reply as positive, neutral, an objection, or an unsubscribe, so a sequence can branch on how a prospect responded, not just whether they responded.",
   },
@@ -270,24 +270,24 @@ const EVIDENCE_OVERRIDE: Record<string, Record<string, string>> = {
     "Mindtickle": "Mindtickle automatically surfaces relevant battlecards, case studies, and talk tracks based on real-time analysis of deal stages and competitor mentions during sales calls. This capability allows sales reps to access tailored content at crucial moments, improving their responsiveness and confidence in addressing specific customer concerns. Recommendations factor in industry, persona, deal stage, and a rep's own past engagement history, not just the immediate call context, and can surface directly inside the CRM so reps don't have to leave their workflow to find it. This makes content delivery function more like just-in-time coaching than a static content library search.",
   },
   tech_crm_integration: {
-    "Drift": "Drift natively integrates with both Salesforce and HubSpot, allowing seamless data sharing without needing middleware. This means that conversations are automatically logged, and leads can be qualified and routed directly into the CRM, enabling sales teams to act quickly on fresh leads and data insights. The Salesforce integration is bidirectional — conversation engagement updates lead scores in real time, and reps can view full chat transcripts directly inside Salesforce records rather than switching tools. Because Drift was built Salesforce-first, teams report its routing, attribution, and pipeline tracking perform noticeably better there than in a HubSpot-primary setup.",
+    "Drift": "Drift natively integrates with both Salesforce and HubSpot, allowing seamless data sharing without needing middleware. This means that conversations are automatically logged, and leads can be qualified and routed directly into the CRM, enabling sales teams to act quickly on fresh leads and data insights. The Salesforce integration is bidirectional. Conversation engagement updates lead scores in real time, and reps can view full chat transcripts directly inside Salesforce records rather than switching tools. Because Drift was built Salesforce-first, teams report its routing, attribution, and pipeline tracking perform noticeably better there than in a HubSpot-primary setup.",
     "Chorus": "Chorus natively integrates with both Salesforce and HubSpot, allowing sales teams to seamlessly sync call data, meeting notes, and performance metrics directly into their CRM systems. This integration ensures that sales reps have immediate access to critical customer interactions, enhancing their ability to track engagement and improve follow-up strategies effectively. Every synced call also pushes a completed Salesforce task with a link to the recording, attendee list, topics discussed, and next steps, so the activity trail is reconstructable without opening Chorus itself. Its Momentum Insights layer surfaces the same pipeline and relationship visibility directly on ZoomInfo's own company and contact pages, not just inside Chorus.",
     "Reply.io": "Reply.io provides native integrations with both Salesforce and HubSpot that allow users to sync contacts, track interactions, and automate workflows directly without requiring any third-party middleware. This built-in capability means sales teams can ensure their CRM systems are always up to date with minimal manual overhead, enhancing productivity and streamlining engagement tracking. Worth noting for anyone building on this: the sync is one-directional, from Reply.io into the CRM, so updates made in Salesforce or HubSpot don't flow back automatically. Teams needing bidirectional sync typically layer on Zapier or the open API rather than relying on the native connector alone.",
   },
   tech_workflow_automation: {
     "6sense": "6sense's Intelligent Workflows feature includes an intuitive drag-and-drop canvas for building multi-step campaigns, with conditional logic and parallel workflows for flexibility. The tool lets you create intelligent branches based on any buyer signal and route buyers to the perfect next step based on any set of conditions, including deploying AI-personalised emails, pushing hot leads straight into Salesloft or Outreach sequences, and keeping technographic and firmographic data accurate across every connected system. This puts the branching logic on buyer behaviour rather than a fixed send schedule, so a workflow can react the same day an account's intent signal changes rather than at the next scheduled touch.",
-    "Revenue.io": "Revenue.io automates multi-step sales workflows by intelligently analysing call data, updating CRM records, drafting follow-up communications, and flagging potential risks without human intervention. This seamless integration allows sales teams to save time on administrative tasks, focus more on selling, and reduce errors that can occur from manual processes. Its Moments feature fires live coaching notifications the instant a call connects — talk tracks, objection responses, compliance reminders — rather than surfacing guidance only after the call ends. RevAI is trained on the org's own Salesforce fields, pipeline, and rep behaviour rather than a generic model, so scorecards and coaching feedback reference the team's actual playbooks.",
+    "Revenue.io": "Revenue.io automates multi-step sales workflows by intelligently analysing call data, updating CRM records, drafting follow-up communications, and flagging potential risks without human intervention. This seamless integration allows sales teams to save time on administrative tasks, focus more on selling, and reduce errors that can occur from manual processes. Its Moments feature fires live coaching notifications the instant a call connects (talk tracks, objection responses, compliance reminders), rather than surfacing guidance only after the call ends. RevAI is trained on the org's own Salesforce fields, pipeline, and rep behaviour rather than a generic model, so scorecards and coaching feedback reference the team's actual playbooks.",
     "Clari": "Clari automates multi-step sales workflows by leveraging its AI-driven insights and integrations with platforms like CRM systems. This allows Clari to analyse call data, automatically update the CRM with relevant information, draft follow-up emails, and flag risks without requiring manual input from sales reps, resulting in a seamless and efficient process that minimises administrative burdens. Smart Follow-Up Emails generate contextually accurate, personalised drafts based on the specifics of each conversation rather than a generic template. Clari Copilot handles the Salesforce updates directly, and RevGPT can draft the follow-up email, summarise the call, and identify next steps as one combined post-call action.",
   },
   rai_explainability: {
-    "Chorus": "Chorus provides detailed insights when it flags a deal as at-risk by highlighting specific call behaviours and customer signals that contributed to the flag. For example, it can show indications such as objections raised during the call or a lack of engagement from the prospect, allowing sales teams to understand and address the issues proactively. Its Deal Recommendation Engine ties these flags to concrete signals — declining meeting frequency, negative sentiment trends, stalled commitment phrases — rather than a single opaque score, and lets teams set custom alert thresholds around them. Recommendations are also grounded in ZoomInfo's buying-committee data, so a stalled deal comes with a suggested contact to re-engage, not just a warning.",
+    "Chorus": "Chorus provides detailed insights when it flags a deal as at-risk by highlighting specific call behaviours and customer signals that contributed to the flag. For example, it can show indications such as objections raised during the call or a lack of engagement from the prospect, allowing sales teams to understand and address the issues proactively. Its Deal Recommendation Engine ties these flags to concrete signals, including declining meeting frequency, negative sentiment trends, and stalled commitment phrases, rather than a single opaque score, and lets teams set custom alert thresholds around them. Recommendations are also grounded in ZoomInfo's buying-committee data, so a stalled deal comes with a suggested contact to re-engage, not just a warning.",
     "Revenue.io": "Revenue.io provides insights into why a deal is flagged as at-risk by showing specific signals that triggered the alert, such as negative trends in interaction metrics. This clarity allows sales teams to take informed actions based on actual data, enhancing their ability to strategise on high-risk deals effectively. Deal Health Scores update daily from CRM data, activity signals, engagement recency, and actual conversation content combined, rather than from CRM fields alone. Its Conversation Agents also extract the specific objections, next steps, and competitor mentions behind a score and write them straight to Salesforce, so the explanation is attached to the record itself, not locked in a separate dashboard.",
-    "Gong": "Gong provides detailed explanations when flagging a deal as at-risk by highlighting the specific signals that triggered the alert, such as lack of engagement or decreased communication frequency. This insight allows sales teams to understand the context behind the risk flag and take informed actions to address the issues. Its Deal Likelihood Score draws on 300+ buying signals to output a Low/Medium/High rating alongside a plain-language explanation of the contributing factors, rather than a bare number. Named risk warnings — such as a red-flagged email, no prospect activity for a set number of days, or a single-threaded relationship — are colour-coded and individually configurable, so a manager can see exactly which condition tripped the alert.",
+    "Gong": "Gong provides detailed explanations when flagging a deal as at-risk by highlighting the specific signals that triggered the alert, such as lack of engagement or decreased communication frequency. This insight allows sales teams to understand the context behind the risk flag and take informed actions to address the issues. Its Deal Likelihood Score draws on 300+ buying signals to output a Low/Medium/High rating alongside a plain-language explanation of the contributing factors, rather than a bare number. Named risk warnings such as a red-flagged email, no prospect activity for a set number of days, or a single-threaded relationship, are colour-coded and individually configurable, so a manager can see exactly which condition tripped the alert.",
   },
   cost_free_trial: {
-    "Reply.io": "Reply.io offers a 14-day free trial with no credit card required. The trial provides access to core platform features including a B2B database, multichannel sequences (email, LinkedIn, SMS, calls), reports, analytics, and API access with integrations like Salesforce and HubSpot. Users can start the trial directly at reply.io without requiring a sales call or demo, and pricing stays transparent beyond the trial too — plans run $49/user for email-only, up to $139/user for the full AI SDR tier. That published, self-serve pricing is worth copying regardless of trial length; it lets a buyer size up cost before ever talking to sales.",
-    "Apollo": "Apollo offers a free trial that allows users to access its platform and utilise its sales intelligence tools. This self-serve approach enables sales teams to explore features such as lead generation, email tracking, and engagement metrics without requiring a sales call, making it easy for potential customers to evaluate the tool's effectiveness directly. Beyond the trial, Apollo actually runs a free-forever Starter plan with the full 210M+ contact database, fair-use email sending, and a handful of mobile and export credits each month — not just a time-boxed trial that expires. The trade-off is real: as of late 2025 the free tier's email allowance was cut from 10,000 to 100 credits a month, and it excludes CRM integrations, so it's best treated as a data-quality test rather than an ongoing prospecting tool.",
-    "Drift": "Drift discontinued its free trial and self-serve plan in 2023 — there is no sandbox or trial period today, only a guided demo gated behind a sales call. Pricing now starts around $2,500/month for the entry-level Premium plan, scaling to $6,000–10,000+/month at Enterprise, which puts it in a different buying category from the self-serve tools in this cluster. Worth flagging for any team evaluating this group: Drift is the one product here that can't be tested hands-on before a sales conversation, which matters if fast, low-commitment evaluation is a priority.",
+    "Reply.io": "Reply.io offers a 14-day free trial with no credit card required. The trial provides access to core platform features including a B2B database, multichannel sequences (email, LinkedIn, SMS, calls), reports, analytics, and API access with integrations like Salesforce and HubSpot. Users can start the trial directly at reply.io without requiring a sales call or demo, and pricing stays transparent beyond the trial too. Plans run $49/user for email-only, up to $139/user for the full AI SDR tier. That published, self-serve pricing is worth copying regardless of trial length; it lets a buyer size up cost before ever talking to sales.",
+    "Apollo": "Apollo offers a free trial that allows users to access its platform and utilise its sales intelligence tools. This self-serve approach enables sales teams to explore features such as lead generation, email tracking, and engagement metrics without requiring a sales call, making it easy for potential customers to evaluate the tool's effectiveness directly. Beyond the trial, Apollo actually runs a free-forever Starter plan with the full 210M+ contact database, fair-use email sending, and a handful of mobile and export credits each month, not just a time-boxed trial that expires. The trade-off is real: as of late 2025 the free tier's email allowance was cut from 10,000 to 100 credits a month, and it excludes CRM integrations, so it's best treated as a data-quality test rather than an ongoing prospecting tool.",
+    "Drift": "Drift discontinued its free trial and self-serve plan in 2023. There is no sandbox or trial period today, only a guided demo gated behind a sales call. Pricing now starts around $2,500/month for the entry-level Premium plan, scaling to $6,000–10,000+/month at Enterprise, which puts it in a different buying category from the self-serve tools in this cluster. Worth flagging for any team evaluating this group: Drift is the one product here that can't be tested hands-on before a sales conversation, which matters if fast, low-commitment evaluation is a priority.",
   },
 };
 
@@ -299,15 +299,15 @@ function evidenceFor(featureId: string, brand: string, raw: string | null): stri
 const G2_EVIDENCE: Record<string, { featureLabel: string; evidence: string }> = {
   "Backstory.ai": {
     featureLabel: "Revenue Activity Capture",
-    evidence: "Backstory (formerly People.ai) is a Revenue Answers Platform grounded in 100% of actual sales activity — connecting every signal to accounts and opportunities so reps can query deal context inside Salesforce, Claude, or Copilot without relying on what got manually logged.",
+    evidence: "Backstory (formerly People.ai) is a Revenue Answers Platform grounded in 100% of actual sales activity, connecting every signal to accounts and opportunities so reps can query deal context inside Salesforce, Claude, or Copilot without relying on what got manually logged.",
   },
   "Tact.ai": {
     featureLabel: "Mobile CRM Automation",
-    evidence: "Tact's patented Edge AI gives field sellers frictionless mobile access to Salesforce — logging activities, surfacing next-step recommendations, and automating multi-step workflows so Fortune 500 teams at Honeywell and Cisco can work deals without touching a laptop.",
+    evidence: "Tact's patented Edge AI gives field sellers frictionless mobile access to Salesforce, logging activities, surfacing next-step recommendations, and automating multi-step workflows so Fortune 500 teams at Honeywell and Cisco can work deals without touching a laptop.",
   },
   "Avoma": {
     featureLabel: "AI Meeting Intelligence",
-    evidence: "Avoma records, transcribes, and AI-scores every sales call (9.5/10 on G2 for call recording), then auto-extracts action items and coaching scorecards and syncs them to CRM — eliminating post-call admin for reps entirely.",
+    evidence: "Avoma records, transcribes, and AI-scores every sales call (9.5/10 on G2 for call recording), then auto-extracts action items and coaching scorecards and syncs them to CRM, eliminating post-call admin for reps entirely.",
   },
   "Chorus": {
     featureLabel: "Conversation Intelligence",
@@ -315,19 +315,19 @@ const G2_EVIDENCE: Record<string, { featureLabel: string; evidence: string }> = 
   },
   "Revenue.io": {
     featureLabel: "Real-Time Call Guidance",
-    evidence: "Revenue.io surfaces AI-powered guidance on live calls in real time — not in post-call reviews — so reps receive the right play at the exact moment a buying signal or objection appears, while natively logging every interaction in Salesforce automatically.",
+    evidence: "Revenue.io surfaces AI-powered guidance on live calls in real time, not in post-call reviews, so reps receive the right play at the exact moment a buying signal or objection appears, while natively logging every interaction in Salesforce automatically.",
   },
   "Gong": {
     featureLabel: "Revenue AI Operating System",
-    evidence: "Gong's Revenue AI OS analyses 100% of customer conversations to surface deal risk, coaching opportunities, and competitive intelligence — ranked G2's #1 Best Software Product for multiple years, with users citing searchable call archives and real-time deal alerts as its defining advantage.",
+    evidence: "Gong's Revenue AI OS analyses 100% of customer conversations to surface deal risk, coaching opportunities, and competitive intelligence. Ranked G2's #1 Best Software Product for multiple years, with users citing searchable call archives and real-time deal alerts as its defining advantage.",
   },
   "Salesloft": {
     featureLabel: "AI Sales Engagement",
-    evidence: "Salesloft's cadence engine automates multi-touch sequences across email, phone, and LinkedIn with ML-driven engagement recommendations based on historical buyer behaviour — 11,000+ G2 reviews make it the #1 rated sales engagement platform, with teams reporting 20–30% productivity gains.",
+    evidence: "Salesloft's cadence engine automates multi-touch sequences across email, phone, and LinkedIn with ML-driven engagement recommendations based on historical buyer behaviour. With 11,000+ G2 reviews make it the #1 rated sales engagement platform, with teams reporting 20–30% productivity gains.",
   },
   "Outreach": {
     featureLabel: "AI Deal Management",
-    evidence: "Outreach's Kaia AI delivers real-time notes, action items, and competitive battlecards mid-call, while the Deal Agent automatically surfaces AI-recommended CRM field updates — eliminating manual pipeline hygiene so reps stay focused on customer conversations.",
+    evidence: "Outreach's Kaia AI delivers real-time notes, action items, and competitive battlecards mid-call, while the Deal Agent automatically surfaces AI-recommended CRM field updates, eliminating manual pipeline hygiene so reps stay focused on customer conversations.",
   },
   "Clari": {
     featureLabel: "AI Pipeline Forecasting",
@@ -335,31 +335,31 @@ const G2_EVIDENCE: Record<string, { featureLabel: string; evidence: string }> = 
   },
   "6sense": {
     featureLabel: "Predictive Account Intelligence",
-    evidence: "6sense's 6AI engine scores accounts by buying stage and purchase intent, surfacing up to 1,000 daily signals across 15+ signal types per seller — so sales teams engage the right accounts at exactly the right moment, with 98% of G2 reviewers rating it 4 or 5 stars.",
+    evidence: "6sense's 6AI engine scores accounts by buying stage and purchase intent, surfacing up to 1,000 daily signals across 15+ signal types per seller, so sales teams engage the right accounts at exactly the right moment, with 98% of G2 reviewers rating it 4 or 5 stars.",
   },
   "Apollo": {
     featureLabel: "AI GTM Platform",
-    evidence: "Apollo combines a 210M+ contact database with agentic AI workflows for lead scoring, personalised message generation, and send-time optimisation — the first GTM platform to reach 9,000+ G2 reviews, holding #1 rankings across sales intelligence and engagement in the Winter 2026 report.",
+    evidence: "Apollo combines a 210M+ contact database with agentic AI workflows for lead scoring, personalised message generation, and send-time optimisation. The first GTM platform to reach 9,000+ G2 reviews, holding #1 rankings across sales intelligence and engagement in the Winter 2026 report.",
   },
   "Clay": {
     featureLabel: "AI Data Enrichment & Outreach",
-    evidence: "Clay's Claygent AI enriches prospects with 300+ attributes across 100+ data sources, then generates hyper-personalised outreach at scale — users report replacing multiple data provider subscriptions and cutting manual research time by 60–70% per campaign.",
+    evidence: "Clay's Claygent AI enriches prospects with 300+ attributes across 100+ data sources, then generates hyper-personalised outreach at scale. Users report replacing multiple data provider subscriptions and cutting manual research time by 60–70% per campaign.",
   },
   "Conversica": {
     featureLabel: "Autonomous AI Sales Assistant",
-    evidence: "Conversica's AI Assistants engage leads in human-like two-way dialogue with 98% claimed accuracy across email, SMS, and chat — qualifying prospects and booking meetings autonomously while syncing all conversation history to Salesforce, with users reporting 98% reduction in time-to-first-contact.",
+    evidence: "Conversica's AI Assistants engage leads in human-like two-way dialogue with 98% claimed accuracy across email, SMS, and chat, qualifying prospects and booking meetings autonomously while syncing all conversation history to Salesforce, with users reporting 98% reduction in time-to-first-contact.",
   },
   "Reply.io": {
     featureLabel: "AI SDR Agent",
-    evidence: "Reply.io's AI SDR Agent learns your product, sources prospects from a 1B+ verified contact database, and autonomously runs multi-channel sequences across email, LinkedIn, SMS, and WhatsApp — with built-in deliverability infrastructure including email warm-up and DMARC monitoring.",
+    evidence: "Reply.io's AI SDR Agent learns your product, sources prospects from a 1B+ verified contact database, and autonomously runs multi-channel sequences across email, LinkedIn, SMS, and WhatsApp, with built-in deliverability infrastructure including email warm-up and DMARC monitoring.",
   },
   "Lemlist": {
     featureLabel: "Personalised Multi-Channel Outreach",
-    evidence: "Lemlist's AI mines job title, industry, and social signals to generate unique intro lines for each prospect at scale, with native ChatGPT/Gemini integration for message personalisation and built-in Lemwarm deliverability infrastructure — rated a top cold outreach tool across 1,400+ G2 reviews.",
+    evidence: "Lemlist's AI mines job title, industry, and social signals to generate unique intro lines for each prospect at scale, with native ChatGPT/Gemini integration for message personalisation and built-in Lemwarm deliverability infrastructure, rated a top cold outreach tool across 1,400+ G2 reviews.",
   },
   "ZoomInfo": {
     featureLabel: "GTM Intelligence Platform",
-    evidence: "ZoomInfo's Pulse Feed surfaces up to 1,000 daily signals per seller across 15+ types — intent, job changes, funding rounds, hiring activity — so reps see exactly which accounts changed and what to do next, with the platform ranked #1 in Sales Intelligence with a perfect G2 satisfaction score of 100.",
+    evidence: "ZoomInfo's Pulse Feed surfaces up to 1,000 daily signals per seller across 15+ types (intent, job changes, funding rounds, hiring activity) so reps see exactly which accounts changed and what to do next, with the platform ranked #1 in Sales Intelligence with a perfect G2 satisfaction score of 100.",
   },
   "Seamless.ai": {
     featureLabel: "Real-Time Contact Intelligence",
@@ -367,11 +367,11 @@ const G2_EVIDENCE: Record<string, { featureLabel: string; evidence: string }> = 
   },
   "Mindtickle": {
     featureLabel: "AI Sales Coaching & Readiness",
-    evidence: "Mindtickle is G2's #1-rated sales onboarding and training platform, using AI to deliver personalised role-play simulations so reps practise high-stakes conversations before they happen — managers review recorded pitches with skill-gap analytics and a 100% G2 satisfaction score backs its coaching depth.",
+    evidence: "Mindtickle is G2's #1-rated sales onboarding and training platform, using AI to deliver personalised role-play simulations so reps practise high-stakes conversations before they happen. Managers review recorded pitches with skill-gap analytics and a 100% G2 satisfaction score backs its coaching depth.",
   },
   "Highspot": {
     featureLabel: "AI Sales Enablement",
-    evidence: "Highspot's patented semantic search surfaces the right content to sellers at the right moment in any deal, while its Deal Agent spots risk and recommends next moves in every active opportunity — AI Role Play lets teams rehearse difficult conversations before they happen.",
+    evidence: "Highspot's patented semantic search surfaces the right content to sellers at the right moment in any deal, while its Deal Agent spots risk and recommends next moves in every active opportunity. AI Role Play lets teams rehearse difficult conversations before they happen.",
   },
 };
 
@@ -736,7 +736,7 @@ export default function SalesVisibilityCharts({
       {/* ── Row 2: Combined 7-day trend ─────────────────────────────────────── */}
       {hasReal && (
         <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "20px 24px 16px" }}>
-          <h3 style={{ fontSize: 18, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>Brand Mentions — 7-Day Trend</h3>
+          <h3 style={{ fontSize: 18, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>Brand Mentions: 7-Day Trend</h3>
           <p style={{ fontSize: 15, color: "#000", marginBottom: 14 }}>All brands · both models combined</p>
           <ResponsiveContainer width="100%" height={280}>
             <LineChart data={chartRows} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
@@ -764,7 +764,7 @@ export default function SalesVisibilityCharts({
       {hasReal && (
         <>
           <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: -8 }}>
-            Brand Mentions — 7-Day Trend by Use Case
+            Brand Mentions: 7-Day Trend by Use Case
           </h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
             {clusterCharts.map(({ tag, label, clusterBrands, rows }) => {
@@ -840,7 +840,7 @@ export default function SalesVisibilityCharts({
         <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
           <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
             <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 2 }}>Brand Position Summary</h3>
-            <p style={{ fontSize: 16, color: "#000" }}>Average position brands appear in AI responses — lower is stronger</p>
+            <p style={{ fontSize: 16, color: "#000" }}>Average position brands appear in AI responses (lower is stronger)</p>
           </div>
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 17 }}>
@@ -888,7 +888,7 @@ export default function SalesVisibilityCharts({
               Avg Brand Position by Use Case
             </h3>
             <p style={{ fontSize: 16, color: "#000" }}>
-              Each brand shown in its primary use case — avg position within that cluster's prompts · lower is better
+              Each brand shown in its primary use case, avg position within that cluster's prompts · lower is better
             </p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 0 }}>
@@ -1081,7 +1081,7 @@ export default function SalesVisibilityCharts({
             {sentimentOpen && !ready && (
               <div style={{ padding: "28px 24px", textAlign: "center" as const }}>
                 <p style={{ fontSize: 18, fontWeight: 600, color: NAVY, marginBottom: 8 }}>
-                  Collecting data — {daysHave} of {GATE} minimum days
+                  Collecting data: {daysHave} of {GATE} minimum days
                 </p>
                 <p style={{ fontSize: 16, color: "#000", maxWidth: 380, margin: "0 auto" }}>
                   Sentiment bars appear once both Claude Haiku and GPT-4o-mini have collected on {GATE} separate days.
@@ -1172,7 +1172,7 @@ export default function SalesVisibilityCharts({
           Based on 23 daily prompts across Claude Haiku and GPT-4o-mini · Sales AI agent category · collecting since July 2026
         </p>
         <p style={{ fontSize: 11, color: "#000", margin: "0 auto", textAlign: "center", maxWidth: 680 }}>
-          Scores require agreement between both AI models. When models disagree, we take the more conservative rating — so a lower score sometimes means models disagree, not that documentation is absent. Check the evidence text for the fuller picture.
+          Scores require agreement between both AI models. When models disagree, we take the more conservative rating, so a lower score sometimes means models disagree, not that documentation is absent. Check the evidence text for the fuller picture.
         </p>
       </div>
 
@@ -1218,7 +1218,7 @@ export default function SalesVisibilityCharts({
         const RAI_FALLBACK: Record<string, { featureId: string; evidence: string }> = {
           "Lemlist": {
             featureId: "rai_data_privacy",
-            evidence: "Lemlist's Trust Center (trust.lemlist.com) documents a SOC 2 Type II report covering 58 controls spanning cloud security, access management, and application security, though full detail requires a trust-portal access request. Per lemlist's own GDPR help documentation, all data — including LinkedIn-sourced prospect data — is stored exclusively on servers in France hosted by OVH within the EEA, with no transfers outside it; only publicly available LinkedIn fields (name, job title, company, employment history) are stored by default, with email and phone captured only when a user enriches or supplies them. Customers are the data controller under a Data Processing Addendum (lemlist.com/legal/dpa) with lemlist acting as processor, and recipients can request deletion directly through lemlist's privacy team.",
+            evidence: "Lemlist's Trust Center (trust.lemlist.com) documents a SOC 2 Type II report covering 58 controls spanning cloud security, access management, and application security, though full detail requires a trust-portal access request. Per lemlist's own GDPR help documentation, all data, including LinkedIn-sourced prospect data, is stored exclusively on servers in France hosted by OVH within the EEA, with no transfers outside it; only publicly available LinkedIn fields (name, job title, company, employment history) are stored by default, with email and phone captured only when a user enriches or supplies them. Customers are the data controller under a Data Processing Addendum (lemlist.com/legal/dpa) with lemlist acting as processor, and recipients can request deletion directly through lemlist's privacy team.",
           },
         };
         for (const [brand, fallback] of Object.entries(RAI_FALLBACK)) {
@@ -1287,7 +1287,7 @@ export default function SalesVisibilityCharts({
                     {/* Placeholder only when neither DB nor G2 has data */}
                     {!primary && !g2 && !bonus && (
                       <p style={{ fontSize: 16, color: "#000", fontStyle: "italic", lineHeight: 1.5, margin: 0 }}>
-                        Capability data collecting — check back after the next daily run.
+                        Capability data collecting. Check back after the next daily run.
                       </p>
                     )}
                     {/* Bonus compliance callout */}
@@ -1324,23 +1324,23 @@ export default function SalesVisibilityCharts({
             brand: "Highspot",
             tactic: "Volume + Direct Confrontation",
             whyVisible: "High content volume and named-competitor takedown pages simultaneously.",
-            how: "Highspot does everything at once — publishes a lot AND runs multiple named-competitor takedown pages.",
+            how: "Highspot does everything at once: publishes a lot AND runs multiple named-competitor takedown pages.",
             points: [
-              { text: "Publishes heavily — 100+ posts in 18 months, roughly 5-10 per month.", cite: "highspot.com/blog" },
+              { text: "Publishes heavily: 100+ posts in 18 months, roughly 5-10 per month.", cite: "highspot.com/blog" },
               { text: "Backs it up with 171 case studies naming real enterprise customers (HSBC, Visa, Siemens).", cite: "highspot.com/success-stories" },
               {
-                text: "Runs three separate “us vs. them” pages, each following the same playbook — paint the rival as fragmented, position Highspot as the unified alternative:",
+                text: "Runs three separate “us vs. them” pages, each following the same playbook: paint the rival as fragmented, position Highspot as the unified alternative:",
                 sub: [
-                  "vs. Seismic — claims 85+ companies switched from Seismic, “+15% win rates”",
+                  "vs. Seismic: claims 85+ companies switched from Seismic, “+15% win rates”",
                   "vs. Showpad",
-                  "vs. Gong — frames Gong as narrow (“just call intelligence”) compared to Highspot's broader platform",
+                  "vs. Gong: frames Gong as narrow (“just call intelligence”) compared to Highspot's broader platform",
                 ],
               },
               { text: "Shipped 3 major product launches in the last year (mid-2025 through mid-2026), each reinforcing an “AI-powered” narrative." },
             ],
             dataLabel: "Highspot data:",
-            yourData: "Sales content delivery 90 — highest score in the Sales Enablement cluster. The evidence text cited three actual Highspot product names (Deal Agent, AI Role Play, Digital Sales Rooms) as proof the feature exists and works in a particular way. 89% positive sentiment — highest of all brands tracked in this report. Appears consistently in the Sales Enablement & Follow-up mention trend.",
-            takeaway: "Different category from yours (content enablement, not deal execution), but the tactic — pairing real content volume with direct named-competitor pages — is the most complete playbook here. Worth studying the mechanism even though Highspot itself isn't a competitor.",
+            yourData: "Sales content delivery 90, highest score in the Sales Enablement cluster. The evidence text cited three actual Highspot product names (Deal Agent, AI Role Play, Digital Sales Rooms) as proof the feature exists and works in a particular way. 89% positive sentiment, highest of all brands tracked in this report. Appears consistently in the Sales Enablement & Follow-up mention trend.",
+            takeaway: "Different category from yours (content enablement, not deal execution), but the tactic of pairing real content volume with direct named-competitor pages is the most complete playbook here. Worth studying the mechanism even though Highspot itself isn't a competitor.",
           },
           {
             brand: "6sense",
@@ -1348,33 +1348,33 @@ export default function SalesVisibilityCharts({
             whyVisible: "A much smaller content operation than Clari's, but with one sharp, deliberate asset: a dedicated head-to-head page.",
             how: "6sense runs a focused content operation built around a small number of pages that directly name and take on specific rivals.",
             points: [
-              { text: "Publishes steadily — around 15-20 posts visible at a time.", cite: "6sense.com/blog" },
-              { text: "Builds dedicated pages to win specific comparisons — a \"6sense vs. Demandbase: See Why 6sense is #1\" landing page built to own that exact search.", cite: "6sense.com/cp/demandbase" },
+              { text: "Publishes steadily, around 15-20 posts visible at a time.", cite: "6sense.com/blog" },
+              { text: "Builds dedicated pages to win specific comparisons, including a \"6sense vs. Demandbase: See Why 6sense is #1\" landing page built to own that exact search.", cite: "6sense.com/cp/demandbase" },
               { text: "Runs a second comparison page, naming UserGems directly.", cite: "6sense.com/blog/6sense-vs-usergems" },
-              { text: "Keeps it sharp, not broad — two targeted pages instead of a \"compare us to everyone\" hub, each aimed at winning one specific matchup." },
+              { text: "Keeps it sharp, not broad: two targeted pages instead of a \"compare us to everyone\" hub, each aimed at winning one specific matchup." },
               { text: "Repositioning toward \"AI agent platform\" framing, moving beyond \"pipeline forecasting\" as the sole pitch.", cite: "6sense.com/guides/pipeline-forecasting" },
             ],
             dataLabel: "6sense data:",
-            yourData: "Deal risk detection 90 — the evidence text cited three actual 6sense product names (Predictive Buying Stage system with named stages Target/Awareness/Consideration/Decision, plus email and Slack alert configuration) as proof the feature exists and works in a particular way. Pipeline forecasting 60 — evidence cited the 50+ buying signal engine and a monthly Predictive Model Insights Report with a 90-day lookback. 83% positive sentiment. 9 discovery mentions in the Deal Risk & Pipeline Forecasting cluster.",
-            takeaway: "This is the cheapest, fastest-to-replicate lever of the four — pairing a small number of sharp, named-competitor pages with steady content. It's built to win specific comparison moments (\"6sense vs. Demandbase\") rather than to maximise overall mention count.",
+            yourData: "Deal risk detection 90: the evidence text cited three actual 6sense product names (Predictive Buying Stage system with named stages Target/Awareness/Consideration/Decision, plus email and Slack alert configuration) as proof the feature exists and works in a particular way. Pipeline forecasting 60: evidence cited the 50+ buying signal engine and a monthly Predictive Model Insights Report with a 90-day lookback. 83% positive sentiment. 9 discovery mentions in the Deal Risk & Pipeline Forecasting cluster.",
+            takeaway: "This is the cheapest, fastest-to-replicate lever of the four: pairing a small number of sharp, named-competitor pages with steady content. It's built to win specific comparison moments (\"6sense vs. Demandbase\") rather than to maximise overall mention count.",
           },
           {
             brand: "Backstory.ai",
             tactic: "The Other Side of the Question: Why It's Invisible",
             whyLabel: "Why it's invisible:",
-            whyVisible: "A real, funded competitor in your exact category (CRM auto-update from sales calls) — with none of the visibility tactics above in play, and confirmed through three independent methods to be functionally unfindable by AI models.",
+            whyVisible: "A real, funded competitor in your exact category (CRM auto-update from sales calls), with none of the visibility tactics above in play, and confirmed through three independent methods to be functionally unfindable by AI models.",
             how: "Backstory.ai publishes modestly, runs no comparison content, has essentially no community presence, and has spent its recent marketing effort on a rebrand rather than category-specific content.",
             points: [
-              { text: "Publishes lightly — about 1-2 posts a month, all dated within the last 6 months (no older archive visible). Content leans toward broad \"pipeline visibility\" thought leadership, not specific \"how we auto-update Salesforce\" guides.", cite: "backstory.ai/blog" },
-              { text: "Zero Reddit or forum presence found. Every search — r/sales, r/RevOps, r/salesforce, broad Reddit search — returned nothing relevant." },
+              { text: "Publishes lightly, about 1-2 posts a month, all dated within the last 6 months (no older archive visible). Content leans toward broad \"pipeline visibility\" thought leadership, not specific \"how we auto-update Salesforce\" guides.", cite: "backstory.ai/blog" },
+              { text: "Zero Reddit or forum presence found. Searched r/sales, r/RevOps, r/salesforce, and broad Reddit. Nothing relevant found." },
               { text: "The one real PR moment was a rebrand, not a product story. Renamed from People.ai to Backstory in April 2026. No funding news since a 2021 Series D.", cite: "Rebrand announcement", citeUrl: "https://www.backstory.ai/newsroom/people-ai-becomes-backstory-redefining-how-revenue-teams-get-answers-about-their-deals" },
-              { text: "Publishes no \"Backstory vs. X\" pages of its own — every comparison URL 404s. Its posture toward Gong is co-existence, not competition: it's an official Gong Collective integration partner, processing Gong's call transcripts rather than competing with Gong directly.", cite: "Gong Collective listing", citeUrl: "https://collective.gong.io/integrations/people-ai" },
-              { text: "Real customers, real product — NVIDIA, OpenAI, Red Hat, and Zscaler are named on the customer page, and blog content is current as of last month. This isn't a dead company — it's a real, actively maintained product that simply isn't showing up.", cite: "backstory.ai/customers" },
-              { text: "No public pricing, no public changelog — /pricing, /changelog, and /release-notes all 404, and the newsroom page exists but is empty. Marketing effort has gone into the site's surface, not into ongoing documentation." },
+              { text: "Publishes no \"Backstory vs. X\" pages of its own. Every comparison URL 404s. Its posture toward Gong is co-existence, not competition: it's an official Gong Collective integration partner, processing Gong's call transcripts rather than competing with Gong directly.", cite: "Gong Collective listing", citeUrl: "https://collective.gong.io/integrations/people-ai" },
+              { text: "Real customers, real product. NVIDIA, OpenAI, Red Hat, and Zscaler are named on the customer page, and blog content is current as of last month. This isn't a dead company. It's a real, actively maintained product that simply isn't showing up.", cite: "backstory.ai/customers" },
+              { text: "No public pricing, no public changelog. /pricing, /changelog, and /release-notes all 404, and the newsroom page exists but is empty. Marketing effort has gone into the site's surface, not into ongoing documentation." },
             ],
             dataLabel: "Backstory.ai data:",
-            yourData: "CRM automation score 90 — the evidence text cited automatic Salesforce field population (contacts, next steps, deal stage, notes) from sales calls, with activity auto-matched to the right account without rep input. Despite this: 0 discovery mentions across 179 tracked prompts over 6 days, despite prompts describing this exact category in buyer language (\"update CRM records after sales calls,\" \"post-call admin,\" \"Salesforce/HubSpot data entry\"). Sentiment data agrees: \"unable to verify current product offerings.\"",
-            takeaway: "Three separate methods, one conclusion — this is a real, well-funded, actively-used competitor in your exact category that AI models currently cannot find. It's the clearest evidence in this report that having a real product and real customers isn't enough on its own. None of the other four brands' tactics (volume, targeted comparisons, acquisition equity, or aggressive confrontation) are present here at all — which is likely a large part of why it's invisible.",
+            yourData: "CRM automation score 90: the evidence text cited automatic Salesforce field population (contacts, next steps, deal stage, notes) from sales calls, with activity auto-matched to the right account without rep input. Despite this: 0 discovery mentions across 179 tracked prompts over 6 days, despite prompts describing this exact category in buyer language (\"update CRM records after sales calls,\" \"post-call admin,\" \"Salesforce/HubSpot data entry\"). Sentiment data agrees: \"unable to verify current product offerings.\"",
+            takeaway: "Three separate methods, one conclusion: this is a real, well-funded, actively-used competitor in your exact category that AI models currently cannot find. It's the clearest evidence in this report that having a real product and real customers isn't enough on its own. None of the other four brands' tactics (volume, targeted comparisons, acquisition equity, or aggressive confrontation) are present here at all. This is likely a large part of why it's invisible.",
           },
         ];
 
@@ -1406,10 +1406,10 @@ export default function SalesVisibilityCharts({
                   padding: "16px 20px",
                 }}>
                   <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
-                    AI visibility is earned, not bought. When a buyer asks an AI model to recommend a sales agent, the model draws on what it has learned from publicly available content — documentation, reviews, case studies, and product pages. Brands that are consistently named, described with specificity, and grounded in third-party evidence appear at the top. Brands with thin or generic content are skipped entirely.
+                    AI visibility is earned, not bought. When a buyer asks an AI model to recommend a sales agent, the model draws on what it has learned from publicly available content, including documentation, reviews, case studies, and product pages. Brands that are consistently named, described with specificity, and grounded in third-party evidence appear at the top. Brands with thin or generic content are skipped entirely.
                   </p>
                   <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: 0 }}>
-                    <strong>Highspot</strong> is a strong example: both Claude and GPT-4o-mini cite its actual product names — Deal Agent, AI Role Play, Digital Sales Rooms — as evidence of specific capabilities. That level of specificity signals to AI models that the feature is real and documented, not just claimed. <strong>6sense</strong> earns visibility differently: its Predictive Buying Stage framework, built on 50+ intent signals and a 90-day lookback model, gives AI something concrete to quote when buyers ask about pipeline forecasting or deal risk. Both brands publish content that answers the question before it is asked.
+                    <strong>Highspot</strong> is a strong example: both Claude and GPT-4o-mini cite its actual product names (Deal Agent, AI Role Play, Digital Sales Rooms) as evidence of specific capabilities. That level of specificity signals to AI models that the feature is real and documented, not just claimed. <strong>6sense</strong> earns visibility differently: its Predictive Buying Stage framework, built on 50+ intent signals and a 90-day lookback model, gives AI something concrete to quote when buyers ask about pipeline forecasting or deal risk. Both brands publish content that answers the question before it is asked.
                   </p>
                 </div>
                 {VISIBILITY_PLAYBOOKS.map((pb, _pbIdx, _pbArr) => (
@@ -1417,7 +1417,7 @@ export default function SalesVisibilityCharts({
                     border: "1px solid rgba(0,0,0,0.08)", borderRadius: 10, padding: "18px 20px",
                   }}>
                     <p style={{ fontSize: 18, fontWeight: 700, color: NAVY, margin: "0 0 12px", lineHeight: 1.3 }}>
-                      {pb.brand} — {pb.tactic}
+                      {pb.brand}: {pb.tactic}
                     </p>
 
                     <p style={{ fontSize: 16, color: "#000", lineHeight: 1.6, margin: "0 0 10px" }}>
@@ -1499,13 +1499,13 @@ export default function SalesVisibilityCharts({
                     Recommended Move for Lamigo
                   </p>
                   <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
-                    The clearest lever available — and the one most consistently associated with AI model visibility across this report — is <strong>publishing 1–2 named-comparison pages</strong> targeted at your direct competitive overlaps. Not general "why us" content, but pages that answer a specific question a buyer might ask an AI: <em>"How does Lamigo compare to [Competitor] for deal execution?"</em>
+                    The clearest lever available, and the one most consistently associated with AI model visibility across this report, is <strong>publishing 1–2 named-comparison pages</strong> targeted at your direct competitive overlaps. Not general "why us" content, but pages that answer a specific question a buyer might ask an AI: <em>"How does Lamigo compare to [Competitor] for deal execution?"</em>
                   </p>
                   <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
-                    6sense's approach is the model to follow: a tightly scoped page, built around the exact use case where the comparison is most credible, with enough specificity that an AI model can quote it. The goal isn&apos;t to win every mention — it&apos;s to own the comparison moment when a buyer asks the AI for your category head-to-head.
+                    6sense's approach is the model to follow: a tightly scoped page, built around the exact use case where the comparison is most credible, with enough specificity that an AI model can quote it. The goal isn&apos;t to win every mention. It&apos;s to own the comparison moment when a buyer asks the AI for your category head-to-head.
                   </p>
                   <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: 0 }}>
-                    Backstory.ai shows what happens without it: a real product, real customers, and zero AI presence. The gap between having a product and being visible to AI is a content and indexability problem — and it&apos;s one of the faster ones to close.
+                    Backstory.ai shows what happens without it: a real product, real customers, and zero AI presence. The gap between having a product and being visible to AI is a content and indexability problem, and it&apos;s one of the faster ones to close.
                   </p>
                 </div>
               </div>
@@ -1520,17 +1520,17 @@ export default function SalesVisibilityCharts({
           {
             title: "Stakeholder change detection",
             current: "Lamigo tracks champions and technical evaluators per deal, and already surfaces new stakeholders during pre-call prep (e.g. flagging \"Lucas Ferretti, VP Eng, joining for the first time\").",
-            improvement: "Turn this into a standalone, proactive alert — not just something surfaced before a call, but a real-time notification the moment a new stakeholder appears in a thread or CC line, with a short profile (\"new VP Eng joined, ex-Datadog, likely cares about integrations\"). Right now this only shows up as call-prep context; making it its own alert extends \"catches what you'd miss\" beyond scheduled calls into ongoing deal activity.",
+            improvement: "Turn this into a standalone, proactive alert, not just something surfaced before a call, but a real-time notification the moment a new stakeholder appears in a thread or CC line, with a short profile (\"new VP Eng joined, ex-Datadog, likely cares about integrations\"). Right now this only shows up as call-prep context; making it its own alert extends \"catches what you'd miss\" beyond scheduled calls into ongoing deal activity.",
           },
           {
             title: "Cross-deal pattern learning",
-            current: "Lamigo reasons per-deal — flagging Brightwave as at-risk based on that deal's own signals (no reply in 4 days, CFO disengaged).",
-            improvement: "Layer in reasoning across deals, using closed-deal history as a reference point — e.g. \"deals that go quiet after a competitive breakdown is sent have historically slipped 40% more often.\" This builds directly on the memory system already in development and turns single-deal alerts into predictions backed by real pattern data.",
+            current: "Lamigo reasons per-deal, flagging Brightwave as at-risk based on that deal's own signals (no reply in 4 days, CFO disengaged).",
+            improvement: "Layer in reasoning across deals, using closed-deal history as a reference point, e.g. \"deals that go quiet after a competitive breakdown is sent have historically slipped 40% more often.\" This builds directly on the memory system already in development and turns single-deal alerts into predictions backed by real pattern data.",
           },
           {
             title: "Pre-send message risk check",
             current: "Lamigo drafts follow-up emails in the rep's own voice and tracks every commitment made in a deal.",
-            improvement: "Add a quick check before a drafted message goes out — flag tone mismatches, over-promising language, or a commitment that was made earlier but isn't reflected in the draft. Since commitment tracking already exists, this is a small addition that cross-references what's already being tracked against what's about to be sent, reducing the risk of a rep sending something inconsistent with earlier promises.",
+            improvement: "Add a quick check before a drafted message goes out: flag tone mismatches, over-promising language, or a commitment that was made earlier but isn't reflected in the draft. Since commitment tracking already exists, this is a small addition that cross-references what's already being tracked against what's about to be sent, reducing the risk of a rep sending something inconsistent with earlier promises.",
           },
         ];
 
