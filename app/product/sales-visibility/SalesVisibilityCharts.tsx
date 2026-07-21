@@ -1399,6 +1399,19 @@ export default function SalesVisibilityCharts({
             </button>
             {visibilityOpen && (
               <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 20 }}>
+                <div style={{
+                  background: "rgba(37,99,235,0.04)",
+                  border: "1px solid rgba(37,99,235,0.12)",
+                  borderRadius: 10,
+                  padding: "16px 20px",
+                }}>
+                  <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
+                    AI visibility is earned, not bought. When a buyer asks an AI model to recommend a sales tool, the model draws on what it has learned from publicly available content — documentation, reviews, case studies, and product pages. Brands that are consistently named, described with specificity, and grounded in third-party evidence appear at the top. Brands with thin or generic content are skipped entirely.
+                  </p>
+                  <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: 0 }}>
+                    <strong>Highspot</strong> is a strong example: both Claude and GPT-4o-mini cite its actual product names — Deal Agent, AI Role Play, Digital Sales Rooms — as evidence of specific capabilities. That level of specificity signals to AI models that the feature is real and documented, not just claimed. <strong>6sense</strong> earns visibility differently: its Predictive Buying Stage framework, built on 50+ intent signals and a 90-day lookback model, gives AI something concrete to quote when buyers ask about pipeline forecasting or deal risk. Both brands publish content that answers the question before it is asked.
+                  </p>
+                </div>
                 {VISIBILITY_PLAYBOOKS.map((pb) => (
                   <div key={pb.brand} style={{
                     border: "1px solid rgba(0,0,0,0.08)", borderRadius: 10, padding: "18px 20px",
