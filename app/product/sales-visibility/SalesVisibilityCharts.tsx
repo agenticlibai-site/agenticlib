@@ -1502,7 +1502,10 @@ export default function SalesVisibilityCharts({
                     The clearest lever available, and the one most consistently associated with AI model visibility across this report, is <strong>publishing 1–2 named-comparison pages</strong> targeted at your direct competitive overlaps. Not general "why us" content, but pages that answer a specific question a buyer might ask an AI: <em>"How does Lamigo compare to [Competitor] for deal execution?"</em>
                   </p>
                   <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
-                    6sense's approach is the model to follow: a tightly scoped page, built around the exact use case where the comparison is most credible, with enough specificity that an AI model can quote it. The goal isn&apos;t to win every mention. It&apos;s to own the comparison moment when a buyer asks the AI for your category head-to-head.
+                    One thing worth flagging before the recommendation: 6sense&apos;s own overall visibility is modest, rank #15 of 19, only 76 mentions. If the tactic below is worth copying, it&apos;s not because it&apos;s made 6sense a top brand. It&apos;s because it&apos;s the cheapest, most controllable lever available to a small player, and it reliably wins the specific comparison moment it targets, even while 6sense&apos;s broader visibility stays low. That&apos;s a different, more realistic promise than &ldquo;do this and become visible&rdquo; — it&apos;s &ldquo;do this and own one specific question a buyer might ask.&rdquo;
+                  </p>
+                  <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
+                    6sense&apos;s approach is the model to follow: a tightly scoped page, built around the exact use case where the comparison is most credible, with enough specificity that an AI model can quote it. The goal isn&apos;t to win every mention. It&apos;s to own the comparison moment when a buyer asks the AI for your category head-to-head.
                   </p>
                   <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: 0 }}>
                     Backstory.ai shows what happens without it: a real product, real customers, and zero AI presence. The gap between having a product and being visible to AI is a content and indexability problem, and it&apos;s one of the faster ones to close.
@@ -1518,19 +1521,19 @@ export default function SalesVisibilityCharts({
       {(() => {
         const IMPROVEMENTS = [
           {
-            title: "Stakeholder change detection",
-            current: "Lamigo tracks champions and technical evaluators per deal, and already surfaces new stakeholders during pre-call prep (e.g. flagging \"Lucas Ferretti, VP Eng, joining for the first time\").",
-            improvement: "Turn this into a standalone, proactive alert, not just something surfaced before a call, but a real-time notification the moment a new stakeholder appears in a thread or CC line, with a short profile (\"new VP Eng joined, ex-Datadog, likely cares about integrations\"). Right now this only shows up as call-prep context; making it its own alert extends \"catches what you'd miss\" beyond scheduled calls into ongoing deal activity.",
+            title: "Document the deal-risk reasoning you already have — this one's free",
+            current: "Clari and 6sense score \"strong\" on deal risk detection specifically because their evidence text cites specific mechanisms (engagement-frequency monitoring, stakeholder-involvement change detection), not vague capability claims. Lamigo's own product demo already reasons this specifically: the Brightwave example (\"Priya hasn't replied in 4 days... CFO still hasn't engaged\") is exactly this level of detail.",
+            improvement: "Right now that reasoning only exists inside the product. Writing up 2–3 real (anonymised) examples on a public page costs nothing to build. It's the fastest, cheapest item on this list, since the substance already exists.",
           },
           {
-            title: "Cross-deal pattern learning",
-            current: "Lamigo reasons per-deal, flagging Brightwave as at-risk based on that deal's own signals (no reply in 4 days, CFO disengaged).",
-            improvement: "Layer in reasoning across deals, using closed-deal history as a reference point, e.g. \"deals that go quiet after a competitive breakdown is sent have historically slipped 40% more often.\" This builds directly on the memory system already in development and turns single-deal alerts into predictions backed by real pattern data.",
+            title: "Competitor objection / mention detection",
+            current: "Chorus and Gong both score 90 here, evidenced by concrete descriptions (\"automatically detects and categorises competitor mentions... via NLP\"). This isn't currently a stated Lamigo feature.",
+            improvement: "Worth considering whether \"flagging when a competitor is mentioned in a call or email thread\" fits your roadmap, since it's a well-documented, well-regarded capability in this adjacent category.",
           },
           {
-            title: "Pre-send message risk check",
-            current: "Lamigo drafts follow-up emails in the rep's own voice and tracks every commitment made in a deal.",
-            improvement: "Add a quick check before a drafted message goes out: flag tone mismatches, over-promising language, or a commitment that was made earlier but isn't reflected in the draft. Since commitment tracking already exists, this is a small addition that cross-references what's already being tracked against what's about to be sent, reducing the risk of a rep sending something inconsistent with earlier promises.",
+            title: "Named audit-trail / decision transparency",
+            current: "Backstory.ai (a smaller player) scores well here specifically because its evidence quotes verbatim reasoning (\"This deal has no executive stakeholder engagement\"). Lamigo's own \"chain of thought\" positioning already aligns with this.",
+            improvement: "Making that transparency publicly documented, not just an in-product behaviour, could translate directly into stronger LLM-evidenced scores later.",
           },
         ];
 
