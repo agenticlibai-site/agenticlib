@@ -701,7 +701,7 @@ export default function SalesVisibilityCharts({
                       <span style={{ fontSize: 15, fontWeight: 600, color: "#000", textTransform: "uppercase" as const, letterSpacing: "0.06em" }}>{label}</span>
                       <span style={{ fontSize: 28, fontWeight: 800, color, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{v.visibility_pct.toFixed(1)}%</span>
                     </div>
-                    <div style={{ height: 5, borderRadius: 999, background: "#000" }}>
+                    <div style={{ height: 5, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
                       <div style={{ height: 5, borderRadius: 999, width: `${Math.min(v.visibility_pct, 100)}%`, background: color }} />
                     </div>
                     <p style={{ fontSize: 14, color: "#000", marginTop: 4 }}>{v.total_responses} responses</p>
@@ -848,7 +848,7 @@ export default function SalesVisibilityCharts({
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 17 }}>
               <thead>
-                <tr style={{ background: "#000" }}>
+                <tr style={{ background: "rgba(0,0,0,0.025)" }}>
                   {["Rank", "Brand", "Avg Position", "7-Day Mentions"].map(h => (
                     <th key={h} style={{ padding: "10px 20px", textAlign: "left", fontSize: 15, fontWeight: 700, color: "#000", textTransform: "uppercase" as const, letterSpacing: "0.07em", whiteSpace: "nowrap" }}>{h}</th>
                   ))}
@@ -856,7 +856,7 @@ export default function SalesVisibilityCharts({
               </thead>
               <tbody>
                 {posTable.map((row, i) => (
-                  <tr key={row.brand} style={{ borderTop: "1px solid rgba(0,0,0,0.05)", background: i % 2 === 0 ? "transparent" : "#000" }}>
+                  <tr key={row.brand} style={{ borderTop: "1px solid rgba(0,0,0,0.05)", background: i % 2 === 0 ? "transparent" : "rgba(0,0,0,0.012)" }}>
                     <td style={{ padding: "11px 20px", color: "#000", fontWeight: 600 }}>#{row.rank}</td>
                     <td style={{ padding: "11px 20px", fontWeight: 600, color: NAVY }}>
                       <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
@@ -868,7 +868,7 @@ export default function SalesVisibilityCharts({
                       <span style={{
                         display: "inline-block", padding: "2px 8px", borderRadius: 4,
                         fontSize: 16, fontWeight: 700, fontVariantNumeric: "tabular-nums",
-                        background: row.avgPos <= 3 ? "rgba(37,99,235,0.10)" : "#000",
+                        background: row.avgPos <= 3 ? "rgba(37,99,235,0.10)" : "rgba(0,0,0,0.05)",
                         color: row.avgPos <= 3 ? BLUE : "#000",
                       }}>
                         {row.avgPos.toFixed(1)}
@@ -913,7 +913,7 @@ export default function SalesVisibilityCharts({
                         <span style={{
                           padding: "2px 7px", borderRadius: 4, fontSize: 15, fontWeight: 700,
                           fontVariantNumeric: "tabular-nums",
-                          background: avg_position <= 3 ? "rgba(37,99,235,0.10)" : "#000",
+                          background: avg_position <= 3 ? "rgba(37,99,235,0.10)" : "rgba(0,0,0,0.05)",
                           color: avg_position <= 3 ? BLUE : "#000",
                         }}>
                           {avg_position.toFixed(1)}
@@ -1005,7 +1005,7 @@ export default function SalesVisibilityCharts({
                                 <span style={{ fontSize: 16, fontWeight: 500, color: NAVY, width: 168, flexShrink: 0, lineHeight: 1.3 }}>
                                   {displayBrand(r.brand_name)}
                                 </span>
-                                <div style={{ flex: 1, height: 6, borderRadius: 999, background: "#000" }}>
+                                <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
                                   <div style={{ width: `${r.score}%`, height: 6, borderRadius: 999, background: BAND_COLORS[r.score_band] ?? "#94a3b8" }} />
                                 </div>
                                 <span style={{ fontSize: 16, fontWeight: 700, color: BAND_COLORS[r.score_band] ?? NAVY, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>
@@ -1071,7 +1071,7 @@ export default function SalesVisibilityCharts({
                   Sentiment Analysis
                 </h3>
                 {!ready && (
-                  <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "#000", background: "#000", borderRadius: 999, padding: "3px 8px" }}>
+                  <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "#000", background: "rgba(0,0,0,0.06)", borderRadius: 999, padding: "3px 8px" }}>
                     Collecting
                   </span>
                 )}
@@ -1120,7 +1120,7 @@ export default function SalesVisibilityCharts({
                                 <span style={{ fontSize: 16, fontWeight: 600, color: NAVY, width: 148, flexShrink: 0, lineHeight: 1.25 }}>
                                   {displayBrand(brand.brand_name)}
                                 </span>
-                                <div style={{ flex: 1, height: 8, borderRadius: 999, background: "#000", overflow: "hidden", display: "flex" }}>
+                                <div style={{ flex: 1, height: 8, borderRadius: 999, background: "rgba(0,0,0,0.06)", overflow: "hidden", display: "flex" }}>
                                   {posPct > 0 && <div style={{ width: `${posPct}%`, height: "100%", background: "#16a34a" }} />}
                                   {neuPct > 0 && <div style={{ width: `${neuPct}%`, height: "100%", background: "#d97706" }} />}
                                   {negPct > 0 && <div style={{ width: `${negPct}%`, height: "100%", background: "#dc2626" }} />}
@@ -1136,8 +1136,8 @@ export default function SalesVisibilityCharts({
                                     <span key={i} style={{
                                       fontSize: 15,
                                       color: unique ? "#2563eb" : "#000",
-                                      background: unique ? "rgba(37,99,235,0.08)" : "#000",
-                                      border: `1px solid ${unique ? "rgba(37,99,235,0.25)" : "#000"}`,
+                                      background: unique ? "rgba(37,99,235,0.08)" : "rgba(0,0,0,0.04)",
+                                      border: `1px solid ${unique ? "rgba(37,99,235,0.25)" : "rgba(0,0,0,0.08)"}`,
                                       borderRadius: 4, padding: "2px 7px", fontWeight: unique ? 600 : 400,
                                     }}>
                                       {d}
@@ -1264,7 +1264,7 @@ export default function SalesVisibilityCharts({
                           {primary ? featureName(primary.featureId) : g2!.featureLabel}
                         </p>
                         {usingG2 && (
-                          <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "#000", background: "#000", borderRadius: 4, padding: "2px 5px", flexShrink: 0 }}>
+                          <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "#000", background: "rgba(0,0,0,0.06)", borderRadius: 4, padding: "2px 5px", flexShrink: 0 }}>
                             G2
                           </span>
                         )}
@@ -1286,7 +1286,7 @@ export default function SalesVisibilityCharts({
                     {/* Bonus compliance callout */}
                     {bonus && (
                       <div style={{
-                        background: "#000",
+                        background: "rgba(0,0,0,0.025)",
                         border: "1px solid rgba(0,0,0,0.08)",
                         borderLeft: "3px solid rgba(0,0,0,0.13)",
                         borderRadius: "0 6px 6px 0",

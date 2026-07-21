@@ -49,6 +49,22 @@ export default async function SalesVisibilityPage() {
           <p className="text-base" style={{ color: "#000000", lineHeight: 1.6, maxWidth: 560 }}>
             How AI models recommend and describe sales AI agent brands across Claude and GPT-4o-mini — updated daily.
           </p>
+          <div style={{
+            marginTop: 14,
+            display: "inline-flex",
+            flexWrap: "wrap" as const,
+            gap: "6px 18px",
+            fontSize: 13,
+            color: "#000",
+            background: "rgba(37,99,235,0.05)",
+            border: "1px solid rgba(37,99,235,0.15)",
+            borderRadius: 8,
+            padding: "8px 14px",
+          }}>
+            <span><strong>Salesloft acquired Clari</strong> — merged Dec 2025; tracked separately as Salesloft (Clari)</span>
+            <span style={{ color: "rgba(0,0,0,0.25)" }}>·</span>
+            <span><strong>ZoomInfo acquired Chorus</strong> — operates as ZoomInfo Chorus; tracked separately</span>
+          </div>
         </div>
 
         <SalesVisibilityCharts
