@@ -1285,7 +1285,7 @@ export default function SalesVisibilityCharts({
           {
             brand: "Highspot",
             tactic: "Volume + Direct Confrontation",
-            whyVisible: "The most aggressive combination of the four — high content volume and named-competitor takedown pages simultaneously.",
+            whyVisible: "High content volume and named-competitor takedown pages simultaneously.",
             how: "Highspot does everything at once — publishes a lot AND runs multiple named-competitor takedown pages.",
             points: [
               { text: "Publishes heavily — 100+ posts in 18 months, roughly 5-10 per month.", cite: "highspot.com/blog" },
