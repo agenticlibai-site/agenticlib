@@ -143,13 +143,22 @@ export default async function SalesVisibilityPage() {
             Disclaimer &amp; Terms of Use
           </p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
-            This report was created by <strong>AgenticLib</strong>. All data, scores, rankings, sentiment analysis, and commentary contained herein are generated and owned by AgenticLib. Unauthorised reproduction, distribution, or commercial use of this report or any portion of it without the prior written consent of AgenticLib is strictly prohibited.
+            All feature scores, rankings, and assessments are based on publicly available information at the time of research and represent AgenticLib&apos;s independent evaluation. They are not official ratings, endorsements, or certifications of the brands, products, or technologies assessed.
           </p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
-            Brand mentions, feature scores, and sentiment data are derived from automated AI model queries (Claude Haiku and GPT-4o-mini) and reflect how those models respond to standardised prompts at the time of collection. They do not constitute an endorsement of, or negative judgment on, any brand. Scores and rankings may change as AI models are updated and new data is collected.
+            Brand names, product names, and trademarks referenced in this report are the property of their respective owners. Their inclusion does not imply affiliation with, sponsorship by, or endorsement from any referenced brand or company.
+          </p>
+          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
+            Competitive intelligence data (including brand mention counts, share-of-voice figures, and AI model visibility scores) is derived from automated queries to publicly accessible large language model APIs (Claude Haiku and GPT-4o-mini). This data reflects model output at specific points in time and may not represent the current or future state of any brand&apos;s market position. Scores and rankings may change as AI models are updated and new data is collected.
+          </p>
+          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
+            Feature information may become outdated as brands update their products and services. AgenticLib makes no warranty, express or implied, as to the accuracy, completeness, or timeliness of the information in this report.
+          </p>
+          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
+            This report is intended for the private use of its recipient. Redistribution, publication, or commercial use of its contents without the prior written consent of AgenticLib is not permitted.
           </p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7 }}>
-            This report is provided for informational purposes only. AgenticLib makes no warranties, express or implied, as to the accuracy, completeness, or fitness for a particular purpose of the information contained herein. AgenticLib shall not be liable for any decisions made in reliance on this report.
+            Nothing in this report should be construed as a claim that any competitor&apos;s product is defective, unsafe, or unfit for its intended purpose. All comparative analysis is made in good faith on the basis of publicly available information.
           </p>
           <p style={{ fontSize: 11, color: "#000", marginTop: 14 }}>
             © {new Date().getFullYear()} AgenticLib. All rights reserved.
