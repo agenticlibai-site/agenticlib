@@ -1327,8 +1327,8 @@ export default function SalesVisibilityCharts({
             points: [
               { text: "Publishes lightly — about 1-2 posts a month, all dated within the last 6 months (no older archive visible). Content leans toward broad \"pipeline visibility\" thought leadership, not specific \"how we auto-update Salesforce\" guides.", cite: "backstory.ai/blog" },
               { text: "Zero Reddit or forum presence found. Every search — r/sales, r/RevOps, r/salesforce, broad Reddit search — returned nothing relevant." },
-              { text: "The one real PR moment was a rebrand, not a product story. Renamed from People.ai to Backstory in April 2026. No funding news since a 2021 Series D.", cite: "Rebrand announcement" },
-              { text: "Publishes no \"Backstory vs. X\" pages of its own — every comparison URL 404s. Its posture toward Gong is co-existence, not competition: it's an official Gong Collective integration partner, processing Gong's call transcripts rather than competing with Gong directly.", cite: "Gong Collective listing" },
+              { text: "The one real PR moment was a rebrand, not a product story. Renamed from People.ai to Backstory in April 2026. No funding news since a 2021 Series D.", cite: "Rebrand announcement", citeUrl: "https://www.backstory.ai/newsroom/people-ai-becomes-backstory-redefining-how-revenue-teams-get-answers-about-their-deals" },
+              { text: "Publishes no \"Backstory vs. X\" pages of its own — every comparison URL 404s. Its posture toward Gong is co-existence, not competition: it's an official Gong Collective integration partner, processing Gong's call transcripts rather than competing with Gong directly.", cite: "Gong Collective listing", citeUrl: "https://collective.gong.io/integrations/people-ai" },
               { text: "Real customers, real product — NVIDIA, OpenAI, Red Hat, and Zscaler are named on the customer page, and blog content is current as of last month. This isn't a dead company — it's a real, actively maintained product that simply isn't showing up.", cite: "backstory.ai/customers" },
               { text: "No public pricing, no public changelog — /pricing, /changelog, and /release-notes all 404, and the newsroom page exists but is empty. Marketing effort has gone into the site's surface, not into ongoing documentation." },
             ],
@@ -1378,11 +1378,15 @@ export default function SalesVisibilityCharts({
                       {pb.points.map((point, i) => (
                         <li key={i} style={{ fontSize: 14, color: "#000", lineHeight: 1.6 }}>
                           {point.text}
-                          {"cite" in point && point.cite && (
-                            point.cite.includes('.') && !point.cite.includes(' ')
-                              ? <a href={`https://${point.cite}`} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", marginLeft: 4, fontSize: 13, textDecoration: "underline" }}>{point.cite}</a>
-                              : <span style={{ color: "rgba(0,0,0,0.4)", marginLeft: 4 }}>{point.cite}</span>
-                          )}
+                          {"cite" in point && point.cite && (() => {
+                            const label = point.cite;
+                            const href = ("citeUrl" in point && point.citeUrl)
+                              ? point.citeUrl as string
+                              : (label.includes('.') && !label.includes(' ') ? `https://${label}` : null);
+                            return href
+                              ? <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", marginLeft: 4, fontSize: 13, textDecoration: "underline" }}>{label}</a>
+                              : <span style={{ color: "rgba(0,0,0,0.4)", marginLeft: 4 }}>{label}</span>;
+                          })()}
                           {"sub" in point && point.sub && (
                             <ul style={{ margin: "6px 0 0", paddingLeft: 18, display: "flex", flexDirection: "column", gap: 4 }}>
                               {point.sub.map((s, j) => (
