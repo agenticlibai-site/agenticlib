@@ -69,6 +69,29 @@ export default async function SalesVisibilityPage() {
           Scores require agreement between both AI models. When models disagree, we take the more conservative rating — so a lower score sometimes means models disagree, not that documentation is absent. Check the evidence text for the fuller picture.
         </p>
 
+        {/* Disclaimer & Terms of Use */}
+        <div style={{
+          marginTop: 48,
+          borderTop: "1px solid rgba(0,0,0,0.08)",
+          paddingTop: 28,
+        }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: "#000", marginBottom: 10 }}>
+            Disclaimer &amp; Terms of Use
+          </p>
+          <p style={{ fontSize: 12, color: "rgba(0,0,0,0.55)", lineHeight: 1.7, marginBottom: 10 }}>
+            This report was created by <strong>AgenticLib</strong> (agenticlib.com). All data, scores, rankings, sentiment analysis, and commentary contained herein are generated and owned by AgenticLib. Unauthorised reproduction, distribution, or commercial use of this report or any portion of it without the prior written consent of AgenticLib is strictly prohibited.
+          </p>
+          <p style={{ fontSize: 12, color: "rgba(0,0,0,0.55)", lineHeight: 1.7, marginBottom: 10 }}>
+            Brand mentions, feature scores, and sentiment data are derived from automated AI model queries (Claude Haiku and GPT-4o-mini) and reflect how those models respond to standardised prompts at the time of collection. They do not constitute an endorsement of, or negative judgment on, any brand. Scores and rankings may change as AI models are updated and new data is collected.
+          </p>
+          <p style={{ fontSize: 12, color: "rgba(0,0,0,0.55)", lineHeight: 1.7 }}>
+            This report is provided for informational purposes only. AgenticLib makes no warranties, express or implied, as to the accuracy, completeness, or fitness for a particular purpose of the information contained herein. AgenticLib shall not be liable for any decisions made in reliance on this report.
+          </p>
+          <p style={{ fontSize: 11, color: "rgba(0,0,0,0.35)", marginTop: 14 }}>
+            © {new Date().getFullYear()} AgenticLib. All rights reserved.
+          </p>
+        </div>
+
       </div>
     </main>
   );
