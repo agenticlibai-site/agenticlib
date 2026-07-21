@@ -1374,26 +1374,32 @@ export default function SalesVisibilityCharts({
                       <span style={{ fontWeight: 700 }}>How: </span>{pb.how}
                     </p>
 
-                    <ul style={{ margin: "0 0 12px", paddingLeft: 18, display: "flex", flexDirection: "column", gap: 8 }}>
+                    <ul style={{ margin: "0 0 12px", paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 8 }}>
                       {pb.points.map((point, i) => (
-                        <li key={i} style={{ fontSize: 14, color: "#000", lineHeight: 1.6 }}>
-                          {point.text}
-                          {"cite" in point && point.cite && (() => {
-                            const label = point.cite;
-                            const href = ("citeUrl" in point && point.citeUrl)
-                              ? point.citeUrl as string
-                              : (label.includes('.') && !label.includes(' ') ? `https://${label}` : null);
-                            return href
-                              ? <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", marginLeft: 4, fontSize: 13, textDecoration: "underline" }}>{label}</a>
-                              : <span style={{ color: "rgba(0,0,0,0.4)", marginLeft: 4 }}>{label}</span>;
-                          })()}
-                          {"sub" in point && point.sub && (
-                            <ul style={{ margin: "6px 0 0", paddingLeft: 18, display: "flex", flexDirection: "column", gap: 4 }}>
-                              {point.sub.map((s, j) => (
-                                <li key={j} style={{ fontSize: 14, color: "rgba(0,0,0,0.7)", lineHeight: 1.6 }}>{s}</li>
-                              ))}
-                            </ul>
-                          )}
+                        <li key={i} style={{ fontSize: 14, color: "#000", lineHeight: 1.6, display: "flex", alignItems: "flex-start", gap: 10 }}>
+                          <span style={{ flexShrink: 0, width: 7, height: 7, borderRadius: "50%", background: NAVY, marginTop: 6 }} />
+                          <span>
+                            {point.text}
+                            {"cite" in point && point.cite && (() => {
+                              const label = point.cite;
+                              const href = ("citeUrl" in point && point.citeUrl)
+                                ? point.citeUrl as string
+                                : (label.includes('.') && !label.includes(' ') ? `https://${label}` : null);
+                              return href
+                                ? <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", marginLeft: 4, fontSize: 13, textDecoration: "underline" }}>{label}</a>
+                                : <span style={{ color: "rgba(0,0,0,0.4)", marginLeft: 4 }}>{label}</span>;
+                            })()}
+                            {"sub" in point && point.sub && (
+                              <ul style={{ margin: "6px 0 0", paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 4 }}>
+                                {point.sub.map((s, j) => (
+                                  <li key={j} style={{ fontSize: 14, color: "rgba(0,0,0,0.7)", lineHeight: 1.6, display: "flex", alignItems: "flex-start", gap: 8 }}>
+                                    <span style={{ flexShrink: 0, width: 5, height: 5, borderRadius: "50%", border: `1.5px solid ${NAVY}`, marginTop: 7 }} />
+                                    <span>{s}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </span>
                         </li>
                       ))}
                     </ul>
