@@ -365,6 +365,10 @@ const HIDDEN_FEATURE_IDS = new Set([
   "tech_instruction_following",
 ]);
 
+const DESCRIPTOR_BLOCKLIST: Record<string, string[]> = {
+  "Salesloft (Clari)": ["robust forecasting capabilities"],
+};
+
 // ── Use case clusters ─────────────────────────────────────────────────────────
 const SOV_CLUSTERS = [
   { tag: "sales-call",       label: "Call Intelligence & Coaching" },
@@ -1093,7 +1097,7 @@ export default function SalesVisibilityCharts({
                                 </span>
                               </div>
                               <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 5, paddingLeft: 158 }}>
-                                {[...new Set(brand.top_descriptors)].slice(0, 4).map((d, i) => {
+                                {[...new Set(brand.top_descriptors)].filter(d => !(DESCRIPTOR_BLOCKLIST[brand.brand_name] ?? []).includes(d)).slice(0, 4).map((d, i) => {
                                   const unique = globalDescFreq.get(d) === 1;
                                   return (
                                     <span key={i} style={{
