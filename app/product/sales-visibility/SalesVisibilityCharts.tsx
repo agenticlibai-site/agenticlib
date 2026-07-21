@@ -21,6 +21,33 @@ const LINE_COLORS = [
 
 function lineColor(i: number) { return LINE_COLORS[i % LINE_COLORS.length]; }
 
+// Fixed brand→color map so every chart, table, and card uses the same colour
+// for the same brand regardless of sort order or section.
+const BRAND_COLOR_MAP: Record<string, string> = {
+  "Chorus":       "#2563EB",
+  "Outreach":     "#6B4FBB",
+  "Gong":         "#E8447A",
+  "Salesloft":    "#059669",
+  "Clari":        "#DC2626",
+  "Conversica":   "#D97706",
+  "Revenue.io":   "#0891B2",
+  "Apollo":       "#C026D3",
+  "ZoomInfo":     "#EA580C",
+  "Lemlist":      "#0D9488",
+  "Clay":         "#7C3AED",
+  "Reply.io":     "#65A30D",
+  "Seamless.ai":  "#0369A1",
+  "Avoma":        "#92400E",
+  "Backstory.ai": "#BE185D",
+  "6sense":       "#F43F5E",
+  "Mindtickle":   "#84CC16",
+  "Highspot":     "#FB923C",
+  "Tact.ai":      "#818CF8",
+};
+function getBrandColor(brand: string): string {
+  return BRAND_COLOR_MAP[brand] ?? LINE_COLORS[0];
+}
+
 
 function fmtDate(d: string) {
   return new Date(d + "T00:00:00Z").toLocaleDateString("en-AU", {
@@ -476,7 +503,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
 
   if (top.length === 0) return null;
 
-  const colorMap = Object.fromEntries(top.map((r, i) => [r.brand, lineColor(i)]));
+  const colorMap = Object.fromEntries(top.map((r) => [r.brand, getBrandColor(r.brand)]));
 
   return (
     <div style={{
@@ -564,8 +591,7 @@ export default function SalesVisibilityCharts({
     .filter(b => weeklyTotals[b] || index[dates[0]]?.[b] !== undefined)
     .sort((a, b) => (weeklyTotals[b]?.mentions ?? 0) - (weeklyTotals[a]?.mentions ?? 0));
 
-  const brandColorMap = Object.fromEntries(brands.map((b, i) => [b, lineColor(i)]));
-  const brandColor = (b: string) => brandColorMap[b] ?? lineColor(0);
+  const brandColor = (b: string) => getBrandColor(b);
 
   // ── Combined chart rows (all brands) ─────────────────────────────────────
   const chartRows = dates.map(date => {
@@ -1145,12 +1171,6 @@ export default function SalesVisibilityCharts({
 
       {/* ── Row 9: Brand Capability Spotlight ────────────────────────────────── */}
       {(() => {
-        const BRAND_COLORS = [
-          "#6B4FBB", "#E8447A", "#2563EB", "#059669", "#DC2626", "#D97706",
-          "#0891B2", "#C026D3", "#EA580C", "#0D9488", "#7C3AED", "#65A30D",
-          "#0369A1", "#92400E", "#BE185D", "#F43F5E", "#84CC16", "#FB923C",
-          "#818CF8", "#34D399",
-        ];
 
         const BONUS = new Set(["rai_data_privacy", "rai_explainability"]);
 
@@ -1224,8 +1244,8 @@ export default function SalesVisibilityCharts({
             </button>
             {spotlightOpen && (
               <div style={{ padding: "20px 24px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                {spotlights.map(([brand, { primary, bonus }], idx) => {
-                  const color = BRAND_COLORS[idx % BRAND_COLORS.length];
+                {spotlights.map(([brand, { primary, bonus }]) => {
+                  const color = getBrandColor(brand);
                   const g2 = G2_EVIDENCE[brand];
                   const usingG2 = !primary && !!g2;
                   return (
