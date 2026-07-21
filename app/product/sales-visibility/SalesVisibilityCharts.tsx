@@ -425,7 +425,7 @@ const SENTIMENT_CLUSTERS = [
 function CombinedTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   const sorted = [...payload]
-    .filter((item: any) => item.value != null && item.value > 0)
+    .filter((item: any) => item.value != null && (item.value > 0 || item.dataKey === "Backstory.ai"))
     .sort((a: any, b: any) => (b.value ?? 0) - (a.value ?? 0));
   return (
     <div style={{
