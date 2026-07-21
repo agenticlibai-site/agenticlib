@@ -1379,7 +1379,9 @@ export default function SalesVisibilityCharts({
                         <li key={i} style={{ fontSize: 14, color: "#000", lineHeight: 1.6 }}>
                           {point.text}
                           {"cite" in point && point.cite && (
-                            <span style={{ color: "rgba(0,0,0,0.4)" }}> {point.cite}</span>
+                            point.cite.includes('.') && !point.cite.includes(' ')
+                              ? <a href={`https://${point.cite}`} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", marginLeft: 4, fontSize: 13, textDecoration: "underline" }}>{point.cite}</a>
+                              : <span style={{ color: "rgba(0,0,0,0.4)", marginLeft: 4 }}>{point.cite}</span>
                           )}
                           {"sub" in point && point.sub && (
                             <ul style={{ margin: "6px 0 0", paddingLeft: 18, display: "flex", flexDirection: "column", gap: 4 }}>
