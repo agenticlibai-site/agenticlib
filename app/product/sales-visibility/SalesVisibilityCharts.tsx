@@ -991,7 +991,7 @@ export default function SalesVisibilityCharts({
                           {featureName(featureId)}
                         </p>
                         {FEATURE_DESCRIPTIONS[featureId] && (
-                          <p style={{ fontSize: 16, color: "#000", lineHeight: 1.5, margin: "0 0 10px" }}>
+                          <p style={{ fontSize: 16, color: "#2563EB", lineHeight: 1.5, margin: "0 0 10px" }}>
                             {FEATURE_DESCRIPTIONS[featureId]}
                           </p>
                         )}
