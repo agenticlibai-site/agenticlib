@@ -69,6 +69,54 @@ export default async function SalesVisibilityPage() {
           Scores require agreement between both AI models. When models disagree, we take the more conservative rating — so a lower score sometimes means models disagree, not that documentation is absent. Check the evidence text for the fuller picture.
         </p>
 
+        {/* Glossary */}
+        <div style={{
+          marginTop: 48,
+          borderTop: "1px solid rgba(0,0,0,0.08)",
+          paddingTop: 28,
+        }}>
+          <p style={{ fontSize: 13, fontWeight: 700, color: "#000", marginBottom: 16 }}>
+            Glossary
+          </p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {[
+              {
+                term: "Brand Coverage Over Time",
+                def: "Shows how often each brand is mentioned by AI models across multiple days. This helps identify whether a brand's AI visibility is stable, increasing, or decreasing over time.",
+              },
+              {
+                term: "Brand Mentions",
+                def: "The total number of times a brand is referenced by AI models across the prompts included in this report. Higher mentions generally indicate greater visibility within AI-generated recommendations.",
+              },
+              {
+                term: "Avg Brand Position",
+                def: "The average rank at which a brand appears within an AI model's response — position 1 means the brand was named first. Lower numbers indicate the brand is consistently surfaced earlier and more prominently. A brand can have many mentions but a weak position if it is typically listed near the bottom.",
+              },
+              {
+                term: "Visibility by LLM / Model",
+                def: "Compares how frequently each AI model (Claude Haiku and GPT-4o-mini) mentions each brand. This highlights differences in brand awareness and recommendation behaviour across models.",
+              },
+              {
+                term: "Share of Voice by Use Case",
+                def: "Measures the percentage of brand mentions within a specific sales use case (such as call intelligence, CRM automation, or deal risk detection). Rather than showing overall popularity, it shows which brands dominate each individual category.",
+              },
+              {
+                term: "Feature Score",
+                def: "A 0–100 score reflecting how well an AI model can confirm and describe a specific product capability for a given brand. Scores require agreement between both models — when they disagree, the more conservative rating is used. Strong (90): capability clearly confirmed with specific evidence. Present (70): confirmed but less detailed. Partial (35): partially confirmed or mixed signals. Weak (10): capability not confirmed.",
+              },
+              {
+                term: "Sentiment",
+                def: "How AI models characterise a brand when describing it — classified as Positive, Neutral, or Negative based on the language used across model responses. The percentage shown reflects the share of positive responses out of all responses for that brand.",
+              },
+            ].map(({ term, def }) => (
+              <div key={term} style={{ display: "flex", gap: 12 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#000", minWidth: 200, flexShrink: 0, paddingTop: 1 }}>{term}</span>
+                <span style={{ fontSize: 12, color: "rgba(0,0,0,0.55)", lineHeight: 1.7 }}>{def}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Disclaimer & Terms of Use */}
         <div style={{
           marginTop: 48,
