@@ -78,15 +78,17 @@ export default async function SalesVisibilityPage() {
         />
 
         {/* Glossary */}
-        <div style={{
-          marginTop: 48,
-          borderTop: "1px solid rgba(0,0,0,0.08)",
-          paddingTop: 28,
-        }}>
-          <p style={{ fontSize: 13, fontWeight: 700, color: "#000", marginBottom: 16 }}>
-            Glossary
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+        <div style={{ marginTop: 56 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24 }}>
+            <span style={{
+              fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const,
+              color: "#2563EB", background: "rgba(37,99,235,0.08)", borderRadius: 999, padding: "4px 12px",
+            }}>
+              Glossary
+            </span>
+            <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.07)" }} />
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
             {[
               {
                 term: "Brand Coverage Over Time",
@@ -116,10 +118,20 @@ export default async function SalesVisibilityPage() {
                 term: "Sentiment",
                 def: "How AI models characterise a brand when describing it — classified as Positive, Neutral, or Negative based on the language used across model responses. The percentage shown reflects the share of positive responses out of all responses for that brand.",
               },
-            ].map(({ term, def }) => (
-              <div key={term} style={{ display: "flex", gap: 12 }}>
-                <span style={{ fontSize: 12, fontWeight: 700, color: "#000", minWidth: 200, flexShrink: 0, paddingTop: 1 }}>{term}</span>
-                <span style={{ fontSize: 12, color: "#000", lineHeight: 1.7 }}>{def}</span>
+            ].map(({ term, def }, i, arr) => (
+              <div key={term} style={{
+                display: "flex",
+                gap: 32,
+                padding: "18px 0",
+                borderBottom: i < arr.length - 1 ? "1px solid rgba(0,0,0,0.06)" : "none",
+              }}>
+                <div style={{ width: 220, flexShrink: 0 }}>
+                  <span style={{
+                    fontSize: 13, fontWeight: 700, color: "#000", lineHeight: 1.4,
+                    display: "inline-block",
+                  }}>{term}</span>
+                </div>
+                <p style={{ fontSize: 13, color: "#000", lineHeight: 1.75, margin: 0 }}>{def}</p>
               </div>
             ))}
           </div>
