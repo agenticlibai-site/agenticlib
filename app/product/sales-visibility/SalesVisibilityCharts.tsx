@@ -1166,6 +1166,16 @@ export default function SalesVisibilityCharts({
         );
       })()}
 
+      {/* ── Feature scores footnotes ─────────────────────────────────────────── */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 6, padding: "0 4px" }}>
+        <p style={{ fontSize: 11, color: "#000", margin: 0, textAlign: "center" }}>
+          Based on 23 daily prompts across Claude Haiku and GPT-4o-mini · Sales AI agent category · collecting since July 2026
+        </p>
+        <p style={{ fontSize: 11, color: "#000", margin: "0 auto", textAlign: "center", maxWidth: 680 }}>
+          Scores require agreement between both AI models. When models disagree, we take the more conservative rating — so a lower score sometimes means models disagree, not that documentation is absent. Check the evidence text for the fuller picture.
+        </p>
+      </div>
+
       {/* ── Row 9: Brand Capability Spotlight ────────────────────────────────── */}
       {(() => {
 
