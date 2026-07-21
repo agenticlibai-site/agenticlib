@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "Sales AI Agent Visibility – AgenticLib",
   description:
-    "How AI models recommend and describe sales AI agent brands across Claude and GPT-4o-mini — updated daily.",
+    "How AI models recommend and describe sales AI agent brands across Claude and GPT-4o-mini, updated daily.",
 };
 
 export default async function SalesVisibilityPage() {
@@ -47,7 +47,7 @@ export default async function SalesVisibilityPage() {
             Sales AI Agent Visibility
           </h1>
           <p className="text-base" style={{ color: "#000000", lineHeight: 1.6, maxWidth: 560 }}>
-            How AI models recommend and describe sales AI agent brands across Claude and GPT-4o-mini — updated daily.
+            How AI models recommend and describe sales AI agent brands across Claude and GPT-4o-mini, updated daily.
           </p>
           <div style={{
             marginTop: 14,
@@ -61,9 +61,9 @@ export default async function SalesVisibilityPage() {
             borderRadius: 8,
             padding: "8px 14px",
           }}>
-            <span><strong>Salesloft acquired Clari</strong> — merged Dec 2025; tracked separately as Salesloft (Clari)</span>
+            <span><strong>Salesloft acquired Clari</strong>, merged Dec 2025, tracked separately as Salesloft (Clari)</span>
             <span style={{ color: "rgba(0,0,0,0.25)" }}>·</span>
-            <span><strong>ZoomInfo acquired Chorus</strong> — acquired 2021; tracked separately as ZoomInfo (Chorus)</span>
+            <span><strong>ZoomInfo acquired Chorus</strong> in 2021, tracked separately as ZoomInfo (Chorus)</span>
           </div>
         </div>
 
@@ -100,7 +100,7 @@ export default async function SalesVisibilityPage() {
               },
               {
                 term: "Avg Brand Position",
-                def: "The average rank at which a brand appears within an AI model's response — position 1 means the brand was named first. Lower numbers indicate the brand is consistently surfaced earlier and more prominently. A brand can have many mentions but a weak position if it is typically listed near the bottom.",
+                def: "The average rank at which a brand appears within an AI model's response. Position 1 means the brand was named first. Lower numbers indicate the brand is consistently surfaced earlier and more prominently. A brand can have many mentions but a weak position if it is typically listed near the bottom.",
               },
               {
                 term: "Visibility by LLM / Model",
@@ -112,11 +112,11 @@ export default async function SalesVisibilityPage() {
               },
               {
                 term: "Feature Score",
-                def: "A 0–100 score reflecting how well an AI model can confirm and describe a specific product capability for a given brand. Scores require agreement between both models — when they disagree, the more conservative rating is used. Strong (90): capability clearly confirmed with specific evidence. Present (70): confirmed but less detailed. Partial (35): partially confirmed or mixed signals. Weak (10): capability not confirmed.",
+                def: "A 0–100 score reflecting how well an AI model can confirm and describe a specific product capability for a given brand. Scores require agreement between both models; when they disagree, the more conservative rating is used. Strong (90): capability clearly confirmed with specific evidence. Present (70): confirmed but less detailed. Partial (35): partially confirmed or mixed signals. Weak (10): capability not confirmed.",
               },
               {
                 term: "Sentiment",
-                def: "How AI models characterise a brand when describing it — classified as Positive, Neutral, or Negative based on the language used across model responses. The percentage shown reflects the share of positive responses out of all responses for that brand.",
+                def: "How AI models characterise a brand when describing it, classified as Positive, Neutral, or Negative based on the language used across model responses. The percentage shown reflects the share of positive responses out of all responses for that brand.",
               },
             ].map(({ term, def }, i, arr) => (
               <div key={term} style={{
