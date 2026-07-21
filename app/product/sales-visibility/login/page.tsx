@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { createHash } from "node:crypto";
 
-const SALT = "|skincare_gate_agenticlib_2026";
+const SALT = "|sales_gate_agenticlib_2026";
 
 function computeToken(password: string): string {
   return createHash("sha256").update(password + SALT).digest("hex");
@@ -11,15 +11,15 @@ function computeToken(password: string): string {
 async function verifyPassword(formData: FormData) {
   "use server";
   const entered = String(formData.get("password") ?? "").trim();
-  const correct = process.env.SKINCARE_ACCESS_PASSWORD ?? "";
+  const correct = process.env.SALES_ACCESS_PASSWORD ?? "";
 
   if (!entered || entered !== correct) {
-    redirect("/product/skincare-visibility/login?error=1");
+    redirect("/product/sales-visibility/login?error=1");
   }
 
   const token = computeToken(entered);
   const jar = await cookies();
-  jar.set("skincare_auth", token, {
+  jar.set("sales_auth", token, {
     httpOnly: true,
     secure: true,
     sameSite: "lax",
@@ -27,7 +27,7 @@ async function verifyPassword(formData: FormData) {
     maxAge: 60 * 60 * 24 * 30, // 30 days
   });
 
-  redirect("/product/skincare-visibility");
+  redirect("/product/sales-visibility");
 }
 
 export const metadata = {
@@ -35,7 +35,7 @@ export const metadata = {
   robots: "noindex",
 };
 
-export default async function SkincareLoginPage({
+export default async function SalesLoginPage({
   searchParams,
 }: {
   searchParams: Promise<{ error?: string }>;
@@ -49,7 +49,7 @@ export default async function SkincareLoginPage({
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "linear-gradient(160deg, #EEF0FD 0%, #F4F5FD 45%, #F9FAFE 100%)",
+        background: "#F7F8FC",
       }}
     >
       <div
@@ -68,15 +68,15 @@ export default async function SkincareLoginPage({
             fontSize: 11,
             fontWeight: 700,
             letterSpacing: "0.08em",
-            textTransform: "uppercase",
-            background: "rgba(59,77,190,0.10)",
-            color: "#3B4DBE",
+            textTransform: "uppercase" as const,
+            background: "rgba(37,99,235,0.10)",
+            color: "#2563EB",
             borderRadius: 999,
             padding: "4px 12px",
             marginBottom: 20,
           }}
         >
-          Skincare Intelligence
+          Brand Intelligence · Sales
         </div>
 
         <h1
@@ -89,7 +89,7 @@ export default async function SkincareLoginPage({
             margin: "0 0 8px",
           }}
         >
-          Dewwie Report
+          Sales AI Agent Visibility
         </h1>
         <p style={{ fontSize: 14, color: "#000", margin: "0 0 28px", lineHeight: 1.5 }}>
           This report is available to invited partners only. Enter the access password below.
@@ -111,7 +111,7 @@ export default async function SkincareLoginPage({
               outline: "none",
               color: "#000",
               background: "#fff",
-              boxSizing: "border-box",
+              boxSizing: "border-box" as const,
             }}
           />
           {error === "1" && (
@@ -122,7 +122,7 @@ export default async function SkincareLoginPage({
           <button
             type="submit"
             style={{
-              background: "#3B4DBE",
+              background: "#2563EB",
               color: "#fff",
               border: "none",
               borderRadius: 8,
