@@ -459,7 +459,7 @@ function Card({ children, accent }: { children: React.ReactNode; accent?: string
 
 function CardLabel({ children }: { children: React.ReactNode }) {
   return (
-    <p style={{ fontSize: 15, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(0,0,0,0.45)", marginBottom: 8 }}>
+    <p style={{ fontSize: 15, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#000", marginBottom: 8 }}>
       {children}
     </p>
   );
@@ -469,7 +469,7 @@ function BigNumber({ value, sub }: { value: string; sub: string }) {
   return (
     <>
       <p style={{ fontSize: 36, fontWeight: 800, color: NAVY, lineHeight: 1, marginBottom: 6, fontVariantNumeric: "tabular-nums" }}>{value}</p>
-      <p style={{ fontSize: 15, color: "rgba(0,0,0,0.5)" }}>{sub}</p>
+      <p style={{ fontSize: 15, color: "#000" }}>{sub}</p>
     </>
   );
 }
@@ -515,7 +515,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
       <h3 style={{ fontSize: 18, fontWeight: 700, color: NAVY, marginBottom: 4, letterSpacing: "-0.01em" }}>
         {cluster.label}
       </h3>
-      <p style={{ fontSize: 15, color: "rgba(0,0,0,0.45)", marginBottom: 16 }}>Share of voice · last 14 days</p>
+      <p style={{ fontSize: 15, color: "#000", marginBottom: 16 }}>Share of voice · last 14 days</p>
       <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
         <div style={{ flexShrink: 0 }}>
           <PieChart width={150} height={150}>
@@ -541,7 +541,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
             <div key={r.brand} style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <div style={{ width: 8, height: 8, borderRadius: 2, flexShrink: 0, background: colorMap[r.brand] }} />
               <span style={{ fontSize: 15, color: NAVY, flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{displayBrand(r.brand)}</span>
-              <span style={{ fontSize: 15, fontWeight: 600, color: "rgba(0,0,0,0.55)", flexShrink: 0 }}>{r.sov_pct}%</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: "#000", flexShrink: 0 }}>{r.sov_pct}%</span>
             </div>
           ))}
         </div>
@@ -689,7 +689,7 @@ export default function SalesVisibilityCharts({
         <Card accent={INDIGO}>
           <CardLabel>LLM Visibility · 14 Days</CardLabel>
           {!hasVis ? (
-            <p style={{ fontSize: 17, color: "rgba(0,0,0,0.4)" }}>No data yet</p>
+            <p style={{ fontSize: 17, color: "#000" }}>No data yet</p>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               {llmVisibility.map((v, i) => {
@@ -698,13 +698,13 @@ export default function SalesVisibilityCharts({
                 return (
                   <div key={v.model}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 6 }}>
-                      <span style={{ fontSize: 15, fontWeight: 600, color: "rgba(0,0,0,0.55)", textTransform: "uppercase" as const, letterSpacing: "0.06em" }}>{label}</span>
+                      <span style={{ fontSize: 15, fontWeight: 600, color: "#000", textTransform: "uppercase" as const, letterSpacing: "0.06em" }}>{label}</span>
                       <span style={{ fontSize: 28, fontWeight: 800, color, lineHeight: 1, fontVariantNumeric: "tabular-nums" }}>{v.visibility_pct.toFixed(1)}%</span>
                     </div>
-                    <div style={{ height: 5, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
+                    <div style={{ height: 5, borderRadius: 999, background: "#000" }}>
                       <div style={{ height: 5, borderRadius: 999, width: `${Math.min(v.visibility_pct, 100)}%`, background: color }} />
                     </div>
-                    <p style={{ fontSize: 14, color: "rgba(0,0,0,0.4)", marginTop: 4 }}>{v.total_responses} responses</p>
+                    <p style={{ fontSize: 14, color: "#000", marginTop: 4 }}>{v.total_responses} responses</p>
                   </div>
                 );
               })}
@@ -719,13 +719,13 @@ export default function SalesVisibilityCharts({
               <p style={{ fontSize: 24, fontWeight: 800, color: NAVY, lineHeight: 1.2, marginBottom: 4 }}>
                 {displayBrand(topByMentions)}
               </p>
-              <p style={{ fontSize: 15, color: "rgba(0,0,0,0.5)" }}>
+              <p style={{ fontSize: 15, color: "#000" }}>
                 {topMentionData.mentions.toLocaleString()} mentions
                 {topMentionData.avgPos != null ? ` · avg position ${topMentionData.avgPos.toFixed(1)}` : ""}
               </p>
             </>
           ) : (
-            <p style={{ fontSize: 17, color: "rgba(0,0,0,0.4)" }}>No data yet</p>
+            <p style={{ fontSize: 17, color: "#000" }}>No data yet</p>
           )}
         </Card>
 
@@ -735,12 +735,12 @@ export default function SalesVisibilityCharts({
       {hasReal && (
         <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "20px 24px 16px" }}>
           <h3 style={{ fontSize: 18, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>Brand Mentions — 7-Day Trend</h3>
-          <p style={{ fontSize: 15, color: "rgba(0,0,0,0.45)", marginBottom: 14 }}>All brands · both models combined</p>
+          <p style={{ fontSize: 15, color: "#000", marginBottom: 14 }}>All brands · both models combined</p>
           <ResponsiveContainer width="100%" height={280}>
             <LineChart data={chartRows} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
               <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,0,0,0.055)" vertical={false} />
-              <XAxis dataKey="date" tickFormatter={fmtDate} tick={{ fontSize: 14, fill: "rgba(0,0,0,0.42)" }} axisLine={false} tickLine={false} dy={6} />
-              <YAxis allowDecimals={false} tick={{ fontSize: 14, fill: "rgba(0,0,0,0.42)" }} axisLine={false} tickLine={false} width={36} />
+              <XAxis dataKey="date" tickFormatter={fmtDate} tick={{ fontSize: 14, fill: "#000" }} axisLine={false} tickLine={false} dy={6} />
+              <YAxis allowDecimals={false} tick={{ fontSize: 14, fill: "#000" }} axisLine={false} tickLine={false} width={36} />
               <Tooltip content={<CombinedTooltip />} wrapperStyle={{ zIndex: 100 }} />
               {brands.map(b => (
                 <Line key={b} type="monotone" dataKey={b} stroke={brandColor(b)} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 0 }} />
@@ -777,12 +777,12 @@ export default function SalesVisibilityCharts({
                   }}
                 >
                   <h4 style={{ fontSize: 17, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>{label}</h4>
-                  <p style={{ fontSize: 15, color: "rgba(0,0,0,0.45)", marginBottom: 14 }}>14-day mentions · both models</p>
+                  <p style={{ fontSize: 15, color: "#000", marginBottom: 14 }}>14-day mentions · both models</p>
                   <ResponsiveContainer width="100%" height={220}>
                     <LineChart data={rows} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,0,0,0.055)" vertical={false} />
-                      <XAxis dataKey="date" tickFormatter={fmtDate} tick={{ fontSize: 14, fill: "rgba(0,0,0,0.42)" }} axisLine={false} tickLine={false} dy={6} />
-                      <YAxis allowDecimals={false} tick={{ fontSize: 14, fill: "rgba(0,0,0,0.42)" }} axisLine={false} tickLine={false} width={32} />
+                      <XAxis dataKey="date" tickFormatter={fmtDate} tick={{ fontSize: 14, fill: "#000" }} axisLine={false} tickLine={false} dy={6} />
+                      <YAxis allowDecimals={false} tick={{ fontSize: 14, fill: "#000" }} axisLine={false} tickLine={false} width={32} />
                       <Tooltip
                         contentStyle={{ borderRadius: 8, border: "1px solid rgba(0,0,0,0.10)", fontSize: 15, boxShadow: "0 4px 16px rgba(0,0,0,0.12)", color: NAVY }}
                         labelStyle={{ fontWeight: 700, marginBottom: 4 }}
@@ -816,7 +816,7 @@ export default function SalesVisibilityCharts({
             <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>
               Brand Mentions · 14 Days · by Model
             </h3>
-            <p style={{ fontSize: 16, color: "rgba(0,0,0,0.5)" }}>Total mentions per brand across Claude Haiku and GPT-4o mini</p>
+            <p style={{ fontSize: 16, color: "#000" }}>Total mentions per brand across Claude Haiku and GPT-4o mini</p>
           </div>
           <div style={{ display: "flex", gap: 20, marginBottom: 14 }}>
             {[{ label: "Claude Haiku", color: BLUE }, { label: "GPT-4o mini", color: INDIGO }].map(({ label, color }) => (
@@ -843,21 +843,21 @@ export default function SalesVisibilityCharts({
         <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
           <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
             <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 2 }}>Brand Position Summary</h3>
-            <p style={{ fontSize: 16, color: "rgba(0,0,0,0.5)" }}>Average position brands appear in AI responses — lower is stronger</p>
+            <p style={{ fontSize: 16, color: "#000" }}>Average position brands appear in AI responses — lower is stronger</p>
           </div>
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 17 }}>
               <thead>
-                <tr style={{ background: "rgba(0,0,0,0.025)" }}>
+                <tr style={{ background: "#000" }}>
                   {["Rank", "Brand", "Avg Position", "7-Day Mentions"].map(h => (
-                    <th key={h} style={{ padding: "10px 20px", textAlign: "left", fontSize: 15, fontWeight: 700, color: "rgba(0,0,0,0.45)", textTransform: "uppercase" as const, letterSpacing: "0.07em", whiteSpace: "nowrap" }}>{h}</th>
+                    <th key={h} style={{ padding: "10px 20px", textAlign: "left", fontSize: 15, fontWeight: 700, color: "#000", textTransform: "uppercase" as const, letterSpacing: "0.07em", whiteSpace: "nowrap" }}>{h}</th>
                   ))}
                 </tr>
               </thead>
               <tbody>
                 {posTable.map((row, i) => (
-                  <tr key={row.brand} style={{ borderTop: "1px solid rgba(0,0,0,0.05)", background: i % 2 === 0 ? "transparent" : "rgba(0,0,0,0.012)" }}>
-                    <td style={{ padding: "11px 20px", color: "rgba(0,0,0,0.4)", fontWeight: 600 }}>#{row.rank}</td>
+                  <tr key={row.brand} style={{ borderTop: "1px solid rgba(0,0,0,0.05)", background: i % 2 === 0 ? "transparent" : "#000" }}>
+                    <td style={{ padding: "11px 20px", color: "#000", fontWeight: 600 }}>#{row.rank}</td>
                     <td style={{ padding: "11px 20px", fontWeight: 600, color: NAVY }}>
                       <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
                         <span style={{ width: 8, height: 8, borderRadius: "50%", background: brandColor(row.brand), flexShrink: 0, display: "inline-block" }} />
@@ -868,13 +868,13 @@ export default function SalesVisibilityCharts({
                       <span style={{
                         display: "inline-block", padding: "2px 8px", borderRadius: 4,
                         fontSize: 16, fontWeight: 700, fontVariantNumeric: "tabular-nums",
-                        background: row.avgPos <= 3 ? "rgba(37,99,235,0.10)" : "rgba(0,0,0,0.05)",
-                        color: row.avgPos <= 3 ? BLUE : "rgba(0,0,0,0.6)",
+                        background: row.avgPos <= 3 ? "rgba(37,99,235,0.10)" : "#000",
+                        color: row.avgPos <= 3 ? BLUE : "#000",
                       }}>
                         {row.avgPos.toFixed(1)}
                       </span>
                     </td>
-                    <td style={{ padding: "11px 20px", color: "rgba(0,0,0,0.6)" }}>{row.mentions.toLocaleString()}</td>
+                    <td style={{ padding: "11px 20px", color: "#000" }}>{row.mentions.toLocaleString()}</td>
                   </tr>
                 ))}
               </tbody>
@@ -890,7 +890,7 @@ export default function SalesVisibilityCharts({
             <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 2 }}>
               Avg Brand Position by Use Case
             </h3>
-            <p style={{ fontSize: 16, color: "rgba(0,0,0,0.5)" }}>
+            <p style={{ fontSize: 16, color: "#000" }}>
               Each brand shown in its primary use case — avg position within that cluster's prompts
             </p>
           </div>
@@ -901,7 +901,7 @@ export default function SalesVisibilityCharts({
                 borderRight: ci % 3 !== 2 ? "1px solid rgba(0,0,0,0.06)" : undefined,
                 borderBottom: ci < 3 ? "1px solid rgba(0,0,0,0.06)" : undefined,
               }}>
-                <p style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.4)", marginBottom: 12 }}>
+                <p style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "#000", marginBottom: 12 }}>
                   {cluster.label}
                 </p>
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -913,13 +913,13 @@ export default function SalesVisibilityCharts({
                         <span style={{
                           padding: "2px 7px", borderRadius: 4, fontSize: 15, fontWeight: 700,
                           fontVariantNumeric: "tabular-nums",
-                          background: avg_position <= 3 ? "rgba(37,99,235,0.10)" : "rgba(0,0,0,0.05)",
-                          color: avg_position <= 3 ? BLUE : "rgba(0,0,0,0.6)",
+                          background: avg_position <= 3 ? "rgba(37,99,235,0.10)" : "#000",
+                          color: avg_position <= 3 ? BLUE : "#000",
                         }}>
                           {avg_position.toFixed(1)}
                         </span>
                       ) : (
-                        <span style={{ fontSize: 15, color: "rgba(0,0,0,0.25)" }}>—</span>
+                        <span style={{ fontSize: 15, color: "#000" }}>—</span>
                       )}
                     </div>
                   ))}
@@ -970,7 +970,7 @@ export default function SalesVisibilityCharts({
 
           {featureOpen && (
             <div style={{ padding: "20px 24px" }}>
-              <p style={{ fontSize: 15, color: "rgba(0,0,0,0.45)", marginBottom: 24 }}>
+              <p style={{ fontSize: 15, color: "#000", marginBottom: 24 }}>
                 Both models · data from July 2026 · updates daily
               </p>
               {FEATURE_GROUPS.map(group => {
@@ -994,7 +994,7 @@ export default function SalesVisibilityCharts({
                           {featureName(featureId)}
                         </p>
                         {FEATURE_DESCRIPTIONS[featureId] && (
-                          <p style={{ fontSize: 16, color: "rgba(0,0,0,0.5)", lineHeight: 1.5, margin: "0 0 10px" }}>
+                          <p style={{ fontSize: 16, color: "#000", lineHeight: 1.5, margin: "0 0 10px" }}>
                             {FEATURE_DESCRIPTIONS[featureId]}
                           </p>
                         )}
@@ -1005,7 +1005,7 @@ export default function SalesVisibilityCharts({
                                 <span style={{ fontSize: 16, fontWeight: 500, color: NAVY, width: 168, flexShrink: 0, lineHeight: 1.3 }}>
                                   {displayBrand(r.brand_name)}
                                 </span>
-                                <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
+                                <div style={{ flex: 1, height: 6, borderRadius: 999, background: "#000" }}>
                                   <div style={{ width: `${r.score}%`, height: 6, borderRadius: 999, background: BAND_COLORS[r.score_band] ?? "#94a3b8" }} />
                                 </div>
                                 <span style={{ fontSize: 16, fontWeight: 700, color: BAND_COLORS[r.score_band] ?? NAVY, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>
@@ -1016,7 +1016,7 @@ export default function SalesVisibilityCharts({
                                 const ev = evidenceFor(featureId, r.brand_name, r.evidence);
                                 const text = ev ?? BAND_FALLBACK[r.score_band];
                                 return text ? (
-                                  <p style={{ paddingLeft: 178, fontSize: 17, color: ev ? "#000" : "rgba(0,0,0,0.42)", lineHeight: 1.5, margin: "4px 0 0", fontStyle: ev ? "normal" : "italic" }}>{text}</p>
+                                  <p style={{ paddingLeft: 178, fontSize: 17, color: ev ? "#000" : "#000", lineHeight: 1.5, margin: "4px 0 0", fontStyle: ev ? "normal" : "italic" }}>{text}</p>
                                 ) : null;
                               })()}
                             </div>
@@ -1027,7 +1027,7 @@ export default function SalesVisibilityCharts({
                   </div>
                 );
               })}
-              <p style={{ fontSize: 15, color: "rgba(0,0,0,0.35)", borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 12, marginTop: 4 }}>
+              <p style={{ fontSize: 15, color: "#000", borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 12, marginTop: 4 }}>
                 Top 3 brands per feature · scored by both Claude Haiku and GPT-4o mini
               </p>
             </div>
@@ -1071,7 +1071,7 @@ export default function SalesVisibilityCharts({
                   Sentiment Analysis
                 </h3>
                 {!ready && (
-                  <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.4)", background: "rgba(0,0,0,0.06)", borderRadius: 999, padding: "3px 8px" }}>
+                  <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "#000", background: "#000", borderRadius: 999, padding: "3px 8px" }}>
                     Collecting
                   </span>
                 )}
@@ -1086,7 +1086,7 @@ export default function SalesVisibilityCharts({
                 <p style={{ fontSize: 18, fontWeight: 600, color: NAVY, marginBottom: 8 }}>
                   Collecting data — {daysHave} of {GATE} minimum days
                 </p>
-                <p style={{ fontSize: 16, color: "rgba(0,0,0,0.45)", maxWidth: 380, margin: "0 auto" }}>
+                <p style={{ fontSize: 16, color: "#000", maxWidth: 380, margin: "0 auto" }}>
                   Sentiment bars appear once both Claude Haiku and GPT-4o-mini have collected on {GATE} separate days.
                   Check back in {GATE - daysHave} day{GATE - daysHave !== 1 ? "s" : ""}.
                 </p>
@@ -1095,7 +1095,7 @@ export default function SalesVisibilityCharts({
 
             {sentimentOpen && ready && (
               <div style={{ padding: "20px 24px" }}>
-                <p style={{ fontSize: 15, color: "rgba(0,0,0,0.45)", marginBottom: 24 }}>
+                <p style={{ fontSize: 15, color: "#000", marginBottom: 24 }}>
                   How Claude Haiku and GPT-4o-mini describe each brand · {sentimentDateLabel()}
                 </p>
                 {SENTIMENT_CLUSTERS.map(cluster => {
@@ -1120,7 +1120,7 @@ export default function SalesVisibilityCharts({
                                 <span style={{ fontSize: 16, fontWeight: 600, color: NAVY, width: 148, flexShrink: 0, lineHeight: 1.25 }}>
                                   {displayBrand(brand.brand_name)}
                                 </span>
-                                <div style={{ flex: 1, height: 8, borderRadius: 999, background: "rgba(0,0,0,0.06)", overflow: "hidden", display: "flex" }}>
+                                <div style={{ flex: 1, height: 8, borderRadius: 999, background: "#000", overflow: "hidden", display: "flex" }}>
                                   {posPct > 0 && <div style={{ width: `${posPct}%`, height: "100%", background: "#16a34a" }} />}
                                   {neuPct > 0 && <div style={{ width: `${neuPct}%`, height: "100%", background: "#d97706" }} />}
                                   {negPct > 0 && <div style={{ width: `${negPct}%`, height: "100%", background: "#dc2626" }} />}
@@ -1135,9 +1135,9 @@ export default function SalesVisibilityCharts({
                                   return (
                                     <span key={i} style={{
                                       fontSize: 15,
-                                      color: unique ? "#2563eb" : "rgba(0,0,0,0.55)",
-                                      background: unique ? "rgba(37,99,235,0.08)" : "rgba(0,0,0,0.04)",
-                                      border: `1px solid ${unique ? "rgba(37,99,235,0.25)" : "rgba(0,0,0,0.08)"}`,
+                                      color: unique ? "#2563eb" : "#000",
+                                      background: unique ? "rgba(37,99,235,0.08)" : "#000",
+                                      border: `1px solid ${unique ? "rgba(37,99,235,0.25)" : "#000"}`,
                                       borderRadius: 4, padding: "2px 7px", fontWeight: unique ? 600 : 400,
                                     }}>
                                       {d}
@@ -1156,10 +1156,10 @@ export default function SalesVisibilityCharts({
                   {[["#16a34a", "Positive"], ["#d97706", "Neutral"], ["#dc2626", "Negative"]].map(([color, label]) => (
                     <div key={label} style={{ display: "flex", alignItems: "center", gap: 5 }}>
                       <div style={{ width: 10, height: 10, borderRadius: 2, background: color, flexShrink: 0 }} />
-                      <span style={{ fontSize: 15, color: "rgba(0,0,0,0.45)" }}>{label}</span>
+                      <span style={{ fontSize: 15, color: "#000" }}>{label}</span>
                     </div>
                   ))}
-                  <span style={{ fontSize: 15, color: "rgba(0,0,0,0.35)", marginLeft: "auto" }}>
+                  <span style={{ fontSize: 15, color: "#000", marginLeft: "auto" }}>
                     Both models · updates daily
                   </span>
                 </div>
@@ -1264,7 +1264,7 @@ export default function SalesVisibilityCharts({
                           {primary ? featureName(primary.featureId) : g2!.featureLabel}
                         </p>
                         {usingG2 && (
-                          <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.38)", background: "rgba(0,0,0,0.06)", borderRadius: 4, padding: "2px 5px", flexShrink: 0 }}>
+                          <span style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "#000", background: "#000", borderRadius: 4, padding: "2px 5px", flexShrink: 0 }}>
                             G2
                           </span>
                         )}
@@ -1279,14 +1279,14 @@ export default function SalesVisibilityCharts({
                     )}
                     {/* Placeholder only when neither DB nor G2 has data */}
                     {!primary && !g2 && !bonus && (
-                      <p style={{ fontSize: 16, color: "rgba(0,0,0,0.32)", fontStyle: "italic", lineHeight: 1.5, margin: 0 }}>
+                      <p style={{ fontSize: 16, color: "#000", fontStyle: "italic", lineHeight: 1.5, margin: 0 }}>
                         Capability data collecting — check back after the next daily run.
                       </p>
                     )}
                     {/* Bonus compliance callout */}
                     {bonus && (
                       <div style={{
-                        background: "rgba(0,0,0,0.025)",
+                        background: "#000",
                         border: "1px solid rgba(0,0,0,0.08)",
                         borderLeft: "3px solid rgba(0,0,0,0.13)",
                         borderRadius: "0 6px 6px 0",
@@ -1421,12 +1421,12 @@ export default function SalesVisibilityCharts({
                                 : (label.includes('.') && !label.includes(' ') ? `https://${label}` : null);
                               return href
                                 ? <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", marginLeft: 4, fontSize: 15, textDecoration: "underline" }}>{label}</a>
-                                : <span style={{ color: "rgba(0,0,0,0.4)", marginLeft: 4 }}>{label}</span>;
+                                : <span style={{ color: "#000", marginLeft: 4 }}>{label}</span>;
                             })()}
                             {"sub" in point && point.sub && (
                               <ul style={{ margin: "6px 0 0", paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 4 }}>
                                 {point.sub.map((s, j) => (
-                                  <li key={j} style={{ fontSize: 16, color: "rgba(0,0,0,0.7)", lineHeight: 1.6, display: "flex", alignItems: "flex-start", gap: 8 }}>
+                                  <li key={j} style={{ fontSize: 16, color: "#000", lineHeight: 1.6, display: "flex", alignItems: "flex-start", gap: 8 }}>
                                     <span style={{ flexShrink: 0, width: 5, height: 5, borderRadius: "50%", border: `1.5px solid ${NAVY}`, marginTop: 7 }} />
                                     <span>{s}</span>
                                   </li>
@@ -1460,7 +1460,7 @@ export default function SalesVisibilityCharts({
                       <p style={{ fontSize: 13, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: BLUE, margin: "0 0 6px" }}>
                         Takeaway
                       </p>
-                      <p style={{ fontSize: 16, color: "rgba(0,0,0,0.75)", lineHeight: 1.65, margin: 0, fontWeight: 400 }}>
+                      <p style={{ fontSize: 16, color: "#000", lineHeight: 1.65, margin: 0, fontWeight: 400 }}>
                         {pb.takeaway}
                       </p>
                     </div>
