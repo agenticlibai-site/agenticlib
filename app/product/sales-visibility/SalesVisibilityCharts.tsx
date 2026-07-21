@@ -1497,10 +1497,10 @@ export default function SalesVisibilityCharts({
                       borderRadius: "0 6px 6px 0",
                       padding: "8px 12px",
                     }}>
-                      <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "rgba(37,99,235,0.55)", margin: "0 0 4px" }}>
+                      <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "#000", margin: "0 0 4px" }}>
                         Improvement
                       </p>
-                      <p style={{ fontSize: 13, color: "rgba(0,0,0,0.6)", lineHeight: 1.55, margin: 0 }}>
+                      <p style={{ fontSize: 13, color: "#000", lineHeight: 1.55, margin: 0 }}>
                         {item.improvement}
                       </p>
                     </div>
