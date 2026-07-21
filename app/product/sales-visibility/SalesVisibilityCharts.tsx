@@ -1301,7 +1301,7 @@ export default function SalesVisibilityCharts({
               { text: "Shipped 3 major product launches in the last year (mid-2025 through mid-2026), each reinforcing an “AI-powered” narrative." },
             ],
             dataLabel: "Highspot data:",
-            yourData: "Sales content delivery 90 — highest score in the Sales Enablement cluster, grounded in real evidence (Deal Agent, AI Role Play, Digital Sales Rooms). 89% positive sentiment — highest of all brands tracked in this report. Top AI descriptors: \"robust content management\", \"user-friendly interface\", \"effective coaching tools\". Appears consistently in the Sales Enablement & Follow-up mention trend. Discovery mentions tracked within the sales-enablement cluster, separate from the CRM/pipeline clusters.",
+            yourData: "Sales content delivery 90 — highest score in the Sales Enablement cluster, grounded in real evidence (Deal Agent, AI Role Play, Digital Sales Rooms). 89% positive sentiment — highest of all brands tracked in this report. Appears consistently in the Sales Enablement & Follow-up mention trend.",
             takeaway: "Different category from yours (content enablement, not deal execution), but the tactic — pairing real content volume with direct named-competitor pages — is the most complete playbook here. Worth studying the mechanism even though Highspot itself isn't a competitor.",
           },
           {
