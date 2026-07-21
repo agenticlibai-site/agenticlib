@@ -888,7 +888,7 @@ export default function SalesVisibilityCharts({
               Avg Brand Position by Use Case
             </h3>
             <p style={{ fontSize: 16, color: "#000" }}>
-              Each brand shown in its primary use case — avg position within that cluster's prompts
+              Each brand shown in its primary use case — avg position within that cluster's prompts · lower is better
             </p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 0 }}>
