@@ -1273,10 +1273,10 @@ export default function SalesVisibilityCharts({
                         padding: "8px 12px",
                         marginTop: 12,
                       }}>
-                        <p style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.38)", margin: "0 0 4px" }}>
+                        <p style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "#000", margin: "0 0 4px" }}>
                           {featureName(bonus.featureId)}
                         </p>
-                        <p style={{ fontSize: 15, color: "rgba(0,0,0,0.55)", lineHeight: 1.5, margin: 0 }}>
+                        <p style={{ fontSize: 15, color: "#000", lineHeight: 1.5, margin: 0 }}>
                           {(() => { const cut = bonus.evidence.indexOf('. '); return cut > 0 ? bonus.evidence.slice(0, cut + 1) : bonus.evidence; })()}
                         </p>
                       </div>
