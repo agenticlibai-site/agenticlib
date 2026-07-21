@@ -98,6 +98,13 @@ interface Props {
   sentimentData:    { rows: SentimentRow[]; meta: SentimentMeta };
 }
 
+function twoSentences(text: string): string {
+  let end = text.indexOf('. ');
+  if (end === -1) return text;
+  end = text.indexOf('. ', end + 2);
+  return end > 0 ? text.slice(0, end + 1) : text;
+}
+
 function cleanEvidence(raw: string | null): string | null {
   if (!raw) return null;
   const stripped = raw.replace(/<cite[^>]*>/g, '').replace(/<\/cite>/g, '').trim();
@@ -1245,10 +1252,10 @@ export default function SalesVisibilityCharts({
                     )}
                     {/* Evidence — DB or G2 fallback */}
                     {primary && (
-                      <p style={{ fontSize: 14, color: "#000", lineHeight: 1.6, margin: 0 }}>{primary.evidence}</p>
+                      <p style={{ fontSize: 14, color: "#000", lineHeight: 1.6, margin: 0 }}>{twoSentences(primary.evidence)}</p>
                     )}
                     {usingG2 && (
-                      <p style={{ fontSize: 14, color: "#000", lineHeight: 1.6, margin: 0 }}>{g2!.evidence}</p>
+                      <p style={{ fontSize: 14, color: "#000", lineHeight: 1.6, margin: 0 }}>{twoSentences(g2!.evidence)}</p>
                     )}
                     {/* Placeholder only when neither DB nor G2 has data */}
                     {!primary && !g2 && !bonus && (
