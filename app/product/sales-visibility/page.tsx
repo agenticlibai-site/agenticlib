@@ -63,7 +63,7 @@ export default async function SalesVisibilityPage() {
           }}>
             <span><strong>Salesloft acquired Clari</strong> — merged Dec 2025; tracked separately as Salesloft (Clari)</span>
             <span style={{ color: "rgba(0,0,0,0.25)" }}>·</span>
-            <span><strong>ZoomInfo acquired Chorus</strong> — operates as ZoomInfo Chorus; tracked separately</span>
+            <span><strong>ZoomInfo acquired Chorus</strong> — acquired 2021; tracked separately as ZoomInfo (Chorus)</span>
           </div>
         </div>
 
