@@ -81,8 +81,8 @@ export default async function SalesVisibilityPage() {
         <div style={{ marginTop: 56 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24 }}>
             <span style={{
-              fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const,
-              color: "#2563EB", background: "rgba(37,99,235,0.08)", borderRadius: 999, padding: "4px 12px",
+              fontSize: 14, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const,
+              color: "#2563EB", background: "rgba(37,99,235,0.08)", borderRadius: 999, padding: "6px 16px",
             }}>
               Glossary
             </span>
