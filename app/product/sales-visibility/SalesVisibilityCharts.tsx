@@ -1420,16 +1420,16 @@ export default function SalesVisibilityCharts({
                     </p>
 
                     <div style={{
-                      background: "rgba(0,0,0,0.025)",
-                      border: "1px solid rgba(0,0,0,0.08)",
-                      borderLeft: "3px solid rgba(0,0,0,0.13)",
-                      borderRadius: "0 6px 6px 0",
-                      padding: "8px 12px",
+                      background: "linear-gradient(135deg, rgba(37,99,235,0.06) 0%, rgba(37,99,235,0.03) 100%)",
+                      border: "1px solid rgba(37,99,235,0.18)",
+                      borderLeft: "4px solid #2563eb",
+                      borderRadius: "0 10px 10px 0",
+                      padding: "14px 18px",
                     }}>
-                      <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.38)", margin: "0 0 4px" }}>
+                      <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: BLUE, margin: "0 0 6px" }}>
                         Takeaway
                       </p>
-                      <p style={{ fontSize: 13, color: "rgba(0,0,0,0.55)", lineHeight: 1.5, margin: 0 }}>
+                      <p style={{ fontSize: 14, color: "rgba(0,0,0,0.75)", lineHeight: 1.65, margin: 0, fontWeight: 400 }}>
                         {pb.takeaway}
                       </p>
                     </div>
