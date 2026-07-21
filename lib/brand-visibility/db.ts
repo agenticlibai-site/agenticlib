@@ -1329,7 +1329,7 @@ export async function getSalesWeeklySummary(): Promise<
   { brand: string; model: string; mention_count: number; avg_position: number | null }[]
 > {
   await initSalesVisibilityDB();
-  const cutoff = salesCutoff(7);
+  const cutoff = salesCutoff(14);
   const result = await sql`
     SELECT brand, model,
       SUM(mention_count)::int AS mention_count,
@@ -1347,7 +1347,7 @@ export async function getSalesLLMVisibility(): Promise<
   { model: string; visibility_pct: number; total_responses: number }[]
 > {
   await initSalesVisibilityDB();
-  const cutoff = salesCutoff(7);
+  const cutoff = salesCutoff(14);
   const result = await sql`
     SELECT model,
       ROUND(
@@ -1367,7 +1367,7 @@ export async function getSalesSOVData(): Promise<
   { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[]
 > {
   await initSalesVisibilityDB();
-  const cutoff = salesCutoff(7);
+  const cutoff = salesCutoff(14);
   const result = await sql`
     SELECT
       r.bucket_tag,
@@ -1401,7 +1401,7 @@ export async function getSalesClusterBrandPositions(): Promise<
   { bucket_tag: string; brand: string; avg_position: number; appearances: number }[]
 > {
   await initSalesVisibilityDB();
-  const cutoff = salesCutoff(7);
+  const cutoff = salesCutoff(14);
   const result = await sql`
     SELECT
       r.bucket_tag,
