@@ -1412,7 +1412,7 @@ export default function SalesVisibilityCharts({
                     <strong>Highspot</strong> is a strong example: both Claude and GPT-4o-mini cite its actual product names — Deal Agent, AI Role Play, Digital Sales Rooms — as evidence of specific capabilities. That level of specificity signals to AI models that the feature is real and documented, not just claimed. <strong>6sense</strong> earns visibility differently: its Predictive Buying Stage framework, built on 50+ intent signals and a 90-day lookback model, gives AI something concrete to quote when buyers ask about pipeline forecasting or deal risk. Both brands publish content that answers the question before it is asked.
                   </p>
                 </div>
-                {VISIBILITY_PLAYBOOKS.map((pb) => (
+                {VISIBILITY_PLAYBOOKS.map((pb, _pbIdx, _pbArr) => (
                   <div key={pb.brand} style={{
                     border: "1px solid rgba(0,0,0,0.08)", borderRadius: 10, padding: "18px 20px",
                   }}>
@@ -1486,6 +1486,28 @@ export default function SalesVisibilityCharts({
                     </div>
                   </div>
                 ))}
+
+                {/* Conclusion */}
+                <div style={{
+                  background: "linear-gradient(135deg, rgba(37,99,235,0.06) 0%, rgba(37,99,235,0.03) 100%)",
+                  border: "1px solid rgba(37,99,235,0.18)",
+                  borderLeft: "4px solid #2563eb",
+                  borderRadius: "0 10px 10px 0",
+                  padding: "20px 22px",
+                }}>
+                  <p style={{ fontSize: 13, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: BLUE, margin: "0 0 10px" }}>
+                    Recommended Move for Lamigo
+                  </p>
+                  <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
+                    The clearest lever available — and the one most consistently associated with AI model visibility across this report — is <strong>publishing 1–2 named-comparison pages</strong> targeted at your direct competitive overlaps. Not general "why us" content, but pages that answer a specific question a buyer might ask an AI: <em>"How does Lamigo compare to [Competitor] for deal execution?"</em>
+                  </p>
+                  <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
+                    6sense's approach is the model to follow: a tightly scoped page, built around the exact use case where the comparison is most credible, with enough specificity that an AI model can quote it. The goal isn&apos;t to win every mention — it&apos;s to own the comparison moment when a buyer asks the AI for your category head-to-head.
+                  </p>
+                  <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: 0 }}>
+                    Backstory.ai shows what happens without it: a real product, real customers, and zero AI presence. The gap between having a product and being visible to AI is a content and indexability problem — and it&apos;s one of the faster ones to close.
+                  </p>
+                </div>
               </div>
             )}
           </div>
