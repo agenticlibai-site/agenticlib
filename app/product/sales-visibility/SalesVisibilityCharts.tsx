@@ -424,7 +424,9 @@ const SENTIMENT_CLUSTERS = [
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function CombinedTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
-  const sorted = [...payload].sort((a: any, b: any) => (b.value as number) - (a.value as number));
+  const sorted = [...payload]
+    .filter((item: any) => item.value != null && item.value > 0)
+    .sort((a: any, b: any) => (b.value ?? 0) - (a.value ?? 0));
   return (
     <div style={{
       background: "#fff", border: "1px solid rgba(0,0,0,0.10)", borderRadius: 8,
