@@ -478,14 +478,24 @@ function BigNumber({ value, sub }: { value: string; sub: string }) {
   );
 }
 
+function toPoints(text: string): string[] {
+  return text
+    .split(/\.\s+(?=[A-Z"(])/)
+    .map(s => s.replace(/\.$/, "").trim())
+    .filter(Boolean);
+}
+
 // ── In-slice pie label ────────────────────────────────────────────────────────
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function PieSliceLabel({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) {
   if (percent < 0.06) return null;
   const RADIAN = Math.PI / 180;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.58;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+  // For a 100% single-slice pie, Recharts places midAngle at 180° (9 o'clock),
+  // which pushes the label to the far left edge. Override to top of ring (90°).
+  const angle = percent >= 0.999 ? 90 : midAngle;
+  const x = cx + radius * Math.cos(-angle * RADIAN);
+  const y = cy + radius * Math.sin(-angle * RADIAN);
   return (
     <text x={x} y={y} fill="#fff" textAnchor="middle" dominantBaseline="central"
       style={{ fontSize: 13, fontWeight: 700, pointerEvents: "none" }}>
@@ -496,7 +506,7 @@ function PieSliceLabel({ cx, cy, midAngle, innerRadius, outerRadius, percent }: 
 
 // ── SOV donut card ────────────────────────────────────────────────────────────
 function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows: SOVRow[] }) {
-  const locked = rows.filter(r => LOCKED_SALES_BRANDS.has(r.brand));
+  const locked = rows.filter(r => LOCKED_SALES_BRANDS.has(r.brand) && BRAND_USE_CASE[r.brand] === cluster.tag);
   const totalAppearances = locked.reduce((s, r) => s + r.total_appearances, 0);
   const top = locked
     .map(r => ({
@@ -519,10 +529,10 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
       <h3 style={{ fontSize: 18, fontWeight: 700, color: NAVY, marginBottom: 4, letterSpacing: "-0.01em" }}>
         {cluster.label}
       </h3>
-      <p style={{ fontSize: 15, color: "#000", marginBottom: 16 }}>Share of voice · last 7 days</p>
+      <p style={{ fontSize: 15, color: "#000", marginBottom: 16 }}>Share of voice · last 14 days</p>
       <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
         <div style={{ flexShrink: 0 }}>
-          <PieChart width={150} height={150}>
+          <PieChart width={150} height={150} style={{ overflow: "visible" }}>
             <Pie
               data={top}
               dataKey="total_appearances"
@@ -632,9 +642,9 @@ export default function SalesVisibilityCharts({
   const totalMentions = Object.values(weeklyTotals).reduce((s, v) => s + v.mentions, 0);
   const hasWeekly = Object.keys(weeklyTotals).length > 0;
 
-  // Top brand: hardcoded to Outreach per explicit request (overrides the highest-mentions
-  // brand, which is otherwise `brands[0]`).
-  const topByMentions = "Outreach";
+  const topByMentions = brands.reduce<string | null>((best, b) =>
+    !best || (weeklyTotals[b]?.mentions ?? 0) > (weeklyTotals[best]?.mentions ?? 0) ? b : best
+  , null);
   const topMentionData = topByMentions ? weeklyTotals[topByMentions] : null;
 
   // ── LLM visibility ────────────────────────────────────────────────────────
@@ -1049,7 +1059,15 @@ export default function SalesVisibilityCharts({
                                 const ev = evidenceFor(featureId, r.brand_name, r.evidence);
                                 const text = ev ?? BAND_FALLBACK[r.score_band];
                                 return text ? (
-                                  <p style={{ paddingLeft: 178, fontSize: 17, color: ev ? "#000" : "#000", lineHeight: 1.5, margin: "4px 0 0", fontStyle: ev ? "normal" : "italic" }}>{text}</p>
+                                  featureId === "rai_data_privacy" ? (
+                                    <ul style={{ paddingLeft: 196, margin: "4px 0 0", fontStyle: ev ? "normal" : "italic", listStyle: "disc" }}>
+                                      {toPoints(text).map((pt, i) => (
+                                        <li key={i} style={{ fontSize: 17, color: "#000", lineHeight: 1.5, marginBottom: 3 }}>{pt}</li>
+                                      ))}
+                                    </ul>
+                                  ) : (
+                                    <p style={{ paddingLeft: 178, fontSize: 17, color: "#000", lineHeight: 1.5, margin: "4px 0 0", fontStyle: ev ? "normal" : "italic" }}>{text}</p>
+                                  )
                                 ) : null;
                               })()}
                             </div>

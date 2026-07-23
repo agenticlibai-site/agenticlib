@@ -69,3 +69,50 @@ These IDs exist in `feature_responses` for dates ≤ 2026-07-09 but collect no n
 |---|---|
 | `call_recording_analysis` | `call_transcription_timestamps`, `call_talk_time_analytics` |
 | `call_coaching_automation` | `call_coaching_scorecard`, `call_competitor_objection_detection` |
+
+---
+
+## Sales Feature Scores — LOCKED (as of 2026-07-23)
+
+**`sales_feature_scores` is intentionally frozen.** Do not re-enable the writer
+crons without reading the root-cause section below.
+
+### Crons paused (removed from vercel.json, confirmed via `vercel cron ls` 2026-07-23)
+
+- `/api/cron/sales-feature-collection?model=gpt-4o-mini&half=1` (was 9:00 UTC daily)
+- `/api/cron/sales-feature-collection?model=gpt-4o-mini&half=2` (was 9:15 UTC daily)
+- `/api/cron/sales-feature-aggregate` (was 10:00 UTC daily)
+
+### Root cause
+
+`sales-feature-aggregate` queries `WHERE run_date = today` and blindly upserts into
+`sales_feature_scores` (singleton: one row per brand+feature, always overwritten).
+
+When Claude Haiku stopped collecting after 2026-07-13, the July 22 aggregate ran
+with only GPT-4o-mini responses. Single-model scoring is more conservative — GPT
+evidence containing hedging phrases (`"may"`, `"might"`, `"typically"`) downgrades
+confidence by one level. Scores that were 90 (strong, dual-model) silently dropped
+to 35–60 across ~86 rows.
+
+### ⚠️ Required fix before re-enabling
+
+Replace `WHERE run_date = today` in `getSalesFeatureResponsesForScoring()` with a
+fixed date window, e.g. `WHERE run_date BETWEEN '2026-07-06' AND '2026-07-12'`.
+Without this, the same silent degradation will recur whenever one model's daily
+collection is thin or absent.
+
+### Fix history (2026-07-23)
+
+| Script | What it did |
+|--------|-------------|
+| `scripts/restore-scores-july6-12.ts` | Bulk re-scored all brand+feature combos from July 6–12 responses. Fixed Clari/pipeline_forecasting (60→90) but damaged ~86 rows where Claude was conservative in that early window. |
+| `scripts/fix-call-features-july22.ts` | Targeted fix for 3 new call features (call_coaching_scorecard, call_competitor_objection_detection, call_talk_time_analytics) — re-scored from July 22 data. |
+| `scripts/revert-to-july22.ts` | Created but **NOT run**. Would have reverted everything to the July 22 GPT-only state. |
+| `scripts/sweep-and-fix-conservative-scores.ts` | Full sweep of all 182 restore-script rows. Fixed 86 where July 22 scored higher (Claude conservative pattern); left 96 dual-model rows untouched; skipped 8 retired features with no July 22 data. |
+
+### Final verified state (all 194 rows correct as of 2026-07-23)
+
+| scored_at | Rows | Source |
+|-----------|------|--------|
+| `2026-07-22 10:05:48` | 98 | July 22 GPT data (fixed from conservative July 6-12 Claude) |
+| `2026-07-23 04:46:xx` | 96 | July 6-12 dual-model data (correctly untouched) |
