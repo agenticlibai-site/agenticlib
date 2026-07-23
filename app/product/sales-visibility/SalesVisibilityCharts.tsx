@@ -571,11 +571,6 @@ export default function SalesVisibilityCharts({
   const CHART_DATE_TO   = "2026-07-12";
   const rangedDaily = dailySummary.filter(r => r.date >= CHART_DATE_FROM && r.date <= CHART_DATE_TO);
 
-  const [featureOpen,       setFeatureOpen]       = useState(true);
-  const [sentimentOpen,     setSentimentOpen]     = useState(true);
-  const [spotlightOpen,     setSpotlightOpen]     = useState(true);
-  const [visibilityOpen,    setVisibilityOpen]    = useState(true);
-  const [improvementsOpen,  setImprovementsOpen]  = useState(true);
   const [hiddenBrands,      setHiddenBrands]      = useState<Set<string>>(new Set());
 
   function toggleBrand(b: string) {
@@ -1001,28 +996,13 @@ export default function SalesVisibilityCharts({
       {/* ── Row 7: Feature scores preview (collapsible) ─────────────────────── */}
       {featureScores.length > 0 && (
         <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
-          <button
-            onClick={() => setFeatureOpen(o => !o)}
-            style={{
-              display: "flex", alignItems: "center", justifyContent: "space-between",
-              width: "100%", padding: "16px 24px",
-              background: "none", border: "none", cursor: "pointer",
-              borderBottom: featureOpen ? "1px solid rgba(0,0,0,0.07)" : "none",
-              fontFamily: "inherit",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
-                Product Feature Scores
-              </h3>
-            </div>
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform: featureOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", flexShrink: 0 }}>
-              <path d="M4 6l4 4 4-4" stroke="rgba(0,0,0,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </button>
+          <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
+            <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
+              Product Feature Scores
+            </h3>
+          </div>
 
-          {featureOpen && (
-            <div style={{ padding: "20px 24px" }}>
+          <div style={{ padding: "20px 24px" }}>
               <p style={{ fontSize: 15, color: "#000", marginBottom: 24 }}>
                 Both models · data from July 2026 · updates daily
               </p>
@@ -1084,7 +1064,6 @@ export default function SalesVisibilityCharts({
                 Top 3 brands per feature · scored by both Claude Haiku and GPT-4o mini
               </p>
             </div>
-          )}
         </div>
       )}
 
@@ -1109,32 +1088,18 @@ export default function SalesVisibilityCharts({
 
         return (
           <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
-            <button
-              onClick={() => setSentimentOpen(o => !o)}
-              style={{
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                width: "100%", padding: "16px 24px",
-                background: "none", border: "none", cursor: "pointer",
-                borderBottom: sentimentOpen ? "1px solid rgba(0,0,0,0.07)" : "none",
-                fontFamily: "inherit",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
-                  Sentiment Analysis
-                </h3>
-                {!ready && (
-                  <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "#000", background: "rgba(0,0,0,0.06)", borderRadius: 999, padding: "3px 8px" }}>
-                    Collecting
-                  </span>
-                )}
-              </div>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform: sentimentOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", flexShrink: 0 }}>
-                <path d="M4 6l4 4 4-4" stroke="rgba(0,0,0,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
+              <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
+                Sentiment Analysis
+              </h3>
+              {!ready && (
+                <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "#000", background: "rgba(0,0,0,0.06)", borderRadius: 999, padding: "3px 8px" }}>
+                  Collecting
+                </span>
+              )}
+            </div>
 
-            {sentimentOpen && !ready && (
+            {!ready && (
               <div style={{ padding: "28px 24px", textAlign: "center" as const }}>
                 <p style={{ fontSize: 18, fontWeight: 600, color: NAVY, marginBottom: 8 }}>
                   Collecting data: {daysHave} of {GATE} minimum days
@@ -1146,7 +1111,7 @@ export default function SalesVisibilityCharts({
               </div>
             )}
 
-            {sentimentOpen && ready && (
+            {ready && (
               <div style={{ padding: "20px 24px" }}>
                 <p style={{ fontSize: 15, color: "#000", marginBottom: 24 }}>
                   How Claude Haiku and GPT-4o-mini describe each brand · {sentimentDateLabel()}
@@ -1288,25 +1253,12 @@ export default function SalesVisibilityCharts({
         if (spotlights.length === 0) return null;
         return (
           <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
-            <button
-              onClick={() => setSpotlightOpen(o => !o)}
-              style={{
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                width: "100%", padding: "16px 24px",
-                background: "none", border: "none", cursor: "pointer",
-                borderBottom: spotlightOpen ? "1px solid rgba(0,0,0,0.07)" : "none",
-                fontFamily: "inherit",
-              }}
-            >
+            <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
               <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
                 Brand Capability Spotlight
               </h3>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform: spotlightOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", flexShrink: 0 }}>
-                <path d="M4 6l4 4 4-4" stroke="rgba(0,0,0,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            {spotlightOpen && (
-              <div style={{ padding: "20px 24px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+            </div>
+            <div style={{ padding: "20px 24px", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
                 {spotlights.map(([brand, { primary, bonus }]) => {
                   const color = getBrandColor(brand);
                   const g2 = G2_EVIDENCE[brand];
@@ -1368,7 +1320,6 @@ export default function SalesVisibilityCharts({
                   );
                 })}
               </div>
-            )}
           </div>
         );
       })()}
@@ -1436,25 +1387,12 @@ export default function SalesVisibilityCharts({
 
         return (
           <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
-            <button
-              onClick={() => setVisibilityOpen(o => !o)}
-              style={{
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                width: "100%", padding: "16px 24px",
-                background: "none", border: "none", cursor: "pointer",
-                borderBottom: visibilityOpen ? "1px solid rgba(0,0,0,0.07)" : "none",
-                fontFamily: "inherit",
-              }}
-            >
+            <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
               <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
                 Building AI Visibility
               </h3>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform: visibilityOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", flexShrink: 0 }}>
-                <path d="M4 6l4 4 4-4" stroke="rgba(0,0,0,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            {visibilityOpen && (
-              <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 20 }}>
+            </div>
+            <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 20 }}>
                 <div style={{
                   background: "rgba(37,99,235,0.04)",
                   border: "1px solid rgba(37,99,235,0.12)",
@@ -1568,7 +1506,6 @@ export default function SalesVisibilityCharts({
                   </p>
                 </div>
               </div>
-            )}
           </div>
         );
       })()}
@@ -1595,25 +1532,12 @@ export default function SalesVisibilityCharts({
 
         return (
           <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
-            <button
-              onClick={() => setImprovementsOpen(o => !o)}
-              style={{
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                width: "100%", padding: "16px 24px",
-                background: "none", border: "none", cursor: "pointer",
-                borderBottom: improvementsOpen ? "1px solid rgba(0,0,0,0.07)" : "none",
-                fontFamily: "inherit",
-              }}
-            >
+            <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
               <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
                 Product Feature Improvement Opportunities for Lamigo
               </h3>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ transform: improvementsOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", flexShrink: 0 }}>
-                <path d="M4 6l4 4 4-4" stroke="rgba(0,0,0,0.4)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            {improvementsOpen && (
-              <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
+            </div>
+            <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 16 }}>
                 {IMPROVEMENTS.map((item, i) => (
                   <div key={i} style={{ border: "1px solid rgba(0,0,0,0.08)", borderRadius: 10, padding: "18px 20px" }}>
                     <p style={{ fontSize: 18, fontWeight: 700, color: NAVY, margin: "0 0 12px", lineHeight: 1.3 }}>
@@ -1639,7 +1563,6 @@ export default function SalesVisibilityCharts({
                   </div>
                 ))}
               </div>
-            )}
           </div>
         );
       })()}
