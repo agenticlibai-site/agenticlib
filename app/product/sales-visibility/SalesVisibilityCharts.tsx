@@ -571,8 +571,8 @@ export default function SalesVisibilityCharts({
   const CHART_DATE_TO   = "2026-07-12";
   const rangedDaily = dailySummary.filter(r => r.date >= CHART_DATE_FROM && r.date <= CHART_DATE_TO);
 
-  const [featureOpen,       setFeatureOpen]       = useState(false);
-  const [sentimentOpen,     setSentimentOpen]     = useState(false);
+  const [featureOpen,       setFeatureOpen]       = useState(true);
+  const [sentimentOpen,     setSentimentOpen]     = useState(true);
   const [spotlightOpen,     setSpotlightOpen]     = useState(true);
   const [visibilityOpen,    setVisibilityOpen]    = useState(true);
   const [improvementsOpen,  setImprovementsOpen]  = useState(true);
