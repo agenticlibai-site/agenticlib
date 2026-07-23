@@ -1492,17 +1492,38 @@ export default function SalesVisibilityCharts({
                   <p style={{ fontSize: 13, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: BLUE, margin: "0 0 10px" }}>
                     Recommended Move for Lamigo
                   </p>
-                  <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
-                    The clearest lever available, and the one most consistently associated with AI model visibility across this report, is <strong>publishing 1–2 named-comparison pages</strong> targeted at your direct competitive overlaps. Not general "why us" content, but pages that answer a specific question a buyer might ask an AI: <em>"How does Lamigo compare to [Competitor] for deal execution?"</em>
+
+                  <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 14px" }}>
+                    The single clearest lever for LLM visibility in this report is <strong>publishing named-comparison pages</strong> — and 6sense is the direct model to copy.
                   </p>
-                  <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
-                    One thing worth flagging before the recommendation: 6sense&apos;s own overall visibility is modest, rank #15 of 19, only 76 mentions. If the tactic below is worth copying, it&apos;s not because it&apos;s made 6sense a top brand. It&apos;s because it&apos;s the cheapest, most controllable lever available to a small player, and it reliably wins the specific comparison moment it targets, even while 6sense&apos;s broader visibility stays low. That&apos;s a different, more realistic promise than &ldquo;do this and become visible&rdquo; — it&apos;s &ldquo;do this and own one specific question a buyer might ask.&rdquo;
+
+                  {/* What 6sense actually does */}
+                  <div style={{
+                    background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.08)",
+                    borderRadius: 8, padding: "14px 16px", margin: "0 0 14px",
+                  }}>
+                    <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#555", margin: "0 0 8px" }}>
+                      What 6sense does
+                    </p>
+                    <p style={{ fontSize: 15, color: "#000", lineHeight: 1.65, margin: "0 0 8px" }}>
+                      6sense publishes a dedicated <strong>&ldquo;6sense vs Demandbase&rdquo;</strong> comparison page that answers the exact question a buyer would ask an AI: <em>&ldquo;How does 6sense compare to Demandbase for predictive pipeline?&rdquo;</em> The page is specific, indexed, and quotable. When either Claude or GPT-4o-mini is asked about pipeline forecasting tools, it has a concrete source to draw on — and 6sense gets cited.
+                    </p>
+                    <p style={{ fontSize: 15, color: "#000", lineHeight: 1.65, margin: 0 }}>
+                      6sense&apos;s overall rank is #15 of 19 in this report, with only 76 total mentions. It is not a broadly visible brand. But in the specific pipeline comparison moment, it wins. That&apos;s what the page buys — not general visibility, but ownership of one exact question.
+                    </p>
+                  </div>
+
+                  <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 14px" }}>
+                    <strong>Lamigo should do the same thing.</strong> Build 1–2 pages that answer the specific questions a buyer might ask an AI about your direct overlaps — not general marketing copy, but tightly scoped comparison content with enough specificity that a model can quote it. For example:
                   </p>
-                  <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
-                    6sense&apos;s approach is the model to follow: a tightly scoped page, built around the exact use case where the comparison is most credible, with enough specificity that an AI model can quote it. The goal isn&apos;t to win every mention. It&apos;s to own the comparison moment when a buyer asks the AI for your category head-to-head.
-                  </p>
+
+                  <ul style={{ fontSize: 16, color: "#000", lineHeight: 1.8, margin: "0 0 14px", paddingLeft: 22 }}>
+                    <li><em>&ldquo;Lamigo vs Gong for deal execution and stakeholder tracking&rdquo;</em></li>
+                    <li><em>&ldquo;Lamigo vs Outreach for AI-assisted follow-up in enterprise sales&rdquo;</em></li>
+                  </ul>
+
                   <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: 0 }}>
-                    Backstory.ai shows what happens without it: a real product, real customers, and zero AI presence. The gap between having a product and being visible to AI is a content and indexability problem, and it&apos;s one of the faster ones to close.
+                    Backstory.ai is the proof of what happens without it: a real product, real customers, and zero AI presence. The gap between having a product and being visible to AI is almost entirely a content and indexability problem — and comparison pages are the fastest way to close it.
                   </p>
                 </div>
               </div>
