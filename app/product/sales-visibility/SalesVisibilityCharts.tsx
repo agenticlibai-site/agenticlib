@@ -1494,7 +1494,7 @@ export default function SalesVisibilityCharts({
                   </p>
 
                   <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 14px" }}>
-                    The single clearest lever for LLM visibility in this report is <strong>publishing named-comparison pages</strong> — and 6sense is the direct model to copy.
+                    The single clearest lever for LLM visibility in this report is <strong>publishing named-comparison pages</strong> — the same approach 6sense uses to earn AI citations in its category.
                   </p>
 
                   {/* What 6sense actually does */}
