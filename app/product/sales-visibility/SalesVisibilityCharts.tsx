@@ -425,19 +425,21 @@ const SENTIMENT_CLUSTERS = [
 function CombinedTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   const sorted = [...payload]
-    .filter((item: any) => item.value != null && (item.value > 0 || item.dataKey === "Backstory.ai"))
+    .filter((item: any) => item.value != null)
     .sort((a: any, b: any) => (b.value ?? 0) - (a.value ?? 0));
   return (
     <div style={{
       background: "#fff", border: "1px solid rgba(0,0,0,0.10)", borderRadius: 8,
       fontSize: 15, boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
-      padding: "8px 12px", maxHeight: 260, overflowY: "auto", zIndex: 100,
+      padding: "8px 12px", maxHeight: 320, overflowY: "auto", zIndex: 100,
     }}>
       <p style={{ fontWeight: 700, marginBottom: 6, color: NAVY }}>{fmtDate(String(label))}</p>
       {sorted.map((item: any) => (
         <div key={item.dataKey} style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 3 }}>
           <span style={{ width: 7, height: 7, borderRadius: "50%", background: item.color, flexShrink: 0, display: "inline-block" }} />
-          <span style={{ color: item.color }}>{displayBrand(String(item.dataKey))} : {item.value}</span>
+          <span style={{ color: item.value > 0 ? item.color : "#aaa" }}>
+            {displayBrand(String(item.dataKey))} : {item.value}
+          </span>
         </div>
       ))}
     </div>
@@ -568,6 +570,15 @@ export default function SalesVisibilityCharts({
   const [spotlightOpen,     setSpotlightOpen]     = useState(true);
   const [visibilityOpen,    setVisibilityOpen]    = useState(true);
   const [improvementsOpen,  setImprovementsOpen]  = useState(true);
+  const [hiddenBrands,      setHiddenBrands]      = useState<Set<string>>(new Set());
+
+  function toggleBrand(b: string) {
+    setHiddenBrands(prev => {
+      const next = new Set(prev);
+      if (next.has(b)) next.delete(b); else next.add(b);
+      return next;
+    });
+  }
 
   // ── Build chart rows — filter to locked brands only ────────────────────────
   const dateSet = new Set<string>();
@@ -745,16 +756,33 @@ export default function SalesVisibilityCharts({
               <YAxis allowDecimals={false} tick={{ fontSize: 14, fill: "#000" }} axisLine={false} tickLine={false} width={36} />
               <Tooltip content={<CombinedTooltip />} wrapperStyle={{ zIndex: 100 }} />
               {brands.map(b => (
-                <Line key={b} type="monotone" dataKey={b} stroke={brandColor(b)} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 0 }} />
+                <Line key={b} type="monotone" dataKey={b} stroke={brandColor(b)}
+                  strokeWidth={hiddenBrands.has(b) ? 0 : 2}
+                  dot={false}
+                  activeDot={hiddenBrands.has(b) ? false : { r: 4, strokeWidth: 0 }}
+                />
               ))}
             </LineChart>
           </ResponsiveContainer>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 12, paddingTop: 10, borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 12, paddingTop: 10, borderTop: "1px solid rgba(0,0,0,0.06)" }}>
             {brands.map(b => (
-              <span key={b} style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 15, color: NAVY }}>
-                <span style={{ width: 8, height: 8, borderRadius: "50%", background: brandColor(b), flexShrink: 0, display: "inline-block" }} />
+              <button key={b} onClick={() => toggleBrand(b)} style={{
+                display: "inline-flex", alignItems: "center", gap: 4, fontSize: 14,
+                color: hiddenBrands.has(b) ? "#aaa" : NAVY,
+                background: hiddenBrands.has(b) ? "rgba(0,0,0,0.04)" : "rgba(0,0,0,0.03)",
+                border: "1px solid",
+                borderColor: hiddenBrands.has(b) ? "rgba(0,0,0,0.08)" : "rgba(0,0,0,0.10)",
+                borderRadius: 999, padding: "3px 10px 3px 7px", cursor: "pointer",
+                textDecoration: hiddenBrands.has(b) ? "line-through" : "none",
+                opacity: hiddenBrands.has(b) ? 0.55 : 1,
+              }}>
+                <span style={{
+                  width: 8, height: 8, borderRadius: "50%",
+                  background: hiddenBrands.has(b) ? "#ccc" : brandColor(b),
+                  flexShrink: 0, display: "inline-block",
+                }} />
                 {displayBrand(b)}
-              </span>
+              </button>
             ))}
           </div>
         </div>
@@ -787,16 +815,33 @@ export default function SalesVisibilityCharts({
                       <YAxis allowDecimals={false} tick={{ fontSize: 14, fill: "#000" }} axisLine={false} tickLine={false} width={32} />
                       <Tooltip content={<CombinedTooltip />} wrapperStyle={{ zIndex: 100 }} />
                       {clusterBrands.map(b => (
-                        <Line key={b} type="monotone" dataKey={b} name={displayBrand(b)} stroke={brandColor(b)} strokeWidth={2} dot={false} activeDot={{ r: 4, strokeWidth: 0 }} />
+                        <Line key={b} type="monotone" dataKey={b} name={displayBrand(b)} stroke={brandColor(b)}
+                          strokeWidth={hiddenBrands.has(b) ? 0 : 2}
+                          dot={false}
+                          activeDot={hiddenBrands.has(b) ? false : { r: 4, strokeWidth: 0 }}
+                        />
                       ))}
                     </LineChart>
                   </ResponsiveContainer>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginTop: 12, paddingTop: 10, borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 12, paddingTop: 10, borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                     {clusterBrands.map(b => (
-                      <span key={b} style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 15, color: NAVY }}>
-                        <span style={{ width: 8, height: 8, borderRadius: "50%", background: brandColor(b), flexShrink: 0, display: "inline-block" }} />
+                      <button key={b} onClick={() => toggleBrand(b)} style={{
+                        display: "inline-flex", alignItems: "center", gap: 4, fontSize: 14,
+                        color: hiddenBrands.has(b) ? "#aaa" : NAVY,
+                        background: hiddenBrands.has(b) ? "rgba(0,0,0,0.04)" : "rgba(0,0,0,0.03)",
+                        border: "1px solid",
+                        borderColor: hiddenBrands.has(b) ? "rgba(0,0,0,0.08)" : "rgba(0,0,0,0.10)",
+                        borderRadius: 999, padding: "3px 10px 3px 7px", cursor: "pointer",
+                        textDecoration: hiddenBrands.has(b) ? "line-through" : "none",
+                        opacity: hiddenBrands.has(b) ? 0.55 : 1,
+                      }}>
+                        <span style={{
+                          width: 8, height: 8, borderRadius: "50%",
+                          background: hiddenBrands.has(b) ? "#ccc" : brandColor(b),
+                          flexShrink: 0, display: "inline-block",
+                        }} />
                         {displayBrand(b)}
-                      </span>
+                      </button>
                     ))}
                   </div>
                 </div>
