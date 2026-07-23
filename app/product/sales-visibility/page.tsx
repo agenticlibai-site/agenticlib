@@ -147,7 +147,7 @@ export default async function SalesVisibilityPage() {
             Disclaimer &amp; Terms of Use
           </p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
-            All feature scores, rankings, and assessments are based on publicly available information at the time of research and represent AgenticLib&apos;s independent evaluation. They are not official ratings, endorsements, or certifications of the brands, products, or technologies assessed.
+            This report was created by AgenticLib, an independent AI research company. All feature scores, rankings, and assessments are based on publicly available information at the time of research and represent AgenticLib&apos;s independent evaluation. They are not official ratings, endorsements, or certifications of the brands, products, or technologies assessed.
           </p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
             Brand names, product names, and trademarks referenced in this report are the property of their respective owners. Their inclusion does not imply affiliation with, sponsorship by, or endorsement from any referenced brand or company.
