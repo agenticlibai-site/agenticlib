@@ -601,7 +601,6 @@ export default function SalesVisibilityCharts({
 
   const dates  = [...dateSet].sort();
   const brands = [...LOCKED_SALES_BRANDS]
-    .filter(b => weeklyTotals[b] || index[dates[0]]?.[b] !== undefined)
     .sort((a, b) => (weeklyTotals[b]?.mentions ?? 0) - (weeklyTotals[a]?.mentions ?? 0));
 
   const brandColor = (b: string) => getBrandColor(b);
@@ -764,26 +763,38 @@ export default function SalesVisibilityCharts({
               ))}
             </LineChart>
           </ResponsiveContainer>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 12, paddingTop: 10, borderTop: "1px solid rgba(0,0,0,0.06)" }}>
-            {brands.map(b => (
-              <button key={b} onClick={() => toggleBrand(b)} style={{
-                display: "inline-flex", alignItems: "center", gap: 4, fontSize: 14,
-                color: hiddenBrands.has(b) ? "#aaa" : NAVY,
-                background: hiddenBrands.has(b) ? "rgba(0,0,0,0.04)" : "rgba(0,0,0,0.03)",
-                border: "1px solid",
-                borderColor: hiddenBrands.has(b) ? "rgba(0,0,0,0.08)" : "rgba(0,0,0,0.10)",
-                borderRadius: 999, padding: "3px 10px 3px 7px", cursor: "pointer",
-                textDecoration: hiddenBrands.has(b) ? "line-through" : "none",
-                opacity: hiddenBrands.has(b) ? 0.55 : 1,
-              }}>
-                <span style={{
-                  width: 8, height: 8, borderRadius: "50%",
-                  background: hiddenBrands.has(b) ? "#ccc" : brandColor(b),
-                  flexShrink: 0, display: "inline-block",
-                }} />
-                {displayBrand(b)}
-              </button>
-            ))}
+          <div style={{ display: "flex", alignItems: "flex-start", gap: 14, marginTop: 12, paddingTop: 10, borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 16px", flex: 1 }}>
+              {brands.map(b => (
+                <label key={b} style={{
+                  display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer",
+                  opacity: hiddenBrands.has(b) ? 0.45 : 1,
+                }}>
+                  <input
+                    type="checkbox"
+                    checked={!hiddenBrands.has(b)}
+                    onChange={() => toggleBrand(b)}
+                    style={{ accentColor: brandColor(b), width: 13, height: 13, cursor: "pointer", flexShrink: 0 }}
+                  />
+                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: brandColor(b), flexShrink: 0, display: "inline-block" }} />
+                  <span style={{ fontSize: 13, color: hiddenBrands.has(b) ? "#999" : NAVY }}>
+                    {displayBrand(b)}
+                  </span>
+                </label>
+              ))}
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 5, flexShrink: 0 }}>
+              <button onClick={() => setHiddenBrands(new Set())} style={{
+                fontSize: 12, fontWeight: 600, color: BLUE,
+                background: "rgba(37,99,235,0.07)", border: "1px solid rgba(37,99,235,0.2)",
+                borderRadius: 6, padding: "5px 12px", cursor: "pointer", whiteSpace: "nowrap" as const,
+              }}>Select All</button>
+              <button onClick={() => setHiddenBrands(new Set(brands))} style={{
+                fontSize: 12, fontWeight: 600, color: "#555",
+                background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.12)",
+                borderRadius: 6, padding: "5px 12px", cursor: "pointer", whiteSpace: "nowrap" as const,
+              }}>Clear All</button>
+            </div>
           </div>
         </div>
       )}
@@ -823,25 +834,21 @@ export default function SalesVisibilityCharts({
                       ))}
                     </LineChart>
                   </ResponsiveContainer>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 12, paddingTop: 10, borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: "6px 16px", marginTop: 12, paddingTop: 10, borderTop: "1px solid rgba(0,0,0,0.06)" }}>
                     {clusterBrands.map(b => (
-                      <button key={b} onClick={() => toggleBrand(b)} style={{
-                        display: "inline-flex", alignItems: "center", gap: 4, fontSize: 14,
-                        color: hiddenBrands.has(b) ? "#aaa" : NAVY,
-                        background: hiddenBrands.has(b) ? "rgba(0,0,0,0.04)" : "rgba(0,0,0,0.03)",
-                        border: "1px solid",
-                        borderColor: hiddenBrands.has(b) ? "rgba(0,0,0,0.08)" : "rgba(0,0,0,0.10)",
-                        borderRadius: 999, padding: "3px 10px 3px 7px", cursor: "pointer",
-                        textDecoration: hiddenBrands.has(b) ? "line-through" : "none",
-                        opacity: hiddenBrands.has(b) ? 0.55 : 1,
+                      <label key={b} style={{
+                        display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer",
+                        opacity: hiddenBrands.has(b) ? 0.45 : 1,
                       }}>
-                        <span style={{
-                          width: 8, height: 8, borderRadius: "50%",
-                          background: hiddenBrands.has(b) ? "#ccc" : brandColor(b),
-                          flexShrink: 0, display: "inline-block",
-                        }} />
-                        {displayBrand(b)}
-                      </button>
+                        <input
+                          type="checkbox"
+                          checked={!hiddenBrands.has(b)}
+                          onChange={() => toggleBrand(b)}
+                          style={{ accentColor: brandColor(b), width: 13, height: 13, cursor: "pointer", flexShrink: 0 }}
+                        />
+                        <span style={{ width: 7, height: 7, borderRadius: "50%", background: brandColor(b), flexShrink: 0, display: "inline-block" }} />
+                        <span style={{ fontSize: 13, color: hiddenBrands.has(b) ? "#999" : NAVY }}>{displayBrand(b)}</span>
+                      </label>
                     ))}
                   </div>
                 </div>
