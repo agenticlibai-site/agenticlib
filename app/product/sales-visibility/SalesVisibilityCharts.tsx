@@ -565,6 +565,12 @@ export default function SalesVisibilityCharts({
   const featureScores = featureScoresRaw.filter(r => r.brand_name !== "Drift");
   const sentimentData = { ...sentimentDataRaw, rows: sentimentDataRaw.rows.filter(r => r.brand_name !== "Drift") };
   const hasReal = dailySummary.length > 0;
+
+  // Pin all trend charts to exactly 6–12 July — dates outside this range are excluded.
+  const CHART_DATE_FROM = "2026-07-06";
+  const CHART_DATE_TO   = "2026-07-12";
+  const rangedDaily = dailySummary.filter(r => r.date >= CHART_DATE_FROM && r.date <= CHART_DATE_TO);
+
   const [featureOpen,       setFeatureOpen]       = useState(false);
   const [sentimentOpen,     setSentimentOpen]     = useState(false);
   const [spotlightOpen,     setSpotlightOpen]     = useState(true);
@@ -584,7 +590,7 @@ export default function SalesVisibilityCharts({
   const dateSet = new Set<string>();
   const index: Record<string, Record<string, number>> = {};
 
-  for (const row of dailySummary) {
+  for (const row of rangedDaily) {
     if (!LOCKED_SALES_BRANDS.has(row.brand)) continue;
     dateSet.add(row.date);
     if (!index[row.date]) index[row.date] = {};
@@ -641,7 +647,7 @@ export default function SalesVisibilityCharts({
 
   // ── Model mentions (locked brands only) ───────────────────────────────────
   const modelMentionsByBrand: Record<string, { claude: number; gpt: number }> = {};
-  for (const row of dailySummary) {
+  for (const row of rangedDaily) {
     if (!LOCKED_SALES_BRANDS.has(row.brand)) continue;
     if (!modelMentionsByBrand[row.brand]) modelMentionsByBrand[row.brand] = { claude: 0, gpt: 0 };
     if (row.model === "claude-haiku-4-5") modelMentionsByBrand[row.brand].claude += row.mention_count;
