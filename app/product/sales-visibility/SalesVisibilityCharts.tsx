@@ -1483,13 +1483,13 @@ export default function SalesVisibilityCharts({
 
                 {/* Conclusion */}
                 <div style={{
-                  background: "linear-gradient(135deg, rgba(37,99,235,0.06) 0%, rgba(37,99,235,0.03) 100%)",
-                  border: "1px solid rgba(37,99,235,0.18)",
-                  borderLeft: "4px solid #2563eb",
+                  background: "linear-gradient(135deg, rgba(219,39,119,0.06) 0%, rgba(219,39,119,0.03) 100%)",
+                  border: "1px solid rgba(219,39,119,0.2)",
+                  borderLeft: "4px solid #DB2777",
                   borderRadius: "0 10px 10px 0",
                   padding: "20px 22px",
                 }}>
-                  <p style={{ fontSize: 13, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: BLUE, margin: "0 0 10px" }}>
+                  <p style={{ fontSize: 13, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#DB2777", margin: "0 0 10px" }}>
                     Recommended Move for Lamigo
                   </p>
 
