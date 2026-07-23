@@ -1521,19 +1521,19 @@ export default function SalesVisibilityCharts({
       {(() => {
         const IMPROVEMENTS = [
           {
-            title: "Document the deal-risk reasoning you already have — this one's free",
-            current: "Clari and 6sense score \"strong\" on deal risk detection specifically because their evidence text cites specific mechanisms (engagement-frequency monitoring, stakeholder-involvement change detection), not vague capability claims. Lamigo's own product demo already reasons this specifically: the Brightwave example (\"Priya hasn't replied in 4 days... CFO still hasn't engaged\") is exactly this level of detail.",
-            improvement: "Right now that reasoning only exists inside the product. Writing up 2–3 real (anonymised) examples on a public page costs nothing to build. It's the fastest, cheapest item on this list, since the substance already exists.",
+            title: "Stakeholder change detection",
+            current: "Lamigo tracks champions and technical evaluators per deal, and already surfaces new stakeholders during pre-call prep (e.g. flagging \"Lucas Ferretti, VP Eng, joining for the first time\").",
+            improvement: "Turn this into a standalone, proactive alert, not just something surfaced before a call, but a real-time notification the moment a new stakeholder appears in a thread or CC line, with a short profile (\"new VP Eng joined, ex-Datadog, likely cares about integrations\"). Right now this only shows up as call-prep context; making it its own alert extends \"catches what you'd miss\" beyond scheduled calls into ongoing deal activity.",
           },
           {
-            title: "Competitor objection / mention detection",
-            current: "Chorus and Gong both score 90 here, evidenced by concrete descriptions (\"automatically detects and categorises competitor mentions... via NLP\"). This isn't currently a stated Lamigo feature.",
-            improvement: "Worth considering whether \"flagging when a competitor is mentioned in a call or email thread\" fits your roadmap, since it's a well-documented, well-regarded capability in this adjacent category.",
+            title: "Cross-deal pattern learning",
+            current: "Lamigo reasons per-deal, flagging Brightwave as at-risk based on that deal's own signals (no reply in 4 days, CFO disengaged).",
+            improvement: "Layer in reasoning across deals, using closed-deal history as a reference point, e.g. \"deals that go quiet after a competitive breakdown is sent have historically slipped 40% more often.\" This builds directly on the memory system already in development and turns single-deal alerts into predictions backed by real pattern data.",
           },
           {
-            title: "Named audit-trail / decision transparency",
-            current: "Backstory.ai (a smaller player) scores well here specifically because its evidence quotes verbatim reasoning (\"This deal has no executive stakeholder engagement\"). Lamigo's own \"chain of thought\" positioning already aligns with this.",
-            improvement: "Making that transparency publicly documented, not just an in-product behaviour, could translate directly into stronger LLM-evidenced scores later.",
+            title: "Pre-send message risk check",
+            current: "Lamigo drafts follow-up emails in the rep's own voice and tracks every commitment made in a deal.",
+            improvement: "Add a quick check before a drafted message goes out: flag tone mismatches, over-promising language, or a commitment that was made earlier but isn't reflected in the draft. Since commitment tracking already exists, this is a small addition that cross-references what's already being tracked against what's about to be sent, reducing the risk of a rep sending something inconsistent with earlier promises.",
           },
         ];
 
