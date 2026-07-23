@@ -431,7 +431,7 @@ function CombinedTooltip({ active, payload, label }: any) {
     <div style={{
       background: "#fff", border: "1px solid rgba(0,0,0,0.10)", borderRadius: 8,
       fontSize: 15, boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
-      padding: "8px 12px", maxHeight: 320, overflowY: "auto", zIndex: 100,
+      padding: "8px 12px", zIndex: 100,
     }}>
       <p style={{ fontWeight: 700, marginBottom: 6, color: NAVY }}>{fmtDate(String(label))}</p>
       {sorted.map((item: any) => (
@@ -754,7 +754,7 @@ export default function SalesVisibilityCharts({
               <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,0,0,0.055)" vertical={false} />
               <XAxis dataKey="date" tickFormatter={fmtDate} tick={{ fontSize: 14, fill: "#000" }} axisLine={false} tickLine={false} dy={6} />
               <YAxis allowDecimals={false} tick={{ fontSize: 14, fill: "#000" }} axisLine={false} tickLine={false} width={36} />
-              <Tooltip content={<CombinedTooltip />} wrapperStyle={{ zIndex: 100 }} />
+              <Tooltip content={<CombinedTooltip />} wrapperStyle={{ zIndex: 100 }} allowEscapeViewBox={{ x: false, y: true }} />
               {brands.map(b => (
                 <Line key={b} type="monotone" dataKey={b} stroke={brandColor(b)}
                   strokeWidth={hiddenBrands.has(b) ? 0 : 2}
@@ -813,7 +813,7 @@ export default function SalesVisibilityCharts({
                       <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,0,0,0.055)" vertical={false} />
                       <XAxis dataKey="date" tickFormatter={fmtDate} tick={{ fontSize: 14, fill: "#000" }} axisLine={false} tickLine={false} dy={6} />
                       <YAxis allowDecimals={false} tick={{ fontSize: 14, fill: "#000" }} axisLine={false} tickLine={false} width={32} />
-                      <Tooltip content={<CombinedTooltip />} wrapperStyle={{ zIndex: 100 }} />
+                      <Tooltip content={<CombinedTooltip />} wrapperStyle={{ zIndex: 100 }} allowEscapeViewBox={{ x: false, y: true }} />
                       {clusterBrands.map(b => (
                         <Line key={b} type="monotone" dataKey={b} name={displayBrand(b)} stroke={brandColor(b)}
                           strokeWidth={hiddenBrands.has(b) ? 0 : 2}
