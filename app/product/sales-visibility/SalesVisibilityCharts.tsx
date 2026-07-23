@@ -519,7 +519,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
       <h3 style={{ fontSize: 18, fontWeight: 700, color: NAVY, marginBottom: 4, letterSpacing: "-0.01em" }}>
         {cluster.label}
       </h3>
-      <p style={{ fontSize: 15, color: "#000", marginBottom: 16 }}>Share of voice · last 14 days</p>
+      <p style={{ fontSize: 15, color: "#000", marginBottom: 16 }}>Share of voice · last 7 days</p>
       <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
         <div style={{ flexShrink: 0 }}>
           <PieChart width={150} height={150}>
@@ -691,7 +691,7 @@ export default function SalesVisibilityCharts({
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
 
         <Card accent={BLUE}>
-          <CardLabel>Brand Mentions · 14 Days</CardLabel>
+          <CardLabel>Brand Mentions · 7 Days</CardLabel>
           <BigNumber
             value={hasWeekly ? totalMentions.toLocaleString() : "—"}
             sub={hasWeekly ? `across ${brands.length} brands · 2 models` : "No data yet"}
@@ -699,7 +699,7 @@ export default function SalesVisibilityCharts({
         </Card>
 
         <Card accent={INDIGO}>
-          <CardLabel>LLM Visibility · 14 Days</CardLabel>
+          <CardLabel>LLM Visibility · 7 Days</CardLabel>
           {!hasVis ? (
             <p style={{ fontSize: 17, color: "#000" }}>No data yet</p>
           ) : (
@@ -725,7 +725,7 @@ export default function SalesVisibilityCharts({
         </Card>
 
         <Card accent={NAVY}>
-          <CardLabel>Top Brand · 14 Days</CardLabel>
+          <CardLabel>Top Brand · 7 Days</CardLabel>
           {topByMentions && topMentionData ? (
             <>
               <p style={{ fontSize: 24, fontWeight: 800, color: NAVY, lineHeight: 1.2, marginBottom: 4 }}>
@@ -776,7 +776,6 @@ export default function SalesVisibilityCharts({
                     onChange={() => toggleBrand(b)}
                     style={{ accentColor: brandColor(b), width: 13, height: 13, cursor: "pointer", flexShrink: 0 }}
                   />
-                  <span style={{ width: 7, height: 7, borderRadius: "50%", background: brandColor(b), flexShrink: 0, display: "inline-block" }} />
                   <span style={{ fontSize: 13, color: hiddenBrands.has(b) ? "#999" : NAVY }}>
                     {displayBrand(b)}
                   </span>
@@ -818,7 +817,7 @@ export default function SalesVisibilityCharts({
                   }}
                 >
                   <h4 style={{ fontSize: 17, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>{label}</h4>
-                  <p style={{ fontSize: 15, color: "#000", marginBottom: 14 }}>14-day mentions · both models</p>
+                  <p style={{ fontSize: 15, color: "#000", marginBottom: 14 }}>7-day mentions · both models</p>
                   <ResponsiveContainer width="100%" height={220}>
                     <LineChart data={rows} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                       <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,0,0,0.055)" vertical={false} />
@@ -846,7 +845,6 @@ export default function SalesVisibilityCharts({
                           onChange={() => toggleBrand(b)}
                           style={{ accentColor: brandColor(b), width: 13, height: 13, cursor: "pointer", flexShrink: 0 }}
                         />
-                        <span style={{ width: 7, height: 7, borderRadius: "50%", background: brandColor(b), flexShrink: 0, display: "inline-block" }} />
                         <span style={{ fontSize: 13, color: hiddenBrands.has(b) ? "#999" : NAVY }}>{displayBrand(b)}</span>
                       </label>
                     ))}
@@ -863,7 +861,7 @@ export default function SalesVisibilityCharts({
         <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "24px 28px 20px" }}>
           <div style={{ marginBottom: 16 }}>
             <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>
-              Brand Mentions · 14 Days · by Model
+              Brand Mentions · 7 Days · by Model
             </h3>
             <p style={{ fontSize: 16, color: "#000" }}>Total mentions per brand across Claude Haiku and GPT-4o mini</p>
           </div>
