@@ -1344,6 +1344,76 @@ export default function SalesVisibilityCharts({
 
       {/* Building AI Visibility — competitor playbooks for earning AI-search visibility */}
       {(() => {
+        // ── Live-data helpers for the playbook data boxes ──────────────────────
+        const liveFeatScore = (brand: string, fid: string) =>
+          featureScores.find(r => r.brand_name === brand && r.feature_id === fid)?.score ?? null;
+
+        // sentimentData is already filtered to the Jul 6–12 window at the DB layer.
+        const brandSentPct = (brand: string): number | null => {
+          const rows = sentimentData.rows.filter(r => r.brand_name === brand);
+          if (rows.length === 0) return null;
+          const pos   = rows.reduce((s, r) => s + r.positive_count, 0);
+          const total = rows.reduce((s, r) => s + r.total_count, 0);
+          return total > 0 ? Math.round((pos / total) * 100) : null;
+        };
+
+        // Checks whether `brand` is sole leader, tied, or not highest in a feature set.
+        const scoreRank = (brand: string, featureIds: string[]): "highest" | "tied" | "not-highest" => {
+          const brandBest = featureScores
+            .filter(r => r.brand_name === brand && featureIds.includes(r.feature_id))
+            .reduce((m, r) => Math.max(m, r.score), -Infinity);
+          if (!isFinite(brandBest)) return "not-highest";
+          const others = featureScores.filter(r => r.brand_name !== brand && featureIds.includes(r.feature_id));
+          if (others.some(r => r.score > brandBest)) return "not-highest";
+          if (others.some(r => r.score === brandBest)) return "tied";
+          return "highest";
+        };
+
+        // Same check for sentiment across all brands in sentimentData (Drift already excluded).
+        const sentimentRank = (brand: string): "highest" | "tied" | "not-highest" => {
+          const pct = brandSentPct(brand);
+          if (pct === null) return "not-highest";
+          const others = [...new Set(sentimentData.rows.map(r => r.brand_name))]
+            .filter(b => b !== brand)
+            .map(brandSentPct)
+            .filter((p): p is number => p !== null);
+          if (others.some(p => p > pct)) return "not-highest";
+          if (others.some(p => p === pct)) return "tied";
+          return "highest";
+        };
+
+        // Inline badge distinguishing live feature scores from the Jul 6–12-locked data.
+        // Feature scores update with each daily cron run; mention/sentiment data is window-locked.
+        const LiveTag = (
+          <span style={{
+            fontSize: 11, fontWeight: 700, letterSpacing: "0.05em",
+            color: "#2563eb", background: "rgba(37,99,235,0.08)",
+            border: "1px solid rgba(37,99,235,0.2)",
+            borderRadius: 3, padding: "1px 5px", margin: "0 3px",
+            verticalAlign: "middle",
+            textTransform: "uppercase" as const,
+          }}>live</span>
+        );
+
+        const enablementFeatures = FEATURE_GROUPS.find(g => g.label === "Sales Enablement")!.features;
+
+        const hsContentScore = liveFeatScore("Highspot", "sales_content_delivery");
+        const hsScoreRank    = scoreRank("Highspot", enablementFeatures);
+        const hsSentPct      = brandSentPct("Highspot");
+        const hsSentRank     = sentimentRank("Highspot");
+
+        const s6DealScore = liveFeatScore("6sense", "deal_risk_detection");
+        const s6PipeScore = liveFeatScore("6sense", "pipeline_forecasting");
+        const s6SentPct   = brandSentPct("6sense");
+
+        const bsCrmScore  = liveFeatScore("Backstory.ai", "crm_auto_update");
+        const bsMentions  = weeklyTotals["Backstory.ai"]?.mentions ?? 0;
+
+        // `brands` is sorted by Jul 6–12 window mention count (computed above the return statement).
+        const s6Mentions  = weeklyTotals["6sense"]?.mentions ?? 0;
+        const s6Rank      = brands.indexOf("6sense") + 1;
+        const totalBrands = brands.length;
+
         const VISIBILITY_PLAYBOOKS = [
           {
             brand: "Highspot",
@@ -1364,7 +1434,21 @@ export default function SalesVisibilityCharts({
               { text: "Shipped 3 major product launches in the last year (mid-2025 through mid-2026), each reinforcing an “AI-powered” narrative." },
             ],
             dataLabel: "Highspot data:",
-            yourData: "Sales content delivery 90, highest score in the Sales Enablement cluster. The evidence text cited three actual Highspot product names (Deal Agent, AI Role Play, Digital Sales Rooms) as proof the feature exists and works in a particular way. 89% positive sentiment, highest of all brands tracked in this report. Appears consistently in the Sales Enablement & Follow-up mention trend.",
+            yourData: (
+              <>
+                {`Sales content delivery ${hsContentScore ?? "—"} `}{LiveTag}
+                {` — ${
+                  hsScoreRank === "highest" ? "highest score in the Sales Enablement cluster" :
+                  hsScoreRank === "tied"    ? "tied for highest in the Sales Enablement cluster" :
+                                              "in the Sales Enablement cluster"
+                }. The evidence text cited three actual Highspot product names (Deal Agent, AI Role Play, Digital Sales Rooms) as proof the feature exists and works in a particular way.`}
+                {hsSentPct !== null && ` ${hsSentPct}% positive sentiment, Jul 6–12${
+                  hsSentRank === "highest" ? " (highest of all brands tracked in this report)" :
+                  hsSentRank === "tied"    ? " (tied for highest of all brands tracked in this report)" : ""
+                }.`}
+                {" Appears consistently in the Sales Enablement & Follow-up mention trend."}
+              </>
+            ),
             takeaway: "Different category from yours (content enablement, not deal execution), but the tactic of pairing real content volume with direct named-competitor pages is the most complete playbook here. Worth studying the mechanism even though Highspot itself isn't a competitor.",
           },
           {
@@ -1380,7 +1464,16 @@ export default function SalesVisibilityCharts({
               { text: "Repositioning toward \"AI agent platform\" framing, moving beyond \"pipeline forecasting\" as the sole pitch.", cite: "6sense.com/guides/pipeline-forecasting" },
             ],
             dataLabel: "6sense data:",
-            yourData: "Deal risk detection 90: the evidence text cited three actual 6sense product names (Predictive Buying Stage system with named stages Target/Awareness/Consideration/Decision, plus email and Slack alert configuration) as proof the feature exists and works in a particular way. Pipeline forecasting 60: evidence cited the 50+ buying signal engine and a monthly Predictive Model Insights Report with a 90-day lookback. 83% positive sentiment. 9 discovery mentions in the Deal Risk & Pipeline Forecasting cluster.",
+            yourData: (
+              <>
+                {`Deal risk detection ${s6DealScore ?? "—"} `}{LiveTag}
+                {": the evidence text cited three actual 6sense product names (Predictive Buying Stage system with named stages Target/Awareness/Consideration/Decision, plus email and Slack alert configuration) as proof the feature exists and works in a particular way. Pipeline forecasting "}
+                {`${s6PipeScore ?? "—"} `}{LiveTag}
+                {": evidence cited the 50+ buying signal engine and a monthly Predictive Model Insights Report with a 90-day lookback."}
+                {s6SentPct !== null && ` ${s6SentPct}% positive sentiment, Jul 6–12.`}
+                {` ${s6Mentions} total discovery mentions in the Jul 6–12 window.`}
+              </>
+            ),
             takeaway: "This is the cheapest, fastest-to-replicate lever of the four: pairing a small number of sharp, named-competitor pages with steady content. It's built to win specific comparison moments (\"6sense vs. Demandbase\") rather than to maximise overall mention count.",
           },
           {
@@ -1398,7 +1491,12 @@ export default function SalesVisibilityCharts({
               { text: "No public pricing, no public changelog. /pricing, /changelog, and /release-notes all 404, and the newsroom page exists but is empty. Marketing effort has gone into the site's surface, not into ongoing documentation." },
             ],
             dataLabel: "Backstory.ai data:",
-            yourData: "CRM automation score 90: the evidence text cited automatic Salesforce field population (contacts, next steps, deal stage, notes) from sales calls, with activity auto-matched to the right account without rep input. Despite this: 0 discovery mentions across 179 tracked prompts over 6 days, despite prompts describing this exact category in buyer language (\"update CRM records after sales calls,\" \"post-call admin,\" \"Salesforce/HubSpot data entry\"). Sentiment data agrees: \"unable to verify current product offerings.\"",
+            yourData: (
+              <>
+                {`CRM automation score ${bsCrmScore ?? "—"} `}{LiveTag}
+                {`: the evidence text cited automatic Salesforce field population (contacts, next steps, deal stage, notes) from sales calls, with activity auto-matched to the right account without rep input. Despite this: ${bsMentions} discovery mention${bsMentions === 1 ? "" : "s"} in the Jul 6–12 window, despite prompts describing this exact category in buyer language ("update CRM records after sales calls," "post-call admin," "Salesforce/HubSpot data entry"). Sentiment data agrees: "unable to verify current product offerings."`}
+              </>
+            ),
             takeaway: "Three separate methods, one conclusion: this is a real, well-funded, actively-used competitor in your exact category that AI models currently cannot find. It's the clearest evidence in this report that having a real product and real customers isn't enough on its own. None of the other four brands' tactics (volume, targeted comparisons, acquisition equity, or aggressive confrontation) are present here at all. This is likely a large part of why it's invisible.",
           },
         ];
@@ -1527,7 +1625,7 @@ export default function SalesVisibilityCharts({
                       6sense publishes a dedicated <strong>&ldquo;6sense vs Demandbase&rdquo;</strong> comparison page that answers the exact question a buyer would ask an AI: <em>&ldquo;How does 6sense compare to Demandbase for predictive pipeline?&rdquo;</em> The page is specific, indexed, and quotable. When either Claude or GPT-4o-mini is asked about pipeline forecasting tools, it has a concrete source to draw on — and 6sense gets cited.
                     </p>
                     <p style={{ fontSize: 15, color: "#000", lineHeight: 1.65, margin: 0 }}>
-                      6sense&apos;s overall rank is #15 of 19 in this report, with only 76 total mentions. It is not a broadly visible brand. But in the specific pipeline comparison moment, it wins. That&apos;s what the page buys — not general visibility, but ownership of one exact question.
+                      6sense&apos;s overall rank is #{s6Rank} of {totalBrands} in this report, with only {s6Mentions}{" "}total mentions. It is not a broadly visible brand. But in the specific pipeline comparison moment, it wins. That&apos;s what the page buys — not general visibility, but ownership of one exact question.
                     </p>
                   </div>
 
