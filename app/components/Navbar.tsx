@@ -43,12 +43,7 @@ export default function Navbar() {
                 <div className="flex" style={{ padding: "28px 8px 24px" }}>
 
                   <div className="flex-1 px-6">
-                    <Link href="/ai-agent-builders" style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#000000", textTransform: "uppercase", textDecoration: "none", marginBottom: 12 }}
-                      onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#7C3AED"; }}
-                      onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#000000"; }}>
-                      For AI Agent Builders
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5l4 3.5-4 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </Link>
+                    <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#000000", textTransform: "uppercase", marginBottom: 12 }}>For AI Agent Builders</p>
                     <div style={{ height: 1, background: "#f0f0f4", marginBottom: 16 }} />
                     {[
                       { label: "Marketing", desc: "Track your marketing AI agent's product features, visibility, and sentiment against competitors.", href: "/solutions/marketing",
@@ -182,11 +177,7 @@ export default function Navbar() {
           {productExpanded && (
             <div style={{ background: "#fafafa", borderBottom: "1px solid #f3f4f6" }}>
               {/* For AI Agent Builders */}
-              <Link href="/ai-agent-builders" onClick={() => setMobileOpen(false)}
-                style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#000000", textTransform: "uppercase", textDecoration: "none", padding: "10px 20px 6px" }}>
-                For AI Agent Builders
-                <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5l4 3.5-4 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </Link>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#000000", textTransform: "uppercase", padding: "10px 20px 6px", margin: 0 }}>For AI Agent Builders</p>
               {[
                 { label: "Marketing", href: "/solutions/marketing" },
                 { label: "Skincare", href: "/solutions/skincare" },

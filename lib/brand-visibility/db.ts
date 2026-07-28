@@ -1311,11 +1311,10 @@ export async function getSalesDailySummary(days = 7): Promise<
   { date: string; brand: string; model: string; mention_count: number; avg_position: number | null }[]
 > {
   await initSalesVisibilityDB();
-  const cutoff = salesCutoff(days);
   const result = await sql`
     SELECT date::text AS date, brand, model, mention_count, avg_position
     FROM sales_daily_summary
-    WHERE date >= GREATEST(${cutoff}::date, '2026-07-06'::date)
+    WHERE date >= '2026-07-06'::date AND date <= '2026-07-12'::date
       AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
     ORDER BY date ASC, mention_count DESC
   `;
@@ -1326,13 +1325,12 @@ export async function getSalesWeeklySummary(): Promise<
   { brand: string; model: string; mention_count: number; avg_position: number | null }[]
 > {
   await initSalesVisibilityDB();
-  const cutoff = salesCutoff(14);
   const result = await sql`
     SELECT brand, model,
       SUM(mention_count)::int AS mention_count,
       AVG(avg_position)       AS avg_position
     FROM sales_daily_summary
-    WHERE date >= ${cutoff}::date
+    WHERE date >= '2026-07-06'::date AND date <= '2026-07-12'::date
       AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
     GROUP BY brand, model
     ORDER BY SUM(mention_count) DESC
@@ -1344,7 +1342,6 @@ export async function getSalesLLMVisibility(): Promise<
   { model: string; visibility_pct: number; total_responses: number }[]
 > {
   await initSalesVisibilityDB();
-  const cutoff = salesCutoff(14);
   const result = await sql`
     SELECT model,
       ROUND(
@@ -1353,7 +1350,7 @@ export async function getSalesLLMVisibility(): Promise<
       )::float AS visibility_pct,
       COUNT(*)::int AS total_responses
     FROM sales_raw_responses
-    WHERE date >= ${cutoff}::date
+    WHERE date >= '2026-07-06'::date AND date <= '2026-07-12'::date
     GROUP BY model
     ORDER BY model
   `;
@@ -1364,7 +1361,6 @@ export async function getSalesSOVData(): Promise<
   { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[]
 > {
   await initSalesVisibilityDB();
-  const cutoff = salesCutoff(14);
   const result = await sql`
     SELECT
       r.bucket_tag,
@@ -1380,7 +1376,7 @@ export async function getSalesSOVData(): Promise<
       )::float AS sov_pct
     FROM sales_raw_responses r,
          jsonb_array_elements_text(r.brands) AS t(brand_name)
-    WHERE r.date >= ${cutoff}::date
+    WHERE r.date >= '2026-07-06'::date AND r.date <= '2026-07-12'::date
       AND LENGTH(TRIM(t.brand_name)) > 0
       AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
     GROUP BY r.bucket_tag,
@@ -1398,7 +1394,6 @@ export async function getSalesClusterBrandPositions(): Promise<
   { bucket_tag: string; brand: string; avg_position: number; appearances: number }[]
 > {
   await initSalesVisibilityDB();
-  const cutoff = salesCutoff(14);
   const result = await sql`
     SELECT
       r.bucket_tag,
@@ -1411,7 +1406,7 @@ export async function getSalesClusterBrandPositions(): Promise<
       COUNT(*)::int AS appearances
     FROM sales_raw_responses r,
          LATERAL jsonb_array_elements_text(r.brands) WITH ORDINALITY AS t(brand_name, pos)
-    WHERE r.date >= ${cutoff}::date
+    WHERE r.date >= '2026-07-06'::date AND r.date <= '2026-07-12'::date
       AND r.bucket_tag != 'sales-overall'
       AND LENGTH(TRIM(t.brand_name)) > 0
       AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
@@ -1677,7 +1672,7 @@ export async function getMarketingSentimentData(): Promise<{
     FROM (
       SELECT run_date
       FROM sentiment_responses
-      WHERE run_date >= '2026-07-06' AND NOT parse_error
+      WHERE run_date >= '2026-07-06' AND run_date <= '2026-07-12' AND NOT parse_error
       GROUP BY run_date
       HAVING COUNT(DISTINCT model) >= 2
     ) d
@@ -1694,7 +1689,7 @@ export async function getMarketingSentimentData(): Promise<{
     WITH base AS (
       SELECT brand_name, bucket_tag, sentiment, descriptors
       FROM sentiment_responses
-      WHERE run_date >= '2026-07-06' AND NOT parse_error
+      WHERE run_date >= '2026-07-06' AND run_date <= '2026-07-12' AND NOT parse_error
     ),
     sentiments AS (
       SELECT brand_name, bucket_tag,
@@ -1760,7 +1755,7 @@ export async function getSalesSentimentData(): Promise<{
     FROM (
       SELECT run_date
       FROM sales_sentiment_responses
-      WHERE run_date >= CURRENT_DATE - 14 AND NOT parse_error
+      WHERE run_date >= '2026-07-06' AND run_date <= '2026-07-12' AND NOT parse_error
       GROUP BY run_date
       HAVING COUNT(DISTINCT model) >= 2
     ) d
@@ -1777,7 +1772,7 @@ export async function getSalesSentimentData(): Promise<{
     WITH base AS (
       SELECT brand_name, bucket_tag, sentiment, descriptors
       FROM sales_sentiment_responses
-      WHERE run_date >= CURRENT_DATE - 14 AND NOT parse_error
+      WHERE run_date >= '2026-07-06' AND run_date <= '2026-07-12' AND NOT parse_error
     ),
     sentiments AS (
       SELECT brand_name, bucket_tag,
