@@ -42,31 +42,6 @@ export default function Navbar() {
               <div className="rounded-2xl" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 20px 60px rgba(0,0,0,0.13), 0 4px 12px rgba(0,0,0,0.06)" }}>
                 <div className="flex" style={{ padding: "28px 8px 24px" }}>
 
-                  {/* Left column */}
-                  <div className="flex-1 px-6" style={{ borderRight: "1px solid #f0f0f4" }}>
-                    <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#000000", textTransform: "uppercase", marginBottom: 12 }}>For Individuals / Businesses</p>
-                    <div style={{ height: 1, background: "#f0f0f4", marginBottom: 16 }} />
-                    {[
-                      { label: "Sage", desc: "Get matched to the right agent instantly", href: "/product/recommendations",
-                        iconBg: "rgba(124,58,237,0.10)",
-                        icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2l2.4 5 5.6.8-4 3.9.9 5.5L10 14.5l-4.9 2.7.9-5.5L2 7.8l5.6-.8L10 2z" fill="url(#nav-sage)"/><defs><linearGradient id="nav-sage" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#E8447A"/></linearGradient></defs></svg> },
-                      { label: "Vera", desc: "Research and compare agents side by side in detail", href: "/product/research",
-                        iconBg: "rgba(94,108,232,0.10)",
-                        icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="6" height="12" rx="1.5" fill="#5E6CE8"/><rect x="12" y="3" width="6" height="14" rx="1.5" fill="#9B6ED8"/><path d="M9 10h2M9 10l-1.5-1.5M9 10l-1.5 1.5M11 10l1.5-1.5M11 10l1.5 1.5" stroke="#5E6CE8" strokeWidth="1.2" strokeLinecap="round"/></svg> },
-                    ].map((item) => (
-                      <a key={item.href} href={item.href} className="flex items-start gap-4 py-4 rounded-xl px-3" style={{ textDecoration: "none" }}
-                        onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
-                        onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
-                        <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: item.iconBg }}>{item.icon}</div>
-                        <div className="flex flex-col">
-                          <span style={{ fontSize: 14, fontWeight: 600, color: "#000000", lineHeight: 1.4 }}>{item.label} AI</span>
-                          <span style={{ fontSize: 12.5, color: "#000000", marginTop: 3, lineHeight: 1.5 }}>{item.desc}</span>
-                        </div>
-                      </a>
-                    ))}
-                  </div>
-
-                  {/* Right column */}
                   <div className="flex-1 px-6">
                     <Link href="/ai-agent-builders" style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#000000", textTransform: "uppercase", textDecoration: "none", marginBottom: 12 }}
                       onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#7C3AED"; }}
@@ -76,13 +51,13 @@ export default function Navbar() {
                     </Link>
                     <div style={{ height: 1, background: "#f0f0f4", marginBottom: 16 }} />
                     {[
-                      { label: "Marketing", desc: "Track your marketing AI agent's features, visibility, and sentiment against competitors.", href: "/solutions/marketing",
+                      { label: "Marketing", desc: "Track your marketing AI agent's product features, visibility, and sentiment against competitors.", href: "/solutions/marketing",
                         iconBg: "rgba(240,97,122,0.10)",
                         icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 17V8l4-4h6l4 4v9H3z" stroke="#F0617A" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(240,97,122,0.12)"/><path d="M8 17v-5h4v5" stroke="#F0617A" strokeWidth="1.5" strokeLinejoin="round"/></svg> },
-                      { label: "Skincare", desc: "Track your skincare AI agent's features, visibility, and sentiment against competitors.", href: "/solutions/skincare",
+                      { label: "Skincare", desc: "Track your skincare AI agent's product features, visibility, and sentiment against competitors.", href: "/solutions/skincare",
                         iconBg: "rgba(30,58,138,0.10)",
                         icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3c0 0-5 3.5-5 8a5 5 0 0010 0c0-4.5-5-8-5-8z" stroke="#1E3A8A" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(30,58,138,0.12)"/><circle cx="10" cy="11" r="1.5" fill="#1E3A8A"/></svg> },
-                      { label: "Sales", desc: "Track your sales AI agent's brand visibility across Claude and GPT-4o mini, updated daily.", href: "/product/sales-visibility",
+                      { label: "Sales", desc: "Track your sales AI agent's product features, visibility, and sentiment against competitors.", href: "/product/sales-visibility",
                         iconBg: "rgba(37,99,235,0.10)",
                         icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 14l4-5 4 3 3-4 3 3" stroke="#2563EB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="17" cy="11" r="1.5" fill="#2563EB"/></svg> },
                     ].map((item) => (
@@ -206,21 +181,9 @@ export default function Navbar() {
           </button>
           {productExpanded && (
             <div style={{ background: "#fafafa", borderBottom: "1px solid #f3f4f6" }}>
-              {/* For Individuals / Businesses */}
-              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#000000", textTransform: "uppercase", padding: "10px 20px 6px" }}>For Individuals / Businesses</p>
-              {[
-                { label: "Sage AI", href: "/product/recommendations" },
-                { label: "Vera AI", href: "/product/research" },
-              ].map((item) => (
-                <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                  className="block pl-8 pr-5 py-3 text-sm text-black hover:text-black hover:bg-gray-100 transition-colors"
-                  style={{ textDecoration: "none", borderBottom: "1px solid #f0f0f0" }}>
-                  {item.label}
-                </a>
-              ))}
               {/* For AI Agent Builders */}
               <Link href="/ai-agent-builders" onClick={() => setMobileOpen(false)}
-                style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#000000", textTransform: "uppercase", textDecoration: "none", padding: "10px 20px 6px", borderTop: "1px solid #ebebeb" }}>
+                style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#000000", textTransform: "uppercase", textDecoration: "none", padding: "10px 20px 6px" }}>
                 For AI Agent Builders
                 <svg width="10" height="10" viewBox="0 0 12 12" fill="none"><path d="M4.5 2.5l4 3.5-4 3.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
               </Link>

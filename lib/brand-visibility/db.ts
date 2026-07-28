@@ -657,9 +657,6 @@ export async function getLockedDailySummary(days = 7): Promise<
   { date: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string; rank: number; dominant_tag: string }[]
 > {
   await initBrandVisibilityDB();
-  const cutoff = new Date();
-  cutoff.setDate(cutoff.getDate() - days + 1);
-  const cutoffStr = cutoff.toISOString().split("T")[0];
 
   const result = await sql`
     SELECT ds.date::text AS date, ds.brand, ds.model,
@@ -667,7 +664,7 @@ export async function getLockedDailySummary(days = 7): Promise<
            lma.rank, lma.dominant_tag
     FROM daily_summary ds
     JOIN locked_marketing_agents lma ON lma.brand_name = ds.brand
-    WHERE ds.date >= ${cutoffStr}::date
+    WHERE ds.date >= '2026-07-06'::date
     ORDER BY ds.date ASC, lma.rank ASC
   `;
   return result.rows as { date: string; brand: string; model: string; mention_count: number; avg_position: number | null; confidence: string; rank: number; dominant_tag: string }[];
@@ -1680,7 +1677,7 @@ export async function getMarketingSentimentData(): Promise<{
     FROM (
       SELECT run_date
       FROM sentiment_responses
-      WHERE run_date >= CURRENT_DATE - 7 AND NOT parse_error
+      WHERE run_date >= '2026-07-06' AND NOT parse_error
       GROUP BY run_date
       HAVING COUNT(DISTINCT model) >= 2
     ) d
@@ -1697,7 +1694,7 @@ export async function getMarketingSentimentData(): Promise<{
     WITH base AS (
       SELECT brand_name, bucket_tag, sentiment, descriptors
       FROM sentiment_responses
-      WHERE run_date >= CURRENT_DATE - 7 AND NOT parse_error
+      WHERE run_date >= '2026-07-06' AND NOT parse_error
     ),
     sentiments AS (
       SELECT brand_name, bucket_tag,

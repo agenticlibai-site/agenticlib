@@ -686,7 +686,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
 
   // Brand filter state — all visible by default; toggled client-side, no re-fetch
   const [hiddenBrands, setHiddenBrands] = useState<Set<string>>(new Set());
-  const [sentimentOpen, setSentimentOpen] = useState(false);
+  const [sentimentOpen, setSentimentOpen] = useState(true);
   const toggleBrand = (brand: string) =>
     setHiddenBrands(prev => { const n = new Set(prev); n.has(brand) ? n.delete(brand) : n.add(brand); return n; });
   const selectAll = () => setHiddenBrands(new Set());
@@ -799,7 +799,7 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 20 }}>
           <div>
             <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>
-              Brand Mentions — 7-Day Trend
+              Brand Mentions — Jul 6–12
             </h3>
             <p style={{ fontSize: 12, color: "#000000" }}>
               {hasReal ? "Top 22 locked AI marketing agents · both models combined" : "Sample data — live chart populates after daily collection"}
@@ -977,63 +977,6 @@ export default function BrandVisibilityCharts({ dailySummary, weeklySummary, llm
               getDisplayName={getDisplayName}
             />
           ))}
-        </div>
-      )}
-
-      {/* ── Row 2d: Perception Gaps ─────────────────────────────────────────── */}
-      {hasReal && (
-        <div style={{
-          background: "#fff",
-          borderRadius: 10,
-          boxShadow: "0 2px 8px rgba(13,27,62,0.07), 0 1px 2px rgba(13,27,62,0.04)",
-          overflow: "hidden",
-        }}>
-          <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(13,27,62,0.07)" }}>
-            <h3 style={{ fontSize: 15, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 2 }}>
-              Perception Gaps — where LLM visibility and reality diverge
-            </h3>
-            <p style={{ fontSize: 12, color: "#000000" }}>
-              Brands where AI share of voice and documented capability tell different stories.
-            </p>
-          </div>
-          <div style={{ padding: "16px 24px", display: "flex", flexDirection: "column", gap: 12 }}>
-            {perceptionGaps.length === 0 && (
-              <p style={{ fontSize: 13, color: "#000000", fontStyle: "italic" }}>
-                No perception gaps detected — check /api/brand-visibility/audit/perception-gaps for diagnostics.
-              </p>
-            )}
-            {perceptionGaps.map((gap, i) => {
-              const label = clusterLabel(gap.cluster_tag);
-              const explanation = `${gap.display_name} appears consistently in ${label} brand coverage but holds less than 3% share of voice when buyers ask specifically about ${label} — present in the conversation but not owning it.`;
-              return (
-                <div key={`${gap.brand_name}-${i}`} style={{
-                  borderLeft: "3px solid #F59E0B",
-                  background: "rgba(245,158,11,0.04)",
-                  borderRadius: "0 6px 6px 0",
-                  padding: "12px 16px",
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: 4,
-                }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: NAVY }}>{gap.display_name}</span>
-                    <span style={{
-                      fontSize: 10, fontWeight: 700, textTransform: "uppercase" as const,
-                      letterSpacing: "0.07em", padding: "2px 7px", borderRadius: 4,
-                      background: "rgba(245,158,11,0.12)",
-                      color: "#B45309",
-                    }}>
-                      SOV gap
-                    </span>
-                    <span style={{ fontSize: 11, color: "#000000" }}>{label}</span>
-                  </div>
-                  <p style={{ fontSize: 12, color: "#000000", lineHeight: 1.55, margin: 0 }}>
-                    {explanation}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
         </div>
       )}
 

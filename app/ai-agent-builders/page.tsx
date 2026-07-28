@@ -5,6 +5,7 @@ import { useState } from "react";
 const DOMAINS = [
   { label: "Marketing", href: "/solutions/marketing" },
   { label: "Skincare", href: "/solutions/skincare" },
+  { label: "Sales", href: "/product/sales-visibility" },
 ];
 
 function DomainSearch() {
