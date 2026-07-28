@@ -128,16 +128,9 @@ export default function Home() {
               </span>
             </h1>
 
-            {/* Tagline + pill */}
-              <div style={{ margin: "32px 0" }}>
-                <span className="hero-tagline-text" style={{ fontSize: "22px", fontWeight: 500, color: "#000000" }}>AgenticLib, the hub for </span>
-                <span style={{ fontSize: "22px", fontWeight: 500, color: "#7C3AED", background: "rgba(124,58,237,0.10)", borderRadius: 4, padding: "2px 8px" }}>
-                  AI Agent Builders
-                </span>
-              </div>
-
               {/* Subhead */}
-              <p className="hero-subhead text-base md:text-lg mx-auto" style={{ color: "#000000", maxWidth: "520px", lineHeight: 1.35, marginTop: "40px" }}>
+              <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 15, fontWeight: 700, letterSpacing: ".22em", color: "#C2186A", margin: "40px 0 10px" }}>FOR AI AGENT BUILDERS</p>
+              <p className="hero-subhead text-base md:text-lg mx-auto" style={{ color: "#000000", maxWidth: "520px", lineHeight: 1.35, marginTop: "0", fontWeight: 700 }}>
                 Get an edge on your product feature growth, know your competitive landscape and scale in LLM visibility to show up where your buyers are asking.
               </p>
 
