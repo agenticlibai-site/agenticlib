@@ -576,7 +576,7 @@ export default function SalesVisibilityCharts({
   const sentimentData = { ...sentimentDataRaw, rows: sentimentDataRaw.rows.filter(r => r.brand_name !== "Drift") };
   const hasReal = dailySummary.length > 0;
 
-  // Pin all trend charts to exactly 6–12 July — dates outside this range are excluded.
+  // Pin all trend charts to exactly 6–12 July.
   const CHART_DATE_FROM = "2026-07-06";
   const CHART_DATE_TO   = "2026-07-12";
   const rangedDaily = dailySummary.filter(r => r.date >= CHART_DATE_FROM && r.date <= CHART_DATE_TO);
