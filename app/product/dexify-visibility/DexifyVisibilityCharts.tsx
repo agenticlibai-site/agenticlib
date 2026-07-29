@@ -82,7 +82,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
     .map((r) => ({ brand: r.brand, mentions: r.total_mentions }));
 
   // ── Trend: pivot to recharts format, top 8 brands ────────────────────────────
-  const top8brands = topBrands.slice(0, 8).map((r) => r.brand);
+  const top8brands = topBrands.slice(0, 15).map((r) => r.brand);
   const trendByDate: Record<string, Record<string, number | string>> = {};
   for (const r of trend) {
     if (!top8brands.includes(r.brand)) continue;
@@ -94,7 +94,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
   );
 
   // ── LLM split: top 12 brands, side-by-side claude vs gpt ─────────────────────
-  const top12 = topBrands.slice(0, 12).map((r) => r.brand);
+  const top12 = topBrands.slice(0, 15).map((r) => r.brand);
   const modelMap: Record<string, { claude: number; gpt: number }> = {};
   for (const r of byModel) {
     if (!top12.includes(r.brand)) continue;
@@ -153,7 +153,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
       {/* ── Coverage over time ────────────────────────────────────────────── */}
       <Section
         title="Coverage Over Time"
-        subtitle="Daily mention totals for the top 8 brands"
+        subtitle="Daily mention totals for the top 15 brands"
       >
         {trendData.length === 0 ? (
           <EmptyState label="Trend builds after day 2" />
@@ -182,7 +182,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
       {/* ── LLM model split ────────────────────────────────────────────────── */}
       <Section
         title="Visibility by LLM"
-        subtitle="Claude Haiku vs GPT-4o-mini — top 12 brands"
+        subtitle="Claude Haiku vs GPT-4o-mini — top 15 brands"
       >
         {modelData.length === 0 ? (
           <EmptyState label="No data yet" />
