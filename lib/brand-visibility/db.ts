@@ -1915,3 +1915,91 @@ export async function insertDexifyRawResponse(row: {
       created_at     = NOW()
   `;
 }
+
+export interface DexifyTopBrandRow {
+  brand:          string;
+  total_mentions: number;
+  avg_position:   number | null;
+}
+
+export interface DexifyClusterRow {
+  cluster_tag:    string;
+  brand:          string;
+  total_mentions: number;
+  avg_position:   number | null;
+}
+
+export interface DexifyModelRow {
+  model:          string;
+  brand:          string;
+  total_mentions: number;
+}
+
+export interface DexifyTrendRow {
+  date:          string;
+  brand:         string;
+  mention_count: number;
+}
+
+export async function getDexifyTopBrands(limit = 25): Promise<DexifyTopBrandRow[]> {
+  await initDexifyDB();
+  const result = await sql`
+    SELECT
+      brand,
+      SUM(mention_count)::int    AS total_mentions,
+      AVG(avg_position)::float   AS avg_position
+    FROM dexify_daily_summary
+    WHERE LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
+    GROUP BY brand
+    ORDER BY total_mentions DESC
+    LIMIT ${limit}
+  `;
+  return result.rows as DexifyTopBrandRow[];
+}
+
+export async function getDexifyByCluster(): Promise<DexifyClusterRow[]> {
+  await initDexifyDB();
+  const result = await sql`
+    SELECT
+      cluster_tag,
+      brand,
+      SUM(mention_count)::int    AS total_mentions,
+      AVG(avg_position)::float   AS avg_position
+    FROM dexify_daily_summary
+    WHERE LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
+    GROUP BY cluster_tag, brand
+    ORDER BY cluster_tag, total_mentions DESC
+  `;
+  return result.rows as DexifyClusterRow[];
+}
+
+export async function getDexifyByModel(): Promise<DexifyModelRow[]> {
+  await initDexifyDB();
+  const result = await sql`
+    SELECT
+      model,
+      brand,
+      SUM(mention_count)::int AS total_mentions
+    FROM dexify_daily_summary
+    WHERE LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
+    GROUP BY model, brand
+    ORDER BY total_mentions DESC
+  `;
+  return result.rows as DexifyModelRow[];
+}
+
+export async function getDexifyTrend(days = 7): Promise<DexifyTrendRow[]> {
+  await initDexifyDB();
+  const result = await sql`
+    SELECT
+      date::text,
+      brand,
+      SUM(mention_count)::int AS mention_count
+    FROM dexify_daily_summary
+    WHERE date >= CURRENT_DATE - (${days} || ' days')::interval
+      AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
+    GROUP BY date, brand
+    ORDER BY date, mention_count DESC
+  `;
+  return result.rows as DexifyTrendRow[];
+}
