@@ -22,6 +22,20 @@ export const FEATURE_SYSTEM_PROMPT =
   "For each feature, explain the brand's specific implementation and the practical value it delivers — not generic feature existence. " +
   "Return ONLY valid JSON matching the exact schema. No markdown, no explanation — just the JSON object.";
 
+// Verified facts injected into prompts where models have demonstrated stale or hallucinated data.
+// Keyed by brand name → feature_id → correction string.
+// Add an entry whenever a model repeatedly returns a known-wrong value.
+const VERIFIED_FACTS: Record<string, Partial<Record<string, string>>> = {
+  "Reply.io": {
+    cost_pricing_transparency:
+      "VERIFIED PRICING (as of July 2026): Starter $49/user/month (email-only), " +
+      "Professional $89/user/month (adds LinkedIn, calling, SMS), " +
+      "Ultimate $139/user/month (full AI SDR). " +
+      "Add-ons such as LinkedIn automation ($69) and cloud calling ($29) are not included in the base price. " +
+      "Do NOT cite $70 — that figure is outdated or incorrect.",
+  },
+};
+
 // ── Brand cluster lists ────────────────────────────────────────────────────────
 
 const CALL_BRANDS       = ["Chorus", "Gong", "Revenue.io", "Avoma"];
@@ -244,7 +258,11 @@ export function getFeaturesForBrand(brandName: string): Feature[] {
 }
 
 export function buildPrompt(feature: Feature, brandName: string): string {
-  const grounding  = GROUNDING_INSTRUCTION.replaceAll("[BRAND]", brandName);
+  const verifiedFact = VERIFIED_FACTS[brandName]?.[feature.feature_id];
+  const groundingBase = GROUNDING_INSTRUCTION.replaceAll("[BRAND]", brandName);
+  const grounding = verifiedFact
+    ? groundingBase + "\n\nFACT CHECK — use these verified figures, do not override them:\n" + verifiedFact
+    : groundingBase;
   const outputSpec = JSON_OUTPUT_SPEC.replaceAll("[BRAND]", brandName);
   return feature.prompt
     .replaceAll("[BRAND]", brandName)
