@@ -1889,6 +1889,50 @@ export async function initDexifyDB(): Promise<void> {
     )
   `;
 
+  await sql`
+    CREATE TABLE IF NOT EXISTS dexify_feature_responses (
+      id             SERIAL PRIMARY KEY,
+      brand_name     TEXT    NOT NULL,
+      feature_id     TEXT    NOT NULL,
+      feature_tag    TEXT    NOT NULL,
+      model          TEXT    NOT NULL,
+      run_number     INTEGER NOT NULL,
+      run_date       DATE    NOT NULL DEFAULT CURRENT_DATE,
+      has_capability TEXT,
+      evidence       TEXT,
+      limitations    TEXT,
+      confidence     TEXT,
+      raw_json       JSONB,
+      parse_error    BOOLEAN NOT NULL DEFAULT FALSE,
+      grounded       BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at     TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  await sql`
+    CREATE UNIQUE INDEX IF NOT EXISTS dexify_feature_responses_unique
+    ON dexify_feature_responses (brand_name, feature_id, model, run_number, run_date)
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS dexify_feature_scores (
+      id                 SERIAL PRIMARY KEY,
+      brand_name         TEXT    NOT NULL,
+      feature_id         TEXT    NOT NULL,
+      feature_tag        TEXT    NOT NULL,
+      score              NUMERIC,
+      score_band         TEXT,
+      runs_agreeing      INTEGER,
+      runs_total         INTEGER NOT NULL DEFAULT 0,
+      flagged_for_review BOOLEAN NOT NULL DEFAULT FALSE,
+      flag_reason        TEXT,
+      notes              TEXT,
+      grounded_source    BOOLEAN DEFAULT FALSE,
+      scored_at          TIMESTAMP DEFAULT NOW(),
+      UNIQUE (brand_name, feature_id)
+    )
+  `;
+
   dexifyDbInitialised = true;
 }
 
@@ -2002,4 +2046,159 @@ export async function getDexifyTrend(days = 7): Promise<DexifyTrendRow[]> {
     ORDER BY date, mention_count DESC
   `;
   return result.rows as DexifyTrendRow[];
+}
+
+// ── Dexify feature pipeline ───────────────────────────────────────────────────
+
+export async function getDexifyTopBrandsForFeatureScoring(limit = 20): Promise<string[]> {
+  await initDexifyDB();
+  const result = await sql`
+    SELECT brand
+    FROM dexify_daily_summary
+    WHERE LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
+    GROUP BY brand
+    ORDER BY SUM(mention_count) DESC
+    LIMIT ${limit}
+  `;
+  return result.rows.map((r: { brand: string }) => r.brand);
+}
+
+export async function insertDexifyFeatureResponse(row: {
+  brand_name:     string;
+  feature_id:     string;
+  feature_tag:    string;
+  model:          string;
+  run_number:     number;
+  run_date:       string;
+  has_capability: string | null;
+  evidence:       string | null;
+  limitations:    string | null;
+  confidence:     string | null;
+  raw_json:       object | null;
+  parse_error:    boolean;
+  grounded?:      boolean;
+}): Promise<void> {
+  const grounded = row.grounded ?? false;
+  await sql`
+    INSERT INTO dexify_feature_responses
+      (brand_name, feature_id, feature_tag, model, run_number, run_date,
+       has_capability, evidence, limitations, confidence, raw_json, parse_error, grounded)
+    VALUES
+      (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.model},
+       ${row.run_number}, ${row.run_date}::date, ${row.has_capability},
+       ${row.evidence}, ${row.limitations}, ${row.confidence},
+       ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error}, ${grounded})
+    ON CONFLICT DO NOTHING
+  `;
+}
+
+export async function getDexifyFeatureResponsesForScoring(runDate: string): Promise<{
+  brand_name:     string;
+  feature_id:     string;
+  feature_tag:    string;
+  model:          string;
+  has_capability: string | null;
+  evidence:       string | null;
+  confidence:     string | null;
+  parse_error:    boolean;
+  grounded:       boolean;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, feature_id, feature_tag, model,
+           has_capability, evidence, confidence, parse_error,
+           COALESCE(grounded, FALSE) AS grounded
+    FROM dexify_feature_responses
+    WHERE run_date = ${runDate}::date
+    ORDER BY brand_name, feature_id, model, grounded ASC, run_number
+  `;
+  return result.rows as {
+    brand_name: string; feature_id: string; feature_tag: string; model: string;
+    has_capability: string | null; evidence: string | null; confidence: string | null;
+    parse_error: boolean; grounded: boolean;
+  }[];
+}
+
+export async function getDexifyFeatureScores(): Promise<{
+  brand_name:         string;
+  feature_id:         string;
+  feature_tag:        string;
+  score:              number;
+  score_band:         string;
+  flagged_for_review: boolean;
+  evidence:           string | null;
+}[]> {
+  await initDexifyDB();
+  const result = await sql`
+    WITH best_evidence AS (
+      SELECT DISTINCT ON (brand_name, feature_id)
+        brand_name, feature_id, evidence
+      FROM dexify_feature_responses
+      WHERE parse_error = false
+        AND evidence IS NOT NULL AND evidence != ''
+        AND evidence NOT ILIKE '%not explicitly document%'
+        AND evidence NOT ILIKE '%does not document%'
+        AND evidence NOT ILIKE '%no specific documentation%'
+        AND evidence NOT ILIKE '%without clear documentation%'
+        AND evidence NOT ILIKE '%documentation not available%'
+        AND evidence NOT ILIKE '%not documented%'
+        AND evidence NOT ILIKE '%cannot be confirmed from%'
+        AND evidence NOT ILIKE '%no available information%'
+        AND evidence NOT ILIKE '%does not provide documentation%'
+      ORDER BY brand_name, feature_id,
+        CASE has_capability WHEN 'yes' THEN 0 WHEN 'partial' THEN 1 ELSE 2 END,
+        grounded DESC,
+        run_date DESC,
+        CASE confidence WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END,
+        model
+    )
+    SELECT s.brand_name, s.feature_id, s.feature_tag, s.score, s.score_band, s.flagged_for_review,
+           be.evidence
+    FROM dexify_feature_scores s
+    LEFT JOIN best_evidence be ON be.brand_name = s.brand_name AND be.feature_id = s.feature_id
+    WHERE s.score IS NOT NULL
+    ORDER BY s.feature_tag, s.score DESC
+  `;
+  return result.rows as {
+    brand_name: string; feature_id: string; feature_tag: string;
+    score: number; score_band: string; flagged_for_review: boolean;
+    evidence: string | null;
+  }[];
+}
+
+export async function upsertDexifyFeatureScore(row: {
+  brand_name:         string;
+  feature_id:         string;
+  feature_tag:        string;
+  score:              number | null;
+  score_band:         string;
+  runs_agreeing:      number | null;
+  runs_total:         number;
+  flagged_for_review: boolean;
+  flag_reason:        string | null;
+  notes:              string | null;
+  grounded_source?:   boolean;
+}): Promise<void> {
+  const grounded_source = row.grounded_source ?? false;
+  await sql`
+    INSERT INTO dexify_feature_scores
+      (brand_name, feature_id, feature_tag, score, score_band,
+       runs_agreeing, runs_total, flagged_for_review, flag_reason, notes,
+       grounded_source, scored_at)
+    VALUES
+      (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.score},
+       ${row.score_band}, ${row.runs_agreeing}, ${row.runs_total},
+       ${row.flagged_for_review}, ${row.flag_reason}, ${row.notes},
+       ${grounded_source}, NOW())
+    ON CONFLICT (brand_name, feature_id) DO UPDATE SET
+      feature_tag        = EXCLUDED.feature_tag,
+      score              = EXCLUDED.score,
+      score_band         = EXCLUDED.score_band,
+      runs_agreeing      = EXCLUDED.runs_agreeing,
+      runs_total         = EXCLUDED.runs_total,
+      flagged_for_review = EXCLUDED.flagged_for_review,
+      flag_reason        = EXCLUDED.flag_reason,
+      notes              = EXCLUDED.notes,
+      grounded_source    = EXCLUDED.grounded_source,
+      scored_at          = NOW()
+  `;
 }

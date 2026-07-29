@@ -10,6 +10,7 @@ import type {
   DexifyModelRow,
   DexifyTrendRow,
 } from "@/lib/brand-visibility/db";
+import { DEXIFY_FEATURES } from "@/lib/brand-visibility/dexify-features";
 
 // ── Palette ────────────────────────────────────────────────────────────────────
 const ACCENT  = "#EA580C";
@@ -65,15 +66,48 @@ function Section({ title, subtitle, children }: { title: string; subtitle?: stri
   );
 }
 
-// ── Props ──────────────────────────────────────────────────────────────────────
-interface Props {
-  topBrands: DexifyTopBrandRow[];
-  byCluster: DexifyClusterRow[];
-  byModel:   DexifyModelRow[];
-  trend:     DexifyTrendRow[];
+// ── Feature score types ────────────────────────────────────────────────────────
+interface FeatureScoreRow {
+  brand_name:         string;
+  feature_id:         string;
+  feature_tag:        string;
+  score:              number;
+  score_band:         string;
+  flagged_for_review: boolean;
+  evidence:           string | null;
 }
 
-export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, trend }: Props) {
+const BAND_COLOR: Record<string, string> = {
+  high:            "#16a34a",
+  medium:          "#d97706",
+  low:             "#dc2626",
+  not_documented:  "rgba(0,0,0,0.18)",
+};
+
+function ScorePill({ band, score }: { band: string; score: number | null }) {
+  const color = BAND_COLOR[band] ?? "rgba(0,0,0,0.18)";
+  return (
+    <span style={{
+      display: "inline-block", minWidth: 36, textAlign: "center",
+      padding: "2px 8px", borderRadius: 4, fontSize: 13, fontWeight: 700,
+      color: band === "not_documented" ? "rgba(0,0,0,0.35)" : "#fff",
+      background: color,
+    }}>
+      {score !== null ? score : "–"}
+    </span>
+  );
+}
+
+// ── Props ──────────────────────────────────────────────────────────────────────
+interface Props {
+  topBrands:     DexifyTopBrandRow[];
+  byCluster:     DexifyClusterRow[];
+  byModel:       DexifyModelRow[];
+  trend:         DexifyTrendRow[];
+  featureScores: FeatureScoreRow[];
+}
+
+export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, trend, featureScores }: Props) {
 
   // ── Overall top brands (horizontal bar) ─────────────────────────────────────
   const top20 = topBrands.slice(0, 20);
@@ -261,6 +295,99 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
           </div>
         );
       })}
+
+      {/* ── Product Feature Scores ─────────────────────────────────────────── */}
+      <div style={{ marginTop: 32, marginBottom: 4 }}>
+        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
+          Product Feature Scores
+        </h2>
+        <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", margin: "0 0 16px" }}>
+          How well each brand supports the core capabilities Dexify is built for — scored per use case cluster by Claude and GPT-4o-mini
+        </p>
+      </div>
+
+      {featureScores.length === 0 ? (
+        <div style={{
+          background: "#fff", borderRadius: 14, border: "1px solid rgba(0,0,0,0.07)",
+          padding: "28px", marginBottom: 16,
+        }}>
+          <EmptyState label="Feature scores arrive after the first 7:45 AM UTC aggregate run" />
+        </div>
+      ) : (
+        CLUSTERS.map((cluster) => {
+          const clusterFeatures = DEXIFY_FEATURES.filter((f) => f.feature_tag === cluster.tag);
+          const clusterScores   = featureScores.filter((s) => s.feature_tag === cluster.tag);
+
+          if (clusterScores.length === 0) return null;
+
+          const brandsInCluster = [...new Set(clusterScores.map((s) => s.brand_name))];
+          const scoreMap = new Map(clusterScores.map((s) => [`${s.brand_name}::${s.feature_id}`, s]));
+
+          return (
+            <div key={cluster.tag} style={{
+              background: "#fff", borderRadius: 14,
+              border: "1px solid rgba(0,0,0,0.07)",
+              padding: "20px 28px", marginBottom: 16,
+            }}>
+              <h3 style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
+                {cluster.label}
+              </h3>
+              <p style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", margin: "0 0 16px" }}>
+                {cluster.description}
+              </p>
+
+              <div style={{ overflowX: "auto" }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                  <thead>
+                    <tr>
+                      <th style={{ textAlign: "left", padding: "6px 12px 6px 0", fontWeight: 700, color: "#000", borderBottom: "2px solid rgba(0,0,0,0.08)", whiteSpace: "nowrap" }}>
+                        Brand
+                      </th>
+                      {clusterFeatures.map((f) => (
+                        <th key={f.feature_id} style={{ textAlign: "center", padding: "6px 12px", fontWeight: 700, color: "#000", borderBottom: "2px solid rgba(0,0,0,0.08)", whiteSpace: "nowrap", fontSize: 12 }}>
+                          {f.feature_name.split(" ").slice(0, 4).join(" ")}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {brandsInCluster.map((brand, i) => (
+                      <tr key={brand} style={{ background: i % 2 === 0 ? "transparent" : "rgba(0,0,0,0.018)" }}>
+                        <td style={{ padding: "8px 12px 8px 0", fontWeight: 600, color: "#000", whiteSpace: "nowrap" }}>
+                          {brand}
+                        </td>
+                        {clusterFeatures.map((f) => {
+                          const s = scoreMap.get(`${brand}::${f.feature_id}`);
+                          return (
+                            <td key={f.feature_id} style={{ padding: "8px 12px", textAlign: "center" }}>
+                              {s ? (
+                                <div title={s.evidence ?? undefined}>
+                                  <ScorePill band={s.score_band} score={s.score} />
+                                </div>
+                              ) : (
+                                <span style={{ color: "rgba(0,0,0,0.2)", fontSize: 13 }}>–</span>
+                              )}
+                            </td>
+                          );
+                        })}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div style={{ marginTop: 12, display: "flex", gap: 16, flexWrap: "wrap" as const }}>
+                {[["#16a34a", "High (80–100)"], ["#d97706", "Medium (40–79)"], ["#dc2626", "Low (0–39)"], ["rgba(0,0,0,0.18)", "Not documented"]].map(([color, label]) => (
+                  <div key={label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "rgba(0,0,0,0.5)" }}>
+                    <span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, background: color }} />
+                    {label}
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })
+      )}
 
     </div>
   );
