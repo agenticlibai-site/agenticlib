@@ -1,0 +1,128 @@
+import { sql } from "@vercel/postgres";
+import { initDexifyDB } from "@/lib/brand-visibility/db";
+import { DEXIFY_PROMPTS } from "@/lib/brand-visibility/dexify-prompts";
+import { sendEmail } from "@/lib/email";
+
+export const dynamic    = "force-dynamic";
+export const maxDuration = 60;
+
+// Runs 35 minutes after the last collection job (6:10 → 6:45 UTC).
+// Reads today's dexify_raw_responses, counts brand appearances per cluster,
+// upserts into dexify_daily_summary.
+// No locked brand list — all brands are counted so tomorrow's review can
+// determine which to keep and which to denylist.
+
+export async function GET(request: Request) {
+  const secret = request.headers.get("authorization")?.replace("Bearer ", "");
+  if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) {
+    return Response.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const now          = new Date();
+  const today        = now.toISOString().split("T")[0];
+  const runTimestamp = now.toISOString().replace("T", " ").slice(0, 19) + " UTC";
+
+  try {
+    await initDexifyDB();
+
+    const countResult = await sql`
+      SELECT COUNT(*)::int AS cnt FROM dexify_raw_responses WHERE date = ${today}::date
+    `;
+    const rawCount = (countResult.rows[0]?.cnt ?? 0) as number;
+
+    if (rawCount === 0) {
+      return Response.json({
+        mode: "dexify_aggregate",
+        date: today,
+        note: "no dexify_raw_responses found for today — collection may not have run yet",
+        brands_written: 0,
+      });
+    }
+
+    // Count brand appearances per (brand, model, cluster_tag), filtered by denylist.
+    // avg_position: 1-based ordinal of the brand within each response's brands array.
+    const upsertResult = await sql`
+      INSERT INTO dexify_daily_summary (date, brand, model, cluster_tag, mention_count, avg_position)
+      SELECT
+        ${today}::date,
+        TRIM(t.brand_name),
+        r.model,
+        r.cluster_tag,
+        COUNT(*)::int         AS mention_count,
+        AVG(t.ordinality)::float AS avg_position
+      FROM dexify_raw_responses r,
+           jsonb_array_elements_text(r.brands) WITH ORDINALITY AS t(brand_name, ordinality)
+      WHERE r.date = ${today}::date
+        AND LENGTH(TRIM(t.brand_name)) > 0
+        AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
+      GROUP BY TRIM(t.brand_name), r.model, r.cluster_tag
+      ON CONFLICT (date, brand, model, cluster_tag) DO UPDATE SET
+        mention_count = EXCLUDED.mention_count,
+        avg_position  = EXCLUDED.avg_position
+      RETURNING brand
+    `;
+
+    const brandsWritten = upsertResult.rows.length;
+
+    const RUNS_PER_PROMPT   = 3;
+    const EXPECTED_RAW      = DEXIFY_PROMPTS.length * RUNS_PER_PROMPT * 2;
+    const EXPECTED_PER_MODEL = DEXIFY_PROMPTS.length * RUNS_PER_PROMPT;
+    const healthy = rawCount >= EXPECTED_RAW;
+
+    if (!healthy) {
+      const perModelResult = await sql`
+        SELECT model, COUNT(*)::int AS rows_stored
+        FROM dexify_raw_responses
+        WHERE date = ${today}::date
+        GROUP BY model
+      `;
+      const perModelMap: Record<string, number> = Object.fromEntries(
+        perModelResult.rows.map((r) => [r.model as string, r.rows_stored as number])
+      );
+      const modelRows = (["claude-haiku-4-5", "gpt-4o-mini"] as const).map((m) => {
+        const stored = perModelMap[m] ?? 0;
+        return `<tr><td style="padding:4px 12px 4px 0"><strong>${m}</strong></td><td>${stored} / ${EXPECTED_PER_MODEL} ${stored >= EXPECTED_PER_MODEL ? "✓" : "✗"}</td></tr>`;
+      }).join("");
+
+      await sendEmail({
+        subject: `[AgenticLib] ALERT — Dexify Aggregate incomplete (${today})`,
+        html: `
+          <h2>Dexify Pipeline — Aggregation Health Check</h2>
+          <table style="border-collapse:collapse;font-family:monospace">
+            <tr><td style="padding:4px 12px 4px 0"><strong>Run timestamp</strong></td><td>${runTimestamp}</td></tr>
+            <tr><td style="padding:4px 12px 4px 0"><strong>Date</strong></td><td>${today}</td></tr>
+            <tr><td style="padding:4px 12px 4px 0"><strong>Raw rows</strong></td><td>${rawCount} / ${EXPECTED_RAW} expected</td></tr>
+            ${modelRows}
+            <tr><td style="padding:4px 12px 4px 0"><strong>Brands written</strong></td><td>${brandsWritten}</td></tr>
+          </table>
+          <p>Collection may not have completed for one or both models. Check Vercel function logs.</p>
+        `,
+      }).catch((e) => console.error("[alert] dexify aggregate email failed:", e));
+    }
+
+    return Response.json({
+      mode:           "dexify_aggregate",
+      date:           today,
+      raw_rows:       rawCount,
+      expected_raw:   EXPECTED_RAW,
+      healthy,
+      brands_written: brandsWritten,
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("[cron] dexify-aggregate crashed:", message);
+
+    await sendEmail({
+      subject: `[AgenticLib] CRASH — Dexify Aggregate (${today})`,
+      html: `
+        <h2>Dexify Pipeline — Unhandled Crash</h2>
+        <table style="border-collapse:collapse;font-family:monospace">
+          <tr><td style="padding:4px 12px 4px 0"><strong>Timestamp</strong></td><td>${runTimestamp}</td></tr>
+          <tr><td style="padding:4px 12px 4px 0"><strong>Error</strong></td><td>${message}</td></tr>
+        </table>
+      `,
+    }).catch(() => {});
+
+    return Response.json({ error: "Internal server error", message }, { status: 500 });
+  }
+}
