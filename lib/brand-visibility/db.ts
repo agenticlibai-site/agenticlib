@@ -1850,7 +1850,9 @@ let dexifyDbInitialised = false;
 
 export async function initDexifyDB(): Promise<void> {
   if (dexifyDbInitialised) return;
+  dexifyDbInitialised = true; // set before any await — JS single-thread guarantees no concurrent DDL
 
+  try {
   await sql`
     CREATE TABLE IF NOT EXISTS dexify_raw_responses (
       id             SERIAL PRIMARY KEY,
@@ -1989,7 +1991,10 @@ export async function initDexifyDB(): Promise<void> {
     )
   `;
 
-  dexifyDbInitialised = true;
+  } catch (err) {
+    dexifyDbInitialised = false; // allow retry if DDL genuinely failed
+    throw err;
+  }
 }
 
 export async function insertDexifyRawResponse(row: {
@@ -2116,7 +2121,7 @@ export async function getDexifyTopBrandsForFeatureScoring(limit = 20): Promise<s
     ORDER BY SUM(mention_count) DESC
     LIMIT ${limit}
   `;
-  return result.rows.map((r: { brand: string }) => r.brand);
+  return (result.rows as { brand: string }[]).map((r) => r.brand);
 }
 
 export async function insertDexifyFeatureResponse(row: {
