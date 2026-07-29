@@ -42,9 +42,85 @@ function DomainSearch() {
   );
 }
 
+function ReportModal({ onClose }: { onClose: () => void }) {
+  const [email, setEmail]     = useState("");
+  const [status, setStatus]   = useState<"idle" | "loading" | "done" | "error">("idle");
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/report-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+      setStatus(res.ok ? "done" : "error");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  return (
+    <div
+      style={{ position: "fixed", inset: 0, zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.45)", backdropFilter: "blur(4px)" }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div style={{ background: "#fff", borderRadius: 20, padding: "40px 36px", maxWidth: 420, width: "90%", boxShadow: "0 24px 64px rgba(0,0,0,0.18)", position: "relative" }}>
+        <button onClick={onClose} style={{ position: "absolute", top: 16, right: 18, background: "none", border: "none", fontSize: 22, color: "rgba(0,0,0,0.35)", cursor: "pointer", lineHeight: 1 }}>×</button>
+
+        {status === "done" ? (
+          <div style={{ textAlign: "center", padding: "16px 0" }}>
+            <div style={{ fontSize: 36, marginBottom: 12 }}>✓</div>
+            <h3 style={{ fontSize: 20, fontWeight: 700, color: "#0F0B1E", margin: "0 0 10px" }}>Request received</h3>
+            <p style={{ fontSize: 14, color: "rgba(0,0,0,0.55)", lineHeight: 1.6, margin: 0 }}>We&apos;ll be in touch at <strong>{email}</strong> with your free report.</p>
+          </div>
+        ) : (
+          <>
+            <h3 style={{ fontSize: 22, fontWeight: 700, color: "#0F0B1E", margin: "0 0 8px", letterSpacing: "-0.02em" }}>Get Your Free Report</h3>
+            <p style={{ fontSize: 14, color: "rgba(0,0,0,0.55)", lineHeight: 1.55, margin: "0 0 24px" }}>
+              Enter your email and we&apos;ll get in touch with you for next steps.
+            </p>
+            <form onSubmit={submit}>
+              <input
+                type="email"
+                required
+                placeholder="you@company.com"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                style={{
+                  width: "100%", boxSizing: "border-box" as const,
+                  padding: "12px 16px", borderRadius: 10, fontSize: 14, fontWeight: 500,
+                  border: "1.5px solid rgba(124,58,237,0.3)", outline: "none",
+                  marginBottom: 14, fontFamily: "inherit", color: "#000",
+                }}
+              />
+              {status === "error" && (
+                <p style={{ fontSize: 13, color: "#dc2626", margin: "0 0 12px" }}>Something went wrong — please try again.</p>
+              )}
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                style={{
+                  width: "100%", padding: "13px", borderRadius: 10, border: "none", cursor: "pointer",
+                  background: "linear-gradient(95deg, #7C3AED, #C2186A)", color: "#fff",
+                  fontSize: 15, fontWeight: 700, opacity: status === "loading" ? 0.7 : 1,
+                }}
+              >
+                {status === "loading" ? "Sending…" : "Request Report"}
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
+  const [reportModalOpen, setReportModalOpen] = useState(false);
   const videoPlayedRef = useRef(false);
 
   const handleVideoPlay = () => {
@@ -56,6 +132,7 @@ export default function Home() {
 
   return (
     <div className="page-bg relative text-black font-sans">
+      {reportModalOpen && <ReportModal onClose={() => setReportModalOpen(false)} />}
       <style>{`
         @media (max-width: 640px) {
           .hero-card-wrapper { margin: 8px 12px 16px !important; }
@@ -327,16 +404,48 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="contact" style={{ background: "transparent", paddingTop: "80px", paddingBottom: "80px" }}>
+      <section id="contact" style={{ background: "transparent", paddingTop: "8px", paddingBottom: "80px" }}>
         <div className="max-w-3xl mx-auto px-6 text-center">
-          <h2
-            className="text-3xl font-bold mb-3 leading-snug"
-            style={{ background: "linear-gradient(90deg, #5B5BD6, #E8633A)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}
-          >
-            Stay connected
-          </h2>
-          <p className="text-black/60 text-base mb-10">Follow along as we build.</p>
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
+
+          {/* ── Bottom CTA ── */}
+          <div style={{
+            background: "linear-gradient(145deg, #F3EEFE 0%, #FDE8F3 50%, #EEF0FE 100%)",
+            border: "1px solid rgba(124,58,237,0.15)",
+            borderRadius: 24,
+            padding: "52px 40px 48px",
+            marginBottom: 40,
+            boxShadow: "0 8px 40px rgba(124,58,237,0.10)",
+            textAlign: "center" as const,
+          }}>
+            <h2 style={{
+              fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 700, letterSpacing: "-0.02em",
+              lineHeight: 1.1, margin: "0 0 16px", color: "#0F0B1E",
+            }}>
+              Get Your Free Report
+            </h2>
+            <p style={{ fontSize: 16, color: "rgba(15,11,30,0.6)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 32px" }}>
+              See the top brands in your domain, get a deep dive into product feature scores, and receive an actionable roadmap to scale your features and LLM visibility.
+            </p>
+            <button
+              onClick={() => setReportModalOpen(true)}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                background: "linear-gradient(95deg, #7C3AED, #C2186A)",
+                color: "#fff", fontWeight: 700, fontSize: 15,
+                padding: "15px 32px", borderRadius: 9999, border: "none", cursor: "pointer",
+                boxShadow: "0 4px 20px rgba(124,58,237,0.35)",
+                transition: "box-shadow 0.2s ease, transform 0.15s ease",
+              }}
+              onMouseEnter={(e) => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 8px 32px rgba(124,58,237,0.50)"; el.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={(e) => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 4px 20px rgba(124,58,237,0.35)"; el.style.transform = "translateY(0)"; }}
+            >
+              Get Your Free Report <span aria-hidden style={{ fontSize: 17 }}>›</span>
+            </button>
+          </div>
+
+          {/* ── Social links (secondary) ── */}
+          <p style={{ fontSize: 12, color: "rgba(0,0,0,0.35)", marginBottom: 14, letterSpacing: "0.05em" }}>Follow along as we build</p>
+          <div className="flex flex-wrap justify-center gap-3">
             {[
               { href: "https://www.linkedin.com/company/108024233/", Icon: Share2, label: "LinkedIn" },
               { href: "mailto:srinidhi.murali@agenticlib.com", Icon: Mail, label: "Email" },
@@ -349,16 +458,17 @@ export default function Home() {
                 href={href}
                 target={href.startsWith("mailto") ? undefined : "_blank"}
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-medium text-white"
-                style={{ background: "#5B5BD6", transition: "background 0.18s ease, box-shadow 0.18s ease" }}
-                onMouseEnter={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "#E8633A"; el.style.boxShadow = "0 4px 16px rgba(232,99,58,0.35)"; }}
-                onMouseLeave={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "#5B5BD6"; el.style.boxShadow = "none"; }}
+                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
+                style={{ background: "rgba(0,0,0,0.05)", color: "rgba(0,0,0,0.55)", transition: "background 0.18s ease, color 0.18s ease" }}
+                onMouseEnter={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "rgba(0,0,0,0.10)"; el.style.color = "#000"; }}
+                onMouseLeave={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "rgba(0,0,0,0.05)"; el.style.color = "rgba(0,0,0,0.55)"; }}
               >
-                <Icon size={15} strokeWidth={1.75} />
+                <Icon size={14} strokeWidth={1.75} />
                 {label}
               </a>
             ))}
           </div>
+
         </div>
       </section>
 
