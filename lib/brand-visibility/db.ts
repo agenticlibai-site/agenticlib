@@ -1843,3 +1843,75 @@ export async function upsertSentimentDrift(row: {
       created_at   = NOW()
   `;
 }
+
+// ── Dexify pipeline ────────────────────────────────────────────────────────────
+
+let dexifyDbInitialised = false;
+
+export async function initDexifyDB(): Promise<void> {
+  if (dexifyDbInitialised) return;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS dexify_raw_responses (
+      id             SERIAL PRIMARY KEY,
+      date           DATE    NOT NULL,
+      prompt_id      INTEGER NOT NULL,
+      prompt_text    TEXT    NOT NULL,
+      cluster_tag    TEXT    NOT NULL,
+      model          TEXT    NOT NULL,
+      model_snapshot TEXT,
+      run_number     INTEGER NOT NULL,
+      brands         JSONB   NOT NULL DEFAULT '[]',
+      created_at     TIMESTAMP DEFAULT NOW(),
+      UNIQUE (date, prompt_id, model, run_number)
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS dexify_daily_summary (
+      id            SERIAL PRIMARY KEY,
+      date          DATE    NOT NULL,
+      brand         TEXT    NOT NULL,
+      model         TEXT    NOT NULL,
+      cluster_tag   TEXT    NOT NULL,
+      mention_count INTEGER NOT NULL DEFAULT 0,
+      avg_position  FLOAT,
+      created_at    TIMESTAMP DEFAULT NOW(),
+      UNIQUE (date, brand, model, cluster_tag)
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS dexify_denylist (
+      brand_name TEXT NOT NULL UNIQUE,
+      reason     TEXT,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  dexifyDbInitialised = true;
+}
+
+export async function insertDexifyRawResponse(row: {
+  date:          string;
+  promptId:      number;
+  promptText:    string;
+  clusterTag:    string;
+  model:         string;
+  modelSnapshot: string;
+  runNumber:     number;
+  brands:        string[];
+}): Promise<void> {
+  await sql`
+    INSERT INTO dexify_raw_responses
+      (date, prompt_id, prompt_text, cluster_tag, model, model_snapshot, run_number, brands)
+    VALUES (
+      ${row.date}::date, ${row.promptId}, ${row.promptText}, ${row.clusterTag},
+      ${row.model}, ${row.modelSnapshot}, ${row.runNumber}, ${JSON.stringify(row.brands)}::jsonb
+    )
+    ON CONFLICT (date, prompt_id, model, run_number) DO UPDATE SET
+      brands         = EXCLUDED.brands,
+      model_snapshot = EXCLUDED.model_snapshot,
+      created_at     = NOW()
+  `;
+}
