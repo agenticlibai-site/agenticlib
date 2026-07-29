@@ -1890,6 +1890,62 @@ export async function initDexifyDB(): Promise<void> {
   `;
 
   await sql`
+    CREATE TABLE IF NOT EXISTS dexify_sentiment_responses (
+      id          SERIAL PRIMARY KEY,
+      brand_name  TEXT    NOT NULL,
+      prompt_id   INTEGER NOT NULL,
+      bucket_tag  TEXT    NOT NULL,
+      model       TEXT    NOT NULL,
+      run_date    DATE    NOT NULL DEFAULT CURRENT_DATE,
+      sentiment   TEXT    CHECK (sentiment IN ('positive', 'neutral', 'negative')),
+      confidence  TEXT    CHECK (confidence IN ('high', 'medium', 'low')),
+      descriptors TEXT[],
+      limitations TEXT[],
+      raw_json    JSONB,
+      parse_error BOOLEAN DEFAULT FALSE,
+      created_at  TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  await sql`
+    CREATE UNIQUE INDEX IF NOT EXISTS dexify_sentiment_responses_unique
+    ON dexify_sentiment_responses (brand_name, prompt_id, model, run_date)
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS dexify_sentiment_scores (
+      id              SERIAL PRIMARY KEY,
+      brand_name      TEXT    NOT NULL,
+      bucket_tag      TEXT    NOT NULL,
+      positive_count  INTEGER NOT NULL DEFAULT 0,
+      neutral_count   INTEGER NOT NULL DEFAULT 0,
+      negative_count  INTEGER NOT NULL DEFAULT 0,
+      total_count     INTEGER NOT NULL DEFAULT 0,
+      top_descriptors TEXT[],
+      unique_flags    TEXT[],
+      week_start      DATE    NOT NULL,
+      scored_at       TIMESTAMP DEFAULT NOW(),
+      UNIQUE (brand_name, bucket_tag, week_start)
+    )
+  `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS dexify_sentiment_drift (
+      id           SERIAL PRIMARY KEY,
+      brand_name   TEXT    NOT NULL,
+      bucket_tag   TEXT    NOT NULL,
+      week_start   DATE    NOT NULL,
+      positive_pct FLOAT,
+      neutral_pct  FLOAT,
+      negative_pct FLOAT,
+      drift_flag   BOOLEAN DEFAULT FALSE,
+      drift_reason TEXT,
+      created_at   TIMESTAMP DEFAULT NOW(),
+      UNIQUE (brand_name, bucket_tag, week_start)
+    )
+  `;
+
+  await sql`
     CREATE TABLE IF NOT EXISTS dexify_feature_responses (
       id             SERIAL PRIMARY KEY,
       brand_name     TEXT    NOT NULL,
@@ -2163,6 +2219,146 @@ export async function getDexifyFeatureScores(): Promise<{
     score: number; score_band: string; flagged_for_review: boolean;
     evidence: string | null;
   }[];
+}
+
+// ── Dexify sentiment pipeline ─────────────────────────────────────────────────
+
+export async function insertDexifySentimentResponse(row: {
+  brand_name:  string;
+  prompt_id:   number;
+  bucket_tag:  string;
+  model:       string;
+  run_date:    string;
+  sentiment:   string | null;
+  confidence:  string | null;
+  descriptors: string[] | null;
+  limitations: string[] | null;
+  raw_json:    object | null;
+  parse_error: boolean;
+}): Promise<void> {
+  const descriptorsJson = JSON.stringify(row.descriptors ?? []);
+  const limitationsJson = JSON.stringify(row.limitations ?? []);
+  await sql`
+    INSERT INTO dexify_sentiment_responses
+      (brand_name, prompt_id, bucket_tag, model, run_date,
+       sentiment, confidence, descriptors, limitations, raw_json, parse_error)
+    VALUES
+      (${row.brand_name}, ${row.prompt_id}, ${row.bucket_tag}, ${row.model},
+       ${row.run_date}::date, ${row.sentiment}, ${row.confidence},
+       ARRAY(SELECT jsonb_array_elements_text(${descriptorsJson}::jsonb)),
+       ARRAY(SELECT jsonb_array_elements_text(${limitationsJson}::jsonb)),
+       ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb,
+       ${row.parse_error})
+    ON CONFLICT (brand_name, prompt_id, model, run_date) DO UPDATE SET
+      bucket_tag  = EXCLUDED.bucket_tag,
+      sentiment   = EXCLUDED.sentiment,
+      confidence  = EXCLUDED.confidence,
+      descriptors = EXCLUDED.descriptors,
+      limitations = EXCLUDED.limitations,
+      raw_json    = EXCLUDED.raw_json,
+      parse_error = EXCLUDED.parse_error
+  `;
+}
+
+export async function getDexifySentimentResponsesForWeek(weekStart: string, weekEnd: string): Promise<{
+  brand_name:  string;
+  bucket_tag:  string;
+  sentiment:   string | null;
+  confidence:  string | null;
+  descriptors: string[] | null;
+  parse_error: boolean;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, bucket_tag, sentiment, confidence, descriptors, parse_error
+    FROM dexify_sentiment_responses
+    WHERE run_date >= ${weekStart}::date AND run_date < ${weekEnd}::date
+    ORDER BY brand_name, bucket_tag, run_date
+  `;
+  return result.rows as {
+    brand_name: string; bucket_tag: string; sentiment: string | null;
+    confidence: string | null; descriptors: string[] | null; parse_error: boolean;
+  }[];
+}
+
+export async function getPrevDexifySentimentScores(prevWeekStart: string): Promise<{
+  brand_name:     string;
+  bucket_tag:     string;
+  positive_count: number;
+  neutral_count:  number;
+  negative_count: number;
+  total_count:    number;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, bucket_tag, positive_count, neutral_count, negative_count, total_count
+    FROM dexify_sentiment_scores
+    WHERE week_start = ${prevWeekStart}::date
+  `;
+  return result.rows as {
+    brand_name: string; bucket_tag: string;
+    positive_count: number; neutral_count: number; negative_count: number; total_count: number;
+  }[];
+}
+
+export async function upsertDexifySentimentScore(row: {
+  brand_name:      string;
+  bucket_tag:      string;
+  positive_count:  number;
+  neutral_count:   number;
+  negative_count:  number;
+  total_count:     number;
+  top_descriptors: string[];
+  unique_flags:    string[];
+  week_start:      string;
+}): Promise<void> {
+  const topDescJson    = JSON.stringify(row.top_descriptors);
+  const uniqueFlagJson = JSON.stringify(row.unique_flags);
+  await sql`
+    INSERT INTO dexify_sentiment_scores
+      (brand_name, bucket_tag, positive_count, neutral_count, negative_count,
+       total_count, top_descriptors, unique_flags, week_start)
+    VALUES
+      (${row.brand_name}, ${row.bucket_tag}, ${row.positive_count},
+       ${row.neutral_count}, ${row.negative_count}, ${row.total_count},
+       ARRAY(SELECT jsonb_array_elements_text(${topDescJson}::jsonb)),
+       ARRAY(SELECT jsonb_array_elements_text(${uniqueFlagJson}::jsonb)),
+       ${row.week_start}::date)
+    ON CONFLICT (brand_name, bucket_tag, week_start) DO UPDATE SET
+      positive_count  = EXCLUDED.positive_count,
+      neutral_count   = EXCLUDED.neutral_count,
+      negative_count  = EXCLUDED.negative_count,
+      total_count     = EXCLUDED.total_count,
+      top_descriptors = EXCLUDED.top_descriptors,
+      unique_flags    = EXCLUDED.unique_flags,
+      scored_at       = NOW()
+  `;
+}
+
+export async function upsertDexifySentimentDrift(row: {
+  brand_name:   string;
+  bucket_tag:   string;
+  week_start:   string;
+  positive_pct: number;
+  neutral_pct:  number;
+  negative_pct: number;
+  drift_flag:   boolean;
+  drift_reason: string | null;
+}): Promise<void> {
+  await sql`
+    INSERT INTO dexify_sentiment_drift
+      (brand_name, bucket_tag, week_start, positive_pct, neutral_pct,
+       negative_pct, drift_flag, drift_reason)
+    VALUES
+      (${row.brand_name}, ${row.bucket_tag}, ${row.week_start}::date,
+       ${row.positive_pct}, ${row.neutral_pct}, ${row.negative_pct},
+       ${row.drift_flag}, ${row.drift_reason})
+    ON CONFLICT (brand_name, bucket_tag, week_start) DO UPDATE SET
+      positive_pct = EXCLUDED.positive_pct,
+      neutral_pct  = EXCLUDED.neutral_pct,
+      negative_pct = EXCLUDED.negative_pct,
+      drift_flag   = EXCLUDED.drift_flag,
+      drift_reason = EXCLUDED.drift_reason,
+      created_at   = NOW()
+  `;
 }
 
 export async function upsertDexifyFeatureScore(row: {
