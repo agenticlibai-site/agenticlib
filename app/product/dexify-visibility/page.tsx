@@ -4,6 +4,7 @@ import {
   getDexifyByModel,
   getDexifyTrend,
   getDexifyFeatureScores,
+  getDexifySentimentData,
 } from "@/lib/brand-visibility/db";
 import DexifyVisibilityCharts from "./DexifyVisibilityCharts";
 
@@ -16,12 +17,13 @@ export const metadata = {
 };
 
 export default async function DexifyVisibilityPage() {
-  const [topBrands, byCluster, byModel, trend, featureScores] = await Promise.all([
+  const [topBrands, byCluster, byModel, trend, featureScores, sentimentData] = await Promise.all([
     getDexifyTopBrands(25),
     getDexifyByCluster(),
     getDexifyByModel(),
     getDexifyTrend(7),
     getDexifyFeatureScores(),
+    getDexifySentimentData(),
   ]);
 
   return (
@@ -55,6 +57,7 @@ export default async function DexifyVisibilityPage() {
           byModel={byModel}
           trend={trend}
           featureScores={featureScores}
+          sentimentData={sentimentData}
         />
 
         {/* Glossary */}
