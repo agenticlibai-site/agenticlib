@@ -36,15 +36,6 @@ export const DEXIFY_FEATURES: DexifyFeature[] = [
 
   // ── General Discovery · dexify-general ───────────────────────────────────────
   {
-    feature_id:   "trade_admin_agent",
-    feature_tag:  "dexify-general",
-    feature_name: "Purpose-built AI agent for trade business admin",
-    prompt: `I run a small trade business and I'm looking for an AI agent that handles my business admin automatically — not a generic chatbot or app, but a system that takes actions on my behalf (quoting, invoicing, scheduling, compliance) without me managing each step manually. Does [BRAND] provide agentic automation specifically built for trade businesses or tradespeople, where the AI acts as an operator rather than just a tool?
-[GROUNDING INSTRUCTION]
-Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
-[JSON OUTPUT]`,
-  },
-  {
     feature_id:   "tradie_selfserve_onboarding",
     feature_tag:  "dexify-general",
     feature_name: "Self-serve setup with no IT or technical help needed",
