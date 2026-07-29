@@ -229,15 +229,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
             padding: "20px 28px", marginBottom: 16,
           }}>
             <div style={{ marginBottom: 4 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 2 }}>
-                <span style={{
-                  fontSize: 11, fontWeight: 700, letterSpacing: "0.05em",
-                  color: ACCENT, background: "rgba(234,88,12,0.08)",
-                  border: "1px solid rgba(234,88,12,0.2)",
-                  borderRadius: 4, padding: "2px 7px", textTransform: "uppercase" as const,
-                }}>
-                  {cluster.tag}
-                </span>
+              <div style={{ marginBottom: 2 }}>
                 <h3 style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>
                   {cluster.label}
                 </h3>
