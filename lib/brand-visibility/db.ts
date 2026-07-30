@@ -1579,6 +1579,77 @@ export async function getSalesFeatureScores(): Promise<{
   }[];
 }
 
+export interface SeamlessFeatureReportRow {
+  feature_id:        string;
+  seamless_score:    number | null;
+  seamless_band:     string;
+  seamless_evidence: string | null;
+  top_peer_brand:    string | null;
+  top_peer_score:    number | null;
+  top_peer_band:     string | null;
+  top_peer_evidence: string | null;
+}
+
+export async function getSeamlessFeatureReport(): Promise<SeamlessFeatureReportRow[]> {
+  await initSalesVisibilityDB();
+  const FEATURES = ['ai_personalisation', 'outreach_sequencing', 'cost_pricing_transparency', 'rai_data_privacy'];
+  const result = await sql`
+    WITH seamless_data AS (
+      SELECT
+        s.feature_id,
+        s.score,
+        s.score_band,
+        (SELECT LEFT(fr.evidence, 700)
+         FROM sales_feature_responses fr
+         WHERE fr.brand_name = 'Seamless.ai'
+           AND fr.feature_id = s.feature_id
+           AND fr.parse_error = false
+           AND fr.evidence IS NOT NULL AND fr.evidence != ''
+         ORDER BY fr.run_date DESC, fr.model
+         LIMIT 1) AS evidence
+      FROM sales_feature_scores s
+      WHERE s.brand_name = 'Seamless.ai'
+        AND s.feature_id = ANY(${FEATURES})
+    ),
+    peer_data AS (
+      SELECT DISTINCT ON (s.feature_id)
+        s.feature_id,
+        s.brand_name,
+        s.score,
+        s.score_band,
+        (SELECT LEFT(fr.evidence, 700)
+         FROM sales_feature_responses fr
+         WHERE fr.brand_name = s.brand_name
+           AND fr.feature_id = s.feature_id
+           AND fr.parse_error = false
+           AND fr.evidence IS NOT NULL AND fr.evidence != ''
+         ORDER BY
+           CASE fr.has_capability WHEN 'yes' THEN 0 WHEN 'partial' THEN 1 ELSE 2 END,
+           fr.grounded DESC,
+           fr.run_date DESC
+         LIMIT 1) AS evidence
+      FROM sales_feature_scores s
+      WHERE s.brand_name != 'Seamless.ai'
+        AND s.feature_id = ANY(${FEATURES})
+        AND s.score IS NOT NULL
+      ORDER BY s.feature_id, s.score DESC NULLS LAST
+    )
+    SELECT
+      sd.feature_id,
+      sd.score        AS seamless_score,
+      sd.score_band   AS seamless_band,
+      sd.evidence     AS seamless_evidence,
+      pd.brand_name   AS top_peer_brand,
+      pd.score        AS top_peer_score,
+      pd.score_band   AS top_peer_band,
+      pd.evidence     AS top_peer_evidence
+    FROM seamless_data sd
+    LEFT JOIN peer_data pd ON pd.feature_id = sd.feature_id
+    ORDER BY sd.feature_id
+  `;
+  return result.rows as SeamlessFeatureReportRow[];
+}
+
 export async function upsertSalesFeatureScore(row: {
   brand_name:         string;
   feature_id:         string;
@@ -2116,17 +2187,11 @@ export async function getDexifyTrend(days = 7): Promise<DexifyTrendRow[]> {
 
 // ── Dexify feature pipeline ───────────────────────────────────────────────────
 
-export async function getDexifyTopBrandsForFeatureScoring(limit = 20): Promise<string[]> {
-  await initDexifyDB();
-  const result = await sql`
-    SELECT brand
-    FROM dexify_daily_summary
-    WHERE LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
-    GROUP BY brand
-    ORDER BY SUM(mention_count) DESC
-    LIMIT ${limit}
-  `;
-  return (result.rows as { brand: string }[]).map((r) => r.brand);
+export async function getDexifyTopBrandsForFeatureScoring(): Promise<string[]> {
+  // Returns the locked brand list directly — no dynamic query.
+  // Add brands to LOCKED_DEXIFY_BRANDS in dexify-features.ts after independent verification.
+  const { LOCKED_DEXIFY_BRANDS } = await import("@/lib/brand-visibility/dexify-features");
+  return [...LOCKED_DEXIFY_BRANDS];
 }
 
 export async function insertDexifyFeatureResponse(row: {
