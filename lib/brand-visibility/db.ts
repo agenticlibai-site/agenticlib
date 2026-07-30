@@ -5,7 +5,9 @@ let dbInitialised = false;
 
 export async function initBrandVisibilityDB(): Promise<void> {
   if (dbInitialised) return;
+  dbInitialised = true;
 
+  try {
   // ── Core collection tables ─────────────────────────────────────────────────
 
   // Raw per-call responses — one row per (date, prompt, model, run)
@@ -345,7 +347,10 @@ export async function initBrandVisibilityDB(): Promise<void> {
     ON feature_responses (brand_name, feature_id, model, run_number, run_date)
   `;
 
-  dbInitialised = true;
+  } catch (err) {
+    dbInitialised = false;
+    throw err;
+  }
 }
 
 // ── Raw response writes ────────────────────────────────────────────────────────

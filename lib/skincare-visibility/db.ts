@@ -78,15 +78,20 @@ export async function initSkincareDB(): Promise<void> {
     )
   `;
 
-  // Empty denylist — skincare noise differs from marketing noise
-  // (e.g. dermatology clinics, e-commerce sites, beauty blogs).
-  // Add entries after day-1 review: INSERT INTO skincare_denylist (brand_name) VALUES ('...')
   await sql`
     CREATE TABLE IF NOT EXISTS skincare_denylist (
       id         SERIAL PRIMARY KEY,
       brand_name TEXT NOT NULL UNIQUE,
       created_at TIMESTAMP DEFAULT NOW()
     )
+  `;
+
+  // Brands that are NOT AI agents / AI agent platforms — excluded from all results.
+  // Yuka and SkinSort are intentionally allowed: they qualify as ingredient-analysis AI tools.
+  await sql`
+    INSERT INTO skincare_denylist (brand_name)
+    VALUES ('Curology'), ('Skincare.ai')
+    ON CONFLICT (brand_name) DO NOTHING
   `;
 
   // LLM visibility — % of responses in a window that mention ≥1 tracked brand.

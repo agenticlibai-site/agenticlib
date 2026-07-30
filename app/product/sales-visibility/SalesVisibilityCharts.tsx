@@ -508,16 +508,22 @@ function PieSliceLabel({ cx, cy, midAngle, innerRadius, outerRadius, percent }: 
 function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows: SOVRow[] }) {
   const locked = rows.filter(r => LOCKED_SALES_BRANDS.has(r.brand) && BRAND_USE_CASE[r.brand] === cluster.tag);
   const totalAppearances = locked.reduce((s, r) => s + r.total_appearances, 0);
-  const top = locked
-    .map(r => ({
-      ...r,
-      sov_pct: totalAppearances > 0 ? Math.round((r.total_appearances / totalAppearances) * 1000) / 10 : 0,
-    }))
-    .slice(0, 8);
+  const mapped = locked.map(r => ({
+    ...r,
+    sov_pct: totalAppearances > 0 ? Math.round((r.total_appearances / totalAppearances) * 1000) / 10 : 0,
+  }));
+  const top8 = mapped.slice(0, 8);
+  const restAppearances = mapped.slice(8).reduce((s, r) => s + r.total_appearances, 0);
+  const othersEntry = restAppearances > 0 ? {
+    brand: "Others", bucket_tag: cluster.tag, total_appearances: restAppearances,
+    sov_pct: Math.round((restAppearances / totalAppearances) * 1000) / 10,
+  } : null;
+  const slices = othersEntry ? [...top8, othersEntry] : top8;
 
-  if (top.length === 0) return null;
+  if (slices.length === 0) return null;
 
-  const colorMap = Object.fromEntries(top.map((r) => [r.brand, getBrandColor(r.brand)]));
+  const colorMap: Record<string, string> = Object.fromEntries(top8.map((r) => [r.brand, getBrandColor(r.brand)]));
+  if (othersEntry) colorMap["Others"] = "#94A3B8";
 
   return (
     <div style={{
@@ -534,7 +540,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
         <div style={{ flexShrink: 0 }}>
           <PieChart width={150} height={150} style={{ overflow: "visible" }}>
             <Pie
-              data={top}
+              data={slices}
               dataKey="total_appearances"
               cx={70} cy={70}
               innerRadius={38} outerRadius={65}
@@ -542,7 +548,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
               labelLine={false}
               label={(props) => <PieSliceLabel {...props} />}
             >
-              {top.map((r) => <Cell key={r.brand} fill={colorMap[r.brand]} />)}
+              {slices.map((r) => <Cell key={r.brand} fill={colorMap[r.brand]} />)}
             </Pie>
             <Tooltip
               contentStyle={{ borderRadius: 8, fontSize: 15, border: "1px solid rgba(0,0,0,0.1)" }}
@@ -551,7 +557,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
           </PieChart>
         </div>
         <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 5 }}>
-          {top.slice(0, 7).map((r) => (
+          {slices.map((r) => (
             <div key={r.brand} style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <div style={{ width: 8, height: 8, borderRadius: 2, flexShrink: 0, background: colorMap[r.brand] }} />
               <span style={{ fontSize: 15, color: NAVY, flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{displayBrand(r.brand)}</span>
