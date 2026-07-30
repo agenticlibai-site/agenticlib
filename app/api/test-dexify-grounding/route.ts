@@ -64,9 +64,9 @@ async function runGrounded(brand: string, feature: DexifyFeature) {
 }
 
 export async function GET(request: Request) {
-  // Protected by CRON_SECRET — same auth as cron routes.
+  // Protected by DEXIFY_TEST_TOKEN — temp env var added for this diagnostic, deleted after.
   const secret = request.headers.get("authorization")?.replace("Bearer ", "");
-  if (!process.env.CRON_SECRET || secret !== process.env.CRON_SECRET) {
+  if (!process.env.DEXIFY_TEST_TOKEN || secret !== process.env.DEXIFY_TEST_TOKEN) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
