@@ -4,6 +4,7 @@ import {
   DEXIFY_SENTIMENT_CLUSTERS,
   DEXIFY_SENTIMENT_SYSTEM_PROMPT,
   buildDexifySentimentPrompt,
+  type DexifySentimentCluster,
 } from "@/lib/brand-visibility/dexify-sentiment";
 import {
   initDexifyDB,
@@ -59,6 +60,32 @@ async function callClaude(promptText: string): Promise<string> {
   });
   const block = res.content.find((b) => b.type === "text");
   return block?.type === "text" ? block.text : "";
+}
+
+// Grounded variant: web search runs before the sentiment question.
+// Used as a fallback when the standard Claude call signals low confidence,
+// which for zero-knowledge brands (no LLM training data) happens reliably.
+// The grounded result overwrites the standard row via ON CONFLICT DO UPDATE.
+async function callClaudeGroundedSentiment(brandName: string, bucketTag: string): Promise<string> {
+  const basePrompt = buildDexifySentimentPrompt(brandName, bucketTag);
+  const searchMsg =
+    `Search for user reviews, testimonials, and market perception of ${brandName} ` +
+    `to understand how tradespeople evaluate it. Look for both praise and criticism. ` +
+    `Then answer only about ${brandName}:\n\n${basePrompt}`;
+  const res = await anthropic.messages.create({
+    model:      "claude-haiku-4-5-20251001",
+    max_tokens: 512,
+    tools:      [{ type: "web_search_20250305" as const, name: "web_search" as const }],
+    messages:   [{ role: "user", content: searchMsg }],
+  });
+  const textBlocks = res.content.filter((b): b is Anthropic.TextBlock => b.type === "text");
+  return textBlocks[textBlocks.length - 1]?.text ?? "";
+}
+
+function needsSentimentGrounding(confidence: string | null, parseError: boolean): boolean {
+  if (parseError) return true;
+  if (confidence === "low") return true;
+  return false;
 }
 
 async function callGPT(promptText: string): Promise<string> {
@@ -149,6 +176,11 @@ export async function GET(request: Request) {
       });
     }
 
+    // Track standard results per (brand, bucketTag) so the grounding pass
+    // knows which pairs need web-search fallback.
+    type StandardResult = { confidence: string | null; parseError: boolean; cluster: DexifySentimentCluster };
+    const standardResults = new Map<string, StandardResult>();
+
     const tasks: (() => Promise<{ success: boolean }>)[] = [];
 
     for (const brandName of brands) {
@@ -181,9 +213,17 @@ export async function GET(request: Request) {
               parse_error: parseError,
             });
 
+            // Record for Claude grounding-pass decision
+            if (model === "claude-haiku-4-5") {
+              standardResults.set(`${b}::${c.bucket_tag}`, { confidence, parseError, cluster: c });
+            }
+
             return { success: true };
           } catch (err) {
             console.error(`[dexify-sentiment-collection] error: ${callLabel} (${model}):`, err);
+            if (model === "claude-haiku-4-5") {
+              standardResults.set(`${b}::${c.bucket_tag}`, { confidence: null, parseError: true, cluster: c });
+            }
             return { success: false };
           }
         });
@@ -194,6 +234,59 @@ export async function GET(request: Request) {
     const results   = await runWithConcurrency(tasks, BATCH_CONCURRENCY, BATCH_DELAY_MS);
     const succeeded = results.filter((r) => r.success).length;
     const failed    = expected - succeeded;
+
+    // ── Grounding pass (Claude only) ─────────────────────────────────────────
+    // For any (brand, cluster) pair where the standard Claude call came back
+    // low-confidence or parse-errored, re-run with web search.
+    // The grounded result overwrites the standard row via ON CONFLICT DO UPDATE.
+    // GPT has no grounding capability — see docs/dexify-grounding-gap.md for status.
+    let groundingRan = 0, groundingFailed = 0;
+
+    if (model === "claude-haiku-4-5") {
+      const groundingTasks: (() => Promise<void>)[] = [];
+
+      for (const [pairKey, result] of standardResults) {
+        if (!needsSentimentGrounding(result.confidence, result.parseError)) continue;
+        const [brandName, bucketTag] = pairKey.split("::");
+        const cluster = result.cluster;
+
+        groundingTasks.push(async () => {
+          try {
+            const rawText = await withRetry(
+              () => callClaudeGroundedSentiment(brandName, bucketTag),
+              `${brandName}/${bucketTag}/grounded`,
+            );
+            const { sentiment, confidence, descriptors, limitations, parsed, parseError } =
+              parseSentimentResponse(rawText);
+
+            await insertDexifySentimentResponse({
+              brand_name:  brandName,
+              prompt_id:   cluster.prompt_id,
+              bucket_tag:  bucketTag,
+              model:       "claude-haiku-4-5",
+              run_date:    today,
+              sentiment,
+              confidence,
+              descriptors,
+              limitations,
+              raw_json:    parseError
+                ? { raw: rawText.slice(0, 2000), grounded: true }
+                : { ...(parsed as object), grounded: true },
+              parse_error: parseError,
+            });
+            groundingRan++;
+          } catch (err) {
+            console.error(`[dexify-sentiment-collection] grounding error: ${brandName}/${bucketTag}:`, err);
+            groundingFailed++;
+          }
+        });
+      }
+
+      if (groundingTasks.length > 0) {
+        console.log(`[dexify-sentiment-collection] grounding pass: ${groundingTasks.length} pairs`);
+        await runWithConcurrency(groundingTasks, BATCH_CONCURRENCY, BATCH_DELAY_MS);
+      }
+    }
 
     if (failed > 0) {
       await sendEmail({
@@ -206,14 +299,16 @@ export async function GET(request: Request) {
     }
 
     return Response.json({
-      mode:     "dexify_sentiment_collection",
+      mode:            "dexify_sentiment_collection",
       model,
-      date:     today,
-      brands:   brands.length,
-      clusters: DEXIFY_SENTIMENT_CLUSTERS.length,
+      date:            today,
+      brands:          brands.length,
+      clusters:        DEXIFY_SENTIMENT_CLUSTERS.length,
       expected,
       succeeded,
       failed,
+      grounding_ran:   groundingRan,
+      grounding_failed: groundingFailed,
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
