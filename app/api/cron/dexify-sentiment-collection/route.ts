@@ -139,7 +139,7 @@ export async function GET(request: Request) {
 
   try {
     await initDexifyDB();
-    const brands = await getDexifyTopBrandsForFeatureScoring(20);
+    const brands = await getDexifyTopBrandsForFeatureScoring();
 
     if (brands.length === 0) {
       return Response.json({

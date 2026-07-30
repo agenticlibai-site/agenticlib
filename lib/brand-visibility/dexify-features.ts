@@ -23,6 +23,22 @@ export const DEXIFY_JSON_OUTPUT_SPEC =
   '  "confidence": "high|medium|low"\n' +
   '}';
 
+// ── Locked brand list ──────────────────────────────────────────────────────────
+// Only independently web-verified AI agents / platforms with named autonomous
+// AI features for tradespeople. Do not add without verification.
+export const LOCKED_DEXIFY_BRANDS: readonly string[] = [
+  "Sophiie AI",      // Autonomous phone agent — books jobs, sends follow-ups, quotes (AU)
+  "simPRO",          // Lightning platform: Cooper AI, FieldReady, JobReady, JobScribe, JobBrief agents (AU)
+  "VoxTrade",        // Voice-to-quote AI (voxtrade.app — distinct from voxtradeapp.com stock app)
+  "AirQuote",        // AI converts voice/plain-language job descriptions to priced quotes
+  "ServiceM8",       // AI scheduling, automated job follow-up, and smart dispatch (AU)
+  "ServiceTitan",    // Titan Intelligence + Atlas AI sidekick — scheduling, dispatch, booking, pricing
+  "Voxworks",        // AU AI voice agent for tradies — inbound triage, warm transfer, outbound follow-up (AU)
+  "Waboom AI",       // AU AI voice agent for construction — subcontractor coordination, quote capture, emergency triage (AU)
+  "Square AI",       // AU AI agent for plumbers — call answering, job cards into ServiceM8/Tradify (AU, Penrith NSW)
+  "Insta Quote AI",  // AU/NZ voice-to-quote and conversational quoting
+];
+
 // ── Feature definitions ────────────────────────────────────────────────────────
 
 export interface DexifyFeature {

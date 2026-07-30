@@ -1,8 +1,8 @@
 export const DEXIFY_COLLECTION_SYSTEM_PROMPT =
   'You are a market research assistant. Return ONLY valid JSON in this exact format: {"brands": ["Brand A", "Brand B", ...]}' +
-  "\n\nList every AI agent, AI platform, or software brand name that would naturally appear in your response, " +
-  "in the order they would appear. Include all distinct brand names — do not filter or pre-select. " +
-  "No other text, no markdown formatting, no explanation — just the JSON object.";
+  "\n\nList every brand name that would naturally appear in your response, in the order they would appear. Include all distinct brand names — do not filter or pre-select." +
+  "\n\nIMPORTANT: Only include brands that have a specific, named autonomous AI agent or AI-powered feature for tradespeople or trade businesses. Do NOT include traditional accounting software (e.g. Xero, QuickBooks, FreshBooks, Wave), generic CRMs (e.g. Salesforce, HubSpot, Zoho), general project management tools (e.g. Asana, Monday.com, Trello), collaboration tools (e.g. Slack), document platforms (e.g. DocuSign), or generic automation platforms (e.g. Zapier) unless they have a specific, publicly documented AI agent feature that autonomously handles tradie workflows without manual intervention." +
+  "\n\nNo other text, no markdown formatting, no explanation — just the JSON object.";
 
 export interface DexifyPrompt {
   id:   number;
