@@ -39,8 +39,8 @@ const VERIFIED_FACTS: Record<string, Partial<Record<string, string>>> = {
 // ── Brand cluster lists ────────────────────────────────────────────────────────
 
 const CALL_BRANDS       = ["Chorus", "Gong", "Revenue.io", "Avoma"];
-const CRM_BRANDS        = ["Backstory.ai", "Tact.ai"];
-const PIPELINE_BRANDS   = ["Clari", "6sense"];
+const CRM_BRANDS        = ["Tact.ai"];
+const PIPELINE_BRANDS   = ["Backstory.ai", "Clari", "6sense"];
 const OUTREACH_BRANDS   = ["Outreach", "Salesloft", "Conversica", "Apollo", "Lemlist", "Clay", "Reply.io", "Seamless.ai"];
 const ENABLEMENT_BRANDS = ["Drift", "Mindtickle", "Highspot"];
 
