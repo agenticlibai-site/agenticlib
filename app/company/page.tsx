@@ -33,18 +33,11 @@ export default function CompanyPage() {
         }}>
           About
         </p>
-        <div style={{
-          borderLeft: "4px solid",
-          borderImage: "linear-gradient(to bottom, #A855F7, #EC4899) 1",
-          paddingLeft: 28,
-          marginBottom: 60,
-        }}>
-          <p style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.45, margin: 0 }}>
-            AgenticLib helps AI Agent builders gain an edge on their product feature growth,
-            competitive landscape, and LLM visibility by giving them the intelligence to see
-            exactly where they stand and what to fix next.
-          </p>
-        </div>
+        <p style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.45, marginBottom: 60 }}>
+          AgenticLib helps AI Agent builders gain an edge on their product feature growth,
+          competitive landscape, and LLM visibility by giving them the intelligence to see
+          exactly where they stand and what to fix next.
+        </p>
 
         {/* Vision label */}
         <p style={{
