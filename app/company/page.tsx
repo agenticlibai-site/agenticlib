@@ -9,6 +9,7 @@ const SERIF   = "var(--font-schibsted), var(--font-geist-sans), sans-serif";
 const BG      = "#F5F0FA";
 const INK     = "#111111";
 const MUTED   = "#111111";
+const MAGENTA = "#DB2777";
 
 export default function CompanyPage() {
   return (
@@ -28,7 +29,7 @@ export default function CompanyPage() {
           fontWeight: 700,
           letterSpacing: "0.12em",
           textTransform: "uppercase",
-          color: MUTED,
+          color: MAGENTA,
           marginBottom: 20,
         }}>
           About
@@ -46,7 +47,7 @@ export default function CompanyPage() {
           fontWeight: 700,
           letterSpacing: "0.12em",
           textTransform: "uppercase",
-          color: MUTED,
+          color: MAGENTA,
           marginBottom: 32,
         }}>
           Vision
