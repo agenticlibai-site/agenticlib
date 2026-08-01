@@ -54,7 +54,7 @@ export default function CompanyPage() {
         </p>
 
         {/* Vision body */}
-        <div style={{ fontSize: 19, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 22 }}>
+        <div style={{ fontSize: 16, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 22 }}>
           <p>
             AgenticLib exists because being good at what you build should not require guessing
             whether the systems now deciding who gets recommended can even find you.
@@ -83,7 +83,7 @@ export default function CompanyPage() {
           </p>
         </div>
 
-        <div style={{ fontSize: 19, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 22 }}>
+        <div style={{ fontSize: 16, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 22 }}>
           <p>
             Visibility is measured by how often a brand comes up when buyers ask the specific
             questions that matter for that use case. Feature scoring is measured the same way,
@@ -125,13 +125,13 @@ export default function CompanyPage() {
           </p>
         </div>
 
-        <div style={{ fontSize: 19, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 14 }}>
+        <div style={{ fontSize: 16, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 14 }}>
           <p>Builders deserve to know exactly where they stand, by use case, by feature, by competitor. Not a vague visibility score.</p>
           <p>Buyers deserve recommendations built on what&apos;s true and current, not on what happened to get indexed first.</p>
           <p>The AI agent market deserves infrastructure that rewards real capability over accidental visibility.</p>
         </div>
 
-        <div style={{ fontSize: 19, lineHeight: 1.8, marginTop: 22, display: "flex", flexDirection: "column", gap: 22 }}>
+        <div style={{ fontSize: 16, lineHeight: 1.8, marginTop: 22, display: "flex", flexDirection: "column", gap: 22 }}>
           <p>
             In the long run, this is about more than any one report. As more purchasing
             decisions route through AI-mediated search, the builders who understand both their
