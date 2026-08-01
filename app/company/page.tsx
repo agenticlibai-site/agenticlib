@@ -143,10 +143,17 @@ export default function CompanyPage() {
           </p>
         </div>
 
-        <div style={{ height: 1, background: "rgba(0,0,0,0.12)", margin: "60px 0 52px" }} />
-
         {/* Founder */}
-        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+        <div style={{
+          marginTop: 60,
+          borderRadius: 24,
+          background: "linear-gradient(135deg, rgba(168,85,247,0.12) 0%, rgba(236,72,153,0.10) 50%, rgba(99,102,241,0.10) 100%)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          border: "1px solid rgba(168,85,247,0.18)",
+          padding: "28px 32px",
+          display: "flex", alignItems: "center", gap: 20,
+        }}>
           <div style={{
             width: 52, height: 52, borderRadius: "50%", flexShrink: 0,
             background: "linear-gradient(135deg, #6c4cf1, #e040a0)",
