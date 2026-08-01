@@ -23,7 +23,8 @@ export default function CompanyPage() {
 
         {/* About — left-border callout */}
         <div style={{
-          borderLeft: "4px solid " + INK,
+          borderLeft: "4px solid",
+          borderImage: "linear-gradient(to bottom, #A855F7, #EC4899) 1",
           paddingLeft: 28,
           marginBottom: 52,
         }}>
@@ -68,7 +69,8 @@ export default function CompanyPage() {
 
         {/* Callout block */}
         <div style={{
-          borderLeft: "4px solid " + INK,
+          borderLeft: "4px solid",
+          borderImage: "linear-gradient(to bottom, #A855F7, #EC4899) 1",
           paddingLeft: 28,
           margin: "44px 0",
         }}>
@@ -109,7 +111,8 @@ export default function CompanyPage() {
 
         {/* Mission callout */}
         <div style={{
-          borderLeft: "4px solid " + INK,
+          borderLeft: "4px solid",
+          borderImage: "linear-gradient(to bottom, #A855F7, #EC4899) 1",
           paddingLeft: 28,
           margin: "44px 0",
         }}>
