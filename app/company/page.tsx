@@ -28,9 +28,9 @@ export default function CompanyPage() {
           marginBottom: 52,
         }}>
           <p style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.45, margin: 0 }}>
-            We help AI agent builders gain an edge on their product feature growth, competitive
-            landscape, and LLM visibility by giving them the intelligence to see exactly where
-            they stand and what to fix next.
+            AgenticLib helps AI Agent builders gain an edge on their product feature growth,
+            competitive landscape, and LLM visibility by giving them the intelligence to see
+            exactly where they stand and what to fix next.
           </p>
         </div>
 
@@ -74,7 +74,7 @@ export default function CompanyPage() {
         }}>
           <p style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.45, margin: 0 }}>
             That&apos;s the thing we do differently: we separate LLM visibility from product
-            feature scoring, and organize both around the same unit, the use case cluster.
+            feature scoring, and organise both around the same unit, the use case cluster.
           </p>
         </div>
 
