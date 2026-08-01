@@ -27,42 +27,6 @@
     {
       "path": "/api/cron/sentiment-aggregate",
       "schedule": "0 1 * * 0"
-    },
-    {
-      "path": "/api/cron/dexify-collection?model=claude-haiku-4-5",
-      "schedule": "0 6 * * *"
-    },
-    {
-      "path": "/api/cron/dexify-collection?model=gpt-4o-mini",
-      "schedule": "10 6 * * *"
-    },
-    {
-      "path": "/api/cron/dexify-aggregate",
-      "schedule": "45 6 * * *"
-    },
-    {
-      "path": "/api/cron/dexify-feature-collection?model=claude-haiku-4-5",
-      "schedule": "0 7 * * *"
-    },
-    {
-      "path": "/api/cron/dexify-feature-collection?model=gpt-4o-mini",
-      "schedule": "15 7 * * *"
-    },
-    {
-      "path": "/api/cron/dexify-feature-aggregate",
-      "schedule": "45 7 * * *"
-    },
-    {
-      "path": "/api/cron/dexify-sentiment-collection?model=claude-haiku-4-5",
-      "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/cron/dexify-sentiment-collection?model=gpt-4o-mini",
-      "schedule": "30 9 * * *"
-    },
-    {
-      "path": "/api/cron/dexify-sentiment-aggregate",
-      "schedule": "0 2 * * 0"
     }
   ]
 }
