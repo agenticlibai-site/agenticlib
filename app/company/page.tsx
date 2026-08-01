@@ -14,9 +14,9 @@ export default function CompanyPage() {
   return (
     <main style={{ minHeight: "100vh", background: BG }}>
       <article style={{
-        maxWidth: 660,
+        maxWidth: 860,
         margin: "0 auto",
-        padding: "88px 32px 96px",
+        padding: "88px 64px 96px",
         fontFamily: SERIF,
         color: INK,
       }}>
