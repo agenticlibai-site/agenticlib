@@ -21,12 +21,23 @@ export default function CompanyPage() {
         color: INK,
       }}>
 
-        {/* About — left-border callout */}
+        {/* About label + callout */}
+        <p style={{
+          fontFamily: "var(--font-space-mono), monospace",
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+          color: MUTED,
+          marginBottom: 20,
+        }}>
+          About
+        </p>
         <div style={{
           borderLeft: "4px solid",
           borderImage: "linear-gradient(to bottom, #A855F7, #EC4899) 1",
           paddingLeft: 28,
-          marginBottom: 52,
+          marginBottom: 60,
         }}>
           <p style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.45, margin: 0 }}>
             AgenticLib helps AI Agent builders gain an edge on their product feature growth,
@@ -34,8 +45,6 @@ export default function CompanyPage() {
             exactly where they stand and what to fix next.
           </p>
         </div>
-
-        <div style={{ height: 1, background: "rgba(0,0,0,0.12)", marginBottom: 52 }} />
 
         {/* Vision label */}
         <p style={{
