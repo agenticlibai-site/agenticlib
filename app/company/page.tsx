@@ -5,89 +5,139 @@ export const metadata: Metadata = {
   description: "AgenticLib is the intelligence layer between AI agent builders and the LLM responses that describe them.",
 };
 
-const PURPLE = "#6c4cf1";
+const SERIF   = "var(--font-eb-garamond), Georgia, 'Times New Roman', serif";
+const BG      = "#F4EFE4";
+const INK     = "#111111";
+const MUTED   = "#666666";
 
 export default function CompanyPage() {
   return (
-    <main style={{ minHeight: "100vh" }}>
-      <section style={{ maxWidth: 680, margin: "0 auto", padding: "80px 32px 64px", fontFamily: "var(--font-schibsted), var(--font-geist-sans), sans-serif" }}>
+    <main style={{ minHeight: "100vh", background: BG }}>
+      <article style={{
+        maxWidth: 660,
+        margin: "0 auto",
+        padding: "88px 32px 96px",
+        fontFamily: SERIF,
+        color: INK,
+      }}>
 
-        {/* About */}
-        <p style={{ fontSize: 20, fontWeight: 600, lineHeight: 1.5, color: "#000", marginBottom: 48 }}>
-          We help AI agent builders gain an edge on their product feature growth, competitive landscape, and LLM visibility
-          by giving them the intelligence to see exactly where they stand and what to fix next.
-        </p>
+        {/* About — left-border callout */}
+        <div style={{
+          borderLeft: "4px solid " + INK,
+          paddingLeft: 28,
+          marginBottom: 52,
+        }}>
+          <p style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.45, margin: 0 }}>
+            We help AI agent builders gain an edge on their product feature growth, competitive
+            landscape, and LLM visibility by giving them the intelligence to see exactly where
+            they stand and what to fix next.
+          </p>
+        </div>
 
-        <div style={{ height: 1, background: "rgba(0,0,0,0.08)", marginBottom: 48 }} />
+        <div style={{ height: 1, background: "rgba(0,0,0,0.12)", marginBottom: 52 }} />
 
-        {/* Vision */}
+        {/* Vision label */}
         <p style={{
-          fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase",
-          color: PURPLE, marginBottom: 20,
+          fontFamily: "var(--font-space-mono), monospace",
+          fontSize: 11,
+          fontWeight: 700,
+          letterSpacing: "0.14em",
+          textTransform: "uppercase",
+          color: MUTED,
+          marginBottom: 32,
         }}>
           Vision
         </p>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: 20, fontSize: 16, lineHeight: 1.75, color: "#000" }}>
+        {/* Vision body */}
+        <div style={{ fontSize: 19, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 22 }}>
           <p>
-            AgenticLib exists because being good at what you build should not require guessing whether the systems now
-            deciding who gets recommended can even find you.
+            AgenticLib exists because being good at what you build should not require guessing
+            whether the systems now deciding who gets recommended can even find you.
           </p>
           <p>
-            Buyers no longer just compare pricing pages. They ask Claude or GPT what tool to use, and the AI&apos;s answer
-            has quietly become the shortlist. Most founders have no idea what that answer says about them, or how it
-            compares to their competitors.
+            Buyers no longer just compare pricing pages. They ask Claude or GPT what tool to
+            use, and the AI&apos;s answer has quietly become the shortlist. Most founders have
+            no idea what that answer says about them, or how it compares to their competitors.
           </p>
           <p>
-            We believe visibility and capability are two different problems, and treating them as one is why most tools in
-            this space fall short.
+            We believe visibility and capability are two different problems, and treating them
+            as one is why most tools in this space fall short.
           </p>
-          <p>
-            That&apos;s the thing we do differently: we separate LLM visibility from product feature scoring, and organize
-            both around the same unit, the use case cluster. Visibility is measured by how often a brand comes up when
-            buyers ask the specific questions that matter for that use case. Feature scoring is measured the same way,
-            against the specific buyer questions a brand needs to answer well within that use case, not a generic
-            capability checklist. A brand doesn&apos;t just want to &ldquo;be visible.&rdquo; It wants to win the exact
-            moment a buyer is asking about the exact thing it does best, and know precisely where it falls short of that.
-          </p>
-          <p>
-            From there, we zoom out. Within a business domain, every tracked brand is scored across security, pricing,
-            technical capabilities, and the domain-specific features that actually define the category. That gives
-            builders a real picture of the competitive landscape, not just their own scorecard in isolation. That&apos;s
-            how a builder sees not just &ldquo;are we behind,&rdquo; but exactly where, against exactly whom.
-          </p>
-          <p>
-            We also track sentiment: not just whether AI models mention a brand, but how they describe it, and how
-            confidently.
-          </p>
-          <p>
-            And for the brands that have won real AI-search visibility, we show the mechanism. What they actually did and
-            how they did it: the content, the positioning, the specific moves, so builders aren&apos;t just told
-            they&apos;re behind, they&apos;re shown a real, replicable path forward.
-          </p>
+        </div>
 
-          <p style={{ fontWeight: 600 }}>
-            Our mission is simple: make it possible for a good product to be found, understood, and correctly compared by
-            the systems now doing the finding.
+        {/* Callout block */}
+        <div style={{
+          borderLeft: "4px solid " + INK,
+          paddingLeft: 28,
+          margin: "44px 0",
+        }}>
+          <p style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.45, margin: 0 }}>
+            That&apos;s the thing we do differently: we separate LLM visibility from product
+            feature scoring, and organize both around the same unit, the use case cluster.
           </p>
+        </div>
 
-          <ul style={{ paddingLeft: 20, display: "flex", flexDirection: "column", gap: 10, margin: 0 }}>
-            <li>Builders deserve to know exactly where they stand, by use case, by feature, by competitor. Not a vague visibility score.</li>
-            <li>Buyers deserve recommendations built on what&apos;s true and current, not on what happened to get indexed first.</li>
-            <li>The AI agent market deserves infrastructure that rewards real capability over accidental visibility.</li>
-          </ul>
-
+        <div style={{ fontSize: 19, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 22 }}>
           <p>
-            In the long run, this is about more than any one report. As more purchasing decisions route through
-            AI-mediated search, the builders who understand both their visibility and their real competitive gaps (cluster
-            by cluster, feature by feature) will win customers they never had to chase.
+            Visibility is measured by how often a brand comes up when buyers ask the specific
+            questions that matter for that use case. Feature scoring is measured the same way,
+            against the specific buyer questions a brand needs to answer well within that use
+            case, not a generic capability checklist. A brand doesn&apos;t just want to
+            &ldquo;be visible.&rdquo; It wants to win the exact moment a buyer is asking about
+            the exact thing it does best, and know precisely where it falls short of that.
           </p>
           <p>
+            From there, we zoom out. Within a business domain, every tracked brand is scored
+            across security, pricing, technical capabilities, and the domain-specific features
+            that actually define the category. That gives builders a real picture of the
+            competitive landscape, not just their own scorecard in isolation. That&apos;s how a
+            builder sees not just &ldquo;are we behind,&rdquo; but exactly where, against
+            exactly whom.
+          </p>
+          <p>
+            We also track sentiment: not just whether AI models mention a brand, but how they
+            describe it, and how confidently.
+          </p>
+          <p>
+            And for the brands that have won real AI-search visibility, we show the mechanism.
+            What they actually did and how they did it: the content, the positioning, the
+            specific moves, so builders aren&apos;t just told they&apos;re behind, they&apos;re
+            shown a real, replicable path forward.
+          </p>
+        </div>
+
+        {/* Mission callout */}
+        <div style={{
+          borderLeft: "4px solid " + INK,
+          paddingLeft: 28,
+          margin: "44px 0",
+        }}>
+          <p style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.45, margin: 0 }}>
+            Our mission is simple: make it possible for a good product to be found, understood,
+            and correctly compared by the systems now doing the finding.
+          </p>
+        </div>
+
+        <div style={{ fontSize: 19, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 14 }}>
+          <p>Builders deserve to know exactly where they stand, by use case, by feature, by competitor. Not a vague visibility score.</p>
+          <p>Buyers deserve recommendations built on what&apos;s true and current, not on what happened to get indexed first.</p>
+          <p>The AI agent market deserves infrastructure that rewards real capability over accidental visibility.</p>
+        </div>
+
+        <div style={{ fontSize: 19, lineHeight: 1.8, marginTop: 22, display: "flex", flexDirection: "column", gap: 22 }}>
+          <p>
+            In the long run, this is about more than any one report. As more purchasing
+            decisions route through AI-mediated search, the builders who understand both their
+            visibility and their real competitive gaps (cluster by cluster, feature by feature)
+            will win customers they never had to chase.
+          </p>
+          <p style={{ fontStyle: "italic" }}>
             AgenticLib is the intelligence layer for AI agent builders.
           </p>
         </div>
 
-        <div style={{ height: 1, background: "rgba(0,0,0,0.08)", margin: "56px 0 48px" }} />
+        <div style={{ height: 1, background: "rgba(0,0,0,0.12)", margin: "60px 0 52px" }} />
 
         {/* Founder */}
         <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
@@ -96,13 +146,18 @@ export default function CompanyPage() {
             background: "linear-gradient(135deg, #6c4cf1, #e040a0)",
             display: "flex", alignItems: "center", justifyContent: "center",
             fontSize: 20, fontWeight: 600, color: "#fff",
+            fontFamily: "var(--font-geist-sans), sans-serif",
           }}>
             S
           </div>
           <div>
-            <p style={{ fontSize: 16, fontWeight: 600, color: "#000", marginBottom: 4 }}>Srinidhi Murali</p>
+            <p style={{ fontSize: 18, fontWeight: 700, color: INK, marginBottom: 4, fontFamily: SERIF }}>Srinidhi Murali</p>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: PURPLE, textTransform: "uppercase", letterSpacing: "0.1em", margin: 0 }}>Founder</p>
+              <p style={{
+                fontFamily: "var(--font-space-mono), monospace",
+                fontSize: 11, fontWeight: 700, color: MUTED,
+                textTransform: "uppercase", letterSpacing: "0.1em", margin: 0,
+              }}>Founder</p>
               <a
                 href="https://www.linkedin.com/in/srinidhi-murali06/"
                 target="_blank"
@@ -118,7 +173,7 @@ export default function CompanyPage() {
           </div>
         </div>
 
-      </section>
+      </article>
     </main>
   );
 }
