@@ -10,7 +10,7 @@ const PURPLE = "#6c4cf1";
 export default function CompanyPage() {
   return (
     <main style={{ minHeight: "100vh" }}>
-      <section style={{ maxWidth: 680, margin: "0 auto", padding: "80px 32px 64px" }}>
+      <section style={{ maxWidth: 680, margin: "0 auto", padding: "80px 32px 64px", fontFamily: "var(--font-schibsted), var(--font-geist-sans), sans-serif" }}>
 
         {/* About */}
         <p style={{ fontSize: 20, fontWeight: 600, lineHeight: 1.5, color: "#000", marginBottom: 48 }}>
