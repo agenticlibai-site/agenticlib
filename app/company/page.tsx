@@ -24,9 +24,9 @@ export default function CompanyPage() {
         {/* About label + callout */}
         <p style={{
           fontFamily: "var(--font-space-mono), monospace",
-          fontSize: 11,
+          fontSize: 20,
           fontWeight: 700,
-          letterSpacing: "0.14em",
+          letterSpacing: "0.12em",
           textTransform: "uppercase",
           color: MUTED,
           marginBottom: 20,
@@ -42,9 +42,9 @@ export default function CompanyPage() {
         {/* Vision label */}
         <p style={{
           fontFamily: "var(--font-space-mono), monospace",
-          fontSize: 11,
+          fontSize: 20,
           fontWeight: 700,
-          letterSpacing: "0.14em",
+          letterSpacing: "0.12em",
           textTransform: "uppercase",
           color: MUTED,
           marginBottom: 32,
