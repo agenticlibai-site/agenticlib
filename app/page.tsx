@@ -246,7 +246,7 @@ export default function Home() {
               onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#EEF0FF"; }}
             >
               <img src="/blackbird logo.jpg" alt="Blackbird VC" style={{ width: 18, height: 18, borderRadius: 3, flexShrink: 0, objectFit: "cover" }} />
-              Backed by Blackbird VC Giants Program
+              Supported by Blackbird VC Giants Program
             </a>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
