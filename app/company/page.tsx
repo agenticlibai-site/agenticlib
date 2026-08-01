@@ -155,7 +155,7 @@ export default function CompanyPage() {
           display: "flex", alignItems: "center", gap: 20,
         }}>
           <div style={{
-            width: 52, height: 52, borderRadius: "50%", flexShrink: 0,
+            width: 68, height: 68, borderRadius: "50%", flexShrink: 0,
             background: "linear-gradient(135deg, #6c4cf1, #e040a0)",
             display: "flex", alignItems: "center", justifyContent: "center",
             fontSize: 26, fontWeight: 600, color: "#fff",
@@ -164,11 +164,11 @@ export default function CompanyPage() {
             S
           </div>
           <div>
-            <p style={{ fontSize: 18, fontWeight: 700, color: INK, marginBottom: 4, fontFamily: SERIF }}>Srinidhi Murali</p>
+            <p style={{ fontSize: 26, fontWeight: 700, color: INK, marginBottom: 6, fontFamily: SERIF }}>Srinidhi Murali</p>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <p style={{
                 fontFamily: "var(--font-space-mono), monospace",
-                fontSize: 11, fontWeight: 700, color: MUTED,
+                fontSize: 16, fontWeight: 700, color: MUTED,
                 textTransform: "uppercase", letterSpacing: "0.1em", margin: 0,
               }}>Founder</p>
               <a
