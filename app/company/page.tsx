@@ -24,7 +24,7 @@ export default function CompanyPage() {
         {/* About label + callout */}
         <p style={{
           fontFamily: "var(--font-space-mono), monospace",
-          fontSize: 20,
+          fontSize: 26,
           fontWeight: 700,
           letterSpacing: "0.12em",
           textTransform: "uppercase",
@@ -42,7 +42,7 @@ export default function CompanyPage() {
         {/* Vision label */}
         <p style={{
           fontFamily: "var(--font-space-mono), monospace",
-          fontSize: 20,
+          fontSize: 26,
           fontWeight: 700,
           letterSpacing: "0.12em",
           textTransform: "uppercase",
@@ -150,7 +150,7 @@ export default function CompanyPage() {
             width: 52, height: 52, borderRadius: "50%", flexShrink: 0,
             background: "linear-gradient(135deg, #6c4cf1, #e040a0)",
             display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 20, fontWeight: 600, color: "#fff",
+            fontSize: 26, fontWeight: 600, color: "#fff",
             fontFamily: "var(--font-geist-sans), sans-serif",
           }}>
             S
