@@ -154,16 +154,7 @@ export default function CompanyPage() {
           padding: "28px 32px",
           display: "flex", alignItems: "center", gap: 20,
         }}>
-          <div style={{
-            width: 68, height: 68, borderRadius: "50%", flexShrink: 0,
-            background: "linear-gradient(135deg, #6c4cf1, #e040a0)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 26, fontWeight: 600, color: "#fff",
-            fontFamily: "var(--font-geist-sans), sans-serif",
-          }}>
-            S
-          </div>
-          <div>
+<div>
             <p style={{ fontSize: 26, fontWeight: 700, color: INK, marginBottom: 6, fontFamily: SERIF }}>Srinidhi Murali</p>
             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
               <p style={{
