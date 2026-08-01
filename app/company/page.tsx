@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   description: "AgenticLib is the intelligence layer between AI agent builders and the LLM responses that describe them.",
 };
 
-const SERIF   = "var(--font-eb-garamond), Georgia, 'Times New Roman', serif";
+const SERIF   = "var(--font-schibsted), var(--font-geist-sans), sans-serif";
 const BG      = "#F4EFE4";
 const INK     = "#111111";
 const MUTED   = "#666666";
