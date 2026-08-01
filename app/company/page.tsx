@@ -6,7 +6,7 @@ export const metadata: Metadata = {
 };
 
 const SERIF   = "var(--font-schibsted), var(--font-geist-sans), sans-serif";
-const BG      = "#F4EFE4";
+const BG      = "#F5F0FA";
 const INK     = "#111111";
 const MUTED   = "#666666";
 
