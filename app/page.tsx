@@ -263,16 +263,16 @@ export default function Home() {
           </div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 48, flexWrap: "wrap" }}>
             <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" className="dewwie-logo" style={{ textDecoration: "none" }}>dewwie</a>
-            <a href="https://www.lamigo.com/" target="_blank" rel="noopener noreferrer" className="lamigo-logo" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 8 }}>
-              <svg width="28" height="28" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50 5 C50 5, 58 20, 58 32 C58 38, 54 42, 50 42 C46 42, 42 38, 42 32 C42 20, 50 5, 50 5Z"/>
-                <path d="M50 95 C50 95, 42 80, 42 68 C42 62, 46 58, 50 58 C54 58, 58 62, 58 68 C58 80, 50 95, 50 95Z"/>
-                <path d="M5 50 C5 50, 20 42, 32 42 C38 42, 42 46, 42 50 C42 54, 38 58, 32 58 C20 58, 5 50, 5 50Z"/>
-                <path d="M95 50 C95 50, 80 58, 68 58 C62 58, 58 54, 58 50 C58 46, 62 42, 68 42 C80 42, 95 50, 95 50Z"/>
-                <path d="M18 18 C18 18, 30 27, 34 38 C36 44, 34 49, 30 51 C26 53, 21 51, 19 45 C15 34, 18 18, 18 18Z"/>
-                <path d="M82 82 C82 82, 70 73, 66 62 C64 56, 66 51, 70 49 C74 47, 79 49, 81 55 C85 66, 82 82, 82 82Z"/>
-                <path d="M18 82 C18 82, 27 70, 38 66 C44 64, 49 66, 51 70 C53 74, 51 79, 45 81 C34 85, 18 82, 18 82Z"/>
-                <path d="M82 18 C82 18, 73 30, 62 34 C56 36, 51 34, 49 30 C47 26, 49 21, 55 19 C66 15, 82 18, 82 18Z"/>
+            <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" className="lamigo-logo" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 9 }}>
+              <svg width="30" height="30" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(0 50 50)"/>
+                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(45 50 50)"/>
+                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(90 50 50)"/>
+                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(135 50 50)"/>
+                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(180 50 50)"/>
+                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(225 50 50)"/>
+                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(270 50 50)"/>
+                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(315 50 50)"/>
               </svg>
               <span style={{ fontWeight: 700, fontSize: 22, letterSpacing: "-0.01em" }}>lamigo</span>
             </a>
