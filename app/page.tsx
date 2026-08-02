@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Share2, Mail, X as XIcon, ArrowUp, MessageCircle } from "lucide-react";
+import LamigoIcon from "./components/LamigoIcon";
 
 const DOMAINS = [
   { label: "Marketing", href: "/solutions/marketing" },
@@ -152,6 +153,15 @@ export default function Home() {
           transition: color 0.2s ease;
         }
         .dewwie-logo:hover { color: #0c00b0; }
+        .lamigo-logo {
+          color: rgba(0,0,0,0.28);
+          transition: color 0.2s ease;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        .lamigo-logo:hover { color: #000; }
       `}</style>
 
       {/* Background blobs */}
@@ -258,6 +268,10 @@ export default function Home() {
           </div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 48, flexWrap: "wrap" }}>
             <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" className="dewwie-logo" style={{ textDecoration: "none" }}>dewwie</a>
+            <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" className="lamigo-logo">
+              <LamigoIcon size={28} color="currentColor" label="Lamigo" />
+              <span style={{ fontWeight: 700, fontSize: 22, letterSpacing: "-0.01em" }}>lamigo</span>
+            </a>
           </div>
 
           {/* Testimonial */}
