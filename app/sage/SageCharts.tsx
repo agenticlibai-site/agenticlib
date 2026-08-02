@@ -225,7 +225,7 @@ export default function SageCharts({
 
       {/* ── LEFT SIDEBAR ─────────────────────────────────────────────────── */}
       <aside style={{
-        width: 236, background: "#0F1117", flexShrink: 0,
+        width: 192, background: "#0F1117", flexShrink: 0,
         display: "flex", flexDirection: "column", overflowY: "auto",
         borderRight: "1px solid rgba(255,255,255,0.04)",
       }}>
@@ -330,7 +330,7 @@ export default function SageCharts({
       </aside>
 
       {/* ── MAIN CONTENT ──────────────────────────────────────────────────── */}
-      <main style={{ flex: 1, background: "#F3F4F9", overflowY: "auto", padding: "26px 22px" }}>
+      <main style={{ flex: 1, background: "#F3F4F9", overflowY: "auto", padding: "22px 16px" }}>
         {!domain ? (
           /* Empty state */
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", gap: 14 }}>
@@ -541,8 +541,8 @@ export default function SageCharts({
 
       {/* ── RIGHT PANEL ───────────────────────────────────────────────────── */}
       <aside style={{
-        width: 252, background: "#fff", borderLeft: "1px solid rgba(0,0,0,0.07)",
-        padding: "22px 16px", overflowY: "auto", flexShrink: 0,
+        width: 210, background: "#fff", borderLeft: "1px solid rgba(0,0,0,0.07)",
+        padding: "22px 14px", overflowY: "auto", flexShrink: 0,
       }}>
         <div style={{
           fontSize: 9.5, fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase",
