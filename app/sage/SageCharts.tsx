@@ -136,6 +136,17 @@ function ScorePill({ band, score }: { band: string; score: number }) {
 
 // ── Props ──────────────────────────────────────────────────────────────────────
 
+interface DexifySentimentRow {
+  brand_name:      string;
+  bucket_tag:      string;
+  positive_count:  number;
+  neutral_count:   number;
+  negative_count:  number;
+  total_count:     number;
+  top_descriptors: string[];
+  unique_flags:    string[];
+}
+
 interface Props {
   marketingSOV:         SOVRow[];
   marketingFeatures:    FeatureScoreRow[];
@@ -146,13 +157,14 @@ interface Props {
   dexifyClusters:       DexifyClusterRow[];
   dexifyFeatures:       { brand_name: string; feature_id: string; feature_tag: string; score: number; score_band: string; evidence: string | null }[];
   dexifyFeatureDefs:    FeatureDef[];
+  dexifySentiment:      DexifySentimentRow[];
   skincareClusters:     UseCaseBucketBrandRow[];
 }
 
 export default function SageCharts({
   marketingSOV, marketingFeatures, marketingFeatureDefs,
   salesClusters, salesFeatures, salesFeatureDefs,
-  dexifyClusters, dexifyFeatures, dexifyFeatureDefs,
+  dexifyClusters, dexifyFeatures, dexifyFeatureDefs, dexifySentiment,
   skincareClusters,
 }: Props) {
   const [domain, setDomain]   = useState<DomainId | null>(null);
@@ -205,6 +217,14 @@ export default function SageCharts({
     if (dom === "marketing") return marketingFeatureDefs.filter(f => f.feature_tag === tag);
     if (dom === "dexify")    return dexifyFeatureDefs.filter(f => f.feature_tag === tag);
     return [];
+  }
+
+  function getDexifySentimentRows(clusterTag: string): DexifySentimentRow[] {
+    // cluster tag is e.g. "dexify-voice-quote"; sentiment bucket_tag is "voice-quote"
+    const bucketTag = clusterTag.replace(/^dexify-/, "");
+    return dexifySentiment
+      .filter(r => r.bucket_tag === bucketTag)
+      .sort((a, b) => b.positive_count / b.total_count - a.positive_count / a.total_count);
   }
 
   function getScoreMap(dom: DomainId, tag: string): Map<string, { score: number; score_band: string; evidence: string | null }> {
@@ -379,11 +399,12 @@ export default function SageCharts({
             {/* Use case cards */}
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {Object.entries(visibleClusters).map(([tag, label]) => {
-                const brands     = getBrands(domain, tag);
-                const featureDefs = getFeatureDefs(domain, tag);
-                const scoreMap   = getScoreMap(domain, tag);
-                const isSkincare = domain === "skincare";
-                const hasFeatures = !isSkincare && featureDefs.length > 0 && brands.length > 0;
+                const brands          = getBrands(domain, tag);
+                const featureDefs     = getFeatureDefs(domain, tag);
+                const scoreMap        = getScoreMap(domain, tag);
+                const isSkincare      = domain === "skincare";
+                const hasFeatures     = !isSkincare && featureDefs.length > 0 && brands.length > 0;
+                const sentimentRows   = domain === "dexify" ? getDexifySentimentRows(tag) : [];
 
                 return (
                   <div key={tag} style={{
@@ -428,64 +449,103 @@ export default function SageCharts({
                         <span style={{ fontSize: 13, fontWeight: 500 }}>No data collected yet for this use case</span>
                       </div>
                     ) : domain === "dexify" && hasFeatures ? (
-                      /* ── Dexify: feature-first bar chart layout ─────────── */
-                      <div>
-                        {featureDefs.map((f, fi) => (
-                          <div key={f.feature_id} style={{
-                            padding: "18px 20px",
-                            borderBottom: fi < featureDefs.length - 1 ? "1px solid rgba(0,0,0,0.05)" : "none",
-                          }}>
-                            <div style={{ fontWeight: 700, fontSize: 13.5, color: "#000", marginBottom: 14 }}>
-                              {f.feature_name}
-                            </div>
-                            {brands.map((b, bi) => {
-                              const s = scoreMap.get(`${b.brand}::${f.feature_id}`);
-                              const isNotDoc = !s || s.score_band === "not_documented";
-                              const barPct   = s?.score ?? 0;
-                              const barColor = s?.score_band === "high"   ? "#16a34a"
-                                             : s?.score_band === "medium" ? "#d97706"
-                                             : s?.score_band === "low"    ? "#dc2626"
-                                             : "rgba(0,0,0,0.10)";
-                              const textColor = isNotDoc ? "rgba(0,0,0,0.25)" : barColor;
-                              return (
-                                <div key={b.brand} style={{ marginBottom: bi < brands.length - 1 ? 16 : 0 }}>
-                                  <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: s?.evidence ? 5 : 0 }}>
-                                    <span style={{
-                                      width: 130, fontSize: 13, fontWeight: 500,
-                                      color: "#000", flexShrink: 0, lineHeight: 1.3,
-                                    }}>
-                                      {b.brand}
-                                    </span>
-                                    <div style={{
-                                      flex: 1, height: 7, background: "rgba(0,0,0,0.07)",
-                                      borderRadius: 4, overflow: "hidden",
-                                    }}>
-                                      <div style={{
-                                        height: "100%", width: `${barPct}%`,
-                                        background: barColor, borderRadius: 4,
-                                      }} />
+                        /* ── Dexify: feature-first bar chart + sentiment ─────── */
+                        <div>
+                          {featureDefs.map((f, fi) => (
+                            <div key={f.feature_id} style={{
+                              padding: "18px 20px",
+                              borderBottom: "1px solid rgba(0,0,0,0.05)",
+                            }}>
+                              <div style={{ fontWeight: 700, fontSize: 13.5, color: "#000", marginBottom: 14 }}>
+                                {f.feature_name}
+                              </div>
+                              {brands.map((b, bi) => {
+                                const s = scoreMap.get(`${b.brand}::${f.feature_id}`);
+                                const isNotDoc = !s || s.score_band === "not_documented";
+                                const barPct   = s?.score ?? 0;
+                                const barColor = s?.score_band === "high"   ? "#16a34a"
+                                               : s?.score_band === "medium" ? "#d97706"
+                                               : s?.score_band === "low"    ? "#dc2626"
+                                               : "rgba(0,0,0,0.10)";
+                                const textColor = isNotDoc ? "rgba(0,0,0,0.25)" : barColor;
+                                return (
+                                  <div key={b.brand} style={{ marginBottom: bi < brands.length - 1 ? 16 : 0 }}>
+                                    <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: s?.evidence ? 5 : 0 }}>
+                                      <span style={{ width: 130, fontSize: 13, fontWeight: 500, color: "#000", flexShrink: 0, lineHeight: 1.3 }}>
+                                        {b.brand}
+                                      </span>
+                                      <div style={{ flex: 1, height: 7, background: "rgba(0,0,0,0.07)", borderRadius: 4, overflow: "hidden" }}>
+                                        <div style={{ height: "100%", width: `${barPct}%`, background: barColor, borderRadius: 4 }} />
+                                      </div>
+                                      <span style={{ width: 32, textAlign: "right", fontSize: 14, fontWeight: 700, color: textColor, flexShrink: 0 }}>
+                                        {s?.score ?? "–"}
+                                      </span>
                                     </div>
-                                    <span style={{
-                                      width: 32, textAlign: "right", fontSize: 14,
-                                      fontWeight: 700, color: textColor, flexShrink: 0,
-                                    }}>
-                                      {s?.score ?? "–"}
-                                    </span>
+                                    {s?.evidence && (
+                                      <div style={{ marginLeft: 144, fontSize: 12, color: "rgba(0,0,0,0.5)", lineHeight: 1.6 }}>
+                                        {s.evidence}
+                                      </div>
+                                    )}
                                   </div>
-                                  {s?.evidence && (
-                                    <div style={{
-                                      marginLeft: 144, fontSize: 12,
-                                      color: "rgba(0,0,0,0.5)", lineHeight: 1.6,
-                                    }}>
-                                      {s.evidence}
+                                );
+                              })}
+                            </div>
+                          ))}
+
+                          {/* ── Sentiment section ──────────────────────────── */}
+                          {sentimentRows.length > 0 && (
+                            <div style={{ padding: "14px 20px 18px" }}>
+                              <div style={{
+                                fontSize: 10, fontWeight: 700, letterSpacing: "0.12em",
+                                textTransform: "uppercase", color: "rgba(0,0,0,0.28)",
+                                marginBottom: 14,
+                              }}>
+                                Sentiment
+                              </div>
+                              {sentimentRows.map((r, ri) => {
+                                const posW = r.total_count > 0 ? (r.positive_count / r.total_count) * 100 : 0;
+                                const neuW = r.total_count > 0 ? (r.neutral_count  / r.total_count) * 100 : 0;
+                                const negW = r.total_count > 0 ? (r.negative_count / r.total_count) * 100 : 0;
+                                const posPct = Math.round(posW);
+                                return (
+                                  <div key={r.brand_name} style={{ marginBottom: ri < sentimentRows.length - 1 ? 18 : 0 }}>
+                                    <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 8 }}>
+                                      <span style={{ width: 130, fontSize: 13, fontWeight: 700, color: "#000", flexShrink: 0 }}>
+                                        {r.brand_name}
+                                      </span>
+                                      <div style={{ flex: 1, height: 7, borderRadius: 4, overflow: "hidden", display: "flex" }}>
+                                        <div style={{ width: `${posW}%`, height: "100%", background: "#16a34a" }} />
+                                        <div style={{ width: `${neuW}%`, height: "100%", background: "#d97706" }} />
+                                        <div style={{ width: `${negW}%`, height: "100%", background: "#dc2626" }} />
+                                      </div>
+                                      <span style={{ width: 36, textAlign: "right", fontSize: 14, fontWeight: 700, color: "#16a34a", flexShrink: 0 }}>
+                                        {posPct}%
+                                      </span>
                                     </div>
-                                  )}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        ))}
-                      </div>
+                                    {r.top_descriptors.length > 0 && (
+                                      <div style={{ marginLeft: 144, display: "flex", flexWrap: "wrap", gap: 6 }}>
+                                        {r.top_descriptors.map((d, di) => {
+                                          const isUnique = r.unique_flags[di] === "true";
+                                          return (
+                                            <span key={di} style={{
+                                              fontSize: 11.5, padding: "3px 10px", borderRadius: 20,
+                                              fontWeight: isUnique ? 600 : 400,
+                                              background: isUnique ? `rgba(${activeDomain?.rgb},0.10)` : "transparent",
+                                              border: isUnique ? `1px solid rgba(${activeDomain?.rgb},0.25)` : "1px solid rgba(0,0,0,0.15)",
+                                              color: isUnique ? activeDomain?.color : "rgba(0,0,0,0.5)",
+                                            }}>
+                                              {d}
+                                            </span>
+                                          );
+                                        })}
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
                     ) : hasFeatures ? (
                       <div style={{ overflowX: "auto" }}>
                         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
