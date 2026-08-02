@@ -152,11 +152,6 @@ export default function Home() {
           transition: color 0.2s ease;
         }
         .dewwie-logo:hover { color: #0c00b0; }
-        .lamigo-logo {
-          color: rgba(0,0,0,0.28);
-          transition: color 0.2s ease;
-        }
-        .lamigo-logo:hover { color: #000; }
       `}</style>
 
       {/* Background blobs */}
@@ -263,19 +258,6 @@ export default function Home() {
           </div>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 48, flexWrap: "wrap" }}>
             <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" className="dewwie-logo" style={{ textDecoration: "none" }}>dewwie</a>
-            <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" className="lamigo-logo" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: 9 }}>
-              <svg width="30" height="30" viewBox="0 0 100 100" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(0 50 50)"/>
-                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(45 50 50)"/>
-                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(90 50 50)"/>
-                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(135 50 50)"/>
-                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(180 50 50)"/>
-                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(225 50 50)"/>
-                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(270 50 50)"/>
-                <path d="M50 50 C41 47 38 27 50 14 C62 27 59 47 50 50Z" transform="rotate(315 50 50)"/>
-              </svg>
-              <span style={{ fontWeight: 700, fontSize: 22, letterSpacing: "-0.01em" }}>lamigo</span>
-            </a>
           </div>
 
           {/* Testimonial */}
