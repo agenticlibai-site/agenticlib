@@ -1,0 +1,17 @@
+name: Dexify Visibility Aggregate
+
+on:
+  schedule:
+    - cron: '45 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger Dexify visibility aggregate
+        run: |
+          curl --max-time 70 --fail-with-body \
+            "https://agenticlib.com/api/cron/dexify-aggregate" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"

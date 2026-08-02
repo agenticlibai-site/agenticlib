@@ -1,0 +1,17 @@
+name: Dexify Sentiment Aggregate
+
+on:
+  schedule:
+    - cron: '15 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger Dexify sentiment aggregate
+        run: |
+          curl --max-time 70 --fail-with-body \
+            "https://agenticlib.com/api/cron/dexify-sentiment-aggregate" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
