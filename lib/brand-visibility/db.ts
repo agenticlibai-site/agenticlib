@@ -2417,6 +2417,7 @@ export async function getDexifySentimentData(): Promise<{
     negative_count:  number;
     total_count:     number;
     top_descriptors: string[];
+    unique_flags:    string[];
   }[];
   meta: { dual_model_dates: number; earliest_date: string | null; latest_date: string | null };
 }> {
@@ -2480,14 +2481,24 @@ export async function getDexifySentimentData(): Promise<{
     LEFT JOIN top_descs d USING (brand_name, bucket_tag)
     ORDER BY s.bucket_tag, s.brand_name
   `;
-  return {
-    rows: result.rows as {
-      brand_name: string; bucket_tag: string;
-      positive_count: number; neutral_count: number; negative_count: number; total_count: number;
-      top_descriptors: string[];
-    }[],
-    meta,
-  };
+  const rawRows = result.rows as {
+    brand_name: string; bucket_tag: string;
+    positive_count: number; neutral_count: number; negative_count: number; total_count: number;
+    top_descriptors: string[];
+  }[];
+
+  // Compute unique_flags: "true" if descriptor doesn't appear in any other brand's list for the same bucket_tag
+  const rows = rawRows.map(row => {
+    const othersDescs = new Set(
+      rawRows
+        .filter(r => r.bucket_tag === row.bucket_tag && r.brand_name !== row.brand_name)
+        .flatMap(r => r.top_descriptors),
+    );
+    const unique_flags = row.top_descriptors.map(d => (othersDescs.has(d) ? "false" : "true"));
+    return { ...row, unique_flags };
+  });
+
+  return { rows, meta };
 }
 
 export async function upsertDexifySentimentDrift(row: {

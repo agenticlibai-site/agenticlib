@@ -5,6 +5,7 @@ import {
   getSalesFeatureScores,
   getDexifyByCluster,
   getDexifyFeatureScores,
+  getDexifySentimentData,
 } from "@/lib/brand-visibility/db";
 import { getSkincareUseCaseBuckets } from "@/lib/skincare-visibility/db";
 import { FEATURES as MARKETING_FEATURE_DEFS_FULL } from "@/lib/brand-visibility/features";
@@ -27,6 +28,7 @@ export default async function SagePage() {
     salesFeatures,
     dexifyClusters,
     dexifyFeatures,
+    dexifySentimentResult,
     skincareClusters,
   ] = await Promise.all([
     getLockedSOVByClusters(),
@@ -35,6 +37,7 @@ export default async function SagePage() {
     getSalesFeatureScores(),
     getDexifyByCluster(),
     getDexifyFeatureScores(),
+    getDexifySentimentData(),
     getSkincareUseCaseBuckets(),
   ]);
 
@@ -49,6 +52,7 @@ export default async function SagePage() {
       dexifyClusters={dexifyClusters}
       dexifyFeatures={dexifyFeatures}
       dexifyFeatureDefs={DEXIFY_FEATURE_DEFS_FULL.map(f => ({ feature_id: f.feature_id, feature_tag: f.feature_tag, feature_name: f.feature_name }))}
+      dexifySentiment={dexifySentimentResult.rows}
       skincareClusters={skincareClusters}
     />
   );
