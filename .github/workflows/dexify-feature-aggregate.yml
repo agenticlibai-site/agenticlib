@@ -1,0 +1,17 @@
+name: Dexify Feature Aggregate
+
+on:
+  schedule:
+    - cron: '55 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger Dexify feature aggregate
+        run: |
+          curl --max-time 70 --fail-with-body \
+            "https://agenticlib.com/api/cron/dexify-feature-aggregate" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"

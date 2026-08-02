@@ -1,0 +1,17 @@
+name: Dexify Sentiment Collection (Claude)
+
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Trigger Dexify sentiment collection (Claude)
+        run: |
+          curl --max-time 310 --fail-with-body \
+            "https://agenticlib.com/api/cron/dexify-sentiment-collection?model=claude-haiku-4-5" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
