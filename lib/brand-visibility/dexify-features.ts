@@ -27,16 +27,16 @@ export const DEXIFY_JSON_OUTPUT_SPEC =
 // Only independently web-verified AI agents / platforms with named autonomous
 // AI features for tradespeople. Do not add without verification.
 export const LOCKED_DEXIFY_BRANDS: readonly string[] = [
-  "Sophiie AI",      // Autonomous phone agent — books jobs, sends follow-ups, quotes (AU)
-  "simPRO",          // Lightning platform: Cooper AI, FieldReady, JobReady, JobScribe, JobBrief agents (AU)
-  "VoxTrade",        // Voice-to-quote AI (voxtrade.app — distinct from voxtradeapp.com stock app)
-  "AirQuote",        // AI converts voice/plain-language job descriptions to priced quotes
-  "ServiceM8",       // AI scheduling, automated job follow-up, and smart dispatch (AU)
-  "ServiceTitan",    // Titan Intelligence + Atlas AI sidekick — scheduling, dispatch, booking, pricing
-  "Voxworks",        // AU AI voice agent for tradies — inbound triage, warm transfer, outbound follow-up (AU)
-  "Waboom AI",       // AU AI voice agent for construction — subcontractor coordination, quote capture, emergency triage (AU)
-  "Square AI",       // AU AI agent for plumbers — call answering, job cards into ServiceM8/Tradify (AU, Penrith NSW)
-  "Insta Quote AI",  // AU/NZ voice-to-quote and conversational quoting
+  "Sophiie AI",      // Surfers Paradise QLD — autonomous phone agent, books jobs, sends follow-ups, quotes; Antler-backed, $2M ARR
+  "simPRO",          // Brisbane QLD — Lightning platform: Cooper AI, FieldReady, JobReady, JobScribe, JobBrief agents
+  "ServiceM8",       // Darwin NT — AI scheduling, automated job follow-up, smart dispatch
+  "Voxworks",        // North Sydney NSW — AI voice agent for tradies, inbound triage, warm transfer, outbound follow-up; AU Govt AI directory
+  "Waboom AI",       // Auckland NZ — AI voice agent for construction, subcontractor coordination, quote capture, emergency triage
+  "Square AI",       // Sydney NSW — AI agent for plumbers, call answering, job cards into ServiceM8/Tradify
+  "Insta Quote AI",  // NZ-built, AU/NZ rollout — voice-to-quote and conversational quoting
+  "Chime Labs",      // Sydney NSW — AI receptionist for AU tradies, 24/7 call answering, books into ServiceM8/Google Calendar/iCal; $900K pre-seed Apr 2026
+  "Sammy AI",        // AU/NZ — voice or text job description → branded proposal with itemised pricing; tracks opens, change requests, acceptance
+  "Wired",           // AU — voice-first AI agent for tradies, call and command directly into Fergus/ServiceM8/Xero/QuickBooks/Google Workspace/Apple Calendar; bootstrapped, data hosted in AU
 ];
 
 // ── Feature definitions ────────────────────────────────────────────────────────
