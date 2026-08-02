@@ -427,6 +427,65 @@ export default function SageCharts({
                         </svg>
                         <span style={{ fontSize: 13, fontWeight: 500 }}>No data collected yet for this use case</span>
                       </div>
+                    ) : domain === "dexify" && hasFeatures ? (
+                      /* ── Dexify: feature-first bar chart layout ─────────── */
+                      <div>
+                        {featureDefs.map((f, fi) => (
+                          <div key={f.feature_id} style={{
+                            padding: "18px 20px",
+                            borderBottom: fi < featureDefs.length - 1 ? "1px solid rgba(0,0,0,0.05)" : "none",
+                          }}>
+                            <div style={{ fontWeight: 700, fontSize: 13.5, color: "#000", marginBottom: 14 }}>
+                              {f.feature_name}
+                            </div>
+                            {brands.map((b, bi) => {
+                              const s = scoreMap.get(`${b.brand}::${f.feature_id}`);
+                              const isNotDoc = !s || s.score_band === "not_documented";
+                              const barPct   = s?.score ?? 0;
+                              const barColor = s?.score_band === "high"   ? "#16a34a"
+                                             : s?.score_band === "medium" ? "#d97706"
+                                             : s?.score_band === "low"    ? "#dc2626"
+                                             : "rgba(0,0,0,0.10)";
+                              const textColor = isNotDoc ? "rgba(0,0,0,0.25)" : barColor;
+                              return (
+                                <div key={b.brand} style={{ marginBottom: bi < brands.length - 1 ? 16 : 0 }}>
+                                  <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: s?.evidence ? 5 : 0 }}>
+                                    <span style={{
+                                      width: 130, fontSize: 13, fontWeight: 500,
+                                      color: "#000", flexShrink: 0, lineHeight: 1.3,
+                                    }}>
+                                      {b.brand}
+                                    </span>
+                                    <div style={{
+                                      flex: 1, height: 7, background: "rgba(0,0,0,0.07)",
+                                      borderRadius: 4, overflow: "hidden",
+                                    }}>
+                                      <div style={{
+                                        height: "100%", width: `${barPct}%`,
+                                        background: barColor, borderRadius: 4,
+                                      }} />
+                                    </div>
+                                    <span style={{
+                                      width: 32, textAlign: "right", fontSize: 14,
+                                      fontWeight: 700, color: textColor, flexShrink: 0,
+                                    }}>
+                                      {s?.score ?? "–"}
+                                    </span>
+                                  </div>
+                                  {s?.evidence && (
+                                    <div style={{
+                                      marginLeft: 144, fontSize: 12,
+                                      color: "rgba(0,0,0,0.5)", lineHeight: 1.6,
+                                    }}>
+                                      {s.evidence}
+                                    </div>
+                                  )}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        ))}
+                      </div>
                     ) : hasFeatures ? (
                       <div style={{ overflowX: "auto" }}>
                         <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
