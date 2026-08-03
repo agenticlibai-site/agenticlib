@@ -30,9 +30,9 @@ export default async function SalesVisibilityPage() {
 
   return (
     <main className="min-h-screen" style={{ background: "#F7F8FC" }}>
-      <div className="max-w-5xl mx-auto px-6 py-10">
 
-        {/* Header */}
+      {/* Header — keep at original width */}
+      <div className="max-w-5xl mx-auto px-6 pt-10 pb-0">
         <div style={{ marginBottom: 28 }}>
           <div
             className="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-4"
@@ -66,7 +66,10 @@ export default async function SalesVisibilityPage() {
             <span><strong>ZoomInfo acquired Chorus</strong> in 2021, tracked separately as ZoomInfo (Chorus)</span>
           </div>
         </div>
+      </div>
 
+      {/* Charts + Feature Scores + Sentiment — wider container */}
+      <div className="max-w-7xl mx-auto px-6 pb-0">
         <SalesVisibilityCharts
           dailySummary={dailySummary}
           weeklySummary={weeklySummary}
@@ -76,6 +79,10 @@ export default async function SalesVisibilityPage() {
           featureScores={featureScores}
           sentimentData={sentimentData}
         />
+      </div>
+
+      {/* Glossary + Disclaimer — back to original width */}
+      <div className="max-w-5xl mx-auto px-6 pb-10">
 
         {/* Glossary */}
         <div style={{ marginTop: 56 }}>

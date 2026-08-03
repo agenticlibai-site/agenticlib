@@ -143,7 +143,9 @@ body {
 
 /* ── Capabilities grid — collapse to 1 col on mobile ── */
 @media (max-width: 768px) {
-  .caps-grid { grid-template-columns: 1fr !important; }
+  .caps-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+  .caps-section { padding-top: 40px !important; padding-bottom: 52px !important; }
+  .caps-card { padding: 20px 18px !important; }
 }
 
 /* ── Hero two-column split — stack on mobile ── */
@@ -203,7 +205,7 @@ body {
 @media (max-width: 768px) {
   .product-outer { padding: 0 16px !important; }
   .feature-card-icon { display: none !important; }
-  .feature-card-last { max-width: 100% !important; margin: 0 !important; }
+  .feature-card-last { width: 100% !important; max-width: 100% !important; margin: 0 !important; }
   .why-grid {
     grid-template-columns: 1fr !important;
     padding: 32px 20px 36px !important;
