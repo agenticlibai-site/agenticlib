@@ -236,20 +236,6 @@ export default function Home() {
       {/* ── Trusted By ────────────────────────────────────────────────────── */}
       <section style={{ padding: "44px 24px 52px" }}>
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: 28 }}>
-            <a
-              href="https://www.blackbird.vc/giants"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-full transition-colors duration-150"
-              style={{ background: "#EEF0FF", color: "#5B5BD6" }}
-              onMouseEnter={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#DDE0FF"; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLAnchorElement).style.background = "#EEF0FF"; }}
-            >
-              <img src="/blackbird logo.jpg" alt="Blackbird VC" style={{ width: 18, height: 18, borderRadius: 3, flexShrink: 0, objectFit: "cover" }} />
-              Supported by Blackbird VC Giants Program
-            </a>
-          </div>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
             <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
             <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "#000", whiteSpace: "nowrap" }}>
@@ -262,6 +248,23 @@ export default function Home() {
             <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", borderBottom: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "grayscale(1) brightness(0)"; el.style.textDecoration = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; el.style.textDecoration = "none"; }}>
               <img src="/lamigo logo .png" alt="Lamigo" style={{ height: 38, width: "auto", objectFit: "contain" }} />
             </a>
+          </div>
+
+          {/* Supported by */}
+          <div style={{ marginTop: 40 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
+              <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
+              <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase" as const, color: "#000", whiteSpace: "nowrap" }}>
+                Supported by
+              </span>
+              <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 10 }}>
+              <a href="https://www.blackbird.vc/giants" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 10, opacity: 0.55, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.55"; el.style.filter = "grayscale(1)"; }}>
+                <img src="/blackbird logo.jpg" alt="Blackbird VC" style={{ height: 44, width: "auto", objectFit: "contain", borderRadius: 8 }} />
+                <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#000" }}>Blackbird VC Giants</span>
+              </a>
+            </div>
           </div>
 
           {/* Testimonial */}
