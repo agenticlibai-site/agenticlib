@@ -106,20 +106,6 @@ export default function BlogPage() {
             <Image src="/logo.png" alt="AgenticLib" width={120} height={24} className="h-6 w-auto" />
             <span className="text-lg font-semibold tracking-tight">AgenticLib</span>
           </Link>
-          <div className="flex items-center">
-            <Link
-              href="/"
-              className="flex items-center gap-2 px-4 py-2 rounded-full border transition-all text-sm font-medium"
-              style={{ borderColor: "#e4e4e7", color: "#3f3f46", background: "white" }}
-              onMouseEnter={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "#f4f4f5"; el.style.borderColor = "#d4d4d8"; }}
-              onMouseLeave={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "white"; el.style.borderColor = "#e4e4e7"; }}
-            >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 11L5 7l4-4" />
-              </svg>
-              Home
-            </Link>
-          </div>
         </div>
       </header>
 
@@ -128,10 +114,6 @@ export default function BlogPage() {
 
           {/* Hero */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-white/60 border border-white/40 text-black text-xs px-3 py-1.5 rounded-full mb-6">
-              <span className="w-1.5 h-1.5 rounded-full bg-violet-500" />
-              The AgenticLib Blog
-            </div>
             <h1 className="text-5xl md:text-6xl font-semibold tracking-tight text-black mb-4">
               Insights on{" "}
               <span className="gradient-text">AI Agents</span>
