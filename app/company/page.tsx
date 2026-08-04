@@ -174,7 +174,9 @@ export default function CompanyPage() {
                 </svg>
               </a>
               <a
-                href="mailto:srinidhi.murali@agenticlib.com"
+                href="https://mail.google.com/mail/?view=cm&to=srinidhi.murali@agenticlib.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 aria-label="Email"
                 style={{ display: "flex", alignItems: "center", color: MUTED, flexShrink: 0 }}
               >
