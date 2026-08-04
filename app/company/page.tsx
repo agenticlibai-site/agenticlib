@@ -81,8 +81,7 @@ export default function CompanyPage() {
             set of filters.
           </p>
           <p>
-            This is what comparison intelligence means in practice: not a static report, but a
-            working tool that turns real LLM data into a decision-making layer for every stage of
+            This is what comparison intelligence means in practice: a working platform that turns real LLM data into a decision-making layer for every stage of
             product growth.
           </p>
         </div>
