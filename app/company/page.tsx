@@ -40,7 +40,8 @@ export default function CompanyPage() {
           exactly where they stand and what to fix next.
         </p>
 
-        {/* Vision label */}
+
+        {/* Platform section */}
         <p style={{
           fontFamily: "var(--font-space-mono), monospace",
           fontSize: 26,
@@ -48,98 +49,41 @@ export default function CompanyPage() {
           letterSpacing: "0.12em",
           textTransform: "uppercase",
           color: MAGENTA,
+          marginTop: 64,
           marginBottom: 32,
         }}>
-          Vision
+          Platform
         </p>
 
-        {/* Vision body */}
         <div style={{ fontSize: 18, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 22 }}>
           <p>
-            AgenticLib exists because being good at what you build should not require guessing
-            whether the systems now deciding who gets recommended can even find you.
+            The AgenticLib platform is a full intelligence dashboard built specifically for AI
+            agent builders. Builders start by selecting a business domain — construction, finance,
+            healthcare, legal, and more — then drill into the specific use case that matters to
+            them. From there, they choose the product features they want to evaluate, and the
+            platform surfaces the top brands operating in that exact space with every filter
+            applied.
           </p>
           <p>
-            Buyers no longer just compare pricing pages. They ask Claude or GPT what tool to
-            use, and the AI&apos;s answer has quietly become the shortlist. Most founders have
-            no idea what that answer says about them, or how it compares to their competitors.
+            What they get back is not a raw list. It is a structured comparison: visibility scores
+            across Claude, GPT, and other major LLMs; feature-by-feature breakdowns showing how
+            each brand performs against the buyer questions that define that use case; sentiment
+            signals showing not just whether a brand gets mentioned but how confidently and
+            positively; and competitive rankings that make it immediately clear where any given
+            product leads, where it trails, and against whom.
           </p>
           <p>
-            We believe visibility and capability are two different problems, and treating them
-            as one is why most tools in this space fall short.
-          </p>
-        </div>
-
-        {/* Callout block */}
-        <div style={{
-          borderLeft: "4px solid",
-          borderImage: "linear-gradient(to bottom, #A855F7, #EC4899) 1",
-          paddingLeft: 28,
-          margin: "44px 0",
-        }}>
-          <p style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.45, margin: 0 }}>
-            That&apos;s the thing we do differently: we separate LLM visibility from product
-            feature scoring, and organise both around the same unit, the use case cluster.
-          </p>
-        </div>
-
-        <div style={{ fontSize: 18, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 22 }}>
-          <p>
-            Visibility is measured by how often a brand comes up when buyers ask the specific
-            questions that matter for that use case. Feature scoring is measured the same way,
-            against the specific buyer questions a brand needs to answer well within that use
-            case, not a generic capability checklist. A brand doesn&apos;t just want to
-            &ldquo;be visible.&rdquo; It wants to win the exact moment a buyer is asking about
-            the exact thing it does best, and know precisely where it falls short of that.
+            The dashboard serves two purposes simultaneously. A builder can use it to benchmark
+            their own product, identify the specific features or positioning gaps holding their
+            score down, and find a clear path to closing them. And they can use it to understand
+            the competitive landscape in full: who is winning in their domain, how they are
+            winning, and what it would take to overtake them. Both views are live from the same
+            set of filters.
           </p>
           <p>
-            From there, we zoom out. Within a business domain, every tracked brand is scored
-            across security, pricing, technical capabilities, and the domain-specific features
-            that actually define the category. That gives builders a real picture of the
-            competitive landscape, not just their own scorecard in isolation. That&apos;s how a
-            builder sees not just &ldquo;are we behind,&rdquo; but exactly where, against
-            exactly whom.
-          </p>
-          <p>
-            We also track sentiment: not just whether AI models mention a brand, but how they
-            describe it, and how confidently.
-          </p>
-          <p>
-            And for the brands that have won real AI-search visibility, we show the mechanism.
-            What they actually did and how they did it: the content, the positioning, the
-            specific moves, so builders aren&apos;t just told they&apos;re behind, they&apos;re
-            shown a real, replicable path forward.
-          </p>
-        </div>
-
-        {/* Mission callout */}
-        <div style={{
-          borderLeft: "4px solid",
-          borderImage: "linear-gradient(to bottom, #A855F7, #EC4899) 1",
-          paddingLeft: 28,
-          margin: "44px 0",
-        }}>
-          <p style={{ fontSize: 22, fontWeight: 700, lineHeight: 1.45, margin: 0 }}>
-            Our mission is simple: make it possible for a good product to be found, understood,
-            and correctly compared by the systems now doing the finding.
-          </p>
-        </div>
-
-        <div style={{ fontSize: 18, lineHeight: 1.8, display: "flex", flexDirection: "column", gap: 14 }}>
-          <p>Builders deserve to know exactly where they stand, by use case, by feature, by competitor. Not a vague visibility score.</p>
-          <p>Buyers deserve recommendations built on what&apos;s true and current, not on what happened to get indexed first.</p>
-          <p>The AI agent market deserves infrastructure that rewards real capability over accidental visibility.</p>
-        </div>
-
-        <div style={{ fontSize: 18, lineHeight: 1.8, marginTop: 22, display: "flex", flexDirection: "column", gap: 22 }}>
-          <p>
-            In the long run, this is about more than any one report. As more purchasing
-            decisions route through AI-mediated search, the builders who understand both their
-            visibility and their real competitive gaps (cluster by cluster, feature by feature)
-            will win customers they never had to chase.
-          </p>
-          <p style={{ fontStyle: "italic" }}>
-            AgenticLib is the intelligence layer for AI agent builders.
+            This is what comparison intelligence means in practice: not a static report, but a
+            working tool that turns real LLM data into a decision-making layer for every stage of
+            product growth.
           </p>
         </div>
 
