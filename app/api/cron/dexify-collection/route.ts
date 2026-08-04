@@ -64,6 +64,18 @@ function parseBrands(raw: string): string[] {
   return parsed.brands.filter((b: unknown) => typeof b === "string" && b.length > 0);
 }
 
+async function withRetry<T>(fn: () => Promise<T>, retries = 2, delayMs = 1000): Promise<T> {
+  for (let attempt = 0; attempt <= retries; attempt++) {
+    try {
+      return await fn();
+    } catch (err) {
+      if (attempt === retries) throw err;
+      await new Promise((r) => setTimeout(r, delayMs * Math.pow(2, attempt)));
+    }
+  }
+  throw new Error("unreachable");
+}
+
 async function runWithConcurrency<T>(
   tasks:       (() => Promise<T>)[],
   concurrency: number,
@@ -115,9 +127,9 @@ export async function GET(request: Request) {
 
         tasks.push(async () => {
           try {
-            const result = model === "claude-haiku-4-5"
-              ? await callClaude(p.text)
-              : await callGPT(p.text);
+            const result = await withRetry(() =>
+              model === "claude-haiku-4-5" ? callClaude(p.text) : callGPT(p.text)
+            );
 
             const brands = parseBrands(result.text);
 
