@@ -200,30 +200,17 @@ export default function Home() {
               className="text-[28px] sm:text-[36px] md:text-[54px] lg:text-[64px] mb-5"
               style={{ color: "#000000", fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.08 }}
             >
-              Comparison intelligence for the{" "}
+              Comparison intelligence for{" "}
               <span style={{ display: "inline-block", background: "linear-gradient(95deg, #6B4FBB 15%, #E8447A 85%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", paddingBottom: "0.15em" }}>
-                AI agent era
+                AI Agent Builders
               </span>
             </h1>
 
               {/* Subhead */}
-              <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 15, fontWeight: 700, letterSpacing: ".22em", color: "#C2186A", margin: "40px 0 10px" }}>FOR AI AGENT BUILDERS</p>
-              <p className="hero-subhead text-base md:text-lg mx-auto" style={{ color: "#000000", maxWidth: "520px", lineHeight: 1.35, marginTop: "0", fontWeight: 700 }}>
+              <p className="hero-subhead text-base md:text-lg mx-auto" style={{ color: "#000000", maxWidth: "520px", lineHeight: 1.35, marginTop: "40px", fontWeight: 700 }}>
                 Get an edge on your product feature growth, know your competitive landscape and scale in LLM visibility to show up where your buyers are asking.
               </p>
 
-              {/* CTA */}
-              <div className="flex items-center justify-center gap-3 mt-10 mb-0">
-                <a
-                  href="/ai-agent-builders"
-                  className="inline-flex items-center gap-2 font-semibold transition-all"
-                  style={{ background: "rgba(124,58,237,0.18)", border: "1.5px solid rgba(124,58,237,0.35)", borderRadius: 9999, padding: "14px 28px", fontSize: "15px", textDecoration: "none", letterSpacing: "-0.01em", color: "#000000", fontWeight: 600 }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.28)"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.18)"; }}
-                >
-                  Get Started <span aria-hidden>›</span>
-                </a>
-              </div>
 
 
           </div>
