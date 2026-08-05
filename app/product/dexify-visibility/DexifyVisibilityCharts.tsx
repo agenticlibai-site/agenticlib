@@ -121,7 +121,7 @@ const SENTIMENT_CLUSTERS: { tag: string; label: string }[] = [
   { tag: "client-comms", label: "Inbound & Client Comms" },
 ];
 
-const SENTIMENT_GATE = 3;
+const SENTIMENT_GATE = 1;
 
 // ── Props ──────────────────────────────────────────────────────────────────────
 interface Props {
