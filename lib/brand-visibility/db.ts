@@ -2439,7 +2439,7 @@ export async function getDexifySentimentData(): Promise<{
     dual_model_dates: number; earliest_date: string | null; latest_date: string | null;
   };
 
-  if ((meta.dual_model_dates ?? 0) < 3) {
+  if ((meta.dual_model_dates ?? 0) < 1) {
     return { rows: [], meta };
   }
 
