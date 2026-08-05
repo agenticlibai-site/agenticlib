@@ -1,6 +1,7 @@
 import { sql } from "@vercel/postgres";
 import { initDexifyDB } from "@/lib/brand-visibility/db";
 import { DEXIFY_PROMPTS } from "@/lib/brand-visibility/dexify-prompts";
+import { LOCKED_DEXIFY_BRANDS } from "@/lib/brand-visibility/dexify-features";
 import { sendEmail } from "@/lib/email";
 
 export const dynamic    = "force-dynamic";
@@ -63,6 +64,61 @@ export async function GET(request: Request) {
     `;
 
     const brandsWritten = upsertResult.rows.length;
+
+    // ── Canonicalize brand names ──────────────────────────────────────────────
+    // LLMs sometimes return case variants (e.g. "SimPRO" vs "simPRO").
+    // Merge any case variants into the locked canonical form so the dashboard
+    // never shows two rows for the same brand.
+    for (const canonical of LOCKED_DEXIFY_BRANDS) {
+      const lower = canonical.toLowerCase();
+
+      // Step 1: Where both canonical and variant exist for the same
+      //         (date, model, cluster_tag), add mention counts into canonical.
+      await sql`
+        UPDATE dexify_daily_summary main
+        SET
+          mention_count = main.mention_count + v.mention_count,
+          avg_position  = CASE
+            WHEN (main.mention_count + v.mention_count) > 0
+            THEN (COALESCE(main.avg_position, 1) * main.mention_count
+                  + COALESCE(v.avg_position, 1) * v.mention_count)
+                 / (main.mention_count + v.mention_count)
+            ELSE main.avg_position
+          END
+        FROM dexify_daily_summary v
+        WHERE main.date          = ${today}::date
+          AND main.brand         = ${canonical}
+          AND v.date             = ${today}::date
+          AND LOWER(v.brand)     = ${lower}
+          AND v.brand           != ${canonical}
+          AND main.model         = v.model
+          AND main.cluster_tag   = v.cluster_tag
+      `;
+
+      // Step 2: Rename variant → canonical where no canonical row existed.
+      await sql`
+        UPDATE dexify_daily_summary
+        SET brand = ${canonical}
+        WHERE date          = ${today}::date
+          AND LOWER(brand)  = ${lower}
+          AND brand        != ${canonical}
+          AND NOT EXISTS (
+            SELECT 1 FROM dexify_daily_summary d2
+            WHERE d2.date        = ${today}::date
+              AND d2.brand       = ${canonical}
+              AND d2.model       = dexify_daily_summary.model
+              AND d2.cluster_tag = dexify_daily_summary.cluster_tag
+          )
+      `;
+
+      // Step 3: Delete any remaining variant rows (already merged in step 1).
+      await sql`
+        DELETE FROM dexify_daily_summary
+        WHERE date         = ${today}::date
+          AND LOWER(brand) = ${lower}
+          AND brand       != ${canonical}
+      `;
+    }
 
     const RUNS_PER_PROMPT   = 3;
     const EXPECTED_RAW      = DEXIFY_PROMPTS.length * RUNS_PER_PROMPT * 2;

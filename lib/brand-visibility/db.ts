@@ -2346,7 +2346,7 @@ export async function getDexifySentimentResponsesForWeek(weekStart: string, week
   const result = await sql`
     SELECT brand_name, bucket_tag, sentiment, confidence, descriptors, parse_error
     FROM dexify_sentiment_responses
-    WHERE run_date >= ${weekStart}::date AND run_date < ${weekEnd}::date
+    WHERE run_date >= ${weekStart}::date AND run_date <= ${weekEnd}::date
     ORDER BY brand_name, bucket_tag, run_date
   `;
   return result.rows as {
