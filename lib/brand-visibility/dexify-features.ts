@@ -263,14 +263,13 @@ export function computeDexifyScore(rows: FeatureRunRow[]): DexifyScoreResult {
   let grounded_source = false;
 
   if (gnd && gnd.capability !== "not_documented") {
-    if (CAP_RANK[gnd.capability] > CAP_RANK[cap]) {
-      cap  = gnd.capability;
-      conf = gnd.confidence;
-      grounded_source = true;
-    } else if (gnd.capability === cap && gnd.confidence === "high") {
-      conf = "high";
-      grounded_source = true;
-    }
+    // Grounded (web-search-backed) evidence is authoritative and overrides
+    // ungrounded consensus in BOTH directions — upgrade or downgrade.
+    // This prevents GPT hallucinating "yes/high" for small brands from
+    // overwhelming a Claude grounded "partial" that found real documentation.
+    cap  = gnd.capability;
+    conf = gnd.confidence;
+    grounded_source = true;
   }
 
   const scoreMap: Record<HasCapability, Record<Confidence, number>> = {
@@ -287,15 +286,17 @@ export function computeDexifyScore(rows: FeatureRunRow[]): DexifyScoreResult {
     : score >= 40   ? "medium"
     : "low";
 
-  const disagreement    = std.total > 0 && std.agreeing < Math.ceil(std.total / 2);
-  const allParseErrors  = rows.every((r) => r.parse_error);
-  const lowConfHighCap  = cap === "yes" && conf === "low" && !grounded_source;
+  const disagreement        = std.total > 0 && std.agreeing < Math.ceil(std.total / 2);
+  const allParseErrors      = rows.every((r) => r.parse_error);
+  const lowConfHighCap      = cap === "yes" && conf === "low" && !grounded_source;
+  const groundedDowngraded  = grounded_source && gnd !== null && CAP_RANK[gnd.capability] < CAP_RANK[std.capability];
 
-  const flagged    = disagreement || allParseErrors || lowConfHighCap;
+  const flagged    = disagreement || allParseErrors || lowConfHighCap || groundedDowngraded;
   const flag_reason =
-    allParseErrors    ? "all_parse_errors"
-    : disagreement    ? "model_disagreement"
-    : lowConfHighCap  ? "low_confidence_yes"
+    allParseErrors      ? "all_parse_errors"
+    : groundedDowngraded ? "grounded_downgrade"   // grounded found less than LLM claimed
+    : disagreement      ? "model_disagreement"
+    : lowConfHighCap    ? "low_confidence_yes"
     : null;
 
   return {
