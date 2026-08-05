@@ -33,6 +33,15 @@ const CLUSTERS: { tag: string; label: string; description: string }[] = [
   { tag: "dexify-client-comms", label: "Inbound & Client Communication",   description: "AI receptionist and quote follow-up" },
 ];
 
+// All clusters including general (used for feature scores section)
+const ALL_CLUSTERS: { tag: string; label: string }[] = [
+  { tag: "dexify-general",      label: "General Discovery" },
+  { tag: "dexify-voice-quote",  label: "Voice-to-Quote Agent" },
+  { tag: "dexify-post-job",     label: "Post-Job Admin & Invoicing" },
+  { tag: "dexify-compliance",   label: "Compliance & Documentation" },
+  { tag: "dexify-client-comms", label: "Inbound & Client Communication" },
+];
+
 // ── Empty state ────────────────────────────────────────────────────────────────
 function EmptyState({ label }: { label: string }) {
   return (
@@ -340,75 +349,98 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
           <EmptyState label="Feature scores arrive after the first 7:45 AM UTC aggregate run" />
         </div>
       ) : (
-        CLUSTERS.map((cluster) => {
+        ALL_CLUSTERS.map((cluster) => {
           const clusterFeatures = DEXIFY_FEATURES.filter((f) => f.feature_tag === cluster.tag);
           const clusterScores   = featureScores.filter((s) => s.feature_tag === cluster.tag);
-
-          if (clusterScores.length === 0) return null;
-
-          const brandsInCluster = [...new Set(clusterScores.map((s) => s.brand_name))];
-          const scoreMap = new Map(clusterScores.map((s) => [`${s.brand_name}::${s.feature_id}`, s]));
+          if (clusterFeatures.length === 0 || clusterScores.length === 0) return null;
 
           return (
             <div key={cluster.tag} style={{
               background: "#fff", borderRadius: 14,
               border: "1px solid rgba(0,0,0,0.07)",
-              padding: "20px 28px", marginBottom: 16,
+              padding: "28px", marginBottom: 20,
             }}>
-              <h3 style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
+              {/* Cluster heading */}
+              <p style={{
+                fontFamily: "var(--font-space-mono, monospace)",
+                fontSize: 12, fontWeight: 700, letterSpacing: "0.14em",
+                textTransform: "uppercase" as const,
+                color: "#2563EB", margin: "0 0 24px",
+              }}>
                 {cluster.label}
-              </h3>
-              <p style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", margin: "0 0 16px" }}>
-                {cluster.description}
               </p>
 
-              <div style={{ overflowX: "auto" }}>
-                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-                  <thead>
-                    <tr>
-                      <th style={{ textAlign: "left", padding: "6px 12px 6px 0", fontWeight: 700, color: "#000", borderBottom: "2px solid rgba(0,0,0,0.08)", whiteSpace: "nowrap" }}>
-                        Brand
-                      </th>
-                      {clusterFeatures.map((f) => (
-                        <th key={f.feature_id} style={{ textAlign: "center", padding: "6px 12px", fontWeight: 700, color: "#000", borderBottom: "2px solid rgba(0,0,0,0.08)", whiteSpace: "nowrap", fontSize: 12 }}>
-                          {f.feature_name.split(" ").slice(0, 4).join(" ")}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {brandsInCluster.map((brand, i) => (
-                      <tr key={brand} style={{ background: i % 2 === 0 ? "transparent" : "rgba(0,0,0,0.018)" }}>
-                        <td style={{ padding: "8px 12px 8px 0", fontWeight: 600, color: "#000", whiteSpace: "nowrap" }}>
-                          {brand}
-                        </td>
-                        {clusterFeatures.map((f) => {
-                          const s = scoreMap.get(`${brand}::${f.feature_id}`);
+              <div style={{ display: "flex", flexDirection: "column" as const, gap: 32 }}>
+                {clusterFeatures.map((feature, fi) => {
+                  const featureRows = clusterScores
+                    .filter((s) => s.feature_id === feature.feature_id)
+                    .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+                  if (featureRows.length === 0) return null;
+
+                  return (
+                    <div key={feature.feature_id}>
+                      {/* Feature name + definition */}
+                      <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
+                        {feature.feature_name}
+                      </p>
+                      <p style={{ fontSize: 13, color: "#2563EB", margin: "0 0 18px", lineHeight: 1.5 }}>
+                        {feature.description}
+                      </p>
+
+                      {/* Brand rows */}
+                      <div style={{ display: "flex", flexDirection: "column" as const, gap: 16 }}>
+                        {featureRows.map((row) => {
+                          const score   = row.score ?? 0;
+                          const barColor = row.score_band === "high" ? "#16a34a"
+                            : row.score_band === "medium" ? "#d97706"
+                            : "#dc2626";
+                          const cleanEvidence = row.evidence
+                            ? row.evidence.replace(/<cite[^>]*>|<\/cite>/g, "").trim()
+                            : null;
+
                           return (
-                            <td key={f.feature_id} style={{ padding: "8px 12px", textAlign: "center" }}>
-                              {s ? (
-                                <div title={s.evidence ?? undefined}>
-                                  <ScorePill band={s.score_band} score={s.score} />
+                            <div key={row.brand_name}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: cleanEvidence ? 6 : 0 }}>
+                                <span style={{ fontSize: 13, fontWeight: 600, color: "#000", width: 140, flexShrink: 0 }}>
+                                  {row.brand_name}
+                                </span>
+                                <div style={{
+                                  flex: 1, height: 10, borderRadius: 999,
+                                  background: "rgba(0,0,0,0.06)", overflow: "hidden",
+                                }}>
+                                  <div style={{
+                                    width: `${score}%`, height: "100%",
+                                    background: barColor, borderRadius: 999,
+                                    transition: "width 0.4s ease",
+                                  }} />
                                 </div>
-                              ) : (
-                                <span style={{ color: "rgba(0,0,0,0.2)", fontSize: 13 }}>–</span>
+                                <span style={{
+                                  fontSize: 14, fontWeight: 700, color: barColor,
+                                  width: 32, textAlign: "right" as const, flexShrink: 0,
+                                  fontVariantNumeric: "tabular-nums",
+                                }}>
+                                  {score}
+                                </span>
+                              </div>
+                              {cleanEvidence && (
+                                <p style={{
+                                  fontSize: 12, color: "rgba(0,0,0,0.5)", lineHeight: 1.65,
+                                  margin: 0, paddingLeft: 152,
+                                }}>
+                                  {cleanEvidence}
+                                </p>
                               )}
-                            </td>
+                            </div>
                           );
                         })}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                      </div>
 
-              <div style={{ marginTop: 12, display: "flex", gap: 16, flexWrap: "wrap" as const }}>
-                {[["#16a34a", "High (80–100)"], ["#d97706", "Medium (40–79)"], ["#dc2626", "Low (0–39)"], ["rgba(0,0,0,0.18)", "Not documented"]].map(([color, label]) => (
-                  <div key={label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11, color: "rgba(0,0,0,0.5)" }}>
-                    <span style={{ display: "inline-block", width: 10, height: 10, borderRadius: 2, background: color }} />
-                    {label}
-                  </div>
-                ))}
+                      {fi < clusterFeatures.length - 1 && (
+                        <div style={{ marginTop: 28, borderTop: "1px solid rgba(0,0,0,0.06)" }} />
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           );
