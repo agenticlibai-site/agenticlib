@@ -45,6 +45,7 @@ export interface DexifyFeature {
   feature_id:   string;
   feature_tag:  string;  // matches dexify cluster tag
   feature_name: string;
+  description:  string;  // one-liner shown in the dashboard under the feature name
   prompt:       string;  // [BRAND], [GROUNDING INSTRUCTION], [JSON OUTPUT] substituted at runtime
 }
 
@@ -55,6 +56,7 @@ export const DEXIFY_FEATURES: DexifyFeature[] = [
     feature_id:   "tradie_selfserve_onboarding",
     feature_tag:  "dexify-general",
     feature_name: "Self-serve setup with no IT or technical help needed",
+    description:  "Whether a non-technical tradie can sign up, configure, and start using the platform independently within a day — no developer or IT support required.",
     prompt: `As a sole trader or small trade business owner with no IT support or technical background, can I set up and use [BRAND] myself — without developer assistance, complex configuration, or a multi-week onboarding process? Does [BRAND] offer a self-serve setup that a non-technical tradie can complete and start using independently within a day?
 [GROUNDING INSTRUCTION]
 Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
@@ -66,6 +68,7 @@ Return only the JSON object below. Do not include any explanation, markdown form
     feature_id:   "voice_to_quote_generation",
     feature_tag:  "dexify-voice-quote",
     feature_name: "Spoken job description to formatted customer quote, no typing",
+    description:  "Converts a spoken on-site job description into a formatted customer quote automatically — no typing, no office visit, sendable immediately.",
     prompt: `I'm on a job site and want to describe what needs to be done by speaking into my phone — and have [BRAND] automatically generate a formatted quote I can send to the client immediately, without typing anything or going back to the office. Does [BRAND] support generating a customer-facing quote directly from a spoken voice description of the job, with the AI handling the structuring and pricing?
 [GROUNDING INSTRUCTION]
 Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
@@ -75,6 +78,7 @@ Return only the JSON object below. Do not include any explanation, markdown form
     feature_id:   "branded_pdf_quote_output",
     feature_tag:  "dexify-voice-quote",
     feature_name: "Quote delivered as a professional branded PDF",
+    description:  "Produces a client-facing PDF with the business's logo, name, contact details, and itemised scope — ready to send directly without reformatting.",
     prompt: `When [BRAND] generates a quote for a trade job, does it produce a professional, customer-facing PDF that includes the business's branding — logo, business name, contact details, and itemised job scope — ready to send directly to the client without reformatting? Not an internal cost estimate, but a document the client receives as a formal quote.
 [GROUNDING INSTRUCTION]
 Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
@@ -86,6 +90,7 @@ Return only the JSON object below. Do not include any explanation, markdown form
     feature_id:   "auto_invoice_on_job_completion",
     feature_tag:  "dexify-post-job",
     feature_name: "Invoice triggered and sent automatically when job is done, no manual entry",
+    description:  "Generates and sends an invoice automatically when a job is marked complete — no post-job data entry required from the tradie.",
     prompt: `When I finish a job, I want [BRAND] to automatically generate and send an invoice to my client without me manually entering job details, hours, or materials after the fact. Does [BRAND] trigger invoice creation and delivery automatically when a job is marked complete — with no manual data entry required from the tradie?
 [GROUNDING INSTRUCTION]
 Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
@@ -95,6 +100,7 @@ Return only the JSON object below. Do not include any explanation, markdown form
     feature_id:   "payment_link_in_invoice",
     feature_tag:  "dexify-post-job",
     feature_name: "Invoice includes online payment link for immediate client payment",
+    description:  "The auto-generated invoice includes a direct payment link so clients can pay on receipt — closing the loop from job done to payment collected without manual chasing.",
     prompt: `Does [BRAND]'s automatically generated invoice include a direct online payment link so the client can pay immediately on receipt — without the tradie needing to follow up or manage a separate payment step? Does the system close the loop from job completion to payment collected without manual chasing?
 [GROUNDING INSTRUCTION]
 Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
@@ -106,6 +112,7 @@ Return only the JSON object below. Do not include any explanation, markdown form
     feature_id:   "swms_auto_generation",
     feature_tag:  "dexify-compliance",
     feature_name: "AI generates Australian SWMS document automatically from job details",
+    description:  "Auto-generates an Australian Safe Work Method Statement (SWMS) from job details or a spoken description — no manual writing required.",
     prompt: `Australian tradespeople are required to produce a Safe Work Method Statement (SWMS) before starting high-risk construction work. Can [BRAND] automatically generate a SWMS for a job — from either a spoken description or existing job details in the system — without the tradie writing it manually? This is specifically the Australian SWMS compliance document, not a generic risk assessment.
 [GROUNDING INSTRUCTION]
 Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
@@ -115,6 +122,7 @@ Return only the JSON object below. Do not include any explanation, markdown form
     feature_id:   "voice_to_site_report",
     feature_tag:  "dexify-compliance",
     feature_name: "Voice description on site to structured compliance or site report",
+    description:  "Converts a spoken on-site description into structured site reports, safety observations, or completion sign-offs — no writing required.",
     prompt: `On site, I want to describe a job, hazard, or inspection outcome by speaking into my phone and have [BRAND] produce the required documentation automatically — site reports, safety observations, or completion sign-offs — without me writing anything. Does [BRAND] convert voice input directly into structured, shareable site documentation for trade work?
 [GROUNDING INSTRUCTION]
 Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
@@ -126,6 +134,7 @@ Return only the JSON object below. Do not include any explanation, markdown form
     feature_id:   "ai_inbound_enquiry_handling",
     feature_tag:  "dexify-client-comms",
     feature_name: "AI agent responds to and qualifies new client enquiries automatically",
+    description:  "AI agent handles inbound phone, message, or web enquiries end-to-end — responding, capturing job details, and booking or routing to the tradie without real-time manual involvement.",
     prompt: `When a potential client contacts my trade business — by phone, message, or web form — I want [BRAND] to handle the initial enquiry automatically: respond immediately, capture the job details, and either book a time or route the enquiry to me with a summary, without me needing to be available or respond manually in real time. Does [BRAND] provide an AI agent that handles inbound client enquiries for a trade business end-to-end, not just a chatbot widget?
 [GROUNDING INSTRUCTION]
 Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
@@ -135,6 +144,7 @@ Return only the JSON object below. Do not include any explanation, markdown form
     feature_id:   "quote_followup_automation",
     feature_tag:  "dexify-client-comms",
     feature_name: "Automatic follow-up sent on behalf of tradie after quote is sent",
+    description:  "Sends a follow-up message to the client automatically after a set number of days — the agent handles the communication itself, not just a reminder to the tradie.",
     prompt: `After I send a quote to a client, I often lose the job because I'm too busy to follow up manually. Does [BRAND] automatically send a follow-up message to the client on my behalf — after a set number of days — to check if they want to proceed, without me needing to remember or initiate it? The agent should handle the follow-up communication itself, not just remind me to do it.
 [GROUNDING INSTRUCTION]
 Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
