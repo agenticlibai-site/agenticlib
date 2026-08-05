@@ -78,8 +78,10 @@ async function callClaudeGroundedSentiment(brandName: string, bucketTag: string)
     tools:      [{ type: "web_search_20250305" as const, name: "web_search" as const }],
     messages:   [{ role: "user", content: searchMsg }],
   });
+  // Concatenate ALL text blocks — the JSON may appear in any block when web
+  // search is active, not necessarily the last one.
   const textBlocks = res.content.filter((b): b is Anthropic.TextBlock => b.type === "text");
-  return textBlocks[textBlocks.length - 1]?.text ?? "";
+  return textBlocks.map((b) => b.text).join("\n\n");
 }
 
 function needsSentimentGrounding(confidence: string | null, parseError: boolean): boolean {
@@ -110,8 +112,22 @@ function parseSentimentResponse(raw: string): {
   parseError:  boolean;
 } {
   try {
-    const cleaned = raw.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
-    const obj = JSON.parse(cleaned);
+    let jsonStr = raw.trim();
+
+    // Strategy 1: extract from a ```json ... ``` block anywhere in the string.
+    // Grounded responses include prose before/after the code block.
+    const codeBlock = jsonStr.match(/```(?:json)?\s*([\s\S]*?)```/i);
+    if (codeBlock) {
+      jsonStr = codeBlock[1].trim();
+    } else {
+      // Strategy 2: strip a leading/trailing top-level fence (GPT structured output).
+      jsonStr = jsonStr.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
+      // Strategy 3: extract the first balanced JSON object from prose.
+      const objMatch = jsonStr.match(/\{[\s\S]*\}/);
+      if (objMatch) jsonStr = objMatch[0];
+    }
+
+    const obj = JSON.parse(jsonStr);
     const descriptors = Array.isArray(obj.descriptors)
       ? (obj.descriptors as unknown[]).filter((d): d is string => typeof d === "string")
       : null;
@@ -259,6 +275,17 @@ export async function GET(request: Request) {
             const { sentiment, confidence, descriptors, limitations, parsed, parseError } =
               parseSentimentResponse(rawText);
 
+            // Only write grounded result when it successfully parsed — a failed
+            // grounded parse must NOT overwrite the valid standard response via
+            // ON CONFLICT DO UPDATE.
+            if (parseError) {
+              console.warn(
+                `[dexify-sentiment-collection] grounding parse failed for ${brandName}/${bucketTag} — keeping standard result`,
+              );
+              groundingFailed++;
+              return;
+            }
+
             await insertDexifySentimentResponse({
               brand_name:  brandName,
               prompt_id:   cluster.prompt_id,
@@ -269,10 +296,8 @@ export async function GET(request: Request) {
               confidence,
               descriptors,
               limitations,
-              raw_json:    parseError
-                ? { raw: rawText.slice(0, 2000), grounded: true }
-                : { ...(parsed as object), grounded: true },
-              parse_error: parseError,
+              raw_json:    { ...(parsed as object), grounded: true },
+              parse_error: false,
             });
             groundingRan++;
           } catch (err) {
