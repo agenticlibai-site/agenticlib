@@ -122,14 +122,6 @@ interface SentimentData {
   meta: { dual_model_dates: number; earliest_date: string | null; latest_date: string | null };
 }
 
-const SENTIMENT_CLUSTERS: { tag: string; label: string }[] = [
-  { tag: "overall",      label: "Overall" },
-  { tag: "voice-quote",  label: "Voice-to-Quote" },
-  { tag: "post-job",     label: "Post-Job Admin" },
-  { tag: "compliance",   label: "Compliance & Documentation" },
-  { tag: "client-comms", label: "Inbound & Client Comms" },
-];
-
 const SENTIMENT_GATE = 1;
 
 // ── Props ──────────────────────────────────────────────────────────────────────
@@ -450,44 +442,33 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
       {/* ── Sentiment Analysis ────────────────────────────────────────────── */}
       {(() => {
         const { rows: sentimentRows, meta: sentimentMeta } = sentimentData;
-        const daysHave = sentimentMeta.dual_model_dates ?? 0;
-        const ready    = daysHave >= SENTIMENT_GATE;
+        const ready = (sentimentMeta.dual_model_dates ?? 0) >= SENTIMENT_GATE;
 
-        // Build global descriptor frequency to highlight unique descriptors
+        const overallBrands = sentimentRows
+          .filter((r) => r.bucket_tag === "overall")
+          .sort((a, b) => b.positive_count - a.positive_count);
+
         const globalDescFreq = new Map<string, number>();
-        for (const row of sentimentRows) {
+        for (const row of overallBrands) {
           for (const d of (row.top_descriptors ?? [])) {
             globalDescFreq.set(d, (globalDescFreq.get(d) ?? 0) + 1);
           }
         }
 
-        function sentimentDateLabel() {
-          const e = sentimentMeta.earliest_date;
-          const l = sentimentMeta.latest_date;
-          if (!e || !l) return "";
-          const fmt = (d: string) =>
-            new Date(d + "T00:00:00Z").toLocaleDateString("en-AU", { month: "short", day: "numeric", timeZone: "UTC" });
-          return e === l ? fmt(e) : `${fmt(e)} – ${fmt(l)}`;
-        }
+        const e = sentimentMeta.earliest_date;
+        const l = sentimentMeta.latest_date;
+        const fmt = (d: string) =>
+          new Date(d + "T00:00:00Z").toLocaleDateString("en-AU", { month: "short", day: "numeric", timeZone: "UTC" });
+        const dateLabel = e && l ? (e === l ? fmt(e) : `${fmt(e)} – ${fmt(l)}`) : "";
 
         return (
           <div style={{ marginTop: 32, marginBottom: 4 }}>
             <div style={{ marginBottom: 16 }}>
               <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
                 Sentiment Analysis
-                {!ready && (
-                  <span style={{
-                    marginLeft: 10, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
-                    textTransform: "uppercase" as const, color: "#EA580C",
-                    background: "rgba(234,88,12,0.10)", borderRadius: 999, padding: "3px 9px",
-                    verticalAlign: "middle",
-                  }}>
-                    Collecting
-                  </span>
-                )}
               </h2>
               <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", margin: 0 }}>
-                How LLMs perceive each brand across Dexify&apos;s five tradie use case clusters — updated daily
+                How Claude Haiku and GPT-4o-mini describe each brand overall{dateLabel ? ` · ${dateLabel}` : ""}
               </p>
             </div>
 
@@ -496,95 +477,63 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
               border: "1px solid rgba(0,0,0,0.07)",
               padding: "24px 28px", marginBottom: 20,
             }}>
-              {!ready ? (
-                <div style={{ textAlign: "center" as const, padding: "16px 0" }}>
-                  <p style={{ fontSize: 15, fontWeight: 600, color: "#000", marginBottom: 8 }}>
-                    Collecting data: {daysHave} of {SENTIMENT_GATE} minimum days
-                  </p>
-                  <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", maxWidth: 400, margin: "0 auto" }}>
-                    Sentiment bars appear once both Claude Haiku and GPT-4o-mini have collected on {SENTIMENT_GATE} separate days.
-                    {daysHave > 0 && ` Check back in ${SENTIMENT_GATE - daysHave} day${SENTIMENT_GATE - daysHave !== 1 ? "s" : ""}.`}
-                  </p>
-                </div>
+              {!ready || overallBrands.length === 0 ? (
+                <EmptyState label="Collecting sentiment data" />
               ) : (
                 <div>
-                  <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", marginBottom: 24 }}>
-                    How Claude Haiku and GPT-4o-mini describe each brand · {sentimentDateLabel()}
-                  </p>
-
-                  {SENTIMENT_CLUSTERS.map((cluster) => {
-                    const brands = sentimentRows
-                      .filter((r) => r.bucket_tag === cluster.tag)
-                      .sort((a, b) => b.positive_count - a.positive_count);
-                    if (brands.length === 0) return null;
-
-                    return (
-                      <div key={cluster.tag} style={{ marginBottom: 28 }}>
-                        <p style={{
-                          fontSize: 12, fontWeight: 700, letterSpacing: "0.07em",
-                          textTransform: "uppercase" as const, color: ACCENT, marginBottom: 14,
-                        }}>
-                          {cluster.label}
-                        </p>
-                        <div style={{ display: "flex", flexDirection: "column" as const, gap: 14 }}>
-                          {brands.map((brand) => {
-                            const total  = brand.total_count || 1;
-                            const posPct = Math.round((brand.positive_count / total) * 100);
-                            const neuPct = Math.round((brand.neutral_count  / total) * 100);
-                            const negPct = 100 - posPct - neuPct;
-                            const descriptors = [...new Set(brand.top_descriptors ?? [])].slice(0, 4);
-                            return (
-                              <div key={brand.brand_name}>
-                                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-                                  <span style={{
-                                    fontSize: 13, fontWeight: 600, color: "#000",
-                                    width: 148, flexShrink: 0, lineHeight: 1.25,
+                  <div style={{ display: "flex", flexDirection: "column" as const, gap: 16 }}>
+                    {overallBrands.map((brand) => {
+                      const total  = brand.total_count || 1;
+                      const posPct = Math.round((brand.positive_count / total) * 100);
+                      const neuPct = Math.round((brand.neutral_count  / total) * 100);
+                      const negPct = 100 - posPct - neuPct;
+                      const descriptors = [...new Set(brand.top_descriptors ?? [])].slice(0, 5);
+                      return (
+                        <div key={brand.brand_name}>
+                          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: descriptors.length > 0 ? 6 : 0 }}>
+                            <span style={{ fontSize: 13, fontWeight: 600, color: "#000", width: 140, flexShrink: 0 }}>
+                              {brand.brand_name}
+                            </span>
+                            <div style={{
+                              flex: 1, height: 10, borderRadius: 999,
+                              background: "rgba(0,0,0,0.06)", overflow: "hidden", display: "flex",
+                            }}>
+                              {posPct > 0 && <div style={{ width: `${posPct}%`, height: "100%", background: "#16a34a" }} />}
+                              {neuPct > 0 && <div style={{ width: `${neuPct}%`, height: "100%", background: "#d97706" }} />}
+                              {negPct > 0 && <div style={{ width: `${negPct}%`, height: "100%", background: "#dc2626" }} />}
+                            </div>
+                            <span style={{
+                              fontSize: 14, fontWeight: 700, color: "#16a34a",
+                              width: 36, textAlign: "right" as const, flexShrink: 0,
+                              fontVariantNumeric: "tabular-nums",
+                            }}>
+                              {posPct}%
+                            </span>
+                          </div>
+                          {descriptors.length > 0 && (
+                            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 5, paddingLeft: 152 }}>
+                              {descriptors.map((d, i) => {
+                                const unique = (globalDescFreq.get(d) ?? 0) === 1;
+                                return (
+                                  <span key={i} style={{
+                                    fontSize: 12,
+                                    color: unique ? "#2563eb" : "rgba(0,0,0,0.55)",
+                                    background: unique ? "rgba(37,99,235,0.07)" : "rgba(0,0,0,0.04)",
+                                    border: `1px solid ${unique ? "rgba(37,99,235,0.2)" : "rgba(0,0,0,0.07)"}`,
+                                    borderRadius: 4, padding: "2px 7px", fontWeight: unique ? 600 : 400,
                                   }}>
-                                    {brand.brand_name}
+                                    {d}
                                   </span>
-                                  <div style={{
-                                    flex: 1, height: 8, borderRadius: 999,
-                                    background: "rgba(0,0,0,0.06)", overflow: "hidden", display: "flex",
-                                  }}>
-                                    {posPct > 0 && <div style={{ width: `${posPct}%`, height: "100%", background: "#16a34a" }} />}
-                                    {neuPct > 0 && <div style={{ width: `${neuPct}%`, height: "100%", background: "#d97706" }} />}
-                                    {negPct > 0 && <div style={{ width: `${negPct}%`, height: "100%", background: "#dc2626" }} />}
-                                  </div>
-                                  <span style={{
-                                    fontSize: 13, fontWeight: 700, color: "#16a34a",
-                                    width: 34, textAlign: "right" as const, flexShrink: 0,
-                                    fontVariantNumeric: "tabular-nums",
-                                  }}>
-                                    {posPct}%
-                                  </span>
-                                </div>
-                                {descriptors.length > 0 && (
-                                  <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 5, paddingLeft: 158 }}>
-                                    {descriptors.map((d, i) => {
-                                      const unique = (globalDescFreq.get(d) ?? 0) === 1;
-                                      return (
-                                        <span key={i} style={{
-                                          fontSize: 12,
-                                          color: unique ? "#2563eb" : "#000",
-                                          background: unique ? "rgba(37,99,235,0.08)" : "rgba(0,0,0,0.04)",
-                                          border: `1px solid ${unique ? "rgba(37,99,235,0.25)" : "rgba(0,0,0,0.08)"}`,
-                                          borderRadius: 4, padding: "2px 7px", fontWeight: unique ? 600 : 400,
-                                        }}>
-                                          {d}
-                                        </span>
-                                      );
-                                    })}
-                                  </div>
-                                )}
-                              </div>
-                            );
-                          })}
+                                );
+                              })}
+                            </div>
+                          )}
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
 
-                  <div style={{ display: "flex", gap: 16, borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 12, marginTop: 4, flexWrap: "wrap" as const }}>
+                  <div style={{ display: "flex", gap: 16, borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 12, marginTop: 20, flexWrap: "wrap" as const }}>
                     {[["#16a34a", "Positive"], ["#d97706", "Neutral"], ["#dc2626", "Negative"]].map(([color, label]) => (
                       <div key={label} style={{ display: "flex", alignItems: "center", gap: 5 }}>
                         <div style={{ width: 10, height: 10, borderRadius: 2, background: color, flexShrink: 0 }} />
@@ -592,7 +541,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                       </div>
                     ))}
                     <span style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", marginLeft: "auto" }}>
-                      Both models · updates daily
+                      Both models · updates weekly
                     </span>
                   </div>
                 </div>
