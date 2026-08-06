@@ -291,7 +291,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
           }}>
             <div style={{ marginBottom: 4 }}>
               <div style={{ marginBottom: 2 }}>
-                <h3 style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>
+                <h3 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: 0 }}>
                   {cluster.label}
                 </h3>
               </div>
@@ -355,7 +355,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
               {/* Cluster heading */}
               <p style={{
                 fontFamily: "var(--font-space-mono, monospace)",
-                fontSize: 12, fontWeight: 700, letterSpacing: "0.14em",
+                fontSize: 15, fontWeight: 700, letterSpacing: "0.12em",
                 textTransform: "uppercase" as const,
                 color: "#2563EB", margin: "0 0 24px",
               }}>
