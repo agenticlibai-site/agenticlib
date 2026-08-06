@@ -1,8 +1,6 @@
 name: Dexify Sentiment Aggregate
 
 on:
-  schedule:
-    - cron: '15 6 * * *'
   workflow_dispatch:
 
 jobs:

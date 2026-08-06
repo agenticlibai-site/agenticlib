@@ -1,8 +1,6 @@
 name: Dexify Visibility Aggregate
 
 on:
-  schedule:
-    - cron: '45 3 * * *'
   workflow_dispatch:
 
 jobs:
