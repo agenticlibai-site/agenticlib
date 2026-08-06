@@ -1,8 +1,6 @@
 name: Dexify Visibility Collection (GPT)
 
 on:
-  schedule:
-    - cron: '10 3 * * *'
   workflow_dispatch:
 
 jobs:

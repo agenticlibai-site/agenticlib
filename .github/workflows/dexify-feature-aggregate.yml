@@ -1,8 +1,6 @@
 name: Dexify Feature Aggregate
 
 on:
-  schedule:
-    - cron: '55 4 * * *'
   workflow_dispatch:
 
 jobs:
