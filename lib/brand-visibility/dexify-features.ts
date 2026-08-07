@@ -69,7 +69,9 @@ Return only the JSON object below. Do not include any explanation, markdown form
     feature_tag:  "dexify-voice-quote",
     feature_name: "Spoken job description to formatted customer quote, no typing",
     description:  "Converts a spoken on-site job description into a formatted customer quote automatically — no typing, no office visit, sendable immediately.",
-    prompt: `I'm on a job site and want to describe what needs to be done by speaking into my phone — and have [BRAND] automatically generate a formatted quote I can send to the client immediately, without typing anything or going back to the office. Does [BRAND] support generating a customer-facing quote directly from a spoken voice description of the job, with the AI handling the structuring and pricing?
+    prompt: `I'm on a job site and want to describe what needs to be done by speaking into my phone — and have [BRAND] automatically generate a formatted, client-facing quote from that spoken description, without typing anything or going back to the office. Does [BRAND] support voice-to-quote generation specifically in this sense: the TRADIE speaks a job description (scope, materials, labour) and the platform converts it into a structured quote document the tradie can send to their client?
+
+IMPORTANT — this is NOT the same as AI inbound call handling. Do NOT count [BRAND] as having this capability if its primary voice feature is an AI receptionist that answers incoming customer calls and mentions prices during that call. This feature requires the tradie themselves to initiate a voice description of a job, with no customer on the line, and receive a formatted quote document as output. If [BRAND]'s voice capability is inbound-call-only (AI answering customer enquiries), set has_capability to not_documented for this feature.
 [GROUNDING INSTRUCTION]
 Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
 [JSON OUTPUT]`,
