@@ -117,16 +117,12 @@ export default function CompanyPage() {
                 </svg>
               </a>
               <a
-                href="https://mail.google.com/mail/?view=cm&to=srinidhi.murali@agenticlib.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Email"
-                style={{ display: "flex", alignItems: "center", color: MUTED, flexShrink: 0 }}
+                href="mailto:srinidhi.murali@agenticlib.com"
+                style={{ fontSize: 14, color: MUTED, textDecoration: "none" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.textDecoration = "underline"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.textDecoration = "none"; }}
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="2" y="4" width="20" height="16" rx="2"/>
-                  <path d="m2 7 10 7 10-7"/>
-                </svg>
+                srinidhi.murali@agenticlib.com
               </a>
             </div>
           </div>
