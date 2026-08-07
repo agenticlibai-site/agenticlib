@@ -2253,7 +2253,7 @@ export async function getDexifyFeatureScores(): Promise<{
   brand_name:         string;
   feature_id:         string;
   feature_tag:        string;
-  score:              number;
+  score:              number | null;
   score_band:         string;
   flagged_for_review: boolean;
   evidence:           string | null;
@@ -2286,12 +2286,11 @@ export async function getDexifyFeatureScores(): Promise<{
            be.evidence
     FROM dexify_feature_scores s
     LEFT JOIN best_evidence be ON be.brand_name = s.brand_name AND be.feature_id = s.feature_id
-    WHERE s.score IS NOT NULL
-    ORDER BY s.feature_tag, s.score DESC
+    ORDER BY s.feature_tag, s.score DESC NULLS LAST
   `;
   return result.rows as {
     brand_name: string; feature_id: string; feature_tag: string;
-    score: number; score_band: string; flagged_for_review: boolean;
+    score: number | null; score_band: string; flagged_for_review: boolean;
     evidence: string | null;
   }[];
 }
