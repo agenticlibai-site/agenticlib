@@ -535,7 +535,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
       <h3 style={{ fontSize: 18, fontWeight: 700, color: NAVY, marginBottom: 4, letterSpacing: "-0.01em" }}>
         {cluster.label}
       </h3>
-      <p style={{ fontSize: 15, color: "#000", marginBottom: 16 }}>Share of voice · last 14 days</p>
+      <p style={{ fontSize: 15, color: "#000", marginBottom: 16 }}>Share of voice · last 7 days</p>
       <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
         <div style={{ flexShrink: 0 }}>
           <PieChart width={150} height={150} style={{ overflow: "visible" }}>
