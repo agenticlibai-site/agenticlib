@@ -281,20 +281,6 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
         </p>
       </div>
 
-      {/* ── White-space callout ───────────────────────────────────────────── */}
-      <div style={{
-        background: "linear-gradient(135deg, #f8f4ff 0%, #f0f7ff 100%)",
-        border: "1px solid rgba(99,102,241,0.15)",
-        borderLeft: "3px solid #6366f1",
-        borderRadius: 10,
-        padding: "16px 20px",
-        marginBottom: 20,
-      }}>
-        <p style={{ fontSize: 13.5, lineHeight: 1.65, color: "#1e1b4b", margin: 0 }}>
-          <strong>Unlike sales AI, no tradie AI-agent brand has cracked LLM visibility yet</strong> — every discovery prompt currently defaults to non-AI incumbents like Jobber and QuickBooks. That&apos;s not a competitive gap you need to close, it&apos;s white space nobody&apos;s claimed. In adjacent AI-agent categories, the two tactics that reliably work are narrow, named-competitor comparison content (6sense&apos;s model) and content volume paired with direct confrontation (Highspot&apos;s model) — Dexify has the chance to be the first tradie AI-agent brand to apply either.
-        </p>
-      </div>
-
       {CLUSTERS.map((cluster) => {
         const data = clusterMap[cluster.tag] ?? [];
         return (
@@ -336,95 +322,6 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
           </div>
         );
       })}
-
-      {/* ── LLM Visibility Playbook ──────────────────────────────────────────── */}
-      <div style={{ marginTop: 32, marginBottom: 16 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
-          LLM Visibility Playbook
-        </h2>
-        <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", margin: "0 0 20px" }}>
-          The moves that turn LLM invisibility into first-mover advantage — ranked by expected lift
-        </p>
-
-        {/* Two proven models */}
-        <div style={{ display: "flex", gap: 12, marginBottom: 12, flexWrap: "wrap" as const }}>
-          {([
-            {
-              label: "Model A — 6sense",
-              title: "Named-competitor comparison pages",
-              priority: "Highest impact",
-              priorityColor: "#16a34a",
-              body: "Publish a dedicated ‘Dexify vs [Competitor]’ page for every incumbent — Jobber, ServiceM8, Tradify, simPRO. LLMs are trained on comparison content and retrieve it directly when users ask what alternatives exist. A single well-structured comparison page is worth more training signal than dozens of generic blog posts. Each page should name the competitor in the title, URL slug, and H1, include a feature table, and end with a clear ‘why Dexify’ section. Four pages covers the four tools LLMs currently default to in this space.",
-            },
-            {
-              label: "Model B — Highspot",
-              title: "Own one query cluster with volume",
-              priority: "High impact",
-              priorityColor: "#16a34a",
-              body: "Pick the single query cluster where Dexify has the strongest product story — voice-to-quote is the natural choice — and publish 10–15 pieces all using exactly the same phrase: ‘voice-to-quote AI agent for tradies.’ LLMs learn category labels through repeated co-occurrence; when every piece on a topic uses the same phrase cluster and names Dexify, the model begins associating them. One scattered blog post does nothing. Concentrated volume on one anchor phrase breaks through.",
-            },
-          ] as { label: string; title: string; priority: string; priorityColor: string; body: string }[]).map(({ label, title, priority, priorityColor, body }) => (
-            <div key={label} style={{
-              flex: "1 1 300px",
-              background: "#fff",
-              border: "1px solid rgba(0,0,0,0.08)",
-              borderRadius: 12,
-              padding: "18px 20px",
-            }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(0,0,0,0.35)", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{label}</span>
-                <span style={{ fontSize: 11, fontWeight: 700, color: priorityColor, background: `${priorityColor}18`, padding: "2px 8px", borderRadius: 999 }}>{priority}</span>
-              </div>
-              <p style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: "0 0 8px", lineHeight: 1.3 }}>{title}</p>
-              <p style={{ fontSize: 12.5, lineHeight: 1.65, color: "rgba(0,0,0,0.6)", margin: 0 }}>{body}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Tradie-specific tactics */}
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
-          {([
-            {
-              tag: "Tradie-specific",
-              title: "Hyper-local, trade-specific landing pages",
-              body: "LLMs answer location+trade queries by surfacing whatever content exists for that combination. Create pages targeting: AI agent for electricians in Sydney, voice quoting for plumbers in Melbourne, AI invoicing for builders in Brisbane. No competitor has done this. These pages train LLMs to associate Dexify with specific trades and cities — the same way Jobber captured the field service software category through geo-targeted content, but Dexify can do it faster because the niche is empty.",
-            },
-            {
-              tag: "Tradie-specific",
-              title: "Trade forum and community seeding",
-              body: "LLMs are trained on Reddit, Whirlpool, and trade forums. A genuine, helpful answer to questions like 'what AI tools do tradies use?' on r/AusFinance, HIA forums, or Master Builders community threads — mentioning Dexify by name with a specific use case — generates training signal that a blog post on Dexify's own domain cannot. Third-party mentions in communities carry outsized weight because they read as unsponsored.",
-            },
-            {
-              tag: "Overall AI visibility",
-              title: "Third-party AI directory listings",
-              body: "G2, Capterra, ProductHunt, and Futurepedia are the directories LLMs trust most for product discovery. Dexify needs a listing on each with 'AI agent for tradespeople' in the description — not quoting software. LLMs surface Futurepedia and G2 listings directly in responses when a product lacks wider web presence. A complete listing with reviews is a credibility shortcut that also functions as training data.",
-            },
-            {
-              tag: "Overall AI visibility",
-              title: "Publish the best tradie AI agents listicle — yourself",
-              body: "LLMs frequently cite best-of roundup articles when answering discovery queries. If no independent publication has written about the best AI agents for Australian tradies, Dexify should publish it — including a fair assessment of competitors. LLMs do not penalise self-authored comparison content; they index it the same as any third party. This is how Highspot, Gong, and Clari built category authority before analysts caught up: they defined the category in writing before anyone else did.",
-            },
-          ] as { tag: string; title: string; body: string }[]).map(({ tag, title, body }) => (
-            <div key={title} style={{
-              background: "#fff",
-              border: "1px solid rgba(0,0,0,0.08)",
-              borderRadius: 12,
-              padding: "16px 20px",
-              display: "flex",
-              gap: 16,
-              alignItems: "flex-start",
-            }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 7 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(0,0,0,0.35)", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{tag}</span>
-                </div>
-                <p style={{ fontSize: 13.5, fontWeight: 700, color: "#000", margin: "0 0 6px", lineHeight: 1.3 }}>{title}</p>
-                <p style={{ fontSize: 12.5, lineHeight: 1.65, color: "rgba(0,0,0,0.6)", margin: 0 }}>{body}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* ── Product Feature Scores ─────────────────────────────────────────── */}
       <div style={{ marginTop: 32, marginBottom: 4 }}>
@@ -674,6 +571,109 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
           </div>
         );
       })()}
+
+      {/* ── LLM Visibility Playbook ──────────────────────────────────────────── */}
+      <div style={{ marginTop: 40, marginBottom: 16 }}>
+        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
+          LLM Visibility Playbook
+        </h2>
+        <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", margin: "0 0 20px" }}>
+          The moves that turn LLM invisibility into first-mover advantage — ranked by expected lift
+        </p>
+
+        {/* White-space callout */}
+        <div style={{
+          background: "linear-gradient(135deg, #f8f4ff 0%, #f0f7ff 100%)",
+          border: "1px solid rgba(99,102,241,0.15)",
+          borderLeft: "3px solid #6366f1",
+          borderRadius: 10,
+          padding: "16px 20px",
+          marginBottom: 20,
+        }}>
+          <p style={{ fontSize: 13.5, lineHeight: 1.65, color: "#1e1b4b", margin: 0 }}>
+            <strong>Unlike sales AI, no tradie AI-agent brand has cracked LLM visibility yet</strong> — every discovery prompt currently defaults to non-AI incumbents like Jobber and QuickBooks. That&apos;s not a competitive gap you need to close, it&apos;s white space nobody&apos;s claimed. In adjacent AI-agent categories, the two tactics that reliably work are narrow, named-competitor comparison content (6sense&apos;s model) and content volume paired with direct confrontation (Highspot&apos;s model) — Dexify has the chance to be the first tradie AI-agent brand to apply either.
+          </p>
+        </div>
+
+        {/* Two proven models */}
+        <div style={{ display: "flex", gap: 12, marginBottom: 12, flexWrap: "wrap" as const }}>
+          {([
+            {
+              label: "Model A — 6sense",
+              title: "Named-competitor comparison pages",
+              priority: "Highest impact",
+              priorityColor: "#16a34a",
+              body: "Publish a dedicated 'Dexify vs [Competitor]' page for every incumbent — Jobber, ServiceM8, Tradify, simPRO. LLMs are trained on comparison content and retrieve it directly when users ask what alternatives exist. A single well-structured comparison page is worth more training signal than dozens of generic blog posts. Each page should name the competitor in the title, URL slug, and H1, include a feature table, and end with a clear 'why Dexify' section. Four pages covers the four tools LLMs currently default to in this space.",
+            },
+            {
+              label: "Model B — Highspot",
+              title: "Own one query cluster with volume",
+              priority: "High impact",
+              priorityColor: "#16a34a",
+              body: "Pick the single query cluster where Dexify has the strongest product story — voice-to-quote is the natural choice — and publish 10–15 pieces all using exactly the same phrase: 'voice-to-quote AI agent for tradies.' LLMs learn category labels through repeated co-occurrence; when every piece on a topic uses the same phrase cluster and names Dexify, the model begins associating them. One scattered blog post does nothing. Concentrated volume on one anchor phrase breaks through.",
+            },
+          ] as { label: string; title: string; priority: string; priorityColor: string; body: string }[]).map(({ label, title, priority, priorityColor, body }) => (
+            <div key={label} style={{
+              flex: "1 1 300px",
+              background: "#fff",
+              border: "1px solid rgba(0,0,0,0.08)",
+              borderRadius: 12,
+              padding: "18px 20px",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(0,0,0,0.35)", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{label}</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: priorityColor, background: `${priorityColor}18`, padding: "2px 8px", borderRadius: 999 }}>{priority}</span>
+              </div>
+              <p style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: "0 0 8px", lineHeight: 1.3 }}>{title}</p>
+              <p style={{ fontSize: 12.5, lineHeight: 1.65, color: "rgba(0,0,0,0.6)", margin: 0 }}>{body}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Tradie-specific tactics */}
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
+          {([
+            {
+              tag: "Tradie-specific",
+              title: "Hyper-local, trade-specific landing pages",
+              body: "LLMs answer location+trade queries by surfacing whatever content exists for that combination. Create pages targeting: AI agent for electricians in Sydney, voice quoting for plumbers in Melbourne, AI invoicing for builders in Brisbane. No competitor has done this. These pages train LLMs to associate Dexify with specific trades and cities — the same way Jobber captured the field service software category through geo-targeted content, but Dexify can do it faster because the niche is empty.",
+            },
+            {
+              tag: "Tradie-specific",
+              title: "Trade forum and community seeding",
+              body: "LLMs are trained on Reddit, Whirlpool, and trade forums. A genuine, helpful answer to questions like 'what AI tools do tradies use?' on r/AusFinance, HIA forums, or Master Builders community threads — mentioning Dexify by name with a specific use case — generates training signal that a blog post on Dexify's own domain cannot. Third-party mentions in communities carry outsized weight because they read as unsponsored.",
+            },
+            {
+              tag: "Overall AI visibility",
+              title: "Third-party AI directory listings",
+              body: "G2, Capterra, ProductHunt, and Futurepedia are the directories LLMs trust most for product discovery. Dexify needs a listing on each with 'AI agent for tradespeople' in the description — not quoting software. LLMs surface Futurepedia and G2 listings directly in responses when a product lacks wider web presence. A complete listing with reviews is a credibility shortcut that also functions as training data.",
+            },
+            {
+              tag: "Overall AI visibility",
+              title: "Publish the best tradie AI agents listicle — yourself",
+              body: "LLMs frequently cite best-of roundup articles when answering discovery queries. If no independent publication has written about the best AI agents for Australian tradies, Dexify should publish it — including a fair assessment of competitors. LLMs do not penalise self-authored comparison content; they index it the same as any third party. This is how Highspot, Gong, and Clari built category authority before analysts caught up: they defined the category in writing before anyone else did.",
+            },
+          ] as { tag: string; title: string; body: string }[]).map(({ tag, title, body }) => (
+            <div key={title} style={{
+              background: "#fff",
+              border: "1px solid rgba(0,0,0,0.08)",
+              borderRadius: 12,
+              padding: "16px 20px",
+              display: "flex",
+              gap: 16,
+              alignItems: "flex-start",
+            }}>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 7 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(0,0,0,0.35)", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{tag}</span>
+                </div>
+                <p style={{ fontSize: 13.5, fontWeight: 700, color: "#000", margin: "0 0 6px", lineHeight: 1.3 }}>{title}</p>
+                <p style={{ fontSize: 12.5, lineHeight: 1.65, color: "rgba(0,0,0,0.6)", margin: 0 }}>{body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
     </div>
   );
