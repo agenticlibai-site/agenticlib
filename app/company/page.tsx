@@ -120,8 +120,12 @@ export default function CompanyPage() {
             <a
               href="mailto:srinidhi.murali@agenticlib.com"
               className="hover:underline"
-              style={{ fontSize: 14, color: MUTED, textDecoration: "none", marginTop: 6, display: "inline-block" }}
+              style={{ fontSize: 14, color: MUTED, textDecoration: "none", marginTop: 6, display: "inline-flex", alignItems: "center", gap: 6 }}
             >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="m2 7 10 7 10-7"/>
+              </svg>
               srinidhi.murali@agenticlib.com
             </a>
           </div>
