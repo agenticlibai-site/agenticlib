@@ -118,9 +118,8 @@ export default function CompanyPage() {
               </a>
               <a
                 href="mailto:srinidhi.murali@agenticlib.com"
+                className="hover:underline"
                 style={{ fontSize: 14, color: MUTED, textDecoration: "none" }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.textDecoration = "underline"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.textDecoration = "none"; }}
               >
                 srinidhi.murali@agenticlib.com
               </a>
