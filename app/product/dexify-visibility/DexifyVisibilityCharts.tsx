@@ -26,23 +26,6 @@ const LINE_COLORS = [
 
 function lineColor(i: number) { return LINE_COLORS[i % LINE_COLORS.length]; }
 
-// ── Pie slice label — percentage on the ring ──────────────────────────────────
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function PieSliceLabel({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) {
-  if (percent < 0.06) return null;
-  const RADIAN = Math.PI / 180;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const angle = percent >= 0.999 ? 90 : midAngle;
-  const x = cx + radius * Math.cos(-angle * RADIAN);
-  const y = cy + radius * Math.sin(-angle * RADIAN);
-  return (
-    <text x={x} y={y} fill="#fff" textAnchor="middle" dominantBaseline="central"
-      style={{ fontSize: 11, fontWeight: 700, pointerEvents: "none" }}>
-      {`${Math.round(percent * 100)}%`}
-    </text>
-  );
-}
-
 // ── Trend tooltip — sorted highest to lowest ───────────────────────────────────
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function TrendTooltip({ active, payload, label }: any) {
@@ -371,7 +354,6 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                         innerRadius={38} outerRadius={65}
                         paddingAngle={2}
                         labelLine={false}
-                        label={(props) => <PieSliceLabel {...props} />}
                       >
                         {data.map((r) => (
                           <Cell key={r.brand} fill={brandColor(r.brand)} />
