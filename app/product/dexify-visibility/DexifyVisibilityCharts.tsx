@@ -269,12 +269,12 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
         {modelData.length === 0 ? (
           <EmptyState label="No data yet" />
         ) : (
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={modelData} margin={{ left: 0, right: 16, top: 8, bottom: 60 }}>
+          <ResponsiveContainer width="100%" height={340}>
+            <BarChart data={modelData} margin={{ left: 0, right: 16, top: 8, bottom: 80 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" />
               <XAxis
                 dataKey="brand" tick={{ fontSize: 11, fill: "#000" }}
-                interval={0} angle={-35} textAnchor="end"
+                interval={0} angle={-35} textAnchor="end" dy={4}
               />
               <YAxis tick={{ fontSize: 11, fill: "#000" }} />
               <Tooltip
@@ -282,7 +282,8 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                 formatter={(v: unknown, name: unknown) => [v as number, name === "claude" ? "Claude Haiku" : "GPT-4o-mini"]}
               />
               <Legend
-                wrapperStyle={{ fontSize: 12 }}
+                verticalAlign="bottom"
+                wrapperStyle={{ fontSize: 12, paddingTop: 16 }}
                 formatter={(v) => v === "claude" ? "Claude Haiku" : "GPT-4o-mini"}
               />
               <Bar dataKey="claude" name="claude" fill={CLAUDE} radius={[3, 3, 0, 0]} />
