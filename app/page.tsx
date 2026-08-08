@@ -568,6 +568,8 @@ export default function Home() {
       <section id="pricing" style={{ background: "transparent", paddingTop: 0, paddingBottom: 80 }}>
         <div className="max-w-5xl mx-auto px-6">
 
+          <h2 style={{ fontSize: "clamp(36px, 5vw, 56px)", fontWeight: 800, letterSpacing: "-0.03em", color: "#0F0B1E", margin: "0 0 40px", textAlign: "center" }}>Pricing</h2>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ maxWidth: 780, margin: "0 auto" }}>
 
             {/* Free card */}
