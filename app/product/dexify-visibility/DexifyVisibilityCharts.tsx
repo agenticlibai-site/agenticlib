@@ -3,6 +3,7 @@
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
   ResponsiveContainer, LineChart, Line, Legend,
+  PieChart, Pie, Cell,
 } from "recharts";
 import type {
   DexifyTopBrandRow,
@@ -272,47 +273,64 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
         </p>
       </div>
 
-      {CLUSTERS.map((cluster) => {
-        const data = clusterMap[cluster.tag] ?? [];
-        return (
-          <div key={cluster.tag} style={{
-            background: "#fff", borderRadius: 14,
-            border: "1px solid rgba(0,0,0,0.07)",
-            padding: "20px 28px", marginBottom: 16,
-          }}>
-            <div style={{ marginBottom: 4 }}>
-              <div style={{ marginBottom: 2 }}>
-                <h3 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: 0 }}>
-                  {cluster.label}
-                </h3>
-              </div>
-              <p style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", margin: "0 0 14px" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16 }}>
+        {CLUSTERS.map((cluster) => {
+          const data = clusterMap[cluster.tag] ?? [];
+          const total = data.reduce((s, r) => s + r.mentions, 0);
+          return (
+            <div key={cluster.tag} style={{
+              background: "#fff", borderRadius: 14,
+              border: "1px solid rgba(0,0,0,0.07)",
+              padding: "20px 24px",
+            }}>
+              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#000", margin: "0 0 2px" }}>
+                {cluster.label}
+              </h3>
+              <p style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", margin: "0 0 16px" }}>
                 {cluster.description}
               </p>
+              {data.length === 0 ? (
+                <EmptyState label="No data yet for this cluster" />
+              ) : (
+                <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+                  <div style={{ flexShrink: 0 }}>
+                    <PieChart width={150} height={150}>
+                      <Pie
+                        data={data} dataKey="mentions"
+                        cx={70} cy={70}
+                        innerRadius={38} outerRadius={65}
+                        paddingAngle={2}
+                      >
+                        {data.map((_r, i) => (
+                          <Cell key={i} fill={LINE_COLORS[i % LINE_COLORS.length]} />
+                        ))}
+                      </Pie>
+                      <Tooltip
+                        contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid rgba(0,0,0,0.1)" }}
+                        formatter={(v: unknown, _n: unknown, props: { payload?: { brand?: string } }) => [
+                          `${v} (${total > 0 ? Math.round(((v as number) / total) * 100) : 0}%)`,
+                          props.payload?.brand ?? "",
+                        ]}
+                      />
+                    </PieChart>
+                  </div>
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 5 }}>
+                    {data.map((r, i) => (
+                      <div key={r.brand} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                        <div style={{ width: 8, height: 8, borderRadius: 2, flexShrink: 0, background: LINE_COLORS[i % LINE_COLORS.length] }} />
+                        <span style={{ fontSize: 13, color: "#000", flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{r.brand}</span>
+                        <span style={{ fontSize: 13, fontWeight: 600, color: "#000", flexShrink: 0 }}>
+                          {total > 0 ? Math.round((r.mentions / total) * 100) : 0}%
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-            {data.length === 0 ? (
-              <EmptyState label="No data yet for this cluster" />
-            ) : (
-              <ResponsiveContainer width="100%" height={Math.max(160, data.length * 28)}>
-                <BarChart data={data} layout="vertical" margin={{ left: 0, right: 40, top: 2, bottom: 2 }}>
-                  <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(0,0,0,0.05)" />
-                  <XAxis type="number" tick={{ fontSize: 11, fill: "#000" }} />
-                  <YAxis
-                    type="category" dataKey="brand" width={130}
-                    tick={{ fontSize: 12, fill: "#000" }} tickLine={false}
-                  />
-                  <Tooltip
-                    cursor={{ fill: "rgba(234,88,12,0.06)" }}
-                    contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid rgba(0,0,0,0.1)" }}
-                    formatter={(v: unknown) => [v as number, "mentions"]}
-                  />
-                  <Bar dataKey="mentions" fill={ACCENT} radius={[0, 4, 4, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            )}
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
 
       {/* ── Product Feature Scores ─────────────────────────────────────────── */}
       <div style={{ marginTop: 32, marginBottom: 4 }}>
