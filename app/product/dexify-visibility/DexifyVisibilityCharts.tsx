@@ -85,6 +85,28 @@ const ALL_CLUSTERS: { tag: string; label: string }[] = [
   { tag: "dexify-pricing",      label: "Pricing & Access" },
 ];
 
+// ── Australian English normaliser (for LLM-generated sentiment descriptors) ────
+function auEnglish(s: string): string {
+  return s
+    // -ize → -ise (only when ≥3 chars precede "ize" — avoids "size", "prize", "maize")
+    .replace(/([a-z]{3,})ize(d|s|r|tion|ing|ment|able)?\b/gi,
+      (_, pre: string, suf = "") => `${pre}ise${suf}`)
+    // -our spellings
+    .replace(/\bcolor\b/gi, "colour")
+    .replace(/\bbehavior\b/gi, "behaviour")
+    .replace(/\blabor\b/gi, "labour")
+    .replace(/\bhonor\b/gi, "honour")
+    .replace(/\bfavor\b/gi, "favour")
+    // -re spellings
+    .replace(/\bcenter\b/gi, "centre")
+    // -yse spellings
+    .replace(/\banalyze(d|s|r|ing)?\b/gi, (_, suf = "") => `analyse${suf}`)
+    // -ce spellings
+    .replace(/\bdefense\b/gi, "defence")
+    .replace(/\boffense\b/gi, "offence")
+    .replace(/\blicense\b/gi, "licence");
+}
+
 // ── Empty state ────────────────────────────────────────────────────────────────
 function EmptyState({ label }: { label: string }) {
   return (
@@ -603,7 +625,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                                     border: `1px solid ${unique ? "rgba(37,99,235,0.2)" : "rgba(0,0,0,0.07)"}`,
                                     borderRadius: 4, padding: "2px 7px", fontWeight: unique ? 600 : 400,
                                   }}>
-                                    {d}
+                                    {auEnglish(d)}
                                   </span>
                                 );
                               })}
