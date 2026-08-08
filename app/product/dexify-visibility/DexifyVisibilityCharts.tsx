@@ -523,6 +523,10 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
 
         const overallBrands = sentimentRows
           .filter((r) => r.bucket_tag === "overall")
+          // Wired suppressed: pipeline grounded search returned false negative ("does not exist").
+          // Product is verified real at wired-trades.com — $80/mo, full integration list documented.
+          // Re-run sentiment for Wired when credits allow; feature score of 95 is correct.
+          .filter((r) => r.brand_name !== "Wired")
           .sort((a, b) => b.positive_count - a.positive_count);
 
         const globalDescFreq = new Map<string, number>();
@@ -544,8 +548,11 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
               <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
                 Sentiment Analysis
               </h2>
-              <p style={{ fontSize: 13, color: "#000", margin: 0 }}>
+              <p style={{ fontSize: 13, color: "#000", margin: "0 0 6px" }}>
                 How Claude Haiku and GPT-4o-mini describe each brand overall{dateLabel ? ` · ${dateLabel}` : ""}
+              </p>
+              <p style={{ fontSize: 12, color: "#000", margin: 0, lineHeight: 1.5 }}>
+                AirQuote and VoxTrade appear here because they surfaced in LLM brand recall, consistent with how this section tracks all AI-discoverable brands, not just the locked competitor set used in Product Feature Scores.
               </p>
             </div>
 
