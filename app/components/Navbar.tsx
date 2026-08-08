@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
+  const [sageExpanded, setSageExpanded] = useState(false);
   const [resourcesExpanded, setResourcesExpanded] = useState(false);
   const pathname = usePathname();
 
@@ -55,6 +56,9 @@ export default function Navbar() {
                       { label: "Sales", desc: "Track your sales AI agent's product features, visibility, and sentiment against competitors.", href: "/product/sales-visibility",
                         iconBg: "rgba(37,99,235,0.10)",
                         icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 14l4-5 4 3 3-4 3 3" stroke="#2563EB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="17" cy="11" r="1.5" fill="#2563EB"/></svg> },
+                      { label: "Trades", desc: "Track your tradie AI agent's product features, visibility, and sentiment against competitors.", href: "/product/dexify-visibility",
+                        iconBg: "rgba(234,88,12,0.10)",
+                        icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 16l2-6h8l2 6H4z" stroke="#EA580C" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(234,88,12,0.12)"/><path d="M8 10V7a2 2 0 014 0v3" stroke="#EA580C" strokeWidth="1.5" strokeLinecap="round"/></svg> },
                     ].map((item) => (
                       <a key={item.href} href={item.href} className="flex items-start gap-4 py-4 rounded-xl px-3" style={{ textDecoration: "none" }}
                         onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
@@ -69,6 +73,37 @@ export default function Navbar() {
                   </div>
 
                 </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Product dropdown */}
+          <div className="relative group">
+            <button
+              className="transition px-3 py-1.5 rounded-lg flex items-center gap-1"
+              style={{ fontSize: "15.5px", fontWeight: 400, color: "#000000", background: "none", border: "none", cursor: "pointer" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.05)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = ""; }}
+            >
+              Platform
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginTop: 1 }}>
+                <path d="M2.5 4.5l3.5 3.5 3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            <div className="absolute left-0 top-full pt-2 hidden group-hover:block" style={{ zIndex: 9999, minWidth: 300 }}>
+              <div className="rounded-2xl p-2" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 16px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)" }}>
+                <Link href="/sage" className="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-colors" style={{ textDecoration: "none" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#f8f8ff"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
+                  <div className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#7C3AED,#C2186A)" }}>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3" fill="white" fillOpacity=".9"/><circle cx="10" cy="10" r="7" stroke="white" strokeWidth="1.5" strokeOpacity=".5"/><path d="M10 3v2M10 15v2M3 10h2M15 10h2" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeOpacity=".6"/></svg>
+                  </div>
+                  <div className="flex flex-col flex-1">
+                    <span style={{ fontSize: 13, fontWeight: 600, color: "#000000", lineHeight: 1.3 }}>Sage</span>
+                    <span style={{ fontSize: 11.5, color: "#000000", marginTop: 2 }}>Competitor intelligence by domain &amp; use case</span>
+                  </div>
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color: "#d1d5db" }}><path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                </Link>
               </div>
             </div>
           </div>
@@ -182,6 +217,7 @@ export default function Navbar() {
                 { label: "Marketing", href: "/solutions/marketing" },
                 { label: "Skincare", href: "/solutions/skincare" },
                 { label: "Sales", href: "/product/sales-visibility" },
+                { label: "Trades", href: "/product/dexify-visibility" },
               ].map((item) => (
                 <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                   className="block pl-8 pr-5 py-3 text-sm text-black hover:text-black hover:bg-gray-100 transition-colors"
@@ -189,6 +225,25 @@ export default function Navbar() {
                   {item.label}
                 </a>
               ))}
+            </div>
+          )}
+          <button
+            onClick={() => setSageExpanded((o) => !o)}
+            className="w-full flex items-center justify-between px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
+            style={{ background: "none", border: "none", cursor: "pointer", borderBottom: "1px solid #f3f4f6" }}
+          >
+            <span>Product</span>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ transform: sageExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>
+              <path d="M3 5l4 4 4-4" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+          {sageExpanded && (
+            <div style={{ background: "#fafafa", borderBottom: "1px solid #f3f4f6" }}>
+              <Link href="/sage" onClick={() => setMobileOpen(false)}
+                className="block pl-8 pr-5 py-3 text-sm text-black hover:bg-gray-100 transition-colors"
+                style={{ textDecoration: "none", borderBottom: "1px solid #f0f0f0" }}>
+                Sage — Competitor Intelligence
+              </Link>
             </div>
           )}
           <button
