@@ -648,25 +648,26 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
           }}>
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
               <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>
-                1. Inbound Enquiry Handling — AI Agent Answers Calls While You&apos;re on the Tools
+                1. SWMS Auto-generation from Voice — Speak the Job, Get the Compliance Doc Too
               </p>
               <span style={{
                 flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
                 textTransform: "uppercase" as const, color: "#2563EB",
                 background: "rgba(37,99,235,0.08)", borderRadius: 4, padding: "3px 8px",
-              }}>New cluster</span>
+              }}>AU differentiator</span>
             </div>
             <p style={{ fontSize: 14, color: "rgba(0,0,0,0.7)", lineHeight: 1.65, margin: "0 0 12px" }}>
-              Dexify&apos;s current strength is tradie-initiated: you speak the job, get the quote, send it on the spot. But tradies miss inbound calls constantly while on tools, and every missed call is a job lost to whoever picks up first. An AI agent that answers calls, captures job details, and books the diary autonomously while the tradie is busy would close this gap and make Dexify the complete admin agent across both directions of the customer relationship.
+              Australian tradies are legally required to produce a Safe Work Method Statement before starting any high-risk construction work — and most write it manually or skip it entirely. Dexify already captures the full job description by voice on-site. Generating the SWMS automatically from that same input, alongside the quote, would close a mandatory compliance step with zero extra effort from the tradie. No other pure AI agent in the locked brand set does this well. It extends Dexify&apos;s voice-first, on-site paradigm into a workflow that is AU-specific, legally required, and completely underserved.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
-              <span style={{ fontSize: 12, color: "rgba(0,0,0,0.4)", fontWeight: 600 }}>Competitors doing this:</span>
-              {["Sophiie AI", "Voxworks", "Waboom AI", "Square AI", "Chime Labs"].map((b) => (
+              <span style={{ fontSize: 12, color: "rgba(0,0,0,0.4)", fontWeight: 600 }}>Partial coverage in competitors:</span>
+              {["simPRO"].map((b) => (
                 <span key={b} style={{
                   fontSize: 12, color: "rgba(0,0,0,0.6)",
                   background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px",
                 }}>{b}</span>
               ))}
+              <span style={{ fontSize: 12, color: "rgba(0,0,0,0.4)", marginLeft: 4 }}>— no AI-native agent has cracked this</span>
             </div>
           </div>
 
