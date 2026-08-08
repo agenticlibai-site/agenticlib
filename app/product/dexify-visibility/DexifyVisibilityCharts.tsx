@@ -628,6 +628,115 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
         );
       })()}
 
+      {/* ── Product Feature Improvement Opportunities ───────────────────────── */}
+      <div style={{ marginTop: 40, marginBottom: 16 }}>
+        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
+          Product Feature Improvement Opportunities
+        </h2>
+        <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", margin: "0 0 20px" }}>
+          Gaps identified from locked-brand AI agent competitors and tradie customer feedback across use case clusters
+        </p>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 14 }}>
+
+          {/* Opportunity 1 */}
+          <div style={{
+            background: "#fff",
+            border: "1px solid rgba(0,0,0,0.08)",
+            borderLeft: "4px solid #2563EB",
+            borderRadius: "0 12px 12px 0",
+            padding: "18px 22px",
+          }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>
+                1. Inbound Enquiry Handling — AI Agent Answers Calls While You&apos;re on the Tools
+              </p>
+              <span style={{
+                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                textTransform: "uppercase" as const, color: "#2563EB",
+                background: "rgba(37,99,235,0.08)", borderRadius: 4, padding: "3px 8px",
+              }}>New cluster</span>
+            </div>
+            <p style={{ fontSize: 14, color: "rgba(0,0,0,0.7)", lineHeight: 1.65, margin: "0 0 12px" }}>
+              Dexify&apos;s current strength is tradie-initiated: you speak the job, get the quote, send it on the spot. But tradies miss inbound calls constantly while on tools, and every missed call is a job lost to whoever picks up first. An AI agent that answers calls, captures job details, and books the diary autonomously while the tradie is busy would close this gap and make Dexify the complete admin agent across both directions of the customer relationship.
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
+              <span style={{ fontSize: 12, color: "rgba(0,0,0,0.4)", fontWeight: 600 }}>Competitors doing this:</span>
+              {["Sophiie AI", "Voxworks", "Waboom AI", "Square AI", "Chime Labs"].map((b) => (
+                <span key={b} style={{
+                  fontSize: 12, color: "rgba(0,0,0,0.6)",
+                  background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px",
+                }}>{b}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Opportunity 2 */}
+          <div style={{
+            background: "#fff",
+            border: "1px solid rgba(0,0,0,0.08)",
+            borderLeft: "4px solid #16a34a",
+            borderRadius: "0 12px 12px 0",
+            padding: "18px 22px",
+          }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>
+                2. Quote Follow-up Automation and Read Tracking
+              </p>
+              <span style={{
+                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                textTransform: "uppercase" as const, color: "#16a34a",
+                background: "rgba(22,163,74,0.08)", borderRadius: 4, padding: "3px 8px",
+              }}>Deepens core</span>
+            </div>
+            <p style={{ fontSize: 14, color: "rgba(0,0,0,0.7)", lineHeight: 1.65, margin: "0 0 12px" }}>
+              Sending a quote on the spot is only half the job. Tradies consistently lose work not because their quote is wrong but because they forget to follow up while juggling active jobs. The agent should automatically send a follow-up message to the client after 48 hours if no response is received, and notify the tradie the moment the client opens the quote. This transforms a send-and-forget workflow into a closed-loop sales process, within the same Voice-to-Quote cluster where Dexify already has an advantage.
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
+              <span style={{ fontSize: 12, color: "rgba(0,0,0,0.4)", fontWeight: 600 }}>Competitors doing this:</span>
+              {["Sammy AI", "Sophiie AI"].map((b) => (
+                <span key={b} style={{
+                  fontSize: 12, color: "rgba(0,0,0,0.6)",
+                  background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px",
+                }}>{b}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Opportunity 3 */}
+          <div style={{
+            background: "#fff",
+            border: "1px solid rgba(0,0,0,0.08)",
+            borderLeft: "4px solid #d97706",
+            borderRadius: "0 12px 12px 0",
+            padding: "18px 22px",
+          }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>
+                3. Native Integrations with Xero, ServiceM8, Fergus, and Tradify
+              </p>
+              <span style={{
+                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                textTransform: "uppercase" as const, color: "#d97706",
+                background: "rgba(217,119,6,0.08)", borderRadius: 4, padding: "3px 8px",
+              }}>Adoption lever</span>
+            </div>
+            <p style={{ fontSize: 14, color: "rgba(0,0,0,0.7)", lineHeight: 1.65, margin: "0 0 12px" }}>
+              Most tradies already run some combination of Xero, ServiceM8, Fergus, or Tradify. The biggest barrier to adopting a new AI tool is not the AI — it is the switching cost and the fear of running two systems. Dexify integrated as the AI layer on top of the tools tradies already use (pushing quotes and invoices directly into Xero, pulling existing job cards from ServiceM8) would dramatically lower friction across every use case cluster rather than requiring the tradie to replace their existing stack entirely.
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
+              <span style={{ fontSize: 12, color: "rgba(0,0,0,0.4)", fontWeight: 600 }}>Competitors doing this:</span>
+              {["Wired", "Square AI", "simPRO"].map((b) => (
+                <span key={b} style={{
+                  fontSize: 12, color: "rgba(0,0,0,0.6)",
+                  background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px",
+                }}>{b}</span>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
       {/* ── LLM Visibility Playbook ──────────────────────────────────────────── */}
       <div style={{ marginTop: 40, marginBottom: 16 }}>
         <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
