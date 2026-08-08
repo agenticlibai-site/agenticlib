@@ -152,6 +152,50 @@ Return only the JSON object below. Do not include any explanation, markdown form
 Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
 [JSON OUTPUT]`,
   },
+
+  // ── Security & Data · dexify-security ────────────────────────────────────────
+  {
+    feature_id:   "data_au_hosting",
+    feature_tag:  "dexify-security",
+    feature_name: "Australian data hosting — job, client, and financial data stays in Australia",
+    description:  "Data is stored on Australian servers, not routed offshore — important for tradie businesses with client privacy obligations.",
+    prompt: `As a tradie, my data includes client contact details, job addresses, photos taken on site, and payment information. Does [BRAND] store this data on Australian servers — not offshore in the US or Europe? I need to know where my business data physically lives, and whether it stays in Australia.
+[GROUNDING INSTRUCTION]
+Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
+[JSON OUTPUT]`,
+  },
+  {
+    feature_id:   "security_compliance_posture",
+    feature_tag:  "dexify-security",
+    feature_name: "Published security certifications or compliance posture (SOC 2, ISO 27001, etc.)",
+    description:  "Demonstrates formal security standards — meaningful for tradies storing sensitive customer and financial data.",
+    prompt: `I'm a tradesperson considering using [BRAND] for my business, and I'm concerned about data security. Does [BRAND] hold any recognised security certifications — such as SOC 2, ISO 27001, or equivalent — or publish a clear security policy covering how they protect my business data? I'm looking for documented evidence of their security posture, not just a general statement that they take security seriously.
+[GROUNDING INSTRUCTION]
+Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
+[JSON OUTPUT]`,
+  },
+
+  // ── Pricing & Access · dexify-pricing ────────────────────────────────────────
+  {
+    feature_id:   "pricing_transparency",
+    feature_tag:  "dexify-pricing",
+    feature_name: "Public pricing — no sales call required to get a number",
+    description:  "Pricing is clearly published on the website so a tradie can assess affordability before speaking to anyone.",
+    prompt: `I'm a sole trader or small trade business owner trying to figure out whether I can afford [BRAND]. Does [BRAND] publish its pricing clearly on its website — specific dollar amounts or tier breakdowns — without requiring me to book a demo or speak to a salesperson first? I want to know the actual cost before committing any time to a sales conversation.
+[GROUNDING INSTRUCTION]
+Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
+[JSON OUTPUT]`,
+  },
+  {
+    feature_id:   "free_trial_access",
+    feature_tag:  "dexify-pricing",
+    feature_name: "Free trial or self-serve signup — no mandatory demo or contract to start",
+    description:  "A tradie can try the product hands-on before committing, without being locked into a sales process.",
+    prompt: `I want to try [BRAND] before paying for it. Can I sign up and test [BRAND] on my own — without booking a demo, speaking to a salesperson, or signing a contract? This could be a free trial, a freemium tier, or a self-serve signup that lets me use the core product for a limited time or with limited features. I want to see if it actually works for my trade business before I spend money.
+[GROUNDING INSTRUCTION]
+Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
+[JSON OUTPUT]`,
+  },
 ];
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
