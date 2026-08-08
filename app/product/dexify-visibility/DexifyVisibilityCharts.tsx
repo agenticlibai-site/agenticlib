@@ -548,11 +548,8 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
               <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
                 Sentiment Analysis
               </h2>
-              <p style={{ fontSize: 13, color: "#000", margin: "0 0 6px" }}>
+              <p style={{ fontSize: 13, color: "#000", margin: 0 }}>
                 How Claude Haiku and GPT-4o-mini describe each brand overall{dateLabel ? ` · ${dateLabel}` : ""}
-              </p>
-              <p style={{ fontSize: 12, color: "#000", margin: 0, lineHeight: 1.5 }}>
-                AirQuote and VoxTrade appear here because they surfaced in LLM brand recall, consistent with how this section tracks all AI-discoverable brands, not just the locked competitor set used in Product Feature Scores.
               </p>
             </div>
 
