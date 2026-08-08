@@ -567,15 +567,6 @@ export default function Home() {
       {/* ── Pricing Section ── */}
       <section id="pricing" style={{ background: "transparent", paddingTop: 0, paddingBottom: 80 }}>
         <div className="max-w-5xl mx-auto px-6">
-          <div style={{ textAlign: "center", marginBottom: 40 }}>
-            <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "#7C3AED", marginBottom: 12 }}>Pricing</p>
-            <h2 style={{ fontSize: "clamp(26px, 3.5vw, 38px)", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.15, color: "#0F0B1E", margin: "0 0 12px" }}>
-              Simple, transparent pricing
-            </h2>
-            <p style={{ fontSize: 15, color: "rgba(15,11,30,0.55)", lineHeight: 1.6, maxWidth: 460, margin: "0 auto" }}>
-              Start free and scale when you're ready. No credit card required.
-            </p>
-          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ maxWidth: 780, margin: "0 auto" }}>
 
