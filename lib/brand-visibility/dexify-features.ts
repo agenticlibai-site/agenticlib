@@ -56,7 +56,7 @@ export const DEXIFY_FEATURES: DexifyFeature[] = [
     feature_id:   "tradie_selfserve_onboarding",
     feature_tag:  "dexify-general",
     feature_name: "Self-serve setup with no IT or technical help needed",
-    description:  "Whether a non-technical tradie can sign up, configure, and start using the platform independently within a day — no developer or IT support required.",
+    description:  "Whether a non-technical tradie can sign up, configure, and start using the platform independently within a day, no developer or IT support required.",
     prompt: `As a sole trader or small trade business owner with no IT support or technical background, can I set up and use [BRAND] myself — without developer assistance, complex configuration, or a multi-week onboarding process? Does [BRAND] offer a self-serve setup that a non-technical tradie can complete and start using independently within a day?
 [GROUNDING INSTRUCTION]
 Return only the JSON object below. Do not include any explanation, markdown formatting, code blocks, or text before or after the JSON. Your entire response must be valid JSON starting with { and ending with }
