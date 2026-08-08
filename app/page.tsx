@@ -690,7 +690,6 @@ export default function Home() {
                     "Sentiment analysis across LLMs",
                     "LLM visibility playbook & roadmap",
                     "Monthly refresh cadence",
-                    "Dedicated Slack channel",
                   ].map((item) => (
                     <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 13.5, color: "#0F0B1E", lineHeight: 1.45 }}>
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 1 }}>
