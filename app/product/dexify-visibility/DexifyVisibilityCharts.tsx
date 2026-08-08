@@ -425,7 +425,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                     <div key={feature.feature_id}>
                       {/* Feature name + definition */}
                       <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
-                        {feature.feature_name}
+                        <span style={{ color: "#2563EB" }}>Product Feature {fi + 1}: </span>{feature.feature_name}
                       </p>
                       <p style={{ fontSize: 13, color: "#2563EB", margin: "0 0 18px", lineHeight: 1.5 }}>
                         {feature.description}
