@@ -374,9 +374,6 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
         <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
           Product Feature Scores
         </h2>
-        <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", margin: "0 0 16px" }}>
-          How well each brand supports the core capabilities Dexify is built for — scored per use case cluster by Claude and GPT-4o-mini
-        </p>
       </div>
 
       {featureScores.length === 0 ? (
