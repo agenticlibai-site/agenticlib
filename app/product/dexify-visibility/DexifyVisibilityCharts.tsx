@@ -294,7 +294,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
       {/* ── Use case cluster split ────────────────────────────────────────── */}
       <div style={{ marginTop: 8, marginBottom: 4 }}>
         <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
-          Use Case Split
+          Use Case Share of Voice
         </h2>
         <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", margin: "0 0 16px" }}>
           Which brands appear when LLMs are asked about each specific tradie AI agent use case
