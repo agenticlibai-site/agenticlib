@@ -177,6 +177,15 @@ interface Props {
 
 export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, trend, featureScores, sentimentData }: Props) {
 
+  // ── Global brand→color map (consistent across all charts) ────────────────────
+  // Assign colors in total-mentions order so the highest-visibility brand always
+  // gets the same colour regardless of which cluster chart it appears in.
+  const brandColorMap: Record<string, string> = {};
+  [...topBrands]
+    .sort((a, b) => b.total_mentions - a.total_mentions)
+    .forEach((r, i) => { brandColorMap[r.brand] = LINE_COLORS[i % LINE_COLORS.length]; });
+  const brandColor = (brand: string) => brandColorMap[brand] ?? "#94a3b8";
+
   // ── Overall top brands (horizontal bar) ─────────────────────────────────────
   const top20 = topBrands.slice(0, 20);
   const overallData = [...top20]
@@ -267,10 +276,10 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
               <YAxis tick={{ fontSize: 11, fill: "#000" }} />
               <Tooltip content={<TrendTooltip />} />
               <Legend wrapperStyle={{ fontSize: 12 }} />
-              {top8brands.map((brand, i) => (
+              {top8brands.map((brand) => (
                 <Line
                   key={brand} type="monotone" dataKey={brand}
-                  stroke={lineColor(i)} strokeWidth={2}
+                  stroke={brandColor(brand)} strokeWidth={2}
                   dot={false} connectNulls
                 />
               ))}
@@ -320,8 +329,8 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                         labelLine={false}
                         label={(props) => <PieSliceLabel {...props} />}
                       >
-                        {data.map((_r, i) => (
-                          <Cell key={i} fill={LINE_COLORS[i % LINE_COLORS.length]} />
+                        {data.map((r) => (
+                          <Cell key={r.brand} fill={brandColor(r.brand)} />
                         ))}
                       </Pie>
                       <Tooltip
@@ -334,9 +343,9 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                     </PieChart>
                   </div>
                   <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 5 }}>
-                    {data.map((r, i) => (
+                    {data.map((r) => (
                       <div key={r.brand} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                        <div style={{ width: 8, height: 8, borderRadius: 2, flexShrink: 0, background: LINE_COLORS[i % LINE_COLORS.length] }} />
+                        <div style={{ width: 8, height: 8, borderRadius: 2, flexShrink: 0, background: brandColor(r.brand) }} />
                         <span style={{ fontSize: 13, color: "#000", flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{r.brand}</span>
                         <span style={{ fontSize: 13, fontWeight: 600, color: "#000", flexShrink: 0 }}>
                           {total > 0 ? Math.round((r.mentions / total) * 100) : 0}%
