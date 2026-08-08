@@ -90,7 +90,7 @@ function EmptyState({ label }: { label: string }) {
   return (
     <div style={{
       height: 160, display: "flex", flexDirection: "column", alignItems: "center",
-      justifyContent: "center", gap: 8, color: "rgba(0,0,0,0.3)",
+      justifyContent: "center", gap: 8, color: "#000",
       border: "1.5px dashed rgba(234,88,12,0.18)", borderRadius: 10,
     }}>
       <span style={{ fontSize: 28 }}>⏳</span>
@@ -110,7 +110,7 @@ function Section({ title, subtitle, children }: { title: string; subtitle?: stri
     }}>
       <div style={{ marginBottom: subtitle ? 4 : 18 }}>
         <h2 style={{ fontSize: 16, fontWeight: 700, color: "#000", margin: 0 }}>{title}</h2>
-        {subtitle && <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", margin: "4px 0 18px" }}>{subtitle}</p>}
+        {subtitle && <p style={{ fontSize: 13, color: "#000", margin: "4px 0 18px" }}>{subtitle}</p>}
       </div>
       {children}
     </div>
@@ -316,7 +316,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
         <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
           Use Case Share of Voice
         </h2>
-        <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", margin: "0 0 16px" }}>
+        <p style={{ fontSize: 13, color: "#000", margin: "0 0 16px" }}>
           Which brands appear when LLMs are asked about each specific tradie AI agent use case
         </p>
       </div>
@@ -334,7 +334,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
               <h3 style={{ fontSize: 16, fontWeight: 700, color: "#000", margin: "0 0 2px" }}>
                 {cluster.label}
               </h3>
-              <p style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", margin: "0 0 16px" }}>
+              <p style={{ fontSize: 12, color: "#000", margin: "0 0 16px" }}>
                 {cluster.description}
               </p>
               {data.length === 0 ? (
@@ -457,10 +457,10 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                           if (isNd) {
                             return (
                               <div key={row.brand_name} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                                <span style={{ fontSize: 13, fontWeight: 600, color: "rgba(0,0,0,0.35)", width: 140, flexShrink: 0 }}>
+                                <span style={{ fontSize: 13, fontWeight: 600, color: "#000", width: 140, flexShrink: 0 }}>
                                   {row.brand_name}
                                 </span>
-                                <span style={{ fontSize: 12, color: "rgba(0,0,0,0.28)", fontStyle: "italic" }}>
+                                <span style={{ fontSize: 12, color: "#000", fontStyle: "italic" }}>
                                   not documented
                                 </span>
                               </div>
@@ -493,7 +493,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                               </div>
                               {cleanEvidence && (
                                 <p style={{
-                                  fontSize: 12, color: "rgba(0,0,0,0.5)", lineHeight: 1.65,
+                                  fontSize: 12, color: "#000", lineHeight: 1.65,
                                   margin: 0, paddingLeft: 152,
                                 }}>
                                   {cleanEvidence}
@@ -544,7 +544,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
               <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
                 Sentiment Analysis
               </h2>
-              <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", margin: 0 }}>
+              <p style={{ fontSize: 13, color: "#000", margin: 0 }}>
                 How Claude Haiku and GPT-4o-mini describe each brand overall{dateLabel ? ` · ${dateLabel}` : ""}
               </p>
             </div>
@@ -617,7 +617,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                         <span style={{ fontSize: 12, color: "#000" }}>{label}</span>
                       </div>
                     ))}
-                    <span style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", marginLeft: "auto" }}>
+                    <span style={{ fontSize: 12, color: "#000", marginLeft: "auto" }}>
                       Both models · updates weekly
                     </span>
                   </div>
@@ -633,7 +633,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
         <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
           Product Feature Improvement Opportunities
         </h2>
-        <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", margin: "0 0 20px" }}>
+        <p style={{ fontSize: 13, color: "#000", margin: "0 0 20px" }}>
           Gaps identified from locked-brand AI agent competitors and tradie customer feedback across use case clusters
         </p>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 14 }}>
@@ -648,7 +648,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
           }}>
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
               <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>
-                1. SWMS Auto-generation from Voice — Speak the Job, Get the Compliance Doc Too
+                1. SWMS Auto-generation from Voice: Speak the Job, Get the Compliance Doc Too
               </p>
               <span style={{
                 flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
@@ -656,18 +656,18 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                 background: "rgba(37,99,235,0.08)", borderRadius: 4, padding: "3px 8px",
               }}>AU differentiator</span>
             </div>
-            <p style={{ fontSize: 14, color: "rgba(0,0,0,0.7)", lineHeight: 1.65, margin: "0 0 12px" }}>
-              Australian tradies are legally required to produce a Safe Work Method Statement before starting any high-risk construction work — and most write it manually or skip it entirely. Dexify already captures the full job description by voice on-site. Generating the SWMS automatically from that same input, alongside the quote, would close a mandatory compliance step with zero extra effort from the tradie. No other pure AI agent in the locked brand set does this well. It extends Dexify&apos;s voice-first, on-site paradigm into a workflow that is AU-specific, legally required, and completely underserved.
+            <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 12px" }}>
+              Australian tradies are legally required to produce a Safe Work Method Statement before starting any high-risk construction work, and most write it manually or skip it entirely. Dexify already captures the full job description by voice on-site. Generating the SWMS automatically from that same input, alongside the quote, would close a mandatory compliance step with zero extra effort from the tradie. No other pure AI agent in the locked brand set does this well. It extends Dexify&apos;s voice-first, on-site paradigm into a workflow that is AU-specific, legally required, and completely underserved.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
-              <span style={{ fontSize: 12, color: "rgba(0,0,0,0.4)", fontWeight: 600 }}>Partial coverage in competitors:</span>
+              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>Partial coverage in competitors:</span>
               {["simPRO"].map((b) => (
                 <span key={b} style={{
-                  fontSize: 12, color: "rgba(0,0,0,0.6)",
+                  fontSize: 12, color: "#000",
                   background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px",
                 }}>{b}</span>
               ))}
-              <span style={{ fontSize: 12, color: "rgba(0,0,0,0.4)", marginLeft: 4 }}>— no AI-native agent has cracked this</span>
+              <span style={{ fontSize: 12, color: "#000", marginLeft: 4 }}>(no AI-native agent has cracked this)</span>
             </div>
           </div>
 
@@ -689,14 +689,14 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                 background: "rgba(22,163,74,0.08)", borderRadius: 4, padding: "3px 8px",
               }}>Deepens core</span>
             </div>
-            <p style={{ fontSize: 14, color: "rgba(0,0,0,0.7)", lineHeight: 1.65, margin: "0 0 12px" }}>
+            <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 12px" }}>
               Sending a quote on the spot is only half the job. Tradies consistently lose work not because their quote is wrong but because they forget to follow up while juggling active jobs. The agent should automatically send a follow-up message to the client after 48 hours if no response is received, and notify the tradie the moment the client opens the quote. This transforms a send-and-forget workflow into a closed-loop sales process, within the same Voice-to-Quote cluster where Dexify already has an advantage.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
-              <span style={{ fontSize: 12, color: "rgba(0,0,0,0.4)", fontWeight: 600 }}>Competitors doing this:</span>
+              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>Competitors doing this:</span>
               {["Sammy AI", "Sophiie AI"].map((b) => (
                 <span key={b} style={{
-                  fontSize: 12, color: "rgba(0,0,0,0.6)",
+                  fontSize: 12, color: "#000",
                   background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px",
                 }}>{b}</span>
               ))}
@@ -721,14 +721,14 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                 background: "rgba(217,119,6,0.08)", borderRadius: 4, padding: "3px 8px",
               }}>Adoption lever</span>
             </div>
-            <p style={{ fontSize: 14, color: "rgba(0,0,0,0.7)", lineHeight: 1.65, margin: "0 0 12px" }}>
-              Most tradies already run some combination of Xero, ServiceM8, Fergus, or Tradify. The biggest barrier to adopting a new AI tool is not the AI — it is the switching cost and the fear of running two systems. Dexify integrated as the AI layer on top of the tools tradies already use (pushing quotes and invoices directly into Xero, pulling existing job cards from ServiceM8) would dramatically lower friction across every use case cluster rather than requiring the tradie to replace their existing stack entirely.
+            <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 12px" }}>
+              Most tradies already run some combination of Xero, ServiceM8, Fergus, or Tradify. The biggest barrier to adopting a new AI tool is not the AI itself: it is the switching cost and the fear of running two systems. Dexify integrated as the AI layer on top of the tools tradies already use (pushing quotes and invoices directly into Xero, pulling existing job cards from ServiceM8) would dramatically lower friction across every use case cluster rather than requiring the tradie to replace their existing stack entirely.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
-              <span style={{ fontSize: 12, color: "rgba(0,0,0,0.4)", fontWeight: 600 }}>Competitors doing this:</span>
+              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>Competitors doing this:</span>
               {["Wired", "Square AI", "simPRO"].map((b) => (
                 <span key={b} style={{
-                  fontSize: 12, color: "rgba(0,0,0,0.6)",
+                  fontSize: 12, color: "#000",
                   background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px",
                 }}>{b}</span>
               ))}
@@ -743,7 +743,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
         <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
           LLM Visibility Playbook
         </h2>
-        <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", margin: "0 0 20px" }}>
+        <p style={{ fontSize: 13, color: "#000", margin: "0 0 20px" }}>
           The moves that turn LLM invisibility into first-mover advantage, ranked by expected lift
         </p>
 
@@ -787,11 +787,11 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
               padding: "18px 20px",
             }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(0,0,0,0.35)", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{label}</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#000", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{label}</span>
                 <span style={{ fontSize: 11, fontWeight: 700, color: priorityColor, background: `${priorityColor}18`, padding: "2px 8px", borderRadius: 999 }}>{priority}</span>
               </div>
               <p style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: "0 0 8px", lineHeight: 1.3 }}>{title}</p>
-              <p style={{ fontSize: 12.5, lineHeight: 1.65, color: "rgba(0,0,0,0.6)", margin: 0 }}>{body}</p>
+              <p style={{ fontSize: 12.5, lineHeight: 1.65, color: "#000", margin: 0 }}>{body}</p>
             </div>
           ))}
         </div>
@@ -831,10 +831,10 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
             }}>
               <div style={{ flex: 1 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 7 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: "rgba(0,0,0,0.35)", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{tag}</span>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#000", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{tag}</span>
                 </div>
                 <p style={{ fontSize: 13.5, fontWeight: 700, color: "#000", margin: "0 0 6px", lineHeight: 1.3 }}>{title}</p>
-                <p style={{ fontSize: 12.5, lineHeight: 1.65, color: "rgba(0,0,0,0.6)", margin: 0 }}>{body}</p>
+                <p style={{ fontSize: 12.5, lineHeight: 1.65, color: "#000", margin: 0 }}>{body}</p>
               </div>
             </div>
           ))}
