@@ -268,7 +268,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
         marginBottom: 24,
       }}>
         <p style={{ fontSize: 13, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#EA580C", margin: "0 0 8px" }}>
-          Key Finding
+          Note
         </p>
         <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
           Despite prompts explicitly restricted to named AI agents for tradespeople, LLMs consistently default to job management tools, CRMs, and construction software, rather than AI agents in <strong>Top Brands by Total Mentions</strong>, <strong>Coverage Over Time</strong>, and <strong>Use Case Share of Voice</strong> sections. Brands like Procore, BambooHR, and CoConstruct appear here not because they are tradie AI agents, but because they are what AI assistants currently recall when asked. This is the core visibility gap Dexify (and every other AI-native tradie tool) is currently up against: even genuinely capable AI agents (see Product Feature Scores below) are largely invisible to LLMs today.
