@@ -769,14 +769,14 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
         <div style={{ display: "flex", gap: 12, marginBottom: 12, flexWrap: "wrap" as const }}>
           {([
             {
-              label: "Model A: 6sense (sales AI)",
+              label: "Model A: 6sense (Sales AI Agent)",
               title: "Named-competitor comparison pages",
               priority: "Highest impact",
               priorityColor: "#16a34a",
               body: "Publish a dedicated 'Dexify vs [Competitor]' page for every incumbent: Jobber, ServiceM8, Tradify, simPRO. LLMs are trained on comparison content and retrieve it directly when users ask what alternatives exist. A single well-structured comparison page is worth more training signal than dozens of generic blog posts. Each page should name the competitor in the title, URL slug, and H1, include a feature table, and end with a clear 'why Dexify' section. Four pages covers the four tools LLMs currently default to in this space.",
             },
             {
-              label: "Model B: Highspot (sales AI)",
+              label: "Model B: Highspot (Sales AI Agent)",
               title: "Own one query cluster with volume",
               priority: "High impact",
               priorityColor: "#16a34a",
