@@ -6,9 +6,10 @@ interface SendEmailOptions {
   subject:   string;
   html:      string;
   fromName?: string;
+  to?:       string;
 }
 
-export async function sendEmail({ subject, html, fromName = "AgenticLib Analytics" }: SendEmailOptions): Promise<void> {
+export async function sendEmail({ subject, html, fromName = "AgenticLib Analytics", to = TO }: SendEmailOptions): Promise<void> {
   const user = process.env.EMAIL_USER;
   const pass = process.env.EMAIL_PASS;
 
@@ -26,9 +27,9 @@ export async function sendEmail({ subject, html, fromName = "AgenticLib Analytic
 
   const from = `${fromName} <${user}>`;
 
-  console.log("[email] sending to:", TO, "subject:", subject);
+  console.log("[email] sending to:", to, "subject:", subject);
 
-  const info = await transporter.sendMail({ from, to: TO, subject, html });
+  const info = await transporter.sendMail({ from, to, subject, html });
 
   console.log("[email] sent — messageId:", info.messageId, "response:", info.response);
 }
