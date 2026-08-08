@@ -81,6 +81,8 @@ const ALL_CLUSTERS: { tag: string; label: string }[] = [
   { tag: "dexify-post-job",     label: "Post-Job Admin & Invoicing" },
   { tag: "dexify-compliance",   label: "Compliance & Documentation" },
   { tag: "dexify-client-comms", label: "Inbound & Client Communication" },
+  { tag: "dexify-security",     label: "Security & Data" },
+  { tag: "dexify-pricing",      label: "Pricing & Access" },
 ];
 
 // ── Empty state ────────────────────────────────────────────────────────────────
