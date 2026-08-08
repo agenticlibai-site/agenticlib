@@ -139,7 +139,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
   // ── Overall top brands (horizontal bar) ─────────────────────────────────────
   const top20 = topBrands.slice(0, 20);
   const overallData = [...top20]
-    .sort((a, b) => a.total_mentions - b.total_mentions)
+    .sort((a, b) => b.total_mentions - a.total_mentions)
     .map((r) => ({ brand: r.brand, mentions: r.total_mentions }));
 
   // ── Trend: pivot to recharts format, top 8 brands ────────────────────────────
@@ -175,8 +175,8 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
   }
   for (const tag of Object.keys(clusterMap)) {
     clusterMap[tag] = clusterMap[tag]
-      .sort((a, b) => a.mentions - b.mentions)
-      .slice(-10);
+      .sort((a, b) => b.mentions - a.mentions)
+      .slice(0, 10);
   }
 
   const hasData = topBrands.length > 0;
