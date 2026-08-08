@@ -236,10 +236,30 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
   return (
     <div>
 
+      {/* ── Key Finding callout ───────────────────────────────────────────────── */}
+      <div style={{
+        background: "rgba(234,88,12,0.06)",
+        border: "1px solid rgba(234,88,12,0.25)",
+        borderLeft: "4px solid #EA580C",
+        borderRadius: "0 10px 10px 0",
+        padding: "18px 22px",
+        marginBottom: 24,
+      }}>
+        <p style={{ fontSize: 13, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#EA580C", margin: "0 0 8px" }}>
+          Key Finding
+        </p>
+        <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
+          Despite prompts explicitly restricted to named AI agents for tradespeople (not generic software), LLMs consistently default to established, well-documented platforms — job management tools, CRMs, and construction software — rather than the newer AI-native agents actually built for these use cases. Brands like Procore, BambooHR, and CoConstruct appear here not because they are tradie AI agents, but because they are what AI assistants currently recall when asked. This is the core visibility gap Dexify — and every other AI-native tradie tool — is currently up against: even genuinely capable AI agents (see Product Feature Scores below) are largely invisible to LLMs today.
+        </p>
+        <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: 0 }}>
+          <strong>Product Feature Scores</strong> below only scores real, purpose-built AI agents for tradies — not the generic platforms that dominate the LLM visibility rankings above.
+        </p>
+      </div>
+
       {/* ── Overall brand mentions ─────────────────────────────────────────── */}
       <Section
         title="Top Brands by Total Mentions"
-        subtitle="All clusters combined · both models · all days collected so far"
+        subtitle="All clusters combined · both models"
       >
         {!hasData ? (
           <EmptyState label="No data yet" />
