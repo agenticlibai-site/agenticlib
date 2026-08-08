@@ -565,7 +565,7 @@ export default function Home() {
       </section>
 
       {/* ── Pricing Section ── */}
-      <section style={{ background: "transparent", paddingTop: 0, paddingBottom: 80 }}>
+      <section id="pricing" style={{ background: "transparent", paddingTop: 0, paddingBottom: 80 }}>
         <div className="max-w-5xl mx-auto px-6">
           <div style={{ textAlign: "center", marginBottom: 40 }}>
             <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "#7C3AED", marginBottom: 12 }}>Pricing</p>
