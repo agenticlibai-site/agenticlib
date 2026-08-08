@@ -261,37 +261,6 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
         )}
       </Section>
 
-      {/* ── LLM model split ────────────────────────────────────────────────── */}
-      <Section
-        title="Visibility by LLM"
-        subtitle="Claude Haiku vs GPT-4o-mini — top 15 brands"
-      >
-        {modelData.length === 0 ? (
-          <EmptyState label="No data yet" />
-        ) : (
-          <ResponsiveContainer width="100%" height={340}>
-            <BarChart data={modelData} margin={{ left: 0, right: 16, top: 8, bottom: 80 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" />
-              <XAxis
-                dataKey="brand" tick={{ fontSize: 11, fill: "#000" }}
-                interval={0} angle={-35} textAnchor="end" dy={4}
-              />
-              <YAxis tick={{ fontSize: 11, fill: "#000" }} />
-              <Tooltip
-                contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid rgba(0,0,0,0.1)" }}
-                formatter={(v: unknown, name: unknown) => [v as number, name === "claude" ? "Claude Haiku" : "GPT-4o-mini"]}
-              />
-              <Legend
-                verticalAlign="bottom"
-                wrapperStyle={{ fontSize: 12, paddingTop: 16 }}
-                formatter={(v) => v === "claude" ? "Claude Haiku" : "GPT-4o-mini"}
-              />
-              <Bar dataKey="claude" name="claude" fill={CLAUDE} radius={[3, 3, 0, 0]} />
-              <Bar dataKey="gpt"    name="gpt"    fill={GPT}    radius={[3, 3, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        )}
-      </Section>
 
       {/* ── Use case cluster split ────────────────────────────────────────── */}
       <div style={{ marginTop: 8, marginBottom: 4 }}>
