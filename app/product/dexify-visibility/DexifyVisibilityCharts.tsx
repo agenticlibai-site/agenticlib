@@ -25,6 +25,29 @@ const LINE_COLORS = [
 
 function lineColor(i: number) { return LINE_COLORS[i % LINE_COLORS.length]; }
 
+// ── Trend tooltip — sorted highest to lowest ───────────────────────────────────
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function TrendTooltip({ active, payload, label }: any) {
+  if (!active || !payload?.length) return null;
+  const sorted = [...payload]
+    .filter((p: any) => p.value != null && p.value > 0)
+    .sort((a: any, b: any) => (b.value ?? 0) - (a.value ?? 0));
+  return (
+    <div style={{
+      background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: 8,
+      fontSize: 12, padding: "8px 12px", boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
+    }}>
+      <p style={{ fontWeight: 700, marginBottom: 4, color: "#000" }}>{label}</p>
+      {sorted.map((p: any) => (
+        <div key={p.dataKey} style={{ display: "flex", alignItems: "center", gap: 6, padding: "1px 0" }}>
+          <span style={{ width: 8, height: 8, borderRadius: "50%", background: p.color, flexShrink: 0, display: "inline-block" }} />
+          <span style={{ color: "#000" }}>{p.dataKey} : {p.value}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // ── Cluster config ─────────────────────────────────────────────────────────────
 const CLUSTERS: { tag: string; label: string; description: string }[] = [
   { tag: "dexify-voice-quote",  label: "Voice-to-Quote Agent",             description: "Voice → branded PDF quote on site" },
@@ -224,9 +247,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
               <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" />
               <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#000" }} />
               <YAxis tick={{ fontSize: 11, fill: "#000" }} />
-              <Tooltip
-                contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid rgba(0,0,0,0.1)" }}
-              />
+              <Tooltip content={<TrendTooltip />} />
               <Legend wrapperStyle={{ fontSize: 12 }} />
               {top8brands.map((brand, i) => (
                 <Line
