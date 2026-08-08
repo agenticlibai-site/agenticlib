@@ -249,10 +249,10 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
           Key Finding
         </p>
         <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
-          Despite prompts explicitly restricted to named AI agents for tradespeople (not generic software), LLMs consistently default to established, well-documented platforms — job management tools, CRMs, and construction software — rather than the newer AI-native agents actually built for these use cases. Brands like Procore, BambooHR, and CoConstruct appear here not because they are tradie AI agents, but because they are what AI assistants currently recall when asked. This is the core visibility gap Dexify — and every other AI-native tradie tool — is currently up against: even genuinely capable AI agents (see Product Feature Scores below) are largely invisible to LLMs today.
+          Despite prompts explicitly restricted to named AI agents for tradespeople, LLMs consistently default to job management tools, CRMs, and construction software, rather than the newer AI-native agents actually built for these use cases. Brands like Procore, BambooHR, and CoConstruct appear here not because they are tradie AI agents, but because they are what AI assistants currently recall when asked. This is the core visibility gap Dexify (and every other AI-native tradie tool) is currently up against: even genuinely capable AI agents (see Product Feature Scores below) are largely invisible to LLMs today.
         </p>
         <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: 0 }}>
-          <strong>Product Feature Scores</strong> below only scores real, purpose-built AI agents for tradies — not the generic platforms that dominate the LLM visibility rankings above.
+          <strong>Product Feature Scores</strong> below only scores real, purpose-built AI agents for tradies, not the generic platforms that dominate the LLM visibility rankings above.
         </p>
       </div>
 
@@ -634,7 +634,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
           LLM Visibility Playbook
         </h2>
         <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", margin: "0 0 20px" }}>
-          The moves that turn LLM invisibility into first-mover advantage — ranked by expected lift
+          The moves that turn LLM invisibility into first-mover advantage, ranked by expected lift
         </p>
 
         {/* White-space callout */}
@@ -647,7 +647,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
           marginBottom: 20,
         }}>
           <p style={{ fontSize: 13.5, lineHeight: 1.65, color: "#1e1b4b", margin: 0 }}>
-            <strong>Unlike sales AI, no tradie AI-agent brand has cracked LLM visibility yet</strong> — every discovery prompt currently defaults to non-AI incumbents like Jobber and QuickBooks. That&apos;s not a competitive gap you need to close, it&apos;s white space nobody&apos;s claimed. In adjacent AI-agent categories, the two tactics that reliably work are narrow, named-competitor comparison content (6sense&apos;s model) and content volume paired with direct confrontation (Highspot&apos;s model) — Dexify has the chance to be the first tradie AI-agent brand to apply either.
+            <strong>Unlike sales AI, no tradie AI-agent brand has cracked LLM visibility yet.</strong> Every discovery prompt currently defaults to non-AI incumbents like Jobber and QuickBooks. That&apos;s not a competitive gap you need to close, it&apos;s white space nobody&apos;s claimed. In adjacent AI-agent categories, the two tactics that reliably work are narrow, named-competitor comparison content (6sense&apos;s model) and content volume paired with direct confrontation (Highspot&apos;s model). Dexify has the chance to be the first tradie AI-agent brand to apply either.
           </p>
         </div>
 
@@ -655,18 +655,18 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
         <div style={{ display: "flex", gap: 12, marginBottom: 12, flexWrap: "wrap" as const }}>
           {([
             {
-              label: "Model A — 6sense",
+              label: "Model A: 6sense",
               title: "Named-competitor comparison pages",
               priority: "Highest impact",
               priorityColor: "#16a34a",
-              body: "Publish a dedicated 'Dexify vs [Competitor]' page for every incumbent — Jobber, ServiceM8, Tradify, simPRO. LLMs are trained on comparison content and retrieve it directly when users ask what alternatives exist. A single well-structured comparison page is worth more training signal than dozens of generic blog posts. Each page should name the competitor in the title, URL slug, and H1, include a feature table, and end with a clear 'why Dexify' section. Four pages covers the four tools LLMs currently default to in this space.",
+              body: "Publish a dedicated 'Dexify vs [Competitor]' page for every incumbent: Jobber, ServiceM8, Tradify, simPRO. LLMs are trained on comparison content and retrieve it directly when users ask what alternatives exist. A single well-structured comparison page is worth more training signal than dozens of generic blog posts. Each page should name the competitor in the title, URL slug, and H1, include a feature table, and end with a clear 'why Dexify' section. Four pages covers the four tools LLMs currently default to in this space.",
             },
             {
-              label: "Model B — Highspot",
+              label: "Model B: Highspot",
               title: "Own one query cluster with volume",
               priority: "High impact",
               priorityColor: "#16a34a",
-              body: "Pick the single query cluster where Dexify has the strongest product story — voice-to-quote is the natural choice — and publish 10–15 pieces all using exactly the same phrase: 'voice-to-quote AI agent for tradies.' LLMs learn category labels through repeated co-occurrence; when every piece on a topic uses the same phrase cluster and names Dexify, the model begins associating them. One scattered blog post does nothing. Concentrated volume on one anchor phrase breaks through.",
+              body: "Pick the single query cluster where Dexify has the strongest product story (voice-to-quote is the natural choice) and publish 10-15 pieces all using exactly the same phrase: 'voice-to-quote AI agent for tradies.' LLMs learn category labels through repeated co-occurrence; when every piece on a topic uses the same phrase cluster and names Dexify, the model begins associating them. One scattered blog post does nothing. Concentrated volume on one anchor phrase breaks through.",
             },
           ] as { label: string; title: string; priority: string; priorityColor: string; body: string }[]).map(({ label, title, priority, priorityColor, body }) => (
             <div key={label} style={{
@@ -692,22 +692,22 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
             {
               tag: "Tradie-specific",
               title: "Hyper-local, trade-specific landing pages",
-              body: "LLMs answer location+trade queries by surfacing whatever content exists for that combination. Create pages targeting: AI agent for electricians in Sydney, voice quoting for plumbers in Melbourne, AI invoicing for builders in Brisbane. No competitor has done this. These pages train LLMs to associate Dexify with specific trades and cities — the same way Jobber captured the field service software category through geo-targeted content, but Dexify can do it faster because the niche is empty.",
+              body: "LLMs answer location+trade queries by surfacing whatever content exists for that combination. Create pages targeting: AI agent for electricians in Sydney, voice quoting for plumbers in Melbourne, AI invoicing for builders in Brisbane. No competitor has done this. These pages train LLMs to associate Dexify with specific trades and cities, the same way Jobber captured the field service software category through geo-targeted content, but Dexify can do it faster because the niche is empty.",
             },
             {
               tag: "Tradie-specific",
               title: "Trade forum and community seeding",
-              body: "LLMs are trained on Reddit, Whirlpool, and trade forums. A genuine, helpful answer to questions like 'what AI tools do tradies use?' on r/AusFinance, HIA forums, or Master Builders community threads — mentioning Dexify by name with a specific use case — generates training signal that a blog post on Dexify's own domain cannot. Third-party mentions in communities carry outsized weight because they read as unsponsored.",
+              body: "LLMs are trained on Reddit, Whirlpool, and trade forums. A genuine, helpful answer to questions like 'what AI tools do tradies use?' on r/AusFinance, HIA forums, or Master Builders community threads (mentioning Dexify by name with a specific use case) generates training signal that a blog post on Dexify's own domain cannot. Third-party mentions in communities carry outsized weight because they read as unsponsored.",
             },
             {
               tag: "Overall AI visibility",
               title: "Third-party AI directory listings",
-              body: "G2, Capterra, ProductHunt, and Futurepedia are the directories LLMs trust most for product discovery. Dexify needs a listing on each with 'AI agent for tradespeople' in the description — not quoting software. LLMs surface Futurepedia and G2 listings directly in responses when a product lacks wider web presence. A complete listing with reviews is a credibility shortcut that also functions as training data.",
+              body: "G2, Capterra, ProductHunt, and Futurepedia are the directories LLMs trust most for product discovery. Dexify needs a listing on each with 'AI agent for tradespeople' in the description, not quoting software. LLMs surface Futurepedia and G2 listings directly in responses when a product lacks wider web presence. A complete listing with reviews is a credibility shortcut that also functions as training data.",
             },
             {
               tag: "Overall AI visibility",
-              title: "Publish the best tradie AI agents listicle — yourself",
-              body: "LLMs frequently cite best-of roundup articles when answering discovery queries. If no independent publication has written about the best AI agents for Australian tradies, Dexify should publish it — including a fair assessment of competitors. LLMs do not penalise self-authored comparison content; they index it the same as any third party. This is how Highspot, Gong, and Clari built category authority before analysts caught up: they defined the category in writing before anyone else did.",
+              title: "Publish the best tradie AI agents listicle yourself",
+              body: "LLMs frequently cite best-of roundup articles when answering discovery queries. If no independent publication has written about the best AI agents for Australian tradies, Dexify should publish it, including a fair assessment of competitors. LLMs do not penalise self-authored comparison content; they index it the same as any third party. This is how Highspot, Gong, and Clari built category authority before analysts caught up: they defined the category in writing before anyone else did.",
             },
           ] as { tag: string; title: string; body: string }[]).map(({ tag, title, body }) => (
             <div key={title} style={{
