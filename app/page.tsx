@@ -42,6 +42,102 @@ function DomainSearch() {
   );
 }
 
+function PricingModal({ plan, onClose }: { plan: "free" | "enterprise"; onClose: () => void }) {
+  const [email, setEmail]   = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/pricing-signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, plan }),
+      });
+      setStatus(res.ok ? "done" : "error");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  const isEnterprise = plan === "enterprise";
+  const accent = isEnterprise ? "#C2186A" : "#7C3AED";
+  const gradient = isEnterprise
+    ? "linear-gradient(95deg, #7C3AED, #C2186A)"
+    : "linear-gradient(95deg, #7C3AED, #9D174D)";
+
+  return (
+    <div
+      style={{ position: "fixed", inset: 0, zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.45)", backdropFilter: "blur(4px)" }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div style={{ background: "#fff", borderRadius: 20, padding: "40px 36px", maxWidth: 420, width: "90%", boxShadow: "0 24px 64px rgba(0,0,0,0.18)", position: "relative" }}>
+        <button onClick={onClose} style={{ position: "absolute", top: 16, right: 18, background: "none", border: "none", fontSize: 22, color: "rgba(0,0,0,0.35)", cursor: "pointer", lineHeight: 1 }}>×</button>
+
+        {status === "done" ? (
+          <div style={{ textAlign: "center", padding: "16px 0" }}>
+            <div style={{ fontSize: 36, marginBottom: 12 }}>✓</div>
+            <h3 style={{ fontSize: 20, fontWeight: 700, color: "#0F0B1E", margin: "0 0 10px" }}>You&apos;re on the list</h3>
+            <p style={{ fontSize: 14, color: "rgba(0,0,0,0.55)", lineHeight: 1.6, margin: 0 }}>
+              We&apos;ll be in touch at <strong>{email}</strong> shortly.
+            </p>
+          </div>
+        ) : (
+          <>
+            <span style={{
+              display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+              textTransform: "uppercase" as const, color: accent,
+              background: `rgba(${isEnterprise ? "194,24,106" : "124,58,237"},0.09)`,
+              borderRadius: 999, padding: "3px 10px", marginBottom: 16,
+            }}>
+              {isEnterprise ? "Enterprise" : "Free"}
+            </span>
+            <h3 style={{ fontSize: 22, fontWeight: 700, color: "#0F0B1E", margin: "0 0 8px", letterSpacing: "-0.02em" }}>
+              {isEnterprise ? "Get started with Enterprise" : "Get started for free"}
+            </h3>
+            <p style={{ fontSize: 14, color: "rgba(0,0,0,0.55)", lineHeight: 1.55, margin: "0 0 24px" }}>
+              {isEnterprise
+                ? "Enter your email and we’ll get in touch."
+                : "Enter your email and we’ll get in touch."}
+            </p>
+            <form onSubmit={submit}>
+              <input
+                type="email"
+                required
+                autoFocus
+                placeholder="you@company.com"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                style={{
+                  width: "100%", boxSizing: "border-box" as const,
+                  padding: "12px 16px", borderRadius: 10, fontSize: 14, fontWeight: 500,
+                  border: `1.5px solid rgba(${isEnterprise ? "194,24,106" : "124,58,237"},0.28)`,
+                  outline: "none", marginBottom: 14, fontFamily: "inherit", color: "#000",
+                }}
+              />
+              {status === "error" && (
+                <p style={{ fontSize: 13, color: "#dc2626", margin: "0 0 12px" }}>Something went wrong — please try again.</p>
+              )}
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                style={{
+                  width: "100%", padding: "13px", borderRadius: 10, border: "none", cursor: "pointer",
+                  background: gradient, color: "#fff",
+                  fontSize: 15, fontWeight: 700, opacity: status === "loading" ? 0.7 : 1,
+                }}
+              >
+                {status === "loading" ? "Sending…" : "Get started"}
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function ReportModal({ onClose }: { onClose: () => void }) {
   const [email, setEmail]     = useState("");
   const [status, setStatus]   = useState<"idle" | "loading" | "done" | "error">("idle");
@@ -121,6 +217,7 @@ export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [pricingModal, setPricingModal] = useState<{ open: boolean; plan: "free" | "enterprise" }>({ open: false, plan: "free" });
   const videoPlayedRef = useRef(false);
 
   const handleVideoPlay = () => {
@@ -133,6 +230,7 @@ export default function Home() {
   return (
     <div className="page-bg relative text-black font-sans">
       {reportModalOpen && <ReportModal onClose={() => setReportModalOpen(false)} />}
+      {pricingModal.open && <PricingModal plan={pricingModal.plan} onClose={() => setPricingModal(p => ({ ...p, open: false }))} />}
       <style>{`
         @media (max-width: 640px) {
           .hero-card-wrapper { margin: 8px 12px 16px !important; }
@@ -463,6 +561,150 @@ export default function Home() {
             ))}
           </div>
 
+        </div>
+      </section>
+
+      {/* ── Pricing Section ── */}
+      <section style={{ background: "transparent", paddingTop: 0, paddingBottom: 80 }}>
+        <div className="max-w-5xl mx-auto px-6">
+          <div style={{ textAlign: "center", marginBottom: 40 }}>
+            <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "#7C3AED", marginBottom: 12 }}>Pricing</p>
+            <h2 style={{ fontSize: "clamp(26px, 3.5vw, 38px)", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.15, color: "#0F0B1E", margin: "0 0 12px" }}>
+              Simple, transparent pricing
+            </h2>
+            <p style={{ fontSize: 15, color: "rgba(15,11,30,0.55)", lineHeight: 1.6, maxWidth: 460, margin: "0 auto" }}>
+              Start free and scale when you're ready. No credit card required.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ maxWidth: 780, margin: "0 auto" }}>
+
+            {/* Free card */}
+            <div style={{
+              background: "#fff",
+              border: "1.5px solid rgba(124,58,237,0.15)",
+              borderRadius: 20,
+              padding: "32px 32px 36px",
+              display: "flex",
+              flexDirection: "column" as const,
+              boxShadow: "0 4px 24px rgba(124,58,237,0.07)",
+            }}>
+              <div style={{ marginBottom: 4 }}>
+                <span style={{
+                  display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                  textTransform: "uppercase" as const, color: "#7C3AED",
+                  background: "rgba(124,58,237,0.08)", borderRadius: 999, padding: "3px 10px", marginBottom: 16,
+                }}>Free</span>
+              </div>
+              <div style={{ marginBottom: 24 }}>
+                <span style={{ fontSize: 42, fontWeight: 800, color: "#0F0B1E", letterSpacing: "-0.03em", lineHeight: 1 }}>$0</span>
+                <span style={{ fontSize: 14, color: "rgba(15,11,30,0.45)", marginLeft: 6, fontWeight: 500 }}>/month</span>
+              </div>
+              <p style={{ fontSize: 13.5, color: "rgba(15,11,30,0.55)", lineHeight: 1.55, marginBottom: 24 }}>
+                Get your first AI agent visibility snapshot. See where you stand today.
+              </p>
+              <button
+                onClick={() => setPricingModal({ open: true, plan: "free" })}
+                style={{
+                  display: "block", width: "100%", padding: "13px 0",
+                  background: "transparent", border: "1.5px solid rgba(124,58,237,0.35)",
+                  borderRadius: 10, color: "#7C3AED", fontWeight: 700, fontSize: 14,
+                  cursor: "pointer", letterSpacing: "0.01em",
+                  transition: "background 0.18s ease, border-color 0.18s ease",
+                  marginBottom: 28,
+                }}
+                onMouseEnter={(e) => { const el = e.currentTarget as HTMLButtonElement; el.style.background = "rgba(124,58,237,0.06)"; el.style.borderColor = "rgba(124,58,237,0.55)"; }}
+                onMouseLeave={(e) => { const el = e.currentTarget as HTMLButtonElement; el.style.background = "transparent"; el.style.borderColor = "rgba(124,58,237,0.35)"; }}
+              >
+                Get started free
+              </button>
+              <div style={{ borderTop: "1px solid rgba(15,11,30,0.08)", paddingTop: 24 }}>
+                <p style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "rgba(15,11,30,0.35)", marginBottom: 16 }}>What&rsquo;s included</p>
+                <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column" as const, gap: 12 }}>
+                  {[
+                    "Single-domain visibility snapshot",
+                    "Top brand mentions by LLM",
+                    "Use case share of voice",
+                    "Coverage over time chart",
+                    "PDF report export",
+                  ].map((item) => (
+                    <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 13.5, color: "#0F0B1E", lineHeight: 1.45 }}>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 1 }}>
+                        <circle cx="8" cy="8" r="8" fill="rgba(124,58,237,0.10)"/>
+                        <path d="M4.5 8.2l2.3 2.3 4.2-4.5" stroke="#7C3AED" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Enterprise card */}
+            <div style={{
+              background: "linear-gradient(145deg, #F3EEFE 0%, #FDE8F3 60%, #EEF0FE 100%)",
+              border: "1.5px solid rgba(124,58,237,0.25)",
+              borderRadius: 20,
+              padding: "32px 32px 36px",
+              display: "flex",
+              flexDirection: "column" as const,
+              boxShadow: "0 8px 40px rgba(124,58,237,0.14)",
+            }}>
+              <div style={{ marginBottom: 4 }}>
+                <span style={{
+                  display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                  textTransform: "uppercase" as const, color: "#C2186A",
+                  background: "rgba(194,24,106,0.10)", borderRadius: 999, padding: "3px 10px", marginBottom: 16,
+                }}>Enterprise</span>
+              </div>
+              <div style={{ marginBottom: 24 }}>
+                <span style={{ fontSize: 42, fontWeight: 800, color: "#0F0B1E", letterSpacing: "-0.03em", lineHeight: 1 }}>$25</span>
+                <span style={{ fontSize: 14, color: "rgba(15,11,30,0.45)", marginLeft: 6, fontWeight: 500 }}>/month</span>
+              </div>
+              <p style={{ fontSize: 13.5, color: "rgba(15,11,30,0.60)", lineHeight: 1.55, marginBottom: 24 }}>
+                Full competitive intelligence, ongoing monitoring, and a roadmap built for your product.
+              </p>
+              <button
+                onClick={() => setPricingModal({ open: true, plan: "enterprise" })}
+                style={{
+                  display: "block", width: "100%", padding: "13px 0",
+                  background: "linear-gradient(95deg, #7C3AED, #C2186A)",
+                  border: "none", borderRadius: 10, color: "#fff",
+                  fontWeight: 700, fontSize: 14, cursor: "pointer",
+                  letterSpacing: "0.01em",
+                  boxShadow: "0 4px 20px rgba(124,58,237,0.30)",
+                  transition: "box-shadow 0.18s ease, transform 0.15s ease",
+                  marginBottom: 28,
+                }}
+                onMouseEnter={(e) => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 8px 32px rgba(124,58,237,0.45)"; el.style.transform = "translateY(-1px)"; }}
+                onMouseLeave={(e) => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 4px 20px rgba(124,58,237,0.30)"; el.style.transform = "translateY(0)"; }}
+              >
+                Get started
+              </button>
+              <div style={{ borderTop: "1px solid rgba(124,58,237,0.15)", paddingTop: 24 }}>
+                <p style={{ fontSize: 11.5, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "rgba(15,11,30,0.40)", marginBottom: 16 }}>Everything in Free, plus</p>
+                <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column" as const, gap: 12 }}>
+                  {[
+                    "Multi-domain & competitor tracking",
+                    "Product feature scores (50+ features)",
+                    "Sentiment analysis across LLMs",
+                    "LLM visibility playbook & roadmap",
+                    "Monthly refresh cadence",
+                    "Dedicated Slack channel",
+                  ].map((item) => (
+                    <li key={item} style={{ display: "flex", alignItems: "flex-start", gap: 10, fontSize: 13.5, color: "#0F0B1E", lineHeight: 1.45 }}>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, marginTop: 1 }}>
+                        <circle cx="8" cy="8" r="8" fill="rgba(194,24,106,0.12)"/>
+                        <path d="M4.5 8.2l2.3 2.3 4.2-4.5" stroke="#C2186A" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 
