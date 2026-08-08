@@ -443,14 +443,8 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 32 }}>
                 {clusterFeatures.map((feature, fi) => {
                   const featureRows = clusterScores
-                    .filter((s) => s.feature_id === feature.feature_id)
-                    .sort((a, b) => {
-                      // not_documented rows sink to the bottom
-                      const aNd = a.score_band === "not_documented" ? 1 : 0;
-                      const bNd = b.score_band === "not_documented" ? 1 : 0;
-                      if (aNd !== bNd) return aNd - bNd;
-                      return (b.score ?? 0) - (a.score ?? 0);
-                    })
+                    .filter((s) => s.feature_id === feature.feature_id && s.score_band !== "not_documented")
+                    .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
                     .slice(0, 3);
                   if (featureRows.length === 0) return null;
 
