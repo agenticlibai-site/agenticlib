@@ -450,7 +450,8 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                       const bNd = b.score_band === "not_documented" ? 1 : 0;
                       if (aNd !== bNd) return aNd - bNd;
                       return (b.score ?? 0) - (a.score ?? 0);
-                    });
+                    })
+                    .slice(0, 3);
                   if (featureRows.length === 0) return null;
 
                   return (
