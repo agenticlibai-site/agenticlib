@@ -314,16 +314,9 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
               <h3 style={{ fontSize: 16, fontWeight: 700, color: "#000", margin: "0 0 2px" }}>
                 {cluster.label}
               </h3>
-              <p style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", margin: "0 0 8px" }}>
+              <p style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", margin: "0 0 16px" }}>
                 {cluster.description}
               </p>
-              <div style={{ marginBottom: 14 }}>
-                {DEXIFY_FEATURES.filter((f) => f.feature_tag === cluster.tag).map((f, i) => (
-                  <p key={f.feature_id} style={{ fontSize: 12, color: "rgba(0,0,0,0.6)", margin: "0 0 3px" }}>
-                    <span style={{ fontWeight: 700 }}>Product Feature {i + 1}:</span> {f.feature_name}
-                  </p>
-                ))}
-              </div>
               {data.length === 0 ? (
                 <EmptyState label="No data yet for this cluster" />
               ) : (
