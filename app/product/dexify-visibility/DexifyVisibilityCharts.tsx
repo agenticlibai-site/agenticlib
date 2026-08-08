@@ -444,8 +444,7 @@ export default function DexifyVisibilityCharts({ topBrands, byCluster, byModel, 
                 {clusterFeatures.map((feature, fi) => {
                   const featureRows = clusterScores
                     .filter((s) => s.feature_id === feature.feature_id && s.score_band !== "not_documented")
-                    .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
-                    .slice(0, 3);
+                    .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
                   if (featureRows.length === 0) return null;
 
                   return (
