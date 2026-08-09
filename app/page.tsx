@@ -390,7 +390,7 @@ export default function Home() {
               <span style={{ display: "inline-block", border: "1px solid rgba(176,64,72,.30)", background: "rgba(255,255,255,.45)", color: "#000000", fontSize: 13.5, fontWeight: 600, letterSpacing: ".01em", padding: "7px 15px", borderRadius: 9 }}>Why AgenticLib</span>
               <h2 style={{ fontSize: "clamp(28px,3.2vw,42px)", fontWeight: 600, lineHeight: 1.14, letterSpacing: "-.025em", color: "#000000", margin: "26px 0 0", maxWidth: "18ch" }}>
                 {"Insightful comparison intelligence on "}
-                <span style={{ background: "linear-gradient(100deg,#E0506A,#D14B86 70%,#C24D9E)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", color: "transparent", WebkitBoxDecorationBreak: "clone", boxDecorationBreak: "clone" }}>brand and product</span>
+                <span style={{ background: "linear-gradient(100deg,#E0506A,#D14B86 70%,#C24D9E)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", color: "transparent", WebkitBoxDecorationBreak: "clone", boxDecorationBreak: "clone" }}>brand, product and use case</span>
                 {" for AI agent builders"}
               </h2>
               <p style={{ fontSize: 17, lineHeight: 1.62, color: "#000000", margin: "22px 0 0", maxWidth: "52ch" }}>AgenticLib traces your agent brand from business domain to product feature, benchmarks your visibility against competition and turns your feature gaps into a roadmap - so you show up where your buyers are actually asking.</p>
