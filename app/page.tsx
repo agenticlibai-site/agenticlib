@@ -42,7 +42,7 @@ function DomainSearch() {
   );
 }
 
-function PricingModal({ plan, onClose }: { plan: "free" | "enterprise"; onClose: () => void }) {
+function PricingModal({ plan, onClose }: { plan: "free" | "premium"; onClose: () => void }) {
   const [email, setEmail]   = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
 
@@ -61,9 +61,9 @@ function PricingModal({ plan, onClose }: { plan: "free" | "enterprise"; onClose:
     }
   }
 
-  const isEnterprise = plan === "enterprise";
-  const accent = isEnterprise ? "#C2186A" : "#7C3AED";
-  const gradient = isEnterprise
+  const isPremium = plan === "premium";
+  const accent = isPremium ? "#C2186A" : "#7C3AED";
+  const gradient = isPremium
     ? "linear-gradient(95deg, #7C3AED, #C2186A)"
     : "linear-gradient(95deg, #7C3AED, #9D174D)";
 
@@ -88,16 +88,16 @@ function PricingModal({ plan, onClose }: { plan: "free" | "enterprise"; onClose:
             <span style={{
               display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
               textTransform: "uppercase" as const, color: accent,
-              background: `rgba(${isEnterprise ? "194,24,106" : "124,58,237"},0.09)`,
+              background: `rgba(${isPremium ? "194,24,106" : "124,58,237"},0.09)`,
               borderRadius: 999, padding: "3px 10px", marginBottom: 16,
             }}>
-              {isEnterprise ? "Enterprise" : "Free"}
+              {isPremium ? "Premium" : "Free"}
             </span>
             <h3 style={{ fontSize: 22, fontWeight: 700, color: "#0F0B1E", margin: "0 0 8px", letterSpacing: "-0.02em" }}>
-              {isEnterprise ? "Get started with Enterprise" : "Get started for free"}
+              {isPremium ? "Get started with Premium" : "Get started for free"}
             </h3>
             <p style={{ fontSize: 14, color: "rgba(0,0,0,0.55)", lineHeight: 1.55, margin: "0 0 24px" }}>
-              {isEnterprise
+              {isPremium
                 ? "Enter your email and we’ll get in touch."
                 : "Enter your email and we’ll get in touch."}
             </p>
@@ -112,7 +112,7 @@ function PricingModal({ plan, onClose }: { plan: "free" | "enterprise"; onClose:
                 style={{
                   width: "100%", boxSizing: "border-box" as const,
                   padding: "12px 16px", borderRadius: 10, fontSize: 14, fontWeight: 500,
-                  border: `1.5px solid rgba(${isEnterprise ? "194,24,106" : "124,58,237"},0.28)`,
+                  border: `1.5px solid rgba(${isPremium ? "194,24,106" : "124,58,237"},0.28)`,
                   outline: "none", marginBottom: 14, fontFamily: "inherit", color: "#000",
                 }}
               />
@@ -217,7 +217,7 @@ export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
-  const [pricingModal, setPricingModal] = useState<{ open: boolean; plan: "free" | "enterprise" }>({ open: false, plan: "free" });
+  const [pricingModal, setPricingModal] = useState<{ open: boolean; plan: "free" | "premium" }>({ open: false, plan: "free" });
   const videoPlayedRef = useRef(false);
 
   const handleVideoPlay = () => {
@@ -633,7 +633,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Enterprise card */}
+            {/* Premium card */}
             <div style={{
               background: "linear-gradient(145deg, #F3EEFE 0%, #FDE8F3 60%, #EEF0FE 100%)",
               border: "1.5px solid rgba(124,58,237,0.25)",
@@ -648,7 +648,7 @@ export default function Home() {
                   display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
                   textTransform: "uppercase" as const, color: "#C2186A",
                   background: "rgba(194,24,106,0.10)", borderRadius: 999, padding: "3px 10px", marginBottom: 16,
-                }}>Enterprise</span>
+                }}>Premium</span>
               </div>
               <div style={{ marginBottom: 24 }}>
                 <span style={{ fontSize: 42, fontWeight: 800, color: "#0F0B1E", letterSpacing: "-0.03em", lineHeight: 1 }}>$25</span>
@@ -658,7 +658,7 @@ export default function Home() {
                 Full competitive intelligence, ongoing monitoring, and a roadmap built for your product.
               </p>
               <button
-                onClick={() => setPricingModal({ open: true, plan: "enterprise" })}
+                onClick={() => setPricingModal({ open: true, plan: "premium" })}
                 style={{
                   display: "block", width: "100%", padding: "13px 0",
                   background: "linear-gradient(95deg, #7C3AED, #C2186A)",

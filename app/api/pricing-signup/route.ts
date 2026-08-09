@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     const country  = req.headers.get("x-vercel-ip-country") ?? "Unknown";
     const city     = req.headers.get("x-vercel-ip-city") ?? "";
     const location = [city, country].filter(Boolean).join(", ");
-    const planLabel = plan === "enterprise" ? "Enterprise ($25/mo)" : "Free";
+    const planLabel = plan === "premium" ? "Premium ($25/mo)" : "Free";
 
     await sendEmail({
       to:      NOTIFY_TO,
