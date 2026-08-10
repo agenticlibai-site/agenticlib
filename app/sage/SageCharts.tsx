@@ -93,34 +93,41 @@ function normalizeBand(band: string): string {
 // Extract meaningful talking points from evidence text
 function extractTalkingPoints(evidence: string | null): string[] {
   if (!evidence) return [];
+
+  // Strip HTML/XML tags (e.g. <cite index="12-1,12-8">) leaving plain text only
+  const text = evidence.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+
   const pts: string[] = [];
 
-  // 1. Quoted phrases (e.g., "Brand Voice", "Autonomous Budget Allocator")
-  for (const m of evidence.matchAll(/"([^"]{3,50})"/g))
+  // 1. Double-quoted phrases — "Autonomous Budget Allocator", "AI-driven language generation"
+  for (const m of text.matchAll(/"([^"]{3,50})"/g))
     pts.push(m[1].trim());
 
-  // 2. Named product features: Title Case words followed by tab/feature/hub/card/mode/tool/engine/score
-  //    e.g. "Coaching Feedback tab", "Intelligent Delivery feature", "SmartTriggers"
-  for (const m of evidence.matchAll(
-    /\b((?:[A-Z][a-zA-Z]{1,18}\s+){0,3}[A-Z][a-zA-Z]{1,18}\s+(?:tab|feature|hub|card|mode|tool|engine|model|score|view|plan|index))\b/g
+  // 2. Single-quoted product names — 'Optimal Send Time', 'Brand Voice', 'Smart Sending'
+  for (const m of text.matchAll(/'([A-Z][^']{2,48})'/g))
+    pts.push(m[1].trim());
+
+  // 3. TitleCase words before tab/feature/hub/card/mode/tool/engine/score/…
+  //    e.g. "Global Optimization Hub", "Budget Pacing feature", "Coaching Feedback tab"
+  for (const m of text.matchAll(
+    /\b((?:[A-Z][a-zA-Z]{1,18}\s+){0,3}[A-Z][a-zA-Z]{1,18}\s+(?:tab|feature|hub|card|mode|tool|engine|model|score|view|plan|index|phase|suite))\b/g
   )) {
     const p = m[1].trim();
     if (p.length >= 6 && p.length <= 48) pts.push(p);
   }
 
-  // 3. Numeric scales / ranges — e.g. "0–5 scale", "1-10 score"
-  for (const m of evidence.matchAll(/\b(\d+[–\-]\d+\s+(?:scale|score|range|points?))\b/gi))
+  // 4. Numeric scales / ranges — "0–5 scale", "1-10 score"
+  for (const m of text.matchAll(/\b(\d+[–\-]\d+\s+(?:scale|score|range|points?))\b/gi))
     pts.push(m[1].trim());
 
-  // 4. Frameworks / methodologies named after "like", "called", "named", "such as"
-  //    e.g. "like GAP Selling or MEDDIC" → "GAP Selling"
-  for (const m of evidence.matchAll(/(?:like|named|called|such as)\s+([A-Z][A-Za-z0-9 ]{2,35})/g)) {
+  // 5. Named after "like", "called", "named", "such as" — "like GAP Selling or MEDDIC" → "GAP Selling"
+  for (const m of text.matchAll(/(?:like|named|called|such as)\s+([A-Z][A-Za-z0-9 ]{2,35})/g)) {
     const cut = m[1].split(/\s+(?:or|and|rather|instead|etc|but)\b/i)[0].trim();
     if (cut.length >= 3 && cut.length <= 42) pts.push(cut);
   }
 
-  // 5. "Brand's X Feature" pattern — e.g. "Madgicx's Autonomous Budget Allocator"
-  for (const m of evidence.matchAll(/[A-Z][a-zA-Z]*'s\s+([A-Z][^.,;"]{3,42}?)(?=\s+(?:feature|tool|tab|function|hub|allows|lets|enables|shifts|moves|gives|provides|helps)|[.,;"]|$)/g))
+  // 6. "Brand's X" possessive — "Madgicx's Autonomous Budget Allocator", "Braze's predictive analytics"
+  for (const m of text.matchAll(/[A-Z][a-zA-Z]*'s\s+([A-Z][^.,;"]{3,42}?)(?=\s+(?:feature|tool|tab|function|hub|allows|lets|enables|shifts|moves|gives|provides|helps)|[.,;"]|$)/g))
     pts.push(m[1].trim());
 
   const cleaned = [...new Set(
@@ -345,7 +352,7 @@ function FeatureDetailPanel({ info, onClose }: { info: ModalScore; onClose: () =
               fontSize: 13.5, lineHeight: 1.75, color: "rgba(0,0,0,0.72)",
               fontStyle: "italic",
             }}>
-              "{info.evidence}"
+              "{info.evidence.replace(/<[^>]+>/g, "")}"
             </blockquote>
           </div>
         )}
