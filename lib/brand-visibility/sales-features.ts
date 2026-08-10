@@ -14,7 +14,8 @@ export const JSON_OUTPUT_SPEC =
   '  "has_capability": "yes|no|partial|not_documented",\n' +
   '  "evidence": "if yes/partial: 1-2 sentences on what [BRAND] specifically does for this capability and what makes its approach useful — describe the mechanism and practical outcome for a sales team, not just that the feature exists. If no/not_documented: what is absent or unclear.",\n' +
   '  "limitations": "any caveats or gaps",\n' +
-  '  "confidence": "high|medium|low"\n' +
+  '  "confidence": "high|medium|low",\n' +
+  '  "key_terms": ["2–4 short phrases (2–4 words each) pulled verbatim or near-verbatim from the evidence above that name a specific product capability, metric, or mechanism — e.g. \\"talk-time analytics\\", \\"AI lead scoring\\", \\"CRM sync\\". Omit generic words like \'AI\' or \'automation\' on their own."]\n' +
   '}';
 
 export const FEATURE_SYSTEM_PROMPT =
