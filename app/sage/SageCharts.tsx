@@ -275,30 +275,9 @@ interface ModalScore {
 }
 
 function FeatureDetailPanel({ info, onClose }: { info: ModalScore; onClose: () => void }) {
-  const [loading, setLoading] = useState(true);
-  const [modelScores, setModelScores] = useState<{ model: string; model_score: number | null }[]>([]);
-  const [history,     setHistory]     = useState<{ week: string; score: number | null }[]>([]);
-
-  useEffect(() => {
-    setLoading(true);
-    fetch(
-      `/api/sage/feature-detail?brand=${encodeURIComponent(info.brand)}&feature_id=${encodeURIComponent(info.featureId)}&domain=${info.domain}`
-    )
-      .then(r => r.json())
-      .then(data => {
-        setModelScores(data.modelScores ?? []);
-        setHistory(data.history ?? []);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, [info.brand, info.featureId, info.domain]);
-
   const band        = normalizeBand(info.scoreBand);
   const accentColor = band === "high" ? "#16a34a" : band === "medium" ? "#d97706" : band === "low" ? "#dc2626" : "rgba(0,0,0,0.25)";
   const talkingPts  = extractTalkingPoints(info.evidence);
-
-  const claudeScore = modelScores.find(m => m.model.includes("claude"))?.model_score ?? null;
-  const gptScore    = modelScores.find(m => m.model.includes("gpt"))?.model_score    ?? null;
 
   return (
     <>
@@ -353,33 +332,6 @@ function FeatureDetailPanel({ info, onClose }: { info: ModalScore; onClose: () =
           )}
         </div>
 
-        {/* Model breakdown */}
-        {!loading && (claudeScore !== null || gptScore !== null) && (
-          <div style={{ padding: "16px 22px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
-            <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.13em", textTransform: "uppercase", color: "rgba(0,0,0,0.3)", marginBottom: 14 }}>
-              By Model
-            </div>
-            <div style={{ display: "flex", gap: 28 }}>
-              {claudeScore !== null && (
-                <div>
-                  <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(0,0,0,0.35)", marginBottom: 4 }}>
-                    Claude
-                  </div>
-                  <div style={{ fontSize: 28, fontWeight: 800, color: "#000", letterSpacing: "-0.02em" }}>{claudeScore}</div>
-                </div>
-              )}
-              {gptScore !== null && (
-                <div>
-                  <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(0,0,0,0.35)", marginBottom: 4 }}>
-                    GPT-4o-mini
-                  </div>
-                  <div style={{ fontSize: 28, fontWeight: 800, color: "#000", letterSpacing: "-0.02em" }}>{gptScore}</div>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
-
         {/* Evidence */}
         {info.evidence && (
           <div style={{ padding: "16px 22px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
@@ -395,32 +347,6 @@ function FeatureDetailPanel({ info, onClose }: { info: ModalScore; onClose: () =
             }}>
               "{info.evidence}"
             </blockquote>
-          </div>
-        )}
-
-        {/* Score history */}
-        {!loading && history.length > 0 && (
-          <div style={{ padding: "16px 22px", borderBottom: talkingPts.length > 0 ? "1px solid rgba(0,0,0,0.07)" : "none" }}>
-            <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.13em", textTransform: "uppercase", color: "rgba(0,0,0,0.3)", marginBottom: 14 }}>
-              Score History
-            </div>
-            <div style={{ display: "flex", gap: 7, flexWrap: "wrap" }}>
-              {history.map((h, i) => {
-                const sc = h.score ?? 0;
-                const tileBg = sc >= 70 ? "#16a34a" : sc >= 40 ? "#d97706" : sc > 0 ? "#dc2626" : "rgba(0,0,0,0.1)";
-                const isLatest = i === history.length - 1;
-                return (
-                  <div key={i} style={{
-                    width: 52, height: 52, borderRadius: 11,
-                    background: tileBg,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                    boxShadow: isLatest ? `0 0 0 2.5px ${tileBg}, 0 0 0 4px rgba(0,0,0,0.12)` : "none",
-                  }}>
-                    <span style={{ fontSize: 15, fontWeight: 800, color: "#fff" }}>{h.score ?? "–"}</span>
-                  </div>
-                );
-              })}
-            </div>
           </div>
         )}
 
@@ -447,11 +373,6 @@ function FeatureDetailPanel({ info, onClose }: { info: ModalScore; onClose: () =
           </div>
         )}
 
-        {loading && (
-          <div style={{ padding: "32px 22px", display: "flex", justifyContent: "center", color: "rgba(0,0,0,0.28)", fontSize: 13 }}>
-            Loading…
-          </div>
-        )}
       </div>
     </>
   );
@@ -827,6 +748,40 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
                       </div>
                     )}
                   </div>
+                );
+              })}
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* ── Feature highlight tags: aggregate talking points across top brands ── */}
+      {(() => {
+        const allTags: string[] = [];
+        for (const b of top5) {
+          for (const f of featureDefs) {
+            const s = scoreMap.get(`${b.brand}::${f.feature_id}`);
+            if (s?.evidence) {
+              allTags.push(...extractTalkingPoints(s.evidence));
+            }
+          }
+        }
+        const uniqueTags = [...new Set(allTags)].slice(0, 10);
+        if (uniqueTags.length === 0) return null;
+        return (
+          <div style={{ padding: "16px 20px", borderTop: "1px solid rgba(0,0,0,0.05)" }}>
+            <SectionLabel>Feature Highlights</SectionLabel>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 7 }}>
+              {uniqueTags.map((tag, i) => {
+                const tc = TAG_PALETTE[i % TAG_PALETTE.length];
+                return (
+                  <span key={i} style={{
+                    padding: "5px 13px", borderRadius: 20,
+                    fontSize: 12, fontWeight: 600,
+                    background: tc.bg, border: `1px solid ${tc.border}`, color: tc.text,
+                  }}>
+                    {tag}
+                  </span>
                 );
               })}
             </div>
