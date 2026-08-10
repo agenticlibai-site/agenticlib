@@ -538,8 +538,9 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
         <div style={{ padding: "18px 20px", borderRight: "1px solid rgba(0,0,0,0.05)" }}>
           <SectionLabel>Top Brands</SectionLabel>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {top5.map((b, i) => {
-              const maxApps = top5[0]?.appearances ?? 1;
+            {(() => {
+              const maxApps = Math.max(...top5.map(b => b.appearances), 1);
+              return top5.map((b, i) => {
               const barPct = (b.appearances / maxApps) * 100;
               return (
                 <div key={b.brand}>
@@ -561,7 +562,8 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
                   </div>
                 </div>
               );
-            })}
+            });
+            })()}
           </div>
         </div>
 
@@ -1064,7 +1066,7 @@ export default function SageCharts({
                   const isMkt = domain === "marketing";
                   const clusterBrands = (isMkt ? marketingClusters : salesClusters)
                     .filter(r => r.bucket_tag === tag)
-                    .sort((a, b) => a.avg_position - b.avg_position);
+                    .sort((a, b) => b.appearances - a.appearances); // most mentions first
                   const clusterCoverage = (isMkt ? marketingCoverage : salesCoverage).filter(r => r.bucket_tag === tag);
                   const clusterSOV      = (isMkt ? marketingSOVAll : salesSOV).filter(r => r.bucket_tag === tag).sort((a, b) => b.sov_pct - a.sov_pct);
                   const clusterSentiment = (isMkt ? marketingSentiment : salesSentiment).filter(r => r.bucket_tag === tag);
