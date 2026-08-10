@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { glossaryKeyTerms } from "@/lib/brand-visibility/key-terms-glossary";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
@@ -255,16 +256,65 @@ interface Props {
   marketingSOVAll:      { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
   marketingSentiment:   SalesSentimentRow[];
   salesClusters:        { bucket_tag: string; brand: string; avg_position: number; appearances: number }[];
-  salesFeatures:        { brand_name: string; feature_id: string; feature_tag: string; score: number; score_band: string; evidence: string | null }[];
+  salesFeatures:        { brand_name: string; feature_id: string; feature_tag: string; score: number; score_band: string; evidence: string | null; key_terms: string[] | null }[];
   salesCoverage:        { date: string; bucket_tag: string; brand: string; mention_count: number }[];
   salesSOV:             { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
   salesSentiment:       SalesSentimentRow[];
   salesFeatureDefs:     FeatureDef[];
   dexifyClusters:       DexifyClusterRow[];
-  dexifyFeatures:       { brand_name: string; feature_id: string; feature_tag: string; score: number | null; score_band: string; evidence: string | null }[];
+  dexifyFeatures:       { brand_name: string; feature_id: string; feature_tag: string; score: number | null; score_band: string; evidence: string | null; key_terms: string[] | null }[];
   dexifyFeatureDefs:    FeatureDef[];
   dexifySentiment:      DexifySentimentRow[];
   skincareClusters:     UseCaseBucketBrandRow[];
+}
+
+// ── Inline evidence highlighter ────────────────────────────────────────────────
+
+// Wraps the first occurrence of each term in a periwinkle chip inline with the text.
+// Falls back to glossary-matched terms when the row pre-dates key_terms storage.
+function HighlightedEvidence({ text, keyTerms, featureTag }: {
+  text:       string;
+  keyTerms:   string[];
+  featureTag: string;
+}) {
+  const terms = keyTerms.length > 0 ? keyTerms : glossaryKeyTerms(text, featureTag);
+  if (terms.length === 0) return <>{text}</>;
+
+  const lower = text.toLowerCase();
+  const matches: { start: number; end: number }[] = [];
+
+  for (const term of terms) {
+    const idx = lower.indexOf(term.toLowerCase());
+    if (idx === -1) continue;
+    const end = idx + term.length;
+    // Skip if overlaps an already-matched range
+    if (matches.some(m => m.start < end && m.end > idx)) continue;
+    matches.push({ start: idx, end });
+  }
+  matches.sort((a, b) => a.start - b.start);
+
+  const parts: React.ReactNode[] = [];
+  let cursor = 0;
+  for (let i = 0; i < matches.length; i++) {
+    const { start, end } = matches[i];
+    if (start > cursor) parts.push(text.slice(cursor, start));
+    parts.push(
+      <span key={i} style={{
+        background: "#DEE7FB",
+        color:       "#5E6CE8",
+        borderRadius: 4,
+        padding:     "1px 6px",
+        fontWeight:  600,
+        fontStyle:   "normal",
+        display:     "inline",
+      }}>
+        {text.slice(start, end)}
+      </span>
+    );
+    cursor = end;
+  }
+  if (cursor < text.length) parts.push(text.slice(cursor));
+  return <>{parts}</>;
 }
 
 // ── Feature detail panel ───────────────────────────────────────────────────────
@@ -273,9 +323,11 @@ interface ModalScore {
   brand:       string;
   featureName: string;
   featureId:   string;
+  featureTag:  string;
   score:       number | null;
   scoreBand:   string;
   evidence:    string | null;
+  keyTerms:    string[];
   domain:      string;
   rank:        number;
   total:       number;
@@ -352,7 +404,11 @@ function FeatureDetailPanel({ info, onClose }: { info: ModalScore; onClose: () =
               fontSize: 13.5, lineHeight: 1.75, color: "rgba(0,0,0,0.72)",
               fontStyle: "italic",
             }}>
-              "{info.evidence.replace(/<[^>]+>/g, "")}"
+              &ldquo;<HighlightedEvidence
+                text={info.evidence.replace(/<[^>]+>/g, "")}
+                keyTerms={info.keyTerms}
+                featureTag={info.featureTag}
+              />&rdquo;
             </blockquote>
           </div>
         )}
@@ -395,7 +451,7 @@ interface SalesCardProps {
   coverage:       { date: string; brand: string; mention_count: number }[];
   sov:            { brand: string; total_appearances: number; sov_pct: number }[];
   featureDefs:    FeatureDef[];
-  scoreMap:       Map<string, { score: number | null; score_band: string; evidence: string | null }>;
+  scoreMap:       Map<string, { score: number | null; score_band: string; evidence: string | null; key_terms: string[] | null }>;
   sentimentRows:  SalesSentimentRow[];
   color:          string;
   bg:             string;
@@ -598,7 +654,7 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
             // All brands in cluster, sorted by this feature's score desc
             const brandScores = clusterBrands.map(b => {
               const s = scoreMap.get(`${b.brand}::${f.feature_id}`);
-              return { brand: b.brand, score: s?.score ?? null, scoreBand: s?.score_band ?? "", evidence: s?.evidence ?? null };
+              return { brand: b.brand, score: s?.score ?? null, scoreBand: s?.score_band ?? "", evidence: s?.evidence ?? null, keyTerms: s?.key_terms ?? null };
             }).sort((a, b) => (b.score ?? -1) - (a.score ?? -1));
 
             // Pre-compute ranks for detail panel
@@ -641,9 +697,11 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
                       brand:       b.brand,
                       featureName: f.feature_name,
                       featureId:   f.feature_id,
+                      featureTag:  f.feature_tag,
                       score:       b.score,
                       scoreBand:   b.scoreBand,
                       evidence:    b.evidence,
+                      keyTerms:    b.keyTerms ?? [],
                       domain,
                       rank,
                       total,
@@ -865,11 +923,11 @@ export default function SageCharts({
     return [];
   }
 
-  function getScoreMap(dom: DomainId, tag: string): Map<string, { score: number | null; score_band: string; evidence: string | null }> {
-    const map = new Map<string, { score: number | null; score_band: string; evidence: string | null }>();
+  function getScoreMap(dom: DomainId, tag: string): Map<string, { score: number | null; score_band: string; evidence: string | null; key_terms: string[] | null }> {
+    const map = new Map<string, { score: number | null; score_band: string; evidence: string | null; key_terms: string[] | null }>();
     const rows = dom === "sales" ? salesFeatures : dom === "marketing" ? marketingFeatures : dom === "dexify" ? dexifyFeatures : [];
     for (const r of rows) {
-      if (r.feature_tag === tag) map.set(`${r.brand_name}::${r.feature_id}`, { score: r.score, score_band: r.score_band, evidence: r.evidence });
+      if (r.feature_tag === tag) map.set(`${r.brand_name}::${r.feature_id}`, { score: r.score, score_band: r.score_band, evidence: r.evidence, key_terms: r.key_terms ?? null });
     }
     return map;
   }

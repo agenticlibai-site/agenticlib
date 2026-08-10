@@ -20,7 +20,8 @@ export const DEXIFY_JSON_OUTPUT_SPEC =
   '  "has_capability": "yes|no|partial|not_documented",\n' +
   '  "evidence": "if yes/partial: 1-2 sentences on what [BRAND] specifically does for this capability and what makes its approach useful for a tradie — describe the mechanism and practical outcome, not just that the feature exists. If no/not_documented: what is absent or unclear.",\n' +
   '  "limitations": "any caveats or gaps",\n' +
-  '  "confidence": "high|medium|low"\n' +
+  '  "confidence": "high|medium|low",\n' +
+  '  "key_terms": ["2–4 short phrases (2–4 words each) pulled verbatim or near-verbatim from the evidence above that name a specific product capability, mechanism, or integration — e.g. \\"voice-to-quote\\", \\"ServiceM8 integration\\", \\"automated job follow-up\\". Omit generic words like \'AI\' or \'automation\' on their own."]\n' +
   '}';
 
 // ── Locked brand list ──────────────────────────────────────────────────────────
