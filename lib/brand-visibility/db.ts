@@ -1428,6 +1428,71 @@ export async function getSalesClusterBrandPositions(): Promise<
 
 export { SALES_CANONICAL };
 
+// ── Sage platform: coverage over time + all-time SOV ─────────────────────────
+
+export async function getSalesCoverageByDay(): Promise<
+  { date: string; bucket_tag: string; brand: string; mention_count: number }[]
+> {
+  await initSalesVisibilityDB();
+  const result = await sql`
+    SELECT
+      r.date::text AS date,
+      r.bucket_tag,
+      CASE t.brand_name
+        WHEN 'SalesLoft' THEN 'Salesloft'
+        WHEN 'Chorus.ai' THEN 'Chorus'
+        ELSE t.brand_name
+      END AS brand,
+      COUNT(*)::int AS mention_count
+    FROM sales_raw_responses r,
+         jsonb_array_elements_text(r.brands) AS t(brand_name)
+    WHERE r.bucket_tag != 'sales-overall'
+      AND LENGTH(TRIM(t.brand_name)) > 0
+      AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
+    GROUP BY r.date, r.bucket_tag,
+      CASE t.brand_name
+        WHEN 'SalesLoft' THEN 'Salesloft'
+        WHEN 'Chorus.ai' THEN 'Chorus'
+        ELSE t.brand_name
+      END
+    ORDER BY r.date ASC, r.bucket_tag, COUNT(*) DESC
+  `;
+  return result.rows as { date: string; bucket_tag: string; brand: string; mention_count: number }[];
+}
+
+export async function getSalesSOVAllTime(): Promise<
+  { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[]
+> {
+  await initSalesVisibilityDB();
+  const result = await sql`
+    SELECT
+      r.bucket_tag,
+      CASE t.brand_name
+        WHEN 'SalesLoft' THEN 'Salesloft'
+        WHEN 'Chorus.ai' THEN 'Chorus'
+        ELSE t.brand_name
+      END AS brand,
+      COUNT(*)::int AS total_appearances,
+      ROUND(
+        COUNT(*) * 100.0 / NULLIF(SUM(COUNT(*)) OVER (PARTITION BY r.bucket_tag), 0),
+        1
+      )::float AS sov_pct
+    FROM sales_raw_responses r,
+         jsonb_array_elements_text(r.brands) AS t(brand_name)
+    WHERE r.bucket_tag != 'sales-overall'
+      AND LENGTH(TRIM(t.brand_name)) > 0
+      AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
+    GROUP BY r.bucket_tag,
+      CASE t.brand_name
+        WHEN 'SalesLoft' THEN 'Salesloft'
+        WHEN 'Chorus.ai' THEN 'Chorus'
+        ELSE t.brand_name
+      END
+    ORDER BY r.bucket_tag, COUNT(*) DESC
+  `;
+  return result.rows as { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
+}
+
 // ── Feature scores read (for brand-visibility page) ───────────────────────────
 
 export interface FeatureScoreRow {
