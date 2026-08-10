@@ -3,6 +3,9 @@ import {
   getFeatureScores,
   getSalesClusterBrandPositions,
   getSalesFeatureScores,
+  getSalesCoverageByDay,
+  getSalesSOVAllTime,
+  getSalesSentimentData,
   getDexifyByCluster,
   getDexifyFeatureScores,
   getDexifySentimentData,
@@ -26,6 +29,9 @@ export default async function SagePage() {
     marketingFeatures,
     salesClusters,
     salesFeatures,
+    salesCoverage,
+    salesSOV,
+    salesSentimentResult,
     dexifyClusters,
     dexifyFeatures,
     dexifySentimentResult,
@@ -35,6 +41,9 @@ export default async function SagePage() {
     getFeatureScores(),
     getSalesClusterBrandPositions(),
     getSalesFeatureScores(),
+    getSalesCoverageByDay(),
+    getSalesSOVAllTime(),
+    getSalesSentimentData().catch(() => ({ rows: [], meta: { dual_model_dates: 0, earliest_date: null, latest_date: null } })),
     getDexifyByCluster(),
     getDexifyFeatureScores(),
     getDexifySentimentData(),
@@ -48,6 +57,9 @@ export default async function SagePage() {
       marketingFeatureDefs={MARKETING_FEATURE_DEFS_FULL.map(f => ({ feature_id: f.feature_id, feature_tag: f.feature_tag, feature_name: f.feature_name }))}
       salesClusters={salesClusters}
       salesFeatures={salesFeatures}
+      salesCoverage={salesCoverage}
+      salesSOV={salesSOV}
+      salesSentiment={salesSentimentResult.rows}
       salesFeatureDefs={SALES_FEATURE_DEFS_FULL.map(f => ({ feature_id: f.feature_id, feature_tag: f.feature_tag, feature_name: f.feature_name }))}
       dexifyClusters={dexifyClusters}
       dexifyFeatures={dexifyFeatures}
