@@ -4,6 +4,7 @@ import {
   getMarketingLockedBrandPositions,
   getMarketingCoverageByDay,
   getMarketingSOVAllTime,
+  getMarketingSentimentData,
   getSalesLockedBrandPositions,
   getSalesFeatureScores,
   getSalesCoverageByDay,
@@ -33,6 +34,7 @@ export default async function SagePage() {
     marketingClusters,
     marketingCoverage,
     marketingSOVAll,
+    marketingSentimentResult,
     salesClusters,
     salesFeatures,
     salesCoverage,
@@ -48,6 +50,7 @@ export default async function SagePage() {
     getMarketingLockedBrandPositions(),
     getMarketingCoverageByDay(),
     getMarketingSOVAllTime(),
+    getMarketingSentimentData().catch(() => ({ rows: [], meta: { dual_model_dates: 0, earliest_date: null, latest_date: null } })),
     getSalesLockedBrandPositions(),
     getSalesFeatureScores(),
     getSalesCoverageByDay(),
@@ -67,6 +70,7 @@ export default async function SagePage() {
       marketingClusters={marketingClusters}
       marketingCoverage={marketingCoverage}
       marketingSOVAll={marketingSOVAll}
+      marketingSentiment={marketingSentimentResult.rows}
       salesClusters={salesClusters}
       salesFeatures={salesFeatures}
       salesCoverage={salesCoverage}
