@@ -307,14 +307,14 @@ function FeatureDetailPanel({ info, onClose }: { info: ModalScore; onClose: () =
       <div
         onClick={onClose}
         style={{
-          position: "fixed", inset: 0, background: "rgba(0,0,0,0.18)",
+          position: "fixed", inset: 0, top: 64, background: "rgba(0,0,0,0.18)",
           zIndex: 40, backdropFilter: "blur(2px)",
         }}
       />
 
       {/* Drawer */}
       <div style={{
-        position: "fixed", right: 0, top: 0, bottom: 0, width: 390,
+        position: "fixed", right: 0, top: 64, bottom: 0, width: 390,
         background: "#fff", zIndex: 50,
         boxShadow: "-6px 0 32px rgba(0,0,0,0.12)",
         overflowY: "auto", display: "flex", flexDirection: "column",
