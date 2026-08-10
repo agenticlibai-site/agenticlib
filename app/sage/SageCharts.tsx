@@ -208,9 +208,8 @@ function ScorePill({ band, score, onClick }: { band: string; score: number | nul
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{
-      fontSize: 9.5, fontWeight: 700, letterSpacing: "0.13em",
-      textTransform: "uppercase", color: "rgba(0,0,0,0.3)",
-      marginBottom: 14,
+      fontSize: 14, fontWeight: 800, letterSpacing: "-0.01em",
+      color: "#000", marginBottom: 14,
     }}>
       {children}
     </div>
@@ -537,7 +536,7 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
 
         {/* Top 5 brands */}
         <div style={{ padding: "18px 20px", borderRight: "1px solid rgba(0,0,0,0.05)" }}>
-          <SectionLabel>Top Brands by LLM Recall</SectionLabel>
+          <SectionLabel>Top Brands</SectionLabel>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {top5.map((b, i) => {
               const maxApps = top5[0]?.appearances ?? 1;
@@ -662,6 +661,9 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
       {/* ── Row 3: Feature scores (bar chart, one section per feature) ────── */}
       {hasFeatures && (
         <div style={{ borderBottom: hasSentiment ? "1px solid rgba(0,0,0,0.05)" : "none" }}>
+          <div style={{ padding: "18px 20px 4px" }}>
+            <SectionLabel>Product Features</SectionLabel>
+          </div>
           {featureDefs.map((f, fi) => {
             // All brands in cluster, sorted by this feature's score desc
             const brandScores = clusterBrands.map(b => {
@@ -684,7 +686,7 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
               >
                 {/* Feature heading */}
                 <div style={{ marginBottom: 14 }}>
-                  <div style={{ fontSize: 14, fontWeight: 700, color: "#000" }}>{f.feature_name}</div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "rgba(0,0,0,0.55)", letterSpacing: "-0.005em" }}>{f.feature_name}</div>
                 </div>
 
                 {/* Brand rows */}
