@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   PieChart, Pie, Cell, Legend,
@@ -70,6 +70,34 @@ const SKINCARE_KEYS: Record<string, keyof UseCaseBucketBrandRow> = {
 
 const CHART_COLORS = ["#2563EB", "#7C3AED", "#EA580C", "#16a34a", "#d97706", "#dc2626", "#BE185D", "#0891b2"];
 
+// Tag palette for unique talking points
+const TAG_PALETTE = [
+  { bg: "rgba(37,99,235,0.08)",  border: "rgba(37,99,235,0.22)",  text: "#1d4ed8" },
+  { bg: "rgba(124,58,237,0.08)", border: "rgba(124,58,237,0.22)", text: "#6d28d9" },
+  { bg: "rgba(234,88,12,0.08)",  border: "rgba(234,88,12,0.22)",  text: "#c2410c" },
+  { bg: "rgba(22,163,74,0.08)",  border: "rgba(22,163,74,0.22)",  text: "#15803d" },
+  { bg: "rgba(190,24,93,0.08)",  border: "rgba(190,24,93,0.22)",  text: "#be185d" },
+];
+
+// Normalise DB score bands → the four canonical values ScorePill understands
+function normalizeBand(band: string): string {
+  const map: Record<string, string> = {
+    strong: "high", good: "high", excellent: "high", verified: "high", full: "high",
+    moderate: "medium", partial: "medium", adequate: "medium",
+    weak: "low", limited: "low", poor: "low", minimal: "low",
+    undocumented: "not_documented", unknown: "not_documented", none: "not_documented",
+  };
+  return map[band?.toLowerCase()] ?? band;
+}
+
+// Pull quoted phrases (3–50 chars) from evidence text as talking points
+function extractTalkingPoints(evidence: string | null): string[] {
+  if (!evidence) return [];
+  const matches = evidence.match(/"([^"]{3,50})"/g) ?? [];
+  const cleaned = matches.map(m => m.replace(/^"|"$/g, "").trim());
+  return [...new Set(cleaned)].slice(0, 5);
+}
+
 // ── Icons ──────────────────────────────────────────────────────────────────────
 
 function SalesIcon() {
@@ -114,23 +142,34 @@ function DomainIcon({ id }: { id: string }) {
 
 // ── Score pill ─────────────────────────────────────────────────────────────────
 
-function ScorePill({ band, score }: { band: string; score: number | null }) {
+function ScorePill({ band, score, onClick }: { band: string; score: number | null; onClick?: () => void }) {
+  const nb = normalizeBand(band);
   const styles: Record<string, { bg: string; color: string }> = {
     high:           { bg: "#16a34a", color: "#fff" },
     medium:         { bg: "#d97706", color: "#fff" },
     low:            { bg: "#dc2626", color: "#fff" },
     not_documented: { bg: "rgba(0,0,0,0.07)", color: "rgba(0,0,0,0.3)" },
   };
-  const s = styles[band] ?? styles.not_documented;
-  return (
-    <span style={{
-      display: "inline-block", minWidth: 34, textAlign: "center",
-      padding: "2px 7px", borderRadius: 4, fontSize: 11.5, fontWeight: 700,
-      background: s.bg, color: s.color,
-    }}>
-      {score ?? "–"}
-    </span>
-  );
+  const s = styles[nb] ?? styles.not_documented;
+  const baseStyle = {
+    display: "inline-block", minWidth: 34, textAlign: "center" as const,
+    padding: "2px 7px", borderRadius: 4, fontSize: 11.5, fontWeight: 700,
+    background: s.bg, color: s.color,
+  };
+  if (onClick) {
+    return (
+      <button
+        onClick={onClick}
+        style={{ ...baseStyle, border: "none", cursor: "pointer", outline: "none", transition: "opacity 0.1s" }}
+        onMouseEnter={e => (e.currentTarget.style.opacity = "0.78")}
+        onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+        title="Click for details"
+      >
+        {score ?? "–"}
+      </button>
+    );
+  }
+  return <span style={baseStyle}>{score ?? "–"}</span>;
 }
 
 // ── Section heading ────────────────────────────────────────────────────────────
@@ -190,11 +229,209 @@ interface Props {
   skincareClusters:     UseCaseBucketBrandRow[];
 }
 
+// ── Feature detail panel ───────────────────────────────────────────────────────
+
+interface ModalScore {
+  brand:       string;
+  featureName: string;
+  featureId:   string;
+  score:       number | null;
+  scoreBand:   string;
+  evidence:    string | null;
+  domain:      string;
+  rank:        number;
+  total:       number;
+}
+
+function FeatureDetailPanel({ info, onClose }: { info: ModalScore; onClose: () => void }) {
+  const [loading, setLoading] = useState(true);
+  const [modelScores, setModelScores] = useState<{ model: string; model_score: number | null }[]>([]);
+  const [history,     setHistory]     = useState<{ week: string; score: number | null }[]>([]);
+
+  useEffect(() => {
+    setLoading(true);
+    fetch(
+      `/api/sage/feature-detail?brand=${encodeURIComponent(info.brand)}&feature_id=${encodeURIComponent(info.featureId)}&domain=${info.domain}`
+    )
+      .then(r => r.json())
+      .then(data => {
+        setModelScores(data.modelScores ?? []);
+        setHistory(data.history ?? []);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, [info.brand, info.featureId, info.domain]);
+
+  const band        = normalizeBand(info.scoreBand);
+  const accentColor = band === "high" ? "#16a34a" : band === "medium" ? "#d97706" : band === "low" ? "#dc2626" : "rgba(0,0,0,0.25)";
+  const talkingPts  = extractTalkingPoints(info.evidence);
+
+  const claudeScore = modelScores.find(m => m.model.includes("claude"))?.model_score ?? null;
+  const gptScore    = modelScores.find(m => m.model.includes("gpt"))?.model_score    ?? null;
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        onClick={onClose}
+        style={{
+          position: "fixed", inset: 0, background: "rgba(0,0,0,0.18)",
+          zIndex: 40, backdropFilter: "blur(2px)",
+        }}
+      />
+
+      {/* Drawer */}
+      <div style={{
+        position: "fixed", right: 0, top: 0, bottom: 0, width: 390,
+        background: "#fff", zIndex: 50,
+        boxShadow: "-6px 0 32px rgba(0,0,0,0.12)",
+        overflowY: "auto", display: "flex", flexDirection: "column",
+        fontFamily: "var(--font-geist-sans), system-ui, sans-serif",
+      }}>
+        {/* Close */}
+        <button
+          onClick={onClose}
+          style={{
+            position: "absolute", top: 16, right: 16, width: 28, height: 28,
+            borderRadius: "50%", border: "none", background: "rgba(0,0,0,0.07)",
+            cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+            fontSize: 13, color: "rgba(0,0,0,0.5)", flexShrink: 0,
+          }}
+        >✕</button>
+
+        {/* Header */}
+        <div style={{ padding: "22px 22px 18px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
+          <div style={{
+            fontSize: 9.5, fontWeight: 800, letterSpacing: "0.13em", textTransform: "uppercase",
+            color: "rgba(0,0,0,0.32)", marginBottom: 10,
+          }}>
+            {info.brand} · {info.featureName}
+          </div>
+          <div style={{ display: "flex", alignItems: "flex-end", gap: 8, marginBottom: 6 }}>
+            <span style={{ fontSize: 58, fontWeight: 900, lineHeight: 1, color: accentColor, letterSpacing: "-0.03em" }}>
+              {info.score ?? "–"}
+            </span>
+            {info.score !== null && (
+              <span style={{ fontSize: 14, color: "rgba(0,0,0,0.38)", marginBottom: 10, fontWeight: 500 }}>out of 100</span>
+            )}
+          </div>
+          {info.total > 0 && info.rank > 0 && (
+            <div style={{ fontSize: 13, color: "rgba(0,0,0,0.4)", fontWeight: 500 }}>
+              Ranked {info.rank} of {info.total}
+            </div>
+          )}
+        </div>
+
+        {/* Model breakdown */}
+        {!loading && (claudeScore !== null || gptScore !== null) && (
+          <div style={{ padding: "16px 22px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
+            <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.13em", textTransform: "uppercase", color: "rgba(0,0,0,0.3)", marginBottom: 14 }}>
+              By Model
+            </div>
+            <div style={{ display: "flex", gap: 28 }}>
+              {claudeScore !== null && (
+                <div>
+                  <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(0,0,0,0.35)", marginBottom: 4 }}>
+                    Claude
+                  </div>
+                  <div style={{ fontSize: 28, fontWeight: 800, color: "#000", letterSpacing: "-0.02em" }}>{claudeScore}</div>
+                </div>
+              )}
+              {gptScore !== null && (
+                <div>
+                  <div style={{ fontSize: 9.5, fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "rgba(0,0,0,0.35)", marginBottom: 4 }}>
+                    GPT-4o-mini
+                  </div>
+                  <div style={{ fontSize: 28, fontWeight: 800, color: "#000", letterSpacing: "-0.02em" }}>{gptScore}</div>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Evidence */}
+        {info.evidence && (
+          <div style={{ padding: "16px 22px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
+            <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.13em", textTransform: "uppercase", color: "rgba(0,0,0,0.3)", marginBottom: 12 }}>
+              Evidence
+            </div>
+            <blockquote style={{
+              margin: 0, padding: "13px 16px",
+              borderLeft: `3px solid ${accentColor}`,
+              background: "rgba(0,0,0,0.018)", borderRadius: "0 8px 8px 0",
+              fontSize: 13.5, lineHeight: 1.75, color: "rgba(0,0,0,0.72)",
+              fontStyle: "italic",
+            }}>
+              "{info.evidence}"
+            </blockquote>
+          </div>
+        )}
+
+        {/* Score history */}
+        {!loading && history.length > 0 && (
+          <div style={{ padding: "16px 22px", borderBottom: talkingPts.length > 0 ? "1px solid rgba(0,0,0,0.07)" : "none" }}>
+            <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.13em", textTransform: "uppercase", color: "rgba(0,0,0,0.3)", marginBottom: 14 }}>
+              Score History
+            </div>
+            <div style={{ display: "flex", gap: 7, flexWrap: "wrap" }}>
+              {history.map((h, i) => {
+                const sc = h.score ?? 0;
+                const tileBg = sc >= 70 ? "#16a34a" : sc >= 40 ? "#d97706" : sc > 0 ? "#dc2626" : "rgba(0,0,0,0.1)";
+                const isLatest = i === history.length - 1;
+                return (
+                  <div key={i} style={{
+                    width: 52, height: 52, borderRadius: 11,
+                    background: tileBg,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    boxShadow: isLatest ? `0 0 0 2.5px ${tileBg}, 0 0 0 4px rgba(0,0,0,0.12)` : "none",
+                  }}>
+                    <span style={{ fontSize: 15, fontWeight: 800, color: "#fff" }}>{h.score ?? "–"}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Unique talking points */}
+        {talkingPts.length > 0 && (
+          <div style={{ padding: "16px 22px" }}>
+            <div style={{ fontSize: 9.5, fontWeight: 800, letterSpacing: "0.13em", textTransform: "uppercase", color: "rgba(0,0,0,0.3)", marginBottom: 12 }}>
+              Unique Talking Points
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {talkingPts.map((pt, i) => {
+                const tc = TAG_PALETTE[i % TAG_PALETTE.length];
+                return (
+                  <span key={i} style={{
+                    padding: "5px 13px", borderRadius: 20,
+                    fontSize: 12.5, fontWeight: 600,
+                    background: tc.bg, border: `1px solid ${tc.border}`, color: tc.text,
+                  }}>
+                    {pt}
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {loading && (
+          <div style={{ padding: "32px 22px", display: "flex", justifyContent: "center", color: "rgba(0,0,0,0.28)", fontSize: 13 }}>
+            Loading…
+          </div>
+        )}
+      </div>
+    </>
+  );
+}
+
 // ── Sales use-case card ────────────────────────────────────────────────────────
 
 interface SalesCardProps {
   tag:            string;
   label:          string;
+  domain:         string;
   clusterBrands:  { brand: string; avg_position: number; appearances: number }[];
   coverage:       { date: string; brand: string; mention_count: number }[];
   sov:            { brand: string; total_appearances: number; sov_pct: number }[];
@@ -204,9 +441,10 @@ interface SalesCardProps {
   color:          string;
   bg:             string;
   rgb:            string;
+  onScoreClick:   (info: ModalScore) => void;
 }
 
-function SalesUseCaseCard({ tag, label, clusterBrands, coverage, sov, featureDefs, scoreMap, sentimentRows, color, bg, rgb }: SalesCardProps) {
+function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, featureDefs, scoreMap, sentimentRows, color, bg, rgb, onScoreClick }: SalesCardProps) {
   const top5 = clusterBrands.slice(0, 5);
   const hasFeatures = featureDefs.length > 0 && top5.length > 0;
   const hasSentiment = sentimentRows.length > 0;
@@ -415,10 +653,34 @@ function SalesUseCaseCard({ tag, label, clusterBrands, coverage, sov, featureDef
                     <td style={{ padding: "10px 12px", fontWeight: 600, color: "#000", whiteSpace: "nowrap" as const }}>{b.brand}</td>
                     {featureDefs.map(f => {
                       const s = scoreMap.get(`${b.brand}::${f.feature_id}`);
+                      // Compute rank among all brands in this cluster for this feature
+                      const rankedBrands = clusterBrands
+                        .map(bx => ({ brand: bx.brand, score: scoreMap.get(`${bx.brand}::${f.feature_id}`)?.score }))
+                        .filter((bx): bx is { brand: string; score: number } => bx.score !== null && bx.score !== undefined)
+                        .sort((a, c) => c.score - a.score);
+                      const rank  = rankedBrands.findIndex(bx => bx.brand === b.brand) + 1;
+                      const total = rankedBrands.length;
                       return (
                         <td key={f.feature_id} style={{ padding: "10px", textAlign: "center" }}>
-                          {s ? <span title={s.evidence ?? undefined}><ScorePill band={s.score_band} score={s.score} /></span>
-                             : <span style={{ color: "rgba(0,0,0,0.15)", fontSize: 12 }}>–</span>}
+                          {s ? (
+                            <ScorePill
+                              band={s.score_band}
+                              score={s.score}
+                              onClick={s.score !== null ? () => onScoreClick({
+                                brand:       b.brand,
+                                featureName: f.feature_name,
+                                featureId:   f.feature_id,
+                                score:       s.score,
+                                scoreBand:   s.score_band,
+                                evidence:    s.evidence,
+                                domain,
+                                rank,
+                                total,
+                              }) : undefined}
+                            />
+                          ) : (
+                            <span style={{ color: "rgba(0,0,0,0.15)", fontSize: 12 }}>–</span>
+                          )}
                         </td>
                       );
                     })}
@@ -478,8 +740,12 @@ export default function SageCharts({
   dexifyClusters, dexifyFeatures, dexifyFeatureDefs, dexifySentiment,
   skincareClusters,
 }: Props) {
-  const [domain, setDomain]   = useState<DomainId | null>(null);
-  const [cluster, setCluster] = useState<string | null>(null);
+  const [domain,     setDomain]     = useState<DomainId | null>(null);
+  const [cluster,    setCluster]    = useState<string | null>(null);
+  const [scoreModal, setScoreModal] = useState<ModalScore | null>(null);
+
+  const openScore  = useCallback((info: ModalScore) => setScoreModal(info), []);
+  const closeScore = useCallback(() => setScoreModal(null), []);
 
   const activeDomain   = DOMAINS.find(d => d.id === domain);
   const activeClusters = domain ? CLUSTERS[domain] : ({} as Record<string, string>);
@@ -551,6 +817,7 @@ export default function SageCharts({
     : activeClusters;
 
   return (
+    <>
     <div style={{ display: "flex", height: "calc(100vh - 64px)", overflow: "hidden", fontFamily: "var(--font-geist-sans), system-ui, sans-serif" }}>
 
       {/* ── LEFT SIDEBAR ─────────────────────────────────────────────────── */}
@@ -708,6 +975,7 @@ export default function SageCharts({
                       key={tag}
                       tag={tag}
                       label={lbl}
+                      domain={domain}
                       clusterBrands={clusterBrands}
                       coverage={clusterCoverage}
                       sov={clusterSOV}
@@ -717,6 +985,7 @@ export default function SageCharts({
                       color={activeDomain!.color}
                       bg={activeDomain!.bg}
                       rgb={activeDomain!.rgb}
+                      onScoreClick={openScore}
                     />
                   );
                 })
@@ -940,5 +1209,9 @@ export default function SageCharts({
         )}
       </aside>
     </div>
+
+    {/* Feature detail panel — renders on top of everything */}
+    {scoreModal && <FeatureDetailPanel info={scoreModal} onClose={closeScore} />}
+    </>
   );
 }
