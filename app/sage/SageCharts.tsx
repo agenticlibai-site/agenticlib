@@ -247,6 +247,7 @@ interface Props {
   marketingClusters:    { bucket_tag: string; brand: string; avg_position: number; appearances: number }[];
   marketingCoverage:    { date: string; bucket_tag: string; brand: string; mention_count: number }[];
   marketingSOVAll:      { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
+  marketingSentiment:   SalesSentimentRow[];
   salesClusters:        { bucket_tag: string; brand: string; avg_position: number; appearances: number }[];
   salesFeatures:        { brand_name: string; feature_id: string; feature_tag: string; score: number; score_band: string; evidence: string | null }[];
   salesCoverage:        { date: string; bucket_tag: string; brand: string; mention_count: number }[];
@@ -772,40 +773,62 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
       )}
 
       {/* ── Row 4: Sentiment ────────────────────────────────────────────────── */}
-      {hasSentiment && (
-        <div style={{ padding: "18px 20px" }}>
-          <SectionLabel>Sentiment Analysis</SectionLabel>
-          <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {sentimentRows.map(r => {
-              const posW = r.total_count > 0 ? (r.positive_count / r.total_count) * 100 : 0;
-              const neuW = r.total_count > 0 ? (r.neutral_count  / r.total_count) * 100 : 0;
-              const negW = r.total_count > 0 ? (r.negative_count / r.total_count) * 100 : 0;
-              return (
-                <div key={r.brand_name}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 6 }}>
-                    <span style={{ width: 130, fontSize: 13, fontWeight: 700, color: "#000", flexShrink: 0 }}>{r.brand_name}</span>
-                    <div style={{ flex: 1, height: 7, borderRadius: 4, overflow: "hidden", display: "flex" }}>
-                      <div style={{ width: `${posW}%`, height: "100%", background: "#16a34a" }} />
-                      <div style={{ width: `${neuW}%`, height: "100%", background: "#d97706" }} />
-                      <div style={{ width: `${negW}%`, height: "100%", background: "#dc2626" }} />
+      {hasSentiment && (() => {
+        // Descriptors that appear in 50%+ of brands are "common" — render plain
+        // Descriptors that appear in fewer brands are "unique" — highlight with color
+        const descCount = new Map<string, number>();
+        for (const r of sentimentRows)
+          for (const d of r.top_descriptors)
+            descCount.set(d, (descCount.get(d) ?? 0) + 1);
+        const totalBrands  = sentimentRows.length;
+        const isCommon = (d: string) => (descCount.get(d) ?? 0) / totalBrands >= 0.5;
+
+        return (
+          <div style={{ padding: "18px 20px" }}>
+            <SectionLabel>Sentiment Analysis</SectionLabel>
+            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+              {sentimentRows.map(r => {
+                const posW = r.total_count > 0 ? (r.positive_count / r.total_count) * 100 : 0;
+                const neuW = r.total_count > 0 ? (r.neutral_count  / r.total_count) * 100 : 0;
+                const negW = r.total_count > 0 ? (r.negative_count / r.total_count) * 100 : 0;
+                return (
+                  <div key={r.brand_name}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 8 }}>
+                      <span style={{ width: 130, fontSize: 13, fontWeight: 700, color: "#000", flexShrink: 0 }}>{r.brand_name}</span>
+                      <div style={{ flex: 1, height: 8, borderRadius: 4, overflow: "hidden", display: "flex" }}>
+                        <div style={{ width: `${posW}%`, height: "100%", background: "#16a34a" }} />
+                        <div style={{ width: `${neuW}%`, height: "100%", background: "#d97706" }} />
+                        <div style={{ width: `${negW}%`, height: "100%", background: "#dc2626" }} />
+                      </div>
+                      <span style={{ width: 38, textAlign: "right", fontSize: 13, fontWeight: 800, color: "#16a34a", flexShrink: 0 }}>
+                        {Math.round(posW)}%
+                      </span>
                     </div>
-                    <span style={{ width: 36, textAlign: "right", fontSize: 13, fontWeight: 700, color: "#16a34a", flexShrink: 0 }}>
-                      {Math.round(posW)}%
-                    </span>
+                    {r.top_descriptors.length > 0 && (
+                      <div style={{ marginLeft: 144, display: "flex", flexWrap: "wrap", gap: 6 }}>
+                        {r.top_descriptors.map((d, di) => {
+                          const unique = !isCommon(d);
+                          return (
+                            <span key={di} style={{
+                              fontSize: 11.5, padding: "3px 10px", borderRadius: 20,
+                              fontWeight: unique ? 600 : 400,
+                              background: unique ? `rgba(${rgb}, 0.08)` : "transparent",
+                              border: unique ? `1px solid rgba(${rgb}, 0.25)` : "1px solid rgba(0,0,0,0.12)",
+                              color: unique ? color : "rgba(0,0,0,0.45)",
+                            }}>
+                              {d}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
-                  {r.top_descriptors.length > 0 && (
-                    <div style={{ marginLeft: 144, display: "flex", flexWrap: "wrap", gap: 5 }}>
-                      {r.top_descriptors.map((d, di) => (
-                        <span key={di} style={{ fontSize: 11, padding: "2px 9px", borderRadius: 20, border: "1px solid rgba(0,0,0,0.12)", color: "rgba(0,0,0,0.5)" }}>{d}</span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
     </div>
   );
 }
@@ -814,7 +837,7 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
 
 export default function SageCharts({
   marketingSOV, marketingFeatures, marketingFeatureDefs,
-  marketingClusters, marketingCoverage, marketingSOVAll,
+  marketingClusters, marketingCoverage, marketingSOVAll, marketingSentiment,
   salesClusters, salesFeatures, salesCoverage, salesSOV, salesSentiment, salesFeatureDefs,
   dexifyClusters, dexifyFeatures, dexifyFeatureDefs, dexifySentiment,
   skincareClusters,
@@ -1042,7 +1065,7 @@ export default function SageCharts({
                     .sort((a, b) => a.avg_position - b.avg_position);
                   const clusterCoverage = (isMkt ? marketingCoverage : salesCoverage).filter(r => r.bucket_tag === tag);
                   const clusterSOV      = (isMkt ? marketingSOVAll : salesSOV).filter(r => r.bucket_tag === tag).sort((a, b) => b.sov_pct - a.sov_pct);
-                  const clusterSentiment = isMkt ? [] : salesSentiment.filter(r => r.bucket_tag === tag);
+                  const clusterSentiment = (isMkt ? marketingSentiment : salesSentiment).filter(r => r.bucket_tag === tag);
                   const featureDefs     = (isMkt ? marketingFeatureDefs : salesFeatureDefs).filter(f => f.feature_tag === tag);
                   const scoreMap        = getScoreMap(domain, tag);
                   return (
