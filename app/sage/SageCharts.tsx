@@ -662,12 +662,12 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
                     const hasScore = b.score !== null;
                     const barColor =
                       nb === "high"           ? "#16a34a" :
-                      nb === "medium"         ? "#2563eb" :
+                      nb === "medium"         ? "#d97706" :
                       nb === "low"            ? "#dc2626" :
                       "rgba(0,0,0,0.1)";
                     const barBg =
                       nb === "high"           ? "rgba(22,163,74,0.10)" :
-                      nb === "medium"         ? "rgba(37,99,235,0.10)" :
+                      nb === "medium"         ? "rgba(217,119,6,0.10)" :
                       nb === "low"            ? "rgba(220,38,38,0.08)" :
                       "rgba(0,0,0,0.04)";
                     const rank  = ranked.findIndex(r => r.brand === b.brand) + 1;
@@ -1169,7 +1169,7 @@ export default function SageCharts({
                 <span style={{ fontSize: 10.5, fontWeight: 700, color: "rgba(0,0,0,0.32)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Feature Score</span>
                 {[
                   ["#16a34a", "rgba(22,163,74,0.10)",  "Strong (70–100)"],
-                  ["#2563eb", "rgba(37,99,235,0.10)",  "Partial (40–69)"],
+                  ["#d97706", "rgba(217,119,6,0.10)",  "Partial (40–69)"],
                   ["#dc2626", "rgba(220,38,38,0.08)",  "Weak (0–39)"],
                 ].map(([color, bg, label]) => (
                   <div key={label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11.5, color: "rgba(0,0,0,0.45)" }}>
