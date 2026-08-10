@@ -1551,6 +1551,86 @@ export async function getSalesSOVAllTime(): Promise<
   return result.rows as { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
 }
 
+// ── Marketing Sage functions — locked-brand equivalents of the sales trio ─────
+// All three JOIN on lma.dominant_tag = rr.bucket_tag so each brand only surfaces
+// in the one cluster it was assigned to in locked_marketing_agents.
+
+export async function getMarketingLockedBrandPositions(): Promise<
+  { bucket_tag: string; brand: string; avg_position: number; appearances: number }[]
+> {
+  await initBrandVisibilityDB();
+  const result = await sql`
+    SELECT
+      rr.bucket_tag,
+      lma.display_name AS brand,
+      ROUND(AVG(rcb.position)::numeric, 1)::float AS avg_position,
+      COUNT(*)::int AS appearances
+    FROM response_canonical_brands rcb
+    JOIN raw_responses rr ON rr.id = rcb.response_id
+    JOIN locked_marketing_agents lma
+      ON lma.brand_name = rcb.canonical_brand
+      AND lma.dominant_tag = rr.bucket_tag
+    WHERE rr.bucket_tag IN ('ads', 'content', 'lead-gen', 'lifecycle')
+    GROUP BY rr.bucket_tag, lma.display_name
+    ORDER BY rr.bucket_tag, AVG(rcb.position) ASC
+  `;
+  return result.rows as { bucket_tag: string; brand: string; avg_position: number; appearances: number }[];
+}
+
+export async function getMarketingCoverageByDay(): Promise<
+  { date: string; bucket_tag: string; brand: string; mention_count: number }[]
+> {
+  await initBrandVisibilityDB();
+  const result = await sql`
+    SELECT
+      rr.date::text AS date,
+      rr.bucket_tag,
+      lma.display_name AS brand,
+      COUNT(*)::int AS mention_count
+    FROM response_canonical_brands rcb
+    JOIN raw_responses rr ON rr.id = rcb.response_id
+    JOIN locked_marketing_agents lma
+      ON lma.brand_name = rcb.canonical_brand
+      AND lma.dominant_tag = rr.bucket_tag
+    WHERE rr.bucket_tag IN ('ads', 'content', 'lead-gen', 'lifecycle')
+    GROUP BY rr.date, rr.bucket_tag, lma.display_name
+    ORDER BY rr.date ASC, rr.bucket_tag, COUNT(*) DESC
+  `;
+  return result.rows as { date: string; bucket_tag: string; brand: string; mention_count: number }[];
+}
+
+export async function getMarketingSOVAllTime(): Promise<
+  { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[]
+> {
+  await initBrandVisibilityDB();
+  const result = await sql`
+    WITH locked AS (
+      SELECT
+        rr.bucket_tag,
+        lma.display_name AS brand,
+        COUNT(*)::int AS total_appearances
+      FROM response_canonical_brands rcb
+      JOIN raw_responses rr ON rr.id = rcb.response_id
+      JOIN locked_marketing_agents lma
+        ON lma.brand_name = rcb.canonical_brand
+        AND lma.dominant_tag = rr.bucket_tag
+      WHERE rr.bucket_tag IN ('ads', 'content', 'lead-gen', 'lifecycle')
+      GROUP BY rr.bucket_tag, lma.display_name
+    )
+    SELECT
+      bucket_tag,
+      brand,
+      total_appearances,
+      ROUND(
+        total_appearances * 100.0 / NULLIF(SUM(total_appearances) OVER (PARTITION BY bucket_tag), 0),
+        1
+      )::float AS sov_pct
+    FROM locked
+    ORDER BY bucket_tag, total_appearances DESC
+  `;
+  return result.rows as { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
+}
+
 // ── Feature scores read (for brand-visibility page) ───────────────────────────
 
 export interface FeatureScoreRow {

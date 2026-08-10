@@ -40,13 +40,10 @@ const CLUSTERS: Record<DomainId, Record<string, string>> = {
     "sales-enablement": "Sales Enablement",
   },
   marketing: {
-    "ads":            "Ads Management",
-    "content":        "Content Creation",
-    "lead-gen":       "Lead Generation",
-    "lifecycle":      "Lifecycle & Retention",
-    "technical":      "Technical Capabilities",
-    "responsible-ai": "Responsible AI",
-    "cost":           "Cost & Pricing",
+    "ads":       "Ads Management",
+    "content":   "Content Creation",
+    "lead-gen":  "Lead Generation",
+    "lifecycle": "Lifecycle & Retention",
   },
   dexify: {
     "dexify-voice-quote":  "Voice-to-Quote",
@@ -177,6 +174,9 @@ interface Props {
   marketingSOV:         SOVRow[];
   marketingFeatures:    FeatureScoreRow[];
   marketingFeatureDefs: FeatureDef[];
+  marketingClusters:    { bucket_tag: string; brand: string; avg_position: number; appearances: number }[];
+  marketingCoverage:    { date: string; bucket_tag: string; brand: string; mention_count: number }[];
+  marketingSOVAll:      { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
   salesClusters:        { bucket_tag: string; brand: string; avg_position: number; appearances: number }[];
   salesFeatures:        { brand_name: string; feature_id: string; feature_tag: string; score: number; score_band: string; evidence: string | null }[];
   salesCoverage:        { date: string; bucket_tag: string; brand: string; mention_count: number }[];
@@ -473,6 +473,7 @@ function SalesUseCaseCard({ tag, label, clusterBrands, coverage, sov, featureDef
 
 export default function SageCharts({
   marketingSOV, marketingFeatures, marketingFeatureDefs,
+  marketingClusters, marketingCoverage, marketingSOVAll,
   salesClusters, salesFeatures, salesCoverage, salesSOV, salesSentiment, salesFeatureDefs,
   dexifyClusters, dexifyFeatures, dexifyFeatureDefs, dexifySentiment,
   skincareClusters,
@@ -690,17 +691,18 @@ export default function SageCharts({
 
             {/* Use case cards */}
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              {domain === "sales" ? (
-                // ── Sales: rich cards with charts ─────────────────────────
+              {(domain === "sales" || domain === "marketing") ? (
+                // ── Sales + Marketing: rich cards with charts ──────────────
                 Object.entries(visibleClusters).map(([tag, lbl]) => {
-                  const clusterBrands = salesClusters
+                  const isMkt = domain === "marketing";
+                  const clusterBrands = (isMkt ? marketingClusters : salesClusters)
                     .filter(r => r.bucket_tag === tag)
                     .sort((a, b) => a.avg_position - b.avg_position);
-                  const clusterCoverage = salesCoverage.filter(r => r.bucket_tag === tag);
-                  const clusterSOV      = salesSOV.filter(r => r.bucket_tag === tag).sort((a, b) => b.sov_pct - a.sov_pct);
-                  const clusterSentiment = salesSentiment.filter(r => r.bucket_tag === tag);
-                  const featureDefs     = salesFeatureDefs.filter(f => f.feature_tag === tag);
-                  const scoreMap        = getScoreMap("sales", tag);
+                  const clusterCoverage = (isMkt ? marketingCoverage : salesCoverage).filter(r => r.bucket_tag === tag);
+                  const clusterSOV      = (isMkt ? marketingSOVAll : salesSOV).filter(r => r.bucket_tag === tag).sort((a, b) => b.sov_pct - a.sov_pct);
+                  const clusterSentiment = isMkt ? [] : salesSentiment.filter(r => r.bucket_tag === tag);
+                  const featureDefs     = (isMkt ? marketingFeatureDefs : salesFeatureDefs).filter(f => f.feature_tag === tag);
+                  const scoreMap        = getScoreMap(domain, tag);
                   return (
                     <SalesUseCaseCard
                       key={tag}
