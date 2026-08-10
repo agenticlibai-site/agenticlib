@@ -627,68 +627,107 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
         )}
       </div>
 
-      {/* ── Row 3: Feature scores ───────────────────────────────────────────── */}
+      {/* ── Row 3: Feature scores (bar chart, one section per feature) ────── */}
       {hasFeatures && (
         <div style={{ borderBottom: hasSentiment ? "1px solid rgba(0,0,0,0.05)" : "none" }}>
-          <div style={{ padding: "14px 20px 10px" }}>
-            <SectionLabel>Product Feature Scores</SectionLabel>
-          </div>
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
-              <thead>
-                <tr style={{ background: "rgba(0,0,0,0.015)" }}>
-                  <th style={{ textAlign: "left", padding: "8px 10px 8px 20px", fontWeight: 700, color: "rgba(0,0,0,0.38)", fontSize: 10, letterSpacing: "0.05em", textTransform: "uppercase" as const, borderBottom: "1px solid rgba(0,0,0,0.05)", width: 28 }}>#</th>
-                  <th style={{ textAlign: "left", padding: "8px 12px", fontWeight: 700, color: "rgba(0,0,0,0.38)", fontSize: 10, letterSpacing: "0.05em", textTransform: "uppercase" as const, borderBottom: "1px solid rgba(0,0,0,0.05)" }}>Brand</th>
-                  {featureDefs.map(f => (
-                    <th key={f.feature_id} style={{ textAlign: "center", padding: "8px 10px", fontWeight: 700, color: "rgba(0,0,0,0.38)", fontSize: 9.5, letterSpacing: "0.04em", textTransform: "uppercase" as const, borderBottom: "1px solid rgba(0,0,0,0.05)", whiteSpace: "nowrap" as const }}>
-                      {f.feature_name.split(" ").slice(0, 3).join(" ")}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {top5.map((b, i) => (
-                  <tr key={b.brand} style={{ borderBottom: i < top5.length - 1 ? "1px solid rgba(0,0,0,0.04)" : "none" }}>
-                    <td style={{ padding: "10px 10px 10px 20px", color: "rgba(0,0,0,0.28)", fontSize: 12, fontWeight: 600 }}>{i + 1}</td>
-                    <td style={{ padding: "10px 12px", fontWeight: 600, color: "#000", whiteSpace: "nowrap" as const }}>{b.brand}</td>
-                    {featureDefs.map(f => {
-                      const s = scoreMap.get(`${b.brand}::${f.feature_id}`);
-                      // Compute rank among all brands in this cluster for this feature
-                      const rankedBrands = clusterBrands
-                        .map(bx => ({ brand: bx.brand, score: scoreMap.get(`${bx.brand}::${f.feature_id}`)?.score }))
-                        .filter((bx): bx is { brand: string; score: number } => bx.score !== null && bx.score !== undefined)
-                        .sort((a, c) => c.score - a.score);
-                      const rank  = rankedBrands.findIndex(bx => bx.brand === b.brand) + 1;
-                      const total = rankedBrands.length;
-                      return (
-                        <td key={f.feature_id} style={{ padding: "10px", textAlign: "center" }}>
-                          {s ? (
-                            <ScorePill
-                              band={s.score_band}
-                              score={s.score}
-                              onClick={s.score !== null ? () => onScoreClick({
-                                brand:       b.brand,
-                                featureName: f.feature_name,
-                                featureId:   f.feature_id,
-                                score:       s.score,
-                                scoreBand:   s.score_band,
-                                evidence:    s.evidence,
-                                domain,
-                                rank,
-                                total,
-                              }) : undefined}
-                            />
-                          ) : (
-                            <span style={{ color: "rgba(0,0,0,0.15)", fontSize: 12 }}>–</span>
-                          )}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          {featureDefs.map((f, fi) => {
+            // All brands in cluster, sorted by this feature's score desc
+            const brandScores = clusterBrands.map(b => {
+              const s = scoreMap.get(`${b.brand}::${f.feature_id}`);
+              return { brand: b.brand, score: s?.score ?? null, scoreBand: s?.score_band ?? "", evidence: s?.evidence ?? null };
+            }).sort((a, b) => (b.score ?? -1) - (a.score ?? -1));
+
+            // Pre-compute ranks for detail panel
+            const ranked = brandScores
+              .filter((bx): bx is typeof bx & { score: number } => bx.score !== null)
+              .sort((a, c) => c.score - a.score);
+
+            return (
+              <div
+                key={f.feature_id}
+                style={{
+                  padding: "18px 20px",
+                  borderTop: fi > 0 ? "1px solid rgba(0,0,0,0.05)" : "1px solid rgba(0,0,0,0.05)",
+                }}
+              >
+                {/* Feature heading */}
+                <div style={{ marginBottom: 14 }}>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: "#000" }}>{f.feature_name}</div>
+                </div>
+
+                {/* Brand rows */}
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {brandScores.map(b => {
+                    const nb       = normalizeBand(b.scoreBand);
+                    const hasScore = b.score !== null;
+                    const barColor =
+                      nb === "high"           ? "#16a34a" :
+                      nb === "medium"         ? "#2563eb" :
+                      nb === "low"            ? "#dc2626" :
+                      "rgba(0,0,0,0.1)";
+                    const barBg =
+                      nb === "high"           ? "rgba(22,163,74,0.10)" :
+                      nb === "medium"         ? "rgba(37,99,235,0.10)" :
+                      nb === "low"            ? "rgba(220,38,38,0.08)" :
+                      "rgba(0,0,0,0.04)";
+                    const rank  = ranked.findIndex(r => r.brand === b.brand) + 1;
+                    const total = ranked.length;
+
+                    return (
+                      <div key={b.brand} style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                        {/* Brand name */}
+                        <span style={{
+                          width: 160, flexShrink: 0, fontSize: 13,
+                          fontWeight: 500, color: "#000", lineHeight: 1.3,
+                        }}>
+                          {b.brand}
+                        </span>
+
+                        {/* Bar track */}
+                        <div style={{
+                          flex: 1, height: 10, borderRadius: 5,
+                          background: hasScore ? barBg : "rgba(0,0,0,0.04)",
+                          overflow: "hidden",
+                        }}>
+                          <div style={{
+                            height: "100%",
+                            width: hasScore ? `${b.score}%` : "0%",
+                            background: barColor,
+                            borderRadius: 5,
+                          }} />
+                        </div>
+
+                        {/* Score — clickable */}
+                        <button
+                          onClick={hasScore ? () => onScoreClick({
+                            brand:       b.brand,
+                            featureName: f.feature_name,
+                            featureId:   f.feature_id,
+                            score:       b.score,
+                            scoreBand:   b.scoreBand,
+                            evidence:    b.evidence,
+                            domain,
+                            rank,
+                            total,
+                          }) : undefined}
+                          style={{
+                            width: 36, flexShrink: 0,
+                            textAlign: "right" as const,
+                            fontSize: 14, fontWeight: 800,
+                            color: hasScore ? barColor : "rgba(0,0,0,0.18)",
+                            background: "none", border: "none", padding: 0,
+                            cursor: hasScore ? "pointer" : "default",
+                          }}
+                        >
+                          {b.score ?? "–"}
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
 
@@ -1126,11 +1165,17 @@ export default function SageCharts({
 
             {/* Score legend */}
             {domain !== "skincare" && (
-              <div style={{ marginTop: 18, display: "flex", gap: 16, flexWrap: "wrap", padding: "12px 16px", background: "#fff", borderRadius: 10, border: "1px solid rgba(0,0,0,0.06)", alignItems: "center" }}>
+              <div style={{ marginTop: 18, display: "flex", gap: 20, flexWrap: "wrap", padding: "10px 16px", background: "#fff", borderRadius: 10, border: "1px solid rgba(0,0,0,0.06)", alignItems: "center" }}>
                 <span style={{ fontSize: 10.5, fontWeight: 700, color: "rgba(0,0,0,0.32)", textTransform: "uppercase", letterSpacing: "0.08em" }}>Feature Score</span>
-                {[["#16a34a", "High (80–100)"], ["#d97706", "Medium (40–79)"], ["#dc2626", "Low (0–39)"], ["rgba(0,0,0,0.12)", "Not documented"]].map(([color, label]) => (
-                  <div key={label} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11.5, color: "rgba(0,0,0,0.4)" }}>
-                    <span style={{ display: "inline-block", width: 9, height: 9, borderRadius: 2, background: color }} />
+                {[
+                  ["#16a34a", "rgba(22,163,74,0.10)",  "Strong (70–100)"],
+                  ["#2563eb", "rgba(37,99,235,0.10)",  "Partial (40–69)"],
+                  ["#dc2626", "rgba(220,38,38,0.08)",  "Weak (0–39)"],
+                ].map(([color, bg, label]) => (
+                  <div key={label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 11.5, color: "rgba(0,0,0,0.45)" }}>
+                    <span style={{ display: "inline-block", width: 22, height: 8, borderRadius: 4, background: bg, position: "relative" as const, overflow: "hidden" }}>
+                      <span style={{ position: "absolute" as const, inset: 0, width: "65%", background: color, borderRadius: 4 }} />
+                    </span>
                     {label}
                   </div>
                 ))}
