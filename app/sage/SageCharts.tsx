@@ -752,7 +752,8 @@ export default function SageCharts({
 
   function selectDomain(id: DomainId) {
     setDomain(id);
-    setCluster(null);
+    // Auto-select first cluster so the user sees data immediately
+    setCluster(Object.keys(CLUSTERS[id as DomainId])[0] ?? null);
   }
 
   function getBrands(dom: DomainId, tag: string): { brand: string; rank: number }[] {
@@ -879,25 +880,10 @@ export default function SageCharts({
                 </button>
                 {isActive && (
                   <div style={{ paddingLeft: 14, marginBottom: 6 }}>
-                    <button
-                      onClick={() => setCluster(null)}
-                      style={{
-                        width: "100%", display: "flex", alignItems: "center", gap: 7,
-                        padding: "5px 10px", borderRadius: 7, marginBottom: 2,
-                        background: cluster === null ? `rgba(${d.rgb}, 0.12)` : "transparent",
-                        border: "none", cursor: "pointer", textAlign: "left",
-                        color: cluster === null ? d.color : "rgba(255,255,255,0.3)",
-                        fontSize: 12, fontWeight: cluster === null ? 700 : 400,
-                        transition: "all 0.1s",
-                      }}
-                    >
-                      <span style={{ width: 4, height: 4, borderRadius: "50%", background: cluster === null ? d.color : "rgba(255,255,255,0.18)", flexShrink: 0 }} />
-                      All use cases
-                    </button>
                     {Object.entries(domClusters).map(([tag, lbl]) => (
                       <button
                         key={tag}
-                        onClick={() => setCluster(cluster === tag ? null : tag)}
+                        onClick={() => setCluster(tag)}
                         style={{
                           width: "100%", display: "flex", alignItems: "center", gap: 7,
                           padding: "5px 10px", borderRadius: 7, marginBottom: 2,
@@ -958,7 +944,17 @@ export default function SageCharts({
 
             {/* Use case cards */}
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              {(domain === "sales" || domain === "marketing") ? (
+              {!cluster ? (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: 320, gap: 12 }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 14, background: activeDomain?.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <DomainIcon id={domain} />
+                  </div>
+                  <div style={{ textAlign: "center" }}>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: "0 0 5px" }}>Pick a use case</p>
+                    <p style={{ fontSize: 13, color: "rgba(0,0,0,0.4)", margin: 0 }}>Select one from the sidebar to see rankings, coverage, and feature scores</p>
+                  </div>
+                </div>
+              ) : (domain === "sales" || domain === "marketing") ? (
                 // ── Sales + Marketing: rich cards with charts ──────────────
                 Object.entries(visibleClusters).map(([tag, lbl]) => {
                   const isMkt = domain === "marketing";
