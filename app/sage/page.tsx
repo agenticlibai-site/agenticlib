@@ -1,6 +1,9 @@
 import {
   getLockedSOVByClusters,
   getFeatureScores,
+  getMarketingLockedBrandPositions,
+  getMarketingCoverageByDay,
+  getMarketingSOVAllTime,
   getSalesLockedBrandPositions,
   getSalesFeatureScores,
   getSalesCoverageByDay,
@@ -27,6 +30,9 @@ export default async function SagePage() {
   const [
     marketingSOV,
     marketingFeatures,
+    marketingClusters,
+    marketingCoverage,
+    marketingSOVAll,
     salesClusters,
     salesFeatures,
     salesCoverage,
@@ -39,6 +45,9 @@ export default async function SagePage() {
   ] = await Promise.all([
     getLockedSOVByClusters(),
     getFeatureScores(),
+    getMarketingLockedBrandPositions(),
+    getMarketingCoverageByDay(),
+    getMarketingSOVAllTime(),
     getSalesLockedBrandPositions(),
     getSalesFeatureScores(),
     getSalesCoverageByDay(),
@@ -55,6 +64,9 @@ export default async function SagePage() {
       marketingSOV={marketingSOV}
       marketingFeatures={marketingFeatures}
       marketingFeatureDefs={MARKETING_FEATURE_DEFS_FULL.map(f => ({ feature_id: f.feature_id, feature_tag: f.feature_tag, feature_name: f.feature_name }))}
+      marketingClusters={marketingClusters}
+      marketingCoverage={marketingCoverage}
+      marketingSOVAll={marketingSOVAll}
       salesClusters={salesClusters}
       salesFeatures={salesFeatures}
       salesCoverage={salesCoverage}
