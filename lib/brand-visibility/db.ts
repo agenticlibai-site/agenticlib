@@ -1428,34 +1428,78 @@ export async function getSalesClusterBrandPositions(): Promise<
 
 export { SALES_CANONICAL };
 
-// ── Sage platform: coverage over time + all-time SOV ─────────────────────────
+// ── Sage platform: locked-brand-only queries ──────────────────────────────────
+// All three functions below JOIN against locked_sales_agents so only the 20
+// verified AI-agent-native brands surface in Sage — identical gate to the
+// feature-scoring pipeline's loadLockedSalesAgents().
+
+export async function getSalesLockedBrandPositions(): Promise<
+  { bucket_tag: string; brand: string; avg_position: number; appearances: number }[]
+> {
+  await initSalesVisibilityDB();
+  const result = await sql`
+    WITH canonical AS (
+      SELECT
+        r.bucket_tag,
+        CASE t.brand_name
+          WHEN 'SalesLoft' THEN 'Salesloft'
+          WHEN 'Chorus.ai' THEN 'Chorus'
+          ELSE t.brand_name
+        END AS brand,
+        t.pos::float AS pos
+      FROM sales_raw_responses r,
+           LATERAL jsonb_array_elements_text(r.brands) WITH ORDINALITY AS t(brand_name, pos)
+      WHERE r.bucket_tag != 'sales-overall'
+        AND LENGTH(TRIM(t.brand_name)) > 0
+    )
+    SELECT
+      c.bucket_tag,
+      la.display_name AS brand,
+      ROUND(AVG(c.pos)::numeric, 1)::float AS avg_position,
+      COUNT(*)::int AS appearances
+    FROM canonical c
+    INNER JOIN locked_sales_agents la
+      ON la.bucket_tag = c.bucket_tag
+      AND LOWER(c.brand) = LOWER(la.brand_name)
+    GROUP BY c.bucket_tag, la.display_name
+    ORDER BY c.bucket_tag, AVG(c.pos) ASC
+  `;
+  return result.rows as { bucket_tag: string; brand: string; avg_position: number; appearances: number }[];
+}
 
 export async function getSalesCoverageByDay(): Promise<
   { date: string; bucket_tag: string; brand: string; mention_count: number }[]
 > {
   await initSalesVisibilityDB();
   const result = await sql`
-    SELECT
-      r.date::text AS date,
-      r.bucket_tag,
-      CASE t.brand_name
-        WHEN 'SalesLoft' THEN 'Salesloft'
-        WHEN 'Chorus.ai' THEN 'Chorus'
-        ELSE t.brand_name
-      END AS brand,
-      COUNT(*)::int AS mention_count
-    FROM sales_raw_responses r,
-         jsonb_array_elements_text(r.brands) AS t(brand_name)
-    WHERE r.bucket_tag != 'sales-overall'
-      AND LENGTH(TRIM(t.brand_name)) > 0
-      AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
-    GROUP BY r.date, r.bucket_tag,
-      CASE t.brand_name
-        WHEN 'SalesLoft' THEN 'Salesloft'
-        WHEN 'Chorus.ai' THEN 'Chorus'
-        ELSE t.brand_name
-      END
-    ORDER BY r.date ASC, r.bucket_tag, COUNT(*) DESC
+    WITH canonical AS (
+      SELECT
+        r.date::text AS date,
+        r.bucket_tag,
+        CASE t.brand_name
+          WHEN 'SalesLoft' THEN 'Salesloft'
+          WHEN 'Chorus.ai' THEN 'Chorus'
+          ELSE t.brand_name
+        END AS brand,
+        COUNT(*)::int AS mention_count
+      FROM sales_raw_responses r,
+           jsonb_array_elements_text(r.brands) AS t(brand_name)
+      WHERE r.bucket_tag != 'sales-overall'
+        AND LENGTH(TRIM(t.brand_name)) > 0
+      GROUP BY r.date, r.bucket_tag,
+        CASE t.brand_name
+          WHEN 'SalesLoft' THEN 'Salesloft'
+          WHEN 'Chorus.ai' THEN 'Chorus'
+          ELSE t.brand_name
+        END
+    )
+    SELECT c.date, c.bucket_tag, la.display_name AS brand, SUM(c.mention_count)::int AS mention_count
+    FROM canonical c
+    INNER JOIN locked_sales_agents la
+      ON la.bucket_tag = c.bucket_tag
+      AND LOWER(c.brand) = LOWER(la.brand_name)
+    GROUP BY c.date, c.bucket_tag, la.display_name
+    ORDER BY c.date ASC, c.bucket_tag, SUM(c.mention_count) DESC
   `;
   return result.rows as { date: string; bucket_tag: string; brand: string; mention_count: number }[];
 }
@@ -1465,30 +1509,44 @@ export async function getSalesSOVAllTime(): Promise<
 > {
   await initSalesVisibilityDB();
   const result = await sql`
+    WITH canonical AS (
+      SELECT
+        r.bucket_tag,
+        CASE t.brand_name
+          WHEN 'SalesLoft' THEN 'Salesloft'
+          WHEN 'Chorus.ai' THEN 'Chorus'
+          ELSE t.brand_name
+        END AS brand,
+        COUNT(*)::int AS cnt
+      FROM sales_raw_responses r,
+           jsonb_array_elements_text(r.brands) AS t(brand_name)
+      WHERE r.bucket_tag != 'sales-overall'
+        AND LENGTH(TRIM(t.brand_name)) > 0
+      GROUP BY r.bucket_tag,
+        CASE t.brand_name
+          WHEN 'SalesLoft' THEN 'Salesloft'
+          WHEN 'Chorus.ai' THEN 'Chorus'
+          ELSE t.brand_name
+        END
+    ),
+    locked AS (
+      SELECT c.bucket_tag, la.display_name AS brand, SUM(c.cnt)::int AS total_appearances
+      FROM canonical c
+      INNER JOIN locked_sales_agents la
+        ON la.bucket_tag = c.bucket_tag
+        AND LOWER(c.brand) = LOWER(la.brand_name)
+      GROUP BY c.bucket_tag, la.display_name
+    )
     SELECT
-      r.bucket_tag,
-      CASE t.brand_name
-        WHEN 'SalesLoft' THEN 'Salesloft'
-        WHEN 'Chorus.ai' THEN 'Chorus'
-        ELSE t.brand_name
-      END AS brand,
-      COUNT(*)::int AS total_appearances,
+      bucket_tag,
+      brand,
+      total_appearances,
       ROUND(
-        COUNT(*) * 100.0 / NULLIF(SUM(COUNT(*)) OVER (PARTITION BY r.bucket_tag), 0),
+        total_appearances * 100.0 / NULLIF(SUM(total_appearances) OVER (PARTITION BY bucket_tag), 0),
         1
       )::float AS sov_pct
-    FROM sales_raw_responses r,
-         jsonb_array_elements_text(r.brands) AS t(brand_name)
-    WHERE r.bucket_tag != 'sales-overall'
-      AND LENGTH(TRIM(t.brand_name)) > 0
-      AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sales_denylist)
-    GROUP BY r.bucket_tag,
-      CASE t.brand_name
-        WHEN 'SalesLoft' THEN 'Salesloft'
-        WHEN 'Chorus.ai' THEN 'Chorus'
-        ELSE t.brand_name
-      END
-    ORDER BY r.bucket_tag, COUNT(*) DESC
+    FROM locked
+    ORDER BY bucket_tag, total_appearances DESC
   `;
   return result.rows as { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
 }

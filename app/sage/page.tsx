@@ -1,7 +1,7 @@
 import {
   getLockedSOVByClusters,
   getFeatureScores,
-  getSalesClusterBrandPositions,
+  getSalesLockedBrandPositions,
   getSalesFeatureScores,
   getSalesCoverageByDay,
   getSalesSOVAllTime,
@@ -39,7 +39,7 @@ export default async function SagePage() {
   ] = await Promise.all([
     getLockedSOVByClusters(),
     getFeatureScores(),
-    getSalesClusterBrandPositions(),
+    getSalesLockedBrandPositions(),
     getSalesFeatureScores(),
     getSalesCoverageByDay(),
     getSalesSOVAllTime(),
