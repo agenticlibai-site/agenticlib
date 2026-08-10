@@ -90,12 +90,43 @@ function normalizeBand(band: string): string {
   return map[band?.toLowerCase()] ?? band;
 }
 
-// Pull quoted phrases (3–50 chars) from evidence text as talking points
+// Extract meaningful talking points from evidence text
 function extractTalkingPoints(evidence: string | null): string[] {
   if (!evidence) return [];
-  const matches = evidence.match(/"([^"]{3,50})"/g) ?? [];
-  const cleaned = matches.map(m => m.replace(/^"|"$/g, "").trim());
-  return [...new Set(cleaned)].slice(0, 5);
+  const pts: string[] = [];
+
+  // 1. Quoted phrases (e.g., "Brand Voice", "Autonomous Budget Allocator")
+  for (const m of evidence.matchAll(/"([^"]{3,50})"/g))
+    pts.push(m[1].trim());
+
+  // 2. Named product features: Title Case words followed by tab/feature/hub/card/mode/tool/engine/score
+  //    e.g. "Coaching Feedback tab", "Intelligent Delivery feature", "SmartTriggers"
+  for (const m of evidence.matchAll(
+    /\b((?:[A-Z][a-zA-Z]{1,18}\s+){0,3}[A-Z][a-zA-Z]{1,18}\s+(?:tab|feature|hub|card|mode|tool|engine|model|score|view|plan|index))\b/g
+  )) {
+    const p = m[1].trim();
+    if (p.length >= 6 && p.length <= 48) pts.push(p);
+  }
+
+  // 3. Numeric scales / ranges — e.g. "0–5 scale", "1-10 score"
+  for (const m of evidence.matchAll(/\b(\d+[–\-]\d+\s+(?:scale|score|range|points?))\b/gi))
+    pts.push(m[1].trim());
+
+  // 4. Frameworks / methodologies named after "like", "called", "named", "such as"
+  //    e.g. "like GAP Selling or MEDDIC" → "GAP Selling"
+  for (const m of evidence.matchAll(/(?:like|named|called|such as)\s+([A-Z][A-Za-z0-9 ]{2,35})/g)) {
+    const cut = m[1].split(/\s+(?:or|and|rather|instead|etc|but)\b/i)[0].trim();
+    if (cut.length >= 3 && cut.length <= 42) pts.push(cut);
+  }
+
+  // 5. "Brand's X Feature" pattern — e.g. "Madgicx's Autonomous Budget Allocator"
+  for (const m of evidence.matchAll(/[A-Z][a-zA-Z]*'s\s+([A-Z][^.,;"]{3,42}?)(?=\s+(?:feature|tool|tab|function|hub|allows|lets|enables|shifts|moves|gives|provides|helps)|[.,;"]|$)/g))
+    pts.push(m[1].trim());
+
+  const cleaned = [...new Set(
+    pts.map(s => s.trim()).filter(s => s.length >= 3 && s.length <= 50)
+  )];
+  return cleaned.slice(0, 5);
 }
 
 // ── Icons ──────────────────────────────────────────────────────────────────────
@@ -673,8 +704,32 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
                     const rank  = ranked.findIndex(r => r.brand === b.brand) + 1;
                     const total = ranked.length;
 
+                    const clickInfo = hasScore ? {
+                      brand:       b.brand,
+                      featureName: f.feature_name,
+                      featureId:   f.feature_id,
+                      score:       b.score,
+                      scoreBand:   b.scoreBand,
+                      evidence:    b.evidence,
+                      domain,
+                      rank,
+                      total,
+                    } : null;
+
                     return (
-                      <div key={b.brand} style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                      <div
+                        key={b.brand}
+                        onClick={clickInfo ? () => onScoreClick(clickInfo) : undefined}
+                        role={clickInfo ? "button" : undefined}
+                        style={{
+                          display: "flex", alignItems: "center", gap: 14,
+                          cursor: clickInfo ? "pointer" : "default",
+                          borderRadius: 7, padding: "3px 0",
+                          transition: "background 0.1s",
+                        }}
+                        onMouseEnter={e => { if (clickInfo) (e.currentTarget as HTMLDivElement).style.background = "rgba(0,0,0,0.03)"; }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = "transparent"; }}
+                      >
                         {/* Brand name */}
                         <span style={{
                           width: 160, flexShrink: 0, fontSize: 13,
@@ -697,30 +752,15 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
                           }} />
                         </div>
 
-                        {/* Score — clickable */}
-                        <button
-                          onClick={hasScore ? () => onScoreClick({
-                            brand:       b.brand,
-                            featureName: f.feature_name,
-                            featureId:   f.feature_id,
-                            score:       b.score,
-                            scoreBand:   b.scoreBand,
-                            evidence:    b.evidence,
-                            domain,
-                            rank,
-                            total,
-                          }) : undefined}
-                          style={{
-                            width: 36, flexShrink: 0,
-                            textAlign: "right" as const,
-                            fontSize: 14, fontWeight: 800,
-                            color: hasScore ? barColor : "rgba(0,0,0,0.18)",
-                            background: "none", border: "none", padding: 0,
-                            cursor: hasScore ? "pointer" : "default",
-                          }}
-                        >
+                        {/* Score */}
+                        <span style={{
+                          width: 36, flexShrink: 0,
+                          textAlign: "right" as const,
+                          fontSize: 14, fontWeight: 800,
+                          color: hasScore ? barColor : "rgba(0,0,0,0.18)",
+                        }}>
                           {b.score ?? "–"}
-                        </button>
+                        </span>
                       </div>
                     );
                   })}
