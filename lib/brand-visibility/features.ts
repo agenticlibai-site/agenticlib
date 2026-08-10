@@ -40,78 +40,69 @@ export interface Feature {
 }
 
 export const FEATURES: Feature[] = [
-  // ── Ads (3 features × 9 brands = 27 brand+feature pairs) ─────────────────────
+  // ── Ads (3 features) ──────────────────────────────────────────────────────────
   {
-    feature_id:   "ads_meta_google_native",
+    feature_id:   "ads_autonomous_bidding",
     feature_tag:  "ads",
-    feature_name: "Meta + Google native management",
+    feature_name: "Autonomous bid management",
     applies_to:   ADS_BRANDS,
-    prompt: `I want to manage Meta Ads and Google Ads from one place. Does [BRAND] support both Meta Ads and Google Ads natively — meaning you can create, edit, and optimise campaigns on both platforms directly within [BRAND]'s interface, not just view reporting?
-[GROUNDING INSTRUCTION]
-[JSON OUTPUT]`,
-  },
-  {
-    feature_id:   "ads_tiktok_support",
-    feature_tag:  "ads",
-    feature_name: "TikTok Ads support",
-    applies_to:   ADS_BRANDS,
-    prompt: `TikTok is now a significant channel for our campaigns. Does [BRAND] support TikTok Ads in its platform — can you manage, optimise, or create campaigns for TikTok directly within [BRAND], or is TikTok absent from its channel coverage?
+    prompt: `I need bids to adjust themselves based on live performance — not rules I write manually. Does [BRAND] autonomously adjust bids based on real-time conversion signals and ROAS targets, without requiring manual rule configuration for every scenario?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
   {
     feature_id:   "ads_budget_pacing",
     feature_tag:  "ads",
-    feature_name: "Automated cross-channel budget pacing",
+    feature_name: "Budget pacing & allocation",
     applies_to:   ADS_BRANDS,
-    prompt: `I run campaigns across multiple channels with a shared monthly budget and I need spend to be reallocated automatically as performance shifts. Does [BRAND] include automated budget pacing or reallocation — where it shifts spend between campaigns, ad sets, or channels within a flight based on live performance data, without manual intervention?
+    prompt: `I run campaigns across multiple channels with a shared monthly budget and I need spend to be reallocated automatically as performance shifts. Does [BRAND] include automated budget pacing or reallocation — where it shifts spend between campaigns, ad sets, or channels based on live performance data, without manual intervention?
+[GROUNDING INSTRUCTION]
+[JSON OUTPUT]`,
+  },
+  {
+    feature_id:   "ads_meta_google_native",
+    feature_tag:  "ads",
+    feature_name: "Meta & Google native ads",
+    applies_to:   ADS_BRANDS,
+    prompt: `I want to manage Meta Ads and Google Ads from one place. Does [BRAND] support both Meta Ads and Google Ads natively — meaning you can create, edit, and optimise campaigns on both platforms directly within [BRAND]'s interface, not just view reporting?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
 
-  // ── Content (3 features × 6 brands = 18 brand+feature pairs) ─────────────────
-  {
-    feature_id:   "content_style_training",
-    feature_tag:  "content",
-    feature_name: "Custom brand style training",
-    applies_to:   CONTENT_BRANDS,
-    prompt: `We have a brand voice guide that all our copy needs to follow. Can [BRAND] be trained or configured using our own style guide, example copy, or brand voice document — so that all generated content reflects our specific tone rather than a generic default?
-[GROUNDING INSTRUCTION]
-[JSON OUTPUT]`,
-  },
+  // ── Content (3 features) ──────────────────────────────────────────────────────
   {
     feature_id:   "content_variant_testing",
     feature_tag:  "content",
-    feature_name: "Copy variant generation and performance testing",
+    feature_name: "Copy variant generation & testing",
     applies_to:   CONTENT_BRANDS,
     prompt: `I need to test copy variants before picking a winner. Does [BRAND] generate multiple distinct copy variants for the same brief — and does it support A/B or multivariate testing, either by tracking which variants perform better or by automatically selecting the winner based on engagement data?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
   {
+    feature_id:   "content_brand_voice",
+    feature_tag:  "content",
+    feature_name: "Brand voice customisation",
+    applies_to:   CONTENT_BRANDS,
+    prompt: `We have a brand voice guide that all our copy needs to follow. Can [BRAND] be trained or configured using our own style guide, example copy, or brand voice document — so that all generated content reflects our specific tone rather than a generic default?
+[GROUNDING INSTRUCTION]
+[JSON OUTPUT]`,
+  },
+  {
     feature_id:   "content_channel_formats",
     feature_tag:  "content",
-    feature_name: "Channel-specific output formats",
+    feature_name: "Multi-channel output formats",
     applies_to:   CONTENT_BRANDS,
     prompt: `I need copy for email subject lines, social captions, and display ads — all from the same brief but formatted correctly for each channel. Does [BRAND] produce channel-specific copy variants natively — outputting appropriately formatted versions for email, social, display, or landing pages from a single content request?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
 
-  // ── Lead-gen (4 features × 5 brands = 20 brand+feature pairs) ────────────────
-  {
-    feature_id:   "leadgen_email_deliverability",
-    feature_tag:  "lead-gen",
-    feature_name: "Email deliverability tooling",
-    applies_to:   LEADGEN_BRANDS,
-    prompt: `I'm building outreach sequences and sender reputation is critical. Does [BRAND] include built-in email deliverability features — for example, inbox warming, bounce monitoring, spam score checking, or dedicated sending domains — as part of its own product rather than a third-party add-on?
-[GROUNDING INSTRUCTION]
-[JSON OUTPUT]`,
-  },
+  // ── Lead-gen (3 features) ─────────────────────────────────────────────────────
   {
     feature_id:   "leadgen_ab_testing",
     feature_tag:  "lead-gen",
-    feature_name: "Native A/B testing for sequences",
+    feature_name: "A/B testing for sequences",
     applies_to:   LEADGEN_BRANDS,
     prompt: `Before scaling an outreach campaign I need to know which message variant performs better. Does [BRAND] support A/B or multivariate testing of outreach messages or sequences natively — without exporting to another tool — and does it report results per variant (open rate, reply rate, or similar)?
 [GROUNDING INSTRUCTION]
@@ -127,11 +118,11 @@ export const FEATURES: Feature[] = [
 [JSON OUTPUT]`,
   },
   {
-    feature_id:   "leadgen_intent_signals",
+    feature_id:   "leadgen_qualification",
     feature_tag:  "lead-gen",
-    feature_name: "Engagement-based lead prioritisation",
+    feature_name: "AI lead qualification",
     applies_to:   LEADGEN_BRANDS,
-    prompt: `I want to know which leads to contact next based on how they've been engaging. Does [BRAND] rank or score contacts based on engagement signals — such as email opens, link clicks, or reply intent — to surface which leads are most worth pursuing right now?
+    prompt: `I want AI to automatically score and qualify leads so my team only contacts the most ready prospects. Does [BRAND] automatically qualify or score leads based on behavioural signals, conversation history, or engagement patterns — without requiring manual scoring rules for every scenario?
 [GROUNDING INSTRUCTION]
 [JSON OUTPUT]`,
   },
