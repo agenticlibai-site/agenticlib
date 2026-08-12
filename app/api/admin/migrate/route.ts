@@ -1,4 +1,4 @@
-import { sql } from "@neondatabase/serverless";
+import { sql } from "@vercel/postgres";
 
 export const dynamic = "force-dynamic";
 
