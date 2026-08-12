@@ -119,6 +119,17 @@ export default function Navbar() {
             </div>
           </div>
 
+          {/* Platform */}
+          <Link
+            href="/sage"
+            className="transition px-3 py-1.5 rounded-lg"
+            style={{ fontSize: "15.5px", fontWeight: 400, color: "#000000", textDecoration: "none" }}
+            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; }}
+            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}
+          >
+            Platform
+          </Link>
+
           {/* Company */}
           <Link
             href="/company"
@@ -236,6 +247,11 @@ export default function Navbar() {
               ))}
             </div>
           )}
+          <a href="/sage" onClick={() => setMobileOpen(false)}
+            className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
+            style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
+            Platform
+          </a>
           <Link href="/company" onClick={() => setMobileOpen(false)}
             className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
             style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>

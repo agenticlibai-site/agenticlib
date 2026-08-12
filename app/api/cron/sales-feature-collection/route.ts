@@ -90,21 +90,25 @@ function parseFeatureResponse(raw: string): {
   evidence:       string | null;
   limitations:    string | null;
   confidence:     string | null;
-  key_terms:      string[] | null;
-  parsed:         object | null;
-  parseError:     boolean;
+  key_terms:        string[] | null;
+  terminology_tags: string[] | null;
+  parsed:           object | null;
+  parseError:       boolean;
 } {
   function extract(obj: Record<string, unknown>) {
     return {
-      has_capability: typeof obj.has_capability === "string" ? obj.has_capability : null,
-      evidence:       typeof obj.evidence       === "string" ? obj.evidence       : null,
-      limitations:    typeof obj.limitations    === "string" ? obj.limitations    : null,
-      confidence:     typeof obj.confidence     === "string" ? obj.confidence     : null,
-      key_terms:      Array.isArray(obj.key_terms)
+      has_capability:   typeof obj.has_capability === "string" ? obj.has_capability : null,
+      evidence:         typeof obj.evidence       === "string" ? obj.evidence       : null,
+      limitations:      typeof obj.limitations    === "string" ? obj.limitations    : null,
+      confidence:       typeof obj.confidence     === "string" ? obj.confidence     : null,
+      key_terms:        Array.isArray(obj.key_terms)
         ? (obj.key_terms as unknown[]).filter((t): t is string => typeof t === "string").slice(0, 4)
         : null,
-      parsed:         obj,
-      parseError:     false,
+      terminology_tags: Array.isArray(obj.terminology_tags)
+        ? (obj.terminology_tags as unknown[]).filter((t): t is string => typeof t === "string").slice(0, 3)
+        : null,
+      parsed:           obj,
+      parseError:       false,
     };
   }
 
@@ -121,7 +125,7 @@ function parseFeatureResponse(raw: string): {
     } catch { /* fall through */ }
   }
 
-  return { has_capability: null, evidence: null, limitations: null, confidence: null, key_terms: null, parsed: null, parseError: true };
+  return { has_capability: null, evidence: null, limitations: null, confidence: null, key_terms: null, terminology_tags: null, parsed: null, parseError: true };
 }
 
 type RunSummary = { has_capability: string | null; confidence: string | null; parse_error: boolean };
@@ -229,24 +233,25 @@ export async function GET(request: Request) {
                 ? await withRetry(() => callClaude(promptText), callLabel)
                 : await withRetry(() => callGPT(promptText),    callLabel);
 
-              const { has_capability, evidence, limitations, confidence, key_terms, parsed, parseError } =
+              const { has_capability, evidence, limitations, confidence, key_terms, terminology_tags, parsed, parseError } =
                 parseFeatureResponse(rawText);
 
               await insertSalesFeatureResponse({
-                brand_name:     b.brand_name,
-                feature_id:     f.feature_id,
-                feature_tag:    f.feature_tag,
+                brand_name:      b.brand_name,
+                feature_id:      f.feature_id,
+                feature_tag:     f.feature_tag,
                 model,
-                run_number:     r,
-                run_date:       today,
+                run_number:      r,
+                run_date:        today,
                 has_capability,
                 evidence,
                 limitations,
                 confidence,
                 key_terms,
-                raw_json:       parseError ? { raw: rawText.slice(0, 2000) } : parsed,
-                parse_error:    parseError,
-                grounded:       false,
+                terminology_tags,
+                raw_json:        parseError ? { raw: rawText.slice(0, 2000) } : parsed,
+                parse_error:     parseError,
+                grounded:        false,
               });
 
               if (!pairResults.has(pairKey)) pairResults.set(pairKey, []);
@@ -292,24 +297,25 @@ export async function GET(request: Request) {
               () => callClaudeGrounded(b, f),
               `${b.brand_name}/${f.feature_id}/grounded`,
             );
-            const { has_capability, evidence, limitations, confidence, key_terms, parsed, parseError } =
+            const { has_capability, evidence, limitations, confidence, key_terms, terminology_tags, parsed, parseError } =
               parseFeatureResponse(rawText);
 
             await insertSalesFeatureResponse({
-              brand_name:     b.brand_name,
-              feature_id:     f.feature_id,
-              feature_tag:    f.feature_tag,
-              model:          "claude-haiku-4-5",
-              run_number:     0,
-              run_date:       today,
+              brand_name:      b.brand_name,
+              feature_id:      f.feature_id,
+              feature_tag:     f.feature_tag,
+              model:           "claude-haiku-4-5",
+              run_number:      0,
+              run_date:        today,
               has_capability,
               evidence,
               limitations,
               confidence,
               key_terms,
-              raw_json:       parseError ? { raw: rawText.slice(0, 2000) } : parsed,
-              parse_error:    parseError,
-              grounded:       true,
+              terminology_tags,
+              raw_json:        parseError ? { raw: rawText.slice(0, 2000) } : parsed,
+              parse_error:     parseError,
+              grounded:        true,
             });
             groundingRan++;
           } catch (err) {

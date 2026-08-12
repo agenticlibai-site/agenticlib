@@ -21,7 +21,7 @@ export const DEXIFY_JSON_OUTPUT_SPEC =
   '  "evidence": "if yes/partial: 1-2 sentences on what [BRAND] specifically does for this capability and what makes its approach useful for a tradie — describe the mechanism and practical outcome, not just that the feature exists. If no/not_documented: what is absent or unclear.",\n' +
   '  "limitations": "any caveats or gaps",\n' +
   '  "confidence": "high|medium|low",\n' +
-  '  "key_terms": ["2–4 short phrases (2–4 words each) pulled verbatim or near-verbatim from the evidence above that name a specific product capability, mechanism, or integration — e.g. \\"voice-to-quote\\", \\"ServiceM8 integration\\", \\"automated job follow-up\\". Omit generic words like \'AI\' or \'automation\' on their own."]\n' +
+  '  "terminology_tags": ["0-3 short named terms (1-4 words each). Return ONLY terms that are a named product feature, branded mechanism, or product-specific integration mentioned in the evidence. Return [] when evidence uses only generic language common to any similar tool — most responses should have 0-2 tags and many should have []. Calibration: GOOD → \\"voice-to-quote\\" (named flow), \\"ServiceM8 integration\\" (specific), \\"SWMS auto-generation\\" (named). BAD → [] → \\"job management\\" (generic), \\"AI assistant\\" (generic), \\"automated invoicing\\" (common). Ask: would this exact phrase appear in a competitor\'s evidence? If yes, return []."]\n' +
   '}';
 
 // ── Locked brand list ──────────────────────────────────────────────────────────
