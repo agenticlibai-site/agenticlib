@@ -318,45 +318,50 @@ const CSS = `
 @media (max-width: 768px) {
   .card { padding: 4px 10px; }
 
-  /* Wider card, no right-side iframe */
+  /* Full-width card, stack text above iframe */
   .card-inner {
     width: calc(100vw - 24px) !important;
     max-width: 100% !important;
-    height: auto !important;
-    min-height: 300px !important;
+    height: min(88vh, 560px) !important;
     grid-template-columns: 1fr !important;
-    display: flex !important;
-    flex-direction: column !important;
+    grid-template-rows: auto 1fr !important;
+    display: grid !important;
   }
 
-  /* Hide all iframes on mobile — too small to read */
-  .card-right { display: none !important; }
+  /* Text column: compact padding, no right border */
   .card-left {
-    padding: 32px 22px !important;
+    padding: 18px 18px 14px !important;
     border-right: none !important;
-    gap: 14px !important;
+    border-bottom: 1px solid rgba(0,0,0,0.07) !important;
+    gap: 9px !important;
     justify-content: center !important;
   }
-  .card-headline { font-size: clamp(18px, 5.5vw, 24px) !important; }
-  .card-body { font-size: 14.5px !important; line-height: 1.65 !important; max-width: 100% !important; }
+  .card-headline { font-size: clamp(15px, 4.5vw, 19px) !important; }
+  .card-body { font-size: 13px !important; line-height: 1.6 !important; max-width: 100% !important; }
 
-  /* Card 0 (Competitive): hide browser mockup, centre the header text */
-  .c0-browser-wrap { display: none !important; }
-  .c0-header {
-    padding: 32px 22px !important;
-    text-align: left !important;
-    flex: 1 !important;
+  /* Iframe column: show it, fill remaining height */
+  .card-right {
     display: flex !important;
-    flex-direction: column !important;
-    justify-content: center !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
   }
-  .c0-headline { font-size: clamp(18px, 5.5vw, 24px) !important; }
-  .c0-sub { font-size: 14.5px !important; line-height: 1.65 !important; }
+  .card-right iframe { width: 100% !important; height: 100% !important; border: none !important; }
+
+  /* Card 0 (flex-column): compact its header, keep browser below */
+  .c0-header {
+    padding: 16px 18px 10px !important;
+    text-align: left !important;
+    flex-shrink: 0 !important;
+  }
+  .c0-headline { font-size: clamp(15px, 4.5vw, 19px) !important; }
+  .c0-sub { font-size: 13px !important; line-height: 1.6 !important; }
+  .c0-browser-wrap { padding: 0 10px 0 !important; }
 
   /* Platform badge repositioned for smaller screens */
   .platform-badge {
-    left: 16px !important;
-    top: calc(50% - 290px) !important;
+    left: 12px !important;
+    top: calc(50% - 310px) !important;
   }
 
   /* Hide scroll hint — not enough room */
