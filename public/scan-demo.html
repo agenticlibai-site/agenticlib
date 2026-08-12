@@ -1,0 +1,745 @@
+<title>Sage · Benchmark Intelligence</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ── Tokens ──────────────────────────── */
+:root{
+  --bg:#EDEAF8;
+  --paper:#FFFFFF;
+  --surface:#F6F4FD;
+  --ink:#12102A;
+  --ink2:#3D3460;
+  --muted:#6B6880;
+  --sub:#9590AB;
+  --neutral:#C4BEDD;
+  --border:rgba(94,108,232,0.12);
+  --border2:rgba(0,0,0,0.07);
+  --shadow:0 12px 60px rgba(60,30,140,0.18),0 2px 8px rgba(60,30,140,0.08);
+  --violet:#7C3AED;
+  --analyst:#5E6CE8;
+  --purple:#8E63D6;
+  --periw50:#EBF0FD;
+  --analGrad:linear-gradient(135deg,#5E6CE8,#8E63D6,#C24D9E);
+  --sigGrad:linear-gradient(90deg,#7C3AED,#C73C8E,#F0617A);
+  --critRed:#D93458;
+  --critBg:#FFF1F4;
+  --warnAmb:#C97714;
+  --warnBg:#FFF8EC;
+  --succGreen:#16803A;
+  --succBg:#F0FDF4;
+  --dotCoral:#E8657A;
+  --dotGreen:#22C55E;
+}
+@media(prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0D0B1C;--paper:#171430;--surface:#1E1A3A;
+    --ink:#F0EEFB;--ink2:#C0BAEC;--muted:#9891BE;--sub:#6E6890;
+    --neutral:#403C60;--border:rgba(160,150,230,0.12);--border2:rgba(255,255,255,0.06);
+    --shadow:0 12px 60px rgba(0,0,0,0.5),0 2px 8px rgba(0,0,0,0.3);
+    --periw50:#181C40;--critBg:#2A0E18;--warnBg:#271A05;--succBg:#042010;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0D0B1C;--paper:#171430;--surface:#1E1A3A;
+  --ink:#F0EEFB;--ink2:#C0BAEC;--muted:#9891BE;--sub:#6E6890;
+  --neutral:#403C60;--border:rgba(160,150,230,0.12);--border2:rgba(255,255,255,0.06);
+  --shadow:0 12px 60px rgba(0,0,0,0.5),0 2px 8px rgba(0,0,0,0.3);
+  --periw50:#181C40;--critBg:#2A0E18;--warnBg:#271A05;--succBg:#042010;
+}
+
+body{
+  min-height:100vh;background:var(--bg);
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;color:var(--ink);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+
+/* ── Viewport (the fixed snapshot box) ── */
+.viewport{
+  width:480px;max-width:100%;height:460px;
+  overflow:hidden;border-radius:22px;
+  box-shadow:var(--shadow);
+  position:relative;background:var(--paper);
+}
+
+/* ── State panels (fill viewport absolutely) ── */
+.spanel{
+  position:absolute;inset:0;
+  display:none;flex-direction:column;
+}
+.spanel.on{display:flex}
+
+/* States 1+2 center content */
+#s1,#s2{align-items:center;justify-content:center}
+
+/* ══════════════════════════════
+   STATE 1 — Input
+══════════════════════════════ */
+.input-inner{padding:28px 32px;width:100%}
+.sage-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--periw50);border:1px solid var(--border);
+  border-radius:100px;padding:5px 12px 5px 7px;margin-bottom:22px;
+}
+.sage-dot{width:18px;height:18px;border-radius:5px;background:var(--analGrad);flex-shrink:0}
+.sage-badge-text{font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--analyst)}
+.input-headline{font-size:22px;font-weight:800;letter-spacing:-0.03em;line-height:1.1;text-wrap:balance;margin-bottom:9px}
+.input-sub{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:26px}
+.input-row{
+  display:flex;align-items:center;background:var(--surface);
+  border:1.5px solid var(--periw50);border-radius:12px;
+  padding:6px 6px 6px 14px;gap:8px;transition:border-color 0.3s,box-shadow 0.3s;
+}
+.url-prefix{font-size:13px;font-weight:500;color:var(--sub);flex-shrink:0;user-select:none}
+.url-input{flex:1;border:none;outline:none;font-size:14px;font-weight:600;color:var(--ink);background:transparent;font-family:inherit;min-width:0}
+.url-input::placeholder{color:var(--neutral);font-weight:500}
+.analyze-btn{
+  background:var(--sigGrad);color:#fff;border:none;border-radius:9px;
+  padding:10px 18px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;
+  display:flex;align-items:center;gap:7px;flex-shrink:0;white-space:nowrap;
+  box-shadow:0 4px 18px rgba(124,58,237,0.30);transition:opacity 0.15s;
+}
+.analyze-btn:hover{opacity:0.9}
+.input-hint{margin-top:14px;font-size:11px;color:var(--sub);display:flex;align-items:center;gap:5px}
+
+/* Click animation */
+@keyframes btnPop{
+  0%{transform:scale(1);box-shadow:0 4px 18px rgba(124,58,237,0.30)}
+  30%{transform:scale(0.94);box-shadow:0 2px 6px rgba(124,58,237,0.20)}
+  65%{transform:scale(1.04);box-shadow:0 6px 28px rgba(124,58,237,0.50)}
+  100%{transform:scale(1);box-shadow:0 4px 18px rgba(124,58,237,0.30)}
+}
+.analyze-btn.clicking{animation:btnPop 0.4s ease-out;pointer-events:none}
+@keyframes rowGlow{
+  0%,100%{border-color:rgba(94,108,232,0.15);box-shadow:none}
+  50%{border-color:var(--violet);box-shadow:0 0 0 3px rgba(124,58,237,0.10)}
+}
+.input-row.glowing{animation:rowGlow 0.7s ease}
+
+/* Cursor */
+#cursor{
+  position:absolute;z-index:200;pointer-events:none;
+  opacity:0;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,0.28));
+}
+@keyframes cursorTap{
+  0%{transform:scale(1)}
+  35%{transform:scale(0.72)}
+  75%{transform:scale(1.08)}
+  100%{transform:scale(1)}
+}
+#cursor.tapping{animation:cursorTap 0.28s ease-out}
+
+/* ══════════════════════════════
+   STATE 2 — Scanning
+══════════════════════════════ */
+.scan-inner{padding:32px 32px 24px;width:100%}
+.domain-header{display:flex;align-items:center;gap:13px;margin-bottom:16px}
+.domain-p{width:42px;height:42px;border-radius:11px;background:var(--analGrad);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:800;color:#fff;flex-shrink:0}
+.domain-title{font-size:20px;font-weight:800;letter-spacing:-0.03em}
+.domain-cat{font-size:11px;font-weight:600;color:var(--sub);margin-top:1px}
+.status-row{display:flex;align-items:center;gap:8px;margin-bottom:5px}
+.status-dot{width:7px;height:7px;border-radius:50%;background:var(--dotCoral);flex-shrink:0;transition:background 0.5s}
+.status-dot.done{background:var(--dotGreen)}
+.status-text{font-size:12px;font-weight:500;color:var(--analyst)}
+.progress-track{height:2px;background:var(--border2);border-radius:1px;margin-bottom:24px;overflow:hidden}
+.progress-fill{height:100%;background:var(--sigGrad);border-radius:1px;width:0%;transition:width 0.8s ease}
+
+.scan-cards{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-bottom:14px}
+.sc{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:10px;padding:13px 5px 11px;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  transition:border-color 0.4s,background 0.4s;
+}
+.sc.on{border-color:var(--purple);background:var(--paper)}
+.sc svg{transition:color 0.4s;color:var(--sub)}
+.sc.on svg{color:var(--purple)}
+.sc-lbl{font-size:9px;font-weight:700;color:var(--sub);text-align:center;line-height:1.2;transition:color 0.4s;letter-spacing:0.01em}
+.sc.on .sc-lbl{color:var(--ink2)}
+
+/* ══════════════════════════════
+   STATE 3 — Results (scrollable)
+══════════════════════════════ */
+#resScroll{
+  height:460px;overflow-y:scroll;
+  scrollbar-width:none;-ms-overflow-style:none;
+}
+#resScroll::-webkit-scrollbar{display:none}
+
+/* Header */
+.rpt-header{
+  padding:14px 18px 12px;
+  border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;gap:10px;
+  background:var(--paper);
+  position:sticky;top:0;z-index:10;
+}
+.rpt-icon{width:32px;height:32px;border-radius:8px;background:var(--analGrad);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0}
+.rpt-domain{font-size:14px;font-weight:800;letter-spacing:-0.02em}
+.rpt-tag{font-size:10px;font-weight:600;color:var(--sub);margin-top:1px}
+.rpt-score{margin-left:auto;flex-shrink:0;text-align:right}
+.rpt-score-num{font-size:18px;font-weight:800;letter-spacing:-0.04em;background:var(--sigGrad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.rpt-score-lbl{font-size:9px;font-weight:600;color:var(--sub);letter-spacing:0.04em;text-transform:uppercase}
+
+/* Pills */
+.rpt-pills{padding:9px 18px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pill{font-size:9px;font-weight:700;letter-spacing:0.04em;text-transform:uppercase;padding:3px 9px;border-radius:100px;background:var(--periw50);color:var(--analyst);border:1px solid var(--border)}
+.pill.d{background:var(--surface);color:var(--ink2);border-color:var(--border2)}
+
+/* Section wrapper */
+.rpt-sec{padding:13px 18px;border-bottom:1px solid var(--border2)}
+.rpt-sec:last-child{border-bottom:none}
+.sec-ttl{font-size:9px;font-weight:700;letter-spacing:0.07em;text-transform:uppercase;color:var(--sub);margin-bottom:10px}
+/* Prominent section headings */
+.sec-h{font-size:14px;font-weight:800;color:var(--ink);letter-spacing:-0.02em;text-transform:none;margin-bottom:12px}
+
+/* ── Use case dot-on-line ── */
+.uc-blk{margin-bottom:14px}
+.uc-blk:last-child{margin-bottom:0}
+.uc-label{font-size:11px;font-weight:700;color:var(--ink2);margin-bottom:9px;display:flex;align-items:center;gap:5px}
+.uc-badge{font-size:9px;font-weight:600;color:var(--sub);background:var(--surface);border:1px solid var(--border2);border-radius:5px;padding:2px 6px}
+.dot-chart{position:relative;height:52px;margin:0 10px}
+.dot-line{position:absolute;top:13px;left:0;right:0;height:1.5px;background:var(--border2);border-radius:1px}
+.dpt{position:absolute;top:5px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center}
+.dc{width:15px;height:15px;border-radius:50%;border:2px solid var(--paper);flex-shrink:0}
+.dc.h{background:#7C3AED}
+.dc.m{background:#A78BFA}
+.dc.lo{background:#DDD6FE}
+.dc.you{background:var(--sigGrad);box-shadow:0 0 0 2px rgba(124,58,237,0.22)}
+.dn{font-size:9px;font-weight:700;color:var(--muted);margin-top:4px;white-space:nowrap}
+.ds{font-size:9px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
+.dn.y{color:var(--violet)}
+.ds.y{background:var(--sigGrad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+
+/* ── Feature matrix ── */
+.cov-tbl{width:100%;border-collapse:collapse}
+.cov-tbl th{font-size:8px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--sub);padding:0 0 7px;text-align:center}
+.cov-tbl th:first-child{text-align:left;width:42%}
+.cov-tbl th.yc{color:var(--violet)}
+.cov-tbl td{padding:4px 0;vertical-align:middle;text-align:center}
+.cov-tbl td:first-child{text-align:left;font-size:10px;font-weight:600;color:var(--muted)}
+.cov-tbl tr:not(:last-child) td{border-bottom:1px solid var(--border2)}
+.ind{width:11px;height:11px;border-radius:50%;display:inline-block}
+.ind.h{background:#7C3AED}
+.ind.m{background:#F59E0B}
+.ind.l{background:var(--border2);border:1.5px solid var(--neutral)}
+.ind.yh{background:var(--sigGrad)}
+.ind.ym{background:linear-gradient(90deg,#7C3AED,#C73C8E);opacity:0.5}
+.ind.yl{background:var(--critBg);border:1.5px solid rgba(217,52,88,0.30)}
+.cov-lgd{display:flex;align-items:center;gap:10px;margin-top:8px}
+.lgd-i{display:flex;align-items:center;gap:4px;font-size:9px;font-weight:600;color:var(--sub)}
+
+/* ── Expansion ── */
+.exp-list{display:flex;flex-direction:column;gap:7px}
+.exp-item{background:var(--surface);border:1px solid var(--border2);border-radius:9px;padding:10px 12px;display:flex;align-items:flex-start;gap:9px}
+.exp-arrow{width:20px;height:20px;border-radius:5px;background:var(--periw50);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.exp-nm{font-size:11px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.exp-ds{font-size:10px;color:var(--muted);line-height:1.4}
+.exp-lift{margin-left:auto;flex-shrink:0;font-size:9px;font-weight:700;color:var(--succGreen);background:var(--succBg);padding:3px 6px;border-radius:5px;white-space:nowrap;margin-top:1px}
+
+/* ── Roadmap ── */
+.rm-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.rm-col{background:var(--surface);border:1px solid var(--border2);border-radius:9px;padding:10px 9px;display:flex;flex-direction:column}
+.rm-mo{font-size:8px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--analyst);margin-bottom:3px}
+.rm-hed{font-size:10px;font-weight:800;color:var(--ink);line-height:1.25;margin-bottom:7px;letter-spacing:-0.01em}
+.rm-ul{list-style:none;display:flex;flex-direction:column;gap:4px;flex:1}
+.rm-li{font-size:9px;color:var(--muted);line-height:1.4;display:flex;gap:4px}
+.rm-li::before{content:'·';color:var(--analyst);font-weight:900;flex-shrink:0}
+.rm-tgt{margin-top:8px;padding-top:7px;border-top:1px solid var(--border2);font-size:9px;font-weight:700;color:var(--violet);display:flex;align-items:center;gap:3px}
+.rm-tgt.ok{color:var(--succGreen)}
+
+/* ── Footer ── */
+.rpt-foot{padding:9px 18px;display:flex;align-items:center;justify-content:space-between;background:var(--surface)}
+.rpt-foot-brand{font-size:9px;font-weight:700;color:var(--sub);letter-spacing:0.05em}
+.rpt-foot-date{font-size:9px;color:var(--sub)}
+</style>
+
+<!-- ══ VIEWPORT ══ -->
+<div class="viewport">
+
+  <!-- ── State 1: Input ── -->
+  <div id="s1" class="spanel on">
+    <div class="input-inner">
+      <div class="sage-badge">
+        <div class="sage-dot"></div>
+        <span class="sage-badge-text">Sage AI Platform</span>
+      </div>
+      <h1 class="input-headline">Benchmark your agent against competitors</h1>
+      <p class="input-sub">Enter your website. Sage benchmarks your LLM visibility against the top competitors in your space.</p>
+      <div class="input-row" id="inputRow">
+        <span class="url-prefix">https://</span>
+        <input class="url-input" id="urlInput" type="text" value="pipelyne.ai" placeholder="your-site.com" autocomplete="off" spellcheck="false">
+        <button class="analyze-btn" id="analyzeBtn">
+          Analyse
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+      <div class="input-hint">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="var(--analyst)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        Demo pre-filled with pipelyne.ai
+      </div>
+    </div>
+  </div>
+
+  <!-- ── State 2: Scan ── -->
+  <div id="s2" class="spanel">
+    <div class="scan-inner">
+      <div class="domain-header">
+        <div class="domain-p">P</div>
+        <div>
+          <div class="domain-title">pipelyne.ai</div>
+          <div class="domain-cat">Sales AI · Outbound Prospecting</div>
+        </div>
+      </div>
+      <div class="status-row">
+        <span class="status-dot" id="statusDot"></span>
+        <span class="status-text" id="statusText">Fetching pipelyne.ai...</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progFill"></div></div>
+      <div class="scan-cards">
+        <div class="sc" id="sc0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span class="sc-lbl">Website</span>
+        </div>
+        <div class="sc" id="sc1">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 17.5h7M17.5 14v7"/></svg>
+          <span class="sc-lbl">Features</span>
+        </div>
+        <div class="sc" id="sc2">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/></svg>
+          <span class="sc-lbl">LLMs</span>
+        </div>
+        <div class="sc" id="sc3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="sc-lbl">Competitors</span>
+        </div>
+        <div class="sc" id="sc4">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7"/><path d="M9 4v13M15 7v13"/></svg>
+          <span class="sc-lbl">Roadmap</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── State 3: Results ── -->
+  <div id="s3" class="spanel">
+    <div id="resScroll">
+
+      <!-- Sticky header -->
+      <div class="rpt-header">
+        <div class="rpt-icon">P</div>
+        <div>
+          <div class="rpt-domain">pipelyne.ai</div>
+          <div class="rpt-tag">Sales AI · Aug 2026</div>
+        </div>
+        <div class="rpt-score">
+          <div class="rpt-score-num">31<span style="font-size:11px;font-weight:700">/100</span></div>
+          <div class="rpt-score-lbl">LLM Visibility</div>
+        </div>
+      </div>
+
+      <!-- Domain + use case pills -->
+      <div class="rpt-pills">
+        <span class="pill d">Sales AI</span>
+        <span class="pill">Outbound Prospecting</span>
+        <span class="pill">AI Email Sequencing</span>
+      </div>
+
+      <!-- Benchmarking -->
+      <div class="rpt-sec">
+        <div class="sec-ttl">Benchmarking · 2 Sales AI Use Cases</div>
+
+        <!-- UC 1 -->
+        <div class="uc-blk">
+          <div class="uc-label">
+            Outbound Prospecting
+            <span class="uc-badge">vs 3 competitors</span>
+          </div>
+          <div class="dot-chart">
+            <div class="dot-line"></div>
+            <div class="dpt" style="left:94%">
+              <div class="dc h"></div>
+              <div class="ds">94</div>
+              <div class="dn">Apollo</div>
+            </div>
+            <div class="dpt" style="left:74%">
+              <div class="dc m"></div>
+              <div class="ds">74</div>
+              <div class="dn">Clay</div>
+            </div>
+            <div class="dpt" style="left:58%">
+              <div class="dc lo"></div>
+              <div class="ds">58</div>
+              <div class="dn">Instantly</div>
+            </div>
+            <div class="dpt" style="left:31%">
+              <div class="dc you"></div>
+              <div class="ds y">31</div>
+              <div class="dn y">You</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- UC 2 -->
+        <div class="uc-blk">
+          <div class="uc-label">
+            AI Email Sequencing
+            <span class="uc-badge">vs 3 competitors</span>
+          </div>
+          <div class="dot-chart">
+            <div class="dot-line"></div>
+            <div class="dpt" style="left:83%">
+              <div class="dc h"></div>
+              <div class="ds">83</div>
+              <div class="dn">Salesloft</div>
+            </div>
+            <div class="dpt" style="left:70%">
+              <div class="dc m"></div>
+              <div class="ds">70</div>
+              <div class="dn">Reply.io</div>
+            </div>
+            <div class="dpt" style="left:52%">
+              <div class="dc lo"></div>
+              <div class="ds">52</div>
+              <div class="dn">Smartlead</div>
+            </div>
+            <div class="dpt" style="left:28%">
+              <div class="dc you"></div>
+              <div class="ds y">28</div>
+              <div class="dn y">You</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature gap matrix -->
+      <div class="rpt-sec">
+        <div class="sec-ttl sec-h">Feature Coverage Gap</div>
+        <table class="cov-tbl">
+          <thead>
+            <tr>
+              <th></th>
+              <th class="yc">pipelyne</th>
+              <th>Apollo</th>
+              <th>Clay</th>
+              <th>Instantly</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>AI Email Personalization</td>
+              <td><span class="ind yl"></span></td>
+              <td><span class="ind h"></span></td>
+              <td><span class="ind m"></span></td>
+              <td><span class="ind m"></span></td>
+            </tr>
+            <tr>
+              <td>Multi-channel Sequences</td>
+              <td><span class="ind yl"></span></td>
+              <td><span class="ind h"></span></td>
+              <td><span class="ind h"></span></td>
+              <td><span class="ind m"></span></td>
+            </tr>
+            <tr>
+              <td>Buyer Intent Signals</td>
+              <td><span class="ind yl"></span></td>
+              <td><span class="ind h"></span></td>
+              <td><span class="ind h"></span></td>
+              <td><span class="ind l"></span></td>
+            </tr>
+            <tr>
+              <td>CRM Integration</td>
+              <td><span class="ind ym"></span></td>
+              <td><span class="ind h"></span></td>
+              <td><span class="ind m"></span></td>
+              <td><span class="ind l"></span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="cov-lgd">
+          <div class="lgd-i"><span class="ind h" style="display:inline-block;width:9px;height:9px"></span>Strong</div>
+          <div class="lgd-i"><span class="ind m" style="display:inline-block;width:9px;height:9px"></span>Partial</div>
+          <div class="lgd-i"><span class="ind l" style="display:inline-block;width:9px;height:9px"></span>Weak</div>
+        </div>
+      </div>
+
+      <!-- Expansion -->
+      <div class="rpt-sec">
+        <div class="sec-ttl sec-h">Use Case Expansion Opportunities</div>
+        <div class="exp-list">
+          <div class="exp-item">
+            <div class="exp-arrow">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--analyst)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div class="exp-nm">Sales Intelligence &amp; Account Research</div>
+              <div class="exp-ds">Add intent data + account enrichment to enter a broader category with high LLM query volume alongside Apollo and Clay.</div>
+            </div>
+            <span class="exp-lift">+19–25 pts</span>
+          </div>
+          <div class="exp-item">
+            <div class="exp-arrow">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--analyst)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+            <div style="flex:1;min-width:0">
+              <div class="exp-nm">Revenue Operations &amp; Forecasting</div>
+              <div class="exp-ds">Emerging AI-native sub-category with rising query volume and less competition than outbound prospecting.</div>
+            </div>
+            <span class="exp-lift">+12–16 pts</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Roadmap -->
+      <div class="rpt-sec">
+        <div class="sec-ttl sec-h">90-Day Growth Roadmap</div>
+        <div class="rm-grid">
+          <div class="rm-col">
+            <div class="rm-mo">Sep 2026</div>
+            <div class="rm-hed">Personalization foundation</div>
+            <ul class="rm-ul">
+              <li class="rm-li">Ship AI email personalization</li>
+              <li class="rm-li">Publish reply rate benchmarks</li>
+              <li class="rm-li">G2 &amp; Capterra review push</li>
+            </ul>
+            <div class="rm-tgt">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              +8–12 pts
+            </div>
+          </div>
+          <div class="rm-col">
+            <div class="rm-mo">Oct 2026</div>
+            <div class="rm-hed">Multi-channel &amp; comparison content</div>
+            <ul class="rm-ul">
+              <li class="rm-li">LinkedIn + call sequences</li>
+              <li class="rm-li">"vs Apollo", "vs Clay" pages</li>
+              <li class="rm-li">8 AI tool directories</li>
+            </ul>
+            <div class="rm-tgt">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+              +10–14 pts
+            </div>
+          </div>
+          <div class="rm-col">
+            <div class="rm-mo">Nov 2026</div>
+            <div class="rm-hed">Intent data &amp; expand</div>
+            <ul class="rm-ul">
+              <li class="rm-li">Bombora intent signals</li>
+              <li class="rm-li">Sales Intelligence page</li>
+              <li class="rm-li">Outcome case study</li>
+            </ul>
+            <div class="rm-tgt ok">
+              <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Target: 52+ pts
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="rpt-foot">
+        <span class="rpt-foot-brand">Sage AI Platform</span>
+        <span class="rpt-foot-date">Aug 2026 · 14 competitors</span>
+      </div>
+
+    </div><!-- /resScroll -->
+  </div><!-- /s3 -->
+
+  <!-- Cursor (lives inside viewport so it's clipped correctly) -->
+  <div id="cursor">
+    <svg width="18" height="22" viewBox="0 0 18 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M2 2L2 17L6 12.5L9.5 20L12.5 18.5L9 11L15.5 11L2 2Z"
+        fill="white" stroke="#12102A" stroke-width="1.4"
+        stroke-linejoin="round" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+</div><!-- /viewport -->
+
+<script>
+/* ── Utils ────────────────────── */
+let timers = [];
+function killTimers(){ timers.forEach(clearTimeout); timers = []; }
+function after(ms, fn){ const id = setTimeout(fn, ms); timers.push(id); return id; }
+
+function show(id){
+  document.querySelectorAll('.spanel').forEach(p => p.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+}
+
+function ease(t){ return t<0.5 ? 2*t*t : -1+(4-2*t)*t; }
+
+/* ── Smooth scroll ────────────── */
+let scrollRaf = null;
+function animateScroll(el, from, to, dur, onDone){
+  if(scrollRaf) cancelAnimationFrame(scrollRaf);
+  const t0 = performance.now();
+  function tick(now){
+    const p = Math.min((now - t0) / dur, 1);
+    el.scrollTop = from + (to - from) * ease(p);
+    if(p < 1){ scrollRaf = requestAnimationFrame(tick); }
+    else { scrollRaf = null; if(onDone) onDone(); }
+  }
+  scrollRaf = requestAnimationFrame(tick);
+}
+
+/* ── Cursor ──────────────────── */
+const cur = document.getElementById('cursor');
+
+// Place cursor instantly at (x,y) with no animation, then call cb on next frame
+function teleportCursor(x, y, cb){
+  cur.style.transition = 'none';
+  cur.style.left = x + 'px';
+  cur.style.top  = y + 'px';
+  cur.style.opacity = '0';
+  // Two rAFs to let the browser paint before re-enabling transitions
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    cur.style.transition = 'left 0.75s cubic-bezier(0.4,0,0.2,1), top 0.75s cubic-bezier(0.4,0,0.2,1), opacity 0.25s';
+    if(cb) cb();
+  }));
+}
+
+function showCursor(){ cur.style.opacity = '1'; }
+function hideCursor(){ cur.style.opacity = '0'; }
+function moveCursor(x, y){
+  cur.style.left = x + 'px';
+  cur.style.top  = y + 'px';
+}
+function tapCursor(){
+  cur.classList.remove('tapping');
+  void cur.offsetWidth; // reflow to restart animation
+  cur.classList.add('tapping');
+  after(300, () => cur.classList.remove('tapping'));
+}
+
+/* ── Scan cards ──────────────── */
+const STEPS = [
+  { msg:'Fetching pipelyne.ai...',                          card:0, prog:20 },
+  { msg:'Extracting features and use cases...',             card:1, prog:40 },
+  { msg:'Querying Claude, GPT-4o, Gemini & Perplexity...',  card:2, prog:60 },
+  { msg:'Benchmarking 14 Sales AI competitors...',          card:3, prog:80 },
+  { msg:'Drafting 90-day growth roadmap...',                card:4, prog:95 },
+];
+const STEP_MS = 940;
+
+function activateCard(i){
+  const el = document.getElementById('sc'+i);
+  if(!el) return;
+  el.classList.add('on');
+  const svg = el.querySelector('svg');
+  if(svg) svg.style.color = 'var(--purple)';
+}
+function resetCards(){
+  for(let i=0;i<5;i++){
+    const el=document.getElementById('sc'+i);
+    if(!el) continue;
+    el.classList.remove('on');
+    const svg=el.querySelector('svg');
+    if(svg) svg.style.color='var(--sub)';
+  }
+}
+
+/* ── Main loop ───────────────── */
+function runLoop(){
+  killTimers();
+  if(scrollRaf){ cancelAnimationFrame(scrollRaf); scrollRaf=null; }
+  document.getElementById('resScroll').scrollTop = 0;
+  hideCursor();
+
+  // Show input state
+  show('s1');
+
+  // — Cursor appears at lower-left, glides to Analyse button —
+  // Use getBoundingClientRect so we land on the actual rendered button,
+  // not a guessed coordinate.
+  after(1400, () => {
+    teleportCursor(120, 410, () => {
+      showCursor();
+      after(350, () => {
+        const btn = document.getElementById('analyzeBtn');
+        const vp  = document.querySelector('.viewport');
+        const br  = btn.getBoundingClientRect();
+        const vr  = vp.getBoundingClientRect();
+        // Centre of button relative to the viewport div
+        moveCursor(
+          br.left + br.width  / 2 - vr.left,
+          br.top  + br.height / 2 - vr.top
+        );
+      });
+    });
+  });
+
+  // — Input row glow as cursor arrives —
+  after(2350, () => {
+    const row = document.getElementById('inputRow');
+    row.classList.add('glowing');
+    after(700, () => row.classList.remove('glowing'));
+  });
+
+  // — Cursor tap + button pop —
+  after(2650, () => {
+    tapCursor();
+    after(100, () => {
+      const btn = document.getElementById('analyzeBtn');
+      btn.classList.add('clicking');
+      after(400, () => btn.classList.remove('clicking'));
+    });
+  });
+
+  // — Scan state —
+  after(3050, () => {
+    hideCursor();
+    resetCards();
+    document.getElementById('statusDot').classList.remove('done');
+    document.getElementById('progFill').style.width = '0%';
+    show('s2');
+
+    document.getElementById('statusText').textContent = STEPS[0].msg;
+    document.getElementById('progFill').style.width = STEPS[0].prog + '%';
+    activateCard(0);
+
+    STEPS.slice(1).forEach((step, i) => {
+      after(STEP_MS * (i + 1), () => {
+        document.getElementById('statusText').textContent = step.msg;
+        document.getElementById('progFill').style.width = step.prog + '%';
+        activateCard(step.card);
+      });
+    });
+
+    after(STEP_MS * 5, () => {
+      document.getElementById('statusText').textContent = 'Analysis complete';
+      document.getElementById('progFill').style.width = '100%';
+      document.getElementById('statusDot').classList.add('done');
+    });
+
+    after(STEP_MS * 5 + 660, () => {
+      show('s3');
+      after(550, () => {
+        const scroller = document.getElementById('resScroll');
+        const maxScroll = scroller.scrollHeight - scroller.clientHeight;
+        // Slower scroll — 13 seconds
+        animateScroll(scroller, 0, maxScroll, 13000, () => {
+          after(2200, runLoop);
+        });
+      });
+    });
+  });
+}
+
+/* ── Manual controls ─────────── */
+function manualStart(){
+  killTimers();
+  if(scrollRaf){ cancelAnimationFrame(scrollRaf); scrollRaf=null; }
+  hideCursor();
+  runLoop();
+}
+document.getElementById('analyzeBtn').addEventListener('click', manualStart);
+document.getElementById('urlInput').addEventListener('keydown', e => {
+  if(e.key === 'Enter') manualStart();
+});
+
+// Auto-start when iframe loads; parent reloads the iframe to restart
+after(700, runLoop);
+</script>
