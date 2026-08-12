@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#fff;--surface:#F9F8FC;--border:rgba(0,0,0,0.07);
+  --v:#7C3AED;--v-dim:rgba(124,58,237,0.08);--text:#111018;--sub:#6B6880;--muted:#B0AABF;
+  --grn:#16A34A;--grn-bg:rgba(22,163,74,0.08);--amb:#D97706;--amb-bg:rgba(217,119,6,0.08);
+}
+html,body{width:100%;height:100%;background:#EDEAF8;display:flex;align-items:center;justify-content:center;
+  font-family:system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;overflow:hidden;
+  font-size:12px;letter-spacing:-0.01em;color:var(--text);}
+
+/* ── Fixed card ─────────────────────────────────────────────────── */
+.vp{width:480px;height:460px;background:var(--bg);border-radius:22px;overflow:hidden;
+  display:flex;flex-direction:column;box-shadow:0 2px 24px rgba(60,20,140,0.10);position:relative;}
+
+/* ── Domain header ──────────────────────────────────────────────── */
+.domain-hdr{
+  display:flex;align-items:center;gap:8px;
+  padding:9px 14px;border-bottom:1px solid var(--border);
+  flex-shrink:0;background:rgba(124,58,237,0.04);
+}
+.dom-badge{font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  background:rgba(124,58,237,0.12);color:var(--v);border-radius:4px;padding:2px 7px;}
+.dom-uc{font-size:11px;color:var(--sub);font-weight:500}
+.dom-right{margin-left:auto;font-size:10px;color:var(--muted)}
+
+/* ── Top section ────────────────────────────────────────────────── */
+.top-sec{display:grid;grid-template-columns:54% 46%;border-bottom:1px solid var(--border);
+  flex-shrink:0;height:145px;overflow:hidden;}
+
+/* Top Brands */
+.brands-col{padding:10px 14px;border-right:1px solid var(--border);overflow:hidden;}
+.sec-ttl{font-size:11px;font-weight:700;color:var(--text);margin-bottom:8px}
+.br-row{display:flex;align-items:center;gap:6px;margin-bottom:5px;}
+.br-rank{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:8.5px;font-weight:800;color:#fff;flex-shrink:0;}
+.br-nm{font-size:11px;font-weight:600;color:var(--text);width:54px;flex-shrink:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.br-track{flex:1;height:5px;background:rgba(0,0,0,0.05);border-radius:3px;overflow:hidden;}
+.br-fill{height:100%;border-radius:3px;}
+.br-ct{font-size:9.5px;color:var(--muted);white-space:nowrap;width:28px;text-align:right;flex-shrink:0;}
+
+/* UCSOV */
+.ucsov-col{padding:10px 12px;display:flex;flex-direction:column;align-items:center;overflow:hidden;}
+.ucsov-col .sec-ttl{align-self:flex-start}
+.donut-wrap{flex:1;display:flex;align-items:center;justify-content:center;margin-top:2px;}
+.legend{display:flex;flex-wrap:wrap;gap:3px 10px;justify-content:center;margin-top:4px;}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:9px;color:var(--sub);}
+.leg-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+
+/* ── Product Features ───────────────────────────────────────────── */
+.pf-wrap{flex:1;display:flex;flex-direction:column;overflow:hidden;min-height:0;}
+.pf-hdr{display:flex;align-items:center;gap:8px;padding:9px 14px 8px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.pf-title{font-size:12px;font-weight:700;color:var(--text)}
+.pf-hint{font-size:10px;color:var(--v);cursor:pointer}
+
+.feat-groups{flex:1;overflow-y:auto;padding:10px 14px 10px;}
+.feat-groups::-webkit-scrollbar{display:none}
+
+.feat-grp{margin-bottom:10px;}
+.fg-ttl{font-size:10.5px;font-weight:700;color:var(--sub);margin-bottom:6px;letter-spacing:0.01em;}
+
+.bar-row{display:flex;align-items:center;gap:8px;padding:3px 0;cursor:pointer;border-radius:4px;transition:background 0.1s;}
+.bar-row:hover{background:rgba(0,0,0,0.02);margin:0 -4px;padding:3px 4px;}
+.bn{font-size:11px;color:var(--text);width:62px;flex-shrink:0;font-weight:500;}
+.btrack{flex:1;height:7px;background:rgba(0,0,0,0.06);border-radius:4px;overflow:hidden;}
+.bfill{height:100%;border-radius:4px;width:0;transition:width 0.9s cubic-bezier(0.22,1,0.36,1);}
+.bfill.g{background:#22C55E}.bfill.a{background:#D97706}
+.bsc{font-size:11px;font-weight:700;width:24px;text-align:right;flex-shrink:0;}
+.bsc.g{color:var(--grn)}.bsc.a{color:var(--amb)}
+
+/* ── Evidence drawer ─────────────────────────────────────────────── */
+.ev-drawer{
+  position:absolute;top:0;right:0;bottom:0;width:204px;
+  background:#fff;border-left:1px solid rgba(0,0,0,0.08);
+  box-shadow:-8px 0 40px rgba(0,0,0,0.09);
+  transform:translateX(100%);
+  transition:transform 0.42s cubic-bezier(0.22,1,0.36,1);
+  z-index:50;overflow-y:auto;padding:18px 16px;
+}
+.ev-drawer.open{transform:translateX(0)}
+.ev-brand-feat{font-size:9px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);line-height:1.5;margin-bottom:12px;}
+.ev-score{display:flex;align-items:baseline;gap:6px;margin-bottom:4px;}
+.ev-big{font-size:42px;font-weight:800;color:var(--grn);letter-spacing:-0.04em;line-height:1;}
+.ev-sub{font-size:13px;color:var(--sub)}
+.ev-rank{font-size:11.5px;color:var(--muted);margin-bottom:14px;}
+.ev-div{height:1px;background:var(--border);margin-bottom:12px;}
+.ev-lbl-txt{font-size:9px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.ev-quote-txt{font-size:11.5px;line-height:1.65;color:#333;border-left:2px solid #E9D5FF;padding-left:10px;}
+
+/* ── Cursor ─────────────────────────────────────────────────────── */
+#cur{position:absolute;pointer-events:none;z-index:999;opacity:0;transition:opacity 0.22s ease;}
+#cur.vis{opacity:1}
+#cur.click svg{transform:scale(0.87);transition:transform 0.1s ease}
+#cur svg{transition:transform 0.18s ease}
+</style>
+</head>
+<body>
+<div class="vp">
+
+  <!-- Domain header -->
+  <div class="domain-hdr">
+    <div class="dom-badge">Marketing AI</div>
+    <span class="dom-uc">· Content Creation</span>
+    <span class="dom-right">7 brands tracked</span>
+  </div>
+
+  <!-- Top section -->
+  <div class="top-sec">
+    <!-- Top Brands -->
+    <div class="brands-col">
+      <div class="sec-ttl">Top Brands</div>
+      <div class="br-row">
+        <div class="br-rank" style="background:#3B82F6">1</div>
+        <span class="br-nm">Copy.ai</span>
+        <div class="br-track"><div class="br-fill" style="background:#3B82F6;width:100%"></div></div>
+        <span class="br-ct">600</span>
+      </div>
+      <div class="br-row">
+        <div class="br-rank" style="background:#8B5CF6">2</div>
+        <span class="br-nm">Jasper</span>
+        <div class="br-track"><div class="br-fill" style="background:#8B5CF6;width:99%"></div></div>
+        <span class="br-ct">595</span>
+      </div>
+      <div class="br-row">
+        <div class="br-rank" style="background:#F87171">3</div>
+        <span class="br-nm">Writesonic</span>
+        <div class="br-track"><div class="br-fill" style="background:#F87171;width:84%"></div></div>
+        <span class="br-ct">504</span>
+      </div>
+      <div class="br-row">
+        <div class="br-rank" style="background:#22C55E">4</div>
+        <span class="br-nm">Anyword</span>
+        <div class="br-track"><div class="br-fill" style="background:#22C55E;width:37%"></div></div>
+        <span class="br-ct">220</span>
+      </div>
+      <div class="br-row">
+        <div class="br-rank" style="background:#EAB308">5</div>
+        <span class="br-nm">Brand.ai</span>
+        <div class="br-track"><div class="br-fill" style="background:#EAB308;width:19%"></div></div>
+        <span class="br-ct">116</span>
+      </div>
+    </div>
+
+    <!-- UCSOV -->
+    <div class="ucsov-col">
+      <div class="sec-ttl">Use Case Share of Voice</div>
+      <div class="donut-wrap">
+        <svg width="78" height="78" viewBox="0 0 160 160">
+          <!-- circumference = 2π×60 ≈ 377; segments proportional to 600:595:504:220:116 -->
+          <circle cx="80" cy="80" r="60" fill="none" stroke="#3B82F6" stroke-width="26" stroke-dasharray="111 266" transform="rotate(-90 80 80)"/>
+          <circle cx="80" cy="80" r="60" fill="none" stroke="#8B5CF6" stroke-width="26" stroke-dasharray="110 267" transform="rotate(16.1 80 80)"/>
+          <circle cx="80" cy="80" r="60" fill="none" stroke="#F87171" stroke-width="26" stroke-dasharray="93 284"  transform="rotate(121.3 80 80)"/>
+          <circle cx="80" cy="80" r="60" fill="none" stroke="#22C55E" stroke-width="26" stroke-dasharray="41 336"  transform="rotate(210.5 80 80)"/>
+          <circle cx="80" cy="80" r="60" fill="none" stroke="#EAB308" stroke-width="26" stroke-dasharray="22 355"  transform="rotate(249.4 80 80)"/>
+          <circle cx="80" cy="80" r="45" fill="white"/>
+        </svg>
+      </div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#3B82F6"></div>Copy.ai</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#8B5CF6"></div>Jasper</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#F87171"></div>Writesonic</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#22C55E"></div>Anyword</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#EAB308"></div>Brand.ai</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Features -->
+  <div class="pf-wrap">
+    <div class="pf-hdr">
+      <span class="pf-title">Product Features</span>
+      <span class="pf-hint">↗ Click any bar to read the evidence</span>
+    </div>
+    <div class="feat-groups">
+
+      <!-- Feature 1 -->
+      <div class="feat-grp">
+        <div class="fg-ttl">Copy variant generation & testing</div>
+        <div class="bar-row" id="phrasee-bar" onclick="openDrawer()">
+          <span class="bn">Phrasee</span>
+          <div class="btrack"><div class="bfill g" data-w="90%"></div></div>
+          <span class="bsc g">90</span>
+        </div>
+        <div class="bar-row" onclick="openDrawer()">
+          <span class="bn">Persado</span>
+          <div class="btrack"><div class="bfill g" data-w="90%"></div></div>
+          <span class="bsc g">90</span>
+        </div>
+        <div class="bar-row" onclick="openDrawer()">
+          <span class="bn">Jasper</span>
+          <div class="btrack"><div class="bfill g" data-w="80%"></div></div>
+          <span class="bsc g">80</span>
+        </div>
+        <div class="bar-row" onclick="openDrawer()">
+          <span class="bn">Brand.ai</span>
+          <div class="btrack"><div class="bfill g" data-w="70%"></div></div>
+          <span class="bsc g">70</span>
+        </div>
+        <div class="bar-row" onclick="openDrawer()">
+          <span class="bn">Writesonic</span>
+          <div class="btrack"><div class="bfill a" data-w="45%"></div></div>
+          <span class="bsc a">45</span>
+        </div>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feat-grp">
+        <div class="fg-ttl">Brand voice customisation</div>
+        <div class="bar-row" onclick="openDrawer()">
+          <span class="bn">Jasper</span>
+          <div class="btrack"><div class="bfill g" data-w="95%"></div></div>
+          <span class="bsc g">95</span>
+        </div>
+        <div class="bar-row" onclick="openDrawer()">
+          <span class="bn">Brand.ai</span>
+          <div class="btrack"><div class="bfill g" data-w="95%"></div></div>
+          <span class="bsc g">95</span>
+        </div>
+        <div class="bar-row" onclick="openDrawer()">
+          <span class="bn">Copy.ai</span>
+          <div class="btrack"><div class="bfill g" data-w="75%"></div></div>
+          <span class="bsc g">75</span>
+        </div>
+        <div class="bar-row" onclick="openDrawer()">
+          <span class="bn">Writesonic</span>
+          <div class="btrack"><div class="bfill a" data-w="35%"></div></div>
+          <span class="bsc a">35</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Evidence drawer -->
+  <div class="ev-drawer" id="evDrawer">
+    <div class="ev-brand-feat">Phrasee · Copy variant generation & testing</div>
+    <div class="ev-score">
+      <span class="ev-big">90</span>
+      <span class="ev-sub">out of 100</span>
+    </div>
+    <div class="ev-rank">Ranked 1 of 7</div>
+    <div class="ev-div"></div>
+    <div class="ev-lbl-txt">Evidence</div>
+    <div class="ev-quote-txt">"Phrasee generates multiple distinct copy variants from a single brief using its AI-driven language generation technology. Marketing teams can easily test different messages and tones, optimising for performance based on engagement metrics."</div>
+  </div>
+
+  <!-- Cursor -->
+  <div id="cur">
+    <svg width="20" height="24" viewBox="0 0 20 24" fill="none">
+      <path d="M1 1L1 18.5L5 14.5L7.8 21.5L10.5 20.5L7.8 13.5H13L1 1Z" fill="white" stroke="#333" stroke-width="1.1" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</div>
+
+<script>
+const cur     = document.getElementById('cur');
+const evDrawer= document.getElementById('evDrawer');
+
+function openDrawer()  { evDrawer.classList.add('open'); }
+function closeDrawer() { evDrawer.classList.remove('open'); }
+
+let timers = [];
+function killTimers() { timers.forEach(clearTimeout); timers = []; }
+function after(ms, fn) { const id = setTimeout(fn, ms); timers.push(id); return id; }
+
+// Bar fills animate once; subsequent restarts leave them as-is
+let barsFilledOnce = false;
+function fillBars() {
+  if (barsFilledOnce) return;
+  barsFilledOnce = true;
+  document.querySelectorAll('.bfill[data-w]').forEach((el, i) => {
+    setTimeout(() => { el.style.width = el.dataset.w; }, i * 80 + 200);
+  });
+}
+
+function moveCursor(x, y, dur) {
+  dur = dur || 360;
+  cur.style.transition = `left ${dur}ms cubic-bezier(0.22,1,0.36,1), top ${dur}ms cubic-bezier(0.22,1,0.36,1)`;
+  cur.style.left = x + 'px';
+  cur.style.top  = y + 'px';
+}
+
+function showCursor() { cur.classList.add('vis'); }
+function hideCursor() { cur.classList.remove('vis'); }
+
+function clickCursor() {
+  cur.classList.add('click');
+  setTimeout(() => cur.classList.remove('click'), 180);
+}
+
+function getBarTarget(barTrack) {
+  // Aim at the 90% mark along the bar (where the green fill ends for score 90)
+  const vp = document.querySelector('.vp');
+  const er  = barTrack.getBoundingClientRect();
+  const vr  = vp.getBoundingClientRect();
+  return { x: er.left - vr.left + er.width * 0.90, y: er.top - vr.top + er.height / 2 };
+}
+
+function runLoop() {
+  killTimers();
+  closeDrawer();
+  hideCursor();
+
+  const phraseeRow = document.getElementById('phrasee-bar');
+  const barEl      = phraseeRow.querySelector('.btrack');
+
+  after(500, () => {
+    const p = getBarTarget(barEl);
+    cur.style.transition = 'none';
+    cur.style.left = (p.x - 30) + 'px';
+    cur.style.top  = (p.y + 22) + 'px';
+    showCursor();
+  });
+
+  after(900, () => {
+    const p = getBarTarget(barEl);
+    moveCursor(p.x, p.y, 360);
+  });
+
+  after(1380, () => {
+    clickCursor();
+    openDrawer();
+  });
+
+  // Hold, then close and loop
+  after(5600, () => { closeDrawer(); });
+  after(6300, () => { hideCursor(); });
+  after(7600, runLoop);
+}
+
+// Auto-start when iframe loads; parent reloads the iframe to restart
+window.addEventListener('load', () => { fillBars(); after(400, runLoop); });
+</script>
+
+</body>
+</html>
