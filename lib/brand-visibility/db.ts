@@ -1,12 +1,21 @@
 import { sql } from "@vercel/postgres";
 import { DEFAULT_STOPLIST, type ResolutionCache, type CanonicalEntry } from "./normalization";
 
-let dbInitialised = false;
+// Promise-based guard: concurrent callers await the same in-flight DDL instead
+// of racing ahead with queries before all columns exist.
+let _brandDbInit: Promise<void> | null = null;
 
-export async function initBrandVisibilityDB(): Promise<void> {
-  if (dbInitialised) return;
-  dbInitialised = true;
+export function initBrandVisibilityDB(): Promise<void> {
+  if (!_brandDbInit) {
+    _brandDbInit = _runBrandDDL().catch(err => {
+      _brandDbInit = null; // allow retry after a genuine failure
+      return Promise.reject(err);
+    });
+  }
+  return _brandDbInit;
+}
 
+async function _runBrandDDL(): Promise<void> {
   try {
   // ── Core collection tables ─────────────────────────────────────────────────
 
@@ -334,6 +343,8 @@ export async function initBrandVisibilityDB(): Promise<void> {
   await sql`ALTER TABLE feature_scores    ADD COLUMN IF NOT EXISTS grounded_source BOOLEAN DEFAULT FALSE`;
   // key_terms: LLM-extracted capability phrases stored alongside evidence (2026-08-10+)
   await sql`ALTER TABLE feature_responses ADD COLUMN IF NOT EXISTS key_terms TEXT[]`;
+  // terminology_tags: curated standalone product-specific named terms (2026-08-10+), shown as chips below evidence
+  await sql`ALTER TABLE feature_responses ADD COLUMN IF NOT EXISTS terminology_tags TEXT[]`;
   // Deduplicate before creating the unique index — keeps the latest row per key.
   // Once the index exists this DELETE is a no-op; CREATE UNIQUE INDEX IF NOT EXISTS is idempotent.
   await sql`
@@ -350,7 +361,6 @@ export async function initBrandVisibilityDB(): Promise<void> {
   `;
 
   } catch (err) {
-    dbInitialised = false;
     throw err;
   }
 }
@@ -932,21 +942,23 @@ export async function insertFeatureResponse(row: {
   evidence:       string | null;
   limitations:    string | null;
   confidence:     string | null;
-  key_terms:      string[] | null;
-  raw_json:       object | null;
-  parse_error:    boolean;
-  grounded?:      boolean;
+  key_terms:         string[] | null;
+  terminology_tags:  string[] | null;
+  raw_json:          object | null;
+  parse_error:       boolean;
+  grounded?:         boolean;
 }): Promise<void> {
   const grounded = row.grounded ?? false;
   await sql`
     INSERT INTO feature_responses
       (brand_name, feature_id, feature_tag, model, run_number, run_date,
-       has_capability, evidence, limitations, confidence, key_terms, raw_json, parse_error, grounded)
+       has_capability, evidence, limitations, confidence, key_terms, terminology_tags, raw_json, parse_error, grounded)
     VALUES
       (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.model},
        ${row.run_number}, ${row.run_date}::date, ${row.has_capability},
        ${row.evidence}, ${row.limitations}, ${row.confidence},
        ${row.key_terms ? JSON.stringify(row.key_terms) : null}::text[],
+       ${row.terminology_tags ? JSON.stringify(row.terminology_tags) : null}::text[],
        ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error}, ${grounded})
     ON CONFLICT DO NOTHING
   `;
@@ -1130,11 +1142,19 @@ export async function upsertSentimentScore(row: {
 
 // ── Sales visibility pipeline ─────────────────────────────────────────────────
 
-let salesDbInitialised = false;
+let _salesDbInit: Promise<void> | null = null;
 
-export async function initSalesVisibilityDB(): Promise<void> {
-  if (salesDbInitialised) return;
+export function initSalesVisibilityDB(): Promise<void> {
+  if (!_salesDbInit) {
+    _salesDbInit = _runSalesDDL().catch(err => {
+      _salesDbInit = null;
+      return Promise.reject(err);
+    });
+  }
+  return _salesDbInit;
+}
 
+async function _runSalesDDL(): Promise<void> {
   await sql`
     CREATE TABLE IF NOT EXISTS sales_raw_responses (
       id             SERIAL PRIMARY KEY,
@@ -1254,13 +1274,13 @@ export async function initSalesVisibilityDB(): Promise<void> {
   await sql`ALTER TABLE sales_feature_responses ADD COLUMN IF NOT EXISTS grounded BOOLEAN NOT NULL DEFAULT FALSE`;
   await sql`ALTER TABLE sales_feature_scores    ADD COLUMN IF NOT EXISTS grounded_source BOOLEAN DEFAULT FALSE`;
   await sql`ALTER TABLE sales_feature_responses ADD COLUMN IF NOT EXISTS key_terms TEXT[]`;
+  await sql`ALTER TABLE sales_feature_responses ADD COLUMN IF NOT EXISTS terminology_tags TEXT[]`;
 
   await sql`
     CREATE UNIQUE INDEX IF NOT EXISTS sales_feature_responses_unique
     ON sales_feature_responses (brand_name, feature_id, model, run_number, run_date)
   `;
 
-  salesDbInitialised = true;
 }
 
 export async function insertSalesRawResponse(row: {
@@ -1639,14 +1659,15 @@ export async function getMarketingSOVAllTime(): Promise<
 // ── Feature scores read (for brand-visibility page) ───────────────────────────
 
 export interface FeatureScoreRow {
-  brand_name:      string;
-  feature_id:      string;
-  feature_tag:     string;
-  score:           number;
-  score_band:      string;
-  grounded_source: boolean;
-  evidence:        string | null;
-  key_terms:       string[] | null;
+  brand_name:        string;
+  feature_id:        string;
+  feature_tag:       string;
+  score:             number;
+  score_band:        string;
+  grounded_source:   boolean;
+  evidence:          string | null;
+  key_terms:         string[] | null;
+  terminology_tags:  string[] | null;
 }
 
 export async function getFeatureScores(): Promise<FeatureScoreRow[]> {
@@ -1654,7 +1675,7 @@ export async function getFeatureScores(): Promise<FeatureScoreRow[]> {
   const result = await sql`
     WITH best_evidence AS (
       SELECT DISTINCT ON (brand_name, feature_id)
-        brand_name, feature_id, evidence, key_terms
+        brand_name, feature_id, evidence, key_terms, terminology_tags
       FROM feature_responses
       WHERE parse_error = false
         AND evidence IS NOT NULL AND evidence != ''
@@ -1676,7 +1697,7 @@ export async function getFeatureScores(): Promise<FeatureScoreRow[]> {
     )
     SELECT fs.brand_name, fs.feature_id, fs.feature_tag, fs.score, fs.score_band,
            COALESCE(fs.grounded_source, FALSE) AS grounded_source,
-           be.evidence, be.key_terms
+           be.evidence, be.key_terms, be.terminology_tags
     FROM feature_scores fs
     LEFT JOIN best_evidence be ON be.brand_name = fs.brand_name AND be.feature_id = fs.feature_id
     WHERE fs.score IS NOT NULL
@@ -1698,21 +1719,23 @@ export async function insertSalesFeatureResponse(row: {
   evidence:       string | null;
   limitations:    string | null;
   confidence:     string | null;
-  key_terms:      string[] | null;
-  raw_json:       object | null;
-  parse_error:    boolean;
-  grounded?:      boolean;
+  key_terms:         string[] | null;
+  terminology_tags:  string[] | null;
+  raw_json:          object | null;
+  parse_error:       boolean;
+  grounded?:         boolean;
 }): Promise<void> {
   const grounded = row.grounded ?? false;
   await sql`
     INSERT INTO sales_feature_responses
       (brand_name, feature_id, feature_tag, model, run_number, run_date,
-       has_capability, evidence, limitations, confidence, key_terms, raw_json, parse_error, grounded)
+       has_capability, evidence, limitations, confidence, key_terms, terminology_tags, raw_json, parse_error, grounded)
     VALUES
       (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.model},
        ${row.run_number}, ${row.run_date}::date, ${row.has_capability},
        ${row.evidence}, ${row.limitations}, ${row.confidence},
        ${row.key_terms ? JSON.stringify(row.key_terms) : null}::text[],
+       ${row.terminology_tags ? JSON.stringify(row.terminology_tags) : null}::text[],
        ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error}, ${grounded})
     ON CONFLICT DO NOTHING
   `;
@@ -1753,11 +1776,12 @@ export async function getSalesFeatureScores(): Promise<{
   flagged_for_review: boolean;
   evidence:           string | null;
   key_terms:          string[] | null;
+  terminology_tags:   string[] | null;
 }[]> {
   const result = await sql`
     WITH best_evidence AS (
       SELECT DISTINCT ON (brand_name, feature_id)
-        brand_name, feature_id, evidence, key_terms
+        brand_name, feature_id, evidence, key_terms, terminology_tags
       FROM sales_feature_responses
       WHERE parse_error = false
         AND evidence IS NOT NULL AND evidence != ''
@@ -1778,7 +1802,7 @@ export async function getSalesFeatureScores(): Promise<{
         model
     )
     SELECT s.brand_name, s.feature_id, s.feature_tag, s.score, s.score_band, s.flagged_for_review,
-           be.evidence, be.key_terms
+           be.evidence, be.key_terms, be.terminology_tags
     FROM sales_feature_scores s
     LEFT JOIN best_evidence be ON be.brand_name = s.brand_name AND be.feature_id = s.feature_id
     WHERE s.score IS NOT NULL
@@ -1787,7 +1811,7 @@ export async function getSalesFeatureScores(): Promise<{
   return result.rows as {
     brand_name: string; feature_id: string; feature_tag: string;
     score: number; score_band: string; flagged_for_review: boolean;
-    evidence: string | null; key_terms: string[] | null;
+    evidence: string | null; key_terms: string[] | null; terminology_tags: string[] | null;
   }[];
 }
 
@@ -2134,12 +2158,19 @@ export async function upsertSentimentDrift(row: {
 
 // ── Dexify pipeline ────────────────────────────────────────────────────────────
 
-let dexifyDbInitialised = false;
+let _dexifyDbInit: Promise<void> | null = null;
 
-export async function initDexifyDB(): Promise<void> {
-  if (dexifyDbInitialised) return;
-  dexifyDbInitialised = true; // set before any await — JS single-thread guarantees no concurrent DDL
+export function initDexifyDB(): Promise<void> {
+  if (!_dexifyDbInit) {
+    _dexifyDbInit = _runDexifyDDL().catch(err => {
+      _dexifyDbInit = null;
+      return Promise.reject(err);
+    });
+  }
+  return _dexifyDbInit;
+}
 
+async function _runDexifyDDL(): Promise<void> {
   try {
   await sql`
     CREATE TABLE IF NOT EXISTS dexify_raw_responses (
@@ -2261,6 +2292,7 @@ export async function initDexifyDB(): Promise<void> {
   `;
 
   await sql`ALTER TABLE dexify_feature_responses ADD COLUMN IF NOT EXISTS key_terms TEXT[]`;
+  await sql`ALTER TABLE dexify_feature_responses ADD COLUMN IF NOT EXISTS terminology_tags TEXT[]`;
 
   await sql`
     CREATE TABLE IF NOT EXISTS dexify_feature_scores (
@@ -2282,7 +2314,6 @@ export async function initDexifyDB(): Promise<void> {
   `;
 
   } catch (err) {
-    dexifyDbInitialised = false; // allow retry if DDL genuinely failed
     throw err;
   }
 }
@@ -2419,21 +2450,23 @@ export async function insertDexifyFeatureResponse(row: {
   evidence:       string | null;
   limitations:    string | null;
   confidence:     string | null;
-  key_terms:      string[] | null;
-  raw_json:       object | null;
-  parse_error:    boolean;
-  grounded?:      boolean;
+  key_terms:         string[] | null;
+  terminology_tags:  string[] | null;
+  raw_json:          object | null;
+  parse_error:       boolean;
+  grounded?:         boolean;
 }): Promise<void> {
   const grounded = row.grounded ?? false;
   await sql`
     INSERT INTO dexify_feature_responses
       (brand_name, feature_id, feature_tag, model, run_number, run_date,
-       has_capability, evidence, limitations, confidence, key_terms, raw_json, parse_error, grounded)
+       has_capability, evidence, limitations, confidence, key_terms, terminology_tags, raw_json, parse_error, grounded)
     VALUES
       (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.model},
        ${row.run_number}, ${row.run_date}::date, ${row.has_capability},
        ${row.evidence}, ${row.limitations}, ${row.confidence},
        ${row.key_terms ? JSON.stringify(row.key_terms) : null}::text[],
+       ${row.terminology_tags ? JSON.stringify(row.terminology_tags) : null}::text[],
        ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error}, ${grounded})
     ON CONFLICT DO NOTHING
   `;
@@ -2474,12 +2507,13 @@ export async function getDexifyFeatureScores(): Promise<{
   flagged_for_review: boolean;
   evidence:           string | null;
   key_terms:          string[] | null;
+  terminology_tags:   string[] | null;
 }[]> {
   await initDexifyDB();
   const result = await sql`
     WITH best_evidence AS (
       SELECT DISTINCT ON (brand_name, feature_id)
-        brand_name, feature_id, evidence, key_terms
+        brand_name, feature_id, evidence, key_terms, terminology_tags
       FROM dexify_feature_responses
       WHERE parse_error = false
         AND evidence IS NOT NULL AND evidence != ''
@@ -2500,7 +2534,7 @@ export async function getDexifyFeatureScores(): Promise<{
         model
     )
     SELECT s.brand_name, s.feature_id, s.feature_tag, s.score, s.score_band, s.flagged_for_review,
-           be.evidence, be.key_terms
+           be.evidence, be.key_terms, be.terminology_tags
     FROM dexify_feature_scores s
     LEFT JOIN best_evidence be ON be.brand_name = s.brand_name AND be.feature_id = s.feature_id
     ORDER BY s.feature_tag, s.score DESC NULLS LAST
@@ -2508,7 +2542,7 @@ export async function getDexifyFeatureScores(): Promise<{
   return result.rows as {
     brand_name: string; feature_id: string; feature_tag: string;
     score: number | null; score_band: string; flagged_for_review: boolean;
-    evidence: string | null; key_terms: string[] | null;
+    evidence: string | null; key_terms: string[] | null; terminology_tags: string[] | null;
   }[];
 }
 

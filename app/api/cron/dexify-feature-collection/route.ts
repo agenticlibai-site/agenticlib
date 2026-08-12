@@ -81,13 +81,14 @@ async function callGPT(promptText: string): Promise<string> {
 }
 
 function parseFeatureResponse(raw: string): {
-  has_capability: string | null;
-  evidence:       string | null;
-  limitations:    string | null;
-  confidence:     string | null;
-  key_terms:      string[] | null;
-  parsed:         object | null;
-  parseError:     boolean;
+  has_capability:  string | null;
+  evidence:        string | null;
+  limitations:     string | null;
+  confidence:      string | null;
+  key_terms:       string[] | null;
+  terminology_tags: string[] | null;
+  parsed:          object | null;
+  parseError:      boolean;
 } {
   function extract(obj: Record<string, unknown>) {
     return {
@@ -95,11 +96,14 @@ function parseFeatureResponse(raw: string): {
       evidence:       typeof obj.evidence       === "string" ? obj.evidence       : null,
       limitations:    typeof obj.limitations    === "string" ? obj.limitations    : null,
       confidence:     typeof obj.confidence     === "string" ? obj.confidence     : null,
-      key_terms:      Array.isArray(obj.key_terms)
+      key_terms:        Array.isArray(obj.key_terms)
         ? (obj.key_terms as unknown[]).filter((t): t is string => typeof t === "string").slice(0, 4)
         : null,
-      parsed:         obj,
-      parseError:     false,
+      terminology_tags: Array.isArray(obj.terminology_tags)
+        ? (obj.terminology_tags as unknown[]).filter((t): t is string => typeof t === "string").slice(0, 3)
+        : null,
+      parsed:           obj,
+      parseError:       false,
     };
   }
   const cleaned = raw.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
@@ -109,7 +113,7 @@ function parseFeatureResponse(raw: string): {
   if (first !== -1 && last > first) {
     try { return extract(JSON.parse(cleaned.slice(first, last + 1)) as Record<string, unknown>); } catch { /* fall */ }
   }
-  return { has_capability: null, evidence: null, limitations: null, confidence: null, key_terms: null, parsed: null, parseError: true };
+  return { has_capability: null, evidence: null, limitations: null, confidence: null, key_terms: null, terminology_tags: null, parsed: null, parseError: true };
 }
 
 type RunSummary = { has_capability: string | null; confidence: string | null; parse_error: boolean };
@@ -206,24 +210,25 @@ export async function GET(request: Request) {
                 ? await withRetry(() => callClaude(promptText), callLabel)
                 : await withRetry(() => callGPT(promptText),    callLabel);
 
-              const { has_capability, evidence, limitations, confidence, key_terms, parsed, parseError } =
+              const { has_capability, evidence, limitations, confidence, key_terms, terminology_tags, parsed, parseError } =
                 parseFeatureResponse(rawText);
 
               await insertDexifyFeatureResponse({
-                brand_name:     b,
-                feature_id:     f.feature_id,
-                feature_tag:    f.feature_tag,
+                brand_name:      b,
+                feature_id:      f.feature_id,
+                feature_tag:     f.feature_tag,
                 model,
-                run_number:     r,
-                run_date:       today,
+                run_number:      r,
+                run_date:        today,
                 has_capability,
                 evidence,
                 limitations,
                 confidence,
                 key_terms,
-                raw_json:       parseError ? { raw: rawText.slice(0, 2000) } : parsed,
-                parse_error:    parseError,
-                grounded:       false,
+                terminology_tags,
+                raw_json:        parseError ? { raw: rawText.slice(0, 2000) } : parsed,
+                parse_error:     parseError,
+                grounded:        false,
               });
 
               if (!pairResults.has(pairKey)) pairResults.set(pairKey, []);
@@ -259,12 +264,12 @@ export async function GET(request: Request) {
         groundingTasks.push(async () => {
           try {
             const rawText = await withRetry(() => callClaudeGrounded(b, f), `${b}/${f.feature_id}/grounded`);
-            const { has_capability, evidence, limitations, confidence, key_terms, parsed, parseError } =
+            const { has_capability, evidence, limitations, confidence, key_terms, terminology_tags, parsed, parseError } =
               parseFeatureResponse(rawText);
             await insertDexifyFeatureResponse({
               brand_name: b, feature_id: f.feature_id, feature_tag: f.feature_tag,
               model: "claude-haiku-4-5", run_number: 0, run_date: today,
-              has_capability, evidence, limitations, confidence, key_terms,
+              has_capability, evidence, limitations, confidence, key_terms, terminology_tags,
               raw_json: parseError ? { raw: rawText.slice(0, 2000) } : parsed,
               parse_error: parseError, grounded: true,
             });

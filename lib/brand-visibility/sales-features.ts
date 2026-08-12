@@ -15,7 +15,7 @@ export const JSON_OUTPUT_SPEC =
   '  "evidence": "if yes/partial: 1-2 sentences on what [BRAND] specifically does for this capability and what makes its approach useful — describe the mechanism and practical outcome for a sales team, not just that the feature exists. If no/not_documented: what is absent or unclear.",\n' +
   '  "limitations": "any caveats or gaps",\n' +
   '  "confidence": "high|medium|low",\n' +
-  '  "key_terms": ["2–4 short phrases (2–4 words each) pulled verbatim or near-verbatim from the evidence above that name a specific product capability, metric, or mechanism — e.g. \\"talk-time analytics\\", \\"AI lead scoring\\", \\"CRM sync\\". Omit generic words like \'AI\' or \'automation\' on their own."]\n' +
+  '  "terminology_tags": ["0-3 short named terms (1-4 words each). Return ONLY terms that are a named product feature, branded mechanism, or product-specific metric mentioned in the evidence. Return [] when evidence uses only generic language common to any similar tool — most responses should have 0-2 tags and many should have []. Calibration: GOOD → \\"Deal Intelligence\\" (named feature), \\"Conversation Intelligence\\" (branded), \\"Revenue Forecast\\" (named). BAD → [] → \\"CRM integration\\" (generic), \\"call transcription\\" (generic), \\"AI-powered coaching\\" (common). Ask: would this exact phrase appear in a competitor\'s evidence for the same feature? If yes, return []."]\n' +
   '}';
 
 export const FEATURE_SYSTEM_PROMPT =
@@ -51,6 +51,7 @@ export interface Feature {
   feature_id:   string;
   feature_tag:  string;
   feature_name: string;
+  feature_desc: string; // 1-2 sentence plain-English definition shown in the UI below the heading
   applies_to:   string[] | "all";
   prompt:       string; // [BRAND], [GROUNDING INSTRUCTION], [JSON OUTPUT] substituted at runtime
 }
@@ -65,6 +66,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "call_transcription_timestamps",
     feature_tag:  "sales-call",
     feature_name: "Speaker-labeled transcription with searchable timestamps",
+    feature_desc: "Produces a word-for-word, speaker-labeled transcript of every call with searchable timestamps — so reps and managers can jump to any moment without replaying the full recording.",
     applies_to:   CALL_BRANDS,
     prompt: `My reps sometimes dispute what was said on a call — or I need to find the exact moment a prospect raised a concern without replaying the whole recording. Does [BRAND] produce a speaker-labeled, timestamped transcript of every call automatically — identifying who said what and when, with the ability to search for a keyword or topic and jump directly to that moment in the recording?
 [GROUNDING INSTRUCTION]
@@ -74,6 +76,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "call_talk_time_analytics",
     feature_tag:  "sales-call",
     feature_name: "Talk-time ratio and communication pattern metrics",
+    feature_desc: "Measures how much each participant talked on a call — surfacing talk-time ratios, filler word counts, monologue length, and question rates per rep and trackable over time.",
     applies_to:   CALL_BRANDS,
     prompt: `I want to know if my reps are dominating calls or actually listening. Does [BRAND] measure and report specific per-call communication metrics — such as talk-time ratio between rep and prospect, filler word frequency, longest uninterrupted monologue, or question rate — broken down per rep and trackable over time?
 [GROUNDING INSTRUCTION]
@@ -83,6 +86,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "call_coaching_scorecard",
     feature_tag:  "sales-call",
     feature_name: "Automated per-rep coaching scorecard per call",
+    feature_desc: "Automatically generates written coaching feedback for each rep after every call — covering discovery, objection handling, and next-steps clarity — without a manager listening to recordings.",
     applies_to:   CALL_BRANDS,
     prompt: `I want every rep to receive written coaching feedback after each call without me having to listen to recordings. Does [BRAND] automatically generate a per-rep coaching scorecard after each call — written feedback on specific observed behaviors such as discovery depth, objection handling, and next steps clarity — that a rep can review and act on without manager input?
 [GROUNDING INSTRUCTION]
@@ -92,6 +96,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "call_competitor_objection_detection",
     feature_tag:  "sales-call",
     feature_name: "Automatic competitor mention and objection flagging",
+    feature_desc: "Detects and categorises competitor mentions and objection types during or after a call — without rep tagging — so teams can see which rivals come up most and which objections block deals.",
     applies_to:   CALL_BRANDS,
     prompt: `My reps often forget to log when a competitor came up or a prospect raised a pricing objection. Does [BRAND] automatically detect and categorise competitor mentions and objection types during or after a call — without a rep having to manually tag anything — so I can see across all calls which competitors come up most and what objections are blocking deals?
 [GROUNDING INSTRUCTION]
@@ -103,6 +108,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "crm_auto_update",
     feature_tag:  "sales-crm",
     feature_name: "Automatic CRM data capture post-call",
+    feature_desc: "Automatically captures call outcomes, next steps, and contact updates and writes them back to the CRM — eliminating post-call data entry for reps.",
     applies_to:   CRM_BRANDS,
     prompt: `My reps spend too much time updating Salesforce after every call. Does [BRAND] automatically capture what happened in a sales call and update CRM fields — contacts, next steps, deal stage, notes — without the rep having to do it manually?
 [GROUNDING INSTRUCTION]
@@ -112,6 +118,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "crm_data_accuracy",
     feature_tag:  "sales-crm",
     feature_name: "CRM data accuracy and completeness enforcement",
+    feature_desc: "Validates CRM data completeness by flagging missing fields, auto-populating from calls and emails, and alerting managers when deal records fall below the team's data standards.",
     applies_to:   CRM_BRANDS,
     prompt: `Our CRM data is always incomplete because reps skip fields. Does [BRAND] enforce CRM completeness — for example flagging missing fields, auto-populating data from emails and calls, or alerting managers when deal records are incomplete?
 [GROUNDING INSTRUCTION]
@@ -123,6 +130,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "deal_risk_detection",
     feature_tag:  "sales-pipeline",
     feature_name: "At-risk deal detection and early warning",
+    feature_desc: "Identifies deals going cold before they fall through — flagging when a champion goes silent, engagement drops, or a deal stalls at the same stage too long.",
     applies_to:   PIPELINE_BRANDS,
     prompt: `I need to know which deals are going cold before they fall through. Does [BRAND] automatically identify at-risk deals — for example flagging when a champion goes silent, engagement drops, or a deal has been stuck at the same stage too long — without a manager having to manually review every opportunity?
 [GROUNDING INSTRUCTION]
@@ -132,6 +140,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "pipeline_forecasting",
     feature_tag:  "sales-pipeline",
     feature_name: "AI pipeline forecasting and revenue prediction",
+    feature_desc: "Uses AI to predict what will actually close — going beyond rep-submitted forecasts and stage probabilities to give a signal-based view of expected revenue.",
     applies_to:   PIPELINE_BRANDS,
     prompt: `Our manual forecasting is always wrong. Does [BRAND] use AI to forecast pipeline and predict revenue outcomes — going beyond rep-submitted numbers to give a data-driven view of what will actually close this quarter?
 [GROUNDING INSTRUCTION]
@@ -143,6 +152,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "outreach_sequencing",
     feature_tag:  "sales-outreach",
     feature_name: "Automated multi-step outreach sequencing",
+    feature_desc: "Automates multi-step outreach across email, phone, and other channels — managing timing, follow-ups, and task reminders so reps don't have to manually trigger each step.",
     applies_to:   OUTREACH_BRANDS,
     prompt: `I want to automate my outreach so prospects move through a sequence — first email, follow-up, LinkedIn touch — without my reps manually triggering each step. Does [BRAND] automate multi-step outreach sequences end-to-end, where the next step triggers automatically based on the previous step's outcome?
 [GROUNDING INSTRUCTION]
@@ -152,6 +162,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "ai_personalisation",
     feature_tag:  "sales-outreach",
     feature_name: "AI-generated personalised outreach at scale",
+    feature_desc: "Generates personalised outreach messages for individual prospects at scale — referencing their company, role, or recent activity — without reps writing each message from scratch.",
     applies_to:   OUTREACH_BRANDS,
     prompt: `I need my outreach to feel personal even at high volume. Does [BRAND] use AI to personalise outreach messages at scale — for example referencing a prospect's recent activity, company news, or role context automatically without a rep writing each message manually?
 [GROUNDING INSTRUCTION]
@@ -163,6 +174,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "followup_drafting",
     feature_tag:  "sales-enablement",
     feature_name: "Automated follow-up email drafting",
+    feature_desc: "Automatically drafts a personalised follow-up email after each call — pulling commitments and next steps from the conversation so reps aren't starting from a blank page.",
     applies_to:   ENABLEMENT_BRANDS,
     prompt: `After every sales call my reps spend 20 minutes writing follow-up emails. Does [BRAND] automatically draft follow-up emails based on what was discussed in the call — capturing commitments made, next steps agreed, and personalising the message to the prospect without the rep starting from scratch?
 [GROUNDING INSTRUCTION]
@@ -172,6 +184,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "sales_content_delivery",
     feature_tag:  "sales-enablement",
     feature_name: "Real-time sales content and battlecard delivery",
+    feature_desc: "Surfaces relevant battlecards, case studies, or talk tracks automatically during or before a call — triggered by the prospect, deal stage, or competitor mentioned.",
     applies_to:   ENABLEMENT_BRANDS,
     prompt: `I want my reps to have the right content at the right moment — not searching for it during a call. Does [BRAND] surface relevant battlecards, case studies, or talk tracks automatically during or before a sales conversation based on the prospect, deal stage, or competitor mentioned?
 [GROUNDING INSTRUCTION]
@@ -183,6 +196,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "tech_crm_integration",
     feature_tag:  "technical",
     feature_name: "Native CRM integration",
+    feature_desc: "Checks whether the tool connects directly to Salesforce or HubSpot via a built-in native integration — without Zapier or a custom API build.",
     applies_to:   "all",
     prompt: `I need whatever tool I choose to connect directly with Salesforce or HubSpot without middleware. Does [BRAND] natively integrate with Salesforce and HubSpot — built-in, without needing Zapier or custom API work?
 [GROUNDING INSTRUCTION]
@@ -192,6 +206,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "tech_workflow_automation",
     feature_tag:  "technical",
     feature_name: "Multi-step workflow automation",
+    feature_desc: "Evaluates whether the tool can chain multiple sales actions end-to-end — analyse a call, update the CRM, draft the follow-up, flag the risk — without human intervention at each step.",
     applies_to:   "all",
     prompt: `I want a tool that chains actions automatically — analyse a call, update the CRM, draft the follow-up, flag the risk — without a rep touching anything between steps. Does [BRAND] automate multi-step sales workflows end-to-end without human intervention at each step?
 [GROUNDING INSTRUCTION]
@@ -201,6 +216,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "tech_instruction_following",
     feature_tag:  "technical",
     feature_name: "Constraint and rule enforcement",
+    feature_desc: "Assesses whether user-defined rules — contact frequency limits, mandatory disclaimers, industry exclusions — are enforced automatically across all outreach without reps needing to remember them.",
     applies_to:   "all",
     prompt: `I have rules every rep must follow — never contact a prospect more than twice a week, always include legal disclaimers, exclude certain industries. Does [BRAND] enforce user-defined rules and constraints automatically across all outreach and workflows without reps having to remember them each time?
 [GROUNDING INSTRUCTION]
@@ -212,6 +228,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "rai_data_privacy",
     feature_tag:  "responsible-ai",
     feature_name: "Data privacy and compliance posture",
+    feature_desc: "Examines how the vendor handles prospect data, call recordings, and CRM data — including any SOC 2, GDPR, or equivalent compliance certifications documented publicly.",
     applies_to:   "all",
     prompt: `Before our legal team approves any new sales tool they ask about data handling. Has [BRAND] published documentation on how it handles prospect data, call recordings, and CRM data? Are there any SOC 2, GDPR, or other compliance certifications documented publicly?
 [GROUNDING INSTRUCTION]
@@ -221,6 +238,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "rai_explainability",
     feature_tag:  "responsible-ai",
     feature_name: "Decision transparency and explainability",
+    feature_desc: "Looks at whether AI outputs — risk flags, coaching scores, deal forecasts — come with visible reasoning a rep or manager can understand, rather than just surfacing a number.",
     applies_to:   "all",
     prompt: `When [BRAND] flags a deal as at-risk, recommends an action, or scores a rep's call — does it explain why? For example showing which signals triggered the risk flag or which call behaviours drove the score. Or does it only surface the output without the reasoning?
 [GROUNDING INSTRUCTION]
@@ -232,6 +250,7 @@ export const FEATURES: Feature[] = [
     feature_id:   "cost_free_trial",
     feature_tag:  "cost",
     feature_name: "Free trial or self-serve access",
+    feature_desc: "Assesses whether there is a self-serve trial offering meaningful product access without a sales call or contract signature required upfront.",
     applies_to:   "all",
     prompt: `I want to try [BRAND] before committing budget. Is there a free trial or self-serve access available — where I can actually use the product without a sales call or demo first?
 [GROUNDING INSTRUCTION]
@@ -242,6 +261,7 @@ Return only the JSON object below. Do not include any explanation, markdown form
     feature_id:   "cost_pricing_transparency",
     feature_tag:  "cost",
     feature_name: "Pricing transparency",
+    feature_desc: "Looks at whether pricing is publicly available — what the entry-level tier costs and what it includes — without requiring a sales conversation to get a number.",
     applies_to:   "all",
     prompt: `I need to build a business case for adopting [BRAND]. Is the pricing publicly documented — what does the entry-level paid tier cost and what does it include? If pricing requires a sales call to obtain, note that.
 [GROUNDING INSTRUCTION]

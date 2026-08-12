@@ -3,6 +3,7 @@ import { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Share2, Mail, X as XIcon, ArrowUp, MessageCircle } from "lucide-react";
+import IntelligenceModules from "@/components/IntelligenceModules";
 
 const DOMAINS = [
   { label: "Marketing", href: "/solutions/marketing" },
@@ -309,7 +310,15 @@ export default function Home() {
                 Get an edge on your product feature growth, know your competitive landscape and scale in LLM visibility to show up where your buyers are asking.
               </p>
 
-
+              {/* CTA */}
+              <button
+                onClick={() => document.getElementById("sage-ai")?.scrollIntoView({ behavior: "smooth" })}
+                style={{ marginTop: 36, display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(95deg, #7C3AED, #C2186A)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "14px 32px", borderRadius: 9999, border: "none", cursor: "pointer", boxShadow: "0 4px 20px rgba(124,58,237,0.35)", transition: "box-shadow 0.2s ease, transform 0.15s ease" }}
+                onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 8px 32px rgba(124,58,237,0.50)"; el.style.transform = "translateY(-1px)"; }}
+                onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 4px 20px rgba(124,58,237,0.35)"; el.style.transform = "translateY(0)"; }}
+              >
+                Get started <span aria-hidden style={{ fontSize: 17 }}>›</span>
+              </button>
 
           </div>
         </section>
@@ -319,7 +328,7 @@ export default function Home() {
       </main>
 
       {/* ── Trusted By ────────────────────────────────────────────────────── */}
-      <section style={{ padding: "44px 24px 52px" }}>
+      <section style={{ padding: "44px 24px 24px" }}>
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
             <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
@@ -379,27 +388,23 @@ export default function Home() {
       </section>
 
       {/* ── Why AgenticLib ────────────────────────────────────────────────────── */}
-      <section style={{ background: "transparent", padding: "28px 24px 8px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative", borderRadius: 32, boxShadow: "0 30px 70px rgba(90,26,50,.22)" }}>
-          <div style={{ position: "absolute", inset: 0, borderRadius: 32, overflow: "hidden", background: "linear-gradient(150deg,#FDEAE4 0%,#FBD7CE 55%,#F6C6BC 100%)" }}>
-            <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 0% 0%,rgba(240,97,122,.36) 0%,transparent 46%),radial-gradient(circle at 100% 6%,rgba(255,138,107,.30) 0%,transparent 48%),radial-gradient(circle at 92% 100%,rgba(194,77,158,.26) 0%,transparent 50%),radial-gradient(circle at 12% 100%,rgba(250,211,230,.34) 0%,transparent 52%),radial-gradient(circle at 52% 50%,rgba(255,255,255,.48) 0%,transparent 58%)" }}></div>
-            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(64px) saturate(140%)", WebkitBackdropFilter: "blur(64px) saturate(140%)", background: "rgba(255,255,255,.32)" }}></div>
-          </div>
-          <div className="why-grid" style={{ position: "relative", zIndex: 2 }}>
+      <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(150deg,#EEE8FD 0%,#E8E5FD 55%,#F0E9FD 100%)", padding: "36px 24px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+        <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 0% 0%,rgba(124,58,237,.30) 0%,transparent 46%),radial-gradient(circle at 100% 6%,rgba(94,108,232,.24) 0%,transparent 48%),radial-gradient(circle at 92% 100%,rgba(167,139,250,.22) 0%,transparent 50%),radial-gradient(circle at 12% 100%,rgba(220,209,255,.30) 0%,transparent 52%),radial-gradient(circle at 52% 50%,rgba(255,255,255,.48) 0%,transparent 58%)", pointerEvents: "none" }}></div>
+        <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(64px) saturate(140%)", WebkitBackdropFilter: "blur(64px) saturate(140%)", background: "rgba(255,255,255,.18)", pointerEvents: "none" }}></div>
+          <div className="why-grid" style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 2 }}>
             <div>
-              <span style={{ display: "inline-block", border: "1px solid rgba(176,64,72,.30)", background: "rgba(255,255,255,.45)", color: "#000000", fontSize: 13.5, fontWeight: 600, letterSpacing: ".01em", padding: "7px 15px", borderRadius: 9 }}>Why AgenticLib</span>
+              <span style={{ display: "inline-block", border: "1px solid rgba(124,58,237,.30)", background: "rgba(255,255,255,.45)", color: "#000000", fontSize: 13.5, fontWeight: 600, letterSpacing: ".01em", padding: "7px 15px", borderRadius: 9 }}>Why AgenticLib</span>
               <h2 style={{ fontSize: "clamp(28px,3.2vw,42px)", fontWeight: 600, lineHeight: 1.14, letterSpacing: "-.025em", color: "#000000", margin: "26px 0 0", maxWidth: "18ch" }}>
                 {"Insightful comparison intelligence on "}
-                <span style={{ background: "linear-gradient(100deg,#E0506A,#D14B86 70%,#C24D9E)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent", color: "transparent", WebkitBoxDecorationBreak: "clone", boxDecorationBreak: "clone" }}>brand, product and use case</span>
+                <span style={{ display: "inline", background: "linear-gradient(100deg,#7C3AED,#9B5DE5 60%,#C2186A)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>brand, product and use case</span>
                 {" for AI agent builders"}
               </h2>
               <p style={{ fontSize: 17, lineHeight: 1.62, color: "#000000", margin: "22px 0 0", maxWidth: "52ch" }}>AgenticLib traces your agent brand from business domain to product feature, benchmarks your visibility against competition and turns your feature gaps into a roadmap - so you show up where your buyers are actually asking.</p>
-              <DomainSearch />
             </div>
-            <div className="why-visual" style={{ position: "relative", height: 430, display: "flex", alignItems: "center", gap: 0, width: "100%", minWidth: 0 }}>
-              <div style={{ position: "absolute", width: "82%", height: "60%", left: "50%", top: "50%", transform: "translate(-50%,-50%)", background: "radial-gradient(circle,rgba(240,97,122,.32),transparent 70%)", filter: "blur(16px)" }}></div>
-              <div style={{ flex: "none", position: "relative", zIndex: 3, width: 138, borderRadius: 22, padding: "20px 14px", background: "linear-gradient(150deg,#F0617A 0%,#FF7E72 52%,#FF9E73 100%)", boxShadow: "0 18px 42px rgba(240,97,122,.42)", textAlign: "center" }}>
-                <span style={{ display: "inline-flex", width: 48, height: 48, borderRadius: 13, background: "#fff", alignItems: "center", justifyContent: "center", boxShadow: "0 5px 14px rgba(90,26,50,.20)", overflow: "hidden" }}>
+            <div className="why-visual" style={{ position: "relative", height: 360, display: "flex", alignItems: "center", gap: 0, width: "100%", minWidth: 0 }}>
+              <div style={{ position: "absolute", width: "82%", height: "60%", left: "50%", top: "50%", transform: "translate(-50%,-50%)", background: "radial-gradient(circle,rgba(124,58,237,.25),transparent 70%)", filter: "blur(16px)" }}></div>
+              <div style={{ flex: "none", position: "relative", zIndex: 3, width: 138, borderRadius: 22, padding: "20px 14px", background: "linear-gradient(150deg,#7C3AED 0%,#9B5DE5 52%,#5E6CE8 100%)", boxShadow: "0 18px 42px rgba(124,58,237,.40)", textAlign: "center" }}>
+                <span style={{ display: "inline-flex", width: 48, height: 48, borderRadius: 13, background: "#fff", alignItems: "center", justifyContent: "center", boxShadow: "0 5px 14px rgba(124,58,237,.22)", overflow: "hidden" }}>
                   <img src="/logo.png" alt="AgenticLib" style={{ width: 34, height: 34, objectFit: "contain" }} />
                 </span>
                 <div style={{ marginTop: 13, color: "#fff", fontWeight: 700, fontSize: 16, letterSpacing: "-.01em" }}>AgenticLib Comparison Intelligence</div>
@@ -407,7 +412,7 @@ export default function Home() {
               <svg viewBox="0 0 200 400" preserveAspectRatio="none" style={{ flex: 1, minWidth: 0, alignSelf: "stretch", height: "100%", overflow: "visible", zIndex: 2 }}>
                 <defs>
                   <linearGradient id="aab-cgLine" gradientUnits="userSpaceOnUse" x1="0" y1="200" x2="200" y2="200">
-                    <stop offset="0" stopColor="#F0617A" /><stop offset="1" stopColor="#FF9E73" />
+                    <stop offset="0" stopColor="#7C3AED" /><stop offset="1" stopColor="#5E6CE8" />
                   </linearGradient>
                 </defs>
                 <path d="M0,200 C95,200 100,58 200,58" fill="none" stroke="url(#aab-cgLine)" strokeWidth="3" strokeLinecap="round" />
@@ -416,24 +421,100 @@ export default function Home() {
               </svg>
               <div style={{ flex: "none", display: "flex", flexDirection: "column", justifyContent: "space-between", height: 340, width: 190, zIndex: 3 }}>
                 {[
-                  { label: "Brand Intelligence", icon: <svg width="23" height="23" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="hp-ic1" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#F0617A"/><stop offset="1" stopColor="#FF9E73"/></linearGradient></defs><rect x="3" y="11" width="4.4" height="9" rx="1.6" fill="url(#hp-ic1)"/><rect x="9.8" y="5" width="4.4" height="15" rx="1.6" fill="url(#hp-ic1)"/><rect x="16.6" y="8.5" width="4.4" height="11.5" rx="1.6" fill="url(#hp-ic1)"/></svg> },
-                  { label: "Product Feature Intelligence", icon: <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="url(#hp-ic2)" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"><defs><linearGradient id="hp-ic2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#F0617A"/><stop offset="1" stopColor="#FF9E73"/></linearGradient></defs><path d="M12 2.5 L20.5 7 V17 L12 21.5 L3.5 17 V7 Z"/><path d="M3.5 7 L12 11.7 L20.5 7"/><path d="M12 11.7 V21.5"/></svg> },
-                  { label: "Improvements", icon: <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="url(#hp-ic3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="hp-ic3" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#F0617A"/><stop offset="1" stopColor="#FF9E73"/></linearGradient></defs><path d="M3.5 18.5 A8.5 8.5 0 0 1 20.5 18.5"/><path d="M12 18.5 L16.5 12.5"/><circle cx="12" cy="18.5" r="1.7" fill="url(#hp-ic3)" stroke="none"/></svg> },
+                  { label: "Brand Intelligence", icon: <svg width="23" height="23" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="hp-ic1" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#5E6CE8"/></linearGradient></defs><rect x="3" y="11" width="4.4" height="9" rx="1.6" fill="url(#hp-ic1)"/><rect x="9.8" y="5" width="4.4" height="15" rx="1.6" fill="url(#hp-ic1)"/><rect x="16.6" y="8.5" width="4.4" height="11.5" rx="1.6" fill="url(#hp-ic1)"/></svg> },
+                  { label: "Product Feature Intelligence", icon: <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="url(#hp-ic2)" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"><defs><linearGradient id="hp-ic2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#5E6CE8"/></linearGradient></defs><path d="M12 2.5 L20.5 7 V17 L12 21.5 L3.5 17 V7 Z"/><path d="M3.5 7 L12 11.7 L20.5 7"/><path d="M12 11.7 V21.5"/></svg> },
+                  { label: "Improvements", icon: <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="url(#hp-ic3)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="hp-ic3" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#9B5DE5"/></linearGradient></defs><path d="M3.5 18.5 A8.5 8.5 0 0 1 20.5 18.5"/><path d="M12 18.5 L16.5 12.5"/><circle cx="12" cy="18.5" r="1.7" fill="url(#hp-ic3)" stroke="none"/></svg> },
                 ].map(({ label, icon }) => (
-                  <div key={label} style={{ display: "flex", alignItems: "center", gap: 13, background: "rgba(255,255,255,.58)", backdropFilter: "blur(20px) saturate(150%)", WebkitBackdropFilter: "blur(20px) saturate(150%)", border: "1px solid rgba(255,255,255,.85)", borderRadius: 16, padding: "13px 16px 13px 13px", boxShadow: "0 10px 26px rgba(90,26,50,.14)" }}>
-                    <span style={{ width: 44, height: 44, flex: "none", borderRadius: 13, background: "rgba(240,97,122,.13)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{icon}</span>
+                  <div key={label} style={{ display: "flex", alignItems: "center", gap: 13, background: "rgba(255,255,255,.58)", backdropFilter: "blur(20px) saturate(150%)", WebkitBackdropFilter: "blur(20px) saturate(150%)", border: "1px solid rgba(255,255,255,.85)", borderRadius: 16, padding: "13px 16px 13px 13px", boxShadow: "0 10px 26px rgba(124,58,237,.12)" }}>
+                    <span style={{ width: 44, height: 44, flex: "none", borderRadius: 13, background: "rgba(124,58,237,.12)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{icon}</span>
                     <div style={{ fontWeight: 700, fontSize: 14.5, color: "#000000", letterSpacing: "-.01em" }}>{label}</div>
                   </div>
                 ))}
               </div>
             </div>
           </div>
+      </section>
+
+      {/* ── Intelligence Modules ──────────────────────────────────────────── */}
+      <div id="sage-ai" style={{ marginTop: 20 }}><IntelligenceModules /></div>
+
+      {/* ── Customised Reports ────────────────────────────────────────────────── */}
+      <section className="cr-section" style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", padding: "0 24px 0", marginTop: -32 }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          {/* Divider label */}
+          <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 36 }}>
+            <span style={{ flex: 1, height: 1, background: "linear-gradient(90deg, transparent, rgba(124,58,237,0.35))" }} />
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#4C1D95" }}>Also from AgenticLib</span>
+            <span style={{ flex: 1, height: 1, background: "linear-gradient(90deg, rgba(124,58,237,0.35), transparent)" }} />
+          </div>
+
+          {/* Main content */}
+          <div className="cr-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 60, alignItems: "center" }}>
+            {/* Left — copy */}
+            <div>
+              <h2 style={{ fontSize: "clamp(28px,3vw,42px)", fontWeight: 700, letterSpacing: "-.03em", lineHeight: 1.08, margin: "0 0 18px", color: "#0F0B1E" }}>
+                Want a customised<br />report instead?
+              </h2>
+              <p style={{ fontSize: 16, lineHeight: 1.65, color: "rgba(15,11,30,0.58)", margin: "0 0 32px", maxWidth: "42ch" }}>
+                We build intelligence reports tailored to your agent, your business domain, use case, and your growth goals - delivered as a detailed roadmap you can act on straight away.
+              </p>
+              <button
+                onClick={() => setReportModalOpen(true)}
+                style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(95deg, #7C3AED, #C2186A)", color: "#fff", fontWeight: 700, fontSize: 14, padding: "13px 28px", borderRadius: 9999, border: "none", cursor: "pointer", boxShadow: "0 4px 20px rgba(124,58,237,0.30)", transition: "box-shadow 0.2s ease, transform 0.15s ease" }}
+                onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 8px 32px rgba(124,58,237,0.46)"; el.style.transform = "translateY(-1px)"; }}
+                onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 4px 20px rgba(124,58,237,0.30)"; el.style.transform = "translateY(0)"; }}
+              >
+                Get your free report <span aria-hidden style={{ fontSize: 16 }}>›</span>
+              </button>
+            </div>
+
+            {/* Right — what's inside */}
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
+              {([
+                {
+                  n: "01", title: "Product Feature Scores",
+                  desc: "Know exactly which features get you cited — scored across security, integrations, pricing, and capability, mapped to what matters for your buyers.",
+                  bg: "linear-gradient(160deg,#F3EEFE,#EDE6FD)",
+                  icon: <svg width="54" height="38" viewBox="0 0 118 84" fill="none"><defs><linearGradient id="cr-chk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#A86BF0"/></linearGradient></defs><rect x="4" y="6" width="20" height="20" rx="6" fill="url(#cr-chk)"/><path d="M9 16 L13 20 L19 12" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" fill="none"/><rect x="34" y="12" width="80" height="8" rx="4" fill="#D8C8F6"/><rect x="4" y="32" width="20" height="20" rx="6" fill="#E2D5FA"/><path d="M9 42 L13 46 L19 38" stroke="#A86BF0" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" fill="none"/><rect x="34" y="38" width="62" height="8" rx="4" fill="#E4DAF8"/><rect x="4" y="58" width="20" height="20" rx="6" fill="url(#cr-chk)"/><path d="M9 68 L13 72 L19 64" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" fill="none"/><rect x="34" y="64" width="72" height="8" rx="4" fill="#D8C8F6"/></svg>,
+                },
+                {
+                  n: "02", title: "Brand & Use Case Benchmarking",
+                  desc: "See where rivals outrank you and why — share of voice by use case, who owns each buying moment, and what it takes to close the gap.",
+                  bg: "linear-gradient(160deg,#EEF0FE,#E5E9FD)",
+                  icon: <svg width="54" height="38" viewBox="0 0 120 84" fill="none"><defs><linearGradient id="cr-bar" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stopColor="#5E6CE8"/><stop offset="1" stopColor="#8E63D6"/></linearGradient></defs><rect x="8" y="50" width="13" height="30" rx="3.5" fill="#C7CEF4"/><rect x="24" y="30" width="13" height="50" rx="3.5" fill="url(#cr-bar)"/><rect x="50" y="58" width="13" height="22" rx="3.5" fill="#C7CEF4"/><rect x="66" y="18" width="13" height="62" rx="3.5" fill="url(#cr-bar)"/><rect x="92" y="44" width="13" height="36" rx="3.5" fill="#C7CEF4"/><rect x="108" y="34" width="11" height="46" rx="3.5" fill="url(#cr-bar)"/></svg>,
+                },
+                {
+                  n: "03", title: "Sentiment & Brand Coverage",
+                  desc: "Hear what LLMs actually say about you — the words, tone, and tags used when a buyer asks Claude or GPT to recommend an agent like yours.",
+                  bg: "linear-gradient(160deg,#FCEAF3,#F8DFEC)",
+                  icon: <svg width="50" height="40" viewBox="0 0 110 90" fill="none" stroke="url(#cr-node)" strokeWidth="2.4"><defs><linearGradient id="cr-node" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#C2186A"/><stop offset="1" stopColor="#E0506A"/></linearGradient></defs><line x1="30" y1="28" x2="58" y2="20"/><line x1="30" y1="28" x2="40" y2="58"/><line x1="58" y1="20" x2="80" y2="44"/><line x1="40" y1="58" x2="80" y2="44"/><line x1="40" y1="58" x2="66" y2="72"/><circle cx="30" cy="28" r="6" fill="url(#cr-node)" stroke="none"/><circle cx="58" cy="20" r="6" fill="#fff"/><circle cx="80" cy="44" r="6" fill="url(#cr-node)" stroke="none"/><circle cx="40" cy="58" r="6" fill="#fff"/><circle cx="66" cy="72" r="6" fill="url(#cr-node)" stroke="none"/></svg>,
+                },
+                {
+                  n: "04", title: "LLM Visibility Playbook",
+                  desc: "Your actionable playbook for getting cited by Claude and GPT — grounded in what's actually indexed today.",
+                  bg: "linear-gradient(160deg,#FCE7F3,#FDF2F8)",
+                  icon: <svg width="48" height="40" viewBox="0 0 100 84" fill="none"><defs><linearGradient id="cr-play" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#DB2777"/><stop offset="1" stopColor="#F472B6"/></linearGradient></defs><rect x="8" y="60" width="22" height="14" rx="3" fill="rgba(219,39,119,0.12)"/><rect x="8" y="60" width="22" height="3" rx="1.5" fill="url(#cr-play)"/><rect x="34" y="40" width="22" height="34" rx="3" fill="rgba(219,39,119,0.10)"/><rect x="34" y="40" width="22" height="3" rx="1.5" fill="url(#cr-play)"/><rect x="60" y="20" width="22" height="54" rx="3" fill="rgba(219,39,119,0.08)"/><rect x="60" y="20" width="22" height="3" rx="1.5" fill="url(#cr-play)"/><circle cx="19" cy="57" r="7" fill="url(#cr-play)"/><path d="M15.5 57 L18 59.5 L22.5 54.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="45" cy="37" r="7" fill="url(#cr-play)"/><path d="M41.5 37 L44 39.5 L48.5 34.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="71" cy="17" r="7" fill="url(#cr-play)"/><path d="M67.5 17 L70 19.5 L74.5 14.5" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+                },
+              ] as { n: string; title: string; desc: string; bg: string; icon: React.ReactNode }[]).map(({ n, title, desc, bg, icon }) => (
+                <div key={n} style={{ display: "flex", alignItems: "center", gap: 14, padding: "12px 16px", borderRadius: 12, background: "rgba(124,58,237,0.04)", border: "1px solid rgba(124,58,237,0.08)" }}>
+                  <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 11, fontWeight: 700, color: "rgba(124,58,237,0.45)", flexShrink: 0 }}>{n}</span>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontSize: 13.5, fontWeight: 700, color: "#0F0B1E", marginBottom: 2 }}>{title}</div>
+                    <div style={{ fontSize: 12.5, color: "#0F0B1E", lineHeight: 1.45 }}>{desc}</div>
+                  </div>
+                  <div style={{ flexShrink: 0, width: 72, height: 52, borderRadius: 8, background: bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {icon}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* ── Capabilities Grid ─────────────────────────────────────────────────── */}
-      <section className="caps-section" style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", background: "transparent", padding: "64px 24px 84px" }}>
-        <div style={{ maxWidth: 1180, margin: "0 auto" }}>
+      {/* ── Capabilities Grid (removed) ── */}
+      <section style={{ display: "none" }}>
+        <div>
           <div style={{ maxWidth: 720, margin: "0 auto 40px", textAlign: "center" }}>
             <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, letterSpacing: ".22em", color: "#C2186A", margin: "0 0 14px" }}>WHAT YOU GET</p>
             <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 600, letterSpacing: "-.03em", lineHeight: 1.06, margin: 0, color: "#000000" }}>Our analytics lead you to successful outcomes</h2>
@@ -496,76 +577,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="contact" style={{ background: "transparent", paddingTop: "8px", paddingBottom: "80px" }}>
-        <div className="max-w-3xl mx-auto px-6 text-center">
-
-          {/* ── Bottom CTA ── */}
-          <div style={{
-            background: "linear-gradient(145deg, #F3EEFE 0%, #FDE8F3 50%, #EEF0FE 100%)",
-            border: "1px solid rgba(124,58,237,0.15)",
-            borderRadius: 24,
-            padding: "52px 40px 48px",
-            marginBottom: 40,
-            boxShadow: "0 8px 40px rgba(124,58,237,0.10)",
-            textAlign: "center" as const,
-          }}>
-            <h2 style={{
-              fontSize: "clamp(28px, 4vw, 42px)", fontWeight: 700, letterSpacing: "-0.02em",
-              lineHeight: 1.1, margin: "0 0 16px", color: "#0F0B1E",
-            }}>
-              Get Your Free Report
-            </h2>
-            <p style={{ fontSize: 16, color: "rgba(15,11,30,0.6)", lineHeight: 1.6, maxWidth: 480, margin: "0 auto 32px" }}>
-              See the top brands in your domain, get a deep dive into product feature scores, and receive an actionable roadmap to scale your features and LLM visibility.
-            </p>
-            <button
-              onClick={() => setReportModalOpen(true)}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                background: "linear-gradient(95deg, #7C3AED, #C2186A)",
-                color: "#fff", fontWeight: 700, fontSize: 15,
-                padding: "15px 32px", borderRadius: 9999, border: "none", cursor: "pointer",
-                boxShadow: "0 4px 20px rgba(124,58,237,0.35)",
-                transition: "box-shadow 0.2s ease, transform 0.15s ease",
-              }}
-              onMouseEnter={(e) => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 8px 32px rgba(124,58,237,0.50)"; el.style.transform = "translateY(-1px)"; }}
-              onMouseLeave={(e) => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 4px 20px rgba(124,58,237,0.35)"; el.style.transform = "translateY(0)"; }}
-            >
-              Get Your Free Report <span aria-hidden style={{ fontSize: 17 }}>›</span>
-            </button>
-          </div>
-
-          {/* ── Social links (secondary) ── */}
-          <p style={{ fontSize: 12, color: "rgba(0,0,0,0.35)", marginBottom: 14, letterSpacing: "0.05em" }}>Follow along as we build</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            {[
-              { href: "https://www.linkedin.com/company/108024233/", Icon: Share2, label: "LinkedIn" },
-              { href: "mailto:srinidhi.murali@agenticlib.com", Icon: Mail, label: "Email" },
-              { href: "https://x.com/AgenticLibAI/status/1960527278087266557", Icon: XIcon, label: "X" },
-              { href: "https://www.producthunt.com/p/self-promotion/agenticlib-simplifying-your-ai-agent-discovery-journey", Icon: ArrowUp, label: "Product Hunt" },
-              { href: "https://www.reddit.com/r/SideProject/comments/1m6bfy1/agenticlib_simplifying_your_ai_agent_discovery/", Icon: MessageCircle, label: "Reddit" },
-            ].map(({ href, Icon, label }) => (
-              <a
-                key={label}
-                href={href}
-                target={href.startsWith("mailto") ? undefined : "_blank"}
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
-                style={{ background: "rgba(0,0,0,0.05)", color: "rgba(0,0,0,0.55)", transition: "background 0.18s ease, color 0.18s ease" }}
-                onMouseEnter={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "rgba(0,0,0,0.10)"; el.style.color = "#000"; }}
-                onMouseLeave={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "rgba(0,0,0,0.05)"; el.style.color = "rgba(0,0,0,0.55)"; }}
-              >
-                <Icon size={14} strokeWidth={1.75} />
-                {label}
-              </a>
-            ))}
-          </div>
-
-        </div>
-      </section>
-
       {/* ── Pricing Section ── */}
-      <section id="pricing" style={{ background: "transparent", paddingTop: 0, paddingBottom: 80 }}>
+      <section id="pricing" style={{ background: "transparent", paddingTop: 80, paddingBottom: 80 }}>
         <div className="max-w-5xl mx-auto px-6">
 
           <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 800, letterSpacing: "-.03em", lineHeight: 1.06, color: "#000000", margin: "0 0 40px", textAlign: "center" }}>Pricing</h2>
@@ -696,6 +709,36 @@ export default function Home() {
               </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* ── Social links ── */}
+      <section id="contact" style={{ background: "transparent", paddingTop: 48, paddingBottom: 64 }}>
+        <div className="max-w-3xl mx-auto px-6 text-center">
+          <p style={{ fontSize: 12, color: "rgba(0,0,0,0.35)", marginBottom: 14, letterSpacing: "0.05em" }}>Follow along as we build</p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {[
+              { href: "https://www.linkedin.com/company/108024233/", Icon: Share2, label: "LinkedIn" },
+              { href: "mailto:srinidhi.murali@agenticlib.com", Icon: Mail, label: "Email" },
+              { href: "https://x.com/AgenticLibAI/status/1960527278087266557", Icon: XIcon, label: "X" },
+              { href: "https://www.producthunt.com/p/self-promotion/agenticlib-simplifying-your-ai-agent-discovery-journey", Icon: ArrowUp, label: "Product Hunt" },
+              { href: "https://www.reddit.com/r/SideProject/comments/1m6bfy1/agenticlib_simplifying_your_ai_agent_discovery/", Icon: MessageCircle, label: "Reddit" },
+            ].map(({ href, Icon, label }) => (
+              <a
+                key={label}
+                href={href}
+                target={href.startsWith("mailto") ? undefined : "_blank"}
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
+                style={{ background: "rgba(0,0,0,0.05)", color: "rgba(0,0,0,0.55)", transition: "background 0.18s ease, color 0.18s ease" }}
+                onMouseEnter={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "rgba(0,0,0,0.10)"; el.style.color = "#000"; }}
+                onMouseLeave={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "rgba(0,0,0,0.05)"; el.style.color = "rgba(0,0,0,0.55)"; }}
+              >
+                <Icon size={14} strokeWidth={1.75} />
+                {label}
+              </a>
+            ))}
           </div>
         </div>
       </section>

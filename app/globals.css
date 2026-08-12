@@ -198,7 +198,7 @@ body {
   grid-template-columns: minmax(0,1fr) minmax(0,1.05fr);
   gap: 40px;
   align-items: center;
-  padding: 60px 56px;
+  padding: 40px 48px;
 }
 
 /* ── Mobile overrides for product/solution pages ── */
@@ -212,6 +212,18 @@ body {
     gap: 0 !important;
   }
   .why-visual { display: none !important; }
+}
+
+/* ── Customised Reports section — mobile ── */
+@media (max-width: 768px) {
+  .cr-section {
+    margin-top: 0 !important;
+    padding: 40px 20px 0 !important;
+  }
+  .cr-grid {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
 }
 
 /* ── Print / PDF styles (skincare-visibility report) ── */
