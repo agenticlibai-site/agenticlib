@@ -234,7 +234,7 @@ export default function Home() {
       {pricingModal.open && <PricingModal plan={pricingModal.plan} onClose={() => setPricingModal(p => ({ ...p, open: false }))} />}
       <style>{`
         @media (max-width: 640px) {
-          .hero-card-wrapper { margin: 8px 12px 16px !important; }
+          .hero-card-wrapper { margin: 0 12px 16px !important; }
           .hero-content { padding: 36px 18px 32px !important; min-height: 360px !important; }
           .hero-tagline-text { font-size: 16px !important; }
           .hero-subhead { margin-top: 20px !important; font-size: 14px !important; }
@@ -265,7 +265,7 @@ export default function Home() {
       <main className="relative z-0">
 
         {/* ── HERO ───────────────────────────────────────────── */}
-        <div className="hero-card-wrapper" style={{ position: "relative", margin: "16px 32px 24px" }}>
+        <div className="hero-card-wrapper" style={{ position: "relative", margin: "0 32px 24px" }}>
         <div style={{ borderRadius: "32px", boxShadow: "0 8px 40px rgba(124,58,237,0.12)", position: "relative" }}>
         <section
           className="relative text-center"
