@@ -228,6 +228,63 @@ body {
   }
 }
 
+/* ── Why AgenticLib — phone: side-by-side, visual restructured vertically ── */
+@media (max-width: 640px) {
+  /* Restore 2-column layout on phone */
+  .why-grid {
+    grid-template-columns: 1fr 1fr !important;
+    padding: 20px 0 20px !important;
+    gap: 10px !important;
+    align-items: start !important;
+  }
+  /* Scale text down for narrow left column */
+  .why-grid > div:first-child > span { font-size: 11px !important; padding: 5px 10px !important; }
+  .why-grid > div:first-child h2   { font-size: 18px !important; margin-top: 12px !important; max-width: none !important; }
+  .why-grid > div:first-child p    { font-size: 12px !important; margin-top: 10px !important; line-height: 1.5 !important; max-width: none !important; }
+
+  /* Restructure visual as vertical stack — no transform, no height reserve */
+  .why-visual {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    height: auto !important;
+    min-height: 0 !important;
+    gap: 6px !important;
+    transform: none !important;
+    margin-bottom: 0 !important;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+  /* Hide glow blob */
+  .why-visual > div:first-child { display: none !important; }
+  /* Center card: full column width, compact */
+  .why-visual > div:nth-child(2) {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 12px 10px !important;
+    border-radius: 14px !important;
+  }
+  .why-visual > div:nth-child(2) > span { width: 34px !important; height: 34px !important; border-radius: 10px !important; }
+  .why-visual > div:nth-child(2) > div  { font-size: 10px !important; margin-top: 8px !important; }
+  /* Hide SVG connector lines */
+  .why-visual > svg { display: none !important; }
+  /* Output cards container: full width, stacked */
+  .why-visual > div:last-child {
+    width: 100% !important;
+    height: auto !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    gap: 5px !important;
+  }
+  /* Each output card: compact */
+  .why-visual > div:last-child > div {
+    padding: 7px 8px !important;
+    border-radius: 10px !important;
+    gap: 7px !important;
+  }
+  .why-visual > div:last-child > div > span { width: 28px !important; height: 28px !important; border-radius: 7px !important; flex-shrink: 0 !important; }
+  .why-visual > div:last-child > div > div  { font-size: 10.5px !important; }
+}
+
 /* ── Sage AI Platform section header — aligns with card-inner left edge ── */
 .sage-header {
   padding: 0 max(80px, calc((100vw - 920px) / 2)) 0;
