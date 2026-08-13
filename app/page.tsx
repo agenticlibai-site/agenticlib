@@ -484,7 +484,7 @@ export default function Home() {
               {
                 n: "03", accent: "#C2186A",
                 title: "We tell you what to build next.",
-                desc: "A clear, prioritized roadmap based on real market signal, not guesswork, not \"three customers happened to ask.\"",
+                desc: "A prioritized 3-month roadmap of what to build, plus a clear path to becoming LLM-visible in the use cases you want to own — so you compete where your buyers are already asking.",
                 icon: (
                   <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
                     <rect x="2" y="5" width="16" height="5" rx="2.5" fill="#C2186A"/>
