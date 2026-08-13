@@ -443,7 +443,7 @@ export default function Home() {
           <div style={{ marginBottom: 60 }}>
             <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", marginBottom: 20 }}>The problem</p>
             <p style={{ fontSize: "clamp(20px, 2.6vw, 30px)", fontWeight: 700, fontStyle: "italic" as const, lineHeight: 1.45, color: "#0F0B1E", maxWidth: "52ch", letterSpacing: "-0.02em" }}>
-              Most AI agent builders only learn who they&rsquo;re losing to and what feature to build next{" "}
+              Most AI agent builders only learn who they&rsquo;re losing to and what product feature to build next{" "}
               <span style={{ display: "inline", background: "linear-gradient(95deg,#7C3AED,#C2186A)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>when a customer says so out loud.</span>
             </p>
           </div>
