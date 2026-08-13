@@ -228,6 +228,11 @@ body {
   }
 }
 
+/* ── Sage AI Platform section header — aligns with card-inner left edge ── */
+.sage-header {
+  padding: 0 max(80px, calc((100vw - 920px) / 2)) 0;
+}
+
 /* ── How It Works steps grid — mobile ── */
 @media (max-width: 768px) {
   .steps-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
