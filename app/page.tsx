@@ -450,9 +450,8 @@ export default function Home() {
 
           {/* Bridge heading */}
           <div style={{ marginBottom: 32 }}>
-            <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: "clamp(18px, 2vw, 24px)", fontWeight: 700, color: "#0F0B1E", letterSpacing: "-0.02em", margin: 0, lineHeight: 1.2 }}>
-              Here&rsquo;s how AgenticLib{" "}
-              <span style={{ display: "inline", background: "linear-gradient(95deg,#7C3AED,#C2186A)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>keeps you ahead.</span>
+            <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", margin: 0 }}>
+              Here&rsquo;s how AgenticLib keeps you ahead.
             </p>
           </div>
 
