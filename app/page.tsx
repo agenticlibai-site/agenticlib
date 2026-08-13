@@ -441,7 +441,7 @@ export default function Home() {
 
           {/* Hook quote */}
           <div style={{ marginBottom: 60 }}>
-            <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", marginBottom: 20 }}>The problem</p>
+            <p style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", marginBottom: 20 }}>The problem</p>
             <p style={{ fontSize: "clamp(20px, 2.6vw, 30px)", fontWeight: 700, fontStyle: "italic" as const, lineHeight: 1.45, color: "#0F0B1E", maxWidth: "52ch", letterSpacing: "-0.02em" }}>
               Most AI agent builders only learn who they&rsquo;re losing to and what product feature to build next{" "}
               <span style={{ display: "inline", background: "linear-gradient(95deg,#7C3AED,#C2186A)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>when a customer says so out loud.</span>
@@ -450,7 +450,7 @@ export default function Home() {
 
           {/* Bridge heading */}
           <div style={{ marginBottom: 32 }}>
-            <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", margin: 0 }}>
+            <p style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", margin: 0 }}>
               AgenticLib keeps you ahead.
             </p>
           </div>
@@ -509,8 +509,8 @@ export default function Home() {
                   <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: accent }}>{n}</span>
                   <div style={{ width: 46, height: 46, borderRadius: 12, background: bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{icon}</div>
                 </div>
-                <h3 style={{ fontSize: 17, fontWeight: 800, color: "#0F0B1E", margin: 0, letterSpacing: "-0.025em", lineHeight: 1.25 }}>{title}</h3>
-                <p style={{ fontSize: 14, lineHeight: 1.7, color: "rgba(15,11,30,0.55)", margin: 0 }}>{desc}</p>
+                <h3 style={{ fontSize: 17, fontWeight: 800, color: "#000000", margin: 0, letterSpacing: "-0.025em", lineHeight: 1.25 }}>{title}</h3>
+                <p style={{ fontSize: 14, lineHeight: 1.7, color: "#000000", margin: 0 }}>{desc}</p>
               </div>
             ))}
           </div>
