@@ -66,7 +66,7 @@ export default async function SagePage() {
     <SageCharts
       marketingSOV={marketingSOV}
       marketingFeatures={marketingFeatures}
-      marketingFeatureDefs={MARKETING_FEATURE_DEFS_FULL.map(f => ({ feature_id: f.feature_id, feature_tag: f.feature_tag, feature_name: f.feature_name }))}
+      marketingFeatureDefs={MARKETING_FEATURE_DEFS_FULL.map(f => ({ feature_id: f.feature_id, feature_tag: f.feature_tag, feature_name: f.feature_name, feature_desc: f.feature_desc }))}
       marketingClusters={marketingClusters}
       marketingCoverage={marketingCoverage}
       marketingSOVAll={marketingSOVAll}
@@ -76,10 +76,10 @@ export default async function SagePage() {
       salesCoverage={salesCoverage}
       salesSOV={salesSOV}
       salesSentiment={salesSentimentResult.rows}
-      salesFeatureDefs={SALES_FEATURE_DEFS_FULL.map(f => ({ feature_id: f.feature_id, feature_tag: f.feature_tag, feature_name: f.feature_name }))}
+      salesFeatureDefs={SALES_FEATURE_DEFS_FULL.map(f => ({ feature_id: f.feature_id, feature_tag: f.feature_tag, feature_name: f.feature_name, feature_desc: f.feature_desc }))}
       dexifyClusters={dexifyClusters}
       dexifyFeatures={dexifyFeatures}
-      dexifyFeatureDefs={DEXIFY_FEATURE_DEFS_FULL.map(f => ({ feature_id: f.feature_id, feature_tag: f.feature_tag, feature_name: f.feature_name }))}
+      dexifyFeatureDefs={DEXIFY_FEATURE_DEFS_FULL.map(f => ({ feature_id: f.feature_id, feature_tag: f.feature_tag, feature_name: f.feature_name, feature_desc: f.description }))}
       dexifySentiment={dexifySentimentResult.rows}
       skincareClusters={skincareClusters}
     />
