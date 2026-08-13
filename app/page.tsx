@@ -555,7 +555,7 @@ export default function Home() {
       </div>
 
       {/* ── Customised Reports ────────────────────────────────────────────────── */}
-      <section className="cr-section" style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", padding: "0 24px 0", marginTop: -52 }}>
+      <section className="cr-section" style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", padding: "0 24px 0", marginTop: -40 }}>
         <div style={{ maxWidth: 900, margin: "0 auto" }}>
           {/* Divider label */}
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 36 }}>
