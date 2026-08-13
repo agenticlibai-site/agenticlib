@@ -279,18 +279,18 @@ export default function Home() {
               position: "absolute", inset: 0,
               background: [
                 // Vertical sweep: very soft pastel purple → blush pink → peach → transparent
-                "linear-gradient(180deg, rgba(112,38,230,0.38) 0%, rgba(170,42,168,0.30) 13%, rgba(215,58,128,0.25) 26%, rgba(233,80,112,0.20) 40%, rgba(242,108,98,0.15) 54%, rgba(250,152,122,0.10) 68%, rgba(255,196,170,0.06) 81%, rgba(255,228,210,0.03) 92%, rgba(255,255,255,0) 100%)",
+                "linear-gradient(180deg, rgba(112,38,230,0.26) 0%, rgba(170,42,168,0.20) 13%, rgba(215,58,128,0.17) 26%, rgba(233,80,112,0.13) 40%, rgba(242,108,98,0.10) 54%, rgba(250,152,122,0.07) 68%, rgba(255,196,170,0.04) 81%, rgba(255,228,210,0.02) 92%, rgba(255,255,255,0) 100%)",
                 // Corner radials — very soft
-                "radial-gradient(circle at 3% 0%,   rgba(100,32,215,0.22) 0%, transparent 38%)",
-                "radial-gradient(circle at 97% 2%,  rgba(78,88,218,0.18) 0%, transparent 38%)",
+                "radial-gradient(circle at 3% 0%,   rgba(100,32,215,0.14) 0%, transparent 38%)",
+                "radial-gradient(circle at 97% 2%,  rgba(78,88,218,0.11) 0%, transparent 38%)",
               ].join(", "),
             }} />
             {/* White frost to keep it airy */}
             <div style={{
               position: "absolute", inset: 0,
-              backdropFilter: "blur(60px) saturate(115%)",
-              WebkitBackdropFilter: "blur(60px) saturate(115%)",
-              background: "rgba(255,255,255,0.30)",
+              backdropFilter: "blur(60px) saturate(110%)",
+              WebkitBackdropFilter: "blur(60px) saturate(110%)",
+              background: "rgba(255,255,255,0.38)",
             }} />
           </div>
 
