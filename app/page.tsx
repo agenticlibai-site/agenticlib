@@ -451,7 +451,7 @@ export default function Home() {
           {/* Bridge heading */}
           <div style={{ marginBottom: 32 }}>
             <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", margin: 0 }}>
-              Here&rsquo;s how AgenticLib keeps you ahead.
+              AgenticLib keeps you ahead.
             </p>
           </div>
 
