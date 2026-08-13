@@ -448,6 +448,13 @@ export default function Home() {
             </p>
           </div>
 
+          {/* Bridge heading */}
+          <div style={{ marginBottom: 32 }}>
+            <p style={{ fontSize: "clamp(17px, 1.8vw, 21px)", fontWeight: 700, color: "#0F0B1E", letterSpacing: "-0.02em", margin: 0 }}>
+              Here&rsquo;s how AgenticLib keeps you ahead.
+            </p>
+          </div>
+
           {/* 3 steps */}
           <div className="steps-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 }}>
             {([
