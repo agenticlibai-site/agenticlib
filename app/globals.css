@@ -228,6 +228,11 @@ body {
   }
 }
 
+/* ── How It Works steps grid — mobile ── */
+@media (max-width: 768px) {
+  .steps-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+}
+
 /* ── Customised Reports section — mobile ── */
 @media (max-width: 768px) {
   .cr-section {
