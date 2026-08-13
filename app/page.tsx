@@ -443,9 +443,8 @@ export default function Home() {
           <div style={{ marginBottom: 60 }}>
             <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "rgba(124,58,237,0.55)", marginBottom: 20 }}>The problem</p>
             <p style={{ fontSize: "clamp(20px, 2.6vw, 30px)", fontWeight: 700, fontStyle: "italic" as const, lineHeight: 1.45, color: "#0F0B1E", maxWidth: "28ch", letterSpacing: "-0.02em" }}>
-              Most founders only find out they&rsquo;re falling behind when a customer asks{" "}
-              <span style={{ display: "inline", background: "linear-gradient(95deg,#7C3AED,#C2186A)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>&ldquo;why not X&rdquo;</span>
-              {" "}— by then, the deal&rsquo;s already lost.
+              Most AI agent builders only learn who they&rsquo;re losing to and what feature to build next{" "}
+              <span style={{ display: "inline", background: "linear-gradient(95deg,#7C3AED,#C2186A)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>when a customer says so out loud.</span>
             </p>
           </div>
 
