@@ -234,10 +234,34 @@ export default function Home() {
       {pricingModal.open && <PricingModal plan={pricingModal.plan} onClose={() => setPricingModal(p => ({ ...p, open: false }))} />}
       <style>{`
         @media (max-width: 640px) {
+          /* Hero */
           .hero-card-wrapper { margin: 0 0 16px !important; }
           .hero-content { padding: 36px 18px 32px !important; min-height: 360px !important; }
           .hero-tagline-text { font-size: 16px !important; }
           .hero-subhead { margin-top: 20px !important; font-size: 14px !important; }
+
+          /* Sage AI header — critical: 80px side padding collapses to 20px */
+          .sage-header { padding: 0 20px !important; }
+          .sage-desc { font-size: 16px !important; }
+
+          /* Sage AI section margin */
+          .sage-ai-section { margin-top: 32px !important; }
+
+          /* Testimonial */
+          .testimonial-quote { font-size: 15px !important; line-height: 1.5 !important; }
+
+          /* How It Works */
+          .how-it-works { padding: 40px 20px 48px !important; }
+
+          /* Pricing */
+          #pricing { padding-top: 44px !important; padding-bottom: 44px !important; }
+          .pricing-card { padding: 24px 20px 28px !important; }
+
+          /* Contact */
+          #contact { padding-top: 28px !important; padding-bottom: 44px !important; }
+
+          /* Trusted By spacing */
+          .trusted-by-section { padding: 8px 20px 44px !important; }
         }
         .dewwie-logo {
           font-family: Georgia, 'Times New Roman', serif;
@@ -251,7 +275,6 @@ export default function Home() {
           transition: color 0.2s ease;
         }
         .dewwie-logo:hover { color: #0c00b0; }
-
       `}</style>
 
       {/* Background blobs */}
@@ -331,7 +354,7 @@ export default function Home() {
       </main>
 
       {/* ── Trusted By ────────────────────────────────────────────────────── */}
-      <section style={{ padding: "8px 24px 56px", position: "relative", zIndex: 1, background: "transparent" }}>
+      <section className="trusted-by-section" style={{ padding: "8px 24px 56px", position: "relative", zIndex: 1, background: "transparent" }}>
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
             <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
@@ -374,7 +397,7 @@ export default function Home() {
               letterSpacing: "-0.01em",
               margin: "0 0 18px",
             }}>
-              &ldquo;Helped us map dewwie&apos;s features against the category to identify opportunities for differentiation, and making more informed product decisions.&rdquo;
+              <span className="testimonial-quote">&ldquo;Helped us map dewwie&apos;s features against the category to identify opportunities for differentiation, and making more informed product decisions.&rdquo;</span>
             </p>
             <div style={{ width: 36, height: 3, background: "#5B5BD6", borderRadius: 2, margin: "0 auto 14px" }} />
             <span style={{
@@ -439,7 +462,7 @@ export default function Home() {
       </section>
 
       {/* ── How It Works ─────────────────────────────────────────────────── */}
-      <section style={{ padding: "72px 24px 80px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+      <section className="how-it-works" style={{ padding: "72px 24px 80px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
         <div style={{ maxWidth: 980, margin: "0 auto" }}>
 
           {/* Hook quote */}
@@ -522,11 +545,11 @@ export default function Home() {
       </section>
 
       {/* ── Intelligence Modules ──────────────────────────────────────────── */}
-      <div id="sage-ai" style={{ marginTop: 48 }}>
+      <div id="sage-ai" className="sage-ai-section" style={{ marginTop: 48 }}>
         <div className="sage-header" style={{ paddingBottom: 12, fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
           <p style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", margin: "0 0 14px" }}>The solution</p>
           <h2 style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.05, margin: "0 0 16px", background: "linear-gradient(90deg, #7C3AED, #C73C8E, #F0617A)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>Sage AI Platform</h2>
-          <p style={{ fontSize: 20, fontWeight: 700, color: "#000000", lineHeight: 1.5, margin: 0, maxWidth: 820 }}>One Platform. Product feature, Use case, Competitive landscape overviews for AI Agent Builders. All angles covered.</p>
+          <p className="sage-desc" style={{ fontSize: 20, fontWeight: 700, color: "#000000", lineHeight: 1.5, margin: 0, maxWidth: 820 }}>One Platform. Product feature, Use case, Competitive landscape overviews for AI Agent Builders. All angles covered.</p>
         </div>
         <IntelligenceModules />
       </div>
@@ -679,7 +702,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6" style={{ maxWidth: 780, margin: "0 auto" }}>
 
             {/* Free card */}
-            <div style={{
+            <div className="pricing-card" style={{
               background: "#fff",
               border: "1.5px solid rgba(124,58,237,0.15)",
               borderRadius: 20,
@@ -740,7 +763,7 @@ export default function Home() {
             </div>
 
             {/* Premium card */}
-            <div style={{
+            <div className="pricing-card" style={{
               background: "linear-gradient(145deg, #F3EEFE 0%, #FDE8F3 60%, #EEF0FE 100%)",
               border: "1.5px solid rgba(124,58,237,0.25)",
               borderRadius: 20,
