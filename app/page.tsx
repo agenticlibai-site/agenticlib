@@ -331,7 +331,7 @@ export default function Home() {
       </main>
 
       {/* ── Trusted By ────────────────────────────────────────────────────── */}
-      <section style={{ padding: "8px 24px 24px", position: "relative", zIndex: 1, background: "transparent" }}>
+      <section style={{ padding: "8px 24px 56px", position: "relative", zIndex: 1, background: "transparent" }}>
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
             <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
@@ -391,7 +391,7 @@ export default function Home() {
       </section>
 
       {/* ── Why AgenticLib ────────────────────────────────────────────────────── */}
-      <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(150deg,#EEE8FD 0%,#E8E5FD 55%,#F0E9FD 100%)", padding: "16px 24px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+      <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(150deg,#EEE8FD 0%,#E8E5FD 55%,#F0E9FD 100%)", padding: "48px 24px 16px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 0% 0%,rgba(124,58,237,.30) 0%,transparent 46%),radial-gradient(circle at 100% 6%,rgba(94,108,232,.24) 0%,transparent 48%),radial-gradient(circle at 92% 100%,rgba(167,139,250,.22) 0%,transparent 50%),radial-gradient(circle at 12% 100%,rgba(220,209,255,.30) 0%,transparent 52%),radial-gradient(circle at 52% 50%,rgba(255,255,255,.48) 0%,transparent 58%)", pointerEvents: "none" }}></div>
         <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(64px) saturate(140%)", WebkitBackdropFilter: "blur(64px) saturate(140%)", background: "rgba(255,255,255,.18)", pointerEvents: "none" }}></div>
           <div className="why-grid" style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 2 }}>
