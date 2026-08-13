@@ -331,7 +331,7 @@ export default function Home() {
       </main>
 
       {/* ── Trusted By ────────────────────────────────────────────────────── */}
-      <section style={{ padding: "44px 24px 24px", position: "relative", zIndex: 1, background: "transparent" }}>
+      <section style={{ padding: "8px 24px 24px", position: "relative", zIndex: 1, background: "transparent" }}>
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
             <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
