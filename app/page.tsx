@@ -435,6 +435,83 @@ export default function Home() {
           </div>
       </section>
 
+      {/* ── How It Works ─────────────────────────────────────────────────── */}
+      <section style={{ padding: "72px 24px 80px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 980, margin: "0 auto" }}>
+
+          {/* Hook quote */}
+          <div style={{ marginBottom: 60 }}>
+            <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 11, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "rgba(124,58,237,0.55)", marginBottom: 20 }}>The problem</p>
+            <p style={{ fontSize: "clamp(20px, 2.6vw, 30px)", fontWeight: 700, fontStyle: "italic" as const, lineHeight: 1.45, color: "#0F0B1E", maxWidth: "28ch", letterSpacing: "-0.02em" }}>
+              Most founders only find out they&rsquo;re falling behind when a customer asks{" "}
+              <span style={{ display: "inline", background: "linear-gradient(95deg,#7C3AED,#C2186A)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>&ldquo;why not X&rdquo;</span>
+              {" "}— by then, the deal&rsquo;s already lost.
+            </p>
+          </div>
+
+          {/* 3 steps */}
+          <div className="steps-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 }}>
+            {([
+              {
+                n: "01", accent: "#7C3AED",
+                title: "We track what's shipping.",
+                desc: "Every day, we scan your competitors — what's launched, what's changed, what's new in your category — so you're not finding out from a lost deal.",
+                icon: (
+                  <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                    <circle cx="15" cy="15" r="3.5" fill="#7C3AED"/>
+                    <circle cx="15" cy="15" r="7" stroke="#7C3AED" strokeWidth="1.4" strokeOpacity="0.35" fill="none" strokeDasharray="2.5 2.5"/>
+                    <circle cx="15" cy="15" r="11.5" stroke="#7C3AED" strokeWidth="1.4" strokeOpacity="0.15" fill="none" strokeDasharray="2.5 3"/>
+                    <path d="M15 15 L23 8.5" stroke="#7C3AED" strokeWidth="1.6" strokeLinecap="round" opacity="0.8"/>
+                    <circle cx="23" cy="8.5" r="1.8" fill="#C2186A"/>
+                  </svg>
+                ),
+                bg: "linear-gradient(135deg,#F3EEFE 0%,#EDE6FD 100%)",
+              },
+              {
+                n: "02", accent: "#5E6CE8",
+                title: "We show you the gap, with proof.",
+                desc: "Not a vague score — the actual evidence. What Claude and ChatGPT say about you versus them, and exactly which feature is costing you.",
+                icon: (
+                  <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                    <rect x="2" y="18" width="7" height="10" rx="2" fill="#5E6CE8" fillOpacity="0.25"/>
+                    <rect x="11.5" y="10" width="7" height="18" rx="2" fill="#5E6CE8"/>
+                    <rect x="21" y="14" width="7" height="14" rx="2" fill="#5E6CE8" fillOpacity="0.45"/>
+                    <path d="M2 9 L11.5 5 L21 7.5 L28 4" stroke="#C2186A" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" strokeDasharray="2.5 2"/>
+                    <circle cx="21" cy="7.5" r="2" fill="#C2186A"/>
+                  </svg>
+                ),
+                bg: "linear-gradient(135deg,#EEF0FE 0%,#E5E9FD 100%)",
+              },
+              {
+                n: "03", accent: "#C2186A",
+                title: "We tell you what to build next.",
+                desc: "A clear, prioritized roadmap based on real market signal — not guesswork, not \"three customers happened to ask.\"",
+                icon: (
+                  <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                    <rect x="2" y="5" width="16" height="5" rx="2.5" fill="#C2186A"/>
+                    <rect x="2" y="13" width="20" height="5" rx="2.5" fill="#C2186A" fillOpacity="0.45"/>
+                    <rect x="2" y="21" width="11" height="5" rx="2.5" fill="#C2186A" fillOpacity="0.2"/>
+                    <circle cx="25" cy="7.5" r="4" fill="rgba(34,197,94,0.15)" stroke="#22C55E" strokeWidth="1.5"/>
+                    <path d="M22.8 7.5 L24.5 9.2 L27.2 6" stroke="#22C55E" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                ),
+                bg: "linear-gradient(135deg,#FCEAF3 0%,#F8DFEC 100%)",
+              },
+            ] as { n: string; accent: string; title: string; desc: string; icon: React.ReactNode; bg: string }[]).map(({ n, accent, title, desc, icon, bg }) => (
+              <div key={n} style={{ background: "rgba(255,255,255,0.72)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(124,58,237,0.09)", borderRadius: 18, padding: "28px 24px", display: "flex", flexDirection: "column" as const, gap: 14 }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                  <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: accent }}>{n}</span>
+                  <div style={{ width: 46, height: 46, borderRadius: 12, background: bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{icon}</div>
+                </div>
+                <h3 style={{ fontSize: 17, fontWeight: 800, color: "#0F0B1E", margin: 0, letterSpacing: "-0.025em", lineHeight: 1.25 }}>{title}</h3>
+                <p style={{ fontSize: 14, lineHeight: 1.7, color: "rgba(15,11,30,0.55)", margin: 0 }}>{desc}</p>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
       {/* ── Intelligence Modules ──────────────────────────────────────────── */}
       <div id="sage-ai" style={{ marginTop: 20 }}><IntelligenceModules /></div>
 
