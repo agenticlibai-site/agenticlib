@@ -454,7 +454,7 @@ export default function Home() {
               {
                 n: "01", accent: "#7C3AED",
                 title: "We track what's shipping.",
-                desc: "Every day, we scan your competitors — what's launched, what's changed, what's new in your category — so you're not finding out from a lost deal.",
+                desc: "We scan your competitors: what's launched, what's changed, what's new in your category, so you're not finding out from a lost deal.",
                 icon: (
                   <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
                     <circle cx="15" cy="15" r="3.5" fill="#7C3AED"/>
@@ -469,7 +469,7 @@ export default function Home() {
               {
                 n: "02", accent: "#5E6CE8",
                 title: "We show you the gap, with proof.",
-                desc: "Not a vague score — the actual evidence. What Claude and ChatGPT say about you versus them, and exactly which feature is costing you.",
+                desc: "Not a vague score. The actual evidence. What Claude and ChatGPT say about you versus them, and exactly which feature is costing you.",
                 icon: (
                   <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
                     <rect x="2" y="18" width="7" height="10" rx="2" fill="#5E6CE8" fillOpacity="0.25"/>
@@ -484,7 +484,7 @@ export default function Home() {
               {
                 n: "03", accent: "#C2186A",
                 title: "We tell you what to build next.",
-                desc: "A clear, prioritized roadmap based on real market signal — not guesswork, not \"three customers happened to ask.\"",
+                desc: "A clear, prioritized roadmap based on real market signal, not guesswork, not \"three customers happened to ask.\"",
                 icon: (
                   <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
                     <rect x="2" y="5" width="16" height="5" rx="2.5" fill="#C2186A"/>
