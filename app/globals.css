@@ -205,15 +205,27 @@ body {
 @media (max-width: 960px) {
   .why-grid {
     grid-template-columns: 1fr !important;
-    padding: 32px 20px 36px !important;
+    padding: 32px 20px 28px !important;
     gap: 0 !important;
   }
-  .why-visual { display: none !important; }
+  /* Scale the visual down to fit single-column; compensate dead space with negative margin */
+  .why-visual {
+    display: flex !important;
+    transform: scale(0.72) !important;
+    transform-origin: top center !important;
+    margin-bottom: -101px !important; /* (1 - 0.72) × 360 ≈ 101px */
+    overflow: visible !important;
+  }
 }
 @media (max-width: 768px) {
   .product-outer { padding: 0 16px !important; }
   .feature-card-icon { display: none !important; }
   .feature-card-last { width: 100% !important; max-width: 100% !important; margin: 0 !important; }
+  /* Scale down further on narrow phones */
+  .why-visual {
+    transform: scale(0.58) !important;
+    margin-bottom: -151px !important; /* (1 - 0.58) × 360 ≈ 151px */
+  }
 }
 
 /* ── Customised Reports section — mobile ── */
