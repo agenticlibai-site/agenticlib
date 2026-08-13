@@ -273,23 +273,24 @@ export default function Home() {
             fontFamily: "var(--font-schibsted), var(--font-geist-sans), sans-serif",
           }}
         >
-          {/* Hero gradient — extends 500px below section into Trusted By */}
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "calc(100% + 500px)", zIndex: 0, pointerEvents: "none", borderRadius: "32px 32px 0 0" }}>
+          {/* Hero gradient — purple → pink → peach → white at Dewwie testimonial */}
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "calc(100% + 750px)", zIndex: 0, pointerEvents: "none", borderRadius: "32px 32px 0 0" }}>
             <div style={{
               position: "absolute", inset: 0,
               background: [
-                "radial-gradient(circle at 2% 0%,    rgba(124,58,237,.65)  0%, transparent 48%)",
-                "radial-gradient(circle at 100% 4%,  rgba(94,108,232,.55)  0%, transparent 50%)",
-                "radial-gradient(circle at 98% 100%, rgba(240,97,122,.50)  0%, transparent 50%)",
-                "radial-gradient(circle at 0% 100%,  rgba(199,60,142,.45)  0%, transparent 50%)",
-                "radial-gradient(circle at 50% 50%,  rgba(250,217,236,.35) 0%, transparent 60%)",
+                // Vertical sweep: purple → pink → peach → transparent
+                "linear-gradient(180deg, rgba(112,38,230,0.90) 0%, rgba(170,42,168,0.80) 13%, rgba(215,58,128,0.72) 26%, rgba(233,80,112,0.62) 40%, rgba(242,108,98,0.48) 54%, rgba(250,152,122,0.32) 68%, rgba(255,196,170,0.18) 81%, rgba(255,228,210,0.08) 92%, rgba(255,255,255,0) 100%)",
+                // Corner radials for depth
+                "radial-gradient(circle at 3% 0%,   rgba(100,32,215,0.55) 0%, transparent 38%)",
+                "radial-gradient(circle at 97% 2%,  rgba(78,88,218,0.45) 0%, transparent 38%)",
               ].join(", "),
             }} />
+            {/* Very light frost to smooth edges only */}
             <div style={{
               position: "absolute", inset: 0,
-              backdropFilter: "blur(80px) saturate(150%)",
-              WebkitBackdropFilter: "blur(80px) saturate(150%)",
-              background: "rgba(255,255,255,.33)",
+              backdropFilter: "blur(60px) saturate(120%)",
+              WebkitBackdropFilter: "blur(60px) saturate(120%)",
+              background: "rgba(255,255,255,0.07)",
             }} />
           </div>
 
