@@ -266,16 +266,17 @@ export default function Home() {
 
         {/* ── HERO ───────────────────────────────────────────── */}
         <div className="hero-card-wrapper" style={{ position: "relative", margin: "16px 32px 24px" }}>
-        <div style={{ borderRadius: "32px", overflow: "hidden", boxShadow: "0 8px 40px rgba(124,58,237,0.12)" }}>
+        <div style={{ borderRadius: "32px", boxShadow: "0 8px 40px rgba(124,58,237,0.12)", position: "relative" }}>
         <section
           className="relative text-center"
           style={{
             fontFamily: "var(--font-schibsted), var(--font-geist-sans), sans-serif",
           }}
         >
-          {/* Background layers */}
-          <div className="absolute inset-0">
-            <div className="absolute inset-0" style={{
+          {/* Hero gradient — extends 500px below section into Trusted By */}
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "calc(100% + 500px)", zIndex: 0, pointerEvents: "none", borderRadius: "32px 32px 0 0" }}>
+            <div style={{
+              position: "absolute", inset: 0,
               background: [
                 "radial-gradient(circle at 2% 0%,    rgba(124,58,237,.65)  0%, transparent 48%)",
                 "radial-gradient(circle at 100% 4%,  rgba(94,108,232,.55)  0%, transparent 50%)",
@@ -284,7 +285,8 @@ export default function Home() {
                 "radial-gradient(circle at 50% 50%,  rgba(250,217,236,.35) 0%, transparent 60%)",
               ].join(", "),
             }} />
-            <div className="absolute inset-0" style={{
+            <div style={{
+              position: "absolute", inset: 0,
               backdropFilter: "blur(80px) saturate(150%)",
               WebkitBackdropFilter: "blur(80px) saturate(150%)",
               background: "rgba(255,255,255,.33)",
@@ -292,7 +294,7 @@ export default function Home() {
           </div>
 
           {/* Content */}
-          <div className="hero-content relative max-w-5xl mx-auto px-8 pt-20 pb-16" style={{ zIndex: 2, minHeight: "480px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <div className="hero-content relative max-w-5xl mx-auto px-8 pt-20 pb-16" style={{ zIndex: 2, position: "relative", minHeight: "480px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
 
             {/* Headline */}
             <h1
@@ -328,7 +330,7 @@ export default function Home() {
       </main>
 
       {/* ── Trusted By ────────────────────────────────────────────────────── */}
-      <section style={{ padding: "44px 24px 24px" }}>
+      <section style={{ padding: "44px 24px 24px", position: "relative", zIndex: 1, background: "transparent" }}>
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
             <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
