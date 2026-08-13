@@ -43,9 +43,9 @@ const CSS = `
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 4px 20px;
+  padding: 24px 20px 4px;
   will-change: transform;
   transform-origin: top center;
 }
@@ -54,30 +54,6 @@ const CSS = `
 #c3 { transform: translateY(100%); z-index: 3; }
 
 /* ── Section label above card 1 ───────────────────────────────── */
-.platform-badge {
-  position: absolute;
-  left: max(80px, calc(50% - 460px));
-  top: calc(50% - 384px);
-  z-index: 1;
-  font-family: var(--font-schibsted), system-ui, sans-serif;
-}
-.platform-badge-pill {
-  display: inline-block;
-  background: rgba(124,58,237,0.13);
-  border-radius: 4px;
-  padding: 6px 10px;
-}
-.platform-badge-text {
-  font-size: clamp(18px, 2.2vw, 32px);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  margin: 0;
-  background: linear-gradient(90deg, #7C3AED, #C73C8E, #F0617A);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
 .platform-badge-tagline {
   font-size: clamp(14px, 1.5vw, 22px);
   font-weight: 600;
@@ -376,11 +352,6 @@ const CSS = `
 const CARDS_HTML = `
 <div class="card-stack" id="cardStack">
 
-  <div class="platform-badge">
-    <span class="platform-badge-pill">
-      <h2 class="platform-badge-text">Sage AI Platform</h2>
-    </span>
-  </div>
 
   <!-- CARD 1 · Competitive Intelligence -->
   <div class="card" id="c0">

@@ -504,7 +504,7 @@ export default function Home() {
                 bg: "linear-gradient(135deg,#FCEAF3 0%,#F8DFEC 100%)",
               },
             ] as { n: string; accent: string; title: string; desc: string; icon: React.ReactNode; bg: string }[]).map(({ n, accent, title, desc, icon, bg }) => (
-              <div key={n} style={{ background: "rgba(255,255,255,0.72)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(124,58,237,0.09)", borderRadius: 18, padding: "28px 24px", display: "flex", flexDirection: "column" as const, gap: 14 }}>
+              <div key={n} style={{ background: "rgba(255,255,255,0.72)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", border: "1px solid rgba(124,58,237,0.09)", borderRadius: 18, padding: "28px 24px", display: "flex", flexDirection: "column" as const, gap: 14, transition: "box-shadow 0.25s ease, border-color 0.25s ease" }} onMouseEnter={e => { e.currentTarget.style.boxShadow = "0 0 32px 6px rgba(240,97,122,0.28), 0 8px 24px rgba(240,97,122,0.15)"; e.currentTarget.style.borderColor = "rgba(240,97,122,0.35)"; }} onMouseLeave={e => { e.currentTarget.style.boxShadow = "none"; e.currentTarget.style.borderColor = "rgba(124,58,237,0.09)"; }}>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 11, fontWeight: 700, letterSpacing: "0.12em", color: accent }}>{n}</span>
                   <div style={{ width: 46, height: 46, borderRadius: 12, background: bg, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{icon}</div>
@@ -519,7 +519,14 @@ export default function Home() {
       </section>
 
       {/* ── Intelligence Modules ──────────────────────────────────────────── */}
-      <div id="sage-ai" style={{ marginTop: 20 }}><IntelligenceModules /></div>
+      <div id="sage-ai" style={{ marginTop: 48 }}>
+        <div className="sage-header" style={{ paddingBottom: 12, fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+          <p style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", margin: "0 0 14px" }}>The solution</p>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.05, margin: "0 0 16px", background: "linear-gradient(90deg, #7C3AED, #C73C8E, #F0617A)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>Sage AI Platform</h2>
+          <p style={{ fontSize: 20, fontWeight: 700, color: "#000000", lineHeight: 1.5, margin: 0, maxWidth: 820 }}>One Platform. Product feature, Use case, Competitive landscape overviews for AI Agent Builders. All angles covered.</p>
+        </div>
+        <IntelligenceModules />
+      </div>
 
       {/* ── Customised Reports ────────────────────────────────────────────────── */}
       <section className="cr-section" style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", padding: "0 24px 0", marginTop: -32 }}>

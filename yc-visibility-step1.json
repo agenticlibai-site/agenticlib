@@ -1,0 +1,464 @@
+{
+  "clusters": {
+    "insurance": [
+      "Adaptional",
+      "Aegis",
+      "Avallon AI",
+      "Basepilot",
+      "CopyCat",
+      "Hedge",
+      "Kinro",
+      "Klaimee",
+      "Mount"
+    ],
+    "recruiting-hr": [
+      "Alex",
+      "Asendia AI",
+      "Contrario",
+      "Grade",
+      "Outship",
+      "Perfectly",
+      "Prism",
+      "Saffron",
+      "SpottLeuven",
+      "Standout"
+    ],
+    "fintech-finance": [
+      "Alt-X",
+      "Altur",
+      "Arva AI",
+      "Clarum",
+      "Cohesion",
+      "Collar",
+      "Domu Technology Inc.",
+      "Fenrock AI",
+      "Kenley",
+      "LATO",
+      "MouseCat",
+      "o11",
+      "PathPilot",
+      "Pearson Labs",
+      "Proximitty",
+      "Revi",
+      "Soria",
+      "Veritus",
+      "WithAI",
+      "Zolvo"
+    ],
+    "sales-gtm": [
+      "Amorphic Labs",
+      "Boom AI",
+      "Cardinal",
+      "Chasi",
+      "Ergo",
+      "Fixture",
+      "Gojiberry AI",
+      "item",
+      "Karumi",
+      "Kinect",
+      "Octolane AI",
+      "OpenFunnel",
+      "Orange Slice",
+      "Primer",
+      "Robby",
+      "throxy",
+      "Topo"
+    ],
+    "legal": [
+      "Andco",
+      "Blueshoe",
+      "LegalOS",
+      "Mimos",
+      "Osmaura",
+      "Payna",
+      "Rescript",
+      "Stilta",
+      "Third Chair",
+      "Vector Legal",
+      "Vesence"
+    ],
+    "marketing-content": [
+      "Apten",
+      "Cardboard",
+      "Corvera",
+      "Kuli",
+      "Leadbay",
+      "Light Anchor",
+      "Memoir",
+      "Overlap",
+      "Pluto",
+      "Remix",
+      "Sitefire",
+      "Tell if AI",
+      "Wideframe"
+    ],
+    "healthcare": [
+      "Arctic Health",
+      "Avelis Health",
+      "Care GP",
+      "Careforce",
+      "Clarion",
+      "Clicks Health",
+      "Cova",
+      "Denta",
+      "Dodo",
+      "Egress Health",
+      "Galen AI",
+      "Hubble",
+      "Illume Labs",
+      "Klarify",
+      "Layers",
+      "Locata",
+      "Mango Medical",
+      "mdhub",
+      "Novoflow",
+      "Parallel",
+      "Patientdesk.ai",
+      "Perspectives Health",
+      "Prana",
+      "Remedy",
+      "Rovi Health",
+      "Saga AI",
+      "Simplex",
+      "TakeCareOS",
+      "Tepali",
+      "Toothy AI",
+      "Trapeze",
+      "Voquill"
+    ],
+    "accounting-finance": [
+      "Arden",
+      "Balance",
+      "Bluebook",
+      "Cifrato",
+      "Cranston AI",
+      "End Close",
+      "Fazeshift",
+      "FullSeam",
+      "Gravy",
+      "Last Accounting Company",
+      "LedgerUp",
+      "Magnetic",
+      "Minerva",
+      "ProcIndex",
+      "Rational",
+      "Rex",
+      "TaxGPT",
+      "Tergle",
+      "Trope"
+    ],
+    "supply-chain-logistics": [
+      "Avent",
+      "Burt",
+      "Comena",
+      "Dayjob",
+      "Khotan",
+      "MarkIt",
+      "Prototyping.io",
+      "qomplement",
+      "Reframe",
+      "Soff",
+      "Trava",
+      "Whitespace"
+    ],
+    "security-compliance": [
+      "BeeSafe AI",
+      "Cotool",
+      "Inth",
+      "Nebula Security",
+      "Parameter",
+      "Tolmo"
+    ],
+    "pharma-biotech": [
+      "CellType",
+      "Enjamb Labs",
+      "Rhizome AI",
+      "Ritivel"
+    ],
+    "real-estate": [
+      "CentralComs",
+      "Copperlane",
+      "Kastle",
+      "RealPact",
+      "Trellis"
+    ],
+    "customer-support": [
+      "Cignara",
+      "Minimal AI",
+      "Pollen",
+      "Solidroad",
+      "Userlens"
+    ],
+    "hospitality-travel": [
+      "Conduit",
+      "Elyra",
+      "Lance",
+      "Marble",
+      "Zaplar"
+    ],
+    "government": [
+      "Fed10",
+      "GovGuard",
+      "Stratum Industries"
+    ],
+    "construction-field-service": [
+      "InspectMind AI",
+      "Macadamia",
+      "NOSO LABS",
+      "PLAN0 AI"
+    ]
+  },
+  "excluded_infra": [
+    "Agentcard",
+    "Agentic Fabriq",
+    "AgentPhone",
+    "Agnost AI",
+    "Allowance",
+    "Almanac",
+    "Amulet",
+    "Approxima",
+    "Archal",
+    "Armature",
+    "Ashr",
+    "Assemble",
+    "Autosana",
+    "AutoSitu",
+    "BentoLabs AI",
+    "Callab AI",
+    "Captain",
+    "Cascade",
+    "Chronicle Labs",
+    "Clarm",
+    "Clawvisor",
+    "Corelayer",
+    "Crustdata",
+    "Decawork",
+    "Deeptrace",
+    "Dialogus",
+    "Docket",
+    "Egoist Machines",
+    "Envariant",
+    "Experiential Labs",
+    "Fabraix",
+    "Gigacatalyst",
+    "Glen",
+    "Humwork",
+    "IncidentFox",
+    "Inkbox",
+    "InsForge",
+    "Kestrel AI",
+    "Keyframe Labs",
+    "Kimpton AI",
+    "Linzumi",
+    "machine0",
+    "Manicule",
+    "Maven",
+    "Memory Store",
+    "Mireye",
+    "Moda",
+    "OneCLI",
+    "OneGrep",
+    "Ontora",
+    "Ooak Data",
+    "Overshoot",
+    "Playgent",
+    "Polymath",
+    "Raindrop",
+    "ReasonBlocks",
+    "Relari",
+    "RentAHuman",
+    "Ressl AI",
+    "Revnu",
+    "Rindler",
+    "Rubric AI",
+    "RunLocal AI",
+    "Salus",
+    "Scope",
+    "Sentrial",
+    "Sila",
+    "Simantic",
+    "Stage",
+    "Superset",
+    "Syntropy",
+    "Talking Computers",
+    "Terminal Use",
+    "TesterArmy",
+    "The Context Company",
+    "Tracer",
+    "Truffle AI",
+    "TrustAI",
+    "Tusk",
+    "Understudy Labs",
+    "Unusual",
+    "VOYGR",
+    "Waddle Labs",
+    "Wato",
+    "Wordware"
+  ],
+  "excluded_niche": [
+    {
+      "name": "Alkera AI",
+      "cluster": "data-analytics"
+    },
+    {
+      "name": "Amboras",
+      "cluster": "ecommerce-retail"
+    },
+    {
+      "name": "Pango",
+      "cluster": "ecommerce-retail"
+    },
+    {
+      "name": "Agentin AI",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Aster",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Async",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Atrisa",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Autostep",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Avoice",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Buildbox",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Cenote",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Cerenovus",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Complir",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Context.dev",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Crunched",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Discovered Materials",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "flowscope",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Foaster",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Fuchsia",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Hessian",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "HeyClicky",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "jo",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Lab0",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "LemonLime",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "MOVEdot",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Powder",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Reprompt",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Risely AI",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Samora AI",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "screenpipe",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Seeing Systems",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Shepherd",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Sherpa",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Squid",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "stratify",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Supafax",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Sylvian",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Tasklet",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Unisson",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "YouArt",
+      "cluster": "uncategorised"
+    },
+    {
+      "name": "Zuni",
+      "cluster": "uncategorised"
+    }
+  ]
+}
