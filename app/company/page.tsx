@@ -247,16 +247,8 @@ export default function CompanyPage() {
           {/* MISSION */}
           <section className="co-section">
             <div className="co-left">
-              <p className="co-eyebrow">
-                <span className="co-eyebrow-rule" />
-                01 / Mission
-              </p>
-              <h2 className="co-headline">
-                Stop learning<br />
-                what to build<br />
-                from{" "}
-                <span className="co-gradient">lost deals.</span>
-              </h2>
+              <h2 className="co-headline">Mission</h2>
+
             </div>
 
             <div className="co-right">
@@ -293,21 +285,15 @@ export default function CompanyPage() {
           {/* VISION */}
           <section className="co-section">
             <div className="co-left">
-              <p className="co-eyebrow">
-                <span className="co-eyebrow-rule" />
-                02 / Vision
-              </p>
-              <h2 className="co-headline">
-                Every builder<br />
-                deserves to know<br />
-                what to build{" "}
-                <span className="co-gradient">next.</span>
-              </h2>
+              <h2 className="co-headline">Vision</h2>
+
             </div>
 
             <div className="co-right">
               <p className="co-subhead">
-                The best product teams do not wait for churn to reveal their blind spots. They have intelligence.
+                Every builder<br />
+                deserves to know<br />
+                what to build next.
               </p>
               <div className="co-body">
                 <p>
