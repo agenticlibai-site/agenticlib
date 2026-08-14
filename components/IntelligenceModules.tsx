@@ -396,7 +396,7 @@ const CARDS_HTML = `
         </div>
         <h2 class="card-headline">Feature scores by use case, straight from what LLMs say</h2>
         <p class="card-body">Every product feature gets a score per use case, built from live queries across Claude and GPT. No analyst opinion. Click any score to read the exact quotes that produced it.</p>
-        <button onclick="document.getElementById('sage-ai').scrollIntoView({behavior:'smooth'})" style="display:inline-flex;align-items:center;gap:6px;background:linear-gradient(95deg,#7C3AED,#C2186A);color:#fff;font-weight:700;font-size:13px;padding:10px 22px;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 16px rgba(124,58,237,0.30);letter-spacing:0.01em;">Get started <span style="font-size:15px;">›</span></button>
+        <a href="/sage" style="display:inline-flex;align-items:center;gap:6px;width:fit-content;background:linear-gradient(95deg,#7C3AED,#C2186A);color:#fff;font-weight:700;font-size:13px;padding:10px 22px;border-radius:9999px;text-decoration:none;box-shadow:0 4px 16px rgba(124,58,237,0.30);letter-spacing:0.01em;">Get started <span style="font-size:15px;">›</span></a>
       </div>
       <div class="card-right" style="background:#EDEAF8;display:flex;align-items:center;justify-content:center;padding:0;">
         <iframe
