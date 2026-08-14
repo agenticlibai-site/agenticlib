@@ -291,8 +291,8 @@ export default function Home() {
       <main className="relative z-0">
 
         {/* ── HERO ───────────────────────────────────────────── */}
-        <div className="hero-card-wrapper" style={{ position: "relative", margin: "0 0 24px" }}>
-        <div style={{ borderRadius: "28px 28px 0 0", boxShadow: "0 8px 40px rgba(124,58,237,0.12)", position: "relative" }}>
+        <div className="hero-card-wrapper" style={{ position: "relative", margin: "-68px 0 24px" }}>
+        <div style={{ borderRadius: 0, boxShadow: "0 8px 40px rgba(124,58,237,0.12)", position: "relative" }}>
         <section
           className="relative text-center"
           style={{
@@ -300,7 +300,7 @@ export default function Home() {
           }}
         >
           {/* Hero gradient — purple → pink → peach → white at Dewwie testimonial */}
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "calc(100% + 750px)", zIndex: 0, pointerEvents: "none", borderRadius: "28px 28px 0 0" }}>
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "calc(100% + 750px)", zIndex: 0, pointerEvents: "none", borderRadius: 0 }}>
             <div style={{
               position: "absolute", inset: 0,
               background: [
@@ -321,7 +321,7 @@ export default function Home() {
           </div>
 
           {/* Content */}
-          <div className="hero-content relative max-w-5xl mx-auto px-8 pt-20 pb-16" style={{ zIndex: 2, position: "relative", minHeight: "480px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          <div className="hero-content relative max-w-5xl mx-auto px-8 pt-36 pb-16" style={{ zIndex: 2, position: "relative", minHeight: "480px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
 
             {/* Headline */}
             <h1
