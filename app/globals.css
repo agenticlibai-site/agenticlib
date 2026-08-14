@@ -26,6 +26,11 @@ body {
   background-attachment: fixed;
 }
 
+/* ── Fixed navbar offset — desktop only ── */
+@media (min-width: 768px) {
+  body { padding-top: 68px; }
+}
+
 /* ── Page background ── */
 .page-bg {
   min-height: 100vh;
