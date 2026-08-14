@@ -103,18 +103,6 @@ export default function Navbar() {
                   </div>
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color: "#d1d5db" }}><path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </Link>
-                <Link href="/explore" className="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-colors" style={{ textDecoration: "none" }}
-                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#f8f8ff"; }}
-                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
-                  <div className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#16a34a,#4ade80)" }}>
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="7" height="7" rx="1.5" fill="white" fillOpacity=".9"/><rect x="11" y="2" width="7" height="7" rx="1.5" fill="white" fillOpacity=".6"/><rect x="2" y="11" width="7" height="7" rx="1.5" fill="white" fillOpacity=".6"/><rect x="11" y="11" width="7" height="7" rx="1.5" fill="white" fillOpacity=".9"/></svg>
-                  </div>
-                  <div className="flex flex-col flex-1">
-                    <span style={{ fontSize: 13, fontWeight: 600, color: "#000000", lineHeight: 1.3 }}>AI Agent Library</span>
-                    <span style={{ fontSize: 11.5, color: "#000000", marginTop: 2 }}>Browse all agents across every domain</span>
-                  </div>
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color: "#d1d5db" }}><path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                </Link>
               </div>
             </div>
           </div>
@@ -237,7 +225,6 @@ export default function Navbar() {
             <div style={{ background: "#fafafa", borderBottom: "1px solid #f3f4f6" }}>
               {[
                 { label: "Blog", href: "/blog" },
-                { label: "AI Agent Library", href: "/explore" },
               ].map((item) => (
                 <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                   className="block pl-8 pr-5 py-3 text-sm text-black hover:text-black hover:bg-gray-100 transition-colors"
