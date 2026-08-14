@@ -247,7 +247,15 @@ export default function CompanyPage() {
           {/* MISSION */}
           <section className="co-section">
             <div className="co-left">
-              <h2 className="co-headline">Mission</h2>
+              <h2 className="co-headline" style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                Mission
+                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, opacity: 0.75 }}>
+                  <circle cx="16" cy="16" r="3" fill="#0F0B1E"/>
+                  <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#0F0B1E" strokeWidth="1.5"/>
+                  <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#0F0B1E" strokeWidth="1.5" transform="rotate(60 16 16)"/>
+                  <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#0F0B1E" strokeWidth="1.5" transform="rotate(120 16 16)"/>
+                </svg>
+              </h2>
 
             </div>
 
@@ -285,7 +293,17 @@ export default function CompanyPage() {
           {/* VISION */}
           <section className="co-section">
             <div className="co-left">
-              <h2 className="co-headline">Vision</h2>
+              <h2 className="co-headline" style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                Vision
+                <svg width="44" height="44" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, opacity: 0.75 }}>
+                  <path d="M16 2 L17.5 14.5 L16 16 L14.5 14.5 Z" fill="#0F0B1E"/>
+                  <path d="M30 16 L17.5 17.5 L16 16 L17.5 14.5 Z" fill="#0F0B1E"/>
+                  <path d="M16 30 L14.5 17.5 L16 16 L17.5 17.5 Z" fill="#0F0B1E"/>
+                  <path d="M2 16 L14.5 14.5 L16 16 L14.5 17.5 Z" fill="#0F0B1E"/>
+                  <circle cx="16" cy="16" r="2" fill="#0F0B1E"/>
+                  <circle cx="16" cy="16" r="5.5" stroke="#0F0B1E" strokeWidth="1" opacity="0.3"/>
+                </svg>
+              </h2>
 
             </div>
 
