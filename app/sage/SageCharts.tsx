@@ -1008,12 +1008,15 @@ export default function SageCharts({
           background: "rgba(91,60,200,0.14)",
           position: "relative",
         }}>
-          {/* Sage AI logo */}
-          <img
-            src="/sage-ai-logo.png"
-            alt="Sage AI"
-            style={{ height: 52, width: "auto", flexShrink: 0, objectFit: "contain" }}
-          />
+          {/* Wordmark */}
+          <div style={{ display: "flex", alignItems: "baseline", gap: 5, lineHeight: 1 }}>
+            <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: "-0.025em", color: "#F0EEFF" }}>Sage</span>
+            <span style={{
+              fontSize: 22, fontWeight: 800, letterSpacing: "-0.025em",
+              background: "linear-gradient(90deg, #A78BFA, #F472B6)",
+              WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
+            }}>AI</span>
+          </div>
 
           {/* Gradient accent divider at bottom */}
           <div style={{
