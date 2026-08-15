@@ -6,22 +6,11 @@ import { trackEvent } from "@/lib/analytics";
 import { blogs, Blog } from "@/data/blogs";
 
 
-const BLOG_IMAGES: Record<string, string> = {
-  "top-ai-agents-2025":            "/blog1.jpg",
-  "ai-agents-everyday-assistants": "/blog2.jpg",
-  "ai-agents-vs-software":         "/blog3.jpg",
-  "ai-agents-everyday-life":       "/blog4.jpg",
-  "search-to-delegation":          "/blog5.jpg",
-};
-
-function Thumbnail({ slug }: { slug: string }) {
-  const src = BLOG_IMAGES[slug];
+// Images come directly from each blog's `image` field (set in data/blogs.ts)
+function Thumbnail({ src }: { src: string }) {
   return (
     <div style={{ width:"100%", aspectRatio:"16/9", overflow:"hidden", background:"#F0EEFF" }}>
-      {src
-        ? <img src={src} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
-        : <div style={{ width:"100%", height:"100%", background:"#EDE9FF" }}/>
-      }
+      <img src={src} alt="" style={{ width:"100%", height:"100%", objectFit:"cover" }} />
     </div>
   );
 }
@@ -67,7 +56,7 @@ export default function BlogPage() {
               cursor:"pointer", marginBottom:40,
             }}
           >
-            <Thumbnail slug={featured.slug}/>
+            <Thumbnail src={featured.image}/>
             <div style={{ padding:"36px 40px", display:"flex", flexDirection:"column", justifyContent:"center" }}>
               <CategoryBadge label={featured.category}/>
               <h2 style={{ fontSize:"clamp(1.1rem,2.2vw,1.45rem)", fontWeight:700, color:"#0A0618", lineHeight:1.3, margin:"14px 0 12px", letterSpacing:"-0.02em" }}>
@@ -154,7 +143,7 @@ function BlogCard({ blog, onNavigate }: { blog: Blog; onNavigate:(slug:string,ti
         transition:"all 0.2s ease", display:"flex", flexDirection:"column",
       }}
     >
-      <Thumbnail slug={blog.slug}/>
+      <Thumbnail src={blog.image}/>
       <div style={{ padding:"18px 20px 20px", display:"flex", flexDirection:"column", flex:1 }}>
         <h3 style={{ fontSize:15, fontWeight:700, color:"#0A0618", lineHeight:1.4, margin:"0 0 10px", letterSpacing:"-0.01em", flex:1 }}>
           {blog.title}
