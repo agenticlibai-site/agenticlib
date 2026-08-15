@@ -290,11 +290,11 @@ export default function Navbar() {
                 ))}
               </div>
             )}
-            <a href="/sage" onClick={() => setMobileOpen(false)}
+            <Link href="/sage" onClick={() => setMobileOpen(false)}
               className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
               style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
               Platform
-            </a>
+            </Link>
             <Link href="/company" onClick={() => setMobileOpen(false)}
               className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
               style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
