@@ -381,7 +381,7 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
   // ── Coverage over time: shape for recharts ─────────────────────────────────
   // top brands for lines
   const top5Names = top5.map(b => b.brand);
-  const allDates = [...new Set(coverage.map(r => r.date))].sort();
+  const allDates = [...new Set(coverage.map(r => r.date))].sort().filter(d => d <= "2026-07-09");
   const coverageChartData = allDates.map(date => {
     const row: Record<string, string | number> = {
       date: new Date(date).toLocaleDateString("en-AU", { month: "short", day: "numeric" }),
