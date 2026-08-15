@@ -123,24 +123,14 @@ function SalesIcon() {
   );
 }
 function MarketingIcon() {
-  // Pie chart analytics dashboard card
+  // Funnel — marketing funnel / lead gen stages
   return (
     <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-      {/* Card outline */}
-      <rect x="0.7" y="0.7" width="14.6" height="14.6" rx="2.5" stroke="currentColor" strokeWidth="1.1"/>
-      {/* Dark 270° pie slice (3 o'clock → clockwise 270° → 12 o'clock) */}
-      <path d="M5.5 8L8.7 8A3.2 3.2 0 1 1 5.5 4.8Z" fill="currentColor" opacity="0.85"/>
-      {/* Light 90° highlight wedge (12 o'clock → clockwise 90° → 3 o'clock) */}
-      <path d="M5.5 8L5.5 4.8A3.2 3.2 0 0 1 8.7 8Z" fill="currentColor" opacity="0.35"/>
-      {/* Callout line from wedge midpoint */}
-      <path d="M7.8 5.7L10.5 4.5" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round"/>
-      <circle cx="7.8" cy="5.7" r="0.4" fill="currentColor"/>
-      {/* Legend lines on right */}
-      <line x1="11" y1="6.5"  x2="15" y2="6.5"  stroke="currentColor" strokeWidth="0.85" strokeLinecap="round"/>
-      <line x1="11" y1="8"    x2="15" y2="8"    stroke="currentColor" strokeWidth="0.85" strokeLinecap="round"/>
-      <line x1="11" y1="9.5"  x2="15" y2="9.5"  stroke="currentColor" strokeWidth="0.85" strokeLinecap="round"/>
-      <line x1="11" y1="11"   x2="14" y2="11"   stroke="currentColor" strokeWidth="0.85" strokeLinecap="round"/>
-      <line x1="11" y1="12.5" x2="15" y2="12.5" stroke="currentColor" strokeWidth="0.85" strokeLinecap="round"/>
+      {/* Funnel outline */}
+      <path d="M1.5 2.5H14.5L10 9V13.5H6V9L1.5 2.5Z" stroke="currentColor" strokeWidth="1.35" strokeLinejoin="round"/>
+      {/* Stage lines inside funnel */}
+      <line x1="3.5" y1="5"   x2="12.5" y2="5"   stroke="currentColor" strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
+      <line x1="5"   y1="7.2" x2="11"   y2="7.2" stroke="currentColor" strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
     </svg>
   );
 }
