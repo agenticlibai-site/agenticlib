@@ -31,6 +31,16 @@ body {
   body { padding-top: 68px; }
 }
 
+/* ── Cover the 68px body-padding gap behind the fixed navbar ──
+   Apply .page-gap-fix to any page root that has its own background
+   colour (otherwise the body's pink gradient bleeds through the gap). ── */
+@media (min-width: 768px) {
+  .page-gap-fix {
+    margin-top: -68px;
+    padding-top: 68px;
+  }
+}
+
 /* ── Page background ── */
 .page-bg {
   min-height: 100vh;

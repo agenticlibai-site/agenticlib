@@ -105,35 +105,61 @@ function normalizeBand(band: string): string {
 // ── Icons ──────────────────────────────────────────────────────────────────────
 
 function SalesIcon() {
+  // Bar chart + zigzag trend arrow + $ = revenue growth
   return (
-    <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-      <path d="M2 12l3.5-4 3 2.5L12 5" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="13" cy="4" r="1.5" fill="currentColor"/>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      {/* Dollar sign */}
+      <text x="5.5" y="4.8" fontSize="4.5" fontWeight="700" fill="currentColor" textAnchor="middle">$</text>
+      {/* Ascending bars, bottom-aligned */}
+      <rect x="1"    y="11.5" width="2.5" height="3.5" rx="0.4" fill="currentColor" opacity="0.75"/>
+      <rect x="4.5"  y="9"    width="2.5" height="6"   rx="0.4" fill="currentColor" opacity="0.75"/>
+      <rect x="8"    y="6.5"  width="2.5" height="8.5" rx="0.4" fill="currentColor" opacity="0.75"/>
+      <rect x="11.5" y="4"    width="2.5" height="11"  rx="0.4" fill="currentColor" opacity="0.75"/>
+      {/* Zigzag rising trend line */}
+      <path d="M1.5 13L4.5 8.5L8.5 11L14 4.5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* Arrow tip */}
+      <path d="M12 4L14 4.5L13.5 6.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   );
 }
 function MarketingIcon() {
+  // Pie chart analytics dashboard card
   return (
-    <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-      <path d="M2 8h8M13 4l-3 4 3 4" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="2" cy="8" r="1.5" fill="currentColor"/>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      {/* Card outline */}
+      <rect x="0.7" y="0.7" width="14.6" height="14.6" rx="2.5" stroke="currentColor" strokeWidth="1.1"/>
+      {/* Dark 270° pie slice (3 o'clock → clockwise 270° → 12 o'clock) */}
+      <path d="M5.5 8L8.7 8A3.2 3.2 0 1 1 5.5 4.8Z" fill="currentColor" opacity="0.85"/>
+      {/* Light 90° highlight wedge (12 o'clock → clockwise 90° → 3 o'clock) */}
+      <path d="M5.5 8L5.5 4.8A3.2 3.2 0 0 1 8.7 8Z" fill="currentColor" opacity="0.35"/>
+      {/* Callout line from wedge midpoint */}
+      <path d="M7.8 5.7L10.5 4.5" stroke="currentColor" strokeWidth="0.9" strokeLinecap="round"/>
+      <circle cx="7.8" cy="5.7" r="0.4" fill="currentColor"/>
+      {/* Legend lines on right */}
+      <line x1="11" y1="6.5"  x2="15" y2="6.5"  stroke="currentColor" strokeWidth="0.85" strokeLinecap="round"/>
+      <line x1="11" y1="8"    x2="15" y2="8"    stroke="currentColor" strokeWidth="0.85" strokeLinecap="round"/>
+      <line x1="11" y1="9.5"  x2="15" y2="9.5"  stroke="currentColor" strokeWidth="0.85" strokeLinecap="round"/>
+      <line x1="11" y1="11"   x2="14" y2="11"   stroke="currentColor" strokeWidth="0.85" strokeLinecap="round"/>
+      <line x1="11" y1="12.5" x2="15" y2="12.5" stroke="currentColor" strokeWidth="0.85" strokeLinecap="round"/>
     </svg>
   );
 }
 function TradieIcon() {
+  // Wrench / tools
   return (
-    <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-      <path d="M9.5 2.5l-7 7 1.5 1.5 7-7-1.5-1.5z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M11 4l1.5-1.5 1 1L12 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M3 11l-1 2 2-1" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M10.5 2a3.5 3.5 0 0 0-3.4 4.2L2.4 11a1.4 1.4 0 0 0 2 2l4.8-4.7A3.5 3.5 0 0 0 13.7 4l-2 2-1.5-.5-.5-1.5 2-2A3.5 3.5 0 0 0 10.5 2z" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="3.5" cy="12.5" r="0.8" fill="currentColor"/>
     </svg>
   );
 }
 function SkincareIcon() {
+  // Sparkle / leaf
   return (
-    <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
-      <circle cx="8" cy="8" r="5.5" stroke="currentColor" strokeWidth="1.6"/>
-      <path d="M8 5v3l2 1.5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <path d="M8 2c0 0-5 3-5 7a5 5 0 0 0 10 0c0-4-5-7-5-7z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
+      <path d="M8 14V8" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+      <path d="M8 10c-1-1-2.5-1.5-3-2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" opacity="0.6"/>
     </svg>
   );
 }
@@ -957,7 +983,7 @@ export default function SageCharts({
 
   return (
     <>
-    <div style={{ display: "flex", height: "calc(100vh - 64px)", overflow: "hidden", fontFamily: "var(--font-geist-sans), system-ui, sans-serif" }}>
+    <div style={{ display: "flex", height: "100vh", marginTop: "-68px", overflow: "hidden", fontFamily: "var(--font-geist-sans), system-ui, sans-serif" }}>
 
       {/* ── LEFT SIDEBAR ─────────────────────────────────────────────────── */}
       <aside style={{
@@ -986,9 +1012,9 @@ export default function SageCharts({
         />
         {/* ── Brand row ─────────────────────────────────────────────────────── */}
         <div style={{
-          height: 72, flexShrink: 0,
-          display: "flex", alignItems: "center", gap: 12,
-          padding: "0 16px",
+          height: 72 + 68, flexShrink: 0,
+          display: "flex", alignItems: "flex-end", gap: 12,
+          padding: "0 16px 16px",
           background: "rgba(91,60,200,0.14)",
           position: "relative",
         }}>
@@ -1169,7 +1195,7 @@ export default function SageCharts({
       </aside>
 
       {/* ── MAIN CONTENT ──────────────────────────────────────────────────── */}
-      <main style={{ flex: 1, background: "#F3F4F9", overflowY: "auto", padding: "22px 20px" }}>
+      <main style={{ flex: 1, background: "#F3F4F9", overflowY: "auto", padding: "22px 20px", paddingTop: 68 + 22 }}>
         {!domain ? (
           <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", gap: 14 }}>
             <div style={{ width: 56, height: 56, borderRadius: 18, background: "linear-gradient(135deg, rgba(124,58,237,0.10), rgba(190,24,93,0.10))", display: "flex", alignItems: "center", justifyContent: "center" }}>

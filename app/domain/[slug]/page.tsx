@@ -56,7 +56,7 @@ export default async function DomainSeoPage({
   const agents = agentDomain?.agents ?? [];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 page-gap-fix">
 
       <main className="max-w-5xl mx-auto px-6 py-12">
 
