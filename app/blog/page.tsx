@@ -52,10 +52,10 @@ export default function BlogPage() {
       <div style={{ background: "#F9F8FF", paddingTop: 64, paddingBottom: 48, textAlign: "center" }}>
         <h1
           style={{
-            fontFamily: "Georgia, 'Times New Roman', serif",
+            fontFamily: "var(--font-schibsted), system-ui, sans-serif",
             fontSize: "clamp(2.5rem, 6vw, 4rem)",
-            fontWeight: 400,
-            letterSpacing: "-0.01em",
+            fontWeight: 900,
+            letterSpacing: "-0.03em",
             color: "#0A0618",
             marginBottom: 14,
             lineHeight: 1.1,
@@ -63,7 +63,7 @@ export default function BlogPage() {
         >
           Our Blog
         </h1>
-        <p style={{ fontSize: 15, color: "#5B4E8A", maxWidth: 460, margin: "0 auto", lineHeight: 1.6 }}>
+        <p style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", fontSize: 15, color: "#5B4E8A", maxWidth: 460, margin: "0 auto", lineHeight: 1.6 }}>
           Product updates, research notes, and practical writing about building
           production software with AI agents.
         </p>
@@ -117,16 +117,17 @@ export default function BlogPage() {
             borderLeft: "1px solid #EDE9FF",
           }}>
             <h2 style={{
+              fontFamily: "var(--font-schibsted), system-ui, sans-serif",
               fontSize: "clamp(1.1rem, 2.2vw, 1.45rem)",
-              fontWeight: 700,
+              fontWeight: 900,
               color: "#0A0618",
-              lineHeight: 1.3,
+              lineHeight: 1.25,
               marginBottom: 14,
-              letterSpacing: "-0.01em",
+              letterSpacing: "-0.03em",
             }}>
               {featured.title}
             </h2>
-            <p style={{ fontSize: 13.5, color: "#5B4E8A", lineHeight: 1.65, marginBottom: 20 }}>
+            <p style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", fontSize: 13.5, color: "#5B4E8A", lineHeight: 1.65, marginBottom: 20 }}>
               {featured.description}
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24 }}>
@@ -149,7 +150,7 @@ export default function BlogPage() {
 
         {/* ── Recent posts ─────────────────────────────────────────── */}
         <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", marginBottom: 24 }}>
-          <h2 style={{ fontSize: "1.45rem", fontWeight: 700, color: "#0A0618", letterSpacing: "-0.01em" }}>
+          <h2 style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", fontSize: "1.45rem", fontWeight: 900, color: "#0A0618", letterSpacing: "-0.03em" }}>
             Recent blog posts
           </h2>
           {/* Search */}
@@ -170,7 +171,7 @@ export default function BlogPage() {
                 paddingLeft: 30, paddingRight: 12, paddingTop: 7, paddingBottom: 7,
                 fontSize: 13, border: "1px solid #DDD9F5", borderRadius: 8,
                 background: "white", color: "#0A0618", outline: "none",
-                width: 200,
+                width: 200, fontFamily: "var(--font-schibsted), system-ui, sans-serif",
               }}
             />
           </div>
@@ -191,7 +192,8 @@ export default function BlogPage() {
                   border: "none",
                   cursor: "pointer",
                   fontSize: 13,
-                  fontWeight: activeCategory === cat ? 600 : 400,
+                  fontFamily: "var(--font-schibsted), system-ui, sans-serif",
+                  fontWeight: activeCategory === cat ? 700 : 500,
                   color: activeCategory === cat ? "#6C4CF1" : "#5B4E8A",
                   background: activeCategory === cat ? "#EDE9FF" : "transparent",
                   transition: "all 0.15s",
@@ -280,18 +282,19 @@ function BlogCard({
           <TagPill label={blog.category} />
           <div>
             <h3 style={{
+              fontFamily: "var(--font-schibsted), system-ui, sans-serif",
               fontSize: "clamp(0.9rem, 1.8vw, 1.05rem)",
-              fontWeight: 700,
+              fontWeight: 900,
               color: "white",
-              lineHeight: 1.35,
-              letterSpacing: "-0.01em",
+              lineHeight: 1.25,
+              letterSpacing: "-0.03em",
               textShadow: "0 1px 4px rgba(0,0,0,0.3)",
               marginBottom: 14,
             }}>
               {blog.title}
             </h3>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-              <span style={{ fontSize: 11.5, color: "rgba(255,255,255,0.7)" }}>
+              <span style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", fontSize: 11.5, color: "rgba(255,255,255,0.7)" }}>
                 {blog.date}
               </span>
               <div style={{
@@ -312,26 +315,22 @@ function BlogCard({
 }
 
 function TagPill({ label, dark }: { label: string; dark?: boolean }) {
+  const base: React.CSSProperties = {
+    fontFamily: "var(--font-schibsted), system-ui, sans-serif",
+    fontSize: 11, fontWeight: 700,
+    padding: "3px 10px", borderRadius: 999,
+    display: "inline-block",
+    letterSpacing: "0.01em",
+  };
   if (dark) {
-    return (
-      <span style={{
-        fontSize: 11, fontWeight: 600,
-        padding: "3px 10px", borderRadius: 999,
-        background: "#EDE9FF", color: "#6C4CF1",
-        display: "inline-block",
-      }}>
-        {label}
-      </span>
-    );
+    return <span style={{ ...base, background: "#EDE9FF", color: "#6C4CF1" }}>{label}</span>;
   }
   return (
     <span style={{
-      fontSize: 11, fontWeight: 600,
-      padding: "3px 10px", borderRadius: 999,
+      ...base,
       background: "rgba(255,255,255,0.18)",
       backdropFilter: "blur(8px)",
       color: "white",
-      display: "inline-block",
       border: "1px solid rgba(255,255,255,0.25)",
     }}>
       ✦ {label}
