@@ -6,258 +6,249 @@ import { trackEvent } from "@/lib/analytics";
 import { blogs, Blog } from "@/data/blogs";
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Custom thumbnail illustrations — one per post
-// Light pastel backgrounds, rich editorial diagrams
+// Blog thumbnail illustrations — one per post
+// Style: white card bg, bold dark title, purple→pink gradient illustration
 // ─────────────────────────────────────────────────────────────────────────────
 
 function ThumbTopAgents() {
-  const agents = ["Coveo","Cognigy","Amelia","Darktrace","Rex","Joy","ONEai","curatle","Likely.AI","CrowdStrike"];
+  const bars: [string, string][] = [
+    ["Coveo",     "#7C3AED"],
+    ["Cognigy",   "#9130DF"],
+    ["Amelia",    "#A525CA"],
+    ["Darktrace", "#B82DAF"],
+    ["Salesloft", "#CB3089"],
+    ["Likely.AI", "#DB3468"],
+    ["ONEai",     "#F43F5E"],
+  ];
   return (
-    <svg viewBox="0 0 560 294" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width:"100%", height:"100%", display:"block" }}>
-      <rect width="560" height="294" fill="url(#g1)"/>
+    <svg viewBox="0 0 560 294" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:"100%",height:"100%",display:"block"}}>
       <defs>
-        <linearGradient id="g1" x1="0" y1="0" x2="560" y2="294" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#EDE9FF"/>
-          <stop offset="1" stopColor="#F5F0FF"/>
-        </linearGradient>
+        <radialGradient id="ta-glow" cx="78%" cy="50%" r="55%">
+          <stop stopColor="#FCA5A5" stopOpacity="0.35"/>
+          <stop offset="0.6" stopColor="#F9A8D4" stopOpacity="0.18"/>
+          <stop offset="1" stopColor="white" stopOpacity="0"/>
+        </radialGradient>
       </defs>
-      {/* subtle dot grid */}
-      {Array.from({length:8},(_,x)=>Array.from({length:5},(_,y)=>(
-        <circle key={`${x}${y}`} cx={32+x*72} cy={30+y*60} r="1.5" fill="rgba(108,76,241,0.12)"/>
-      )))}
-      {/* big number */}
-      <text x="36" y="108" fontSize="90" fontWeight="800" fill="rgba(108,76,241,0.09)" fontFamily="system-ui,sans-serif" letterSpacing="-4">10</text>
-      {/* heading */}
-      <text x="36" y="52" fontSize="13" fontWeight="700" fill="#6C4CF1" fontFamily="system-ui,sans-serif" letterSpacing="2">TOP 10</text>
-      <text x="36" y="74" fontSize="18" fontWeight="800" fill="#2D1B69" fontFamily="system-ui,sans-serif" letterSpacing="-0.5">AI Agents of 2025</text>
-      {/* agent pills — 2 columns of 5 */}
-      {agents.map((name, i) => {
-        const col = i < 5 ? 0 : 1;
-        const row = i % 5;
-        const x = col === 0 ? 30 : 300;
-        const y = 120 + row * 34;
-        return (
-          <g key={name}>
-            <rect x={x} y={y} width={col===0?240:210} height="26" rx="13" fill="white" fillOpacity="0.85" stroke="rgba(108,76,241,0.2)" strokeWidth="1"/>
-            <circle cx={x+16} cy={y+13} r="8" fill={`rgba(108,76,241,${0.4+i*0.06})`}/>
-            <text x={x+16} y={y+17} textAnchor="middle" fontSize="8" fontWeight="700" fill="white" fontFamily="system-ui,sans-serif">{i+1}</text>
-            <text x={x+30} y={y+17} fontSize="10.5" fontWeight="500" fill="#2D1B69" fontFamily="system-ui,sans-serif">{name}</text>
-          </g>
-        );
-      })}
-      {/* AgenticLib watermark */}
-      <text x="530" y="284" textAnchor="end" fontSize="9" fill="rgba(108,76,241,0.35)" fontFamily="system-ui,sans-serif" fontWeight="600">AgenticLib</text>
+      <rect width="560" height="294" fill="white"/>
+      <rect width="560" height="294" fill="url(#ta-glow)"/>
+      <text x="28" y="52" fontSize="20" fontWeight="800" fill="#18103E" fontFamily="system-ui,sans-serif">Top 10 AI Agents</text>
+      <text x="28" y="73" fontSize="13" fill="#7C6EA8" fontFamily="system-ui,sans-serif">You Need to Know About in 2025</text>
+      <line x1="28" y1="87" x2="195" y2="87" stroke="#EDE9FF" strokeWidth="1.5"/>
+      {bars.map(([label, color], i) => (
+        <g key={label}>
+          <rect x={222} y={22+i*38} width={316} height={32} rx="9" fill={color}/>
+          <rect x={222} y={22+i*38} width={36} height={32} rx="9" fill="rgba(255,255,255,0.18)"/>
+          <text x={240} y={22+i*38+22} textAnchor="middle" fontSize="11" fontWeight="800" fill="white" fontFamily="system-ui,sans-serif">{i+1}</text>
+          <text x={268} y={22+i*38+22} fontSize="12" fill="rgba(255,255,255,0.95)" fontFamily="system-ui,sans-serif">{label}</text>
+        </g>
+      ))}
     </svg>
   );
 }
 
 function ThumbEverydayAssistants() {
-  const tasks = [
-    { angle: -90, label: "Schedule Meetings",  icon: "📅" },
-    { angle: -18, label: "Write Emails",        icon: "✉️"  },
-    { angle:  54, label: "Analyse Data",        icon: "📊"  },
-    { angle: 126, label: "Manage Tasks",        icon: "✅"  },
-    { angle: 198, label: "Research Topics",     icon: "🔍"  },
-  ];
-  const cx = 280, cy = 152, R = 108;
   return (
-    <svg viewBox="0 0 560 294" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width:"100%", height:"100%", display:"block" }}>
-      <rect width="560" height="294" fill="url(#g2)"/>
+    <svg viewBox="0 0 560 294" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:"100%",height:"100%",display:"block"}}>
       <defs>
-        <linearGradient id="g2" x1="0" y1="0" x2="560" y2="294" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FDF2FF"/>
-          <stop offset="1" stopColor="#F9EEFF"/>
-        </linearGradient>
+        <radialGradient id="ea-p1" cx="33%" cy="28%" r="72%">
+          <stop offset="0%" stopColor="#C4B5FD"/>
+          <stop offset="45%" stopColor="#7C3AED"/>
+          <stop offset="100%" stopColor="#4C1D95"/>
+        </radialGradient>
+        <radialGradient id="ea-p2" cx="33%" cy="28%" r="72%">
+          <stop offset="0%" stopColor="#F0ABFC"/>
+          <stop offset="45%" stopColor="#A21CAF"/>
+          <stop offset="100%" stopColor="#6B21A8"/>
+        </radialGradient>
+        <radialGradient id="ea-p3" cx="33%" cy="28%" r="72%">
+          <stop offset="0%" stopColor="#FBCFE8"/>
+          <stop offset="45%" stopColor="#EC4899"/>
+          <stop offset="100%" stopColor="#9D174D"/>
+        </radialGradient>
+        <radialGradient id="ea-glow" cx="50%" cy="65%" r="58%">
+          <stop stopColor="#F9A8D4" stopOpacity="0.28"/>
+          <stop offset="1" stopColor="white" stopOpacity="0"/>
+        </radialGradient>
       </defs>
-      {/* orbit ring */}
-      <circle cx={cx} cy={cy} r={R} stroke="rgba(147,51,234,0.15)" strokeWidth="1.5" strokeDasharray="6 5"/>
-      {/* connector lines */}
-      {tasks.map(({angle}) => {
-        const rad = (angle*Math.PI)/180;
-        const nx = cx + R*Math.cos(rad), ny = cy + R*Math.sin(rad);
-        return <line key={angle} x1={cx} y1={cy} x2={nx} y2={ny} stroke="rgba(147,51,234,0.18)" strokeWidth="1.2"/>;
-      })}
-      {/* task nodes */}
-      {tasks.map(({angle, label, icon}) => {
-        const rad = (angle*Math.PI)/180;
-        const nx = cx + R*Math.cos(rad), ny = cy + R*Math.sin(rad);
-        const isLeft = nx < cx - 10;
-        return (
-          <g key={label}>
-            <circle cx={nx} cy={ny} r="28" fill="white" fillOpacity="0.9" stroke="rgba(147,51,234,0.25)" strokeWidth="1.2"/>
-            <text x={nx} y={ny+5} textAnchor="middle" fontSize="16">{icon}</text>
-            <text x={isLeft ? nx-36 : nx+36} y={ny+4} textAnchor={isLeft?"end":"start"} fontSize="10.5" fontWeight="600" fill="#5B21B6" fontFamily="system-ui,sans-serif">{label}</text>
-          </g>
-        );
-      })}
-      {/* centre */}
-      <circle cx={cx} cy={cy} r="42" fill="white" stroke="rgba(147,51,234,0.3)" strokeWidth="1.8"/>
-      <text x={cx} y={cy-6} textAnchor="middle" fontSize="18" fontWeight="800" fill="#7C3AED" fontFamily="system-ui,sans-serif">AI</text>
-      <text x={cx} y={cy+12} textAnchor="middle" fontSize="10" fill="#9585C8" fontFamily="system-ui,sans-serif">Agent</text>
-      {/* header */}
-      <text x="36" y="32" fontSize="13" fontWeight="700" fill="#9333EA" fontFamily="system-ui,sans-serif" letterSpacing="1.5">EVERYDAY WORK</text>
-      <text x="530" y="284" textAnchor="end" fontSize="9" fill="rgba(147,51,234,0.35)" fontFamily="system-ui,sans-serif" fontWeight="600">AgenticLib</text>
+      <rect width="560" height="294" fill="white"/>
+      <rect width="560" height="294" fill="url(#ea-glow)"/>
+      <text x="28" y="46" fontSize="16" fontWeight="800" fill="#18103E" fontFamily="system-ui,sans-serif">How AI Agents Are Becoming</text>
+      <text x="28" y="66" fontSize="16" fontWeight="800" fill="#18103E" fontFamily="system-ui,sans-serif">Our Everyday Assistants</text>
+      {/* dashed connectors */}
+      <line x1="192" y1="174" x2="252" y2="168" stroke="#C084FC" strokeWidth="1.5" strokeDasharray="5 4"/>
+      <line x1="318" y1="167" x2="372" y2="174" stroke="#E879F9" strokeWidth="1.5" strokeDasharray="5 4"/>
+      {/* Person 1 — purple */}
+      <ellipse cx="165" cy="218" rx="46" ry="37" fill="url(#ea-p1)" style={{filter:"drop-shadow(0 8px 16px rgba(108,76,241,0.25))"}}/>
+      <circle cx="165" cy="168" r="32" fill="url(#ea-p1)" style={{filter:"drop-shadow(0 5px 12px rgba(108,76,241,0.22))"}}/>
+      {/* Person 2 — purple-pink */}
+      <ellipse cx="283" cy="213" rx="48" ry="39" fill="url(#ea-p2)" style={{filter:"drop-shadow(0 8px 16px rgba(162,28,175,0.25))"}}/>
+      <circle cx="283" cy="160" r="34" fill="url(#ea-p2)" style={{filter:"drop-shadow(0 5px 12px rgba(162,28,175,0.22))"}}/>
+      {/* Person 3 — pink */}
+      <ellipse cx="400" cy="218" rx="46" ry="37" fill="url(#ea-p3)" style={{filter:"drop-shadow(0 8px 16px rgba(236,72,153,0.25))"}}/>
+      <circle cx="400" cy="168" r="32" fill="url(#ea-p3)" style={{filter:"drop-shadow(0 5px 12px rgba(236,72,153,0.22))"}}/>
+      {/* Speech bubble — left figure */}
+      <rect x="22" y="96" width="128" height="54" rx="12" fill="white" stroke="#E9D5FF" strokeWidth="1.5" style={{filter:"drop-shadow(0 2px 10px rgba(108,76,241,0.1))"}}/>
+      <polygon points="78,150 86,163 92,150" fill="white" stroke="#E9D5FF" strokeWidth="1.5" strokeLinejoin="round"/>
+      <rect x="38" y="113" width="96" height="7" rx="3.5" fill="#EDE9FF"/>
+      <rect x="38" y="126" width="72" height="7" rx="3.5" fill="#EDE9FF"/>
+      <circle cx="38" cy="146" r="6" fill="#F9A8D4"/>
+      {/* Speech bubble — center figure */}
+      <rect x="218" y="84" width="130" height="54" rx="12" fill="white" stroke="#F5D0FE" strokeWidth="1.5" style={{filter:"drop-shadow(0 2px 10px rgba(192,38,211,0.1))"}}/>
+      <polygon points="272,138 280,151 288,138" fill="white" stroke="#F5D0FE" strokeWidth="1.5" strokeLinejoin="round"/>
+      <rect x="234" y="101" width="100" height="7" rx="3.5" fill="#F5D0FE"/>
+      <rect x="234" y="114" width="80" height="7" rx="3.5" fill="#F5D0FE"/>
+      <circle cx="320" cy="128" r="6" fill="#DDD6FE"/>
+      {/* Speech bubble — right figure */}
+      <rect x="410" y="90" width="128" height="54" rx="12" fill="white" stroke="#FBCFE8" strokeWidth="1.5" style={{filter:"drop-shadow(0 2px 10px rgba(236,72,153,0.1))"}}/>
+      <polygon points="462,144 470,157 478,144" fill="white" stroke="#FBCFE8" strokeWidth="1.5" strokeLinejoin="round"/>
+      <rect x="426" y="107" width="98" height="7" rx="3.5" fill="#FBCFE8"/>
+      <rect x="426" y="120" width="76" height="7" rx="3.5" fill="#FBCFE8"/>
+      <circle cx="506" cy="134" r="6" fill="#C084FC"/>
     </svg>
   );
 }
 
 function ThumbAgentsVsSoftware() {
   return (
-    <svg viewBox="0 0 560 294" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width:"100%", height:"100%", display:"block" }}>
-      <rect width="560" height="294" fill="url(#g3)"/>
+    <svg viewBox="0 0 560 294" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:"100%",height:"100%",display:"block"}}>
       <defs>
-        <linearGradient id="g3" x1="0" y1="0" x2="560" y2="294" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#EFF4FF"/>
-          <stop offset="1" stopColor="#EDE9FF"/>
-        </linearGradient>
+        <radialGradient id="avs-fig" cx="33%" cy="28%" r="72%">
+          <stop offset="0%" stopColor="#DDD6FE"/>
+          <stop offset="40%" stopColor="#8B5CF6"/>
+          <stop offset="75%" stopColor="#7C3AED"/>
+          <stop offset="100%" stopColor="#4C1D95"/>
+        </radialGradient>
+        <radialGradient id="avs-glow" cx="28%" cy="70%" r="52%">
+          <stop stopColor="#A78BFA" stopOpacity="0.22"/>
+          <stop offset="1" stopColor="white" stopOpacity="0"/>
+        </radialGradient>
       </defs>
-
-      {/* LEFT panel */}
-      <rect x="20" y="20" width="238" height="254" rx="16" fill="white" fillOpacity="0.7" stroke="rgba(108,76,241,0.15)" strokeWidth="1"/>
-      <text x="139" y="52" textAnchor="middle" fontSize="11" fontWeight="700" fill="#9585C8" fontFamily="system-ui,sans-serif" letterSpacing="2">TRADITIONAL</text>
-      {/* flow boxes */}
-      {[["📥 Input",60],["⚙️ Rule Check",100],["✅ Execute",140],["📤 Output",180]].map(([label,y])=>(
-        <g key={String(y)}>
-          <rect x="44" y={Number(y)} width="170" height="30" rx="8" fill="rgba(108,76,241,0.07)" stroke="rgba(108,76,241,0.18)" strokeWidth="1"/>
-          <text x="129" y={Number(y)+20} textAnchor="middle" fontSize="11" fill="#4B3A8A" fontFamily="system-ui,sans-serif">{label as string}</text>
-        </g>
-      ))}
-      {[60,100,140].map(y=>(
-        <path key={y} d={`M129 ${y+30} L129 ${y+36}`} stroke="rgba(108,76,241,0.3)" strokeWidth="1.5" strokeLinecap="round" markerEnd="url(#arr)"/>
-      ))}
-      <text x="139" y="232" textAnchor="middle" fontSize="10" fill="#9585C8" fontFamily="system-ui,sans-serif" fontStyle="italic">Rigid. Predictable.</text>
-
-      {/* RIGHT panel */}
-      <rect x="302" y="20" width="238" height="254" rx="16" fill="white" fillOpacity="0.7" stroke="rgba(124,58,237,0.25)" strokeWidth="1.5"/>
-      <text x="421" y="52" textAnchor="middle" fontSize="11" fontWeight="700" fill="#7C3AED" fontFamily="system-ui,sans-serif" letterSpacing="2">AI AGENT</text>
-      {/* reasoning nodes */}
-      {[["🎯 Goal",78],["🧠 Reason",118],["🔧 Use Tools",158],["💬 Adapt",198]].map(([label,y])=>(
-        <g key={String(y)}>
-          <rect x="326" y={Number(y)} width="190" height="30" rx="8" fill="rgba(124,58,237,0.08)" stroke="rgba(124,58,237,0.3)" strokeWidth="1.2"/>
-          <text x="421" y={Number(y)+20} textAnchor="middle" fontSize="11" fontWeight="500" fill="#3B1E7A" fontFamily="system-ui,sans-serif">{label as string}</text>
-        </g>
-      ))}
-      {/* curved connections */}
-      {[78,118,158].map(y=>(
-        <path key={y} d={`M421 ${y+30} Q440 ${y+37} 421 ${y+36}`} stroke="rgba(124,58,237,0.35)" strokeWidth="1.5" strokeLinecap="round"/>
-      ))}
-      <text x="421" y="240" textAnchor="middle" fontSize="10" fill="#7C3AED" fontFamily="system-ui,sans-serif" fontStyle="italic">Adaptive. Intelligent.</text>
-
+      <rect width="560" height="294" fill="white"/>
+      <rect width="560" height="294" fill="url(#avs-glow)"/>
+      <text x="28" y="44" fontSize="15.5" fontWeight="800" fill="#18103E" fontFamily="system-ui,sans-serif">AI Agents vs Traditional Software:</text>
+      <text x="28" y="63" fontSize="15.5" fontWeight="800" fill="#18103E" fontFamily="system-ui,sans-serif">What&apos;s Actually Different?</text>
+      {/* AI Agent blob figure */}
+      <ellipse cx="128" cy="220" rx="54" ry="44" fill="url(#avs-fig)" style={{filter:"drop-shadow(0 8px 18px rgba(108,76,241,0.28))"}}/>
+      <circle cx="128" cy="160" r="40" fill="url(#avs-fig)" style={{filter:"drop-shadow(0 6px 14px rgba(108,76,241,0.25))"}}/>
+      <text x="128" y="278" textAnchor="middle" fontSize="11" fontWeight="600" fill="#7C3AED" fontFamily="system-ui,sans-serif">AI Agent</text>
       {/* VS badge */}
-      <circle cx="280" cy="147" r="22" fill="white" stroke="rgba(108,76,241,0.35)" strokeWidth="1.5"/>
-      <text x="280" y="153" textAnchor="middle" fontSize="14" fontWeight="800" fill="#6C4CF1" fontFamily="system-ui,sans-serif">vs</text>
-
-      <text x="530" y="284" textAnchor="end" fontSize="9" fill="rgba(108,76,241,0.35)" fontFamily="system-ui,sans-serif" fontWeight="600">AgenticLib</text>
+      <circle cx="278" cy="185" r="30" fill="white" stroke="#EDE9FF" strokeWidth="2" style={{filter:"drop-shadow(0 4px 14px rgba(108,76,241,0.15))"}}/>
+      <text x="278" y="192" textAnchor="middle" fontSize="15" fontWeight="800" fill="#7C3AED" fontFamily="system-ui,sans-serif">VS</text>
+      {/* Software window */}
+      <rect x="346" y="98" width="198" height="155" rx="14" fill="#170D2F" style={{filter:"drop-shadow(0 8px 22px rgba(23,13,47,0.35))"}}/>
+      <circle cx="367" cy="119" r="5.5" fill="#F87171"/>
+      <circle cx="382" cy="119" r="5.5" fill="#FBBF24"/>
+      <circle cx="397" cy="119" r="5.5" fill="#34D399"/>
+      <line x1="346" y1="132" x2="544" y2="132" stroke="rgba(255,255,255,0.08)" strokeWidth="1"/>
+      <rect x="362" y="145" width="120" height="6" rx="3" fill="rgba(255,255,255,0.15)"/>
+      <rect x="362" y="157" width="96" height="6" rx="3" fill="rgba(167,139,250,0.45)"/>
+      <rect x="362" y="169" width="140" height="6" rx="3" fill="rgba(255,255,255,0.1)"/>
+      <rect x="362" y="181" width="76" height="6" rx="3" fill="rgba(249,168,212,0.45)"/>
+      <rect x="362" y="193" width="110" height="6" rx="3" fill="rgba(255,255,255,0.12)"/>
+      <rect x="362" y="205" width="90" height="6" rx="3" fill="rgba(167,139,250,0.3)"/>
+      <rect x="362" y="217" width="130" height="6" rx="3" fill="rgba(255,255,255,0.1)"/>
+      <text x="445" y="278" textAnchor="middle" fontSize="10.5" fontWeight="500" fill="#9585C8" fontFamily="system-ui,sans-serif">Traditional Software</text>
     </svg>
   );
 }
 
 function ThumbAppsWontBeSame() {
-  const appLabels = ["Search","Shop","Plan","Book","Compare"];
   return (
-    <svg viewBox="0 0 560 294" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width:"100%", height:"100%", display:"block" }}>
-      <rect width="560" height="294" fill="url(#g4)"/>
+    <svg viewBox="0 0 560 294" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:"100%",height:"100%",display:"block"}}>
       <defs>
-        <linearGradient id="g4" x1="0" y1="0" x2="560" y2="294" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FFF0F9"/>
-          <stop offset="1" stopColor="#FDF2FF"/>
+        <linearGradient id="waw-wave" x1="0" y1="294" x2="560" y2="0" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stopColor="#7C3AED"/>
+          <stop offset="40%" stopColor="#C026D3"/>
+          <stop offset="70%" stopColor="#EC4899"/>
+          <stop offset="100%" stopColor="#FB7185" stopOpacity="0.75"/>
         </linearGradient>
+        <radialGradient id="waw-glow" cx="55%" cy="50%" r="55%">
+          <stop stopColor="#F9A8D4" stopOpacity="0.25"/>
+          <stop offset="1" stopColor="white" stopOpacity="0"/>
+        </radialGradient>
       </defs>
-
-      {/* BEFORE label */}
-      <text x="40" y="36" fontSize="11" fontWeight="700" fill="#9585C8" fontFamily="system-ui,sans-serif" letterSpacing="2">BEFORE</text>
-      {/* scattered app tiles */}
-      {appLabels.map((label, i) => {
-        const positions = [[28,52],[28,110],[28,168],[104,80],[104,140]];
-        const [ax,ay] = positions[i];
-        return (
-          <g key={label} opacity={0.55 + i*0.07}>
-            <rect x={ax} y={ay} width="64" height="54" rx="12" fill="white" stroke="rgba(219,39,119,0.2)" strokeWidth="1.2"/>
-            <text x={ax+32} y={ay+22} textAnchor="middle" fontSize="18">
-              {["🔍","🛍️","📅","🎫","⚖️"][i]}
-            </text>
-            <text x={ax+32} y={ay+40} textAnchor="middle" fontSize="8.5" fill="#9585C8" fontFamily="system-ui,sans-serif">{label}</text>
-          </g>
-        );
-      })}
-
-      {/* arrow */}
-      <path d="M200 147 L310 147" stroke="#DB2777" strokeWidth="2.5" strokeLinecap="round"/>
-      <path d="M302 140 L312 147 L302 154" stroke="#DB2777" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <text x="255" y="138" textAnchor="middle" fontSize="9.5" fontWeight="600" fill="#DB2777" fontFamily="system-ui,sans-serif">delegate</text>
-
-      {/* AFTER: AI Agent card */}
-      <rect x="322" y="72" width="208" height="150" rx="18" fill="white" stroke="rgba(219,39,119,0.28)" strokeWidth="1.5"/>
-      <text x="402" y="102" textAnchor="middle" fontSize="11" fontWeight="700" fill="#9585C8" fontFamily="system-ui,sans-serif" letterSpacing="2">AI AGENT</text>
-      <circle cx="426" cy="143" r="30" fill="#FDF2FF" stroke="rgba(219,39,119,0.3)" strokeWidth="1.5"/>
-      <text x="426" y="139" textAnchor="middle" fontSize="13" fontWeight="800" fill="#7C3AED" fontFamily="system-ui,sans-serif">AI</text>
-      <text x="426" y="155" textAnchor="middle" fontSize="9" fill="#DB2777" fontFamily="system-ui,sans-serif">handles it</text>
-      <rect x="342" y="186" width="168" height="8" rx="4" fill="rgba(219,39,119,0.1)"/>
-      <rect x="356" y="200" width="138" height="7" rx="3.5" fill="rgba(219,39,119,0.07)"/>
-
-      {/* AFTER label */}
-      <text x="426" y="238" textAnchor="middle" fontSize="11" fontWeight="700" fill="#DB2777" fontFamily="system-ui,sans-serif" letterSpacing="2">AFTER</text>
-
-      <text x="530" y="284" textAnchor="end" fontSize="9" fill="rgba(219,39,119,0.35)" fontFamily="system-ui,sans-serif" fontWeight="600">AgenticLib</text>
+      <rect width="560" height="294" fill="white"/>
+      <rect width="560" height="294" fill="url(#waw-glow)"/>
+      {/* gradient wave ribbon */}
+      <path d="M-10 222 C90 168 200 148 322 116 C402 94 462 70 582 50 L582 160 C462 180 402 204 322 226 C200 258 90 278 -10 332 Z"
+        fill="url(#waw-wave)" opacity="0.72"/>
+      {/* Floating app icon circles */}
+      <circle cx="316" cy="110" r="22" fill="#7C3AED"/>
+      <text x="316" y="118" textAnchor="middle" fontSize="16">💬</text>
+      <circle cx="358" cy="74" r="17" fill="#A855F7"/>
+      <text x="358" y="80" textAnchor="middle" fontSize="11" fill="white" fontWeight="700">✓</text>
+      <circle cx="287" cy="76" r="15" fill="#EC4899"/>
+      <text x="287" y="82" textAnchor="middle" fontSize="11" fill="white">★</text>
+      <circle cx="382" cy="107" r="19" fill="#C026D3"/>
+      <text x="382" y="114" textAnchor="middle" fontSize="13">👤</text>
+      <circle cx="350" cy="144" r="14" fill="#DB2777" style={{opacity:0.8}}/>
+      {/* Phone */}
+      <rect x="398" y="50" width="130" height="222" rx="22" fill="white" stroke="#18103E" strokeWidth="3" style={{filter:"drop-shadow(0 8px 22px rgba(0,0,0,0.12))"}}/>
+      <rect x="438" y="64" width="50" height="7" rx="3.5" fill="#D1D5DB"/>
+      <rect x="410" y="84" width="106" height="170" rx="8" fill="#F8F7FF"/>
+      <rect x="422" y="98" width="35" height="35" rx="10" fill="#EDE9FF"/>
+      <rect x="465" y="98" width="35" height="35" rx="10" fill="#FDF2FF"/>
+      <rect x="422" y="141" width="35" height="35" rx="10" fill="#FDF4FF"/>
+      <rect x="465" y="141" width="35" height="35" rx="10" fill="#F0EEFF"/>
+      <rect x="422" y="184" width="35" height="35" rx="10" fill="#F5F3FF"/>
+      <rect x="465" y="184" width="35" height="35" rx="10" fill="#FEF3C7"/>
+      <circle cx="463" cy="262" r="11" fill="white" stroke="#E5E7EB" strokeWidth="2"/>
+      {/* Title */}
+      <text x="28" y="48" fontSize="18" fontWeight="800" fill="#18103E" fontFamily="system-ui,sans-serif">You Won&apos;t Use Apps</text>
+      <text x="28" y="70" fontSize="18" fontWeight="800" fill="#18103E" fontFamily="system-ui,sans-serif">the Same Way Again</text>
     </svg>
   );
 }
 
 function ThumbSearchToDelegation() {
   return (
-    <svg viewBox="0 0 560 294" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width:"100%", height:"100%", display:"block" }}>
-      <rect width="560" height="294" fill="url(#g5)"/>
+    <svg viewBox="0 0 560 294" fill="none" xmlns="http://www.w3.org/2000/svg" style={{width:"100%",height:"100%",display:"block"}}>
       <defs>
-        <linearGradient id="g5" x1="0" y1="0" x2="560" y2="294" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#EDEAFF"/>
-          <stop offset="1" stopColor="#F0EEFF"/>
-        </linearGradient>
+        <radialGradient id="std-orb" cx="34%" cy="28%" r="72%">
+          <stop offset="0%" stopColor="#EDE9FE"/>
+          <stop offset="22%" stopColor="#A855F7"/>
+          <stop offset="52%" stopColor="#7C3AED"/>
+          <stop offset="76%" stopColor="#BE185D"/>
+          <stop offset="100%" stopColor="#F43F5E" stopOpacity="0.9"/>
+        </radialGradient>
+        <radialGradient id="std-bg" cx="50%" cy="62%" r="62%">
+          <stop stopColor="#F9A8D4" stopOpacity="0.18"/>
+          <stop offset="0.5" stopColor="#DDD6FE" stopOpacity="0.12"/>
+          <stop offset="1" stopColor="white" stopOpacity="0"/>
+        </radialGradient>
       </defs>
-
-      {/* top label */}
-      <text x="280" y="30" textAnchor="middle" fontSize="13" fontWeight="700" fill="#6C4CF1" fontFamily="system-ui,sans-serif" letterSpacing="1">The Internet is Shifting</text>
-
-      {/* FROM row */}
-      <text x="36" y="62" fontSize="10" fontWeight="700" fill="#9585C8" fontFamily="system-ui,sans-serif" letterSpacing="2">FROM</text>
-      {["Search","Compare","Decide","Act"].map((label,i)=>(
-        <g key={label}>
-          <rect x={36+i*122} y={70} width="104" height="34" rx="10" fill="rgba(255,255,255,0.7)" stroke="rgba(108,76,241,0.2)" strokeWidth="1"/>
-          <text x={88+i*122} y={92} textAnchor="middle" fontSize="12" fill="#9585C8" fontFamily="system-ui,sans-serif">{label}</text>
-          {i<3 && <path d={`M${140+i*122} 87 L${150+i*122} 87`} stroke="rgba(108,76,241,0.25)" strokeWidth="1.5" strokeLinecap="round"/>}
-        </g>
-      ))}
-      {/* strikethrough */}
-      <line x1="36" y1="87" x2="524" y2="87" stroke="rgba(224,64,160,0.4)" strokeWidth="1.5" strokeDasharray="8 5"/>
-
-      {/* divider */}
-      <line x1="40" y1="128" x2="520" y2="128" stroke="rgba(108,76,241,0.1)" strokeWidth="1"/>
-
-      {/* TO row */}
-      <text x="36" y="154" fontSize="10" fontWeight="700" fill="#6C4CF1" fontFamily="system-ui,sans-serif" letterSpacing="2">TO</text>
+      <rect width="560" height="294" fill="white"/>
+      <rect width="560" height="294" fill="url(#std-bg)"/>
+      <text x="28" y="44" fontSize="16" fontWeight="800" fill="#18103E" fontFamily="system-ui,sans-serif">The Internet Is Shifting</text>
+      <text x="28" y="65" fontSize="16" fontWeight="800" fill="#18103E" fontFamily="system-ui,sans-serif">From <tspan fill="#7C3AED">Search</tspan> to <tspan fill="#EC4899">Delegation</tspan></text>
+      {/* Search bar */}
+      <rect x="28" y="108" width="148" height="48" rx="24" fill="white" stroke="#E5E7EB" strokeWidth="1.5" style={{filter:"drop-shadow(0 2px 10px rgba(0,0,0,0.07))"}}/>
+      <circle cx="52" cy="132" r="10" fill="none" stroke="#9CA3AF" strokeWidth="2.5"/>
+      <line x1="59" y1="140" x2="66" y2="147" stroke="#9CA3AF" strokeWidth="2.5" strokeLinecap="round"/>
+      <rect x="72" y="126" width="80" height="10" rx="5" fill="#F3F4F6"/>
+      {/* Arrow 1 */}
+      <path d="M178 132 L205 150" stroke="#C084FC" strokeWidth="2.5" strokeLinecap="round"/>
+      <path d="M200 144 L207 151 L199 154" stroke="#C084FC" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* Gradient orb */}
+      <circle cx="278" cy="170" r="80" fill="url(#std-orb)" style={{filter:"drop-shadow(0 10px 24px rgba(124,58,237,0.3))"}}/>
+      {/* Arrow 2 */}
+      <path d="M358 155 L384 136" stroke="#EC4899" strokeWidth="2.5" strokeLinecap="round"/>
+      <path d="M380 141 L386 135 L378 132" stroke="#EC4899" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* Checklist card */}
+      <rect x="394" y="82" width="154" height="164" rx="16" fill="white" stroke="#EDE9FF" strokeWidth="1.5" style={{filter:"drop-shadow(0 4px 16px rgba(108,76,241,0.1))"}}/>
       {[
-        { label:"Ask",      sub:"Your goal",     active:false },
-        { label:"Delegate", sub:"AI handles it", active:true  },
-        { label:"Review",   sub:"Check result",  active:false },
-        { label:"Approve",  sub:"You decide",    active:false },
-      ].map(({label,sub,active},i)=>(
-        <g key={label}>
-          <rect x={36+i*122} y={162} width="104" height="52" rx="12"
-            fill={active ? "rgba(108,76,241,0.12)" : "rgba(255,255,255,0.75)"}
-            stroke={active ? "#7C3AED" : "rgba(108,76,241,0.2)"}
-            strokeWidth={active ? 1.8 : 1}/>
-          <text x={88+i*122} y={185} textAnchor="middle" fontSize="12.5" fontWeight={active?"700":"500"} fill={active?"#6C4CF1":"#4B3A8A"} fontFamily="system-ui,sans-serif">{label}</text>
-          <text x={88+i*122} y={202} textAnchor="middle" fontSize="9.5" fill={active?"#9333EA":"#9585C8"} fontFamily="system-ui,sans-serif">{sub}</text>
-          {i<3 && <path d={`M${140+i*122} 188 L${150+i*122} 188`} stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round"/>}
+        {y:118, done:true,  fill:"#7C3AED"},
+        {y:146, done:true,  fill:"#A855F7"},
+        {y:174, done:true,  fill:"#C026D3"},
+        {y:202, done:false, fill:"#E9D5FF"},
+      ].map(({y, done, fill}, i) => (
+        <g key={i}>
+          <circle cx="416" cy={y} r="10" fill={fill} fillOpacity={done ? 1 : 0.5}/>
+          {done && <path d={`M410 ${y} L414 ${y+4} L422 ${y-4}`} stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>}
+          <rect x="432" y={y-5} width={100} height="9" rx="4.5" fill={done ? "#EDE9FF" : "#F3F4F6"}/>
+          <rect x="432" y={y+9} width={76} height="7" rx="3.5" fill={done ? "#F5F3FF" : "#F9FAFB"}/>
         </g>
       ))}
-
-      {/* agent pill */}
-      <rect x="156" y="230" width="248" height="32" rx="16" fill="white" stroke="rgba(108,76,241,0.3)" strokeWidth="1.2"/>
-      <circle cx="176" cy="246" r="11" fill="#6C4CF1"/>
-      <text x="176" y="250" textAnchor="middle" fontSize="8" fontWeight="800" fill="white" fontFamily="system-ui,sans-serif">AI</text>
-      <text x="290" y="251" textAnchor="middle" fontSize="11" fill="#6C4CF1" fontFamily="system-ui,sans-serif" fontWeight="500">Agent handles the heavy lifting</text>
-
-      <text x="530" y="284" textAnchor="end" fontSize="9" fill="rgba(108,76,241,0.35)" fontFamily="system-ui,sans-serif" fontWeight="600">AgenticLib</text>
     </svg>
   );
 }
