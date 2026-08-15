@@ -30,7 +30,7 @@ export default async function BackstoryReportPage() {
     ]);
 
   return (
-    <main className="min-h-screen" style={{ background: "#F7F8FC" }}>
+    <main className="min-h-screen page-gap-fix" style={{ background: "#F7F8FC" }}>
       <div className="max-w-5xl mx-auto px-6 py-10">
 
         <div style={{ marginBottom: 28 }}>

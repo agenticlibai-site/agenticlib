@@ -77,7 +77,7 @@ export default async function SkincareVisibilityPage() {
 
   return (
     <main
-      className="min-h-screen relative overflow-hidden"
+      className="min-h-screen relative overflow-hidden page-gap-fix"
       style={{ background: "linear-gradient(160deg, #EEF0FD 0%, #F4F5FD 45%, #F9FAFE 100%)" }}
     >
       {/* Background grain */}

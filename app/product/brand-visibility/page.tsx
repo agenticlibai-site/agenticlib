@@ -34,7 +34,7 @@ export default async function BrandVisibilityPage() {
 
   return (
     <main
-      className="min-h-screen relative overflow-hidden"
+      className="min-h-screen relative overflow-hidden page-gap-fix"
       style={{ background: "linear-gradient(170deg, #FEF0F5 0%, #FDFAFF 28%, #FFF8FC 52%, #F8F3FF 76%, #FEF0F5 100%)", backgroundAttachment: "fixed" }}
     >
       {/* Background grain */}

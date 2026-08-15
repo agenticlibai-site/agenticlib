@@ -5,7 +5,7 @@ export const metadata = {
 
 export default function SkincarePage() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen page-gap-fix">
 
       <div className="max-w-4xl mx-auto px-8 py-20 text-center">
         <div

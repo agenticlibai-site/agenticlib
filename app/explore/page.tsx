@@ -84,7 +84,7 @@ export default function ExplorePage() {
 
   return (
     <>
-      <div className="min-h-screen">
+      <div className="min-h-screen page-gap-fix">
 
 <main className="max-w-5xl mx-auto px-6 pt-6 pb-16">
 

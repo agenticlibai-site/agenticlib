@@ -203,7 +203,7 @@ export default function BlogPostClient({ blog, related }: Props) {
   }, [blog.slug, blog.title]);
 
   return (
-    <div className="min-h-screen page-bg">
+    <div className="min-h-screen page-bg page-gap-fix">
 
       {/* Background blobs */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden z-0">

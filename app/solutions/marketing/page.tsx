@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function MarketingPage() {
   return (
-    <main className="min-h-screen" style={{ background: "linear-gradient(170deg, #FEF0F5 0%, #FDFAFF 28%, #FFF8FC 52%, #F8F3FF 76%, #FEF0F5 100%)" }}>
+    <main className="min-h-screen page-gap-fix" style={{ background: "linear-gradient(170deg, #FEF0F5 0%, #FDFAFF 28%, #FFF8FC 52%, #F8F3FF 76%, #FEF0F5 100%)" }}>
       <div className="max-w-4xl mx-auto px-8 pt-16 pb-4 text-center">
         <div
           className="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-6"

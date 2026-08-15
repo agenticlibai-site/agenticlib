@@ -239,7 +239,7 @@ const handleSubmit = async () => {
 };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 flex flex-col items-center px-6">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-100 flex flex-col items-center px-6 page-gap-fix">
 
       {/* Title */}
       <h1 className="text-4xl font-semibold mb-8 text-center text-black">
