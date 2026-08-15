@@ -1593,7 +1593,7 @@ export default function SageCharts({
               />
 
               {/* Optional email */}
-              <p style={{ margin: "16px 0 8px", fontSize: 14, fontWeight: 600, color: "rgba(0,0,0,0.55)", letterSpacing: "0.03em", textTransform: "uppercase" as const }}>Your email <span style={{ fontWeight: 400, textTransform: "none" as const, letterSpacing: 0 }}>(optional — so we can follow up)</span></p>
+              <p style={{ margin: "16px 0 8px", fontSize: 14, fontWeight: 600, color: "rgba(0,0,0,0.55)", letterSpacing: "0.03em", textTransform: "uppercase" as const }}>Your email <span style={{ fontWeight: 400, textTransform: "none" as const, letterSpacing: 0 }}>(so we can follow up)</span></p>
               <input
                 type="email"
                 value={reqEmail}
