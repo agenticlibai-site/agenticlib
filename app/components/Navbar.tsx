@@ -82,6 +82,17 @@ export default function Navbar() {
           {/* NAV */}
           <nav className="nb-nav hidden md:flex items-center ml-10">
 
+            {/* Platform */}
+            <Link
+              href="/sage"
+              className="nb-link transition"
+              style={{ textDecoration: "none" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}
+            >
+              Platform
+            </Link>
+
             {/* Solutions mega dropdown */}
             <div className="relative group">
               <button
@@ -163,17 +174,6 @@ export default function Navbar() {
                 </div>
               </div>
             </div>
-
-            {/* Platform */}
-            <Link
-              href="/sage"
-              className="nb-link transition"
-              style={{ textDecoration: "none" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}
-            >
-              Platform
-            </Link>
 
             {/* Company */}
             <Link
