@@ -1009,10 +1009,10 @@ export default function SageCharts({
           position: "relative",
         }}>
           {/* Wordmark */}
-          <div style={{ display: "flex", alignItems: "baseline", gap: 5, lineHeight: 1 }}>
-            <span style={{ fontSize: 22, fontWeight: 800, letterSpacing: "-0.025em", color: "#F0EEFF" }}>Sage</span>
+          <div style={{ display: "flex", alignItems: "baseline", gap: 6, lineHeight: 1, fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+            <span style={{ fontSize: 24, fontWeight: 900, letterSpacing: "-0.03em", color: "#F0EEFF" }}>Sage</span>
             <span style={{
-              fontSize: 22, fontWeight: 800, letterSpacing: "-0.025em",
+              fontSize: 24, fontWeight: 900, letterSpacing: "-0.03em",
               background: "linear-gradient(90deg, #A78BFA, #F472B6)",
               WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
             }}>AI</span>
