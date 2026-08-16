@@ -362,7 +362,7 @@ export default function Home() {
           <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
             <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
             <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "#000", whiteSpace: "nowrap" }}>
-              Trusted by
+              Trusted by teams shipping AI agents
             </span>
             <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
           </div>
