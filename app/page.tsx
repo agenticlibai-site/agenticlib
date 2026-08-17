@@ -371,8 +371,8 @@ export default function Home() {
             <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", borderBottom: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "grayscale(1) brightness(0)"; el.style.textDecoration = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; el.style.textDecoration = "none"; }}>
               <img src="/lamigo logo .png" alt="Lamigo" style={{ height: 38, width: "auto", objectFit: "contain" }} />
             </a>
-            <a href="https://dexify.com.au/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", display: "flex", alignItems: "center", opacity: 0.55, filter: "grayscale(1)", mixBlendMode: "screen" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.55"; el.style.filter = "grayscale(1)"; }}>
-              <img src="/dexify logo.png" alt="Dexify" style={{ height: 38, width: "auto", objectFit: "contain", mixBlendMode: "screen" }} />
+            <a href="https://dexify.com.au/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; }}>
+              <img src="/dexify-logo.png" alt="Dexify" style={{ height: 32, width: "auto", objectFit: "contain" }} />
             </a>
           </div>
 
