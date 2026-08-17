@@ -371,6 +371,9 @@ export default function Home() {
             <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", borderBottom: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "grayscale(1) brightness(0)"; el.style.textDecoration = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; el.style.textDecoration = "none"; }}>
               <img src="/lamigo logo .png" alt="Lamigo" style={{ height: 38, width: "auto", objectFit: "contain" }} />
             </a>
+            <a href="https://dexify.com.au/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", display: "flex", alignItems: "center", opacity: 0.55, filter: "grayscale(1)", mixBlendMode: "screen" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.55"; el.style.filter = "grayscale(1)"; }}>
+              <img src="/dexify logo.png" alt="Dexify" style={{ height: 38, width: "auto", objectFit: "contain", mixBlendMode: "screen" }} />
+            </a>
           </div>
 
           {/* Supported by */}
@@ -390,8 +393,17 @@ export default function Home() {
             </div>
           </div>
 
+          {/* Testimonial label */}
+          <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "40px 0 0" }}>
+            <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
+            <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "#000", whiteSpace: "nowrap" }}>
+              Testimonial
+            </span>
+            <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
+          </div>
+
           {/* Testimonial */}
-          <div style={{ maxWidth: 560, margin: "40px auto 0", textAlign: "center" }}>
+          <div style={{ maxWidth: 560, margin: "20px auto 0", textAlign: "center" }}>
             <p style={{
               fontSize: 19,
               fontWeight: 700,
