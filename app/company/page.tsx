@@ -309,9 +309,7 @@ export default function CompanyPage() {
 
             <div className="co-right">
               <p className="co-subhead">
-                Every builder<br />
-                deserves to know<br />
-                what to build next.
+                Helping all AI Agent builders succeed.
               </p>
               <div className="co-body">
                 <p>
@@ -325,8 +323,7 @@ export default function CompanyPage() {
                   We believe that should change. Our vision is a world where every AI agent
                   builder, regardless of team size or runway, has a clear view of where they
                   stand in the conversations that drive their buyers' decisions, and a direct
-                  path to improving that position. Not because they asked a customer. Because
-                  they have Sage.
+                  path to improving that position.
                 </p>
               </div>
               <div className="co-footer">
