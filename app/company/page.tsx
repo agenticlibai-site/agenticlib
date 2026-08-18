@@ -12,7 +12,7 @@ export default function CompanyPage() {
       <style>{`
         .co-page {
           min-height: 100vh;
-          background: #f0eff5;
+          background: #FDF0F5;
           font-family: var(--font-schibsted), system-ui, sans-serif;
           margin-top: -68px;
           padding-top: 68px;
