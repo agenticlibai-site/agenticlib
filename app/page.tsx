@@ -335,10 +335,10 @@ export default function Home() {
             style={{
               zIndex: 2, position: "relative",
               maxWidth: 1280, margin: "0 auto",
-              padding: "120px 48px 56px",
+              padding: "120px 32px 56px 96px",
               display: "grid",
-              gridTemplateColumns: "420px 1fr",
-              gap: 56,
+              gridTemplateColumns: "400px 1fr",
+              gap: 64,
               alignItems: "center",
             }}
           >
