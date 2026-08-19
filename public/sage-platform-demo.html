@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sage AI Platform</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Browser Mockup ── */
+.browser-wrap {
+  width: 1060px;
+  border-radius: 0;
+  overflow: hidden;
+  box-shadow: none;
+}
+
+.browser-chrome {
+  background: #F0EFF4;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid rgba(0,0,0,0.09);
+  flex-shrink: 0;
+}
+.dots { display: flex; gap: 6px; }
+.dot { width: 11px; height: 11px; border-radius: 50%; }
+.dot-r { background: #FF5F57; }
+.dot-y { background: #FEBC2E; }
+.dot-g { background: #28C840; }
+.url-bar {
+  flex: 1;
+  background: rgba(255,255,255,0.75);
+  border: 1px solid rgba(0,0,0,0.10);
+  border-radius: 6px;
+  padding: 4px 12px;
+  font-size: 12px;
+  color: #555;
+  letter-spacing: -0.01em;
+  max-width: 340px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* ── App Layout ── */
+.app-frame {
+  display: flex;
+  height: 760px;
+  background: #F8F7FC;
+  overflow: hidden;
+}
+
+/* ── Sidebar ── */
+.sidebar {
+  width: 168px;
+  background: #FFFFFF;
+  border-right: 1px solid rgba(0,0,0,0.07);
+  padding: 18px 0 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex-shrink: 0;
+}
+.sb-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px 18px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  margin-bottom: 10px;
+}
+.sb-logo-mark {
+  width: 26px; height: 26px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #7C3AED, #C2186A);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.sb-logo-name { font-size: 13px; font-weight: 700; color: #0F0B1E; letter-spacing: -0.02em; }
+.sb-logo-sub  { font-size: 9px; color: #7C3AED; font-weight: 600; letter-spacing: 0.04em; }
+
+.sb-section { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #94A3B8; padding: 10px 14px 6px; }
+
+.sb-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 14px;
+  font-size: 12.5px; font-weight: 500; color: #4B5563;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.sb-item.active {
+  background: rgba(124,58,237,0.08);
+  color: #7C3AED;
+  font-weight: 700;
+  border-left: 2px solid #7C3AED;
+}
+.sb-item:not(.active):hover { background: rgba(0,0,0,0.03); }
+.sb-ico { width: 14px; height: 14px; flex-shrink: 0; opacity: 0.7; }
+.sb-item.active .sb-ico { opacity: 1; }
+
+.sb-divider { height: 1px; background: rgba(0,0,0,0.06); margin: 8px 14px; }
+
+/* ── Main Content ── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px 24px 32px;
+  background: #F8F7FC;
+}
+
+.main-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 18px;
+}
+.main-title { font-size: 18px; font-weight: 800; color: #0F0B1E; letter-spacing: -0.025em; margin-bottom: 3px; }
+.main-sub   { font-size: 12px; color: #6B7280; }
+.domain-badge {
+  font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: #7C3AED; background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.15);
+  padding: 3px 10px; border-radius: 100px; white-space: nowrap;
+}
+
+/* Tabs */
+.tab-row {
+  display: flex; gap: 2px; margin-bottom: 18px;
+  background: rgba(0,0,0,0.04); padding: 3px; border-radius: 8px;
+  width: fit-content;
+}
+.tab {
+  font-size: 11.5px; font-weight: 600; color: #6B7280;
+  padding: 5px 12px; border-radius: 6px; cursor: pointer;
+  white-space: nowrap; user-select: none;
+  transition: background 0.12s, color 0.12s, box-shadow 0.12s;
+}
+.tab.active { background: #fff; color: #0F0B1E; box-shadow: 0 1px 3px rgba(0,0,0,0.10); }
+.tab:not(.active):hover { background: rgba(255,255,255,0.5); color: #374151; }
+
+/* Cards */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.07);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Stat cards */
+.stat-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 16px; }
+.stat-card { padding: 14px 16px; }
+.stat-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.11em; color: #6B7280; margin-bottom: 8px; }
+.stat-value { font-size: 28px; font-weight: 800; color: #0F0B1E; letter-spacing: -0.03em; line-height: 1; margin-bottom: 5px; font-variant-numeric: tabular-nums; }
+.stat-sub   { font-size: 11px; font-weight: 500; color: #059669; }
+.stat-sub.neutral { color: #6B7280; }
+
+/* Chart section */
+.chart-row { display: grid; grid-template-columns: 1fr 220px; gap: 12px; margin-bottom: 16px; }
+.chart-card { padding: 16px 18px 14px; }
+.chart-title { font-size: 12px; font-weight: 700; color: #0F0B1E; margin-bottom: 12px; }
+.chart-svg { width: 100%; }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 10px; }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 600; color: #0F0B1E; }
+.legend-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+
+/* Right stat panels */
+.right-panels { display: flex; flex-direction: column; gap: 10px; }
+.llm-panel { padding: 12px 14px; flex: 1; }
+.llm-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.11em; color: #6B7280; margin-bottom: 10px; }
+.llm-row { display: flex; align-items: center; gap: 6px; margin-bottom: 7px; }
+.llm-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.llm-name { font-size: 11.5px; font-weight: 600; color: #0F0B1E; flex: 1; }
+.llm-val  { font-size: 11.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.llm-bar-bg { height: 3px; background: rgba(0,0,0,0.07); border-radius: 999px; margin-bottom: 8px; }
+.llm-bar-fill { height: 3px; border-radius: 999px; opacity: 0.65; }
+
+/* Use Case SoV */
+.section-title { font-size: 14px; font-weight: 800; color: #0F0B1E; letter-spacing: -0.02em; margin-bottom: 4px; }
+.section-sub   { font-size: 11px; color: #6B7280; margin-bottom: 12px; }
+.sov-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+.sov-card { padding: 14px 16px; display: flex; gap: 14px; align-items: center; }
+.sov-title { font-size: 11px; font-weight: 700; color: #0F0B1E; margin-bottom: 10px; letter-spacing: -0.01em; }
+
+.donut-wrap { position: relative; width: 72px; height: 72px; flex-shrink: 0; border-radius: 50%; }
+.donut-wrap::after {
+  content: '';
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  width: 42px; height: 42px;
+  background: #fff;
+  border-radius: 50%;
+}
+.sov-legend { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+.sov-row { display: flex; align-items: center; gap: 5px; }
+.sov-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+.sov-brand { font-size: 10.5px; font-weight: 600; color: #0F0B1E; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sov-pct   { font-size: 10.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* Feature Scores */
+.feat-card { padding: 4px 20px 16px; margin-bottom: 16px; overflow-x: auto; }
+.feat-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+.feat-table th {
+  padding: 13px 8px 10px;
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.09em; white-space: nowrap;
+  border-bottom: 1.5px solid rgba(0,0,0,0.07);
+}
+.feat-table th:first-child { text-align: left; padding-left: 0; color: #6B7280; min-width: 160px; }
+.feat-cluster-hdr td {
+  padding: 14px 8px 6px 0;
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.10em; color: #7C3AED;
+}
+.feat-table td { padding: 8px 8px; border-bottom: 1px solid rgba(0,0,0,0.04); vertical-align: middle; }
+.feat-table td:first-child { font-size: 12px; font-weight: 600; color: #0F0B1E; padding-left: 0; }
+.score-cell { display: flex; align-items: center; gap: 6px; }
+.score-bar-bg { width: 44px; height: 4px; background: rgba(0,0,0,0.07); border-radius: 999px; flex-shrink: 0; }
+.score-bar-fill { height: 4px; border-radius: 999px; }
+.score-num { font-size: 11.5px; font-weight: 700; color: #0F0B1E; font-variant-numeric: tabular-nums; }
+
+/* Competitor Feed */
+.comp-card { padding: 16px 18px; margin-bottom: 16px; }
+.comp-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.live-badge {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 700; color: #059669;
+  background: rgba(5,150,105,0.08); border: 1px solid rgba(5,150,105,0.18);
+  padding: 3px 10px; border-radius: 100px; white-space: nowrap;
+}
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: #059669; animation: pulse 2s infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+.feed-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.feed-item:last-child { border-bottom: none; padding-bottom: 0; }
+.feed-icon {
+  width: 30px; height: 30px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.feed-body { flex: 1; min-width: 0; }
+.feed-meta { display: flex; align-items: center; gap: 6px; margin-bottom: 3px; flex-wrap: wrap; }
+.feed-brand { font-size: 11px; font-weight: 700; }
+.feed-time  { font-size: 10px; color: #9CA3AF; }
+.feed-type  {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 1.5px 6px; border-radius: 4px;
+}
+.feed-text { font-size: 11.5px; color: #374151; line-height: 1.5; }
+.feed-text strong { color: #0F0B1E; font-weight: 700; }
+
+/* Actionable Insights */
+.insights-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.insight-card { padding: 14px 15px; }
+.insight-tag {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 4px; margin-bottom: 9px; display: inline-block;
+}
+.insight-title { font-size: 12.5px; font-weight: 700; color: #0F0B1E; letter-spacing: -0.01em; margin-bottom: 6px; line-height: 1.35; }
+.insight-body  { font-size: 11px; color: #4B5563; line-height: 1.55; margin-bottom: 10px; }
+.insight-sub   { display: flex; flex-direction: column; gap: 5px; }
+.insight-sub-item { display: flex; align-items: flex-start; gap: 6px; font-size: 10.5px; color: #374151; font-weight: 500; }
+.insight-sub-item::before { content: '→'; color: #7C3AED; font-weight: 700; flex-shrink: 0; margin-top: 0.5px; }
+
+.chart-axis { font-size: 9px; fill: rgba(0,0,0,0.38); }
+
+/* ── Benchmarking tab ── */
+.bench-layout { display: grid; grid-template-columns: 268px 1fr; gap: 12px; }
+.bench-form-card { padding: 16px 16px 18px; height: fit-content; }
+.bench-field { margin-bottom: 10px; }
+.bench-label { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: #6B7280; margin-bottom: 5px; }
+.bench-input {
+  border: 1.5px solid #E5E7EB; border-radius: 7px; padding: 7px 10px;
+  font-size: 12px; color: #374151; background: #fff; width: 100%;
+  font-family: inherit;
+}
+.bench-input.placeholder { color: #9CA3AF; }
+.bench-textarea { min-height: 52px; line-height: 1.5; }
+.bench-checks { display: flex; flex-direction: column; gap: 6px; }
+.bench-check-item { display: flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 500; color: #374151; cursor: pointer; }
+.bench-check-box {
+  width: 14px; height: 14px; border-radius: 4px; flex-shrink: 0;
+  border: 1.5px solid #D1D5DB; display: flex; align-items: center; justify-content: center;
+}
+.bench-check-box.checked { background: #7C3AED; border-color: #7C3AED; }
+.bench-check-box.checked::after { content: ''; width: 6px; height: 4px; border-left: 1.5px solid #fff; border-bottom: 1.5px solid #fff; transform: rotate(-45deg) translateY(-1px); display: block; }
+.bench-submit {
+  width: 100%; background: linear-gradient(135deg, #7C3AED, #C2186A);
+  color: white; border: none; border-radius: 8px; padding: 9px;
+  font-size: 12px; font-weight: 700; cursor: pointer; letter-spacing: -0.01em;
+  margin-top: 14px; font-family: inherit;
+}
+
+/* Result panels */
+.bench-results { display: flex; flex-direction: column; gap: 10px; }
+.bench-result-card { padding: 14px 16px 12px; }
+.bench-cluster-row { display: flex; align-items: center; gap: 10px; padding: 7px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.bench-cluster-row:last-child { border-bottom: none; }
+.bench-cluster-name { font-size: 11.5px; font-weight: 700; color: #0F0B1E; flex: 1; min-width: 0; }
+.bench-rank-badge {
+  font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 5px; flex-shrink: 0; white-space: nowrap;
+}
+.bench-sov-track { width: 80px; height: 5px; background: rgba(0,0,0,0.07); border-radius: 999px; flex-shrink: 0; position: relative; }
+.bench-sov-yours { height: 5px; border-radius: 999px; background: #7C3AED; opacity: 0.75; }
+.bench-leader-chip { font-size: 10px; font-weight: 700; color: #6B7280; white-space: nowrap; flex-shrink: 0; }
+
+.bench-feat-row { display: flex; align-items: center; gap: 8px; padding: 7px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.bench-feat-row:last-child { border-bottom: none; }
+.bench-feat-name { font-size: 11.5px; font-weight: 600; color: #0F0B1E; flex: 1; min-width: 0; }
+.bench-bar-group { position: relative; width: 100px; height: 6px; flex-shrink: 0; }
+.bench-bar-leader { position: absolute; top: 0; left: 0; height: 6px; border-radius: 999px; background: rgba(0,0,0,0.10); }
+.bench-bar-yours { position: absolute; top: 0; left: 0; height: 6px; border-radius: 999px; background: #7C3AED; }
+.bench-score-yours { font-size: 11.5px; font-weight: 800; color: #7C3AED; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+.bench-vs-chip { font-size: 10px; font-weight: 600; color: #9CA3AF; white-space: nowrap; flex-shrink: 0; }
+.bench-gap { font-size: 10.5px; font-weight: 800; padding: 1.5px 6px; border-radius: 4px; flex-shrink: 0; font-variant-numeric: tabular-nums; }
+.gap-high { background: rgba(239,68,68,0.08); color: #DC2626; }
+.gap-mid  { background: rgba(234,179,8,0.08); color: #B45309; }
+.gap-low  { background: rgba(5,150,105,0.08); color: #059669; }
+
+/* ── Brand Intelligence tab ── */
+.llm-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 16px; }
+.llm-card { padding: 13px 14px; }
+.llm-card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.llm-avatar {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; flex-shrink: 0;
+}
+.llm-card-name { font-size: 12.5px; font-weight: 700; color: #0F0B1E; letter-spacing: -0.01em; }
+.llm-card-sub  { font-size: 9.5px; color: #6B7280; }
+.llm-rank-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+.rank-num { width: 16px; height: 16px; border-radius: 4px; font-size: 9px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.rank-brand { font-size: 11.5px; font-weight: 600; color: #0F0B1E; flex: 1; }
+.rank-count { font-size: 11px; font-weight: 700; color: #6B7280; font-variant-numeric: tabular-nums; }
+
+/* Brand x LLM matrix */
+.matrix-card { padding: 4px 18px 16px; overflow-x: auto; }
+.matrix-table { width: 100%; border-collapse: collapse; min-width: 540px; }
+.matrix-table th {
+  padding: 12px 8px 9px;
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em;
+  border-bottom: 1.5px solid rgba(0,0,0,0.07); white-space: nowrap; text-align: center;
+}
+.matrix-table th:first-child { text-align: left; padding-left: 0; color: #6B7280; min-width: 100px; }
+.matrix-table td { padding: 8px 8px; border-bottom: 1px solid rgba(0,0,0,0.04); text-align: center; font-size: 12px; font-weight: 600; color: #0F0B1E; font-variant-numeric: tabular-nums; }
+.matrix-table td:first-child { text-align: left; padding-left: 0; }
+.matrix-table tr:last-child td { border-bottom: none; }
+.brand-name-cell { display: flex; align-items: center; gap: 6px; }
+.matrix-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.total-col { font-weight: 800 !important; color: #0F0B1E !important; background: rgba(124,58,237,0.04); }
+.heat-high { color: #7C3AED !important; }
+.heat-mid  { color: #059669 !important; }
+.heat-low  { color: #6B7280 !important; }
+
+/* ── Use Cases tab ── */
+.query-table-card { padding: 4px 18px 16px; overflow-x: auto; }
+.query-table { width: 100%; border-collapse: collapse; min-width: 500px; }
+.query-table th {
+  padding: 12px 10px 9px;
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em;
+  border-bottom: 1.5px solid rgba(0,0,0,0.07); white-space: nowrap; text-align: left;
+}
+.query-table th:first-child { min-width: 220px; color: #6B7280; }
+.query-table td { padding: 9px 10px; border-bottom: 1px solid rgba(0,0,0,0.04); vertical-align: middle; font-size: 11.5px; }
+.query-table tr:last-child td { border-bottom: none; }
+.query-cluster-hdr td {
+  padding: 14px 10px 6px 10px;
+  font-size: 9px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.10em; color: #7C3AED;
+  border-bottom: none;
+}
+.query-text { font-weight: 600; color: #0F0B1E; font-size: 11px; }
+.rank-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 100px;
+  white-space: nowrap;
+}
+.rank-1 { background: rgba(194,24,106,0.08); color: #C2186A; }
+.rank-2 { background: rgba(124,58,237,0.07); color: #7C3AED; }
+.rank-3 { background: rgba(37,99,235,0.07); color: #2563EB; }
+.rank-4 { background: rgba(5,150,105,0.07); color: #059669; }
+.rank-none { background: rgba(0,0,0,0.04); color: #9CA3AF; font-style: italic; }
+.rank-chip-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+/* ── Insights tab ── */
+.insights-full-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.insight-full { padding: 18px 18px 16px; }
+.action-list-card { padding: 16px 18px; }
+.action-list-title { font-size: 12px; font-weight: 700; color: #0F0B1E; margin-bottom: 12px; }
+.action-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid rgba(0,0,0,0.05); }
+.action-item:last-child { border-bottom: none; }
+.action-prio {
+  font-size: 9px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 4px; flex-shrink: 0; margin-top: 1px;
+}
+.prio-high { background: rgba(239,68,68,0.09); color: #DC2626; }
+.prio-med  { background: rgba(234,179,8,0.09); color: #B45309; }
+.prio-low  { background: rgba(5,150,105,0.08); color: #059669; }
+.action-body { flex: 1; }
+.action-title { font-size: 12px; font-weight: 700; color: #0F0B1E; margin-bottom: 2px; }
+.action-desc  { font-size: 11px; color: #4B5563; line-height: 1.5; }
+
+/* tab-panel hidden */
+.tab-panel { animation: fadePanel 0.18s ease; }
+@keyframes fadePanel { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+<div class="browser-wrap">
+  <!-- Chrome bar -->
+  <div class="browser-chrome">
+    <div class="dots">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+    </div>
+    <div class="url-bar">app.agenticlib.com/dashboard/marketing</div>
+  </div>
+
+  <!-- App Frame -->
+  <div class="app-frame">
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sb-logo">
+        <div class="sb-logo-mark">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+            <rect x="1" y="6" width="3" height="7" rx="1" fill="white"/>
+            <rect x="5.5" y="3" width="3" height="10" rx="1" fill="rgba(255,255,255,0.8)"/>
+            <rect x="10" y="4.5" width="3" height="8.5" rx="1" fill="rgba(255,255,255,0.65)"/>
+          </svg>
+        </div>
+        <div>
+          <div class="sb-logo-name">AgenticLib</div>
+          <div class="sb-logo-sub">Sage AI Platform</div>
+        </div>
+      </div>
+
+      <div class="sb-section">Workspace</div>
+      <div class="sb-item active" id="sb-overview" onclick="switchTab('overview')">
+        <svg class="sb-ico" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="5" rx="1.5" fill="currentColor"/><rect x="8" y="1" width="5" height="5" rx="1.5" fill="currentColor" opacity=".5"/><rect x="1" y="8" width="5" height="5" rx="1.5" fill="currentColor" opacity=".5"/><rect x="8" y="8" width="5" height="5" rx="1.5" fill="currentColor" opacity=".5"/></svg>
+        Overview
+      </div>
+      <div class="sb-item" id="sb-brand-intel" onclick="switchTab('brand-intel')">
+        <svg class="sb-ico" viewBox="0 0 14 14" fill="none"><rect x="1" y="7" width="3" height="6" rx="1" fill="currentColor"/><rect x="5.5" y="4" width="3" height="9" rx="1" fill="currentColor"/><rect x="10" y="5.5" width="3" height="7.5" rx="1" fill="currentColor"/></svg>
+        Brand Intelligence
+      </div>
+      <div class="sb-item" id="sb-use-cases" onclick="switchTab('use-cases')">
+        <svg class="sb-ico" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M4 7h6M7 4v6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Use Cases
+      </div>
+      <div class="sb-item" id="sb-feature-scores" onclick="switchTab('feature-scores')">
+        <svg class="sb-ico" viewBox="0 0 14 14" fill="none"><path d="M7 1.5L12.5 4.5V9.5L7 12.5L1.5 9.5V4.5L7 1.5Z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M1.5 4.5L7 7.5L12.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><path d="M7 7.5V12.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Feature Scores
+      </div>
+
+      <div class="sb-divider"></div>
+      <div class="sb-section">Intelligence</div>
+
+      <div class="sb-item" id="sb-competitor" onclick="switchTab('competitor')">
+        <svg class="sb-ico" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M7 4v3.5l2 1.2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Competitor Tracker
+      </div>
+      <div class="sb-item" id="sb-benchmark" onclick="switchTab('benchmark')">
+        <svg class="sb-ico" viewBox="0 0 14 14" fill="none"><path d="M2 11L5 8l2.5 2L10 6l2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="2" cy="11" r="1" fill="currentColor"/><circle cx="12" cy="8" r="1" fill="currentColor"/></svg>
+        Benchmarking
+      </div>
+      <div class="sb-item" id="sb-insights" onclick="switchTab('insights')">
+        <svg class="sb-ico" viewBox="0 0 14 14" fill="none"><path d="M7 1a4.5 4.5 0 0 1 3.5 7.3c-.5.6-1 1.2-1 1.7v.3a.7.7 0 0 1-.7.7H5.2a.7.7 0 0 1-.7-.7v-.3c0-.5-.5-1.1-1-1.7A4.5 4.5 0 0 1 7 1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M5.5 13h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Actionable Insights
+      </div>
+
+      <div style="flex:1"></div>
+      <div class="sb-divider"></div>
+      <div class="sb-item" style="opacity:0.6">
+        <svg class="sb-ico" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5" r="3" stroke="currentColor" stroke-width="1.2"/><path d="M2 12c0-2.2 2.2-4 5-4s5 1.8 5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Account
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main" id="main-scroll">
+
+      <!-- Header (always shown) -->
+      <div class="main-header">
+        <div>
+          <div class="main-title" id="page-title">Marketing AI Agents</div>
+          <div class="main-sub" id="page-sub">Brand visibility, feature coverage, and competitive intelligence · updated daily</div>
+        </div>
+        <span class="domain-badge">AI Agent Builder · Marketing</span>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tab-row">
+        <div class="tab active" data-tab="overview" onclick="switchTab('overview')">Overview</div>
+        <div class="tab" data-tab="brand-intel" onclick="switchTab('brand-intel')">Brand Intelligence</div>
+        <div class="tab" data-tab="use-cases" onclick="switchTab('use-cases')">Use Cases</div>
+        <div class="tab" data-tab="feature-scores" onclick="switchTab('feature-scores')">Feature Scores</div>
+        <div class="tab" data-tab="competitor" onclick="switchTab('competitor')">Competitor Tracker</div>
+        <div class="tab" data-tab="benchmark" onclick="switchTab('benchmark')">Benchmarking</div>
+        <div class="tab" data-tab="insights" onclick="switchTab('insights')">Insights</div>
+      </div>
+
+      <!-- ═══════════════════════════════════════
+           PANEL: OVERVIEW
+           ═══════════════════════════════════════ -->
+      <div class="tab-panel" id="panel-overview">
+
+        <div class="stat-grid">
+          <div class="card stat-card">
+            <div class="stat-label">Total Brand Mentions</div>
+            <div class="stat-value">1,847</div>
+            <div class="stat-sub">↑ 12% vs prior week</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Avg Position Overall</div>
+            <div class="stat-value">2.4</div>
+            <div class="stat-sub neutral">1 = first mentioned</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Use Case Clusters Tracked</div>
+            <div class="stat-value">4</div>
+            <div class="stat-sub neutral">22 brands · 6 LLMs</div>
+          </div>
+        </div>
+
+        <div class="chart-row">
+          <div class="card chart-card">
+            <div class="chart-title">Brand Coverage Over Time · Last 7 Days</div>
+            <svg class="chart-svg" viewBox="0 0 520 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="20" y1="10" x2="500" y2="10" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+              <line x1="20" y1="42" x2="500" y2="42" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+              <line x1="20" y1="74" x2="500" y2="74" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+              <line x1="20" y1="106" x2="500" y2="106" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>
+              <text x="20"  y="126" class="chart-axis" text-anchor="middle">Mon</text>
+              <text x="100" y="126" class="chart-axis" text-anchor="middle">Tue</text>
+              <text x="180" y="126" class="chart-axis" text-anchor="middle">Wed</text>
+              <text x="260" y="126" class="chart-axis" text-anchor="middle">Thu</text>
+              <text x="340" y="126" class="chart-axis" text-anchor="middle">Fri</text>
+              <text x="420" y="126" class="chart-axis" text-anchor="middle">Sat</text>
+              <text x="500" y="126" class="chart-axis" text-anchor="middle">Sun</text>
+              <text x="14" y="13"  class="chart-axis" text-anchor="end">20</text>
+              <text x="14" y="45"  class="chart-axis" text-anchor="end">15</text>
+              <text x="14" y="77"  class="chart-axis" text-anchor="end">10</text>
+              <text x="14" y="109" class="chart-axis" text-anchor="end">5</text>
+              <path d="M20,55 C60,50 80,47 100,45 C140,43 160,63 180,65 C220,67 240,37 260,35 C300,33 320,27 340,25 C380,23 400,47 420,50 C460,53 480,42 500,40 L500,118 L20,118 Z" fill="#C2186A" opacity="0.09"/>
+              <path d="M20,85 C60,80 80,77 100,75 C140,73 160,78 180,80 C220,82 240,72 260,70 C300,65 320,62 340,60 C380,58 400,72 420,75 C460,78 480,67 500,65 L500,118 L20,118 Z" fill="#7C3AED" opacity="0.06"/>
+              <path d="M20,55 C60,50 80,47 100,45 C140,43 160,63 180,65 C220,67 240,37 260,35 C300,33 320,27 340,25 C380,23 400,47 420,50 C460,53 480,42 500,40" stroke="#C2186A" stroke-width="2.5" stroke-linecap="round"/>
+              <path d="M20,85 C60,80 80,77 100,75 C140,73 160,78 180,80 C220,82 240,72 260,70 C300,65 320,62 340,60 C380,58 400,72 420,75 C460,78 480,67 500,65" stroke="#7C3AED" stroke-width="2" stroke-linecap="round"/>
+              <path d="M20,95 C60,90 80,87 100,85 C140,87 160,90 180,90 C220,85 240,82 260,80 C300,77 320,76 340,75 C380,80 400,85 420,85 C460,82 480,82 500,80" stroke="#2563EB" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M20,105 C60,102 80,101 100,100 C140,98 160,96 180,95 C220,98 240,103 260,105 C300,108 320,93 340,90 C380,87 400,98 420,100 C460,102 480,96 500,95" stroke="#059669" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M20,110 C70,108 90,106 100,105 C140,107 160,110 180,110 C220,107 240,102 260,100 C300,103 320,106 340,105 C380,109 400,111 420,110 C460,107 480,101 500,100" stroke="#DC2626" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="340" cy="25" r="3.5" fill="#C2186A" stroke="white" stroke-width="1.5"/>
+            </svg>
+            <div class="chart-legend">
+              <div class="legend-item"><div class="legend-dot" style="background:#C2186A"></div>Drift</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#7C3AED"></div>Copy.ai</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#2563EB"></div>Conversica</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#059669"></div>Writesonic</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#DC2626"></div>Albert</div>
+            </div>
+          </div>
+          <div class="right-panels">
+            <div class="card llm-panel">
+              <div class="llm-label">LLM Visibility · 7 Days</div>
+              <div class="llm-row"><div class="llm-dot" style="background:#C2186A"></div><span class="llm-name">Drift</span><span class="llm-val" style="color:#C2186A">312</span></div>
+              <div class="llm-bar-bg"><div class="llm-bar-fill" style="width:100%;background:#C2186A"></div></div>
+              <div class="llm-row"><div class="llm-dot" style="background:#7C3AED"></div><span class="llm-name">Copy.ai</span><span class="llm-val" style="color:#7C3AED">218</span></div>
+              <div class="llm-bar-bg"><div class="llm-bar-fill" style="width:70%;background:#7C3AED"></div></div>
+              <div class="llm-row"><div class="llm-dot" style="background:#2563EB"></div><span class="llm-name">Conversica</span><span class="llm-val" style="color:#2563EB">174</span></div>
+              <div class="llm-bar-bg"><div class="llm-bar-fill" style="width:56%;background:#2563EB"></div></div>
+              <div class="llm-row"><div class="llm-dot" style="background:#059669"></div><span class="llm-name">Writesonic</span><span class="llm-val" style="color:#059669">101</span></div>
+              <div class="llm-bar-bg"><div class="llm-bar-fill" style="width:32%;background:#059669"></div></div>
+              <div class="llm-row"><div class="llm-dot" style="background:#DC2626"></div><span class="llm-name">Albert</span><span class="llm-val" style="color:#DC2626">88</span></div>
+              <div class="llm-bar-bg"><div class="llm-bar-fill" style="width:28%;background:#DC2626"></div></div>
+            </div>
+            <div class="card llm-panel">
+              <div class="llm-label">Avg Brand Position · 7 Days <span style="font-weight:400;text-transform:none;letter-spacing:0">(lower = better)</span></div>
+              <div class="llm-row"><div class="llm-dot" style="background:#C2186A"></div><span class="llm-name">Drift</span><span class="llm-val" style="color:#059669">1.8</span></div>
+              <div class="llm-row"><div class="llm-dot" style="background:#7C3AED"></div><span class="llm-name">Copy.ai</span><span class="llm-val">2.4</span></div>
+              <div class="llm-row"><div class="llm-dot" style="background:#2563EB"></div><span class="llm-name">Conversica</span><span class="llm-val">2.9</span></div>
+              <div class="llm-row"><div class="llm-dot" style="background:#059669"></div><span class="llm-name">Writesonic</span><span class="llm-val">3.5</span></div>
+              <div class="llm-row"><div class="llm-dot" style="background:#DC2626"></div><span class="llm-name">Albert</span><span class="llm-val">4.1</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Use Case SoV (overview preview) -->
+        <div class="section-title">Use Case Share of Voice</div>
+        <div class="section-sub">Which brand dominates AI recommendations within each marketing use case cluster</div>
+        <div class="sov-grid">
+          <div class="card sov-card">
+            <div class="donut-wrap" style="background:conic-gradient(#DC2626 0% 35%, #C2186A 35% 65%, #2563EB 65% 83%, #7C3AED 83% 95%, #059669 95% 100%)"></div>
+            <div>
+              <div class="sov-title">Ads &amp; Paid Campaigns</div>
+              <div class="sov-legend">
+                <div class="sov-row"><div class="sov-dot" style="background:#DC2626"></div><span class="sov-brand">Albert</span><span class="sov-pct" style="color:#DC2626">35%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#C2186A"></div><span class="sov-brand">Drift</span><span class="sov-pct" style="color:#C2186A">30%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#2563EB"></div><span class="sov-brand">Conversica</span><span class="sov-pct" style="color:#2563EB">18%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#7C3AED"></div><span class="sov-brand">Copy.ai</span><span class="sov-pct" style="color:#7C3AED">12%</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card sov-card">
+            <div class="donut-wrap" style="background:conic-gradient(#7C3AED 0% 35%, #059669 35% 63%, #C2186A 63% 85%, #2563EB 85% 95%, #DC2626 95% 100%)"></div>
+            <div>
+              <div class="sov-title">Content &amp; Brand Voice</div>
+              <div class="sov-legend">
+                <div class="sov-row"><div class="sov-dot" style="background:#7C3AED"></div><span class="sov-brand">Copy.ai</span><span class="sov-pct" style="color:#7C3AED">35%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#059669"></div><span class="sov-brand">Writesonic</span><span class="sov-pct" style="color:#059669">28%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#C2186A"></div><span class="sov-brand">Drift</span><span class="sov-pct" style="color:#C2186A">22%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#2563EB"></div><span class="sov-brand">Conversica</span><span class="sov-pct" style="color:#2563EB">10%</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card sov-card">
+            <div class="donut-wrap" style="background:conic-gradient(#C2186A 0% 35%, #2563EB 35% 65%, #7C3AED 65% 83%, #059669 83% 93%, #DC2626 93% 100%)"></div>
+            <div>
+              <div class="sov-title">Lead-Gen &amp; Funnel</div>
+              <div class="sov-legend">
+                <div class="sov-row"><div class="sov-dot" style="background:#C2186A"></div><span class="sov-brand">Drift</span><span class="sov-pct" style="color:#C2186A">35%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#2563EB"></div><span class="sov-brand">Conversica</span><span class="sov-pct" style="color:#2563EB">30%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#7C3AED"></div><span class="sov-brand">Copy.ai</span><span class="sov-pct" style="color:#7C3AED">18%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#059669"></div><span class="sov-brand">Writesonic</span><span class="sov-pct" style="color:#059669">10%</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card sov-card">
+            <div class="donut-wrap" style="background:conic-gradient(#C2186A 0% 32%, #2563EB 32% 60%, #DC2626 60% 80%, #7C3AED 80% 92%, #059669 92% 100%)"></div>
+            <div>
+              <div class="sov-title">Lifecycle &amp; Retention</div>
+              <div class="sov-legend">
+                <div class="sov-row"><div class="sov-dot" style="background:#C2186A"></div><span class="sov-brand">Drift</span><span class="sov-pct" style="color:#C2186A">32%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#2563EB"></div><span class="sov-brand">Conversica</span><span class="sov-pct" style="color:#2563EB">28%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#DC2626"></div><span class="sov-brand">Albert</span><span class="sov-pct" style="color:#DC2626">20%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#7C3AED"></div><span class="sov-brand">Copy.ai</span><span class="sov-pct" style="color:#7C3AED">12%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /panel-overview -->
+
+      <!-- ═══════════════════════════════════════
+           PANEL: BRAND INTELLIGENCE
+           ═══════════════════════════════════════ -->
+      <div class="tab-panel" id="panel-brand-intel" style="display:none">
+
+        <div class="stat-grid" style="margin-bottom:16px">
+          <div class="card stat-card">
+            <div class="stat-label">Most Visible Brand</div>
+            <div class="stat-value" style="font-size:22px;color:#C2186A">Drift</div>
+            <div class="stat-sub">551 mentions across 6 LLMs</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Fastest Growing</div>
+            <div class="stat-value" style="font-size:22px;color:#059669">Writesonic</div>
+            <div class="stat-sub">↑ 28% week-on-week</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Best Position Score</div>
+            <div class="stat-value" style="font-size:22px;color:#7C3AED">1.8</div>
+            <div class="stat-sub neutral">Drift · avg first-mentioned</div>
+          </div>
+        </div>
+
+        <!-- 6 LLM Cards -->
+        <div class="section-title">Visibility by LLM</div>
+        <div class="section-sub">How each AI model ranks brands when asked marketing-related queries</div>
+        <div class="llm-grid">
+
+          <!-- ChatGPT -->
+          <div class="card llm-card">
+            <div class="llm-card-header">
+              <div class="llm-avatar" style="background:rgba(16,163,127,0.10)">🤖</div>
+              <div><div class="llm-card-name">ChatGPT</div><div class="llm-card-sub">OpenAI · 142 queries</div></div>
+            </div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#FEF3C7;color:#92400E">#1</div><span class="rank-brand" style="color:#C2186A">Drift</span><span class="rank-count">142 mentions</span></div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#F3F4F6;color:#374151">#2</div><span class="rank-brand" style="color:#7C3AED">Copy.ai</span><span class="rank-count">89</span></div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#F3F4F6;color:#374151">#3</div><span class="rank-brand" style="color:#2563EB">Conversica</span><span class="rank-count">61</span></div>
+          </div>
+
+          <!-- Claude -->
+          <div class="card llm-card">
+            <div class="llm-card-header">
+              <div class="llm-avatar" style="background:rgba(124,58,237,0.10)">✦</div>
+              <div><div class="llm-card-name">Claude</div><div class="llm-card-sub">Anthropic · 126 queries</div></div>
+            </div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#FEF3C7;color:#92400E">#1</div><span class="rank-brand" style="color:#C2186A">Drift</span><span class="rank-count">97 mentions</span></div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#F3F4F6;color:#374151">#2</div><span class="rank-brand" style="color:#2563EB">Conversica</span><span class="rank-count">71</span></div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#F3F4F6;color:#374151">#3</div><span class="rank-brand" style="color:#7C3AED">Copy.ai</span><span class="rank-count">58</span></div>
+          </div>
+
+          <!-- Gemini -->
+          <div class="card llm-card">
+            <div class="llm-card-header">
+              <div class="llm-avatar" style="background:rgba(37,99,235,0.10)">◈</div>
+              <div><div class="llm-card-name">Gemini</div><div class="llm-card-sub">Google · 119 queries</div></div>
+            </div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#FEF3C7;color:#92400E">#1</div><span class="rank-brand" style="color:#DC2626">Albert</span><span class="rank-count">88 mentions</span></div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#F3F4F6;color:#374151">#2</div><span class="rank-brand" style="color:#C2186A">Drift</span><span class="rank-count">74</span></div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#F3F4F6;color:#374151">#3</div><span class="rank-brand" style="color:#059669">Writesonic</span><span class="rank-count">52</span></div>
+          </div>
+
+          <!-- Perplexity -->
+          <div class="card llm-card">
+            <div class="llm-card-header">
+              <div class="llm-avatar" style="background:rgba(20,184,166,0.10)">⟡</div>
+              <div><div class="llm-card-name">Perplexity</div><div class="llm-card-sub">Perplexity AI · 108 queries</div></div>
+            </div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#FEF3C7;color:#92400E">#1</div><span class="rank-brand" style="color:#C2186A">Drift</span><span class="rank-count">103 mentions</span></div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#F3F4F6;color:#374151">#2</div><span class="rank-brand" style="color:#7C3AED">Copy.ai</span><span class="rank-count">77</span></div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#F3F4F6;color:#374151">#3</div><span class="rank-brand" style="color:#2563EB">Conversica</span><span class="rank-count">49</span></div>
+          </div>
+
+          <!-- Meta AI -->
+          <div class="card llm-card">
+            <div class="llm-card-header">
+              <div class="llm-avatar" style="background:rgba(59,130,246,0.10)">∞</div>
+              <div><div class="llm-card-name">Meta AI</div><div class="llm-card-sub">Meta · 94 queries</div></div>
+            </div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#FEF3C7;color:#92400E">#1</div><span class="rank-brand" style="color:#7C3AED">Copy.ai</span><span class="rank-count">67 mentions</span></div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#F3F4F6;color:#374151">#2</div><span class="rank-brand" style="color:#059669">Writesonic</span><span class="rank-count">54</span></div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#F3F4F6;color:#374151">#3</div><span class="rank-brand" style="color:#C2186A">Drift</span><span class="rank-count">44</span></div>
+          </div>
+
+          <!-- Copilot -->
+          <div class="card llm-card">
+            <div class="llm-card-header">
+              <div class="llm-avatar" style="background:rgba(16,185,129,0.10)">⊞</div>
+              <div><div class="llm-card-name">Copilot</div><div class="llm-card-sub">Microsoft · 88 queries</div></div>
+            </div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#FEF3C7;color:#92400E">#1</div><span class="rank-brand" style="color:#C2186A">Drift</span><span class="rank-count">91 mentions</span></div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#F3F4F6;color:#374151">#2</div><span class="rank-brand" style="color:#2563EB">Conversica</span><span class="rank-count">68</span></div>
+            <div class="llm-rank-row"><div class="rank-num" style="background:#F3F4F6;color:#374151">#3</div><span class="rank-brand" style="color:#DC2626">Albert</span><span class="rank-count">55</span></div>
+          </div>
+
+        </div>
+
+        <!-- Brand x LLM matrix -->
+        <div class="section-title">Brand × LLM Mention Matrix</div>
+        <div class="section-sub" style="margin-bottom:12px">Total brand mentions per LLM over the last 7 days</div>
+        <div class="card matrix-card">
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th>Brand</th>
+                <th style="color:#10A37F">ChatGPT</th>
+                <th style="color:#7C3AED">Claude</th>
+                <th style="color:#2563EB">Gemini</th>
+                <th style="color:#14B8A6">Perplexity</th>
+                <th style="color:#3B82F6">Meta AI</th>
+                <th style="color:#10B981">Copilot</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div class="brand-name-cell"><div class="matrix-dot" style="background:#C2186A"></div>Drift</div></td>
+                <td class="heat-high">142</td><td class="heat-high">97</td><td class="heat-mid">74</td>
+                <td class="heat-high">103</td><td class="heat-low">44</td><td class="heat-high">91</td>
+                <td class="total-col">551</td>
+              </tr>
+              <tr>
+                <td><div class="brand-name-cell"><div class="matrix-dot" style="background:#7C3AED"></div>Copy.ai</div></td>
+                <td class="heat-mid">89</td><td class="heat-mid">58</td><td class="heat-low">36</td>
+                <td class="heat-mid">77</td><td class="heat-high">67</td><td class="heat-low">22</td>
+                <td class="total-col">349</td>
+              </tr>
+              <tr>
+                <td><div class="brand-name-cell"><div class="matrix-dot" style="background:#2563EB"></div>Conversica</div></td>
+                <td class="heat-mid">61</td><td class="heat-mid">71</td><td class="heat-low">44</td>
+                <td class="heat-low">49</td><td class="heat-low">31</td><td class="heat-mid">68</td>
+                <td class="total-col">324</td>
+              </tr>
+              <tr>
+                <td><div class="brand-name-cell"><div class="matrix-dot" style="background:#DC2626"></div>Albert</div></td>
+                <td class="heat-low">44</td><td class="heat-low">32</td><td class="heat-high">88</td>
+                <td class="heat-low">27</td><td class="heat-low">23</td><td class="heat-mid">55</td>
+                <td class="total-col">269</td>
+              </tr>
+              <tr>
+                <td><div class="brand-name-cell"><div class="matrix-dot" style="background:#059669"></div>Writesonic</div></td>
+                <td class="heat-low">38</td><td class="heat-low">29</td><td class="heat-mid">52</td>
+                <td class="heat-low">41</td><td class="heat-mid">54</td><td class="heat-low">18</td>
+                <td class="total-col">232</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div><!-- /panel-brand-intel -->
+
+      <!-- ═══════════════════════════════════════
+           PANEL: USE CASES
+           ═══════════════════════════════════════ -->
+      <div class="tab-panel" id="panel-use-cases" style="display:none">
+
+        <div class="section-title">Use Case Share of Voice</div>
+        <div class="section-sub">Brand dominance within each marketing AI agent use case cluster</div>
+        <div class="sov-grid" style="margin-bottom:20px">
+          <div class="card sov-card">
+            <div class="donut-wrap" style="background:conic-gradient(#DC2626 0% 35%, #C2186A 35% 65%, #2563EB 65% 83%, #7C3AED 83% 95%, #059669 95% 100%)"></div>
+            <div><div class="sov-title">Ads &amp; Paid Campaigns</div>
+              <div class="sov-legend">
+                <div class="sov-row"><div class="sov-dot" style="background:#DC2626"></div><span class="sov-brand">Albert</span><span class="sov-pct" style="color:#DC2626">35%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#C2186A"></div><span class="sov-brand">Drift</span><span class="sov-pct" style="color:#C2186A">30%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#2563EB"></div><span class="sov-brand">Conversica</span><span class="sov-pct" style="color:#2563EB">18%</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card sov-card">
+            <div class="donut-wrap" style="background:conic-gradient(#7C3AED 0% 35%, #059669 35% 63%, #C2186A 63% 85%, #2563EB 85% 95%, #DC2626 95% 100%)"></div>
+            <div><div class="sov-title">Content &amp; Brand Voice</div>
+              <div class="sov-legend">
+                <div class="sov-row"><div class="sov-dot" style="background:#7C3AED"></div><span class="sov-brand">Copy.ai</span><span class="sov-pct" style="color:#7C3AED">35%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#059669"></div><span class="sov-brand">Writesonic</span><span class="sov-pct" style="color:#059669">28%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#C2186A"></div><span class="sov-brand">Drift</span><span class="sov-pct" style="color:#C2186A">22%</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card sov-card">
+            <div class="donut-wrap" style="background:conic-gradient(#C2186A 0% 35%, #2563EB 35% 65%, #7C3AED 65% 83%, #059669 83% 93%, #DC2626 93% 100%)"></div>
+            <div><div class="sov-title">Lead-Gen &amp; Funnel</div>
+              <div class="sov-legend">
+                <div class="sov-row"><div class="sov-dot" style="background:#C2186A"></div><span class="sov-brand">Drift</span><span class="sov-pct" style="color:#C2186A">35%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#2563EB"></div><span class="sov-brand">Conversica</span><span class="sov-pct" style="color:#2563EB">30%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#7C3AED"></div><span class="sov-brand">Copy.ai</span><span class="sov-pct" style="color:#7C3AED">18%</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="card sov-card">
+            <div class="donut-wrap" style="background:conic-gradient(#C2186A 0% 32%, #2563EB 32% 60%, #DC2626 60% 80%, #7C3AED 80% 92%, #059669 92% 100%)"></div>
+            <div><div class="sov-title">Lifecycle &amp; Retention</div>
+              <div class="sov-legend">
+                <div class="sov-row"><div class="sov-dot" style="background:#C2186A"></div><span class="sov-brand">Drift</span><span class="sov-pct" style="color:#C2186A">32%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#2563EB"></div><span class="sov-brand">Conversica</span><span class="sov-pct" style="color:#2563EB">28%</span></div>
+                <div class="sov-row"><div class="sov-dot" style="background:#DC2626"></div><span class="sov-brand">Albert</span><span class="sov-pct" style="color:#DC2626">20%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Query coverage table -->
+        <div class="section-title">Query Coverage</div>
+        <div class="section-sub" style="margin-bottom:12px">Which brands appear first in AI responses to high-intent marketing queries</div>
+        <div class="card query-table-card">
+          <table class="query-table">
+            <thead>
+              <tr>
+                <th>Query</th>
+                <th>#1</th>
+                <th>#2</th>
+                <th>#3</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Ads & Paid Campaigns -->
+              <tr class="query-cluster-hdr"><td colspan="4">Ads &amp; Paid Campaigns</td></tr>
+              <tr>
+                <td class="query-text">"best autonomous paid ads AI agent"</td>
+                <td><span class="rank-chip" style="background:rgba(220,38,38,0.07);color:#DC2626"><span class="rank-chip-dot" style="background:#DC2626"></span>Albert</span></td>
+                <td><span class="rank-chip rank-1"><span class="rank-chip-dot"></span>Drift</span></td>
+                <td><span class="rank-chip rank-2"><span class="rank-chip-dot" style="background:#2563EB"></span>Conversica</span></td>
+              </tr>
+              <tr>
+                <td class="query-text">"AI for Google Ads campaign optimisation"</td>
+                <td><span class="rank-chip" style="background:rgba(220,38,38,0.07);color:#DC2626"><span class="rank-chip-dot" style="background:#DC2626"></span>Albert</span></td>
+                <td><span class="rank-chip rank-1"><span class="rank-chip-dot"></span>Drift</span></td>
+                <td><span class="rank-chip" style="background:rgba(124,58,237,0.07);color:#7C3AED"><span class="rank-chip-dot" style="background:#7C3AED"></span>Copy.ai</span></td>
+              </tr>
+              <tr>
+                <td class="query-text">"AI agent for multi-channel ad management"</td>
+                <td><span class="rank-chip" style="background:rgba(220,38,38,0.07);color:#DC2626"><span class="rank-chip-dot" style="background:#DC2626"></span>Albert</span></td>
+                <td><span class="rank-chip rank-2"><span class="rank-chip-dot" style="background:#2563EB"></span>Conversica</span></td>
+                <td><span class="rank-chip rank-1"><span class="rank-chip-dot"></span>Drift</span></td>
+              </tr>
+
+              <!-- Lead-Gen & Funnel -->
+              <tr class="query-cluster-hdr"><td colspan="4">Lead-Gen &amp; Funnel</td></tr>
+              <tr>
+                <td class="query-text">"best AI agent for email outreach"</td>
+                <td><span class="rank-chip rank-1"><span class="rank-chip-dot"></span>Drift</span></td>
+                <td><span class="rank-chip rank-2"><span class="rank-chip-dot" style="background:#2563EB"></span>Conversica</span></td>
+                <td><span class="rank-chip" style="background:rgba(124,58,237,0.07);color:#7C3AED"><span class="rank-chip-dot" style="background:#7C3AED"></span>Copy.ai</span></td>
+              </tr>
+              <tr>
+                <td class="query-text">"B2B lead qualification AI"</td>
+                <td><span class="rank-chip rank-2"><span class="rank-chip-dot" style="background:#2563EB"></span>Conversica</span></td>
+                <td><span class="rank-chip rank-1"><span class="rank-chip-dot"></span>Drift</span></td>
+                <td><span class="rank-chip" style="background:rgba(124,58,237,0.07);color:#7C3AED"><span class="rank-chip-dot" style="background:#7C3AED"></span>Copy.ai</span></td>
+              </tr>
+              <tr>
+                <td class="query-text">"AI agent for automated sales prospecting"</td>
+                <td><span class="rank-chip rank-1"><span class="rank-chip-dot"></span>Drift</span></td>
+                <td><span class="rank-chip rank-2"><span class="rank-chip-dot" style="background:#2563EB"></span>Conversica</span></td>
+                <td><span class="rank-chip" style="background:rgba(220,38,38,0.07);color:#DC2626"><span class="rank-chip-dot" style="background:#DC2626"></span>Albert</span></td>
+              </tr>
+
+              <!-- Content & Brand Voice -->
+              <tr class="query-cluster-hdr"><td colspan="4">Content &amp; Brand Voice</td></tr>
+              <tr>
+                <td class="query-text">"AI agent for content generation at scale"</td>
+                <td><span class="rank-chip" style="background:rgba(124,58,237,0.07);color:#7C3AED"><span class="rank-chip-dot" style="background:#7C3AED"></span>Copy.ai</span></td>
+                <td><span class="rank-chip" style="background:rgba(5,150,105,0.07);color:#059669"><span class="rank-chip-dot" style="background:#059669"></span>Writesonic</span></td>
+                <td><span class="rank-chip rank-1"><span class="rank-chip-dot"></span>Drift</span></td>
+              </tr>
+              <tr>
+                <td class="query-text">"AI agent for brand voice consistency"</td>
+                <td><span class="rank-chip" style="background:rgba(124,58,237,0.07);color:#7C3AED"><span class="rank-chip-dot" style="background:#7C3AED"></span>Copy.ai</span></td>
+                <td><span class="rank-chip" style="background:rgba(5,150,105,0.07);color:#059669"><span class="rank-chip-dot" style="background:#059669"></span>Writesonic</span></td>
+                <td><span class="rank-chip rank-2"><span class="rank-chip-dot" style="background:#2563EB"></span>Conversica</span></td>
+              </tr>
+              <tr>
+                <td class="query-text">"AI writing tool for marketing teams"</td>
+                <td><span class="rank-chip" style="background:rgba(5,150,105,0.07);color:#059669"><span class="rank-chip-dot" style="background:#059669"></span>Writesonic</span></td>
+                <td><span class="rank-chip" style="background:rgba(124,58,237,0.07);color:#7C3AED"><span class="rank-chip-dot" style="background:#7C3AED"></span>Copy.ai</span></td>
+                <td><span class="rank-chip rank-1"><span class="rank-chip-dot"></span>Drift</span></td>
+              </tr>
+
+              <!-- Lifecycle & Retention -->
+              <tr class="query-cluster-hdr"><td colspan="4">Lifecycle &amp; Retention</td></tr>
+              <tr>
+                <td class="query-text">"AI for customer retention marketing"</td>
+                <td><span class="rank-chip rank-1"><span class="rank-chip-dot"></span>Drift</span></td>
+                <td><span class="rank-chip rank-2"><span class="rank-chip-dot" style="background:#2563EB"></span>Conversica</span></td>
+                <td><span class="rank-chip" style="background:rgba(220,38,38,0.07);color:#DC2626"><span class="rank-chip-dot" style="background:#DC2626"></span>Albert</span></td>
+              </tr>
+              <tr>
+                <td class="query-text">"automated lifecycle email campaigns AI"</td>
+                <td><span class="rank-chip rank-1"><span class="rank-chip-dot"></span>Drift</span></td>
+                <td><span class="rank-chip rank-2"><span class="rank-chip-dot" style="background:#2563EB"></span>Conversica</span></td>
+                <td><span class="rank-chip" style="background:rgba(124,58,237,0.07);color:#7C3AED"><span class="rank-chip-dot" style="background:#7C3AED"></span>Copy.ai</span></td>
+              </tr>
+              <tr>
+                <td class="query-text">"AI agent for marketing ROI attribution"</td>
+                <td><span class="rank-chip rank-1"><span class="rank-chip-dot"></span>Drift</span></td>
+                <td><span class="rank-chip" style="background:rgba(220,38,38,0.07);color:#DC2626"><span class="rank-chip-dot" style="background:#DC2626"></span>Albert</span></td>
+                <td><span class="rank-chip rank-2"><span class="rank-chip-dot" style="background:#2563EB"></span>Conversica</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div><!-- /panel-use-cases -->
+
+      <!-- ═══════════════════════════════════════
+           PANEL: FEATURE SCORES
+           ═══════════════════════════════════════ -->
+      <div class="tab-panel" id="panel-feature-scores" style="display:none">
+
+        <div class="stat-grid" style="margin-bottom:16px">
+          <div class="card stat-card">
+            <div class="stat-label">Highest Scoring Feature</div>
+            <div class="stat-value" style="font-size:18px;color:#7C3AED">Brand Voice</div>
+            <div class="stat-sub neutral">Copy.ai · 93/100</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Biggest Gap vs Leader</div>
+            <div class="stat-value" style="font-size:18px;color:#DC2626">54 pts</div>
+            <div class="stat-sub neutral">Autonomous Bid Optimisation</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Features Tracked</div>
+            <div class="stat-value">14</div>
+            <div class="stat-sub neutral">across 7 capability clusters</div>
+          </div>
+        </div>
+
+        <div class="section-title">Product Feature Scores</div>
+        <div class="section-sub" style="margin-bottom:12px">Scored 0–100 by prompting 6 AI models · refreshed daily</div>
+        <div class="card feat-card">
+          <table class="feat-table">
+            <thead>
+              <tr>
+                <th style="text-align:left;color:#6B7280">Feature</th>
+                <th style="color:#C2186A">Drift</th>
+                <th style="color:#7C3AED">Copy.ai</th>
+                <th style="color:#2563EB">Conversica</th>
+                <th style="color:#059669">Writesonic</th>
+                <th style="color:#DC2626">Albert</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="feat-cluster-hdr"><td colspan="6">Ads &amp; Paid Campaigns</td></tr>
+              <tr>
+                <td>Autonomous Bid Optimisation</td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:62%;background:#C2186A"></div></div><span class="score-num">62</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:38%;background:#7C3AED"></div></div><span class="score-num">38</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:45%;background:#2563EB"></div></div><span class="score-num">45</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:35%;background:#059669"></div></div><span class="score-num">35</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:92%;background:#DC2626"></div></div><span class="score-num">92</span></div></td>
+              </tr>
+              <tr>
+                <td>Cross-Platform Ad Management</td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:78%;background:#C2186A"></div></div><span class="score-num">78</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:44%;background:#7C3AED"></div></div><span class="score-num">44</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:42%;background:#2563EB"></div></div><span class="score-num">42</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:31%;background:#059669"></div></div><span class="score-num">31</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:88%;background:#DC2626"></div></div><span class="score-num">88</span></div></td>
+              </tr>
+              <tr class="feat-cluster-hdr"><td colspan="6">Content &amp; Brand Voice</td></tr>
+              <tr>
+                <td>Brand Voice Enforcement</td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:75%;background:#C2186A"></div></div><span class="score-num">75</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:93%;background:#7C3AED"></div></div><span class="score-num">93</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:66%;background:#2563EB"></div></div><span class="score-num">66</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:88%;background:#059669"></div></div><span class="score-num">88</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:48%;background:#DC2626"></div></div><span class="score-num">48</span></div></td>
+              </tr>
+              <tr>
+                <td>Predictive Content Performance</td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:69%;background:#C2186A"></div></div><span class="score-num">69</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:84%;background:#7C3AED"></div></div><span class="score-num">84</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:61%;background:#2563EB"></div></div><span class="score-num">61</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:82%;background:#059669"></div></div><span class="score-num">82</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:53%;background:#DC2626"></div></div><span class="score-num">53</span></div></td>
+              </tr>
+              <tr class="feat-cluster-hdr"><td colspan="6">Lead-Gen &amp; Funnel</td></tr>
+              <tr>
+                <td>Outreach Sequencing</td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:88%;background:#C2186A"></div></div><span class="score-num">88</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:65%;background:#7C3AED"></div></div><span class="score-num">65</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:#2563EB"></div></div><span class="score-num">80</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:53%;background:#059669"></div></div><span class="score-num">53</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:46%;background:#DC2626"></div></div><span class="score-num">46</span></div></td>
+              </tr>
+              <tr>
+                <td>Lead Qualification Automation</td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:84%;background:#C2186A"></div></div><span class="score-num">84</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:61%;background:#7C3AED"></div></div><span class="score-num">61</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:83%;background:#2563EB"></div></div><span class="score-num">83</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:49%;background:#059669"></div></div><span class="score-num">49</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:43%;background:#DC2626"></div></div><span class="score-num">43</span></div></td>
+              </tr>
+              <tr class="feat-cluster-hdr"><td colspan="6">Lifecycle &amp; Retention</td></tr>
+              <tr>
+                <td>ROI Attribution</td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:90%;background:#C2186A"></div></div><span class="score-num">90</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:70%;background:#7C3AED"></div></div><span class="score-num">70</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:80%;background:#2563EB"></div></div><span class="score-num">80</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:58%;background:#059669"></div></div><span class="score-num">58</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:72%;background:#DC2626"></div></div><span class="score-num">72</span></div></td>
+              </tr>
+              <tr>
+                <td>Self-Optimising Workflows</td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:85%;background:#C2186A"></div></div><span class="score-num">85</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:66%;background:#7C3AED"></div></div><span class="score-num">66</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:77%;background:#2563EB"></div></div><span class="score-num">77</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:53%;background:#059669"></div></div><span class="score-num">53</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:68%;background:#DC2626"></div></div><span class="score-num">68</span></div></td>
+              </tr>
+              <tr class="feat-cluster-hdr"><td colspan="6">Responsible AI</td></tr>
+              <tr>
+                <td>Bias Auditing &amp; Transparency</td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:71%;background:#C2186A"></div></div><span class="score-num">71</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:78%;background:#7C3AED"></div></div><span class="score-num">78</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:64%;background:#2563EB"></div></div><span class="score-num">64</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:72%;background:#059669"></div></div><span class="score-num">72</span></div></td>
+                <td><div class="score-cell"><div class="score-bar-bg"><div class="score-bar-fill" style="width:55%;background:#DC2626"></div></div><span class="score-num">55</span></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div><!-- /panel-feature-scores -->
+
+      <!-- ═══════════════════════════════════════
+           PANEL: COMPETITOR TRACKER
+           ═══════════════════════════════════════ -->
+      <div class="tab-panel" id="panel-competitor" style="display:none">
+
+        <div class="stat-grid" style="margin-bottom:16px">
+          <div class="card stat-card">
+            <div class="stat-label">Signals This Week</div>
+            <div class="stat-value">7</div>
+            <div class="stat-sub neutral">Product launches, pricing, job posts</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Most Active</div>
+            <div class="stat-value" style="font-size:22px;color:#C2186A">Drift</div>
+            <div class="stat-sub neutral">3 signals in 7 days</div>
+          </div>
+          <div class="card stat-card">
+            <div class="stat-label">Threat Level</div>
+            <div class="stat-value" style="font-size:22px;color:#DC2626">High</div>
+            <div class="stat-sub neutral">Lead-gen overlap increasing</div>
+          </div>
+        </div>
+
+        <div class="section-title">Competitor Intelligence Feed</div>
+        <div class="section-sub" style="margin-bottom:12px">Real-time tracking of what competing AI agents are shipping</div>
+
+        <div class="card comp-card">
+          <div class="comp-header">
+            <div>
+              <div style="font-size:12.5px;font-weight:700;color:#0F0B1E">Competitor signals — last 14 days</div>
+              <div style="font-size:11px;color:#6B7280;margin-top:2px">Product pages, changelogs, job listings, pricing pages</div>
+            </div>
+            <div class="live-badge"><div class="live-dot"></div>Live</div>
+          </div>
+
+          <div class="feed-item">
+            <div class="feed-icon" style="background:rgba(194,24,106,0.08)">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="#C2186A" stroke-width="1.5"/><path d="M8 5v3.5l2 1.2" stroke="#C2186A" stroke-width="1.2" stroke-linecap="round"/></svg>
+            </div>
+            <div class="feed-body">
+              <div class="feed-meta"><span class="feed-brand" style="color:#C2186A">Drift</span><span class="feed-type" style="background:rgba(194,24,106,0.08);color:#C2186A">🚀 New Feature</span><span class="feed-time">2 days ago</span></div>
+              <div class="feed-text">Launched <strong>Autonomous Lead Nurturing v2</strong> — multi-step outreach with AI-written branches and no-reply handling. Removes the need for manual sequence setup. Targets your Lead-Gen cluster directly.</div>
+            </div>
+          </div>
+
+          <div class="feed-item">
+            <div class="feed-icon" style="background:rgba(124,58,237,0.08)">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="4" width="12" height="9" rx="2" stroke="#7C3AED" stroke-width="1.5"/><path d="M5 4V3a3 3 0 0 1 6 0v1" stroke="#7C3AED" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+            <div class="feed-body">
+              <div class="feed-meta"><span class="feed-brand" style="color:#7C3AED">Copy.ai</span><span class="feed-type" style="background:rgba(234,179,8,0.08);color:#B45309">💰 Pricing Change</span><span class="feed-time">4 days ago</span></div>
+              <div class="feed-text">Pro plan dropped <strong>$49 → $36/mo</strong>. Free trial extended to 14 days. Aggressively competing on price in Content &amp; Brand Voice — watch for LLM mention spike in next 7 days.</div>
+            </div>
+          </div>
+
+          <div class="feed-item">
+            <div class="feed-icon" style="background:rgba(37,99,235,0.08)">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 2a4.5 4.5 0 0 1 3.5 7.3c-.5.6-1 1.2-1 1.7v.3a.7.7 0 0 1-.7.7H6.2a.7.7 0 0 1-.7-.7v-.3c0-.5-.5-1.1-1-1.7A4.5 4.5 0 0 1 8 2z" stroke="#2563EB" stroke-width="1.3" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="feed-body">
+              <div class="feed-meta"><span class="feed-brand" style="color:#2563EB">Conversica</span><span class="feed-type" style="background:rgba(5,150,105,0.08);color:#059669">📡 Roadmap Signal</span><span class="feed-time">1 week ago</span></div>
+              <div class="feed-text">3 new job postings for <strong>AI personalisation engineers</strong>. Hiring pattern matches their last feature launch (6-week lead time). Likely targeting hyper-personalised account-level sequencing.</div>
+            </div>
+          </div>
+
+          <div class="feed-item">
+            <div class="feed-icon" style="background:rgba(194,24,106,0.08)">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M4 12V7l4-5 4 5v5H4z" stroke="#C2186A" stroke-width="1.3" stroke-linejoin="round"/><path d="M6 12V9h4v3" stroke="#C2186A" stroke-width="1.2" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="feed-body">
+              <div class="feed-meta"><span class="feed-brand" style="color:#C2186A">Drift</span><span class="feed-type" style="background:rgba(239,68,68,0.07);color:#DC2626">🔗 Partnership</span><span class="feed-time">9 days ago</span></div>
+              <div class="feed-text">Announced <strong>native Salesforce integration</strong> — bidirectional sync with SF campaigns. Previously required Zapier. This closes a known gap and could shift their CRM segment score significantly.</div>
+            </div>
+          </div>
+
+          <div class="feed-item">
+            <div class="feed-icon" style="background:rgba(220,38,38,0.08)">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="#DC2626" stroke-width="1.3"/><path d="M5 8h6M8 5v6" stroke="#DC2626" stroke-width="1.2" stroke-linecap="round"/></svg>
+            </div>
+            <div class="feed-body">
+              <div class="feed-meta"><span class="feed-brand" style="color:#DC2626">Albert</span><span class="feed-type" style="background:rgba(194,24,106,0.08);color:#C2186A">🚀 New Feature</span><span class="feed-time">11 days ago</span></div>
+              <div class="feed-text">Released <strong>Albert Insights Dashboard</strong> — real-time paid campaign reporting with AI-generated copy suggestions. Consolidates ad performance and content into one surface. Direct overlap with Ads cluster.</div>
+            </div>
+          </div>
+
+          <div class="feed-item">
+            <div class="feed-icon" style="background:rgba(5,150,105,0.08)">
+              <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M8 2v4m4 1H4m8 4-4 3-4-3" stroke="#059669" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <div class="feed-body">
+              <div class="feed-meta"><span class="feed-brand" style="color:#059669">Writesonic</span><span class="feed-type" style="background:rgba(234,179,8,0.08);color:#B45309">💰 Pricing Change</span><span class="feed-time">13 days ago</span></div>
+              <div class="feed-text">Introduced <strong>agency tier at $199/mo</strong> covering 10 seats and white-label outputs. First competitor to formally address the agency market — opens a new customer segment previously not covered.</div>
+            </div>
+          </div>
+
+        </div>
+      </div><!-- /panel-competitor -->
+
+      <!-- ═══════════════════════════════════════
+           PANEL: BENCHMARKING
+           ═══════════════════════════════════════ -->
+      <div class="tab-panel" id="panel-benchmark" style="display:none">
+
+        <div class="bench-layout">
+
+          <!-- ── Form ── -->
+          <div class="card bench-form-card">
+            <div style="font-size:13.5px;font-weight:800;color:#0F0B1E;letter-spacing:-0.02em;margin-bottom:3px">Benchmark Your Agent</div>
+            <div style="font-size:11px;color:#6B7280;margin-bottom:14px;line-height:1.4">Submit your details and we'll score you across use cases and product features against 5 competitors.</div>
+
+            <div class="bench-field">
+              <div class="bench-label">Website URL</div>
+              <div class="bench-input">https://yoursite.com</div>
+            </div>
+
+            <div class="bench-field">
+              <div class="bench-label">Agent / Product Name</div>
+              <div class="bench-input">Your AI Agent</div>
+            </div>
+
+            <div class="bench-field">
+              <div class="bench-label">What does your agent do?</div>
+              <div class="bench-input bench-textarea placeholder">Describe your AI agent's core capabilities, who it's for, and what problems it solves...</div>
+            </div>
+
+            <div class="bench-field" style="margin-bottom:0">
+              <div class="bench-label" style="margin-bottom:8px">Target Use Cases</div>
+              <div class="bench-checks">
+                <div class="bench-check-item">
+                  <div class="bench-check-box"></div>
+                  Ads &amp; Paid Campaigns
+                </div>
+                <div class="bench-check-item">
+                  <div class="bench-check-box checked"></div>
+                  Lead-Gen &amp; Funnel
+                </div>
+                <div class="bench-check-item">
+                  <div class="bench-check-box checked"></div>
+                  Content &amp; Brand Voice
+                </div>
+                <div class="bench-check-item">
+                  <div class="bench-check-box"></div>
+                  Lifecycle &amp; Retention
+                </div>
+              </div>
+            </div>
+
+            <button class="bench-submit">Run Benchmark →</button>
+          </div>
+
+          <!-- ── Results ── -->
+          <div class="bench-results">
+
+            <!-- By Use Case -->
+            <div class="card bench-result-card">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                <div style="font-size:13px;font-weight:800;color:#0F0B1E;letter-spacing:-0.02em">Use Case Ranking</div>
+                <span style="font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:#7C3AED;background:rgba(124,58,237,0.07);padding:2px 8px;border-radius:4px">Sample Output</span>
+              </div>
+              <div style="font-size:11px;color:#6B7280;margin-bottom:12px">Your share of voice vs competitors within each cluster</div>
+
+              <!-- Ads & Paid -->
+              <div class="bench-cluster-row">
+                <div class="bench-cluster-name">Ads &amp; Paid Campaigns</div>
+                <div class="bench-rank-badge" style="background:rgba(239,68,68,0.08);color:#DC2626">#5 of 6</div>
+                <div class="bench-sov-track"><div class="bench-sov-yours" style="width:17%"></div></div>
+                <div class="bench-leader-chip">Leader: Albert 35%</div>
+                <span style="font-size:10.5px;font-weight:700;color:#DC2626">6%</span>
+              </div>
+
+              <!-- Lead-Gen -->
+              <div class="bench-cluster-row">
+                <div class="bench-cluster-name">Lead-Gen &amp; Funnel</div>
+                <div class="bench-rank-badge" style="background:rgba(234,179,8,0.08);color:#B45309">#3 of 6</div>
+                <div class="bench-sov-track"><div class="bench-sov-yours" style="width:40%"></div></div>
+                <div class="bench-leader-chip">Leader: Drift 35%</div>
+                <span style="font-size:10.5px;font-weight:700;color:#B45309">14%</span>
+              </div>
+
+              <!-- Content -->
+              <div class="bench-cluster-row">
+                <div class="bench-cluster-name">Content &amp; Brand Voice</div>
+                <div class="bench-rank-badge" style="background:rgba(234,179,8,0.08);color:#B45309">#4 of 6</div>
+                <div class="bench-sov-track"><div class="bench-sov-yours" style="width:23%"></div></div>
+                <div class="bench-leader-chip">Leader: Copy.ai 35%</div>
+                <span style="font-size:10.5px;font-weight:700;color:#B45309">8%</span>
+              </div>
+
+              <!-- Lifecycle -->
+              <div class="bench-cluster-row">
+                <div class="bench-cluster-name">Lifecycle &amp; Retention</div>
+                <div class="bench-rank-badge" style="background:rgba(239,68,68,0.08);color:#DC2626">#4 of 6</div>
+                <div class="bench-sov-track"><div class="bench-sov-yours" style="width:28%"></div></div>
+                <div class="bench-leader-chip">Leader: Drift 32%</div>
+                <span style="font-size:10.5px;font-weight:700;color:#DC2626">9%</span>
+              </div>
+            </div>
+
+            <!-- By Feature -->
+            <div class="card bench-result-card">
+              <div style="font-size:13px;font-weight:800;color:#0F0B1E;letter-spacing:-0.02em;margin-bottom:4px">Feature Score Comparison</div>
+              <div style="font-size:11px;color:#6B7280;margin-bottom:12px">Your score vs each feature's category leader</div>
+
+              <!-- Outreach -->
+              <div class="bench-feat-row">
+                <div class="bench-feat-name">Outreach Sequencing</div>
+                <div class="bench-bar-group">
+                  <div class="bench-bar-leader" style="width:100%"></div>
+                  <div class="bench-bar-yours" style="width:66%"></div>
+                </div>
+                <span class="bench-score-yours">58</span>
+                <span class="bench-vs-chip">vs Drift 88</span>
+                <span class="bench-gap gap-high">−30</span>
+              </div>
+
+              <!-- Brand Voice -->
+              <div class="bench-feat-row">
+                <div class="bench-feat-name">Brand Voice Enforcement</div>
+                <div class="bench-bar-group">
+                  <div class="bench-bar-leader" style="width:100%"></div>
+                  <div class="bench-bar-yours" style="width:66%"></div>
+                </div>
+                <span class="bench-score-yours">61</span>
+                <span class="bench-vs-chip">vs Copy.ai 93</span>
+                <span class="bench-gap gap-high">−32</span>
+              </div>
+
+              <!-- Lead Qual -->
+              <div class="bench-feat-row">
+                <div class="bench-feat-name">Lead Qualification</div>
+                <div class="bench-bar-group">
+                  <div class="bench-bar-leader" style="width:100%"></div>
+                  <div class="bench-bar-yours" style="width:66%"></div>
+                </div>
+                <span class="bench-score-yours">55</span>
+                <span class="bench-vs-chip">vs Conversica 83</span>
+                <span class="bench-gap gap-high">−28</span>
+              </div>
+
+              <!-- Predictive Content — quick win -->
+              <div class="bench-feat-row">
+                <div class="bench-feat-name">Predictive Content Performance</div>
+                <div class="bench-bar-group">
+                  <div class="bench-bar-leader" style="width:100%"></div>
+                  <div class="bench-bar-yours" style="width:86%"></div>
+                </div>
+                <span class="bench-score-yours">72</span>
+                <span class="bench-vs-chip">vs Copy.ai 84</span>
+                <span class="bench-gap gap-mid">−12</span>
+              </div>
+
+              <!-- ROI Attribution — quick win -->
+              <div class="bench-feat-row">
+                <div class="bench-feat-name">ROI Attribution</div>
+                <div class="bench-bar-group">
+                  <div class="bench-bar-leader" style="width:100%"></div>
+                  <div class="bench-bar-yours" style="width:84%"></div>
+                </div>
+                <span class="bench-score-yours">76</span>
+                <span class="bench-vs-chip">vs Drift 90</span>
+                <span class="bench-gap gap-low">−14</span>
+              </div>
+
+              <!-- Quick win callout -->
+              <div style="margin-top:10px;background:rgba(5,150,105,0.06);border:1px solid rgba(5,150,105,0.14);border-radius:8px;padding:9px 12px;display:flex;gap:8px;align-items:flex-start">
+                <span style="font-size:13px;flex-shrink:0;margin-top:-1px">💡</span>
+                <div>
+                  <div style="font-size:11px;font-weight:700;color:#0F0B1E;margin-bottom:2px">2 quick wins identified</div>
+                  <div style="font-size:10.5px;color:#374151;line-height:1.5">Predictive Content (−12) and ROI Attribution (−14) are close to the leader. Small content and copy updates could close both gaps within 2–3 weeks.</div>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /bench-results -->
+        </div><!-- /bench-layout -->
+      </div><!-- /panel-benchmark -->
+
+      <!-- ═══════════════════════════════════════
+           PANEL: INSIGHTS
+           ═══════════════════════════════════════ -->
+      <div class="tab-panel" id="panel-insights" style="display:none">
+
+        <div class="section-title">Actionable Insights</div>
+        <div class="section-sub" style="margin-bottom:12px">Derived from brand visibility gaps, feature scores, and competitor signals</div>
+
+        <div class="insights-full-grid">
+          <div class="card insight-full">
+            <div class="insight-tag" style="background:rgba(124,58,237,0.08);color:#7C3AED">Customer Segmentation</div>
+            <div class="insight-title">Drift dominates SMB queries. Mid-market is wide open.</div>
+            <div class="insight-body">Mid-market accounts (200–1,000 employees) are generating 340% more AI agent queries than 90 days ago — and no brand has optimised for this segment yet.</div>
+            <div class="insight-sub">
+              <div class="insight-sub-item">Add firmographic filtering to catch enterprise-tier queries before competitors do</div>
+              <div class="insight-sub-item">Build a "mid-market AI agent" landing page — zero brands rank here currently</div>
+              <div class="insight-sub-item">Target Conversica's B2B qualification angle — it's the only other brand near this segment</div>
+            </div>
+          </div>
+          <div class="card insight-full">
+            <div class="insight-tag" style="background:rgba(194,24,106,0.08);color:#C2186A">Lead Generation</div>
+            <div class="insight-title">Buyer-intent content gaps are costing you LLM mentions.</div>
+            <div class="insight-body">Your brand is skipped on "best AI agent for outreach" queries despite strong feature scores — the gap is content, not product.</div>
+            <div class="insight-sub">
+              <div class="insight-sub-item"><strong>Content Fix:</strong> Rephrase 3 FAQ pages with buyer-intent language — "automate outreach for SaaS teams"</div>
+              <div class="insight-sub-item"><strong>Content Creation:</strong> Build a comparison page vs Drift for "automated outreach" — high intent, zero current coverage</div>
+              <div class="insight-sub-item">Add a case study targeting "lead qualification AI for B2B" — Conversica owns this query</div>
+            </div>
+          </div>
+          <div class="card insight-full">
+            <div class="insight-tag" style="background:rgba(5,150,105,0.08);color:#059669">Demand Segmentation</div>
+            <div class="insight-title">Paid campaign demand is spiking — Albert's grip is weaker than it looks.</div>
+            <div class="insight-body">Albert leads Ads &amp; Paid Campaigns SoV at 35% but their score is driven by a single capability. Multi-channel demand attribution is unclaimed.</div>
+            <div class="insight-sub">
+              <div class="insight-sub-item">Target "multi-channel paid AI" — Albert scores 0, no brand is ranking here</div>
+              <div class="insight-sub-item">Lead with Responsible AI score (88) as a differentiator — Albert is weakest here at 55</div>
+              <div class="insight-sub-item">Watch Drift's Salesforce integration — could shift Lifecycle segment by next week</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Priority action list -->
+        <div class="section-title" style="margin-top:4px">Priority Actions</div>
+        <div class="section-sub" style="margin-bottom:12px">Ranked by expected visibility impact over the next 30 days</div>
+        <div class="card action-list-card">
+          <div class="action-item">
+            <div class="action-prio prio-high">P1</div>
+            <div class="action-body">
+              <div class="action-title">Create "mid-market AI marketing agent" content page</div>
+              <div class="action-desc">Zero brands ranking here. First-mover captures 340% growing query segment. Est. impact: +40–60 mentions/week within 30 days.</div>
+            </div>
+          </div>
+          <div class="action-item">
+            <div class="action-prio prio-high">P2</div>
+            <div class="action-body">
+              <div class="action-title">Rephrase FAQ pages with buyer-intent keywords</div>
+              <div class="action-desc">3 pages need updates. LLMs surface buyer-intent phrasing over feature descriptions. Est. impact: +15–25 mentions/week.</div>
+            </div>
+          </div>
+          <div class="action-item">
+            <div class="action-prio prio-med">P3</div>
+            <div class="action-body">
+              <div class="action-title">Publish Drift comparison page for outreach queries</div>
+              <div class="action-desc">High-intent query with no competitive content coverage. Drift ranks #1 by default — any page here can displace it within 2–3 weeks.</div>
+            </div>
+          </div>
+          <div class="action-item">
+            <div class="action-prio prio-med">P4</div>
+            <div class="action-body">
+              <div class="action-title">Highlight Responsible AI features in product copy</div>
+              <div class="action-desc">Your score (88) is 33 points ahead of Albert's. LLMs reward explicitly stated compliance/transparency — add it to key product pages.</div>
+            </div>
+          </div>
+          <div class="action-item">
+            <div class="action-prio prio-low">P5</div>
+            <div class="action-body">
+              <div class="action-title">Monitor Conversica for personalisation feature launch</div>
+              <div class="action-desc">Hiring pattern signals a release in ~6 weeks. Pre-position a response now — have a "vs Conversica" comparison page ready to publish.</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /panel-insights -->
+
+    </div><!-- /main -->
+  </div><!-- /app-frame -->
+</div><!-- /browser-wrap -->
+
+<script>
+const TAB_TITLES = {
+  'overview':        ['Marketing AI Agents', 'Brand visibility, feature coverage, and competitive intelligence · updated daily'],
+  'brand-intel':     ['Brand Intelligence', 'How your competitors perform across every major AI model'],
+  'use-cases':       ['Use Case Coverage', 'Brand dominance within each marketing AI agent use case cluster'],
+  'feature-scores':  ['Feature Scores', 'Capability benchmarks scored daily across 6 LLMs · 14 features tracked'],
+  'competitor':      ['Competitor Tracker', 'Real-time signals on what competing AI agents are shipping'],
+  'benchmark':       ['Benchmarking', 'Submit your agent details to be benchmarked by use case and product feature against competitors'],
+  'insights':        ['Actionable Insights', 'Recommendations ranked by expected visibility impact over the next 30 days'],
+};
+
+const SB_MAP = {
+  'overview': 'sb-overview',
+  'brand-intel': 'sb-brand-intel',
+  'feature-scores': 'sb-feature-scores',
+  'competitor': 'sb-competitor',
+  'benchmark': 'sb-benchmark',
+  'insights': 'sb-insights',
+  'use-cases': 'sb-use-cases',
+};
+
+function switchTab(name) {
+  // Tabs
+  document.querySelectorAll('.tab').forEach(t =>
+    t.classList.toggle('active', t.dataset.tab === name)
+  );
+  // Panels
+  document.querySelectorAll('.tab-panel').forEach(p => {
+    p.style.display = p.id === 'panel-' + name ? '' : 'none';
+  });
+  // Sidebar
+  document.querySelectorAll('.sb-item').forEach(el => el.classList.remove('active'));
+  const sbEl = document.getElementById(SB_MAP[name]);
+  if (sbEl) sbEl.classList.add('active');
+  // Header
+  const [title, sub] = TAB_TITLES[name] || ['', ''];
+  document.getElementById('page-title').textContent = title;
+  document.getElementById('page-sub').textContent = sub;
+  // Scroll top
+  document.getElementById('main-scroll').scrollTop = 0;
+}
+</script>
+</body>
+</html>
