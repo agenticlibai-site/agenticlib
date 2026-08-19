@@ -36,10 +36,10 @@ body {
 
 /* ── Sidebar ── */
 .sidebar {
-  width: 168px;
+  width: 200px;
   background: #FFFFFF;
   border-right: 1px solid rgba(0,0,0,0.07);
-  padding: 18px 0 16px;
+  padding: 20px 0 16px;
   display: flex;
   flex-direction: column;
   gap: 0;
@@ -48,27 +48,27 @@ body {
 .sb-logo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 0 14px 18px;
+  gap: 10px;
+  padding: 0 16px 18px;
   border-bottom: 1px solid rgba(0,0,0,0.06);
   margin-bottom: 10px;
 }
 .sb-logo-mark {
-  width: 26px; height: 26px;
-  border-radius: 7px;
+  width: 30px; height: 30px;
+  border-radius: 8px;
   background: linear-gradient(135deg, #7C3AED, #C2186A);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.sb-logo-name { font-size: 13px; font-weight: 700; color: #0F0B1E; letter-spacing: -0.02em; }
-.sb-logo-sub  { font-size: 9px; color: #7C3AED; font-weight: 600; letter-spacing: 0.04em; }
+.sb-logo-name { font-size: 14px; font-weight: 700; color: #0F0B1E; letter-spacing: -0.02em; }
+.sb-logo-sub  { font-size: 10px; color: #7C3AED; font-weight: 600; letter-spacing: 0.04em; }
 
-.sb-section { font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #94A3B8; padding: 10px 14px 6px; }
+.sb-section { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #94A3B8; padding: 10px 16px 6px; }
 
 .sb-item {
-  display: flex; align-items: center; gap: 8px;
-  padding: 7px 14px;
-  font-size: 12.5px; font-weight: 500; color: #4B5563;
+  display: flex; align-items: center; gap: 9px;
+  padding: 8px 16px;
+  font-size: 13.5px; font-weight: 500; color: #4B5563;
   cursor: pointer;
   transition: background 0.12s;
 }
@@ -79,10 +79,10 @@ body {
   border-left: 2px solid #7C3AED;
 }
 .sb-item:not(.active):hover { background: rgba(0,0,0,0.03); }
-.sb-ico { width: 14px; height: 14px; flex-shrink: 0; opacity: 0.7; }
+.sb-ico { width: 15px; height: 15px; flex-shrink: 0; opacity: 0.7; }
 .sb-item.active .sb-ico { opacity: 1; }
 
-.sb-divider { height: 1px; background: rgba(0,0,0,0.06); margin: 8px 14px; }
+.sb-divider { height: 1px; background: rgba(0,0,0,0.06); margin: 8px 16px; }
 
 /* ── Main Content ── */
 .main {
@@ -104,19 +104,8 @@ body {
   padding: 3px 10px; border-radius: 100px; white-space: nowrap;
 }
 
-/* Tabs */
-.tab-row {
-  display: flex; gap: 2px; margin-bottom: 18px;
-  background: rgba(0,0,0,0.04); padding: 3px; border-radius: 8px;
-  width: fit-content;
-}
-.tab {
-  font-size: 11.5px; font-weight: 600; color: #6B7280;
-  padding: 5px 12px; border-radius: 6px; cursor: pointer;
-  white-space: nowrap; user-select: none;
-  transition: background 0.12s, color 0.12s, box-shadow 0.12s;
-}
-.tab.active { background: #fff; color: #0F0B1E; box-shadow: 0 1px 3px rgba(0,0,0,0.10); }
+/* Tabs — row hidden, tabs still function via sidebar */
+.tab-row { display: none !important; }
 .tab:not(.active):hover { background: rgba(255,255,255,0.5); color: #374151; }
 
 /* Cards */
