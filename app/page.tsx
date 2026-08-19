@@ -249,19 +249,25 @@ export default function Home() {
       {pricingModal.open && <PricingModal plan={pricingModal.plan} onClose={() => setPricingModal(p => ({ ...p, open: false }))} />}
       <style>{`
         @media (max-width: 900px) {
-          .hero-content { padding: 80px 20px 0 !important; }
-          .hero-snap-wrap { margin-top: 36px !important; }
+          .hero-content { padding: 90px 24px 0 !important; max-width: 100% !important; }
+          .hero-snap-wrap { margin-top: 36px !important; border-radius: 10px !important; }
         }
         @media (max-width: 640px) {
           /* Hero */
           .hero-card-wrapper { margin: 0 0 16px !important; }
-          .hero-content { padding: 80px 18px 32px !important; gap: 24px !important; }
-          .hero-tagline-text { font-size: 16px !important; }
-          .hero-subhead { margin-top: 16px !important; font-size: 14px !important; }
+          .hero-content { padding: 72px 20px 0 !important; }
+          .hero-tagline-text { font-size: 15px !important; }
+          .hero-subhead { margin-top: 14px !important; font-size: 15px !important; max-width: 100% !important; }
 
-          /* Sage AI header — critical: 80px side padding collapses to 20px */
+          /* Product snap — hide on small phones, too small to be readable */
+          .hero-snap-wrap { display: none !important; }
+
+          /* Trusted By spacing */
+          .trusted-by-section { padding: 40px 20px 44px !important; }
+
+          /* Sage AI header */
           .sage-header { padding: 0 20px !important; }
-          .sage-desc { font-size: 16px !important; }
+          .sage-desc { font-size: 15px !important; }
 
           /* Sage AI section margin */
           .sage-ai-section { margin-top: 32px !important; }
@@ -279,11 +285,12 @@ export default function Home() {
           /* Contact */
           #contact { padding-top: 28px !important; padding-bottom: 44px !important; }
 
-          /* Trusted By spacing */
-          .trusted-by-section { padding: 8px 20px 44px !important; }
-
           /* Why AgenticLib card */
           .why-agenticlib-card { margin: 0 12px !important; border-radius: 18px !important; }
+        }
+        @media (min-width: 641px) and (max-width: 900px) {
+          /* Tablet: show snap but limit height so it doesn't dominate */
+          .hero-snap-wrap { max-height: 420px !important; overflow: hidden !important; }
         }
         .dewwie-logo {
           font-family: Georgia, 'Times New Roman', serif;
@@ -335,7 +342,7 @@ export default function Home() {
             style={{
               zIndex: 2, position: "relative",
               maxWidth: 900, margin: "0 auto",
-              padding: "140px 48px 0",
+              padding: "120px 48px 0",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
