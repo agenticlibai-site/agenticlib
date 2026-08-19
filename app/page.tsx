@@ -259,11 +259,11 @@ export default function Home() {
           .hero-tagline-text { font-size: 15px !important; }
           .hero-subhead { margin-top: 14px !important; font-size: 15px !important; max-width: 100% !important; }
 
-          /* Product snap — hide on small phones, too small to be readable */
-          .hero-snap-wrap { display: none !important; }
+          /* Product snap — show on mobile, tight margins */
+          .hero-snap-wrap { margin-top: 28px !important; border-radius: 8px !important; }
 
           /* Trusted By spacing */
-          .trusted-by-section { padding: 40px 20px 44px !important; }
+          .trusted-by-section { padding: 40px 16px 44px !important; }
 
           /* Sage AI header */
           .sage-header { padding: 0 20px !important; }
@@ -289,8 +289,7 @@ export default function Home() {
           .why-agenticlib-card { margin: 0 12px !important; border-radius: 18px !important; }
         }
         @media (min-width: 641px) and (max-width: 900px) {
-          /* Tablet: show snap but limit height so it doesn't dominate */
-          .hero-snap-wrap { max-height: 420px !important; overflow: hidden !important; }
+          .hero-snap-wrap { margin-top: 32px !important; }
         }
         .dewwie-logo {
           font-family: Georgia, 'Times New Roman', serif;
