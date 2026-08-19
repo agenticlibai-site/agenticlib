@@ -374,7 +374,8 @@ export default function Home() {
                 aspectRatio: "1060 / 800",
                 borderRadius: 14,
                 overflow: "hidden",
-                boxShadow: "0 0 0 1px rgba(124,58,237,0.12), 0 32px 80px rgba(124,58,237,0.22), 0 10px 28px rgba(236,72,153,0.13), 0 2px 6px rgba(0,0,0,0.08)",
+                border: "1.5px solid rgba(124,58,237,0.28)",
+                boxShadow: "0 0 0 4px rgba(124,58,237,0.08), 0 0 32px 6px rgba(124,58,237,0.18), 0 32px 80px rgba(124,58,237,0.22), 0 10px 28px rgba(236,72,153,0.10), 0 2px 6px rgba(0,0,0,0.06)",
                 position: "relative",
                 flexShrink: 0,
               }}
