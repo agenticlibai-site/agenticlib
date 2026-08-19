@@ -563,7 +563,7 @@ export default function Home() {
       <div id="sage-ai" className="sage-ai-section" style={{ marginTop: 48 }}>
         <div className="sage-header" style={{ paddingBottom: 12, fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
           <p style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", margin: "0 0 14px" }}>The solution</p>
-          <h2 style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.05, margin: "0 0 16px", background: "linear-gradient(90deg, #7C3AED, #C73C8E, #F0617A)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>Sage AI Platform</h2>
+          <h2 style={{ fontSize: "clamp(28px, 4vw, 52px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.15, margin: "0 0 16px", paddingBottom: "0.1em", background: "linear-gradient(90deg, #7C3AED, #C73C8E, #F0617A)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>Sage AI Platform</h2>
           <p className="sage-desc" style={{ fontSize: 20, fontWeight: 700, color: "#000000", lineHeight: 1.5, margin: 0, maxWidth: 820 }}>One Platform. Product feature, Use case, Competitive landscape overviews for AI Agent Builders. All angles covered.</p>
         </div>
         <IntelligenceModules />
