@@ -24,38 +24,11 @@ body {
   box-shadow: none;
 }
 
-.browser-chrome {
-  background: #F0EFF4;
-  padding: 10px 16px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  border-bottom: 1px solid rgba(0,0,0,0.09);
-  flex-shrink: 0;
-}
-.dots { display: flex; gap: 6px; }
-.dot { width: 11px; height: 11px; border-radius: 50%; }
-.dot-r { background: #FF5F57; }
-.dot-y { background: #FEBC2E; }
-.dot-g { background: #28C840; }
-.url-bar {
-  flex: 1;
-  background: rgba(255,255,255,0.75);
-  border: 1px solid rgba(0,0,0,0.10);
-  border-radius: 6px;
-  padding: 4px 12px;
-  font-size: 12px;
-  color: #555;
-  letter-spacing: -0.01em;
-  max-width: 340px;
-  margin: 0 auto;
-  text-align: center;
-}
 
 /* ── App Layout ── */
 .app-frame {
   display: flex;
-  height: 760px;
+  height: 800px;
   background: #F8F7FC;
   overflow: hidden;
 }
@@ -413,11 +386,7 @@ body {
 </head>
 <body>
 <div class="browser-wrap">
-  <!-- Chrome bar -->
-  <div class="browser-chrome">
-    <div class="dots">
-      <div class="dot dot-r"></div>
-      <div class="dot dot-y"></div>
+  <div class="dot dot-y"></div>
       <div class="dot dot-g"></div>
     </div>
     <div class="url-bar">app.agenticlib.com/dashboard/marketing</div>
