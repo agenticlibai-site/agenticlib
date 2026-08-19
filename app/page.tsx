@@ -353,7 +353,7 @@ export default function Home() {
                   AI Agent Builders
                 </span>
               </h1>
-              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 24, fontWeight: 600, fontSize: 19, maxWidth: 560 }}>
+              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 24, fontWeight: 600, fontSize: 18, maxWidth: 550 }}>
                 Get an edge on your product feature growth, know your competitive landscape and scale in LLM visibility to show up where your buyers are asking.
               </p>
               <button
