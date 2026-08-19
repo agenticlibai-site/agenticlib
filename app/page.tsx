@@ -844,52 +844,116 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Social links ── */}
-      <section id="contact" style={{ background: "transparent", paddingTop: 48, paddingBottom: 64 }}>
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <p style={{ fontSize: 12, color: "rgba(0,0,0,0.35)", marginBottom: 14, letterSpacing: "0.05em" }}>Follow along as we build</p>
-          <div className="flex flex-wrap justify-center gap-3">
-            {[
-              { href: "https://www.linkedin.com/company/108024233/", Icon: Share2, label: "LinkedIn" },
-              { href: "mailto:srinidhi.murali@agenticlib.com", Icon: Mail, label: "Email" },
-              { href: "https://x.com/AgenticLibAI/status/1960527278087266557", Icon: XIcon, label: "X" },
-              { href: "https://www.producthunt.com/p/self-promotion/agenticlib-simplifying-your-ai-agent-discovery-journey", Icon: ArrowUp, label: "Product Hunt" },
-              { href: "https://www.reddit.com/r/SideProject/comments/1m6bfy1/agenticlib_simplifying_your_ai_agent_discovery/", Icon: MessageCircle, label: "Reddit" },
-            ].map(({ href, Icon, label }) => (
-              <a
-                key={label}
-                href={href}
-                target={href.startsWith("mailto") ? undefined : "_blank"}
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium"
-                style={{ background: "rgba(0,0,0,0.05)", color: "rgba(0,0,0,0.55)", transition: "background 0.18s ease, color 0.18s ease" }}
-                onMouseEnter={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "rgba(0,0,0,0.10)"; el.style.color = "#000"; }}
-                onMouseLeave={(e) => { const el = e.currentTarget as HTMLAnchorElement; el.style.background = "rgba(0,0,0,0.05)"; el.style.color = "rgba(0,0,0,0.55)"; }}
-              >
-                <Icon size={14} strokeWidth={1.75} />
-                {label}
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+      <footer id="contact" style={{ background: "transparent", padding: "20px 160px 28px" }}>
+        {/* ── Rounded card ── */}
+        <div style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.82) 0%, rgba(224,213,255,0.70) 45%, rgba(253,220,240,0.75) 100%)", backdropFilter: "blur(48px) saturate(200%)", WebkitBackdropFilter: "blur(48px) saturate(200%)", borderRadius: 24, padding: "40px 44px 28px", border: "none", boxShadow: "0 32px 80px rgba(108,76,241,0.28), 0 8px 24px rgba(236,72,153,0.18), 0 2px 6px rgba(108,76,241,0.10)" }}>
 
-      <footer style={{ background: "#0F0B1E" }}>
-        <div className="max-w-6xl mx-auto px-8 py-6 flex items-center justify-between">
-          <span className="text-sm text-white/60">&copy; 2026 AgenticLib</span>
-          <span className="text-sm font-semibold tracking-tight" style={{ color: "rgba(255,255,255,0.75)" }}>AgenticLib</span>
-        </div>
-        <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }} className="max-w-6xl mx-auto px-8" />
-        <div className="max-w-6xl mx-auto px-8 py-4 flex flex-wrap items-center justify-between gap-y-4">
-          <div className="flex flex-wrap gap-x-6 gap-y-2">
-            <Link href="/privacy" className="text-xs text-white/40 hover:text-white/70 transition">Privacy Policy</Link>
-            <Link href="/terms" className="text-xs text-white/40 hover:text-white/70 transition">Terms &amp; Conditions</Link>
-            <Link href="/disclaimer" className="text-xs text-white/40 hover:text-white/70 transition">Web Disclaimer</Link>
+          {/* ── Columns ── */}
+          <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr 1fr 1fr 1fr", gap: 32, marginBottom: 40 }}>
+
+            {/* Brand */}
+            <div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                <img src="/logo.png" alt="AgenticLib" style={{ height: 32, width: "auto", objectFit: "contain" }} />
+                <span style={{ fontSize: 18, fontWeight: 700, color: "#0F0B1E", letterSpacing: "-0.01em" }}>AgenticLib</span>
+              </div>
+              <p style={{ fontSize: 14, color: "#000", lineHeight: 1.6, margin: 0, maxWidth: 200 }}>
+                Helping all AI Agent builders succeed.
+              </p>
+            </div>
+
+            {/* Platform */}
+            <div>
+              <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#7C3AED", marginBottom: 14, marginTop: 0 }}>Platform</p>
+              {[
+                { label: "Sage AI", href: "/#sage" },
+              ].map(({ label, href }) => (
+                <a key={label} href={href} style={{ display: "block", fontSize: 15, color: "#000", textDecoration: "none", marginBottom: 9, transition: "color 0.15s" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#6C4CF1"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#000"; }}>
+                  {label}
+                </a>
+              ))}
+            </div>
+
+            {/* Pricing */}
+            <div>
+              <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#7C3AED", marginBottom: 14, marginTop: 0 }}>Pricing</p>
+              <a href="/#pricing" style={{ display: "block", fontSize: 15, color: "#000", textDecoration: "none", marginBottom: 9, transition: "color 0.15s" }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#6C4CF1"; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#000"; }}>
+                Pricing
+              </a>
+            </div>
+
+            {/* Company */}
+            <div>
+              <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#7C3AED", marginBottom: 14, marginTop: 0 }}>Company</p>
+              {[
+                { label: "Mission", href: "/company" },
+                { label: "Blog", href: "/blog" },
+              ].map(({ label, href }) => (
+                <a key={label} href={href} style={{ display: "block", fontSize: 15, color: "#000", textDecoration: "none", marginBottom: 9, transition: "color 0.15s" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#6C4CF1"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#000"; }}>
+                  {label}
+                </a>
+              ))}
+            </div>
+
+            {/* Legal */}
+            <div>
+              <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#7C3AED", marginBottom: 14, marginTop: 0 }}>Legal</p>
+              {[
+                { label: "Privacy Policy", href: "/privacy" },
+                { label: "Terms & Conditions", href: "/terms" },
+              ].map(({ label, href }) => (
+                <Link key={label} href={href} style={{ display: "block", fontSize: 15, color: "#000", textDecoration: "none", marginBottom: 9, transition: "color 0.15s" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#6C4CF1"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#000"; }}>
+                  {label}
+                </Link>
+              ))}
+            </div>
+
+            {/* Connect */}
+            <div>
+              <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#7C3AED", marginBottom: 14, marginTop: 0 }}>Connect</p>
+              {[
+                { label: "LinkedIn", href: "https://www.linkedin.com/company/108024233/" },
+                { label: "X / Twitter", href: "https://x.com/AgenticLibAI/status/1960527278087266557" },
+                { label: "Email", href: "mailto:srinidhi.murali@agenticlib.com" },
+                { label: "Product Hunt", href: "https://www.producthunt.com/p/self-promotion/agenticlib-simplifying-your-ai-agent-discovery-journey" },
+                { label: "Reddit", href: "https://www.reddit.com/r/SideProject/comments/1m6bfy1/agenticlib_simplifying_your_ai_agent_discovery/" },
+              ].map(({ label, href }) => (
+                <a key={label} href={href} target={href.startsWith("mailto") ? undefined : "_blank"} rel="noopener noreferrer"
+                  style={{ display: "block", fontSize: 15, color: "#000", textDecoration: "none", marginBottom: 9, transition: "color 0.15s" }}
+                  onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#6C4CF1"; }}
+                  onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.color = "#000"; }}>
+                  {label}
+                </a>
+              ))}
+            </div>
           </div>
-          <a href="https://launchpadly.co/startup/agenticlib" target="_blank" rel="noopener noreferrer" data-launchpadly-badge="agenticlib" data-launchpadly-badge-variant="light">
-            <img src="https://launchpadly.co/embed/badges/startup/agenticlib.svg?variant=light" alt="Launchpadly Startup Directory" width="220" height="48" style={{ display: "block", border: 0 }} />
-          </a>
+
+          {/* ── Bottom bar ── */}
+          <div style={{ borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 20, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <span style={{ fontSize: 14, color: "#000" }}>&copy; 2026 AgenticLib. All rights reserved.</span>
+            <span style={{ fontSize: 14, color: "rgba(0,0,0,0.25)", fontStyle: "italic" }}>Follow along as we build</span>
+          </div>
         </div>
+
+        <style>{`
+          @media (max-width: 768px) {
+            #contact > div > div:first-child {
+              grid-template-columns: 1fr 1fr !important;
+            }
+          }
+          @media (max-width: 480px) {
+            #contact > div { padding: 28px 20px 20px !important; }
+            #contact > div > div:first-child { grid-template-columns: 1fr !important; }
+          }
+        `}</style>
       </footer>
 
 </div>

@@ -44,6 +44,7 @@ body {
 /* ── Page background ── */
 .page-bg {
   min-height: 100vh;
+  background: linear-gradient(160deg, #EDE9FE 0%, #F5F2FF 30%, #FAF8FF 55%, #FDF0F8 80%, #FCE7F3 100%);
 }
 
 /* ── Gradient headline text ── */
