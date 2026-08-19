@@ -345,7 +345,7 @@ export default function Home() {
             {/* LEFT — text + CTA */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
               <h1
-                className="text-[28px] sm:text-[36px] md:text-[48px] lg:text-[56px]"
+                className="text-[24px] sm:text-[30px] md:text-[40px] lg:text-[46px]"
                 style={{ color: "#000000", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.08, margin: 0 }}
               >
                 Comparison intelligence for{" "}
