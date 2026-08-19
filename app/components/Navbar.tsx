@@ -106,7 +106,7 @@ export default function Navbar() {
                   <path d="M2.5 4.5l3.5 3.5 3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </button>
-              <div className="absolute left-0 top-full pt-2 hidden group-hover:block" style={{ zIndex: 9999, minWidth: "min(880px, calc(100vw - 32px))" }}>
+              <div className="absolute left-0 top-full pt-2 hidden group-hover:block" style={{ zIndex: 9999, width: 420 }}>
                 <div className="rounded-2xl" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 20px 60px rgba(0,0,0,0.13), 0 4px 12px rgba(0,0,0,0.06)" }}>
                   <div className="flex" style={{ padding: "28px 8px 24px" }}>
 
@@ -114,16 +114,16 @@ export default function Navbar() {
                       <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#000000", textTransform: "uppercase", marginBottom: 12 }}>For AI Agent Builders</p>
                       <div style={{ height: 1, background: "#f0f0f4", marginBottom: 16 }} />
                       {[
-                        { label: "Marketing", desc: "Track your marketing AI agent's product features, visibility, and sentiment against competitors.", href: "/solutions/marketing",
+                        { label: "Marketing", desc: "Visibility & sentiment tracking for marketing AI agents.", href: "/solutions/marketing",
                           iconBg: "rgba(240,97,122,0.10)",
                           icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 17V8l4-4h6l4 4v9H3z" stroke="#F0617A" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(240,97,122,0.12)"/><path d="M8 17v-5h4v5" stroke="#F0617A" strokeWidth="1.5" strokeLinejoin="round"/></svg> },
-                        { label: "Skincare", desc: "Track your skincare AI agent's product features, visibility, and sentiment against competitors.", href: "/solutions/skincare",
+                        { label: "Skincare", desc: "Visibility & sentiment tracking for skincare AI agents.", href: "/solutions/skincare",
                           iconBg: "rgba(30,58,138,0.10)",
                           icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3c0 0-5 3.5-5 8a5 5 0 0010 0c0-4.5-5-8-5-8z" stroke="#1E3A8A" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(30,58,138,0.12)"/><circle cx="10" cy="11" r="1.5" fill="#1E3A8A"/></svg> },
-                        { label: "Sales", desc: "Track your sales AI agent's product features, visibility, and sentiment against competitors.", href: "/product/sales-visibility",
+                        { label: "Sales", desc: "Visibility & sentiment tracking for sales AI agents.", href: "/product/sales-visibility",
                           iconBg: "rgba(37,99,235,0.10)",
                           icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 14l4-5 4 3 3-4 3 3" stroke="#2563EB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="17" cy="11" r="1.5" fill="#2563EB"/></svg> },
-                        { label: "Trades", desc: "Track your tradie AI agent's product features, visibility, and sentiment against competitors.", href: "/product/dexify-visibility",
+                        { label: "Trades", desc: "Visibility & sentiment tracking for trades AI agents.", href: "/product/dexify-visibility",
                           iconBg: "rgba(234,88,12,0.10)",
                           icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 16l2-6h8l2 6H4z" stroke="#EA580C" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(234,88,12,0.12)"/><path d="M8 10V7a2 2 0 014 0v3" stroke="#EA580C" strokeWidth="1.5" strokeLinecap="round"/></svg> },
                       ].map((item) => (
