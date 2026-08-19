@@ -103,20 +103,6 @@ body {
   padding: 3px 10px; border-radius: 100px; white-space: nowrap;
 }
 
-/* Tabs */
-.tab-row {
-  display: flex; gap: 2px; margin-bottom: 18px;
-  background: rgba(0,0,0,0.04); padding: 3px; border-radius: 8px;
-  width: fit-content;
-}
-.tab {
-  font-size: 11.5px; font-weight: 600; color: #6B7280;
-  padding: 5px 12px; border-radius: 6px; cursor: pointer;
-  white-space: nowrap; user-select: none;
-  transition: background 0.12s, color 0.12s, box-shadow 0.12s;
-}
-.tab.active { background: #fff; color: #0F0B1E; box-shadow: 0 1px 3px rgba(0,0,0,0.10); }
-.tab:not(.active):hover { background: rgba(255,255,255,0.5); color: #374151; }
 
 /* Cards */
 .card {
@@ -464,11 +450,7 @@ body {
         </div>
         <span class="domain-badge">AI Agent Builder · Marketing</span>
       </div>
-
-      <!-- Tabs -->
-      <div class="tab-row">
-        <div class="tab active" data-tab="overview" onclick="switchTab('overview')">Overview</div>
-        <div class="tab" data-tab="brand-intel" onclick="switchTab('brand-intel')">Brand Intelligence</div>
+      <div class="tab" data-tab="brand-intel" onclick="switchTab('brand-intel')">Brand Intelligence</div>
         <div class="tab" data-tab="use-cases" onclick="switchTab('use-cases')">Use Cases</div>
         <div class="tab" data-tab="feature-scores" onclick="switchTab('feature-scores')">Feature Scores</div>
         <div class="tab" data-tab="competitor" onclick="switchTab('competitor')">Competitor Tracker</div>
