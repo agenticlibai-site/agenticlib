@@ -335,7 +335,7 @@ export default function Home() {
             style={{
               zIndex: 2, position: "relative",
               maxWidth: 900, margin: "0 auto",
-              padding: "110px 48px 0",
+              padding: "140px 48px 0",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
