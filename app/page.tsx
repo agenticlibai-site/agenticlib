@@ -249,8 +249,8 @@ export default function Home() {
       {pricingModal.open && <PricingModal plan={pricingModal.plan} onClose={() => setPricingModal(p => ({ ...p, open: false }))} />}
       <style>{`
         @media (max-width: 900px) {
-          .hero-content { grid-template-columns: 1fr !important; padding: 100px 24px 40px !important; }
-          .hero-snap-wrap { display: none !important; }
+          .hero-content { padding: 80px 20px 0 !important; }
+          .hero-snap-wrap { margin-top: 36px !important; }
         }
         @media (max-width: 640px) {
           /* Hero */
@@ -329,23 +329,23 @@ export default function Home() {
             <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(60px) saturate(112%)", WebkitBackdropFilter: "blur(60px) saturate(112%)", background: "rgba(255,255,255,0.34)" }} />
           </div>
 
-          {/* Two-column hero */}
+          {/* Stacked hero — text centred, snap below */}
           <div
             className="hero-content relative"
             style={{
               zIndex: 2, position: "relative",
-              maxWidth: 1280, margin: "0 auto",
-              padding: "120px 32px 56px 96px",
-              display: "grid",
-              gridTemplateColumns: "400px 1fr",
-              gap: 64,
+              maxWidth: 900, margin: "0 auto",
+              padding: "110px 48px 0",
+              display: "flex",
+              flexDirection: "column",
               alignItems: "center",
+              textAlign: "center",
             }}
           >
-            {/* LEFT — text + CTA */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+            {/* TOP — text + CTA */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
               <h1
-                className="text-[24px] sm:text-[30px] md:text-[40px] lg:text-[46px]"
+                className="text-[28px] sm:text-[36px] md:text-[48px] lg:text-[56px]"
                 style={{ color: "#000000", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.08, margin: 0 }}
               >
                 Comparison intelligence for{" "}
@@ -353,12 +353,12 @@ export default function Home() {
                   AI Agent Builders
                 </span>
               </h1>
-              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 28, fontWeight: 600, fontSize: 19, maxWidth: 400 }}>
+              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 24, fontWeight: 600, fontSize: 19, maxWidth: 560 }}>
                 Get an edge on your product feature growth, know your competitive landscape and scale in LLM visibility to show up where your buyers are asking.
               </p>
               <button
                 onClick={() => document.getElementById("sage-ai")?.scrollIntoView({ behavior: "smooth" })}
-                style={{ marginTop: 36, display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(95deg, #7C3AED, #C2186A)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "14px 32px", borderRadius: 9999, border: "none", cursor: "pointer", boxShadow: "0 4px 20px rgba(124,58,237,0.35)", transition: "box-shadow 0.2s ease, transform 0.15s ease" }}
+                style={{ marginTop: 32, display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(95deg, #7C3AED, #C2186A)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "14px 32px", borderRadius: 9999, border: "none", cursor: "pointer", boxShadow: "0 4px 20px rgba(124,58,237,0.35)", transition: "box-shadow 0.2s ease, transform 0.15s ease" }}
                 onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 8px 32px rgba(124,58,237,0.50)"; el.style.transform = "translateY(-1px)"; }}
                 onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 4px 20px rgba(124,58,237,0.35)"; el.style.transform = "translateY(0)"; }}
               >
@@ -366,11 +366,12 @@ export default function Home() {
               </button>
             </div>
 
-            {/* RIGHT — product snapshot */}
+            {/* BELOW — product snapshot */}
             <div
               className="hero-snap-wrap"
               style={{
                 width: "100%",
+                marginTop: 52,
                 aspectRatio: "1060 / 800",
                 borderRadius: 14,
                 overflow: "hidden",
