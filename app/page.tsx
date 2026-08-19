@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Share2, Mail, X as XIcon, ArrowUp, MessageCircle } from "lucide-react";
@@ -220,22 +220,6 @@ export default function Home() {
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [pricingModal, setPricingModal] = useState<{ open: boolean; plan: "free" | "premium" }>({ open: false, plan: "free" });
   const videoPlayedRef = useRef(false);
-  const snapIframeRef = useRef<HTMLIFrameElement>(null);
-
-  // Scale the product snapshot iframe to always fill its wrapper width
-  useEffect(() => {
-    const resize = () => {
-      const iframe = snapIframeRef.current;
-      if (!iframe?.parentElement) return;
-      const w = iframe.parentElement.clientWidth || 1060;
-      iframe.style.transform = `scale(${w / 1060})`;
-    };
-    resize();
-    const ro = new ResizeObserver(resize);
-    if (snapIframeRef.current?.parentElement) ro.observe(snapIframeRef.current.parentElement);
-    window.addEventListener("resize", resize);
-    return () => { ro.disconnect(); window.removeEventListener("resize", resize); };
-  }, []);
 
   const handleVideoPlay = () => {
     if (videoPlayedRef.current) return;
@@ -249,20 +233,12 @@ export default function Home() {
       {reportModalOpen && <ReportModal onClose={() => setReportModalOpen(false)} />}
       {pricingModal.open && <PricingModal plan={pricingModal.plan} onClose={() => setPricingModal(p => ({ ...p, open: false }))} />}
       <style>{`
-        @media (max-width: 900px) {
-          /* Hero: stack vertically on tablet/mobile */
-          .hero-content {
-            grid-template-columns: 1fr !important;
-            padding: 100px 24px 40px !important;
-          }
-          .hero-snap-wrap { display: none !important; }
-        }
         @media (max-width: 640px) {
           /* Hero */
           .hero-card-wrapper { margin: 0 0 16px !important; }
-          .hero-content { padding: 80px 18px 32px !important; gap: 24px !important; }
+          .hero-content { padding: 36px 18px 32px !important; min-height: 360px !important; }
           .hero-tagline-text { font-size: 16px !important; }
-          .hero-subhead { margin-top: 16px !important; font-size: 14px !important; }
+          .hero-subhead { margin-top: 20px !important; font-size: 14px !important; }
 
           /* Sage AI header — critical: 80px side padding collapses to 20px */
           .sage-header { padding: 0 20px !important; }
@@ -316,13 +292,15 @@ export default function Home() {
 
         {/* ── HERO ───────────────────────────────────────────── */}
         <div className="hero-card-wrapper" style={{ position: "relative", margin: "-68px 0 24px" }}>
-        <div style={{ borderRadius: 0, position: "relative" }}>
+        <div style={{ borderRadius: 0, boxShadow: "0 8px 40px rgba(124,58,237,0.12)", position: "relative" }}>
         <section
-          className="relative"
-          style={{ fontFamily: "var(--font-schibsted), var(--font-geist-sans), sans-serif" }}
+          className="relative text-center"
+          style={{
+            fontFamily: "var(--font-schibsted), var(--font-geist-sans), sans-serif",
+          }}
         >
-          {/* Hero gradient */}
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "calc(100% + 750px)", zIndex: 0, pointerEvents: "none" }}>
+          {/* Hero gradient — purple → pink → peach → white at Dewwie testimonial */}
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "calc(100% + 750px)", zIndex: 0, pointerEvents: "none", borderRadius: 0 }}>
             <div style={{
               position: "absolute", inset: 0,
               background: [
@@ -331,38 +309,35 @@ export default function Home() {
                 "radial-gradient(circle at 97% 2%,  rgba(78,88,218,0.14) 0%, transparent 38%)",
               ].join(", "),
             }} />
-            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(60px) saturate(112%)", WebkitBackdropFilter: "blur(60px) saturate(112%)", background: "rgba(255,255,255,0.34)" }} />
+            {/* White frost to keep it airy */}
+            <div style={{
+              position: "absolute", inset: 0,
+              backdropFilter: "blur(60px) saturate(112%)",
+              WebkitBackdropFilter: "blur(60px) saturate(112%)",
+              background: "rgba(255,255,255,0.34)",
+            }} />
           </div>
 
-          {/* Two-column hero content */}
-          <div
-            className="hero-content relative"
-            style={{
-              zIndex: 2, position: "relative",
-              maxWidth: 1280, margin: "0 auto",
-              padding: "120px 48px 56px",
-              display: "grid",
-              gridTemplateColumns: "420px 1fr",
-              gap: 56,
-              alignItems: "center",
-            }}
-          >
-            {/* LEFT — text + CTA */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
-              <h1
-                className="text-[28px] sm:text-[36px] md:text-[48px] lg:text-[56px]"
-                style={{ color: "#000000", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.08, margin: 0 }}
-              >
-                Comparison intelligence for{" "}
-                <span style={{ display: "inline", background: "linear-gradient(95deg, #6B4FBB 15%, #E8447A 85%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                  AI Agent Builders
-                </span>
-              </h1>
+          {/* Content */}
+          <div className="hero-content relative max-w-5xl mx-auto px-8 pt-36 pb-16" style={{ zIndex: 2, position: "relative", minHeight: "480px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
 
-              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.45, marginTop: 28, fontWeight: 600, fontSize: 16, maxWidth: 380 }}>
+            {/* Headline */}
+            <h1
+              className="text-[28px] sm:text-[36px] md:text-[54px] lg:text-[64px] mb-5"
+              style={{ color: "#000000", fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.08 }}
+            >
+              Comparison intelligence for{" "}
+              <span style={{ display: "inline-block", background: "linear-gradient(95deg, #6B4FBB 15%, #E8447A 85%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", paddingBottom: "0.15em" }}>
+                AI Agent Builders
+              </span>
+            </h1>
+
+              {/* Subhead */}
+              <p className="hero-subhead text-base md:text-lg mx-auto" style={{ color: "#000000", maxWidth: "520px", lineHeight: 1.35, marginTop: "40px", fontWeight: 700 }}>
                 Get an edge on your product feature growth, know your competitive landscape and scale in LLM visibility to show up where your buyers are asking.
               </p>
 
+              {/* CTA */}
               <button
                 onClick={() => document.getElementById("sage-ai")?.scrollIntoView({ behavior: "smooth" })}
                 style={{ marginTop: 36, display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(95deg, #7C3AED, #C2186A)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "14px 32px", borderRadius: 9999, border: "none", cursor: "pointer", boxShadow: "0 4px 20px rgba(124,58,237,0.35)", transition: "box-shadow 0.2s ease, transform 0.15s ease" }}
@@ -371,35 +346,6 @@ export default function Home() {
               >
                 Get started <span aria-hidden style={{ fontSize: 17 }}>›</span>
               </button>
-            </div>
-
-            {/* RIGHT — product snapshot iframe */}
-            <div
-              className="hero-snap-wrap"
-              style={{
-                width: "100%",
-                /* aspect-ratio drives the height automatically — no JS height-setting needed */
-                aspectRatio: "1060 / 810",
-                borderRadius: 14,
-                overflow: "hidden",
-                boxShadow: "0 0 0 1px rgba(124,58,237,0.12), 0 32px 80px rgba(124,58,237,0.22), 0 10px 28px rgba(236,72,153,0.13), 0 2px 6px rgba(0,0,0,0.08)",
-                position: "relative",
-                flexShrink: 0,
-              }}
-            >
-              <iframe
-                ref={snapIframeRef}
-                src="/sage-platform-demo.html"
-                title="Sage AI Platform"
-                style={{
-                  width: 1060,
-                  height: 810,
-                  border: "none",
-                  display: "block",
-                  transformOrigin: "top left",
-                }}
-              />
-            </div>
 
           </div>
         </section>
