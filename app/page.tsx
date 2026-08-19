@@ -846,7 +846,7 @@ export default function Home() {
 
       <footer id="contact" style={{ background: "transparent", padding: "80px 160px 28px" }}>
         {/* ── Rounded card ── */}
-        <div style={{ background: "linear-gradient(135deg, rgba(245,240,230,0.75) 0%, rgba(240,233,218,0.70) 100%)", backdropFilter: "blur(48px) saturate(200%)", WebkitBackdropFilter: "blur(48px) saturate(200%)", borderRadius: 24, padding: "40px 44px 28px", border: "none", boxShadow: "0 32px 80px rgba(108,76,241,0.28), 0 8px 24px rgba(236,72,153,0.18), 0 2px 6px rgba(108,76,241,0.10)" }}>
+        <div style={{ background: "linear-gradient(135deg, rgba(255,255,255,0.82) 0%, rgba(224,213,255,0.70) 45%, rgba(253,220,240,0.75) 100%)", backdropFilter: "blur(48px) saturate(200%)", WebkitBackdropFilter: "blur(48px) saturate(200%)", borderRadius: 24, padding: "40px 44px 28px", border: "none", boxShadow: "0 32px 80px rgba(108,76,241,0.28), 0 8px 24px rgba(236,72,153,0.18), 0 2px 6px rgba(108,76,241,0.10)" }}>
 
           {/* ── Columns ── */}
           <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr 1fr 1fr 1fr 1fr", gap: 32, marginBottom: 40 }}>
@@ -939,7 +939,7 @@ export default function Home() {
           {/* ── Bottom bar ── */}
           <div style={{ borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 20, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
             <span style={{ fontSize: 14, color: "#000" }}>&copy; 2026 AgenticLib. All rights reserved.</span>
-            <span style={{ fontSize: 14, color: "rgba(0,0,0,0.25)", fontStyle: "italic" }}>Follow along as we build</span>
+            <span style={{ fontSize: 14, color: "#000000", fontStyle: "italic" }}>Follow along as we build</span>
           </div>
         </div>
 
