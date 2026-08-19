@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Share2, Mail, X as XIcon, ArrowUp, MessageCircle } from "lucide-react";
@@ -220,6 +220,22 @@ export default function Home() {
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [pricingModal, setPricingModal] = useState<{ open: boolean; plan: "free" | "premium" }>({ open: false, plan: "free" });
   const videoPlayedRef = useRef(false);
+  const snapIframeRef = useRef<HTMLIFrameElement>(null);
+
+  // Scale the product snapshot iframe to always fill its wrapper width
+  useEffect(() => {
+    const resize = () => {
+      const iframe = snapIframeRef.current;
+      if (!iframe?.parentElement) return;
+      const w = iframe.parentElement.clientWidth || 1060;
+      iframe.style.transform = `scale(${w / 1060})`;
+    };
+    resize();
+    const ro = new ResizeObserver(resize);
+    if (snapIframeRef.current?.parentElement) ro.observe(snapIframeRef.current.parentElement);
+    window.addEventListener("resize", resize);
+    return () => { ro.disconnect(); window.removeEventListener("resize", resize); };
+  }, []);
 
   const handleVideoPlay = () => {
     if (videoPlayedRef.current) return;
@@ -233,12 +249,20 @@ export default function Home() {
       {reportModalOpen && <ReportModal onClose={() => setReportModalOpen(false)} />}
       {pricingModal.open && <PricingModal plan={pricingModal.plan} onClose={() => setPricingModal(p => ({ ...p, open: false }))} />}
       <style>{`
+        @media (max-width: 900px) {
+          /* Hero: stack vertically on tablet/mobile */
+          .hero-content {
+            grid-template-columns: 1fr !important;
+            padding: 100px 24px 40px !important;
+          }
+          .hero-snap-wrap { display: none !important; }
+        }
         @media (max-width: 640px) {
           /* Hero */
           .hero-card-wrapper { margin: 0 0 16px !important; }
-          .hero-content { padding: 36px 18px 32px !important; min-height: 360px !important; }
+          .hero-content { padding: 80px 18px 32px !important; gap: 24px !important; }
           .hero-tagline-text { font-size: 16px !important; }
-          .hero-subhead { margin-top: 20px !important; font-size: 14px !important; }
+          .hero-subhead { margin-top: 16px !important; font-size: 14px !important; }
 
           /* Sage AI header — critical: 80px side padding collapses to 20px */
           .sage-header { padding: 0 20px !important; }
@@ -292,54 +316,53 @@ export default function Home() {
 
         {/* ── HERO ───────────────────────────────────────────── */}
         <div className="hero-card-wrapper" style={{ position: "relative", margin: "-68px 0 24px" }}>
-        <div style={{ borderRadius: 0, boxShadow: "0 8px 40px rgba(124,58,237,0.12)", position: "relative" }}>
+        <div style={{ borderRadius: 0, position: "relative" }}>
         <section
-          className="relative text-center"
-          style={{
-            fontFamily: "var(--font-schibsted), var(--font-geist-sans), sans-serif",
-          }}
+          className="relative"
+          style={{ fontFamily: "var(--font-schibsted), var(--font-geist-sans), sans-serif" }}
         >
-          {/* Hero gradient — purple → pink → peach → white at Dewwie testimonial */}
-          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "calc(100% + 750px)", zIndex: 0, pointerEvents: "none", borderRadius: 0 }}>
+          {/* Hero gradient */}
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: "calc(100% + 750px)", zIndex: 0, pointerEvents: "none" }}>
             <div style={{
               position: "absolute", inset: 0,
               background: [
-                // Vertical sweep: very soft pastel purple → blush pink → peach → transparent
                 "linear-gradient(180deg, rgba(112,38,230,0.32) 0%, rgba(170,42,168,0.25) 13%, rgba(215,58,128,0.21) 26%, rgba(233,80,112,0.17) 40%, rgba(242,108,98,0.12) 54%, rgba(250,152,122,0.08) 68%, rgba(255,196,170,0.05) 81%, rgba(255,228,210,0.02) 92%, rgba(255,255,255,0) 100%)",
-                // Corner radials — very soft
                 "radial-gradient(circle at 3% 0%,   rgba(100,32,215,0.18) 0%, transparent 38%)",
                 "radial-gradient(circle at 97% 2%,  rgba(78,88,218,0.14) 0%, transparent 38%)",
               ].join(", "),
             }} />
-            {/* White frost to keep it airy */}
-            <div style={{
-              position: "absolute", inset: 0,
-              backdropFilter: "blur(60px) saturate(112%)",
-              WebkitBackdropFilter: "blur(60px) saturate(112%)",
-              background: "rgba(255,255,255,0.34)",
-            }} />
+            <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(60px) saturate(112%)", WebkitBackdropFilter: "blur(60px) saturate(112%)", background: "rgba(255,255,255,0.34)" }} />
           </div>
 
-          {/* Content */}
-          <div className="hero-content relative max-w-5xl mx-auto px-8 pt-36 pb-16" style={{ zIndex: 2, position: "relative", minHeight: "480px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
+          {/* Two-column hero content */}
+          <div
+            className="hero-content relative"
+            style={{
+              zIndex: 2, position: "relative",
+              maxWidth: 1280, margin: "0 auto",
+              padding: "120px 48px 56px",
+              display: "grid",
+              gridTemplateColumns: "420px 1fr",
+              gap: 56,
+              alignItems: "center",
+            }}
+          >
+            {/* LEFT — text + CTA */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-start" }}>
+              <h1
+                className="text-[28px] sm:text-[36px] md:text-[48px] lg:text-[56px]"
+                style={{ color: "#000000", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.08, margin: 0 }}
+              >
+                Comparison intelligence for{" "}
+                <span style={{ display: "inline", background: "linear-gradient(95deg, #6B4FBB 15%, #E8447A 85%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                  AI Agent Builders
+                </span>
+              </h1>
 
-            {/* Headline */}
-            <h1
-              className="text-[28px] sm:text-[36px] md:text-[54px] lg:text-[64px] mb-5"
-              style={{ color: "#000000", fontWeight: 700, letterSpacing: "-0.01em", lineHeight: 1.08 }}
-            >
-              Comparison intelligence for{" "}
-              <span style={{ display: "inline-block", background: "linear-gradient(95deg, #6B4FBB 15%, #E8447A 85%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", paddingBottom: "0.15em" }}>
-                AI Agent Builders
-              </span>
-            </h1>
-
-              {/* Subhead */}
-              <p className="hero-subhead text-base md:text-lg mx-auto" style={{ color: "#000000", maxWidth: "520px", lineHeight: 1.35, marginTop: "40px", fontWeight: 700 }}>
+              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.45, marginTop: 28, fontWeight: 600, fontSize: 16, maxWidth: 380 }}>
                 Get an edge on your product feature growth, know your competitive landscape and scale in LLM visibility to show up where your buyers are asking.
               </p>
 
-              {/* CTA */}
               <button
                 onClick={() => document.getElementById("sage-ai")?.scrollIntoView({ behavior: "smooth" })}
                 style={{ marginTop: 36, display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(95deg, #7C3AED, #C2186A)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "14px 32px", borderRadius: 9999, border: "none", cursor: "pointer", boxShadow: "0 4px 20px rgba(124,58,237,0.35)", transition: "box-shadow 0.2s ease, transform 0.15s ease" }}
@@ -348,6 +371,35 @@ export default function Home() {
               >
                 Get started <span aria-hidden style={{ fontSize: 17 }}>›</span>
               </button>
+            </div>
+
+            {/* RIGHT — product snapshot iframe */}
+            <div
+              className="hero-snap-wrap"
+              style={{
+                width: "100%",
+                /* aspect-ratio drives the height automatically — no JS height-setting needed */
+                aspectRatio: "1060 / 810",
+                borderRadius: 14,
+                overflow: "hidden",
+                boxShadow: "0 0 0 1px rgba(124,58,237,0.12), 0 32px 80px rgba(124,58,237,0.22), 0 10px 28px rgba(236,72,153,0.13), 0 2px 6px rgba(0,0,0,0.08)",
+                position: "relative",
+                flexShrink: 0,
+              }}
+            >
+              <iframe
+                ref={snapIframeRef}
+                src="/sage-platform-demo.html"
+                title="Sage AI Platform"
+                style={{
+                  width: 1060,
+                  height: 810,
+                  border: "none",
+                  display: "block",
+                  transformOrigin: "top left",
+                }}
+              />
+            </div>
 
           </div>
         </section>
@@ -463,17 +515,38 @@ export default function Home() {
                 <path d="M0,200 L200,200" fill="none" stroke="url(#aab-cgLine)" strokeWidth="3" strokeLinecap="round" />
                 <path d="M0,200 C95,200 100,342 200,342" fill="none" stroke="url(#aab-cgLine)" strokeWidth="3" strokeLinecap="round" />
               </svg>
-              <div style={{ flex: "none", display: "flex", flexDirection: "column", justifyContent: "space-between", height: 340, width: 190, zIndex: 3 }}>
-                {[
-                  { label: "Brand Intelligence", icon: <svg width="23" height="23" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="hp-ic1" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#5E6CE8"/></linearGradient></defs><rect x="3" y="11" width="4.4" height="9" rx="1.6" fill="url(#hp-ic1)"/><rect x="9.8" y="5" width="4.4" height="15" rx="1.6" fill="url(#hp-ic1)"/><rect x="16.6" y="8.5" width="4.4" height="11.5" rx="1.6" fill="url(#hp-ic1)"/></svg> },
-                  { label: "Product Feature Intelligence", icon: <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="url(#hp-ic2)" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"><defs><linearGradient id="hp-ic2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#5E6CE8"/></linearGradient></defs><path d="M12 2.5 L20.5 7 V17 L12 21.5 L3.5 17 V7 Z"/><path d="M3.5 7 L12 11.7 L20.5 7"/><path d="M12 11.7 V21.5"/></svg> },
-                  { label: "Actionable Insights", icon: <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="url(#hp-ic3)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="hp-ic3" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#9B5DE5"/></linearGradient></defs><path d="M12 2a7 7 0 0 1 5.5 11.3c-.8 1-1.5 2-1.5 2.7v.5a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-.5c0-.7-.7-1.7-1.5-2.7A7 7 0 0 1 12 2z"/><path d="M9.5 20.5h5"/><path d="M10.5 22.5h3"/></svg> },
-                ].map(({ label, icon }) => (
-                  <div key={label} style={{ display: "flex", alignItems: "center", gap: 13, background: "rgba(255,255,255,.58)", backdropFilter: "blur(20px) saturate(150%)", WebkitBackdropFilter: "blur(20px) saturate(150%)", border: "1px solid rgba(255,255,255,.85)", borderRadius: 16, padding: "13px 16px 13px 13px", boxShadow: "0 10px 26px rgba(124,58,237,.12)" }}>
-                    <span style={{ width: 44, height: 44, flex: "none", borderRadius: 13, background: "rgba(124,58,237,.12)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>{icon}</span>
-                    <div style={{ fontWeight: 700, fontSize: 14.5, color: "#000000", letterSpacing: "-.01em" }}>{label}</div>
+              <div style={{ flex: "none", display: "flex", flexDirection: "column", justifyContent: "space-between", height: 340, width: 200, zIndex: 3 }}>
+                {/* Brand Intelligence */}
+                <div style={{ display: "flex", alignItems: "center", gap: 13, background: "rgba(255,255,255,.58)", backdropFilter: "blur(20px) saturate(150%)", WebkitBackdropFilter: "blur(20px) saturate(150%)", border: "1px solid rgba(255,255,255,.85)", borderRadius: 16, padding: "13px 16px 13px 13px", boxShadow: "0 10px 26px rgba(124,58,237,.12)" }}>
+                  <span style={{ width: 44, height: 44, flex: "none", borderRadius: 13, background: "rgba(124,58,237,.12)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                    <svg width="23" height="23" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="hp-ic1" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#5E6CE8"/></linearGradient></defs><rect x="3" y="11" width="4.4" height="9" rx="1.6" fill="url(#hp-ic1)"/><rect x="9.8" y="5" width="4.4" height="15" rx="1.6" fill="url(#hp-ic1)"/><rect x="16.6" y="8.5" width="4.4" height="11.5" rx="1.6" fill="url(#hp-ic1)"/></svg>
+                  </span>
+                  <div style={{ fontWeight: 700, fontSize: 14.5, color: "#000000", letterSpacing: "-.01em" }}>Brand Intelligence</div>
+                </div>
+                {/* Product Feature Intelligence */}
+                <div style={{ display: "flex", alignItems: "center", gap: 13, background: "rgba(255,255,255,.58)", backdropFilter: "blur(20px) saturate(150%)", WebkitBackdropFilter: "blur(20px) saturate(150%)", border: "1px solid rgba(255,255,255,.85)", borderRadius: 16, padding: "13px 16px 13px 13px", boxShadow: "0 10px 26px rgba(124,58,237,.12)" }}>
+                  <span style={{ width: 44, height: 44, flex: "none", borderRadius: 13, background: "rgba(124,58,237,.12)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                    <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="url(#hp-ic2)" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round"><defs><linearGradient id="hp-ic2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#5E6CE8"/></linearGradient></defs><path d="M12 2.5 L20.5 7 V17 L12 21.5 L3.5 17 V7 Z"/><path d="M3.5 7 L12 11.7 L20.5 7"/><path d="M12 11.7 V21.5"/></svg>
+                  </span>
+                  <div style={{ fontWeight: 700, fontSize: 14.5, color: "#000000", letterSpacing: "-.01em" }}>Product Feature Intelligence</div>
+                </div>
+                {/* Actionable Insights — pill tags */}
+                <div style={{ background: "rgba(255,255,255,.58)", backdropFilter: "blur(20px) saturate(150%)", WebkitBackdropFilter: "blur(20px) saturate(150%)", border: "1px solid rgba(255,255,255,.85)", borderRadius: 16, padding: "13px 16px 13px 13px", boxShadow: "0 10px 26px rgba(124,58,237,.12)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 13, marginBottom: 10 }}>
+                    <span style={{ width: 44, height: 44, flex: "none", borderRadius: 13, background: "rgba(124,58,237,.12)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
+                      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="url(#hp-ic3)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="hp-ic3" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#9B5DE5"/></linearGradient></defs><path d="M12 2a7 7 0 0 1 5.5 11.3c-.8 1-1.5 2-1.5 2.7v.5a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-.5c0-.7-.7-1.7-1.5-2.7A7 7 0 0 1 12 2z"/><path d="M9.5 20.5h5"/><path d="M10.5 22.5h3"/></svg>
+                    </span>
+                    <div style={{ fontWeight: 700, fontSize: 14.5, color: "#000000", letterSpacing: "-.01em" }}>Actionable Insights</div>
                   </div>
-                ))}
+                  <div style={{ display: "flex", flexDirection: "column" as const, gap: 4 }}>
+                    {["Customer Segmentation", "Lead Generation", "Demand Segmentation"].map(tag => (
+                      <div key={tag} style={{ display: "flex", alignItems: "center", gap: 7 }}>
+                        <span style={{ width: 4, height: 4, borderRadius: "50%", background: "#7C3AED", flex: "none", opacity: 0.7 }} />
+                        <span style={{ fontSize: 12, fontWeight: 600, color: "#4B3F8A", letterSpacing: "-.01em" }}>{tag}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
