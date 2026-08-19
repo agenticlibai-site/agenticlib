@@ -286,7 +286,7 @@ export default function Home() {
           #contact { padding-top: 28px !important; padding-bottom: 44px !important; }
 
           /* Why AgenticLib card */
-          .why-agenticlib-card { margin: 0 12px !important; border-radius: 18px !important; }
+          .why-agenticlib-card { margin: 0 10px !important; border-radius: 16px !important; padding: 0 !important; }
         }
         @media (min-width: 641px) and (max-width: 900px) {
           .hero-snap-wrap { margin-top: 32px !important; }
