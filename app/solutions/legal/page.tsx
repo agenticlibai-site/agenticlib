@@ -113,11 +113,6 @@ export default function LegalPage() {
               </div>
             ))}
           </div>
-          <div style={{ marginTop: 36, paddingTop: 28, borderTop: "1px solid rgba(5,150,105,0.10)" }}>
-            <a href="/#contact" className="btn-primary" style={{ display: "inline-block", padding: "12px 28px", borderRadius: 9, color: "#fff", fontWeight: 600, fontSize: 14, textDecoration: "none" }}>
-              See How Your Agent Scores
-            </a>
-          </div>
         </div>
       </section>
 
