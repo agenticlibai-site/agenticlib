@@ -4,64 +4,24 @@ export const metadata = {
 };
 
 const ACCENT = "#7C3AED";
-const ACCENT2 = "#C2186A";
 
 const USE_CASES = [
-  {
-    title: "Content Marketing & SEO",
-    body: "Marketing teams use AI agents to plan, write, and optimise content at scale. AgenticLib tracks how these agents are discovered and ranked by LLMs when buyers search for AI-powered content tools — so you know where you stand against competitors before a deal slips away.",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <rect x="3" y="2" width="13" height="17" rx="2" stroke={ACCENT} strokeWidth="1.5"/>
-        <path d="M7 7h6M7 11h6M7 15h4" stroke={ACCENT} strokeWidth="1.5" strokeLinecap="round"/>
-        <circle cx="17" cy="17" r="3" stroke={ACCENT} strokeWidth="1.5"/>
-        <path d="M19.5 19.5l2 2" stroke={ACCENT} strokeWidth="1.5" strokeLinecap="round"/>
-      </svg>
-    ),
-  },
-  {
-    title: "Paid Advertising & Campaign Optimisation",
-    body: "Ad teams rely on AI to manage bidding, creative testing, and audience targeting. AgenticLib benchmarks your agent's campaign automation features against competitors and shows whether LLMs surface you when buyers ask about AI for paid media.",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <path d="M3 17l4-6 4 3 4-7 4 4" stroke={ACCENT} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        <path d="M3 20h16" stroke={ACCENT} strokeWidth="1.5" strokeLinecap="round"/>
-      </svg>
-    ),
-  },
-  {
-    title: "Outbound & Email Outreach",
-    body: "AI agents now write, personalise, and sequence outbound emails at scale. AgenticLib tracks how your outreach agent is perceived across LLM-driven buyer searches — and benchmarks your personalisation, deliverability, and multi-channel capabilities against the tools your prospects compare you to.",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <rect x="2" y="5" width="18" height="13" rx="2" stroke={ACCENT} strokeWidth="1.5"/>
-        <path d="M2 8l9 6 9-6" stroke={ACCENT} strokeWidth="1.5" strokeLinejoin="round"/>
-      </svg>
-    ),
-  },
-  {
-    title: "Brand Intelligence & Competitive Monitoring",
-    body: "Marketing leaders use AI to monitor brand sentiment, track competitor moves, and surface market signals. AgenticLib shows how LLMs characterise your brand intelligence agent in competitive queries — and flags when competitors are gaining ground in AI recall before it shows up in your pipeline.",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <circle cx="11" cy="11" r="8" stroke={ACCENT} strokeWidth="1.5"/>
-        <circle cx="11" cy="11" r="4" stroke={ACCENT} strokeWidth="1.5"/>
-        <circle cx="11" cy="11" r="1.5" fill={ACCENT}/>
-      </svg>
-    ),
-  },
-  {
-    title: "Social Media Management",
-    body: "Social AI agents handle scheduling, community engagement, and content creation across channels. AgenticLib benchmarks your social agent's feature set and tracks its LLM visibility — which capabilities are driving recommendations versus costing you comparisons.",
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-        <circle cx="18" cy="5" r="2.5" stroke={ACCENT} strokeWidth="1.5"/>
-        <circle cx="4" cy="11" r="2.5" stroke={ACCENT} strokeWidth="1.5"/>
-        <circle cx="18" cy="17" r="2.5" stroke={ACCENT} strokeWidth="1.5"/>
-        <path d="M6.5 10L15.5 6M6.5 12L15.5 16" stroke={ACCENT} strokeWidth="1.5" strokeLinecap="round"/>
-      </svg>
-    ),
-  },
+  { title: "Content Marketing & SEO", tag: "AI-generated content, keyword research, publishing workflows" },
+  { title: "Paid Advertising & Campaign Optimisation", tag: "Creative testing, bid automation, audience targeting" },
+  { title: "Outbound & Email Outreach", tag: "Personalised sequences, multi-channel delivery, reply intelligence" },
+  { title: "Brand Intelligence & Competitive Monitoring", tag: "Sentiment tracking, share of voice, competitor signals" },
+  { title: "Social Media Management", tag: "Scheduling, community engagement, content generation across channels" },
+];
+
+const FEATURES = [
+  { name: "Content generation quality", desc: "Blog, email, social copy — output depth and accuracy" },
+  { name: "SEO & keyword integration", desc: "Real-time optimisation, SERP signals, search coverage" },
+  { name: "Campaign analytics", desc: "Attribution, performance dashboards, A/B testing" },
+  { name: "Brand voice customisation", desc: "Tone controls, style guides, memory across outputs" },
+  { name: "CRM & tool integrations", desc: "HubSpot, Salesforce, Notion, Slack, ad platforms" },
+  { name: "Multi-language support", desc: "Localisation, regional adaptation, global reach" },
+  { name: "Workflow automation", desc: "Triggers, approval flows, publishing schedules" },
+  { name: "Competitor content tracking", desc: "Gap analysis, topic monitoring, positioning alerts" },
 ];
 
 export default function MarketingPage() {
@@ -72,132 +32,102 @@ export default function MarketingPage() {
     >
       {/* ── Hero ── */}
       <section style={{ position: "relative", overflow: "hidden", padding: "110px 48px 80px" }}>
-        {/* Decorative blobs */}
         <div style={{ position: "absolute", top: -80, right: -100, width: 500, height: 500, borderRadius: "50%", background: "radial-gradient(circle, rgba(124,58,237,0.12) 0%, transparent 70%)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", bottom: -60, left: -80, width: 380, height: 380, borderRadius: "50%", background: "radial-gradient(circle, rgba(194,24,106,0.09) 0%, transparent 70%)", pointerEvents: "none" }} />
-
         <div style={{ maxWidth: 760, margin: "0 auto", textAlign: "center", position: "relative", zIndex: 1 }}>
-          <div
-            className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full mb-8"
-            style={{ background: "rgba(124,58,237,0.08)", color: "#7C3AED", border: "1px solid rgba(124,58,237,0.18)" }}
-          >
+          <div className="inline-flex items-center gap-2 text-xs font-semibold px-4 py-1.5 rounded-full mb-8"
+            style={{ background: "rgba(124,58,237,0.08)", color: "#7C3AED", border: "1px solid rgba(124,58,237,0.18)" }}>
             <span style={{ width: 6, height: 6, borderRadius: "50%", background: "#7C3AED", display: "inline-block" }} />
             AI Agents · Marketing
           </div>
-
-          <h1
-            className="font-bold"
-            style={{ fontSize: "clamp(38px, 5.5vw, 58px)", letterSpacing: "-0.03em", lineHeight: 1.06, color: "#0A0A0A", marginBottom: 24 }}
-          >
-            Be the marketing AI<br />
+          <h1 className="font-bold" style={{ fontSize: "clamp(36px, 5.5vw, 56px)", letterSpacing: "-0.03em", lineHeight: 1.08, color: "#0A0A0A", marginBottom: 24 }}>
+            Comparison intelligence<br />
             <span style={{ background: "linear-gradient(135deg, #7C3AED 0%, #C2186A 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-              your buyers find first
+              for marketing AI agents
             </span>
           </h1>
-
-          <p style={{ fontSize: 18, lineHeight: 1.7, color: "#444", maxWidth: 560, margin: "0 auto 40px" }}>
-            When marketers ask ChatGPT or Perplexity which AI to use, are you the answer?
-            AgenticLib shows exactly where your agent ranks — and what it takes to lead.
+          <p style={{ fontSize: 18, lineHeight: 1.7, color: "#444", maxWidth: 540, margin: "0 auto 40px" }}>
+            AgenticLib tracks where your product appears when marketers research AI tools —
+            and benchmarks every feature your buyers use to compare you against the field.
           </p>
-
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
-            <a
-              href="/#contact"
-              className="btn-primary"
-              style={{ display: "inline-block", padding: "14px 32px", borderRadius: 10, color: "#fff", fontWeight: 600, fontSize: 15, textDecoration: "none" }}
-            >
+            <a href="/#contact" className="btn-primary" style={{ display: "inline-block", padding: "14px 32px", borderRadius: 10, color: "#fff", fontWeight: 600, fontSize: 15, textDecoration: "none" }}>
               Get Your Visibility Report
             </a>
-            <a
-              href="/#contact"
-              style={{ display: "inline-block", padding: "14px 32px", borderRadius: 10, color: "#7C3AED", fontWeight: 600, fontSize: 15, textDecoration: "none", background: "rgba(255,255,255,0.7)", border: "1.5px solid rgba(124,58,237,0.25)", backdropFilter: "blur(8px)" }}
-            >
+            <a href="/#contact" style={{ display: "inline-block", padding: "14px 32px", borderRadius: 10, color: "#7C3AED", fontWeight: 600, fontSize: 15, textDecoration: "none", background: "rgba(255,255,255,0.7)", border: "1.5px solid rgba(124,58,237,0.22)", backdropFilter: "blur(8px)" }}>
               Talk to Us
             </a>
           </div>
         </div>
       </section>
 
-      {/* ── Divider ── */}
-      <div style={{ maxWidth: 860, margin: "0 auto", padding: "0 48px" }}>
-        <div style={{ height: 1, background: "linear-gradient(90deg, transparent, rgba(124,58,237,0.15), transparent)" }} />
-      </div>
-
       {/* ── Use Cases ── */}
-      <section style={{ maxWidth: 960, margin: "0 auto", padding: "72px 48px 96px" }}>
-        <div style={{ marginBottom: 52 }}>
-          <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: "#7C3AED", marginBottom: 12 }}>Use Cases</p>
-          <h2 style={{ fontSize: "clamp(24px, 3.5vw, 34px)", fontWeight: 700, letterSpacing: "-0.022em", color: "#0A0A0A", lineHeight: 1.2, maxWidth: 540 }}>
-            Where AgenticLib helps marketing AI agents compete
-          </h2>
-          <p style={{ fontSize: 16, color: "#555", lineHeight: 1.65, marginTop: 14, maxWidth: 520 }}>
-            Five of the most critical marketing AI use cases — and the competitive intelligence layer AgenticLib adds to each.
-          </p>
-        </div>
-
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 20 }} className="uc-grid">
-          {USE_CASES.map((uc) => (
-            <div key={uc.title} className="uc-card" style={{
-              background: "rgba(255,255,255,0.72)",
-              backdropFilter: "blur(24px)",
-              WebkitBackdropFilter: "blur(24px)",
-              border: "1px solid rgba(124,58,237,0.12)",
-              borderTop: "3px solid #7C3AED",
-              borderRadius: 16,
-              padding: "28px 26px 30px",
-              boxShadow: "0 2px 16px rgba(0,0,0,0.05), 0 1px 3px rgba(0,0,0,0.04)",
-              transition: "transform 0.22s ease, box-shadow 0.22s ease",
-            }}>
-              <div style={{
-                width: 44, height: 44, borderRadius: 11,
-                background: "rgba(124,58,237,0.10)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                marginBottom: 18,
-              }}>
-                {uc.icon}
+      <section style={{ maxWidth: 860, margin: "0 auto", padding: "56px 48px 0" }}>
+        <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: ACCENT, marginBottom: 10 }}>Use Cases</p>
+        <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, letterSpacing: "-0.02em", color: "#0A0A0A", lineHeight: 1.2, marginBottom: 36 }}>
+          Where marketing AI agents compete
+        </h2>
+        <div style={{ borderTop: "1px solid rgba(0,0,0,0.07)" }}>
+          {USE_CASES.map((uc, i) => (
+            <div key={i} className="uc-row" style={{ display: "flex", alignItems: "center", gap: 20, padding: "20px 0", borderBottom: "1px solid rgba(0,0,0,0.07)", cursor: "default" }}>
+              <div style={{ width: 3, height: 36, borderRadius: 2, background: ACCENT, flexShrink: 0, opacity: 0.5 }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 700, fontSize: 15, color: "#0A0A0A", marginBottom: 3 }}>{uc.title}</div>
+                <div style={{ fontSize: 13, color: "#777", lineHeight: 1.5 }}>{uc.tag}</div>
               </div>
-              <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0A0A0A", marginBottom: 10, letterSpacing: "-0.01em" }}>{uc.title}</h3>
-              <p style={{ fontSize: 14, color: "#4A4A4A", lineHeight: 1.72 }}>{uc.body}</p>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, opacity: 0.3 }}>
+                <path d="M3 8h10M9 4l4 4-4 4" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
             </div>
           ))}
         </div>
       </section>
 
-      {/* ── CTA Banner ── */}
-      <section style={{ maxWidth: 960, margin: "0 auto 88px", padding: "0 48px" }}>
+      {/* ── Product Feature Intelligence ── */}
+      <section style={{ maxWidth: 860, margin: "0 auto", padding: "72px 48px 96px" }}>
         <div style={{
-          background: "linear-gradient(135deg, rgba(124,58,237,0.09) 0%, rgba(194,24,106,0.07) 100%)",
-          border: "1.5px solid rgba(124,58,237,0.18)",
-          borderRadius: 22,
-          padding: "56px 60px",
-          textAlign: "center",
-          position: "relative",
-          overflow: "hidden",
+          background: "rgba(255,255,255,0.65)",
+          backdropFilter: "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
+          border: "1px solid rgba(124,58,237,0.12)",
+          borderRadius: 20,
+          padding: "44px 44px 48px",
+          boxShadow: "0 4px 32px rgba(124,58,237,0.07), 0 1px 4px rgba(0,0,0,0.04)",
         }}>
-          <div style={{ position: "absolute", top: -40, right: -40, width: 200, height: 200, borderRadius: "50%", background: "radial-gradient(circle, rgba(124,58,237,0.10) 0%, transparent 70%)", pointerEvents: "none" }} />
-          <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: "#7C3AED", marginBottom: 14 }}>Get Started</p>
-          <h2 style={{ fontSize: "clamp(22px, 3.5vw, 32px)", fontWeight: 700, color: "#0A0A0A", letterSpacing: "-0.022em", lineHeight: 1.2, marginBottom: 12 }}>
-            Ready to lead the conversation?
+          <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: ACCENT, marginBottom: 12 }}>Product Intelligence</p>
+          <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, letterSpacing: "-0.02em", color: "#0A0A0A", lineHeight: 1.2, marginBottom: 12 }}>
+            What a marketing AI agent needs to win
           </h2>
-          <p style={{ fontSize: 16, color: "#555", maxWidth: 440, margin: "0 auto 32px", lineHeight: 1.6 }}>
-            Get your marketing AI agent&apos;s first visibility report in 48 hours — no setup required.
+          <p style={{ fontSize: 15, color: "#555", lineHeight: 1.65, maxWidth: 560, marginBottom: 36 }}>
+            AgenticLib tracks these features across every marketing AI agent in the market —
+            benchmarking where your product leads, where it lags, and what your roadmap needs to prioritise.
           </p>
-          <a
-            href="/#contact"
-            className="btn-primary"
-            style={{ display: "inline-block", padding: "14px 36px", borderRadius: 10, color: "#fff", fontWeight: 600, fontSize: 15, textDecoration: "none" }}
-          >
-            Get Started Free
-          </a>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
+            {FEATURES.map((f) => (
+              <div key={f.name} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                <div style={{ width: 7, height: 7, borderRadius: "50%", background: ACCENT, flexShrink: 0, marginTop: 6 }} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#111", marginBottom: 2 }}>{f.name}</div>
+                  <div style={{ fontSize: 12, color: "#777", lineHeight: 1.5 }}>{f.desc}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 36, paddingTop: 28, borderTop: "1px solid rgba(124,58,237,0.10)" }}>
+            <a href="/#contact" className="btn-primary" style={{ display: "inline-block", padding: "12px 28px", borderRadius: 9, color: "#fff", fontWeight: 600, fontSize: 14, textDecoration: "none" }}>
+              See How Your Agent Scores
+            </a>
+          </div>
         </div>
       </section>
 
       <style>{`
-        .uc-card:hover { transform: translateY(-4px) !important; box-shadow: 0 12px 36px rgba(124,58,237,0.12), 0 4px 10px rgba(0,0,0,0.06) !important; }
+        .uc-row:hover { background: rgba(124,58,237,0.03); border-radius: 10px; }
+        .uc-row:hover > div:first-child { opacity: 1 !important; }
+        .uc-row:hover > svg { opacity: 0.6 !important; }
         @media (max-width: 640px) {
           main > section { padding-left: 20px !important; padding-right: 20px !important; }
           main > section:first-child { padding-top: 72px !important; }
-          .uc-grid { grid-template-columns: 1fr !important; }
         }
       `}</style>
     </main>
