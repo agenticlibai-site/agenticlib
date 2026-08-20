@@ -1,59 +1,59 @@
 export const metadata = {
-  title: "Marketing Solutions – AgenticLib",
-  description: "AgenticLib helps marketing AI agents compete — track visibility, benchmark features, and surface where buyers are finding your competitors across LLMs.",
+  title: "Sales Solutions – AgenticLib",
+  description: "AgenticLib helps sales AI agents compete — track LLM visibility, benchmark capabilities against top competitors, and understand how revenue teams discover and evaluate AI tools.",
 };
 
 const USE_CASES = [
   {
-    title: "Content Marketing & SEO",
-    body: "Marketing teams use AI agents to plan, write, and optimise content at scale. AgenticLib tracks how these agents are being discovered and ranked by LLMs when buyers search for AI-powered SEO and content tools — so you know where you stand against competitors like Jasper and Anyword before a deal slips away.",
+    title: "Lead Qualification & Scoring",
+    body: "AI agents that score inbound leads, prioritise outreach queues, and surface buying intent signals have become essential for modern sales teams. AgenticLib tracks how your qualification agent is discovered and evaluated when revenue leaders ask LLMs which AI tool helps their team focus on the right prospects.",
   },
   {
-    title: "Paid Advertising & Campaign Optimisation",
-    body: "Ad teams rely on AI to manage bidding, creative testing, and audience targeting. AgenticLib benchmarks your agent's campaign automation features against competitors and shows whether LLMs surface you when buyers ask about AI for paid media — giving you the intelligence to position more precisely.",
+    title: "Outbound Sequencing & Personalisation",
+    body: "Sales AI agents that build, personalise, and optimise outbound sequences are at the core of pipeline generation. AgenticLib benchmarks your sequencing capabilities — personalisation depth, multi-channel support, reply detection — against competitors like Outreach and Apollo, and shows how LLMs position you in buyer shortlists.",
   },
   {
-    title: "Outbound & Email Outreach",
-    body: "AI agents now write, personalise, and sequence outbound emails at scale. AgenticLib tracks how your outreach agent is perceived and recommended across LLM-driven buyer searches — and benchmarks your personalisation, deliverability, and multi-channel capabilities against the tools your prospects are comparing you to.",
+    title: "Call Intelligence & Coaching",
+    body: "AI agents that transcribe calls, surface objections, and coach reps in real time are reshaping how teams improve. AgenticLib measures how your call intelligence product is surfaced when sales leaders search for AI coaching tools, and benchmarks your feature set against Gong, Chorus, and emerging challengers.",
   },
   {
-    title: "Brand Intelligence & Competitive Monitoring",
-    body: "Marketing leaders use AI to monitor brand sentiment, track competitor moves, and surface market signals. AgenticLib shows you how LLMs characterise your brand intelligence agent in competitive queries — and flags when competitors are gaining ground in AI recall before it shows up in your pipeline.",
+    title: "Pipeline Forecasting & Deal Intelligence",
+    body: "Revenue operations teams rely on AI to forecast accurately, flag at-risk deals, and surface the right data at board level. AgenticLib tracks how your forecasting agent is perceived and recommended in LLM-driven searches, and shows which capabilities buyers are comparing when they evaluate pipeline AI.",
   },
   {
-    title: "Social Media Management",
-    body: "Social AI agents handle scheduling, community engagement, and content creation across channels. AgenticLib benchmarks your social agent's feature set and tracks its LLM visibility so you know when buyers discover it — and which capabilities are driving recommendations versus costing you comparisons.",
+    title: "CRM Enrichment & Data Hygiene",
+    body: "Sales AI agents that auto-enrich contacts, clean CRM data, and surface account intelligence remove hours of manual work from reps. AgenticLib benchmarks your data enrichment accuracy and integration depth against competitors, and monitors how LLMs characterise your reliability in buyer evaluations.",
   },
 ];
 
-export default function MarketingPage() {
+export default function SalesPage() {
   return (
     <main
       className="min-h-screen page-gap-fix"
-      style={{ background: "linear-gradient(170deg, #FEF0F5 0%, #FDFAFF 28%, #FFF8FC 52%, #F8F3FF 76%, #FEF0F5 100%)" }}
+      style={{ background: "linear-gradient(170deg, #F0F4FF 0%, #FDFAFF 28%, #FFF8FC 52%, #F8F3FF 76%, #F0F4FF 100%)" }}
     >
       {/* ── Hero ── */}
       <section style={{ maxWidth: 860, margin: "0 auto", padding: "100px 48px 64px", textAlign: "center" }}>
         <div
           className="inline-block text-xs font-semibold px-3 py-1 rounded-full mb-6"
-          style={{ background: "rgba(124,58,237,0.10)", color: "#7C3AED" }}
+          style={{ background: "rgba(37,99,235,0.10)", color: "#2563EB" }}
         >
-          AI Agents · Marketing
+          AI Agents · Sales
         </div>
 
         <h1
           className="font-bold mb-5"
           style={{ fontSize: "clamp(34px, 5vw, 52px)", letterSpacing: "-0.025em", lineHeight: 1.1, color: "#0A0A0A" }}
         >
-          Be the Marketing AI<br />
-          <span style={{ background: "linear-gradient(135deg, #7C3AED 0%, #C2186A 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-            Your Buyers Find First
+          Be the Sales AI<br />
+          <span style={{ background: "linear-gradient(135deg, #2563EB 0%, #7C3AED 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+            Revenue Teams Recommend
           </span>
         </h1>
 
         <p style={{ fontSize: 17, lineHeight: 1.65, color: "#3D3D3D", maxWidth: 580, margin: "0 auto 36px" }}>
-          When marketers search for an AI tool, the first stop is ChatGPT or Perplexity.
-          AgenticLib shows exactly where your marketing agent ranks in those conversations — and what it takes to lead them.
+          Revenue leaders now ask LLMs which sales tool to adopt before they take a demo.
+          AgenticLib shows where your agent stands in those searches — and how to win them.
         </p>
 
         <a
@@ -68,9 +68,9 @@ export default function MarketingPage() {
       {/* ── Use Cases ── */}
       <section style={{ maxWidth: 860, margin: "0 auto", padding: "0 48px 100px" }}>
         <div style={{ marginBottom: 44 }}>
-          <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#7C3AED", marginBottom: 10 }}>Use Cases</p>
+          <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#2563EB", marginBottom: 10 }}>Use Cases</p>
           <h2 style={{ fontSize: "clamp(22px, 3vw, 32px)", fontWeight: 700, letterSpacing: "-0.02em", color: "#0A0A0A", lineHeight: 1.25 }}>
-            Where AgenticLib helps marketing AI agents compete
+            Where AgenticLib helps sales AI agents compete
           </h2>
         </div>
 
@@ -82,8 +82,8 @@ export default function MarketingPage() {
                 background: "rgba(255,255,255,0.60)",
                 backdropFilter: "blur(20px)",
                 WebkitBackdropFilter: "blur(20px)",
-                border: "1px solid rgba(124,58,237,0.12)",
-                borderLeft: "3px solid #7C3AED",
+                border: "1px solid rgba(37,99,235,0.12)",
+                borderLeft: "3px solid #2563EB",
                 borderRadius: 14,
                 padding: "22px 24px",
                 boxShadow: "0 4px 18px rgba(0,0,0,0.04)",
@@ -100,18 +100,18 @@ export default function MarketingPage() {
       <section style={{ maxWidth: 860, margin: "0 auto 80px", padding: "0 48px" }}>
         <div
           style={{
-            background: "linear-gradient(135deg, rgba(124,58,237,0.07) 0%, rgba(194,24,106,0.05) 100%)",
-            border: "1.5px solid rgba(124,58,237,0.15)",
+            background: "linear-gradient(135deg, rgba(37,99,235,0.07) 0%, rgba(124,58,237,0.05) 100%)",
+            border: "1.5px solid rgba(37,99,235,0.15)",
             borderRadius: 20,
             padding: "44px 48px",
             textAlign: "center",
           }}
         >
           <h2 style={{ fontSize: "clamp(20px, 3vw, 28px)", fontWeight: 700, color: "#0A0A0A", letterSpacing: "-0.02em", marginBottom: 10 }}>
-            Ready to lead the conversation?
+            Ready to win more revenue team evaluations?
           </h2>
           <p style={{ fontSize: 15, color: "#4B4B4B", maxWidth: 460, margin: "0 auto 28px" }}>
-            Get your marketing AI agent&apos;s first visibility report in 48 hours.
+            Get your sales AI agent&apos;s first visibility report in 48 hours.
           </p>
           <a
             href="/#contact"
