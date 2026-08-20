@@ -120,12 +120,12 @@ export default function Navbar() {
                         { label: "Skincare", desc: "Visibility & sentiment tracking for skincare AI agents.", href: "/solutions/skincare",
                           iconBg: "rgba(30,58,138,0.10)",
                           icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3c0 0-5 3.5-5 8a5 5 0 0010 0c0-4.5-5-8-5-8z" stroke="#1E3A8A" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(30,58,138,0.12)"/><circle cx="10" cy="11" r="1.5" fill="#1E3A8A"/></svg> },
-                        { label: "Sales", desc: "Visibility & sentiment tracking for sales AI agents.", href: "/product/sales-visibility",
+                        { label: "Sales", desc: "Visibility & sentiment tracking for sales AI agents.", href: "/solutions/sales",
                           iconBg: "rgba(37,99,235,0.10)",
                           icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 14l4-5 4 3 3-4 3 3" stroke="#2563EB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="17" cy="11" r="1.5" fill="#2563EB"/></svg> },
-                        { label: "Trades", desc: "Visibility & sentiment tracking for trades AI agents.", href: "/product/dexify-visibility",
-                          iconBg: "rgba(234,88,12,0.10)",
-                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 16l2-6h8l2 6H4z" stroke="#EA580C" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(234,88,12,0.12)"/><path d="M8 10V7a2 2 0 014 0v3" stroke="#EA580C" strokeWidth="1.5" strokeLinecap="round"/></svg> },
+                        { label: "Legal", desc: "Visibility & sentiment tracking for legal AI agents.", href: "/solutions/legal",
+                          iconBg: "rgba(5,150,105,0.10)",
+                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3l1.5 4.5H16l-3.5 2.5 1.5 4.5L10 12l-4 2.5 1.5-4.5L4 7.5h4.5L10 3z" stroke="#059669" strokeWidth="1.4" strokeLinejoin="round" fill="rgba(5,150,105,0.12)"/></svg> },
                       ].map((item) => (
                         <a key={item.href} href={item.href} className="flex items-start gap-4 py-4 rounded-xl px-3" style={{ textDecoration: "none" }}
                           onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
@@ -256,8 +256,8 @@ export default function Navbar() {
                 {[
                   { label: "Marketing", href: "/solutions/marketing" },
                   { label: "Skincare", href: "/solutions/skincare" },
-                  { label: "Sales", href: "/product/sales-visibility" },
-                  { label: "Trades", href: "/product/dexify-visibility" },
+                  { label: "Sales", href: "/solutions/sales" },
+                  { label: "Legal", href: "/solutions/legal" },
                 ].map((item) => (
                   <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                     className="block pl-8 pr-5 py-3 text-sm text-black hover:text-black hover:bg-gray-100 transition-colors"
