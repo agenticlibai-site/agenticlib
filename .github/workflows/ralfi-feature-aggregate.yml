@@ -1,0 +1,21 @@
+name: Ralfi Feature Aggregate
+
+# Runs 30 min after GPT feature collection (10:15 UTC) — scores all brand×feature
+# pairs collected today and upserts into ralfi_feature_scores.
+# No-ops gracefully if no feature responses exist yet.
+
+on:
+  schedule:
+    - cron: '45 10 * * *' # 10:45 UTC daily = 20:45 AEST (UTC+10)
+  workflow_dispatch:
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger Ralfi feature aggregate
+        run: |
+          curl --max-time 70 --fail-with-body \
+            "https://agenticlib.com/api/cron/ralfi-feature-aggregate" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"

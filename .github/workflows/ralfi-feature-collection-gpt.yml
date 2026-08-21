@@ -1,0 +1,20 @@
+name: Ralfi Feature Collection (GPT)
+
+# Fires daily but self-gates: the route returns a no-op until LOCKED_RALFI_BRANDS
+# is populated with verified competitor brands after the Day 2 denylist review.
+
+on:
+  schedule:
+    - cron: '15 10 * * *' # 10:15 UTC daily = 20:15 AEST (UTC+10)
+  workflow_dispatch:
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Trigger Ralfi feature collection (GPT-4o-mini)
+        run: |
+          curl --max-time 310 --fail-with-body \
+            "https://agenticlib.com/api/cron/ralfi-feature-collection?model=gpt-4o-mini" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
