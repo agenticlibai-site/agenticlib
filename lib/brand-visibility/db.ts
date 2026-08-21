@@ -3225,3 +3225,111 @@ export async function upsertRalfiSentimentDrift(row: {
       drift_reason = EXCLUDED.drift_reason, created_at = NOW()
   `;
 }
+
+// ── Ralfi report query functions ──────────────────────────────────────────────
+
+export async function getRalfiDailySummary(days = 14): Promise<
+  { date: string; brand: string; model: string; mention_count: number; avg_position: number | null }[]
+> {
+  await initRalfiDB();
+  const result = await sql`
+    SELECT date::text AS date, brand, model, mention_count, avg_position
+    FROM ralfi_daily_summary
+    WHERE date >= CURRENT_DATE - (${days} || ' days')::interval
+      AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM ralfi_denylist)
+    ORDER BY date ASC, mention_count DESC
+  `;
+  return result.rows as { date: string; brand: string; model: string; mention_count: number; avg_position: number | null }[];
+}
+
+export async function getRalfiWeeklySummary(): Promise<
+  { brand: string; model: string; mention_count: number; avg_position: number | null }[]
+> {
+  await initRalfiDB();
+  const result = await sql`
+    SELECT brand, model,
+      SUM(mention_count)::int AS mention_count,
+      AVG(avg_position)       AS avg_position
+    FROM ralfi_daily_summary
+    WHERE date >= CURRENT_DATE - INTERVAL '14 days'
+      AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM ralfi_denylist)
+    GROUP BY brand, model
+    ORDER BY SUM(mention_count) DESC
+  `;
+  return result.rows as { brand: string; model: string; mention_count: number; avg_position: number | null }[];
+}
+
+export async function getRalfiLLMVisibility(): Promise<
+  { model: string; visibility_pct: number; total_responses: number }[]
+> {
+  await initRalfiDB();
+  const result = await sql`
+    SELECT model,
+      ROUND(
+        COUNT(CASE WHEN jsonb_array_length(brands) > 0 THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0),
+        1
+      )::float AS visibility_pct,
+      COUNT(*)::int AS total_responses
+    FROM ralfi_raw_responses
+    WHERE date >= CURRENT_DATE - INTERVAL '14 days'
+    GROUP BY model
+    ORDER BY model
+  `;
+  return result.rows as { model: string; visibility_pct: number; total_responses: number }[];
+}
+
+export async function getRalfiSOVData(): Promise<
+  { cluster_tag: string; brand: string; total_appearances: number; sov_pct: number }[]
+> {
+  await initRalfiDB();
+  const result = await sql`
+    SELECT
+      r.cluster_tag,
+      TRIM(t.brand_name) AS brand,
+      COUNT(*)::int AS total_appearances,
+      ROUND(
+        COUNT(*) * 100.0 / NULLIF(SUM(COUNT(*)) OVER (PARTITION BY r.cluster_tag), 0),
+        1
+      )::float AS sov_pct
+    FROM ralfi_raw_responses r,
+         jsonb_array_elements_text(r.brands) AS t(brand_name)
+    WHERE r.date >= CURRENT_DATE - INTERVAL '14 days'
+      AND LENGTH(TRIM(t.brand_name)) > 0
+      AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM ralfi_denylist)
+    GROUP BY r.cluster_tag, TRIM(t.brand_name)
+    ORDER BY r.cluster_tag, COUNT(*) DESC
+  `;
+  return result.rows as { cluster_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
+}
+
+export async function getRalfiCollectionHealth(): Promise<{
+  total_rows: number;
+  dates_collected: number;
+  earliest_date: string | null;
+  latest_date: string | null;
+  model_breakdown: { model: string; row_count: number }[];
+}> {
+  await initRalfiDB();
+  const [totals, models] = await Promise.all([
+    sql`
+      SELECT
+        COUNT(*)::int AS total_rows,
+        COUNT(DISTINCT date)::int AS dates_collected,
+        MIN(date)::text AS earliest_date,
+        MAX(date)::text AS latest_date
+      FROM ralfi_raw_responses
+    `,
+    sql`
+      SELECT model, COUNT(*)::int AS row_count
+      FROM ralfi_raw_responses
+      GROUP BY model ORDER BY model
+    `,
+  ]);
+  return {
+    total_rows:       totals.rows[0]?.total_rows ?? 0,
+    dates_collected:  totals.rows[0]?.dates_collected ?? 0,
+    earliest_date:    totals.rows[0]?.earliest_date ?? null,
+    latest_date:      totals.rows[0]?.latest_date ?? null,
+    model_breakdown:  models.rows as { model: string; row_count: number }[],
+  };
+}
