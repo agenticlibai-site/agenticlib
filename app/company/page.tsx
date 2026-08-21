@@ -353,6 +353,8 @@ export default function CompanyPage() {
                   {[
                     {
                       accent: "#7C3AED",
+                      gradient: "linear-gradient(135deg, rgba(124,58,237,0.22) 0%, rgba(194,24,106,0.10) 100%)",
+                      border: "rgba(124,58,237,0.22)",
                       label: "By Business Domain",
                       desc: "",
                       icon: (
@@ -367,6 +369,8 @@ export default function CompanyPage() {
                     },
                     {
                       accent: "#3B6FD4",
+                      gradient: "linear-gradient(135deg, rgba(59,111,212,0.20) 0%, rgba(124,58,237,0.10) 100%)",
+                      border: "rgba(59,111,212,0.22)",
                       label: "By Use Case",
                       desc: "",
                       icon: (
@@ -381,6 +385,8 @@ export default function CompanyPage() {
                     },
                     {
                       accent: "#C2186A",
+                      gradient: "linear-gradient(135deg, rgba(194,24,106,0.20) 0%, rgba(124,58,237,0.08) 100%)",
+                      border: "rgba(194,24,106,0.22)",
                       label: "By Product Feature",
                       desc: "",
                       icon: (
@@ -392,20 +398,26 @@ export default function CompanyPage() {
                         </svg>
                       ),
                     },
-                  ].map(({ accent, label, icon }) => (
+                  ].map(({ accent, gradient, border, label, icon }) => (
                     <div key={label} style={{
-                      padding: "24px",
-                      borderRadius: 14,
-                      background: "#ffffff",
-                      border: "1px solid rgba(0,0,0,0.07)",
+                      padding: "20px 24px",
+                      borderRadius: 16,
+                      background: gradient,
+                      backdropFilter: "blur(20px)",
+                      WebkitBackdropFilter: "blur(20px)",
+                      border: `1px solid ${border}`,
                       display: "flex",
-                      flexDirection: "column",
-                      gap: 12,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: 14,
                     }}>
                       <div style={{
-                        width: 40, height: 40,
-                        borderRadius: 10,
-                        background: `${accent}15`,
+                        width: 42, height: 42,
+                        borderRadius: 11,
+                        background: "rgba(255,255,255,0.55)",
+                        backdropFilter: "blur(8px)",
+                        WebkitBackdropFilter: "blur(8px)",
+                        border: "1px solid rgba(255,255,255,0.80)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -455,7 +467,7 @@ export default function CompanyPage() {
           </section>
 
           {/* VISION */}
-          <section className="co-section">
+          <section className="co-section" style={{ borderTop: "none" }}>
             <div className="co-right" style={{ gridColumn: "1 / -1" }}>
 
               {/* Vision hero card — pink-dominant, purple accent */}
@@ -572,7 +584,7 @@ export default function CompanyPage() {
 
           {/* FOUNDER BANNER */}
           <div style={{
-            margin: "64px auto 0",
+            margin: "24px auto 0",
             borderRadius: 20,
             background: "linear-gradient(110deg, #7C3AED 0%, #b0306a 55%, #E05A5A 100%)",
             padding: "36px 40px",
