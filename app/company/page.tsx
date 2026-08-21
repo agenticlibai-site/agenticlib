@@ -245,94 +245,324 @@ export default function CompanyPage() {
         <div className="co-wrap">
 
           {/* MISSION */}
-          <section className="co-section">
-            <div className="co-left">
-              <h2 className="co-headline" style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                Mission
-                <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, opacity: 0.75 }}>
-                  <circle cx="16" cy="16" r="3" fill="#0F0B1E"/>
-                  <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#0F0B1E" strokeWidth="1.5"/>
-                  <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#0F0B1E" strokeWidth="1.5" transform="rotate(60 16 16)"/>
-                  <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#0F0B1E" strokeWidth="1.5" transform="rotate(120 16 16)"/>
-                </svg>
-              </h2>
+          <section className="co-section" style={{ borderTop: "none", paddingTop: 0, marginTop: -48 }}>
+            <div className="co-right" style={{ gridColumn: "1 / -1" }}>
 
-            </div>
+              {/* Bold statement — fluid gradient hero card, full-width */}
+              <div style={{
+                position: "relative",
+                borderRadius: 18,
+                overflow: "hidden",
+                marginBottom: 32,
+                padding: "48px 44px 44px",
+                background: "#EDE7FF",
+              }}>
+                {/* Fluid blob layer */}
+                <div aria-hidden="true" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+                  <div style={{
+                    position: "absolute", left: "-8%", top: "0%",
+                    width: "50%", height: "140%",
+                    borderRadius: "50%",
+                    background: "rgba(124,58,237,0.20)",
+                    filter: "blur(56px)",
+                    transform: "rotate(-18deg)",
+                  }} />
+                  <div style={{
+                    position: "absolute", right: "-6%", top: "-30%",
+                    width: "42%", height: "110%",
+                    borderRadius: "50%",
+                    background: "rgba(194,24,106,0.32)",
+                    filter: "blur(50px)",
+                    transform: "rotate(22deg)",
+                  }} />
+                  <div style={{
+                    position: "absolute", left: "30%", top: "15%",
+                    width: "38%", height: "75%",
+                    borderRadius: "50%",
+                    background: "rgba(235,215,255,0.65)",
+                    filter: "blur(40px)",
+                  }} />
+                  <div style={{
+                    position: "absolute", left: "55%", bottom: "-20%",
+                    width: "32%", height: "80%",
+                    borderRadius: "50%",
+                    background: "rgba(160,34,142,0.28)",
+                    filter: "blur(46px)",
+                    transform: "rotate(-12deg)",
+                  }} />
+                </div>
 
-            <div className="co-right">
-              <p className="co-subhead">
-                Most AI agent builders only find out who they are losing to when a customer says so out loud.
-              </p>
-              <div className="co-body">
-                <p>
-                  That feedback loop is too slow. By the time it reaches you, the deal is
-                  gone, the roadmap is reactive, and a competitor has already shipped the thing
-                  that would have kept the customer in the room.
-                </p>
-                <p>
-                  AgenticLib's mission is to close that gap. We track every move your competitors
-                  make: what has launched, what has changed, what LLMs now say about them. So
-                  you know before a buyer asks. We show you the exact feature costing you
-                  positions in Claude and ChatGPT responses, with the quotes that prove it. And
-                  we hand you a prioritised three-month roadmap of what to build next, tied
-                  directly to the use cases where your buyers are already looking, so you
-                  compete on intelligence, not on whatever you happened to hear last.
-                </p>
+                {/* Content */}
+                <div style={{ position: "relative", zIndex: 1 }}>
+                  <h2 style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 14,
+                    fontSize: "clamp(38px, 4.8vw, 64px)",
+                    fontWeight: 800,
+                    lineHeight: 1.05,
+                    letterSpacing: "-0.035em",
+                    color: "#0F0B1E",
+                    margin: "0 0 20px",
+                  }}>
+                    Mission
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, opacity: 0.70 }}>
+                      <circle cx="16" cy="16" r="3" fill="#0F0B1E"/>
+                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#0F0B1E" strokeWidth="1.5"/>
+                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#0F0B1E" strokeWidth="1.5" transform="rotate(60 16 16)"/>
+                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#0F0B1E" strokeWidth="1.5" transform="rotate(120 16 16)"/>
+                    </svg>
+                  </h2>
+                  <p style={{
+                    fontSize: "clamp(22px, 2.6vw, 32px)",
+                    fontWeight: 700,
+                    letterSpacing: "-0.025em",
+                    color: "#0F0B1E",
+                    lineHeight: 1.25,
+                    margin: 0,
+                    whiteSpace: "nowrap",
+                  }}>
+                    Give every AI agent builder the intelligence to build what wins.
+                  </p>
+                </div>
               </div>
-              <div className="co-footer">
-                <svg className="co-footer-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M2 2h4M2 2v4M2 2l10 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <span className="co-footer-text">
-                  Built so that every AI agent builder knows where they stand before a customer has to tell them.
-                </span>
+
+              {/* Below-card content */}
+              <div>
+                <p style={{
+                  fontSize: "clamp(17px, 1.6vw, 21px)",
+                  fontWeight: 700,
+                  letterSpacing: "-0.02em",
+                  color: "#000000",
+                  lineHeight: 1.2,
+                  margin: "0 0 20px",
+                }}>
+                  We believe your agent should win conversations by:
+                </p>
+
+                {/* Win-by grid */}
+                <div style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                  gap: 16,
+                  margin: "4px 0 40px",
+                }}>
+                  {[
+                    {
+                      accent: "#7C3AED",
+                      label: "By Business Domain",
+                      desc: "",
+                      icon: (
+                        /* Treemap — four market-territory blocks */
+                        <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
+                          <rect x="1.5" y="1.5" width="10" height="12" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+                          <rect x="13.5" y="1.5" width="7" height="5.5" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+                          <rect x="13.5" y="9" width="7" height="11.5" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+                          <rect x="1.5" y="15.5" width="10" height="5" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+                        </svg>
+                      ),
+                    },
+                    {
+                      accent: "#3B6FD4",
+                      label: "By Use Case",
+                      desc: "",
+                      icon: (
+                        /* Flowchart — branching use case scenarios */
+                        <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
+                          <rect x="8" y="1.5" width="6" height="4.5" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+                          <path d="M11 6v3.5M11 9.5L5.5 13M11 9.5L16.5 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                          <rect x="2" y="13" width="7" height="4.5" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+                          <rect x="13" y="13" width="7" height="4.5" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+                        </svg>
+                      ),
+                    },
+                    {
+                      accent: "#C2186A",
+                      label: "By Product Feature",
+                      desc: "",
+                      icon: (
+                        /* Faceted gem — crystallised capability */
+                        <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
+                          <path d="M11 1.5L20.5 8.5L11 20.5L1.5 8.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+                          <path d="M1.5 8.5H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                          <path d="M6.5 8.5L11 1.5L15.5 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      ),
+                    },
+                  ].map(({ accent, label, icon }) => (
+                    <div key={label} style={{
+                      padding: "24px",
+                      borderRadius: 14,
+                      background: "#ffffff",
+                      border: "1px solid rgba(0,0,0,0.07)",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: 12,
+                    }}>
+                      <div style={{
+                        width: 40, height: 40,
+                        borderRadius: 10,
+                        background: `${accent}15`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: accent,
+                        flexShrink: 0,
+                      }}>
+                        {icon}
+                      </div>
+                      <div style={{
+                        fontSize: 15,
+                        fontWeight: 700,
+                        letterSpacing: "-0.015em",
+                        color: "#000000",
+                        lineHeight: 1.2,
+                      }}>{label}</div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="co-body" style={{ margin: "0 0 36px" }}>
+                  <p>
+                    Most AI agent builders across every business domain aren't short on ambition.
+                    What they're short on is awareness: of who's moving in their category, what
+                    features a competitor just shipped, whether they're winning or losing the use
+                    cases that actually matter. That awareness usually arrives too late, in the
+                    form of a customer asking why they shouldn't just go with the other guy.
+                  </p>
+                  <p>
+                    AgenticLib's mission is to close that gap before it opens. A platform that watches the
+                    competitor landscape for you, tracks who owns which use case by share of
+                    voice, and turns what it finds into a clear product feature roadmap: what to
+                    build next, and what to scale, to stay ahead of the market curve. So a
+                    builder never has to lose a deal because their own customer had to tell them
+                    who they're up against.
+                  </p>
+                </div>
+                <div className="co-footer">
+                  <svg className="co-footer-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M2 2h4M2 2v4M2 2l10 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span className="co-footer-text">
+                    Built so that every AI agent builder knows where they stand before a customer has to tell them.
+                  </span>
+                </div>
               </div>
             </div>
           </section>
 
           {/* VISION */}
           <section className="co-section">
-            <div className="co-left">
-              <h2 className="co-headline" style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                Vision
-                <svg width="44" height="44" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, opacity: 0.75 }}>
-                  <path d="M16 2 L17.5 14.5 L16 16 L14.5 14.5 Z" fill="#0F0B1E"/>
-                  <path d="M30 16 L17.5 17.5 L16 16 L17.5 14.5 Z" fill="#0F0B1E"/>
-                  <path d="M16 30 L14.5 17.5 L16 16 L17.5 17.5 Z" fill="#0F0B1E"/>
-                  <path d="M2 16 L14.5 14.5 L16 16 L14.5 17.5 Z" fill="#0F0B1E"/>
-                  <circle cx="16" cy="16" r="2" fill="#0F0B1E"/>
-                  <circle cx="16" cy="16" r="5.5" stroke="#0F0B1E" strokeWidth="1" opacity="0.3"/>
-                </svg>
-              </h2>
+            <div className="co-right" style={{ gridColumn: "1 / -1" }}>
 
-            </div>
+              {/* Vision hero card — pink-dominant, purple accent */}
+              <div style={{
+                position: "relative",
+                borderRadius: 18,
+                overflow: "hidden",
+                marginBottom: 32,
+                padding: "48px 44px 44px",
+                background: "#FFE5F2",
+              }}>
+                {/* Fluid blob layer */}
+                <div aria-hidden="true" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
+                  <div style={{
+                    position: "absolute", right: "-10%", top: "-10%",
+                    width: "55%", height: "140%",
+                    borderRadius: "50%",
+                    background: "rgba(194,24,106,0.40)",
+                    filter: "blur(56px)",
+                    transform: "rotate(18deg)",
+                  }} />
+                  <div style={{
+                    position: "absolute", left: "-8%", top: "5%",
+                    width: "44%", height: "110%",
+                    borderRadius: "50%",
+                    background: "rgba(124,58,237,0.28)",
+                    filter: "blur(50px)",
+                    transform: "rotate(-20deg)",
+                  }} />
+                  <div style={{
+                    position: "absolute", left: "32%", top: "10%",
+                    width: "36%", height: "80%",
+                    borderRadius: "50%",
+                    background: "rgba(255,210,235,0.70)",
+                    filter: "blur(40px)",
+                  }} />
+                  <div style={{
+                    position: "absolute", right: "42%", bottom: "-20%",
+                    width: "30%", height: "75%",
+                    borderRadius: "50%",
+                    background: "rgba(180,30,120,0.25)",
+                    filter: "blur(44px)",
+                    transform: "rotate(10deg)",
+                  }} />
+                </div>
 
-            <div className="co-right">
-              <p className="co-subhead">
-                Helping all AI Agent builders succeed.
-              </p>
-              <div className="co-body">
-                <p>
-                  Structured, timely, and specific enough to act on. Right now
-                  that kind of intelligence about LLM visibility (which features matter, which
-                  use cases are growing, which competitors are pulling ahead and why) is only
-                  available to the builders with the resources to go looking for it themselves.
-                  Everyone else learns from a lost deal.
-                </p>
-                <p>
-                  We believe that should change. Our vision is a world where every AI agent
-                  builder, regardless of team size or runway, has a clear view of where they
-                  stand in the conversations that drive their buyers' decisions, and a direct
-                  path to improving that position.
-                </p>
+                {/* Content */}
+                <div style={{ position: "relative", zIndex: 1 }}>
+                  <h2 style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 14,
+                    fontSize: "clamp(38px, 4.8vw, 64px)",
+                    fontWeight: 800,
+                    lineHeight: 1.05,
+                    letterSpacing: "-0.035em",
+                    color: "#0F0B1E",
+                    margin: "0 0 20px",
+                  }}>
+                    Vision
+                    <svg width="44" height="44" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, opacity: 0.70 }}>
+                      <path d="M16 2 L17.5 14.5 L16 16 L14.5 14.5 Z" fill="#0F0B1E"/>
+                      <path d="M30 16 L17.5 17.5 L16 16 L17.5 14.5 Z" fill="#0F0B1E"/>
+                      <path d="M16 30 L14.5 17.5 L16 16 L17.5 17.5 Z" fill="#0F0B1E"/>
+                      <path d="M2 16 L14.5 14.5 L16 16 L14.5 17.5 Z" fill="#0F0B1E"/>
+                      <circle cx="16" cy="16" r="2" fill="#0F0B1E"/>
+                      <circle cx="16" cy="16" r="5.5" stroke="#0F0B1E" strokeWidth="1" opacity="0.3"/>
+                    </svg>
+                  </h2>
+                  <p style={{
+                    fontSize: "clamp(22px, 2.6vw, 32px)",
+                    fontWeight: 700,
+                    letterSpacing: "-0.025em",
+                    color: "#0F0B1E",
+                    lineHeight: 1.25,
+                    margin: 0,
+                    whiteSpace: "nowrap",
+                  }}>
+                    Helping all AI agent builders succeed.
+                  </p>
+                </div>
               </div>
-              <div className="co-footer">
-                <svg className="co-footer-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <path d="M2 2h4M2 2v4M2 2l10 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                <span className="co-footer-text">
-                  Product intelligence should not be a privilege of scale. It should be a given.
-                </span>
+
+              {/* Below-card content */}
+              <div>
+                <div className="co-body">
+                  <p>
+                    The odds are stacked against good AI agent builders, and not because their
+                    product isn't good enough. It's because the market has gotten too loud to
+                    read. Competitors ship in silence, buyers ask AI models instead of searching,
+                    and most builders have no idea what those models say about them. The signal
+                    that should guide what to build next gets lost, until a lost deal spells it
+                    out the hard way.
+                  </p>
+                  <p>
+                    Our vision is a world where every AI agent builder, regardless of team size
+                    or runway, has a clear view of where they stand in the conversations that
+                    drive their buyers' decisions, and a direct path to improving that position.
+                    Using our own taxonomy and data-driven architecture, we read buyer intent at
+                    scale and turn it into signal every builder can act on.
+                  </p>
+                </div>
+                <div className="co-footer">
+                  <svg className="co-footer-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
+                    <path d="M2 2h4M2 2v4M2 2l10 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                  <span className="co-footer-text">
+                    Product intelligence should not be a privilege of scale. It should be a given.
+                  </span>
+                </div>
               </div>
             </div>
           </section>
