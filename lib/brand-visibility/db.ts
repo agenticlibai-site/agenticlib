@@ -2869,14 +2869,12 @@ async function _runRalfiDDL(): Promise<void> {
       created_at TIMESTAMP DEFAULT NOW()
     )
   `;
-  // Seed: Ralfi is the client brand commissioning this report.
-  // It must never appear in any chart, table, or count in the output,
-  // regardless of whether it surfaces organically in raw LLM responses.
-  // ON CONFLICT DO NOTHING makes this idempotent across re-runs.
+  // Safety: remove any accidental denylist seed for Ralfi from a prior deploy.
+  // Ralfi (the client) should appear in collection charts so they can see their
+  // own visibility. They are excluded from LOCKED_RALFI_BRANDS only — they
+  // should not be scored as a competitor via feature/sentiment prompts.
   await sql`
-    INSERT INTO ralfi_denylist (brand_name, reason)
-    VALUES ('Ralfi', 'Client brand — excluded from all output by design')
-    ON CONFLICT (brand_name) DO NOTHING
+    DELETE FROM ralfi_denylist WHERE brand_name = 'Ralfi'
   `;
   await sql`
     CREATE TABLE IF NOT EXISTS ralfi_sentiment_responses (
