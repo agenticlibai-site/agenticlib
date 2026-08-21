@@ -1,0 +1,17 @@
+name: Ralfi Aggregate
+
+on:
+  schedule:
+    - cron: '45 6 * * *'  # 06:45 UTC daily = 16:45 AEST (UTC+10)
+  workflow_dispatch:
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger Ralfi aggregate
+        run: |
+          curl --max-time 70 --fail-with-body \
+            "https://agenticlib.com/api/cron/ralfi-aggregate" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"

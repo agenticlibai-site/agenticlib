@@ -28,9 +28,10 @@ export const RALFI_JSON_OUTPUT_SPEC =
 // Populated after Day 2 denylist review. Add only independently verified
 // AI agents / platforms with named features for insurance brokers.
 // Do not add without verification.
-export const LOCKED_RALFI_BRANDS: readonly string[] = [
-  "Ralfi",
-];
+// Populate after Day 2 denylist review with verified competitor AI agent brands.
+// Keep empty until then — sentiment and feature routes self-gate on this being non-empty.
+// Do NOT add Ralfi itself here; this list is for competitor brands to score against.
+export const LOCKED_RALFI_BRANDS: readonly string[] = [];
 
 // ── Feature definitions ────────────────────────────────────────────────────────
 
