@@ -2869,6 +2869,15 @@ async function _runRalfiDDL(): Promise<void> {
       created_at TIMESTAMP DEFAULT NOW()
     )
   `;
+  // Seed: Ralfi is the client brand commissioning this report.
+  // It must never appear in any chart, table, or count in the output,
+  // regardless of whether it surfaces organically in raw LLM responses.
+  // ON CONFLICT DO NOTHING makes this idempotent across re-runs.
+  await sql`
+    INSERT INTO ralfi_denylist (brand_name, reason)
+    VALUES ('Ralfi', 'Client brand — excluded from all output by design')
+    ON CONFLICT (brand_name) DO NOTHING
+  `;
   await sql`
     CREATE TABLE IF NOT EXISTS ralfi_sentiment_responses (
       id          SERIAL PRIMARY KEY,
