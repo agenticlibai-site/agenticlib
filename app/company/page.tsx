@@ -13,7 +13,7 @@ export default function CompanyPage() {
         .co-page {
           min-height: 100vh;
           background: #FDF0F5;
-          font-family: var(--font-schibsted), system-ui, sans-serif;
+          font-family: var(--font-geist-sans), system-ui, sans-serif;
           margin-top: -68px;
           padding-top: 68px;
         }
@@ -346,93 +346,75 @@ export default function CompanyPage() {
                 {/* Win-by grid */}
                 <div style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(3, 1fr)",
+                  gridTemplateColumns: "repeat(3, minmax(0, 220px))",
+                  justifyContent: "center",
                   gap: 16,
                   margin: "4px 0 40px",
                 }}>
                   {[
                     {
                       accent: "#7C3AED",
-                      gradient: "linear-gradient(135deg, rgba(124,58,237,0.22) 0%, rgba(194,24,106,0.10) 100%)",
-                      border: "rgba(124,58,237,0.22)",
+                      eyebrow: "Business Domain",
                       label: "By Business Domain",
-                      desc: "",
+                      sub: "Know which verticals your agent owns and where competitors are gaining ground.",
                       icon: (
-                        /* Treemap — four market-territory blocks */
-                        <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
-                          <rect x="1.5" y="1.5" width="10" height="12" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
-                          <rect x="13.5" y="1.5" width="7" height="5.5" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
-                          <rect x="13.5" y="9" width="7" height="11.5" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
-                          <rect x="1.5" y="15.5" width="10" height="5" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+                        <svg width="52" height="52" viewBox="0 0 22 22" fill="none">
+                          <rect x="1.5" y="1.5" width="10" height="12" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
+                          <rect x="13.5" y="1.5" width="7" height="5.5" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
+                          <rect x="13.5" y="9" width="7" height="11.5" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
+                          <rect x="1.5" y="15.5" width="10" height="5" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
                         </svg>
                       ),
                     },
                     {
                       accent: "#3B6FD4",
-                      gradient: "linear-gradient(135deg, rgba(59,111,212,0.20) 0%, rgba(124,58,237,0.10) 100%)",
-                      border: "rgba(59,111,212,0.22)",
+                      eyebrow: "Use Case",
                       label: "By Use Case",
-                      desc: "",
+                      sub: "Track the exact moments buyers compare agents and see who wins the conversation.",
                       icon: (
-                        /* Flowchart — branching use case scenarios */
-                        <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
-                          <rect x="8" y="1.5" width="6" height="4.5" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
-                          <path d="M11 6v3.5M11 9.5L5.5 13M11 9.5L16.5 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                          <rect x="2" y="13" width="7" height="4.5" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
-                          <rect x="13" y="13" width="7" height="4.5" rx="1.5" stroke="currentColor" strokeWidth="1.5"/>
+                        <svg width="52" height="52" viewBox="0 0 22 22" fill="none">
+                          <rect x="8" y="1.5" width="6" height="4.5" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
+                          <path d="M11 6v3.5M11 9.5L5.5 13M11 9.5L16.5 13" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                          <rect x="2" y="13" width="7" height="4.5" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
+                          <rect x="13" y="13" width="7" height="4.5" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
                         </svg>
                       ),
                     },
                     {
                       accent: "#C2186A",
-                      gradient: "linear-gradient(135deg, rgba(194,24,106,0.20) 0%, rgba(124,58,237,0.08) 100%)",
-                      border: "rgba(194,24,106,0.22)",
+                      eyebrow: "Product Feature",
                       label: "By Product Feature",
-                      desc: "",
+                      sub: "Pinpoint the specific capabilities costing you positions in LLM responses.",
                       icon: (
-                        /* Faceted gem — crystallised capability */
-                        <svg width="18" height="18" viewBox="0 0 22 22" fill="none">
-                          <path d="M11 1.5L20.5 8.5L11 20.5L1.5 8.5Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
-                          <path d="M1.5 8.5H20.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-                          <path d="M6.5 8.5L11 1.5L15.5 8.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                        <svg width="52" height="52" viewBox="0 0 22 22" fill="none">
+                          <path d="M11 1.5L20.5 8.5L11 20.5L1.5 8.5Z" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round"/>
+                          <path d="M1.5 8.5H20.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                          <path d="M6.5 8.5L11 1.5L15.5 8.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       ),
                     },
-                  ].map(({ accent, gradient, border, label, icon }) => (
+                  ].map(({ accent, eyebrow, label, sub, icon }) => (
                     <div key={label} style={{
-                      padding: "20px 24px",
+                      padding: "24px",
                       borderRadius: 16,
-                      background: gradient,
-                      backdropFilter: "blur(20px)",
-                      WebkitBackdropFilter: "blur(20px)",
-                      border: `1px solid ${border}`,
+                      background: "#ffffff",
+                      border: "1px solid rgba(0,0,0,0.07)",
                       display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: 14,
+                      flexDirection: "column",
+                      gap: 0,
                     }}>
-                      <div style={{
-                        width: 42, height: 42,
-                        borderRadius: 11,
-                        background: "rgba(255,255,255,0.55)",
-                        backdropFilter: "blur(8px)",
-                        WebkitBackdropFilter: "blur(8px)",
-                        border: "1px solid rgba(255,255,255,0.80)",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color: accent,
-                        flexShrink: 0,
-                      }}>
-                        {icon}
+                      {/* Top row: eyebrow + decorative icon */}
+                      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 16, marginBottom: 18 }}>
+                        <span style={{
+                          fontFamily: "var(--font-geist-sans), system-ui, sans-serif",
+                          fontSize: 13,
+                          fontWeight: 700,
+                          letterSpacing: "0.10em",
+                          textTransform: "uppercase" as const,
+                          color: accent,
+                        }}>{eyebrow}</span>
+                        <div style={{ color: accent, opacity: 0.18, flexShrink: 0 }}>{icon}</div>
                       </div>
-                      <div style={{
-                        fontSize: 15,
-                        fontWeight: 700,
-                        letterSpacing: "-0.015em",
-                        color: "#000000",
-                        lineHeight: 1.2,
-                      }}>{label}</div>
                     </div>
                   ))}
                 </div>
@@ -597,8 +579,8 @@ export default function CompanyPage() {
             maxWidth: 680,
           }}>
             <div style={{ position: "relative", zIndex: 1, flex: 1 }}>
-              <p style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", fontSize: 18, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.80)", margin: "0 0 12px" }}>Founder</p>
-              <h2 style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", fontSize: "clamp(22px, 2.4vw, 32px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: "-0.025em", color: "#ffffff", margin: "0 0 28px" }}>Srinidhi Murali</h2>
+              <p style={{ fontFamily: "var(--font-geist-sans), system-ui, sans-serif", fontSize: 18, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.80)", margin: "0 0 12px" }}>Founder</p>
+              <h2 style={{ fontFamily: "var(--font-geist-sans), system-ui, sans-serif", fontSize: "clamp(22px, 2.4vw, 32px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: "-0.025em", color: "#ffffff", margin: "0 0 28px" }}>Srinidhi Murali</h2>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-start" }}>
                 <a
                   href="https://www.linkedin.com/in/srinidhi-murali06/"
