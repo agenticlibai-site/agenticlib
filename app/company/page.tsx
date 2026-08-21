@@ -101,6 +101,9 @@ export default function CompanyPage() {
           font-size: 16px;
           line-height: 1.72;
           color: #000000;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          font-weight: 450;
           display: flex;
           flex-direction: column;
           gap: 18px;
