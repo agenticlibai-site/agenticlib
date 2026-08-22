@@ -458,7 +458,7 @@ export default function CompanyPage() {
           </section>
 
           {/* VISION */}
-          <section className="co-section" style={{ borderTop: "none" }}>
+          <section className="co-section" style={{ borderTop: "none", marginTop: -40 }}>
             <div className="co-right" style={{ gridColumn: "1 / -1" }}>
 
               {/* Vision hero card — pink-dominant, purple accent */}
