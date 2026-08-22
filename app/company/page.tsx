@@ -119,9 +119,8 @@ export default function CompanyPage() {
           gap: 10px;
         }
         .co-footer-icon {
-          font-size: 18px;
           flex-shrink: 0;
-          line-height: 1;
+          margin-top: 2px;
         }
         .co-footer-text {
           font-family: var(--font-geist-sans), system-ui, sans-serif;
@@ -445,7 +444,11 @@ export default function CompanyPage() {
                   </p>
                 </div>
                 <div className="co-footer">
-                  <span className="co-footer-icon">🪶</span>
+                  <svg className="co-footer-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                    <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+                    <line x1="16" y1="8" x2="2" y2="22"/>
+                    <line x1="17.5" y1="15" x2="9" y2="15"/>
+                  </svg>
                   <span className="co-footer-text">
                     Built so that every AI agent builder knows where they stand before a customer has to tell them.
                   </span>
@@ -559,7 +562,11 @@ export default function CompanyPage() {
                   </p>
                 </div>
                 <div className="co-footer">
-                  <span className="co-footer-icon">🪶</span>
+                  <svg className="co-footer-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                    <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
+                    <line x1="16" y1="8" x2="2" y2="22"/>
+                    <line x1="17.5" y1="15" x2="9" y2="15"/>
+                  </svg>
                   <span className="co-footer-text">
                     Product intelligence should not be a privilege of scale. It should be a given.
                   </span>
