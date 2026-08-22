@@ -25,24 +25,29 @@ export const RALFI_JSON_OUTPUT_SPEC =
   '}';
 
 // ── Locked brand list ──────────────────────────────────────────────────────────
-// Verified broker-facing, AI-native competitor brands. Added 2026-08-22 after
+// Verified broker-facing, AI-native competitor brands. Finalised 2026-08-22 after
 // denylist review of 358 brands from ralfi_daily_summary mention data.
 // Criteria: broker-facing (retail/commercial brokers use it in their own workflow)
 //           + AI as core product, not just a bolted-on feature.
 // Excluded: direct carriers (Lemonade), carrier-only data platforms (Planck, Cytora,
 //           Tractable, Friss, Cape Analytics), traditional AMS/CRM with AI features
-//           (AgentSync, NowCerts, Insureio), wholesale/MGA-only (BindHQ).
+//           (AgentSync, NowCerts, Insureio), wholesale/MGA-only (BindHQ),
+//           unverified/name-collision risk (Limit AI), hallucinated brands (Claim Genius).
+// Known limitation: ralfi-claims has only one genuine competitor (Snapsheet).
+//   The other 9 brands will correctly score not_documented on claims features.
+//   Report generation should flag this as a single-brand finding, not a thin chart.
 // Do NOT add Ralfi itself here; this list is for competitor brands to score against.
 export const LOCKED_RALFI_BRANDS: readonly string[] = [
-  "Broker Buddha",    // AI application collection & workflow automation for brokers
-  "Snapsheet",        // AI-driven claims workflow with virtual estimators
-  "Indio",            // AI-powered insurance application intake (Applied Systems)
-  "RiskGenius",       // AI policy analysis & gap identification for brokers
-  "Chisel AI",        // AI document review & policy comparison for brokers/insurers
-  "Better Agency",    // AI CRM & automation platform for insurance agents
+  "Broker Buddha",      // AI application collection & workflow automation for brokers
+  "Snapsheet",          // AI-driven claims workflow with virtual estimators
+  "Indio",              // AI-powered insurance application intake (Applied Systems)
+  "RiskGenius",         // AI policy analysis & gap identification for brokers
+  "Chisel AI",          // AI document review & policy comparison for brokers/insurers
+  "Better Agency",      // AI CRM & automation platform for insurance agents
   "Amy by Cover Whale", // Named AI agent for trucking insurance brokers
-  "TrustLayer",       // AI-powered COI/certificate of insurance verification
-  "InsuredMine",      // AI CRM + voice agents for independent insurance agencies
+  "TrustLayer",         // AI-powered COI/certificate of insurance verification
+  "InsuredMine",        // AI CRM + voice agents for independent insurance agencies
+  "Outmarket",          // AI platform built specifically for insurance brokerages
 ];
 
 // ── Feature definitions ────────────────────────────────────────────────────────
