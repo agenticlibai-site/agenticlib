@@ -4,6 +4,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
 import Navbar from "./components/Navbar";
+import SiteFooter from "./components/SiteFooter";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -107,6 +108,8 @@ export default function RootLayout({
 
         {/* Page content */}
         {children}
+
+        <SiteFooter />
 
         {/* Plausible */}
         <Script
