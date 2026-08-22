@@ -297,6 +297,26 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
           ))}
         </div>
 
+        {/* ── ralfi-claims single-brand note ── */}
+        {sovCluster === "ralfi-claims" && (
+          <div style={{
+            background: "#FFFBEB",
+            border: "1px solid #FDE68A",
+            borderRadius: 8,
+            padding: "10px 14px",
+            marginBottom: 16,
+            fontSize: 12,
+            color: "#92400E",
+            lineHeight: 1.5,
+          }}>
+            <strong>Single-brand finding:</strong> Snapsheet is the only tracked brand with genuine
+            claims-advocacy functionality. The other 9 locked brands don&apos;t operate in this space
+            and will score <code style={{ background: "#FEF3C7", padding: "1px 4px", borderRadius: 3 }}>not_documented</code> on
+            claims features. This is valid signal — not a data gap — showing Snapsheet has no
+            direct AI-native competitor in the claims cluster among this comparison set.
+          </div>
+        )}
+
         {sovForCluster.length === 0 ? (
           <div style={{ fontSize: 13, color: "#888", padding: "12px 0" }}>
             No data for this cluster yet.
