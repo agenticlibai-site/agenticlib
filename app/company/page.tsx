@@ -119,16 +119,17 @@ export default function CompanyPage() {
           gap: 10px;
         }
         .co-footer-icon {
-          color: #7C3AED;
+          font-size: 18px;
           flex-shrink: 0;
-          margin-top: 1px;
+          line-height: 1;
         }
         .co-footer-text {
-          font-family: var(--font-space-mono), monospace;
-          font-size: 11px;
-          line-height: 1.65;
-          color: #000000;
-          letter-spacing: 0.02em;
+          font-family: var(--font-geist-sans), system-ui, sans-serif;
+          font-size: 14px;
+          font-style: italic;
+          line-height: 1.6;
+          color: #7C3AED;
+          letter-spacing: -0.01em;
         }
 
         /* Founder banner */
@@ -229,18 +230,25 @@ export default function CompanyPage() {
 
         /* Mobile */
         @media (max-width: 768px) {
-          .co-wrap { padding: 48px 24px 80px; }
+          .co-wrap { padding: 32px 20px 72px; }
           .co-section {
             grid-template-columns: 1fr;
-            gap: 32px;
-            padding: 48px 0;
+            gap: 24px;
+            padding: 36px 0;
+            margin-top: 0 !important;
           }
-          .co-headline { font-size: clamp(34px, 9vw, 52px); }
-          .co-subhead  { font-size: clamp(20px, 5vw, 26px); }
+          .co-headline { font-size: clamp(32px, 9vw, 48px); }
+          .co-subhead  { font-size: clamp(18px, 5vw, 24px); }
           .co-body     { font-size: 15px; }
-          .co-founder-banner { padding: 36px 28px; }
-          .co-founder-name   { font-size: 36px; }
+          .co-founder-banner { padding: 32px 24px; flex-direction: column; }
+          .co-founder-name   { font-size: 32px; }
           .co-orbs { display: none; }
+          /* Hero cards */
+          .co-mission-card  { padding: 28px 24px 24px !important; }
+          .co-mission-title { white-space: normal !important; font-size: clamp(18px, 5.5vw, 26px) !important; }
+          .co-mission-h2    { font-size: clamp(30px, 8vw, 44px) !important; }
+          /* Win-by grid */
+          .co-winby-grid    { grid-template-columns: 1fr !important; }
         }
       `}</style>
 
@@ -252,7 +260,7 @@ export default function CompanyPage() {
             <div className="co-right" style={{ gridColumn: "1 / -1" }}>
 
               {/* Bold statement — fluid gradient hero card, full-width */}
-              <div style={{
+              <div className="co-mission-card" style={{
                 position: "relative",
                 borderRadius: 18,
                 overflow: "hidden",
@@ -297,7 +305,7 @@ export default function CompanyPage() {
 
                 {/* Content */}
                 <div style={{ position: "relative", zIndex: 1 }}>
-                  <h2 style={{
+                  <h2 className="co-mission-h2" style={{
                     display: "flex",
                     alignItems: "center",
                     gap: 14,
@@ -316,7 +324,7 @@ export default function CompanyPage() {
                       <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#0F0B1E" strokeWidth="1.5" transform="rotate(120 16 16)"/>
                     </svg>
                   </h2>
-                  <p style={{
+                  <p className="co-mission-title" style={{
                     fontSize: "clamp(22px, 2.6vw, 32px)",
                     fontWeight: 700,
                     letterSpacing: "-0.025em",
@@ -344,7 +352,7 @@ export default function CompanyPage() {
                 </p>
 
                 {/* Win-by grid */}
-                <div style={{
+                <div className="co-winby-grid" style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(3, minmax(0, 220px))",
                   justifyContent: "center",
@@ -437,9 +445,7 @@ export default function CompanyPage() {
                   </p>
                 </div>
                 <div className="co-footer">
-                  <svg className="co-footer-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M2 2h4M2 2v4M2 2l10 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                  <span className="co-footer-icon">🪶</span>
                   <span className="co-footer-text">
                     Built so that every AI agent builder knows where they stand before a customer has to tell them.
                   </span>
@@ -453,7 +459,7 @@ export default function CompanyPage() {
             <div className="co-right" style={{ gridColumn: "1 / -1" }}>
 
               {/* Vision hero card — pink-dominant, purple accent */}
-              <div style={{
+              <div className="co-mission-card" style={{
                 position: "relative",
                 borderRadius: 18,
                 overflow: "hidden",
@@ -498,7 +504,7 @@ export default function CompanyPage() {
 
                 {/* Content */}
                 <div style={{ position: "relative", zIndex: 1 }}>
-                  <h2 style={{
+                  <h2 className="co-mission-h2" style={{
                     display: "flex",
                     alignItems: "center",
                     gap: 14,
@@ -519,7 +525,7 @@ export default function CompanyPage() {
                       <circle cx="16" cy="16" r="5.5" stroke="#0F0B1E" strokeWidth="1" opacity="0.3"/>
                     </svg>
                   </h2>
-                  <p style={{
+                  <p className="co-mission-title" style={{
                     fontSize: "clamp(22px, 2.6vw, 32px)",
                     fontWeight: 700,
                     letterSpacing: "-0.025em",
@@ -553,9 +559,7 @@ export default function CompanyPage() {
                   </p>
                 </div>
                 <div className="co-footer">
-                  <svg className="co-footer-icon" width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M2 2h4M2 2v4M2 2l10 10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                  <span className="co-footer-icon">🪶</span>
                   <span className="co-footer-text">
                     Product intelligence should not be a privilege of scale. It should be a given.
                   </span>
