@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Share2, Mail, X as XIcon, ArrowUp, MessageCircle } from "lucide-react";
 import IntelligenceModules from "@/components/IntelligenceModules";
+import SiteFooter from "./components/SiteFooter";
 
 const DOMAINS = [
   { label: "Marketing", href: "/solutions/marketing" },
@@ -913,6 +914,7 @@ export default function Home() {
         </div>
       </section>
 
+      <SiteFooter />
 
 </div>
   );
