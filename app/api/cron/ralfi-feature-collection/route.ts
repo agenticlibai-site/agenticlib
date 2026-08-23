@@ -30,12 +30,15 @@ export const maxDuration = 300;
 // ──────────────────────────────────────────────────────────────────────────────
 
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-const openai    = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+// maxRetries:0 — we handle retries ourselves in withRetry to avoid double-waiting
+const openai    = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, maxRetries: 0 });
 
 const RUNS_PER_FEATURE  = 3;
 const BATCH_CONCURRENCY = 10;
 const BATCH_DELAY_MS    = 500;
 const RETRY_DELAYS_MS   = [1000, 2000, 4000];
+// Safety deadline: stop grounding phase if this many ms have elapsed since function start
+const GROUNDING_DEADLINE_MS = 200_000; // 200s leaves ~100s headroom within the 300s max
 
 async function withRetry<T>(fn: () => Promise<T>, label: string): Promise<T> {
   let lastErr: unknown;
@@ -44,13 +47,23 @@ async function withRetry<T>(fn: () => Promise<T>, label: string): Promise<T> {
       return await fn();
     } catch (err) {
       const status = (err as { status?: number })?.status;
-      if (status === 429 && attempt < RETRY_DELAYS_MS.length) {
+      // Retry on 429 (rate-limit) or any 5xx (server-side transient). Log full error on first failure.
+      if ((status === 429 || (status != null && status >= 500)) && attempt < RETRY_DELAYS_MS.length) {
         const delay = RETRY_DELAYS_MS[attempt];
-        console.warn(`[ralfi-feature-collection] 429 on ${label} — retry ${attempt + 1}/3 in ${delay}ms`);
+        console.warn(`[ralfi-feature-collection] ${status} on ${label} — retry ${attempt + 1}/3 in ${delay}ms`);
         await new Promise((r) => setTimeout(r, delay));
         lastErr = err;
         continue;
       }
+      // Log the exact error so Vercel logs expose what went wrong (400s, auth, etc.)
+      const errDetails = {
+        name:    (err instanceof Error) ? err.name    : typeof err,
+        message: (err instanceof Error) ? err.message : String(err),
+        status,
+        code:    (err as { code?: string })?.code,
+        type:    (err as { type?: string })?.type,
+      };
+      console.error(`[ralfi-feature-collection] non-retriable error on ${label}:`, JSON.stringify(errDetails));
       throw err;
     }
   }
@@ -176,6 +189,8 @@ export async function GET(request: Request) {
   }
   const model = modelParam as "claude-haiku-4-5" | "gpt-4o-mini";
 
+  const functionStart = Date.now();
+
   try {
     await initRalfiDB();
     const brands = await getRalfiTopBrandsForFeatureScoring();
@@ -280,8 +295,19 @@ export async function GET(request: Request) {
         });
       }
       if (groundingTasks.length > 0) {
-        console.log(`[ralfi-feature-collection] grounding pass: ${groundingTasks.length} pairs`);
-        await runWithConcurrency(groundingTasks, BATCH_CONCURRENCY, BATCH_DELAY_MS);
+        const elapsedMs = Date.now() - functionStart;
+        if (elapsedMs > GROUNDING_DEADLINE_MS) {
+          console.warn(
+            `[ralfi-feature-collection] grounding skipped — ${Math.round(elapsedMs / 1000)}s elapsed, ` +
+            `exceeds ${GROUNDING_DEADLINE_MS / 1000}s deadline (${groundingTasks.length} pairs deferred)`,
+          );
+        } else {
+          console.log(
+            `[ralfi-feature-collection] grounding pass: ${groundingTasks.length} pairs, ` +
+            `${Math.round(elapsedMs / 1000)}s elapsed`,
+          );
+          await runWithConcurrency(groundingTasks, BATCH_CONCURRENCY, BATCH_DELAY_MS);
+        }
       }
     }
 
