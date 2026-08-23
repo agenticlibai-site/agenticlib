@@ -958,7 +958,7 @@ export async function insertFeatureResponse(row: {
        ${row.run_number}, ${row.run_date}::date, ${row.has_capability},
        ${row.evidence}, ${row.limitations}, ${row.confidence},
        ${row.key_terms ? JSON.stringify(row.key_terms) : null}::text[],
-       ${row.terminology_tags ? JSON.stringify(row.terminology_tags) : null}::text[],
+       ${(row.terminology_tags && row.terminology_tags.length > 0) ? JSON.stringify(row.terminology_tags) : null}::text[],
        ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error}, ${grounded})
     ON CONFLICT DO NOTHING
   `;
@@ -1735,7 +1735,7 @@ export async function insertSalesFeatureResponse(row: {
        ${row.run_number}, ${row.run_date}::date, ${row.has_capability},
        ${row.evidence}, ${row.limitations}, ${row.confidence},
        ${row.key_terms ? JSON.stringify(row.key_terms) : null}::text[],
-       ${row.terminology_tags ? JSON.stringify(row.terminology_tags) : null}::text[],
+       ${(row.terminology_tags && row.terminology_tags.length > 0) ? JSON.stringify(row.terminology_tags) : null}::text[],
        ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error}, ${grounded})
     ON CONFLICT DO NOTHING
   `;
@@ -2466,7 +2466,7 @@ export async function insertDexifyFeatureResponse(row: {
        ${row.run_number}, ${row.run_date}::date, ${row.has_capability},
        ${row.evidence}, ${row.limitations}, ${row.confidence},
        ${row.key_terms ? JSON.stringify(row.key_terms) : null}::text[],
-       ${row.terminology_tags ? JSON.stringify(row.terminology_tags) : null}::text[],
+       ${(row.terminology_tags && row.terminology_tags.length > 0) ? JSON.stringify(row.terminology_tags) : null}::text[],
        ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error}, ${grounded})
     ON CONFLICT DO NOTHING
   `;
@@ -3081,7 +3081,7 @@ export async function insertRalfiFeatureResponse(row: {
       (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.model},
        ${row.run_number}, ${row.run_date}::date, ${row.has_capability},
        ${row.evidence}, ${row.limitations}, ${row.confidence},
-       ${row.terminology_tags ? JSON.stringify(row.terminology_tags) : null}::text[],
+       ${(row.terminology_tags && row.terminology_tags.length > 0) ? JSON.stringify(row.terminology_tags) : null}::text[],
        ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error}, ${grounded})
     ON CONFLICT DO NOTHING
   `;
