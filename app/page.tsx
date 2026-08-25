@@ -411,7 +411,7 @@ export default function Home() {
                       }
                     }, 80);
                   }}
-                  style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#EDE9FD", color: "#6D28D9", fontWeight: 700, fontSize: 15, padding: "14px 28px", borderRadius: 9999, border: "1.5px solid rgba(124,58,237,0.18)", cursor: "pointer", transition: "background 0.15s, box-shadow 0.15s", boxShadow: "0 2px 10px rgba(124,58,237,0.10)" }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#EDE9FD", color: "#6D28D9", fontWeight: 700, fontSize: 15, padding: "14px 28px", borderRadius: 9999, border: "1.5px solid #7C3AED", cursor: "pointer", transition: "background 0.15s, box-shadow 0.15s", boxShadow: "0 2px 10px rgba(124,58,237,0.10)" }}
                   onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.background = "#E0D9FA"; el.style.boxShadow = "0 4px 16px rgba(124,58,237,0.18)"; }}
                   onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.background = "#EDE9FD"; el.style.boxShadow = "0 2px 10px rgba(124,58,237,0.10)"; }}
                 >
