@@ -8,6 +8,11 @@ on:
   schedule:
     - cron: '45 10 * * *' # 10:45 UTC daily = 20:45 AEST (UTC+10)
   workflow_dispatch:
+    inputs:
+      date:
+        description: 'Override scoring date (YYYY-MM-DD). Leave blank for today.'
+        required: false
+        default: ''
 
 jobs:
   aggregate:
@@ -16,6 +21,10 @@ jobs:
     steps:
       - name: Trigger Ralfi feature aggregate
         run: |
+          DATE_PARAM=""
+          if [ -n "${{ github.event.inputs.date }}" ]; then
+            DATE_PARAM="?date=${{ github.event.inputs.date }}"
+          fi
           curl --max-time 70 --fail-with-body \
-            "https://agenticlib.com/api/cron/ralfi-feature-aggregate" \
+            "https://agenticlib.com/api/cron/ralfi-feature-aggregate${DATE_PARAM}" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
