@@ -406,7 +406,7 @@ export default function Home() {
                     setDemoOpen(true);
                     setTimeout(() => {
                       if (demoVideoRef.current) {
-                        demoVideoRef.current.currentTime = 2;
+                        demoVideoRef.current.currentTime = 4;
                         demoVideoRef.current.play();
                       }
                     }, 80);
