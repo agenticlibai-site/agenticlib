@@ -220,6 +220,8 @@ export default function Home() {
   const [productExpanded, setProductExpanded] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [pricingModal, setPricingModal] = useState<{ open: boolean; plan: "free" | "premium" }>({ open: false, plan: "free" });
+  const [demoOpen, setDemoOpen] = useState(false);
+  const demoVideoRef = useRef<HTMLVideoElement>(null);
   const videoPlayedRef = useRef(false);
   const snapIframeRef = useRef<HTMLIFrameElement>(null);
 
@@ -248,6 +250,33 @@ export default function Home() {
     <div className="page-bg relative text-black font-sans">
       {reportModalOpen && <ReportModal onClose={() => setReportModalOpen(false)} />}
       {pricingModal.open && <PricingModal plan={pricingModal.plan} onClose={() => setPricingModal(p => ({ ...p, open: false }))} />}
+
+      {/* ── Sage AI Demo video modal ── */}
+      {demoOpen && (
+        <div
+          onClick={() => { setDemoOpen(false); demoVideoRef.current?.pause(); }}
+          style={{ position: "fixed", inset: 0, zIndex: 9999, background: "rgba(0,0,0,0.72)", display: "flex", alignItems: "center", justifyContent: "center", padding: "24px", backdropFilter: "blur(8px)" }}
+        >
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{ position: "relative", width: "100%", maxWidth: 960, borderRadius: 16, overflow: "hidden", boxShadow: "0 32px 80px rgba(0,0,0,0.55)" }}
+          >
+            <video
+              ref={demoVideoRef}
+              src="/Sage AI Demo.mov"
+              controls
+              playsInline
+              style={{ display: "block", width: "100%", borderRadius: 16 }}
+            />
+            <button
+              onClick={() => { setDemoOpen(false); demoVideoRef.current?.pause(); }}
+              style={{ position: "absolute", top: 12, right: 12, width: 32, height: 32, borderRadius: "50%", background: "rgba(0,0,0,0.55)", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", color: "#fff", fontSize: 18, lineHeight: 1 }}
+            >
+              ×
+            </button>
+          </div>
+        </div>
+      )}
       <style>{`
         @media (max-width: 900px) {
           .hero-content { padding: 90px 24px 0 !important; max-width: 100% !important; }
@@ -363,14 +392,33 @@ export default function Home() {
               <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 24, fontWeight: 600, fontSize: 18, maxWidth: 550 }}>
                 Get an edge on your product feature growth, know your competitive landscape and scale in LLM visibility to show up where your buyers are asking.
               </p>
-              <button
-                onClick={() => document.getElementById("sage-ai")?.scrollIntoView({ behavior: "smooth" })}
-                style={{ marginTop: 32, display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(95deg, #7C3AED, #C2186A)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "14px 32px", borderRadius: 9999, border: "none", cursor: "pointer", boxShadow: "0 4px 20px rgba(124,58,237,0.35)", transition: "box-shadow 0.2s ease, transform 0.15s ease" }}
-                onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 8px 32px rgba(124,58,237,0.50)"; el.style.transform = "translateY(-1px)"; }}
-                onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 4px 20px rgba(124,58,237,0.35)"; el.style.transform = "translateY(0)"; }}
-              >
-                Get started <span aria-hidden style={{ fontSize: 17 }}>›</span>
-              </button>
+              <div style={{ marginTop: 32, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
+                <button
+                  onClick={() => document.getElementById("sage-ai")?.scrollIntoView({ behavior: "smooth" })}
+                  style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(95deg, #7C3AED, #C2186A)", color: "#fff", fontWeight: 700, fontSize: 15, padding: "14px 32px", borderRadius: 9999, border: "none", cursor: "pointer", boxShadow: "0 4px 20px rgba(124,58,237,0.35)", transition: "box-shadow 0.2s ease, transform 0.15s ease" }}
+                  onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 8px 32px rgba(124,58,237,0.50)"; el.style.transform = "translateY(-1px)"; }}
+                  onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.boxShadow = "0 4px 20px rgba(124,58,237,0.35)"; el.style.transform = "translateY(0)"; }}
+                >
+                  Get started <span aria-hidden style={{ fontSize: 17 }}>›</span>
+                </button>
+                <button
+                  onClick={() => {
+                    setDemoOpen(true);
+                    setTimeout(() => {
+                      if (demoVideoRef.current) {
+                        demoVideoRef.current.currentTime = 2;
+                        demoVideoRef.current.play();
+                      }
+                    }, 80);
+                  }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "transparent", color: "#7C3AED", fontWeight: 700, fontSize: 15, padding: "13px 24px", borderRadius: 9999, border: "1.5px solid rgba(124,58,237,0.30)", cursor: "pointer", transition: "background 0.15s, border-color 0.15s" }}
+                  onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.background = "rgba(124,58,237,0.06)"; el.style.borderColor = "rgba(124,58,237,0.55)"; }}
+                  onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.background = "transparent"; el.style.borderColor = "rgba(124,58,237,0.30)"; }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#7C3AED"><path d="M8 5v14l11-7z"/></svg>
+                  Watch demo
+                </button>
+              </div>
             </div>
 
             {/* BELOW — product snapshot */}
