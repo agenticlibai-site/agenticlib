@@ -8,6 +8,11 @@ on:
   schedule:
     - cron: '0 10 * * *'  # 10:00 UTC daily = 20:00 AEST (UTC+10)
   workflow_dispatch:
+    inputs:
+      date:
+        description: 'Override collection date (YYYY-MM-DD). Leave blank for today.'
+        required: false
+        default: ''
 
 jobs:
   collect:
@@ -16,6 +21,10 @@ jobs:
     steps:
       - name: Trigger Ralfi feature collection (Claude Haiku)
         run: |
+          DATE_PARAM=""
+          if [ -n "${{ github.event.inputs.date }}" ]; then
+            DATE_PARAM="&date=${{ github.event.inputs.date }}"
+          fi
           curl --max-time 310 --fail-with-body \
-            "https://agenticlib.com/api/cron/ralfi-feature-collection?model=claude-haiku-4-5" \
+            "https://agenticlib.com/api/cron/ralfi-feature-collection?model=claude-haiku-4-5${DATE_PARAM}" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
