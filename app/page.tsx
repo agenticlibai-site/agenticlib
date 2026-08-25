@@ -266,7 +266,7 @@ export default function Home() {
               src="/Sage AI Demo.mov"
               controls
               playsInline
-              style={{ display: "block", width: "100%", borderRadius: 16, transition: "opacity 0.15s" }}
+              style={{ display: "block", width: "100%", borderRadius: 16 }}
             />
             <button
               onClick={() => { setDemoOpen(false); demoVideoRef.current?.pause(); }}
@@ -407,12 +407,8 @@ export default function Home() {
                     setTimeout(() => {
                       const video = demoVideoRef.current;
                       if (!video) return;
-                      video.style.opacity = "0";
-                      video.currentTime = 4;
-                      video.addEventListener("seeked", () => {
-                        video.style.opacity = "1";
-                        video.play();
-                      }, { once: true });
+                      video.currentTime = 0;
+                      video.play();
                     }, 50);
                   }}
                   style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#EDE9FD", color: "#6D28D9", fontWeight: 700, fontSize: 15, padding: "14px 28px", borderRadius: 9999, border: "1.5px solid #7C3AED", cursor: "pointer", transition: "background 0.15s, box-shadow 0.15s", boxShadow: "0 2px 10px rgba(124,58,237,0.10)" }}
