@@ -411,11 +411,11 @@ export default function Home() {
                       }
                     }, 80);
                   }}
-                  style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "transparent", color: "#7C3AED", fontWeight: 700, fontSize: 15, padding: "13px 24px", borderRadius: 9999, border: "1.5px solid rgba(124,58,237,0.30)", cursor: "pointer", transition: "background 0.15s, border-color 0.15s" }}
-                  onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.background = "rgba(124,58,237,0.06)"; el.style.borderColor = "rgba(124,58,237,0.55)"; }}
-                  onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.background = "transparent"; el.style.borderColor = "rgba(124,58,237,0.30)"; }}
+                  style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "rgba(124,58,237,0.10)", color: "#6D28D9", fontWeight: 700, fontSize: 15, padding: "14px 28px", borderRadius: 9999, border: "1.5px solid rgba(124,58,237,0.22)", cursor: "pointer", transition: "background 0.15s, box-shadow 0.15s", boxShadow: "0 2px 10px rgba(124,58,237,0.12)" }}
+                  onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.background = "rgba(124,58,237,0.16)"; el.style.boxShadow = "0 4px 18px rgba(124,58,237,0.22)"; }}
+                  onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.background = "rgba(124,58,237,0.10)"; el.style.boxShadow = "0 2px 10px rgba(124,58,237,0.12)"; }}
                 >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="#7C3AED"><path d="M8 5v14l11-7z"/></svg>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="#6D28D9"><path d="M8 5v14l11-7z"/></svg>
                   Watch demo
                 </button>
               </div>
