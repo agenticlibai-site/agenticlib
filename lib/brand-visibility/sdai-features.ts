@@ -24,22 +24,15 @@ export const SDAI_JSON_OUTPUT_SPEC =
   '}';
 
 // ── Locked brand list ──────────────────────────────────────────────────────────
-// AI-native video creation platforms for customer education and onboarding.
-// Verified: each brand uses AI for video production (not just screen recording).
-// Do NOT add without verification.
+// Populated after Day 1 denylist review of sdai_daily_summary mention data.
+// Criteria (applied after reviewing Day 1 data):
+//   - AI agent (autonomous AI that produces/records/edits video) OR
+//   - AI agent platform (platform whose core product includes an AI agent for video)
+// Traditional SaaS with bolted-on AI features → sdai_denylist instead.
+// Leave empty until denylist review is complete.
+// Feature + sentiment scoring will no-op gracefully until this is populated.
 export const LOCKED_SDAI_BRANDS: readonly string[] = [
-  "Guidde",      // AI how-to video creator — screen recording → polished video with AI voiceover in seconds
-  "Clueso",      // AI screen recording → polished video with voice cloning, auto-sync, translation
-  "Loom",        // Leading screen recording platform with AI summaries, captions, and editing features
-  "Trupeer",     // AI screen recording to polished onboarding video with auto-zoom and narration
-  "HeyGen",      // AI avatar video with voice cloning, lip-sync translation, and talking head presenters
-  "Synthesia",   // AI avatar video creation for training and onboarding with 175+ languages and avatars
-  "Descript",    // AI video editor with screen recording, text-based editing, and AI voice overdub
-  "VEED.io",     // Browser-based AI video creation with screen recording, auto-captions, and translation
-  "Elai.io",     // AI video generation with avatars, voice cloning, and multi-language support
-  "Tango",       // AI-powered step-by-step guide and video creator from screen recording
-  "Scribe",      // Screen recording → auto-generated documentation and video walkthroughs
-  "Narakeet",    // Text and screenshots → narrated video with AI voices and multi-language support
+  // Add verified brands here after Day 1 review
 ];
 
 // ── Feature definitions ────────────────────────────────────────────────────────

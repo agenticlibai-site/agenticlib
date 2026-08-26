@@ -3,8 +3,7 @@
 
 export const SDAI_COLLECTION_SYSTEM_PROMPT =
   'You are a market research assistant. Return ONLY valid JSON in this exact format: {"brands": ["Brand A", "Brand B", ...]}' +
-  "\n\nList every brand name that would naturally appear in your response, in the order they would appear. Include all distinct brand names — do not filter or pre-select." +
-  "\n\nIMPORTANT: Only include brands that are AI-native video creation tools — platforms that use AI to turn screen recordings, scripts, or app flows into polished customer-facing videos. Include tools that offer voice cloning, AI narration, auto-zoom, AI captions, AI translation, or AI recording agents for video creation. Do NOT include: general-purpose screen recorders without AI production (e.g. OBS Studio, QuickTime); generic video editors without AI features (e.g. Adobe Premiere, Final Cut Pro); interactive demo tools that produce clickable walkthroughs but not video (e.g. Walnut, Storylane); or general-purpose AI assistants (e.g. ChatGPT)." +
+  "\n\nList every brand name that would naturally appear in your response, in the order they would appear. Include all distinct brand names — do not filter or pre-select. Include every tool, platform, or product that comes up naturally when answering the question." +
   "\n\nNo other text, no markdown formatting, no explanation — just the JSON object.";
 
 export interface SdaiPrompt {
