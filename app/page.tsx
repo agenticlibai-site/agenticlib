@@ -404,6 +404,8 @@ export default function Home() {
                 <button
                   onClick={() => {
                     setDemoOpen(true);
+                    // Fire-and-forget — notify on every demo view
+                    fetch("/api/demo-view", { method: "POST" }).catch(() => {});
                     setTimeout(() => {
                       const video = demoVideoRef.current;
                       if (!video) return;
