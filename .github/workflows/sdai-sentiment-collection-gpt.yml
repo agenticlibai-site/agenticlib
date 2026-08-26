@@ -2,7 +2,7 @@ name: SDAI Sentiment Collection (GPT)
 
 on:
   schedule:
-    - cron: '30 9 * * *'  # 09:30 UTC daily = 19:30 AEST
+    - cron: '35 9 * * *'  # 09:35 UTC daily = 19:35 AEST
   workflow_dispatch:
     inputs:
       date:

@@ -2,7 +2,7 @@ name: SDAI Feature Aggregate
 
 on:
   schedule:
-    - cron: '45 10 * * *'  # 10:45 UTC daily = 20:45 AEST
+    - cron: '50 10 * * *'  # 10:50 UTC daily = 20:50 AEST
   workflow_dispatch:
     inputs:
       date:

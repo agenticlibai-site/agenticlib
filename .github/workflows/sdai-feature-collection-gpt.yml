@@ -2,7 +2,7 @@ name: SDAI Feature Collection (GPT)
 
 on:
   schedule:
-    - cron: '15 10 * * *'  # 10:15 UTC daily = 20:15 AEST
+    - cron: '20 10 * * *'  # 10:20 UTC daily = 20:20 AEST
   workflow_dispatch:
     inputs:
       date:

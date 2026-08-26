@@ -2,7 +2,7 @@ name: SDAI Sentiment Aggregate
 
 on:
   schedule:
-    - cron: '0 3 * * 0'  # 03:00 UTC Sunday = 13:00 AEST Monday
+    - cron: '5 3 * * 0'  # 03:05 UTC Sunday = 13:05 AEST Sunday
   workflow_dispatch:
 
 jobs:

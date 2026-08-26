@@ -4,7 +4,7 @@ name: SDAI Feature Collection (Claude)
 
 on:
   schedule:
-    - cron: '0 10 * * *'  # 10:00 UTC daily = 20:00 AEST
+    - cron: '5 10 * * *'  # 10:05 UTC daily = 20:05 AEST
   workflow_dispatch:
     inputs:
       date:
