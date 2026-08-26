@@ -1,0 +1,26 @@
+name: SDAI Aggregate
+
+on:
+  schedule:
+    - cron: '45 6 * * *'  # 06:45 UTC daily = 16:45 AEST
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Override aggregation date (YYYY-MM-DD). Leave blank for today.'
+        required: false
+        default: ''
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger SDAI aggregate
+        run: |
+          DATE_PARAM=""
+          if [ -n "${{ github.event.inputs.date }}" ]; then
+            DATE_PARAM="?date=${{ github.event.inputs.date }}"
+          fi
+          curl --max-time 70 --fail-with-body \
+            "https://agenticlib.com/api/cron/sdai-aggregate${DATE_PARAM}" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"

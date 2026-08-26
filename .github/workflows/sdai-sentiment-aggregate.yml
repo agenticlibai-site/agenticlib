@@ -1,0 +1,17 @@
+name: SDAI Sentiment Aggregate
+
+on:
+  schedule:
+    - cron: '0 3 * * 0'  # 03:00 UTC Sunday = 13:00 AEST Monday
+  workflow_dispatch:
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger SDAI sentiment aggregate
+        run: |
+          curl --max-time 70 --fail-with-body \
+            "https://agenticlib.com/api/cron/sdai-sentiment-aggregate" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"

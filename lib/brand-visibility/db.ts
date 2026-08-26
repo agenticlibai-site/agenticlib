@@ -3340,3 +3340,359 @@ export async function getRalfiCollectionHealth(): Promise<{
     model_breakdown:  models.rows as { model: string; row_count: number }[],
   };
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// SDAI pipeline — AI Video Creation for Customer Education
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let _sdaiDbInit: Promise<void> | null = null;
+
+export function initSdaiDB(): Promise<void> {
+  if (!_sdaiDbInit) {
+    _sdaiDbInit = _runSdaiDDL().catch(err => {
+      _sdaiDbInit = null;
+      return Promise.reject(err);
+    });
+  }
+  return _sdaiDbInit;
+}
+
+async function _runSdaiDDL(): Promise<void> {
+  await sql`
+    CREATE TABLE IF NOT EXISTS sdai_raw_responses (
+      id             SERIAL PRIMARY KEY,
+      date           DATE    NOT NULL,
+      prompt_id      INTEGER NOT NULL,
+      prompt_text    TEXT    NOT NULL,
+      cluster_tag    TEXT    NOT NULL,
+      model          TEXT    NOT NULL,
+      model_snapshot TEXT,
+      run_number     INTEGER NOT NULL,
+      brands         JSONB   NOT NULL DEFAULT '[]',
+      created_at     TIMESTAMP DEFAULT NOW(),
+      UNIQUE (date, prompt_id, model, run_number)
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS sdai_daily_summary (
+      id            SERIAL PRIMARY KEY,
+      date          DATE    NOT NULL,
+      brand         TEXT    NOT NULL,
+      model         TEXT    NOT NULL,
+      cluster_tag   TEXT    NOT NULL,
+      mention_count INTEGER NOT NULL DEFAULT 0,
+      avg_position  FLOAT,
+      created_at    TIMESTAMP DEFAULT NOW(),
+      UNIQUE (date, brand, model, cluster_tag)
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS sdai_denylist (
+      brand_name TEXT NOT NULL UNIQUE,
+      reason     TEXT,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS sdai_sentiment_responses (
+      id          SERIAL PRIMARY KEY,
+      brand_name  TEXT    NOT NULL,
+      prompt_id   INTEGER NOT NULL,
+      bucket_tag  TEXT    NOT NULL,
+      model       TEXT    NOT NULL,
+      run_date    DATE    NOT NULL DEFAULT CURRENT_DATE,
+      sentiment   TEXT    CHECK (sentiment IN ('positive', 'neutral', 'negative')),
+      confidence  TEXT    CHECK (confidence IN ('high', 'medium', 'low')),
+      descriptors TEXT[],
+      limitations TEXT[],
+      raw_json    JSONB,
+      parse_error BOOLEAN DEFAULT FALSE,
+      created_at  TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE UNIQUE INDEX IF NOT EXISTS sdai_sentiment_responses_unique
+    ON sdai_sentiment_responses (brand_name, prompt_id, model, run_date)
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS sdai_sentiment_scores (
+      id              SERIAL PRIMARY KEY,
+      brand_name      TEXT    NOT NULL,
+      bucket_tag      TEXT    NOT NULL,
+      positive_count  INTEGER NOT NULL DEFAULT 0,
+      neutral_count   INTEGER NOT NULL DEFAULT 0,
+      negative_count  INTEGER NOT NULL DEFAULT 0,
+      total_count     INTEGER NOT NULL DEFAULT 0,
+      top_descriptors TEXT[],
+      unique_flags    TEXT[],
+      week_start      DATE    NOT NULL,
+      scored_at       TIMESTAMP DEFAULT NOW(),
+      UNIQUE (brand_name, bucket_tag, week_start)
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS sdai_sentiment_drift (
+      id           SERIAL PRIMARY KEY,
+      brand_name   TEXT    NOT NULL,
+      bucket_tag   TEXT    NOT NULL,
+      week_start   DATE    NOT NULL,
+      positive_pct FLOAT,
+      neutral_pct  FLOAT,
+      negative_pct FLOAT,
+      drift_flag   BOOLEAN DEFAULT FALSE,
+      drift_reason TEXT,
+      created_at   TIMESTAMP DEFAULT NOW(),
+      UNIQUE (brand_name, bucket_tag, week_start)
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS sdai_feature_responses (
+      id               SERIAL PRIMARY KEY,
+      brand_name       TEXT    NOT NULL,
+      feature_id       TEXT    NOT NULL,
+      feature_tag      TEXT    NOT NULL,
+      model            TEXT    NOT NULL,
+      run_number       INTEGER NOT NULL,
+      run_date         DATE    NOT NULL DEFAULT CURRENT_DATE,
+      has_capability   TEXT,
+      evidence         TEXT,
+      limitations      TEXT,
+      confidence       TEXT,
+      terminology_tags TEXT[],
+      raw_json         JSONB,
+      parse_error      BOOLEAN NOT NULL DEFAULT FALSE,
+      grounded         BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at       TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE UNIQUE INDEX IF NOT EXISTS sdai_feature_responses_unique
+    ON sdai_feature_responses (brand_name, feature_id, model, run_number, run_date)
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS sdai_feature_scores (
+      id                 SERIAL PRIMARY KEY,
+      brand_name         TEXT    NOT NULL,
+      feature_id         TEXT    NOT NULL,
+      feature_tag        TEXT    NOT NULL,
+      score              NUMERIC,
+      score_band         TEXT,
+      runs_agreeing      INTEGER,
+      runs_total         INTEGER NOT NULL DEFAULT 0,
+      flagged_for_review BOOLEAN NOT NULL DEFAULT FALSE,
+      flag_reason        TEXT,
+      notes              TEXT,
+      grounded_source    BOOLEAN DEFAULT FALSE,
+      scored_at          TIMESTAMP DEFAULT NOW(),
+      UNIQUE (brand_name, feature_id)
+    )
+  `;
+}
+
+// ── SDAI collection ───────────────────────────────────────────────────────────
+
+export async function insertSdaiRawResponse(row: {
+  date: string; promptId: number; promptText: string; clusterTag: string;
+  model: string; modelSnapshot: string; runNumber: number; brands: string[];
+}): Promise<void> {
+  await sql`
+    INSERT INTO sdai_raw_responses
+      (date, prompt_id, prompt_text, cluster_tag, model, model_snapshot, run_number, brands)
+    VALUES (
+      ${row.date}::date, ${row.promptId}, ${row.promptText}, ${row.clusterTag},
+      ${row.model}, ${row.modelSnapshot}, ${row.runNumber}, ${JSON.stringify(row.brands)}::jsonb
+    )
+    ON CONFLICT (date, prompt_id, model, run_number) DO UPDATE SET
+      brands         = EXCLUDED.brands,
+      model_snapshot = EXCLUDED.model_snapshot,
+      created_at     = NOW()
+  `;
+}
+
+export interface SdaiTopBrandRow { brand: string; total_mentions: number; avg_position: number | null; }
+
+export async function getSdaiTopBrands(limit = 25): Promise<SdaiTopBrandRow[]> {
+  await initSdaiDB();
+  const result = await sql`
+    SELECT brand, SUM(mention_count)::int AS total_mentions, AVG(avg_position)::float AS avg_position
+    FROM sdai_daily_summary
+    WHERE LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM sdai_denylist)
+    GROUP BY brand ORDER BY total_mentions DESC LIMIT ${limit}
+  `;
+  return result.rows as SdaiTopBrandRow[];
+}
+
+export async function getSdaiTopBrandsForFeatureScoring(): Promise<string[]> {
+  const { LOCKED_SDAI_BRANDS } = await import("@/lib/brand-visibility/sdai-features");
+  return [...LOCKED_SDAI_BRANDS];
+}
+
+// ── SDAI feature pipeline ─────────────────────────────────────────────────────
+
+export async function insertSdaiFeatureResponse(row: {
+  brand_name: string; feature_id: string; feature_tag: string;
+  model: string; run_number: number; run_date: string;
+  has_capability: string | null; evidence: string | null; limitations: string | null;
+  confidence: string | null; terminology_tags: string[] | null;
+  raw_json: object | null; parse_error: boolean; grounded?: boolean;
+}): Promise<void> {
+  const grounded = row.grounded ?? false;
+  await sql`
+    INSERT INTO sdai_feature_responses
+      (brand_name, feature_id, feature_tag, model, run_number, run_date,
+       has_capability, evidence, limitations, confidence, terminology_tags, raw_json, parse_error, grounded)
+    VALUES
+      (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.model},
+       ${row.run_number}, ${row.run_date}::date, ${row.has_capability},
+       ${row.evidence}, ${row.limitations}, ${row.confidence},
+       ${(row.terminology_tags && row.terminology_tags.length > 0) ? row.terminology_tags : null},
+       ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error}, ${grounded})
+    ON CONFLICT DO NOTHING
+  `;
+}
+
+export async function getSdaiFeatureResponsesForScoring(runDate: string): Promise<{
+  brand_name: string; feature_id: string; feature_tag: string; model: string;
+  has_capability: string | null; evidence: string | null; confidence: string | null;
+  parse_error: boolean; grounded: boolean;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, feature_id, feature_tag, model,
+           has_capability, evidence, confidence, parse_error,
+           COALESCE(grounded, FALSE) AS grounded
+    FROM sdai_feature_responses
+    WHERE run_date = ${runDate}::date
+    ORDER BY brand_name, feature_id, model, grounded ASC, run_number
+  `;
+  return result.rows as {
+    brand_name: string; feature_id: string; feature_tag: string; model: string;
+    has_capability: string | null; evidence: string | null; confidence: string | null;
+    parse_error: boolean; grounded: boolean;
+  }[];
+}
+
+export async function upsertSdaiFeatureScore(row: {
+  brand_name: string; feature_id: string; feature_tag: string;
+  score: number | null; score_band: string;
+  runs_agreeing: number | null; runs_total: number;
+  flagged_for_review: boolean; flag_reason: string | null;
+  notes: string | null; grounded_source?: boolean;
+}): Promise<void> {
+  const grounded_source = row.grounded_source ?? false;
+  await sql`
+    INSERT INTO sdai_feature_scores
+      (brand_name, feature_id, feature_tag, score, score_band,
+       runs_agreeing, runs_total, flagged_for_review, flag_reason, notes, grounded_source, scored_at)
+    VALUES
+      (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.score},
+       ${row.score_band}, ${row.runs_agreeing}, ${row.runs_total},
+       ${row.flagged_for_review}, ${row.flag_reason}, ${row.notes}, ${grounded_source}, NOW())
+    ON CONFLICT (brand_name, feature_id) DO UPDATE SET
+      feature_tag = EXCLUDED.feature_tag, score = EXCLUDED.score, score_band = EXCLUDED.score_band,
+      runs_agreeing = EXCLUDED.runs_agreeing, runs_total = EXCLUDED.runs_total,
+      flagged_for_review = EXCLUDED.flagged_for_review, flag_reason = EXCLUDED.flag_reason,
+      notes = EXCLUDED.notes, grounded_source = EXCLUDED.grounded_source, scored_at = NOW()
+  `;
+}
+
+// ── SDAI sentiment pipeline ───────────────────────────────────────────────────
+
+export async function insertSdaiSentimentResponse(row: {
+  brand_name: string; prompt_id: number; bucket_tag: string; model: string; run_date: string;
+  sentiment: string | null; confidence: string | null;
+  descriptors: string[] | null; limitations: string[] | null;
+  raw_json: object | null; parse_error: boolean;
+}): Promise<void> {
+  const descriptorsJson = JSON.stringify(row.descriptors ?? []);
+  const limitationsJson = JSON.stringify(row.limitations ?? []);
+  await sql`
+    INSERT INTO sdai_sentiment_responses
+      (brand_name, prompt_id, bucket_tag, model, run_date,
+       sentiment, confidence, descriptors, limitations, raw_json, parse_error)
+    VALUES
+      (${row.brand_name}, ${row.prompt_id}, ${row.bucket_tag}, ${row.model},
+       ${row.run_date}::date, ${row.sentiment}, ${row.confidence},
+       ARRAY(SELECT jsonb_array_elements_text(${descriptorsJson}::jsonb)),
+       ARRAY(SELECT jsonb_array_elements_text(${limitationsJson}::jsonb)),
+       ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb, ${row.parse_error})
+    ON CONFLICT (brand_name, prompt_id, model, run_date) DO UPDATE SET
+      bucket_tag = EXCLUDED.bucket_tag, sentiment = EXCLUDED.sentiment,
+      confidence = EXCLUDED.confidence, descriptors = EXCLUDED.descriptors,
+      limitations = EXCLUDED.limitations, raw_json = EXCLUDED.raw_json,
+      parse_error = EXCLUDED.parse_error
+  `;
+}
+
+export async function getSdaiSentimentResponsesForWeek(weekStart: string, weekEnd: string): Promise<{
+  brand_name: string; bucket_tag: string; sentiment: string | null;
+  confidence: string | null; descriptors: string[] | null; parse_error: boolean;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, bucket_tag, sentiment, confidence, descriptors, parse_error
+    FROM sdai_sentiment_responses
+    WHERE run_date >= ${weekStart}::date AND run_date <= ${weekEnd}::date
+    ORDER BY brand_name, bucket_tag, run_date
+  `;
+  return result.rows as {
+    brand_name: string; bucket_tag: string; sentiment: string | null;
+    confidence: string | null; descriptors: string[] | null; parse_error: boolean;
+  }[];
+}
+
+export async function getPrevSdaiSentimentScores(prevWeekStart: string): Promise<{
+  brand_name: string; bucket_tag: string;
+  positive_count: number; neutral_count: number; negative_count: number; total_count: number;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, bucket_tag, positive_count, neutral_count, negative_count, total_count
+    FROM sdai_sentiment_scores WHERE week_start = ${prevWeekStart}::date
+  `;
+  return result.rows as {
+    brand_name: string; bucket_tag: string;
+    positive_count: number; neutral_count: number; negative_count: number; total_count: number;
+  }[];
+}
+
+export async function upsertSdaiSentimentScore(row: {
+  brand_name: string; bucket_tag: string;
+  positive_count: number; neutral_count: number; negative_count: number; total_count: number;
+  top_descriptors: string[]; unique_flags: string[]; week_start: string;
+}): Promise<void> {
+  const topDescJson    = JSON.stringify(row.top_descriptors);
+  const uniqueFlagJson = JSON.stringify(row.unique_flags);
+  await sql`
+    INSERT INTO sdai_sentiment_scores
+      (brand_name, bucket_tag, positive_count, neutral_count, negative_count,
+       total_count, top_descriptors, unique_flags, week_start)
+    VALUES
+      (${row.brand_name}, ${row.bucket_tag}, ${row.positive_count},
+       ${row.neutral_count}, ${row.negative_count}, ${row.total_count},
+       ARRAY(SELECT jsonb_array_elements_text(${topDescJson}::jsonb)),
+       ARRAY(SELECT jsonb_array_elements_text(${uniqueFlagJson}::jsonb)),
+       ${row.week_start}::date)
+    ON CONFLICT (brand_name, bucket_tag, week_start) DO UPDATE SET
+      positive_count = EXCLUDED.positive_count, neutral_count = EXCLUDED.neutral_count,
+      negative_count = EXCLUDED.negative_count, total_count = EXCLUDED.total_count,
+      top_descriptors = EXCLUDED.top_descriptors, unique_flags = EXCLUDED.unique_flags,
+      scored_at = NOW()
+  `;
+}
+
+export async function upsertSdaiSentimentDrift(row: {
+  brand_name: string; bucket_tag: string; week_start: string;
+  positive_pct: number; neutral_pct: number; negative_pct: number;
+  drift_flag: boolean; drift_reason: string | null;
+}): Promise<void> {
+  await sql`
+    INSERT INTO sdai_sentiment_drift
+      (brand_name, bucket_tag, week_start, positive_pct, neutral_pct, negative_pct, drift_flag, drift_reason)
+    VALUES
+      (${row.brand_name}, ${row.bucket_tag}, ${row.week_start}::date,
+       ${row.positive_pct}, ${row.neutral_pct}, ${row.negative_pct},
+       ${row.drift_flag}, ${row.drift_reason})
+    ON CONFLICT (brand_name, bucket_tag, week_start) DO UPDATE SET
+      positive_pct = EXCLUDED.positive_pct, neutral_pct = EXCLUDED.neutral_pct,
+      negative_pct = EXCLUDED.negative_pct, drift_flag = EXCLUDED.drift_flag,
+      drift_reason = EXCLUDED.drift_reason, created_at = NOW()
+  `;
+}

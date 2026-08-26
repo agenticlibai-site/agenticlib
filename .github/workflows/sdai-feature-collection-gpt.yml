@@ -1,0 +1,26 @@
+name: SDAI Feature Collection (GPT)
+
+on:
+  schedule:
+    - cron: '15 10 * * *'  # 10:15 UTC daily = 20:15 AEST
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 'Override collection date (YYYY-MM-DD). Leave blank for today.'
+        required: false
+        default: ''
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Trigger SDAI feature collection (GPT-4o-mini)
+        run: |
+          DATE_PARAM=""
+          if [ -n "${{ github.event.inputs.date }}" ]; then
+            DATE_PARAM="&date=${{ github.event.inputs.date }}"
+          fi
+          curl --max-time 310 --fail-with-body \
+            "https://agenticlib.com/api/cron/sdai-feature-collection?model=gpt-4o-mini${DATE_PARAM}" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
