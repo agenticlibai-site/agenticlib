@@ -32,7 +32,15 @@ export const SDAI_JSON_OUTPUT_SPEC =
 // Leave empty until denylist review is complete.
 // Feature + sentiment scoring will no-op gracefully until this is populated.
 export const LOCKED_SDAI_BRANDS: readonly string[] = [
-  // Add verified brands here after Day 1 review
+  // Locked 2026-08-27 after Day 1 denylist review (Aug 26 data).
+  // Verified: AI agent or AI agent platform; traditional-with-AI-bolted-on excluded.
+  "Descript",      // 157 mentions — AI-native screen recording + production
+  "Synthesia",     // 141 mentions — AI avatar video generation platform
+  "HeyGen",        //  68 mentions — AI avatar + voice cloning video platform
+  "Opus Clip",     //  61 mentions — AI agent for clip extraction and repurposing
+  "D-ID",          //  49 mentions — AI talking head / digital human platform
+  "DeepBrain",     //  19 mentions — AI avatar video creation platform
+  "Renderforest",  //  16 mentions — AI-native video generation (multi-model: Sora, Pixverse, Seed)
 ];
 
 // ── Feature definitions ────────────────────────────────────────────────────────
