@@ -471,59 +471,6 @@ export default function Home() {
               <img src="/dexify-logo.png" alt="Dexify" style={{ height: 32, width: "auto", objectFit: "contain" }} />
             </a>
           </div>
-
-          {/* Supported by */}
-          <div style={{ marginTop: 40 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
-              <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
-              <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase" as const, color: "#000", whiteSpace: "nowrap" }}>
-                Supported by
-              </span>
-              <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
-            </div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 56 }}>
-              <a href="https://www.blackbird.vc/giants" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 10, opacity: 0.55, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.55"; el.style.filter = "grayscale(1)"; }}>
-                <img src="/blackbird logo.jpg" alt="Blackbird VC" style={{ height: 44, width: "auto", objectFit: "contain", borderRadius: 8 }} />
-                <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#000" }}>Blackbird VC Giants</span>
-              </a>
-              <a href="https://www.sydney.edu.au/business/study/student-experience/sydney-genesis.html" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; }}>
-                <img src="/genesis-transparent.png" alt="University of Sydney Genesis" style={{ height: 90, width: "auto", objectFit: "contain" }} />
-              </a>
-            </div>
-          </div>
-
-          {/* Testimonial label */}
-          <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "40px 0 0" }}>
-            <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
-            <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "#000", whiteSpace: "nowrap" }}>
-              Testimonial
-            </span>
-            <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
-          </div>
-
-          {/* Testimonial */}
-          <div style={{ maxWidth: 560, margin: "20px auto 0", textAlign: "center" }}>
-            <p style={{
-              fontSize: 19,
-              fontWeight: 700,
-              lineHeight: 1.55,
-              color: "#0F0B1E",
-              letterSpacing: "-0.01em",
-              margin: "0 0 18px",
-            }}>
-              <span className="testimonial-quote">&ldquo;Helped us map dewwie&apos;s features against the category to identify opportunities for differentiation, and making more informed product decisions.&rdquo;</span>
-            </p>
-            <div style={{ width: 36, height: 3, background: "#5B5BD6", borderRadius: 2, margin: "0 auto 14px" }} />
-            <span style={{
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase" as const,
-              color: "#888",
-            }}>
-              Founder, Dewwie
-            </span>
-          </div>
         </div>
       </section>
 
@@ -592,6 +539,64 @@ export default function Home() {
               </div>
             </div>
           </div>
+      </section>
+
+      <section className="trusted-by-section" style={{ padding: "0 24px 56px", position: "relative", zIndex: 1, background: "transparent" }}>
+        <div style={{ maxWidth: 860, margin: "0 auto" }}>
+
+          {/* Supported by */}
+          <div style={{ marginTop: 40 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 28 }}>
+              <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
+              <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase" as const, color: "#000", whiteSpace: "nowrap" }}>
+                Supported by
+              </span>
+              <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
+            </div>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 56 }}>
+              <a href="https://www.blackbird.vc/giants" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 10, opacity: 0.55, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.55"; el.style.filter = "grayscale(1)"; }}>
+                <img src="/blackbird logo.jpg" alt="Blackbird VC" style={{ height: 44, width: "auto", objectFit: "contain", borderRadius: 8 }} />
+                <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#000" }}>Blackbird VC Giants</span>
+              </a>
+              <a href="https://www.sydney.edu.au/business/study/student-experience/sydney-genesis.html" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; }}>
+                <img src="/genesis-transparent.png" alt="University of Sydney Genesis" style={{ height: 90, width: "auto", objectFit: "contain" }} />
+              </a>
+            </div>
+          </div>
+
+          {/* Testimonial label */}
+          <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "40px 0 0" }}>
+            <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
+            <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "#000", whiteSpace: "nowrap" }}>
+              Testimonial
+            </span>
+            <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
+          </div>
+
+          {/* Testimonial */}
+          <div style={{ maxWidth: 560, margin: "20px auto 0", textAlign: "center" }}>
+            <p style={{
+              fontSize: 19,
+              fontWeight: 700,
+              lineHeight: 1.55,
+              color: "#0F0B1E",
+              letterSpacing: "-0.01em",
+              margin: "0 0 18px",
+            }}>
+              <span className="testimonial-quote">&ldquo;Helped us map dewwie&apos;s features against the category to identify opportunities for differentiation, and making more informed product decisions.&rdquo;</span>
+            </p>
+            <div style={{ width: 36, height: 3, background: "#5B5BD6", borderRadius: 2, margin: "0 auto 14px" }} />
+            <span style={{
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: "0.18em",
+              textTransform: "uppercase" as const,
+              color: "#888",
+            }}>
+              Founder, Dewwie
+            </span>
+          </div>
+        </div>
       </section>
 
       {/* ── How It Works ─────────────────────────────────────────────────── */}
