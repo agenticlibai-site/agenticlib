@@ -1424,21 +1424,24 @@ export default function SalesVisibilityCharts({
           {
             brand: "Highspot",
             tactic: "Volume + Direct Confrontation",
-            whyVisible: "High content volume and named-competitor takedown pages simultaneously.",
-            how: "Highspot does everything at once: publishes a lot AND runs multiple named-competitor takedown pages.",
-            points: [
-              { text: "Publishes heavily: 100+ posts in 18 months, roughly 5-10 per month.", cite: "highspot.com/blog" },
-              { text: "Backs it up with 171 case studies naming real enterprise customers (HSBC, Visa, Siemens).", cite: "highspot.com/success-stories" },
-              {
-                text: "Ran three separate “us vs. them” pages, each following the same playbook: paint the rival as fragmented, position Highspot as the unified alternative:",
-                sub: [
-                  "vs. Seismic: claimed 85+ companies switched from Seismic, “+15% win rates” — this comparison page is now defunct. Highspot and Seismic signed a definitive merger agreement on Feb 12, 2026; the combined company will operate under the Seismic brand led by Seismic’s CEO.",
-                  "vs. Showpad",
-                  "vs. Gong: frames Gong as narrow (“just call intelligence”) compared to Highspot's broader platform",
-                ],
-              },
-              { text: "Shipped 3 major product launches in the last year (mid-2025 through mid-2026), each reinforcing an “AI-powered” narrative." },
-            ],
+            whyVisible: "",
+            how: "",
+            points: [] as { text: string; cite?: string; citeUrl?: string; sub?: string[] }[],
+            narrative: (
+              <>
+                <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 12px" }}>
+                  What makes Highspot&rsquo;s approach distinctive is that it does two things at once that most competitors only do one of: it publishes at high volume <em>and</em> runs direct named-competitor comparison pages. The volume gives AI models a large surface area to draw on when a buyer asks anything about sales content or enablement. The comparison pages give models something specific and quotable when the question is explicitly about how Highspot compares to a rival.{" "}
+                  <a href="https://highspot.com/blog" target="_blank" rel="noopener" style={{ color: "#2563eb", fontSize: 15 }}>100+ posts over 18 months</a> at 5–10 per month, backed by{" "}
+                  <a href="https://highspot.com/success-stories" target="_blank" rel="noopener" style={{ color: "#2563eb", fontSize: 15 }}>171 case studies</a> naming real enterprise customers — HSBC, Visa, Siemens — is enough content that AI models consistently encounter Highspot as they process the category.
+                </p>
+                <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 12px" }}>
+                  The comparison pages followed a single consistent structure: frame the rival as narrow or fragmented, then position Highspot as the unified alternative. The Gong page describes Gong as &ldquo;just call intelligence&rdquo; and positions Highspot as a broader platform. The Showpad page takes the same approach. The Seismic page went furthest — claiming 85+ companies switched from Seismic and citing +15% win rates — though that page is now defunct. Highspot and Seismic signed a definitive merger agreement on February 12, 2026; the combined company will operate under the Seismic brand, led by Seismic&rsquo;s CEO. Both platforms are expected to continue being supported post-close. The deal is signed but not yet closed as of July 2026.
+                </p>
+                <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 4px" }}>
+                  Three major product launches over the past year added a third layer of visibility. Each launch introduced specific, named product features — Deal Agent, AI Role Play, Digital Sales Rooms — that AI models can cite as evidence of specific capabilities, not just marketing claims. Named product features are far more citable than generic phrases like &ldquo;AI-powered workflow&rdquo;: when a model is asked whether Highspot has a specific capability, it can point to a named product and describe how it works.
+                </p>
+              </>
+            ),
             dataLabel: "Highspot data:",
             yourData: (
               <>
@@ -1455,20 +1458,32 @@ export default function SalesVisibilityCharts({
                 {" Appears consistently in the Sales Enablement & Follow-up mention trend."}
               </>
             ),
-            takeaway: "Different category from yours (content enablement, not deal execution), but the tactic of pairing real content volume with direct named-competitor pages is the most complete playbook here. Worth studying the mechanism even though Highspot itself isn't a competitor. Note: Highspot signed a definitive merger agreement with Seismic on Feb 12, 2026; the combined company will operate under the Seismic brand, led by Seismic's CEO. Both platforms are expected to continue being supported post-close. Deal is signed but not yet closed as of July 2026.",
+            takeaway: "Different category from yours (content enablement, not deal execution), but the tactic of pairing real content volume with direct named-competitor pages is the most complete playbook here. Worth studying the mechanism even though Highspot itself isn’t a competitor. Note: Highspot signed a definitive merger agreement with Seismic on Feb 12, 2026; the combined company will operate under the Seismic brand, led by Seismic’s CEO. Both platforms are expected to continue being supported post-close. Deal is signed but not yet closed as of July 2026.",
           },
           {
             brand: "6sense",
             tactic: "Narrow, Named-Competitor Content as the Wedge",
-            whyVisible: "A much smaller content operation than Clari's, but with one sharp, deliberate asset: a dedicated head-to-head page.",
-            how: "6sense runs a focused content operation built around a small number of pages that directly name and take on specific rivals.",
-            points: [
-              { text: "Publishes steadily, around 15-20 posts visible at a time.", cite: "6sense.com/blog" },
-              { text: "Builds dedicated pages to win specific comparisons, including a \"6sense vs. Demandbase: See Why 6sense is #1\" landing page built to own that exact search.", cite: "6sense.com/cp/demandbase" },
-              { text: "Runs a second comparison page, naming UserGems directly.", cite: "6sense.com/blog/6sense-vs-usergems" },
-              { text: "Keeps it sharp, not broad: two targeted pages instead of a \"compare us to everyone\" hub, each aimed at winning one specific matchup." },
-              { text: "Repositioning toward \"AI agent platform\" framing, moving beyond \"pipeline forecasting\" as the sole pitch.", cite: "6sense.com/guides/pipeline-forecasting" },
-            ],
+            whyVisible: "",
+            how: "",
+            points: [] as { text: string; cite?: string; citeUrl?: string; sub?: string[] }[],
+            narrative: (
+              <>
+                <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 12px" }}>
+                  6sense runs a much smaller content operation than most competitors in this report — around 15–20 posts visible at a time on{" "}
+                  <a href="https://6sense.com/blog" target="_blank" rel="noopener" style={{ color: "#2563eb", fontSize: 15 }}>its blog</a> — but earns AI visibility in specific comparison moments through one deliberate tactic: dedicated pages that directly name and take on individual rivals. The lesson is that size of content operation doesn&rsquo;t determine which comparison moments you win; sharpness does.
+                </p>
+                <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 12px" }}>
+                  The clearest example is the{" "}
+                  <a href="https://6sense.com/cp/demandbase" target="_blank" rel="noopener" style={{ color: "#2563eb", fontSize: 15 }}>&ldquo;6sense vs. Demandbase: See Why 6sense is #1&rdquo;</a>{" "}
+                  landing page. It&rsquo;s built to answer one exact question a buyer might ask an AI model — how 6sense compares to Demandbase for predictive pipeline — and gives the model a structured, indexed document to draw on when that question comes up. A{" "}
+                  <a href="https://6sense.com/blog/6sense-vs-usergems" target="_blank" rel="noopener" style={{ color: "#2563eb", fontSize: 15 }}>second page does the same for UserGems</a>. The deliberate choice here is two sharp, targeted pages rather than a broad &ldquo;compare us to everyone&rdquo; hub — each page is built to win one specific comparison moment, not to maximise overall mention count.
+                </p>
+                <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 4px" }}>
+                  6sense is also repositioning toward &ldquo;AI agent platform&rdquo; framing, moving beyond its original &ldquo;pipeline forecasting&rdquo; pitch — visible in content like its{" "}
+                  <a href="https://6sense.com/guides/pipeline-forecasting" target="_blank" rel="noopener" style={{ color: "#2563eb", fontSize: 15 }}>pipeline forecasting guide</a>. This matters because buyers are increasingly searching for agents, not just tools. Being indexed under that framing early means 6sense shows up in a growing category of questions before competitors have built an answer.
+                </p>
+              </>
+            ),
             dataLabel: "6sense data:",
             yourData: (
               <>
@@ -1480,7 +1495,7 @@ export default function SalesVisibilityCharts({
                 {` ${s6Mentions} total discovery mentions in the Jul 6–12 window.`}
               </>
             ),
-            takeaway: "This is the cheapest, fastest-to-replicate lever of the four: pairing a small number of sharp, named-competitor pages with steady content. It's built to win specific comparison moments (\"6sense vs. Demandbase\") rather than to maximise overall mention count.",
+            takeaway: "This is the cheapest, fastest-to-replicate lever of the four: a small number of sharp, named-competitor pages paired with steady content. It’s built to win specific comparison moments — \"6sense vs. Demandbase\" — rather than to maximise overall mention count. The size of the content operation doesn’t matter. What matters is having an indexed, quotable page for each comparison a buyer is likely to search.",
           },
           {
             brand: "Backstory.ai",
@@ -1536,43 +1551,46 @@ export default function SalesVisibilityCharts({
                       {pb.brand}: {pb.tactic}
                     </p>
 
-                    <p style={{ fontSize: 16, color: "#000", lineHeight: 1.6, margin: "0 0 10px" }}>
-                      <span style={{ fontWeight: 700 }}>{"whyLabel" in pb ? pb.whyLabel : "Why it's visible:"} </span>{pb.whyVisible}
-                    </p>
-
-                    <p style={{ fontSize: 16, color: "#000", lineHeight: 1.6, margin: "0 0 10px" }}>
-                      <span style={{ fontWeight: 700 }}>How: </span>{pb.how}
-                    </p>
-
-                    <ul style={{ margin: "0 0 12px", paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 8 }}>
-                      {pb.points.map((point, i) => (
-                        <li key={i} style={{ fontSize: 16, color: "#000", lineHeight: 1.6, display: "flex", alignItems: "flex-start", gap: 10 }}>
-                          <span style={{ flexShrink: 0, width: 7, height: 7, borderRadius: "50%", background: NAVY, marginTop: 6 }} />
-                          <span>
-                            {point.text}
-                            {"cite" in point && point.cite && (() => {
-                              const label = point.cite;
-                              const href = ("citeUrl" in point && point.citeUrl)
-                                ? point.citeUrl as string
-                                : (label.includes('.') && !label.includes(' ') ? `https://${label}` : null);
-                              return href
-                                ? <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", marginLeft: 4, fontSize: 15, textDecoration: "underline" }}>{label}</a>
-                                : <span style={{ color: "#000", marginLeft: 4 }}>{label}</span>;
-                            })()}
-                            {"sub" in point && point.sub && (
-                              <ul style={{ margin: "6px 0 0", paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 4 }}>
-                                {point.sub.map((s, j) => (
-                                  <li key={j} style={{ fontSize: 16, color: "#000", lineHeight: 1.6, display: "flex", alignItems: "flex-start", gap: 8 }}>
-                                    <span style={{ flexShrink: 0, width: 5, height: 5, borderRadius: "50%", border: `1.5px solid ${NAVY}`, marginTop: 7 }} />
-                                    <span>{s}</span>
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
+                    {"narrative" in pb && pb.narrative
+                      ? <div style={{ marginBottom: 12 }}>{pb.narrative}</div>
+                      : <>
+                          <p style={{ fontSize: 16, color: "#000", lineHeight: 1.6, margin: "0 0 10px" }}>
+                            <span style={{ fontWeight: 700 }}>{"whyLabel" in pb ? pb.whyLabel : "Why it's visible:"} </span>{pb.whyVisible}
+                          </p>
+                          <p style={{ fontSize: 16, color: "#000", lineHeight: 1.6, margin: "0 0 10px" }}>
+                            <span style={{ fontWeight: 700 }}>How: </span>{pb.how}
+                          </p>
+                          <ul style={{ margin: "0 0 12px", paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 8 }}>
+                            {pb.points.map((point, i) => (
+                              <li key={i} style={{ fontSize: 16, color: "#000", lineHeight: 1.6, display: "flex", alignItems: "flex-start", gap: 10 }}>
+                                <span style={{ flexShrink: 0, width: 7, height: 7, borderRadius: "50%", background: NAVY, marginTop: 6 }} />
+                                <span>
+                                  {point.text}
+                                  {"cite" in point && point.cite && (() => {
+                                    const label = point.cite;
+                                    const href = ("citeUrl" in point && point.citeUrl)
+                                      ? point.citeUrl as string
+                                      : (label.includes('.') && !label.includes(' ') ? `https://${label}` : null);
+                                    return href
+                                      ? <a href={href} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", marginLeft: 4, fontSize: 15, textDecoration: "underline" }}>{label}</a>
+                                      : <span style={{ color: "#000", marginLeft: 4 }}>{label}</span>;
+                                  })()}
+                                  {"sub" in point && Array.isArray((point as {sub?: string[]}).sub) && (
+                                    <ul style={{ margin: "6px 0 0", paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: 4 }}>
+                                      {((point as {sub: string[]}).sub).map((s, j) => (
+                                        <li key={j} style={{ fontSize: 16, color: "#000", lineHeight: 1.6, display: "flex", alignItems: "flex-start", gap: 8 }}>
+                                          <span style={{ flexShrink: 0, width: 5, height: 5, borderRadius: "50%", border: `1.5px solid ${NAVY}`, marginTop: 7 }} />
+                                          <span>{s}</span>
+                                        </li>
+                                      ))}
+                                    </ul>
+                                  )}
+                                </span>
+                              </li>
+                            ))}
+                          </ul>
+                        </>
+                    }
 
                     <p style={{
                       fontSize: 16, color: "#000", lineHeight: 1.6, margin: "0 0 10px",
