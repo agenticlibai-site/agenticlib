@@ -106,24 +106,24 @@ const FEATURE_NAMES: Record<string, string> = {
 };
 
 const FEATURE_DESCRIPTIONS: Record<string, string> = {
-  renewal_auto_followup:         "Whether the agent automatically follows up when a client or insurer goes quiet during a renewal — without the broker initiating it.",
-  renewal_stage_reminders:       "Whether the agent tracks each renewal's stage and triggers reminders or actions based on days remaining until policy expiry.",
-  doc_structured_extraction:     "Whether the agent extracts structured fields from policy PDFs, schedules of value, or broker submissions without manual entry.",
-  doc_unstructured_processing:   "Whether the agent reads and processes unstructured documents — PDFs, Word files — received as email attachments, without requiring manual handling.",
-  risk_client_data_collection:   "Whether the agent collects and organises client risk information — turnover, payroll, asset values — in preparation for insurer submissions.",
-  risk_submission_gap_detection: "Whether the agent identifies gaps in a broker submission before it is sent — flagging missing fields that insurers typically require.",
-  claims_status_tracking:        "Whether the agent tracks an open claim's status and automatically follows up with the insurer when updates are overdue.",
-  claims_quiet_alert:            "Whether the agent proactively alerts the broker when a claim has stalled — no insurer response within a set window.",
-  comms_broker_voice_email:      "Whether the agent learns the broker's writing style and drafts client emails accordingly — not generic templates.",
-  comms_client_self_service:     "Whether the agent handles routine client queries — coverage questions, renewal reminders — without the broker needing to respond manually.",
-  compliance_timestamped_logging:"Whether every email, follow-up, and response is automatically timestamped and recorded with no manual logging required.",
-  compliance_audit_export:       "Whether the agent can generate a compliance export — every email, step, and timestamp in one file — for regulatory review or audit.",
-  security_private_ai:           "Whether the AI agent runs on private infrastructure where broker and client data is not used to train AI models.",
-  security_data_control:         "Whether brokers can export all their data and request permanent deletion at any time — with no lock-in.",
-  pricing_cost:                  "Whether specific pricing is available — per broker, per seat, or flat brokerage fee.",
-  pricing_transparency:          "Whether pricing is published on the website so brokers can assess affordability without speaking to sales.",
-  technical_integrations:        "Which systems the agent connects to — Outlook, Gmail, broking platforms, policy data sources.",
-  technical_setup:               "Whether a brokerage can connect and configure the agent without technical staff, developers, or a lengthy implementation project.",
+  renewal_auto_followup:         "When a client or insurer goes quiet mid-renewal, the agent follows up automatically — no broker prompt required. This is the difference between a renewal that completes and one that quietly lapses.",
+  renewal_stage_reminders:       "The agent tracks where each renewal sits in the pipeline and fires reminders or triggers the next action as the expiry date approaches. Nothing slips because the broker forgot to check.",
+  doc_structured_extraction:     "Policy PDFs, schedules of values, and broker submissions are read automatically and their key fields entered into structured records — no manual re-keying from documents.",
+  doc_unstructured_processing:   "Unstructured files — Word documents, free-form PDFs, email attachments in any format — are processed without the broker having to open and re-enter them manually.",
+  risk_client_data_collection:   "The agent gathers the risk information an insurer needs — turnover, payroll, asset values, business descriptions — directly from the client, ready for submission. The broker doesn't have to chase each field by hand.",
+  risk_submission_gap_detection: "Before a submission goes to an insurer, the agent checks it for missing fields and flags gaps early. Incomplete submissions get caught before the insurer does — not after a rejection or a request for clarification.",
+  claims_status_tracking:        "Open claims are tracked automatically, and when an insurer response is overdue the agent follows up without being asked. The broker stays informed without having to monitor each claim manually.",
+  claims_quiet_alert:            "When a claim has gone quiet — no insurer movement in a set window — the broker is alerted proactively. Stalled claims surface before they become a client complaint.",
+  comms_broker_voice_email:      "The agent learns the broker's own writing style and drafts client emails in that voice — not in generic, clearly-AI-generated templates. The output reads like the broker wrote it.",
+  comms_client_self_service:     "Routine client queries — what's my excess, when does my policy renew, what am I covered for — are handled by the agent without the broker stepping in. Clients get answers immediately; brokers get their time back.",
+  compliance_timestamped_logging:"Every client contact, insurer email, and follow-up is automatically logged with a timestamp the moment it happens — no manual entry, no gaps in the record.",
+  compliance_audit_export:       "The full renewal history — every email, action, and timestamp — can be exported in a single file for regulatory review, internal audit, or NIBA Code of Practice compliance.",
+  security_private_ai:           "The AI runs on private infrastructure, which means broker and client data is not used to train models and does not flow into a shared AI pool. What the brokerage puts in stays within its own boundary.",
+  security_data_control:         "Brokers can export everything they've ever entered and request permanent deletion at any time — no data held hostage, no lock-in past the end of the relationship.",
+  pricing_cost:                  "The platform publishes a specific price — per broker, per seat, or a flat brokerage fee — so a firm can assess cost before speaking to anyone.",
+  pricing_transparency:          "Pricing is on the website. A brokerage can work out whether the product fits its budget without having to book a sales call just to find out the number.",
+  technical_integrations:        "The systems the agent connects to — Outlook, Gmail, broker management platforms, policy data sources — are documented publicly, so a brokerage knows what it's buying before it commits.",
+  technical_setup:               "A brokerage can connect and configure the agent without technical staff, IT involvement, or a months-long implementation project. Self-serve setup is the standard, not a premium add-on.",
 };
 
 const FEATURE_GROUPS = [
@@ -656,38 +656,42 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
           <div style={{ padding: "20px 24px" }}>
             <p style={{ fontSize: 15, color: "#000", marginBottom: 24 }}>Both models · updates daily</p>
             {FEATURE_GROUPS.map(group => {
-              const groupFeatures = group.features.flatMap(featureId => {
-                if (HIDDEN_FEATURE_IDS.has(featureId)) return [];
-                const rows = featureScores.filter(r => r.feature_id === featureId).sort((a, b) => b.score - a.score).slice(0, 3);
-                return rows.length >= 1 ? [{ featureId, rows }] : [];
-              });
-              if (groupFeatures.length === 0) return null;
+              const groupFeatures = group.features
+                .filter(featureId => !HIDDEN_FEATURE_IDS.has(featureId))
+                .map(featureId => {
+                  const rows = featureScores.filter(r => r.feature_id === featureId).sort((a, b) => b.score - a.score).slice(0, 3);
+                  return { featureId, rows };
+                });
               return (
                 <div key={group.label} style={{ marginBottom: 28 }}>
                   <p style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: GREEN, marginBottom: 14 }}>{group.label}</p>
                   {groupFeatures.map(({ featureId, rows }) => (
                     <div key={featureId} style={{ marginBottom: 18 }}>
-                      <p style={{ fontSize: 18, fontWeight: 600, color: NAVY, marginBottom: 2 }}>{featureName(featureId)}</p>
+                      <p style={{ fontSize: 18, fontWeight: 600, color: NAVY, marginBottom: 4 }}>{featureName(featureId)}</p>
                       {FEATURE_DESCRIPTIONS[featureId] && (
-                        <p style={{ fontSize: 16, color: GREEN, lineHeight: 1.5, margin: "0 0 10px" }}>{FEATURE_DESCRIPTIONS[featureId]}</p>
+                        <p style={{ fontSize: 15, color: GREEN, lineHeight: 1.6, margin: "0 0 10px" }}>{FEATURE_DESCRIPTIONS[featureId]}</p>
                       )}
-                      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                        {rows.map(r => {
-                          const ev = cleanEvidence(r.evidence) ?? BAND_FALLBACK[r.score_band];
-                          return (
-                            <div key={r.brand_name}>
-                              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                                <span style={{ fontSize: 16, fontWeight: 500, color: NAVY, width: 168, flexShrink: 0, lineHeight: 1.3 }}>{r.brand_name}</span>
-                                <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
-                                  <div style={{ width: `${r.score}%`, height: 6, borderRadius: 999, background: BAND_COLORS[r.score_band] ?? "#94a3b8" }} />
+                      {rows.length === 0 ? (
+                        <p style={{ fontSize: 14, color: "#94a3b8", fontStyle: "italic", margin: 0 }}>Scoring in progress — no brand has documented this feature yet.</p>
+                      ) : (
+                        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                          {rows.map(r => {
+                            const ev = cleanEvidence(r.evidence) ?? BAND_FALLBACK[r.score_band];
+                            return (
+                              <div key={r.brand_name}>
+                                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                                  <span style={{ fontSize: 16, fontWeight: 500, color: NAVY, width: 168, flexShrink: 0, lineHeight: 1.3 }}>{r.brand_name}</span>
+                                  <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
+                                    <div style={{ width: `${r.score}%`, height: 6, borderRadius: 999, background: BAND_COLORS[r.score_band] ?? "#94a3b8" }} />
+                                  </div>
+                                  <span style={{ fontSize: 16, fontWeight: 700, color: BAND_COLORS[r.score_band] ?? NAVY, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>{r.score}</span>
                                 </div>
-                                <span style={{ fontSize: 16, fontWeight: 700, color: BAND_COLORS[r.score_band] ?? NAVY, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>{r.score}</span>
+                                {ev && <p style={{ paddingLeft: 178, fontSize: 17, color: "#000", lineHeight: 1.5, margin: "4px 0 0" }}>{ev}</p>}
                               </div>
-                              {ev && <p style={{ paddingLeft: 178, fontSize: 17, color: "#000", lineHeight: 1.5, margin: "4px 0 0" }}>{ev}</p>}
-                            </div>
-                          );
-                        })}
-                      </div>
+                            );
+                          })}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

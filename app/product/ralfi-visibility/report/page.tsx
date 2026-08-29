@@ -44,6 +44,21 @@ export default async function RalfiReportPage() {
   return (
     <main className="min-h-screen page-gap-fix" style={{ background: "#F3FAF7" }}>
 
+      {/* ── Acquisition notice ── */}
+      <div style={{ background: "#fffbeb", borderBottom: "1px solid #fde68a" }}>
+        <div className="max-w-5xl mx-auto px-6 py-3" style={{ display: "flex", alignItems: "center", gap: 10, flexWrap: "wrap" }}>
+          <span style={{ fontSize: 15, lineHeight: 1 }}>📢</span>
+          <p style={{ fontSize: 14, color: "#92400e", margin: 0, lineHeight: 1.55 }}>
+            <strong style={{ fontWeight: 700 }}>Acquisition note:</strong>{" "}
+            Better Agency AI has been acquired by{" "}
+            <strong style={{ fontWeight: 700 }}>Glovebox</strong>.
+            {" "}Better Agency is the joint-highest scorer in this cohort on client self-service (80) and scores 65 on self-serve setup —
+            capabilities that will carry into the combined entity. Scores are reported under the Better Agency name as that is how LLMs
+            currently document the product; this will be updated as Glovebox&rsquo;s own LLM presence builds.
+          </p>
+        </div>
+      </div>
+
       {/* ── Header ── */}
       <div className="max-w-5xl mx-auto px-6 pt-10 pb-0">
         <div style={{ marginBottom: 28 }}>
