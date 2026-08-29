@@ -1,6 +1,3 @@
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
-import { createHash } from "node:crypto";
 import {
   getRalfiDailySummary,
   getRalfiWeeklySummary,
@@ -23,23 +20,7 @@ export const metadata = {
   robots: { index: false, follow: false },
 };
 
-const SALT = "|ralfi_gate_agenticlib_2026";
-
-function computeToken(password: string): string {
-  return createHash("sha256").update(password + SALT).digest("hex");
-}
-
 export default async function RalfiReportPage() {
-  // ── Auth gate ────────────────────────────────────────────────────────────────
-  const jar    = await cookies();
-  const cookie = jar.get("ralfi_auth")?.value ?? "";
-  const correct = process.env.RALFI_ACCESS_PASSWORD ?? "";
-  const expected = correct ? computeToken(correct) : "";
-
-  if (!cookie || !expected || cookie !== expected) {
-    redirect("/product/ralfi-visibility/login");
-  }
-
   // ── Data fetch ───────────────────────────────────────────────────────────────
   await initRalfiDB();
 
