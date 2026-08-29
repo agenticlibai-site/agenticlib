@@ -133,7 +133,6 @@ const FEATURE_GROUPS = [
   { label: "Claims Advocacy",       features: ["claims_status_tracking","claims_quiet_alert"] },
   { label: "Client Communication",  features: ["comms_broker_voice_email","comms_client_self_service"] },
   { label: "Compliance & Audit",    features: ["compliance_timestamped_logging","compliance_audit_export"] },
-  { label: "Security & Privacy",    features: ["security_private_ai","security_data_control"] },
   { label: "Pricing & Technical",   features: ["pricing_cost","pricing_transparency","technical_integrations","technical_setup"] },
 ];
 
