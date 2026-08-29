@@ -783,6 +783,19 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
           "ralfi-pricing":    "Pricing & Technical",
           "ralfi-technical":  "Pricing & Technical",
         };
+        // Manually reviewed overrides where pipeline evidence is insufficient or misleading
+        const SPOTLIGHT_OVERRIDE: Record<string, { feature: string; cluster: string; description: string }> = {
+          "Amy by Cover Whale": {
+            feature: "Commercial Auto Broker Platform",
+            cluster: "Claims Advocacy",
+            description: "Amy by Cover Whale operates in the commercial trucking and auto insurance space, built for the 6,000+ agents and brokers distributing Cover Whale products. Cover Whale's AI stack centres on instant quoting, real-time telematics-based risk monitoring, and underwriting automation — though Amy's specific broker workflow capabilities are not yet widely documented in LLM training data.",
+          },
+          "TrustLayer": {
+            feature: "Certificate of Insurance Tracking",
+            cluster: "Compliance & Audit",
+            description: "TrustLayer automates certificate of insurance collection and compliance verification — tracking vendor and contractor insurance requirements, flagging coverage gaps, and identifying expired policies. The AI layer reduces the manual work of chasing and reviewing compliance documentation across broker and client networks.",
+          },
+        };
         const spotlight = Array.from(LOCKED_RALFI_BRANDS).map(brand => {
           const top = featureScores.filter(r => r.brand_name === brand).sort((a, b) => b.score - a.score)[0] ?? null;
           return { brand, top };
@@ -796,14 +809,19 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
             <div style={{ padding: "20px 24px" }}>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: 14 }}>
                 {spotlight.map(({ brand, top }) => {
-                  const bandColor = top ? (BAND_COLORS[top.score_band] ?? "#94a3b8") : "#94a3b8";
-                  const clusterLabel = top ? (CLUSTER_LABEL[top.feature_tag] ?? "") : (CLUSTER_LABEL[BRAND_USE_CASE[brand]] ?? "");
-                  const ev = top ? (cleanEvidence(top.evidence) ?? null) : null;
-                  const evShort = ev ? (ev.length > 150 ? ev.slice(0, 147) + "…" : ev) : null;
+                  const override = SPOTLIGHT_OVERRIDE[brand];
+                  const clusterLabel = override
+                    ? override.cluster
+                    : (top ? (CLUSTER_LABEL[top.feature_tag] ?? "") : (CLUSTER_LABEL[BRAND_USE_CASE[brand]] ?? ""));
+                  const featureLabel = override ? override.feature : (top ? featureName(top.feature_id) : null);
+                  const description = override
+                    ? override.description
+                    : (top ? (cleanEvidence(top.evidence) ?? null) : null);
+                  const descShort = description ? (description.length > 200 ? description.slice(0, 197) + "…" : description) : null;
                   return (
                     <div key={brand} style={{
                       border: "1px solid rgba(0,0,0,0.08)",
-                      borderLeft: `3px solid ${bandColor}`,
+                      borderLeft: `3px solid ${GREEN}`,
                       borderRadius: 8,
                       padding: "14px 16px",
                     }}>
@@ -811,20 +829,13 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                         <span style={{ fontSize: 15, fontWeight: 700, color: NAVY, flex: 1, lineHeight: 1.3 }}>{brand}</span>
                         <span style={{ fontSize: 11, fontWeight: 600, color: "#555", background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 6px", whiteSpace: "nowrap" as const, letterSpacing: "0.03em", flexShrink: 0 }}>{clusterLabel}</span>
                       </div>
-                      {top ? (
-                        <>
-                          <p style={{ fontSize: 14, fontWeight: 600, color: GREEN, margin: "0 0 8px", lineHeight: 1.35 }}>{featureName(top.feature_id)}</p>
-                          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: evShort ? 8 : 0 }}>
-                            <div style={{ flex: 1, height: 5, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
-                              <div style={{ width: `${top.score}%`, height: 5, borderRadius: 999, background: bandColor }} />
-                            </div>
-                            <span style={{ fontSize: 15, fontWeight: 800, color: bandColor, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>{top.score}</span>
-                          </div>
-                          {evShort && <p style={{ fontSize: 13, color: "#555", lineHeight: 1.5, margin: 0 }}>{evShort}</p>}
-                        </>
-                      ) : (
-                        <p style={{ fontSize: 13, color: "#94a3b8", fontStyle: "italic" as const, margin: 0 }}>No features documented in LLM training data yet.</p>
+                      {featureLabel && (
+                        <p style={{ fontSize: 14, fontWeight: 600, color: GREEN, margin: "0 0 8px", lineHeight: 1.35 }}>{featureLabel}</p>
                       )}
+                      {descShort
+                        ? <p style={{ fontSize: 13, color: "#555", lineHeight: 1.55, margin: 0 }}>{descShort}</p>
+                        : <p style={{ fontSize: 13, color: "#94a3b8", fontStyle: "italic" as const, margin: 0 }}>No capability documentation found in LLM training data.</p>
+                      }
                     </div>
                   );
                 })}
