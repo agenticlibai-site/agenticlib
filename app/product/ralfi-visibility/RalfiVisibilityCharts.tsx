@@ -654,7 +654,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
               const groupFeatures = group.features.flatMap(featureId => {
                 if (HIDDEN_FEATURE_IDS.has(featureId)) return [];
                 const rows = featureScores.filter(r => r.feature_id === featureId).sort((a, b) => b.score - a.score).slice(0, 3);
-                return rows.length >= 2 ? [{ featureId, rows }] : [];
+                return rows.length >= 1 ? [{ featureId, rows }] : [];
               });
               if (groupFeatures.length === 0) return null;
               return (
