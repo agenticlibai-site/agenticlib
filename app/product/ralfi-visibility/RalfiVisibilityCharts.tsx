@@ -943,6 +943,12 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                       <a href="https://www.prnewswire.com/news-releases/hawksoft-and-broker-buddha-announce-two-way-integration-partnership-302824900.html" target="_blank" rel="noopener" style={{ color: "#2563eb", fontSize: 12 }}>HawkSoft integration announcement ↗</a> repeats the partnership on a third-party wire, anchoring the AMS360/HawkSoft named integration beyond Broker Buddha&rsquo;s own pages.
                     </p>
                   </div>
+                  <div style={{ background: "rgba(239,68,68,0.05)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 6, padding: "8px 10px" }}>
+                    <p style={{ fontSize: 12, color: "#b91c1c", margin: "0 0 4px", fontWeight: 700 }}>Negative signal: NowCerts integration complaint</p>
+                    <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>
+                      A documented reviewer complaint about a failed NowCerts integration exists in the third-party record. This matters beyond the individual review: when an LLM encounters a negative signal about a specific connector, it learns to qualify the vendor&rsquo;s integration claims as connector-specific rather than universal. The result is the difference between a model citing &ldquo;Broker Buddha integrates with AMS360 and Applied Epic&rdquo; (specific, high confidence) and &ldquo;Broker Buddha integrates with most AMS platforms&rdquo; (a claim the model will now hedge). The lesson for Ralfi is to name only integrations that are fully tested and documented — a single negative review of one connector creates a lasting qualifier in training data that narrows how broadly LLMs will describe the product&rsquo;s integration coverage.
+                    </p>
+                  </div>
                   <div style={{ background: "rgba(217,119,6,0.06)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 6, padding: "8px 10px" }}>
                     <p style={{ fontSize: 12, color: "#92400e", margin: 0, lineHeight: 1.55 }}>
                       <strong>Gap:</strong> Broker Buddha was <strong>not found</strong> in "best AI tools for independent agencies" roundup articles reviewed. Organic forum and Reddit presence is weak — no meaningful discussion threads about the product in broker communities. This limits the breadth of its earned footprint.
