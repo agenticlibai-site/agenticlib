@@ -333,7 +333,10 @@ function modelConsensus(rows: FeatureRunRow[]): ModelConsensus {
   }
 
   const majority    = Math.ceil(valid.length / 2);
-  const leadEntry   = Object.entries(capCounts).sort((a, b) => b[1] - a[1])[0];
+  // Tiebreak by CAP_RANK so yes > partial > no > not_documented when counts are equal.
+  const leadEntry   = Object.entries(capCounts).sort((a, b) =>
+    b[1] - a[1] || (CAP_RANK[b[0] as HasCapability] ?? 0) - (CAP_RANK[a[0] as HasCapability] ?? 0)
+  )[0];
   const leadCap     = leadEntry[0] as HasCapability;
   const leadCount   = leadEntry[1];
   const hasGrounded = valid.some((r) => r.grounded);
