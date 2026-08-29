@@ -140,6 +140,11 @@ const FEATURE_GROUPS = [
 const HIDDEN_FEATURE_IDS = new Set<string>([]);
 
 const BAND_COLORS: Record<string, string> = {
+  // DB stores high/medium/low from ralfi scoring function
+  high:    "#16a34a",
+  medium:  "#2563eb",
+  low:     "#d97706",
+  // legacy aliases (Lamigo-style)
   strong:  "#16a34a",
   present: "#2563eb",
   partial: "#d97706",
