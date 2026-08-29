@@ -126,6 +126,9 @@ export default function Navbar() {
                         { label: "Legal", desc: "Visibility & sentiment tracking for legal AI agents.", href: "/solutions/legal",
                           iconBg: "rgba(5,150,105,0.10)",
                           icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3l1.5 4.5H16l-3.5 2.5 1.5 4.5L10 12l-4 2.5 1.5-4.5L4 7.5h4.5L10 3z" stroke="#059669" strokeWidth="1.4" strokeLinejoin="round" fill="rgba(5,150,105,0.12)"/></svg> },
+                        { label: "Insurance Broker (Finance)", desc: "Visibility & sentiment tracking for insurance broker AI agents.", href: "/solutions/insurance-broker",
+                          iconBg: "rgba(13,148,136,0.10)",
+                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 10c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6z" stroke="#0D9488" strokeWidth="1.5" fill="rgba(13,148,136,0.12)"/><path d="M10 7v3l2 2" stroke="#0D9488" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg> },
                       ].map((item) => (
                         <a key={item.href} href={item.href} className="flex items-start gap-4 py-4 rounded-xl px-3" style={{ textDecoration: "none" }}
                           onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
@@ -258,6 +261,7 @@ export default function Navbar() {
                   { label: "Skincare", href: "/solutions/skincare" },
                   { label: "Sales", href: "/solutions/sales" },
                   { label: "Legal", href: "/solutions/legal" },
+                  { label: "Insurance Broker (Finance)", href: "/solutions/insurance-broker" },
                 ].map((item) => (
                   <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                     className="block pl-8 pr-5 py-3 text-sm text-black hover:text-black hover:bg-gray-100 transition-colors"

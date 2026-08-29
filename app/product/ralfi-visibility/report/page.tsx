@@ -7,6 +7,9 @@ import {
   getRalfiLLMVisibility,
   getRalfiSOVData,
   getRalfiCollectionHealth,
+  getRalfiClusterBrandPositions,
+  getRalfiFeatureScores,
+  getRalfiSentimentData,
   initRalfiDB,
 } from "@/lib/brand-visibility/db";
 import RalfiVisibilityCharts from "../RalfiVisibilityCharts";
@@ -40,12 +43,15 @@ export default async function RalfiReportPage() {
   // ── Data fetch ───────────────────────────────────────────────────────────────
   await initRalfiDB();
 
-  const [dailySummary, weeklySummary, llmVisibility, sovData, health] = await Promise.all([
+  const [dailySummary, weeklySummary, llmVisibility, sovData, health, clusterPositions, featureScores, sentimentData] = await Promise.all([
     getRalfiDailySummary(14),
     getRalfiWeeklySummary(),
     getRalfiLLMVisibility(),
     getRalfiSOVData(),
     getRalfiCollectionHealth(),
+    getRalfiClusterBrandPositions(),
+    getRalfiFeatureScores(),
+    getRalfiSentimentData(),
   ]);
 
   const now = new Date().toLocaleDateString("en-AU", {
@@ -116,6 +122,9 @@ export default async function RalfiReportPage() {
         weeklySummary={weeklySummary}
         llmVisibility={llmVisibility}
         sovData={sovData}
+        clusterPositions={clusterPositions}
+        featureScores={featureScores}
+        sentimentData={sentimentData}
       />
 
     </main>

@@ -3341,6 +3341,159 @@ export async function getRalfiCollectionHealth(): Promise<{
   };
 }
 
+export async function getRalfiClusterBrandPositions(): Promise<
+  { cluster_tag: string; brand: string; avg_position: number; appearances: number }[]
+> {
+  await initRalfiDB();
+  const result = await sql`
+    SELECT
+      r.cluster_tag,
+      TRIM(t.brand_name) AS brand,
+      ROUND(AVG(t.pos)::numeric, 1)::float AS avg_position,
+      COUNT(*)::int AS appearances
+    FROM ralfi_raw_responses r,
+         LATERAL jsonb_array_elements_text(r.brands) WITH ORDINALITY AS t(brand_name, pos)
+    WHERE r.date >= CURRENT_DATE - INTERVAL '14 days'
+      AND r.cluster_tag != 'ralfi-overall'
+      AND LENGTH(TRIM(t.brand_name)) > 0
+      AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM ralfi_denylist)
+    GROUP BY r.cluster_tag, TRIM(t.brand_name)
+    ORDER BY r.cluster_tag, AVG(t.pos) ASC
+  `;
+  return result.rows as { cluster_tag: string; brand: string; avg_position: number; appearances: number }[];
+}
+
+export async function getRalfiFeatureScores(): Promise<{
+  brand_name:         string;
+  feature_id:         string;
+  feature_tag:        string;
+  score:              number;
+  score_band:         string;
+  flagged_for_review: boolean;
+  evidence:           string | null;
+  terminology_tags:   string[] | null;
+}[]> {
+  await initRalfiDB();
+  const result = await sql`
+    WITH best_evidence AS (
+      SELECT DISTINCT ON (brand_name, feature_id)
+        brand_name, feature_id, evidence, terminology_tags
+      FROM ralfi_feature_responses
+      WHERE parse_error = false
+        AND evidence IS NOT NULL AND evidence != ''
+        AND evidence NOT ILIKE '%not explicitly document%'
+        AND evidence NOT ILIKE '%does not document%'
+        AND evidence NOT ILIKE '%no specific documentation%'
+        AND evidence NOT ILIKE '%without clear documentation%'
+        AND evidence NOT ILIKE '%documentation not available%'
+        AND evidence NOT ILIKE '%not documented%'
+        AND evidence NOT ILIKE '%cannot be confirmed from%'
+        AND evidence NOT ILIKE '%no available information%'
+        AND evidence NOT ILIKE '%does not provide documentation%'
+      ORDER BY brand_name, feature_id,
+        CASE has_capability WHEN 'yes' THEN 0 WHEN 'partial' THEN 1 ELSE 2 END,
+        grounded DESC,
+        run_date DESC,
+        CASE confidence WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END,
+        model
+    )
+    SELECT s.brand_name, s.feature_id, s.feature_tag, s.score::int AS score,
+           s.score_band, s.flagged_for_review,
+           be.evidence, be.terminology_tags
+    FROM ralfi_feature_scores s
+    LEFT JOIN best_evidence be ON be.brand_name = s.brand_name AND be.feature_id = s.feature_id
+    WHERE s.score IS NOT NULL
+    ORDER BY s.feature_tag, s.score DESC
+  `;
+  return result.rows as {
+    brand_name: string; feature_id: string; feature_tag: string;
+    score: number; score_band: string; flagged_for_review: boolean;
+    evidence: string | null; terminology_tags: string[] | null;
+  }[];
+}
+
+export async function getRalfiSentimentData(): Promise<{
+  rows: {
+    brand_name:      string;
+    bucket_tag:      string;
+    positive_count:  number;
+    neutral_count:   number;
+    negative_count:  number;
+    total_count:     number;
+    top_descriptors: string[];
+  }[];
+  meta: { dual_model_dates: number; earliest_date: string | null; latest_date: string | null };
+}> {
+  await initRalfiDB();
+
+  const metaResult = await sql`
+    SELECT COUNT(*)::int AS dual_model_dates,
+      MIN(run_date)::text AS earliest_date,
+      MAX(run_date)::text AS latest_date
+    FROM (
+      SELECT run_date
+      FROM ralfi_sentiment_responses
+      WHERE run_date >= CURRENT_DATE - INTERVAL '21 days' AND NOT parse_error
+      GROUP BY run_date
+      HAVING COUNT(DISTINCT model) >= 2
+    ) d
+  `;
+  const meta = metaResult.rows[0] as {
+    dual_model_dates: number; earliest_date: string | null; latest_date: string | null;
+  };
+
+  if ((meta.dual_model_dates ?? 0) < 3) {
+    return { rows: [], meta };
+  }
+
+  const result = await sql`
+    WITH base AS (
+      SELECT brand_name, bucket_tag, sentiment, descriptors
+      FROM ralfi_sentiment_responses
+      WHERE run_date >= CURRENT_DATE - INTERVAL '21 days' AND NOT parse_error
+    ),
+    sentiments AS (
+      SELECT brand_name, bucket_tag,
+        COUNT(*) FILTER (WHERE sentiment='positive')::int AS positive_count,
+        COUNT(*) FILTER (WHERE sentiment='neutral')::int  AS neutral_count,
+        COUNT(*) FILTER (WHERE sentiment='negative')::int AS negative_count,
+        COUNT(*)::int AS total_count
+      FROM base
+      GROUP BY brand_name, bucket_tag
+    ),
+    desc_flat AS (
+      SELECT brand_name, bucket_tag, LOWER(TRIM(d)) AS d, COUNT(*) AS cnt
+      FROM base, LATERAL UNNEST(descriptors) AS d
+      WHERE descriptors IS NOT NULL
+      GROUP BY brand_name, bucket_tag, LOWER(TRIM(d))
+    ),
+    ranked AS (
+      SELECT *, ROW_NUMBER() OVER (PARTITION BY brand_name, bucket_tag ORDER BY cnt DESC) AS rn
+      FROM desc_flat
+    ),
+    top_descs AS (
+      SELECT brand_name, bucket_tag,
+        ARRAY_AGG(d ORDER BY cnt DESC) AS top_descriptors
+      FROM ranked WHERE rn <= 5
+      GROUP BY brand_name, bucket_tag
+    )
+    SELECT s.brand_name, s.bucket_tag,
+      s.positive_count, s.neutral_count, s.negative_count, s.total_count,
+      COALESCE(d.top_descriptors, ARRAY[]::text[]) AS top_descriptors
+    FROM sentiments s
+    LEFT JOIN top_descs d USING (brand_name, bucket_tag)
+    ORDER BY s.bucket_tag, s.brand_name
+  `;
+  return {
+    rows: result.rows as {
+      brand_name: string; bucket_tag: string;
+      positive_count: number; neutral_count: number; negative_count: number; total_count: number;
+      top_descriptors: string[];
+    }[],
+    meta,
+  };
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // SDAI pipeline — AI Video Creation for Customer Education
 // ═══════════════════════════════════════════════════════════════════════════════
