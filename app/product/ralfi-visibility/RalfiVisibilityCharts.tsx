@@ -532,7 +532,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
             <p style={{ fontSize: 16, color: "#000" }}>Total mentions per brand across Claude Haiku and GPT-4o mini</p>
           </div>
           <div style={{ display: "flex", gap: 20, marginBottom: 14 }}>
-            {[{ label: "Claude Haiku", color: GREEN }, { label: "GPT-4o mini", color: TEAL }].map(({ label, color }) => (
+            {[{ label: "Claude Haiku", color: "#2563EB" }, { label: "GPT-4o mini", color: GREEN }].map(({ label, color }) => (
               <div key={label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
                 <div style={{ width: 10, height: 10, borderRadius: 2, background: color, flexShrink: 0 }} />
                 <span style={{ fontSize: 15, fontWeight: 600, color: NAVY }}>{label}</span>
@@ -544,8 +544,8 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
               <XAxis type="number" hide />
               <YAxis type="category" dataKey="brand" width={150} tick={{ fontSize: 15, fill: NAVY }} axisLine={false} tickLine={false} />
               <Tooltip contentStyle={{ borderRadius: 8, border: "1px solid rgba(0,0,0,0.10)", fontSize: 16 }} formatter={(value, name) => [value, name === "claude" ? "Claude Haiku" : "GPT-4o mini"]} />
-              <Bar dataKey="claude" stackId="a" fill={GREEN} radius={[0, 0, 0, 0]} />
-              <Bar dataKey="gpt"    stackId="a" fill={TEAL}  radius={[3, 3, 3, 3]} />
+              <Bar dataKey="claude" stackId="a" fill="#2563EB" radius={[0, 0, 0, 0]} />
+              <Bar dataKey="gpt"    stackId="a" fill={GREEN}  radius={[3, 3, 3, 3]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -635,11 +635,19 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
       )}
 
       {/* ── Row 7: Feature scores ── */}
-      {featureScores.length > 0 && (
-        <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
-          <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
-            <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>Product Feature Scores</h3>
+      <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
+          <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>Product Feature Scores</h3>
+          {featureScores.length === 0 && <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "#000", background: "rgba(0,0,0,0.06)", borderRadius: 999, padding: "3px 8px" }}>Collecting</span>}
+        </div>
+        {featureScores.length === 0 ? (
+          <div style={{ padding: "28px 24px", textAlign: "center" as const }}>
+            <p style={{ fontSize: 18, fontWeight: 600, color: NAVY, marginBottom: 8 }}>Feature scores are being collected</p>
+            <p style={{ fontSize: 16, color: "#000", maxWidth: 420, margin: "0 auto" }}>
+              Scores appear once the feature assessment pipeline has run across the locked brands. Check back soon.
+            </p>
           </div>
+        ) : (
           <div style={{ padding: "20px 24px" }}>
             <p style={{ fontSize: 15, color: "#000", marginBottom: 24 }}>Both models · updates daily</p>
             {FEATURE_GROUPS.map(group => {
@@ -684,8 +692,8 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
               Top 3 brands per feature · scored by both Claude Haiku and GPT-4o mini
             </p>
           </div>
-        </div>
-      )}
+        )}
+      </div>
 
       {/* ── Row 8: Sentiment analysis ── */}
       <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
