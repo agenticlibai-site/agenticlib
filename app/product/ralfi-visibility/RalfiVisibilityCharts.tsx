@@ -767,6 +767,68 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
         )}
       </div>
 
+      {/* ── Product feature opportunities ── */}
+      <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
+        <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
+          <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>Product Feature Opportunities</h3>
+          <p style={{ fontSize: 15, color: "#000", margin: "6px 0 0" }}>Three moves Ralfi is positioned to make — based on what this cohort's data reveals</p>
+        </div>
+        <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 0 }}>
+
+          {/* Opportunity 1 */}
+          <div style={{ display: "flex", gap: 20, padding: "20px 0", borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
+            <div style={{ flexShrink: 0, width: 32, height: 32, borderRadius: "50%", background: "rgba(5,150,105,0.10)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: 15, fontWeight: 800, color: GREEN }}>1</span>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 5, flexWrap: "wrap" as const }}>
+                <p style={{ fontSize: 16, fontWeight: 700, color: NAVY, margin: 0 }}>Missing-information detection before renewal terms are sent</p>
+                <span style={{ fontSize: 13, fontWeight: 600, color: GREEN, background: "rgba(5,150,105,0.08)", border: "1px solid rgba(5,150,105,0.2)", borderRadius: 4, padding: "1px 7px", whiteSpace: "nowrap" as const }}>Risk &amp; Submission</span>
+              </div>
+              <p style={{ fontSize: 15, color: "#000", margin: "0 0 8px", lineHeight: 1.6 }}>
+                Indio scores 65 on exactly this pattern: its submission review flags completeness gaps before terms go to an insurer. Ralfi's &ldquo;Analyze&rdquo; step already ingests renewal data from Outlook and policy sources — extending it to surface missing payroll figures or turnover data before terms are sent out is the same mechanism Ralfi has already built, one step earlier in the pipeline.
+              </p>
+              <p style={{ fontSize: 13, color: "#000", margin: 0, fontStyle: "italic" }}>Benchmark: Indio 65 · nearest competitor. No other brand scores above low on this feature.</p>
+            </div>
+          </div>
+
+          {/* Opportunity 2 */}
+          <div style={{ display: "flex", gap: 20, padding: "20px 0", borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
+            <div style={{ flexShrink: 0, width: 32, height: 32, borderRadius: "50%", background: "rgba(5,150,105,0.10)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: 15, fontWeight: 800, color: GREEN }}>2</span>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 5, flexWrap: "wrap" as const }}>
+                <p style={{ fontSize: 16, fontWeight: 700, color: NAVY, margin: 0 }}>Client self-service for routine policy questions</p>
+                <span style={{ fontSize: 13, fontWeight: 600, color: GREEN, background: "rgba(5,150,105,0.08)", border: "1px solid rgba(5,150,105,0.2)", borderRadius: 4, padding: "1px 7px", whiteSpace: "nowrap" as const }}>Client Communication</span>
+              </div>
+              <p style={{ fontSize: 15, color: "#000", margin: "0 0 8px", lineHeight: 1.6 }}>
+                The single highest-scoring feature across the entire cohort — Chisel AI, InsuredMine, and Better Agency all score 80 on client self-service, the strongest three-way consensus of any feature scored. Ralfi already has client-facing infrastructure (the portal where clients fill in details, sign, and return forms). Extending that surface to answer routine questions — &ldquo;what&rsquo;s my excess,&rdquo; &ldquo;when does my policy renew&rdquo; — enters a category the market has clearly validated.
+              </p>
+              <p style={{ fontSize: 13, color: "#000", margin: 0, fontStyle: "italic" }}>Benchmark: Chisel AI · InsuredMine · Better Agency all score 80. Market consensus is strong.</p>
+            </div>
+          </div>
+
+          {/* Opportunity 3 */}
+          <div style={{ display: "flex", gap: 20, padding: "20px 0 4px" }}>
+            <div style={{ flexShrink: 0, width: 32, height: 32, borderRadius: "50%", background: "rgba(5,150,105,0.10)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <span style={{ fontSize: 15, fontWeight: 800, color: GREEN }}>3</span>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 5, flexWrap: "wrap" as const }}>
+                <p style={{ fontSize: 16, fontWeight: 700, color: NAVY, margin: 0 }}>Own the Compliance &amp; Audit cluster</p>
+                <span style={{ fontSize: 13, fontWeight: 600, color: "#d97706", background: "rgba(217,119,6,0.08)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 4, padding: "1px 7px", whiteSpace: "nowrap" as const }}>Highest-leverage · zero build time</span>
+              </div>
+              <p style={{ fontSize: 15, color: "#000", margin: "0 0 8px", lineHeight: 1.6 }}>
+                This is different in kind from the first two: Ralfi doesn&rsquo;t need to build anything. The &ldquo;Record&rdquo; step — NIBA Code of Practice tracking, timestamped logging, exportable renewal history — already does this. The market signal: Compliance &amp; Audit is the thinnest cluster in the dataset (TrustLayer, the only brand with any visibility here, records 1–4 mentions across 14 days) and TrustLayer scores only 15 on pricing transparency, meaning it&rsquo;s not a strong incumbent. Low competitive density. Ralfi already has the capability. The capability is currently undocumented in LLM-facing content. This is the highest-leverage move available — the only cost is documentation time.
+              </p>
+              <p style={{ fontSize: 13, color: "#000", margin: 0, fontStyle: "italic" }}>Benchmark: TrustLayer is the only named competitor · 1–4 mentions/day · scores 15 on pricing. The cluster is unclaimed.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
       {/* ── Feature scores footnotes ── */}
       <div style={{ display: "flex", flexDirection: "column", gap: 6, padding: "0 4px" }}>
         <p style={{ fontSize: 11, color: "#000", margin: 0, textAlign: "center" }}>
