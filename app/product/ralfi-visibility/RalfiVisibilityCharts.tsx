@@ -131,7 +131,7 @@ const FEATURE_GROUPS = [
   { label: "Document Processing",   features: ["doc_structured_extraction","doc_unstructured_processing"] },
   { label: "Risk & Submission",     features: ["risk_client_data_collection","risk_submission_gap_detection"] },
   { label: "Claims Advocacy",       features: ["claims_status_tracking","claims_quiet_alert"] },
-  { label: "Client Communication",  features: ["comms_broker_voice_email","comms_client_self_service"] },
+  { label: "Client Communication",  features: ["comms_client_self_service"] },
   { label: "Compliance & Audit",    features: ["compliance_timestamped_logging","compliance_audit_export"] },
   { label: "Pricing & Technical",   features: ["pricing_cost","pricing_transparency","technical_integrations","technical_setup"] },
 ];
