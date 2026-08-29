@@ -190,7 +190,7 @@ const SOV_CLUSTERS = [
   { tag: "ralfi-documents",  label: "Document Processing" },
   { tag: "ralfi-risk",       label: "Risk & Submission" },
   { tag: "ralfi-claims",     label: "Claims Advocacy" },
-  { tag: "ralfi-comms",      label: "Client Comms" },
+  { tag: "ralfi-comms",      label: "Client Communication" },
   { tag: "ralfi-compliance", label: "Compliance & Audit" },
 ];
 
@@ -199,7 +199,7 @@ const SENTIMENT_CLUSTERS = [
   { tag: "ralfi-documents",  label: "Document Processing" },
   { tag: "ralfi-risk",       label: "Risk & Submission" },
   { tag: "ralfi-claims",     label: "Claims Advocacy" },
-  { tag: "ralfi-comms",      label: "Client Comms" },
+  { tag: "ralfi-comms",      label: "Client Communication" },
   { tag: "ralfi-compliance", label: "Compliance & Audit" },
 ];
 
