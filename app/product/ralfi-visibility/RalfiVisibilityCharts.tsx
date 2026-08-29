@@ -638,70 +638,6 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
         </>
       )}
 
-      {/* ── Brand Capability Spotlight ── */}
-      {featureScores.length > 0 && (() => {
-        const CLUSTER_LABEL: Record<string, string> = {
-          "ralfi-renewal":    "Renewal Management",
-          "ralfi-documents":  "Document Processing",
-          "ralfi-risk":       "Risk & Submission",
-          "ralfi-claims":     "Claims Advocacy",
-          "ralfi-comms":      "Client Communication",
-          "ralfi-compliance": "Compliance & Audit",
-          "ralfi-security":   "Security & Privacy",
-          "ralfi-pricing":    "Pricing & Technical",
-          "ralfi-technical":  "Pricing & Technical",
-        };
-        const spotlight = Array.from(LOCKED_RALFI_BRANDS).map(brand => {
-          const top = featureScores.filter(r => r.brand_name === brand).sort((a, b) => b.score - a.score)[0] ?? null;
-          return { brand, top };
-        });
-        return (
-          <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
-            <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
-              <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>Brand Capability Spotlight</h3>
-              <p style={{ fontSize: 15, color: "#000", margin: "6px 0 0" }}>Each brand&rsquo;s strongest documented capability · multi-model LLM assessment</p>
-            </div>
-            <div style={{ padding: "20px 24px" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: 14 }}>
-                {spotlight.map(({ brand, top }) => {
-                  const bandColor = top ? (BAND_COLORS[top.score_band] ?? "#94a3b8") : "#94a3b8";
-                  const clusterLabel = top ? (CLUSTER_LABEL[top.feature_tag] ?? "") : (CLUSTER_LABEL[BRAND_USE_CASE[brand]] ?? "");
-                  const ev = top ? (cleanEvidence(top.evidence) ?? null) : null;
-                  const evShort = ev ? (ev.length > 150 ? ev.slice(0, 147) + "…" : ev) : null;
-                  return (
-                    <div key={brand} style={{
-                      border: "1px solid rgba(0,0,0,0.08)",
-                      borderLeft: `3px solid ${bandColor}`,
-                      borderRadius: 8,
-                      padding: "14px 16px",
-                    }}>
-                      <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 8 }}>
-                        <span style={{ fontSize: 15, fontWeight: 700, color: NAVY, flex: 1, lineHeight: 1.3 }}>{brand}</span>
-                        <span style={{ fontSize: 11, fontWeight: 600, color: "#555", background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 6px", whiteSpace: "nowrap" as const, letterSpacing: "0.03em", flexShrink: 0 }}>{clusterLabel}</span>
-                      </div>
-                      {top ? (
-                        <>
-                          <p style={{ fontSize: 14, fontWeight: 600, color: GREEN, margin: "0 0 8px", lineHeight: 1.35 }}>{featureName(top.feature_id)}</p>
-                          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: evShort ? 8 : 0 }}>
-                            <div style={{ flex: 1, height: 5, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
-                              <div style={{ width: `${top.score}%`, height: 5, borderRadius: 999, background: bandColor }} />
-                            </div>
-                            <span style={{ fontSize: 15, fontWeight: 800, color: bandColor, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>{top.score}</span>
-                          </div>
-                          {evShort && <p style={{ fontSize: 13, color: "#555", lineHeight: 1.5, margin: 0 }}>{evShort}</p>}
-                        </>
-                      ) : (
-                        <p style={{ fontSize: 13, color: "#94a3b8", fontStyle: "italic" as const, margin: 0 }}>No features documented in LLM training data yet.</p>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        );
-      })()}
-
       {/* ── Row 7: Feature scores ── */}
       <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
@@ -833,6 +769,70 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
           </div>
         )}
       </div>
+
+      {/* ── Brand Capability Spotlight ── */}
+      {featureScores.length > 0 && (() => {
+        const CLUSTER_LABEL: Record<string, string> = {
+          "ralfi-renewal":    "Renewal Management",
+          "ralfi-documents":  "Document Processing",
+          "ralfi-risk":       "Risk & Submission",
+          "ralfi-claims":     "Claims Advocacy",
+          "ralfi-comms":      "Client Communication",
+          "ralfi-compliance": "Compliance & Audit",
+          "ralfi-security":   "Security & Privacy",
+          "ralfi-pricing":    "Pricing & Technical",
+          "ralfi-technical":  "Pricing & Technical",
+        };
+        const spotlight = Array.from(LOCKED_RALFI_BRANDS).map(brand => {
+          const top = featureScores.filter(r => r.brand_name === brand).sort((a, b) => b.score - a.score)[0] ?? null;
+          return { brand, top };
+        });
+        return (
+          <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
+            <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
+              <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>Brand Capability Spotlight</h3>
+              <p style={{ fontSize: 15, color: "#000", margin: "6px 0 0" }}>Each brand&rsquo;s strongest documented capability · multi-model LLM assessment</p>
+            </div>
+            <div style={{ padding: "20px 24px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))", gap: 14 }}>
+                {spotlight.map(({ brand, top }) => {
+                  const bandColor = top ? (BAND_COLORS[top.score_band] ?? "#94a3b8") : "#94a3b8";
+                  const clusterLabel = top ? (CLUSTER_LABEL[top.feature_tag] ?? "") : (CLUSTER_LABEL[BRAND_USE_CASE[brand]] ?? "");
+                  const ev = top ? (cleanEvidence(top.evidence) ?? null) : null;
+                  const evShort = ev ? (ev.length > 150 ? ev.slice(0, 147) + "…" : ev) : null;
+                  return (
+                    <div key={brand} style={{
+                      border: "1px solid rgba(0,0,0,0.08)",
+                      borderLeft: `3px solid ${bandColor}`,
+                      borderRadius: 8,
+                      padding: "14px 16px",
+                    }}>
+                      <div style={{ display: "flex", alignItems: "flex-start", gap: 8, marginBottom: 8 }}>
+                        <span style={{ fontSize: 15, fontWeight: 700, color: NAVY, flex: 1, lineHeight: 1.3 }}>{brand}</span>
+                        <span style={{ fontSize: 11, fontWeight: 600, color: "#555", background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 6px", whiteSpace: "nowrap" as const, letterSpacing: "0.03em", flexShrink: 0 }}>{clusterLabel}</span>
+                      </div>
+                      {top ? (
+                        <>
+                          <p style={{ fontSize: 14, fontWeight: 600, color: GREEN, margin: "0 0 8px", lineHeight: 1.35 }}>{featureName(top.feature_id)}</p>
+                          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: evShort ? 8 : 0 }}>
+                            <div style={{ flex: 1, height: 5, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
+                              <div style={{ width: `${top.score}%`, height: 5, borderRadius: 999, background: bandColor }} />
+                            </div>
+                            <span style={{ fontSize: 15, fontWeight: 800, color: bandColor, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>{top.score}</span>
+                          </div>
+                          {evShort && <p style={{ fontSize: 13, color: "#555", lineHeight: 1.5, margin: 0 }}>{evShort}</p>}
+                        </>
+                      ) : (
+                        <p style={{ fontSize: 13, color: "#94a3b8", fontStyle: "italic" as const, margin: 0 }}>No features documented in LLM training data yet.</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        );
+      })()}
 
       {/* ── Product feature opportunities ── */}
       <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
