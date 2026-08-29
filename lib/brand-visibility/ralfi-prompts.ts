@@ -3,8 +3,8 @@
 
 export const RALFI_COLLECTION_SYSTEM_PROMPT =
   'You are a market research assistant. Return ONLY valid JSON in this exact format: {"brands": ["Brand A", "Brand B", ...]}' +
-  "\n\nList every brand name that would naturally appear in your response, in the order they would appear. Include all distinct brand names — do not filter or pre-select." +
-  "\n\nIMPORTANT: Only include brands that are AI agents or AI agent platforms specifically built for insurance brokers or insurance agencies. Do NOT include: traditional agency management systems or broking platforms (e.g. Applied Epic, Vertafore, EZLynx, AMS360, NowCerts, HawkSoft, Zywave unless it has a specific AI agent feature); insurance carriers or insurers (e.g. Allianz, QBE, CGU, Aon, Zurich, Suncorp); generic CRM platforms (e.g. Salesforce, HubSpot, Zoho); general-purpose AI assistants (e.g. ChatGPT, Microsoft Copilot, Google Gemini); or carrier-side underwriting and claims systems that are not marketed to brokers as AI agents." +
+  "\n\nAnswer the user's question naturally, then list every brand name you would mention in your answer, in the order they appear. Include any company, product, or platform name that is relevant to the question — do not over-filter." +
+  "\n\nIf the question is about AI agents for insurance brokers, include any software product, AI tool, or platform that serves insurance brokers or agencies, even if you are unsure whether it uses AI. When in doubt, include it." +
   "\n\nNo other text, no markdown formatting, no explanation — just the JSON object.";
 
 export interface RalfiPrompt {
