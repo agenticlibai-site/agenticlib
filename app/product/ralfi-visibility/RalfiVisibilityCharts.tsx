@@ -262,7 +262,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
   return (
     <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "20px 24px" }}>
       <h3 style={{ fontSize: 18, fontWeight: 700, color: NAVY, marginBottom: 4, letterSpacing: "-0.01em" }}>{cluster.label}</h3>
-      <p style={{ fontSize: 15, color: "#000", marginBottom: 16 }}>Share of voice · last 14 days</p>
+      <p style={{ fontSize: 15, color: "#000", marginBottom: 16 }}>Share of voice · Aug 21–28</p>
       <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
         <div style={{ flexShrink: 0 }}>
           <PieChart width={150} height={150} style={{ overflow: "visible" }}>
@@ -433,7 +433,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
 
         <Card accent={GREEN}>
-          <CardLabel>Brand Mentions · 14 Days</CardLabel>
+          <CardLabel>Brand Mentions · Aug 21–28</CardLabel>
           <BigNumber
             value={hasWeekly ? totalMentions.toLocaleString() : "—"}
             sub={hasWeekly ? `across ${brands.filter(b => (weeklyTotals[b]?.mentions ?? 0) > 0).length} brands · 2 models` : "No data yet"}
@@ -441,7 +441,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
         </Card>
 
         <Card accent={TEAL}>
-          <CardLabel>LLM Visibility · 14 Days</CardLabel>
+          <CardLabel>LLM Visibility · Aug 21–28</CardLabel>
           {!hasVis ? <p style={{ fontSize: 17, color: "#000" }}>No data yet</p> : (
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               {llmVisibility.map((v, i) => {
@@ -465,7 +465,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
         </Card>
 
         <Card accent={NAVY}>
-          <CardLabel>Top Brand · 14 Days</CardLabel>
+          <CardLabel>Top Brand · Aug 21–28</CardLabel>
           {topByMentions && weeklyTotals[topByMentions] ? (
             <>
               <p style={{ fontSize: 24, fontWeight: 800, color: NAVY, lineHeight: 1.2, marginBottom: 4 }}>{topByMentions}</p>
@@ -482,7 +482,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
       {/* ── Row 2: Combined trend ── */}
       {hasReal && (
         <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "20px 24px 16px" }}>
-          <h3 style={{ fontSize: 18, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>Brand Mentions: 14-Day Trend</h3>
+          <h3 style={{ fontSize: 18, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>Brand Mentions: Aug 21–28 Trend</h3>
           <p style={{ fontSize: 15, color: "#000", marginBottom: 14 }}>All locked brands · both models combined</p>
           <ResponsiveContainer width="100%" height={280}>
             <LineChart data={chartRows} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
@@ -522,7 +522,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
             {clusterCharts.map(({ tag, label, clusterBrands, rows }) => (
               <div key={tag} style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "20px 24px 16px" }}>
                 <h4 style={{ fontSize: 17, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>{label}</h4>
-                <p style={{ fontSize: 15, color: "#000", marginBottom: 14 }}>14-day mentions · both models</p>
+                <p style={{ fontSize: 15, color: "#000", marginBottom: 14 }}>Aug 21–28 · both models</p>
                 <ResponsiveContainer width="100%" height={220}>
                   <LineChart data={rows} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
                     <CartesianGrid strokeDasharray="4 4" stroke="rgba(0,0,0,0.055)" vertical={false} />
@@ -566,7 +566,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 17 }}>
               <thead>
                 <tr style={{ background: "rgba(0,0,0,0.025)" }}>
-                  {["Rank","Brand","Avg Position","14-Day Mentions"].map(h => (
+                  {["Rank","Brand","Avg Position","Mentions (Aug 21–28)"].map(h => (
                     <th key={h} style={{ padding: "10px 20px", textAlign: "left", fontSize: 15, fontWeight: 700, color: "#000", textTransform: "uppercase" as const, letterSpacing: "0.07em", whiteSpace: "nowrap" }}>{h}</th>
                   ))}
                 </tr>
@@ -1141,7 +1141,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                 <span style={{ fontSize: 13, fontWeight: 600, color: "#d97706", background: "rgba(217,119,6,0.08)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 4, padding: "1px 7px", whiteSpace: "nowrap" as const }}>Highest-leverage · zero build time</span>
               </div>
               <p style={{ fontSize: 15, color: "#000", margin: "0 0 8px", lineHeight: 1.6 }}>
-                This is different in kind from the first two: Ralfi doesn&rsquo;t need to build anything. The &ldquo;Record&rdquo; step — NIBA Code of Practice tracking, timestamped logging, exportable renewal history — already does this. The market signal: Compliance &amp; Audit is the thinnest cluster in the dataset (TrustLayer, the only brand with any visibility here, records 1–4 mentions across 14 days) and TrustLayer scores only 15 on pricing transparency, meaning it&rsquo;s not a strong incumbent. Low competitive density. Ralfi already has the capability. The capability is currently undocumented in LLM-facing content. This is the highest-leverage move available — the only cost is documentation time.
+                This is different in kind from the first two: Ralfi doesn&rsquo;t need to build anything. The &ldquo;Record&rdquo; step — NIBA Code of Practice tracking, timestamped logging, exportable renewal history — already does this. The market signal: Compliance &amp; Audit is the thinnest cluster in the dataset (TrustLayer, the only brand with any visibility here, records 1–4 mentions across the Aug 21–28 window) and TrustLayer scores only 15 on pricing transparency, meaning it&rsquo;s not a strong incumbent. Low competitive density. Ralfi already has the capability. The capability is currently undocumented in LLM-facing content. This is the highest-leverage move available — the only cost is documentation time.
               </p>
               <p style={{ fontSize: 13, color: "#000", margin: 0, fontStyle: "italic" }}>Benchmark: TrustLayer is the only named competitor · 1–4 mentions/day · scores 15 on pricing. The cluster is unclaimed.</p>
             </div>

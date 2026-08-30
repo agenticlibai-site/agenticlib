@@ -25,7 +25,7 @@ export default async function RalfiReportPage() {
   await initRalfiDB();
 
   const [dailySummary, weeklySummary, llmVisibility, sovData, health, clusterPositions, featureScores, sentimentData] = await Promise.all([
-    getRalfiDailySummary(14),
+    getRalfiDailySummary(7),
     getRalfiWeeklySummary(),
     getRalfiLLMVisibility(),
     getRalfiSOVData(),

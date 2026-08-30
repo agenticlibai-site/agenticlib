@@ -3235,14 +3235,15 @@ export async function upsertRalfiSentimentDrift(row: {
 
 // ── Ralfi report query functions ──────────────────────────────────────────────
 
-export async function getRalfiDailySummary(days = 14): Promise<
+export async function getRalfiDailySummary(days = 7): Promise<
   { date: string; brand: string; model: string; mention_count: number; avg_position: number | null }[]
 > {
   await initRalfiDB();
+  void days; // window fixed to Aug 21–28 while pipeline is paused
   const result = await sql`
     SELECT date::text AS date, brand, model, mention_count, avg_position
     FROM ralfi_daily_summary
-    WHERE date >= CURRENT_DATE - (${days} || ' days')::interval
+    WHERE date >= '2026-08-21' AND date <= '2026-08-28'
       AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM ralfi_denylist)
     ORDER BY date ASC, mention_count DESC
   `;
@@ -3258,7 +3259,7 @@ export async function getRalfiWeeklySummary(): Promise<
       SUM(mention_count)::int AS mention_count,
       AVG(avg_position)       AS avg_position
     FROM ralfi_daily_summary
-    WHERE date >= CURRENT_DATE - INTERVAL '14 days'
+    WHERE date >= '2026-08-21' AND date <= '2026-08-28'
       AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM ralfi_denylist)
     GROUP BY brand, model
     ORDER BY SUM(mention_count) DESC
@@ -3278,7 +3279,7 @@ export async function getRalfiLLMVisibility(): Promise<
       )::float AS visibility_pct,
       COUNT(*)::int AS total_responses
     FROM ralfi_raw_responses
-    WHERE date >= CURRENT_DATE - INTERVAL '14 days'
+    WHERE date >= '2026-08-21' AND date <= '2026-08-28'
     GROUP BY model
     ORDER BY model
   `;
@@ -3300,7 +3301,7 @@ export async function getRalfiSOVData(): Promise<
       )::float AS sov_pct
     FROM ralfi_raw_responses r,
          jsonb_array_elements_text(r.brands) AS t(brand_name)
-    WHERE r.date >= CURRENT_DATE - INTERVAL '14 days'
+    WHERE r.date >= '2026-08-21' AND r.date <= '2026-08-28'
       AND LENGTH(TRIM(t.brand_name)) > 0
       AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM ralfi_denylist)
     GROUP BY r.cluster_tag, TRIM(t.brand_name)
@@ -3353,7 +3354,7 @@ export async function getRalfiClusterBrandPositions(): Promise<
       COUNT(*)::int AS appearances
     FROM ralfi_raw_responses r,
          LATERAL jsonb_array_elements_text(r.brands) WITH ORDINALITY AS t(brand_name, pos)
-    WHERE r.date >= CURRENT_DATE - INTERVAL '14 days'
+    WHERE r.date >= '2026-08-21' AND r.date <= '2026-08-28'
       AND r.cluster_tag != 'ralfi-overall'
       AND LENGTH(TRIM(t.brand_name)) > 0
       AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM ralfi_denylist)
