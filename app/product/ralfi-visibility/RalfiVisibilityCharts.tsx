@@ -136,7 +136,7 @@ const FEATURE_GROUPS = [
   { label: "Pricing & Technical",   features: ["pricing_cost","pricing_transparency","technical_integrations","technical_setup"] },
 ];
 
-const HIDDEN_FEATURE_IDS = new Set<string>([]);
+const HIDDEN_FEATURE_IDS = new Set<string>(["pricing_cost"]);
 
 const BAND_COLORS: Record<string, string> = {
   // DB stores high/medium/low from ralfi scoring function
