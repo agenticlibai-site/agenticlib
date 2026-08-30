@@ -560,7 +560,10 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
         <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
           <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
             <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 2 }}>Brand Position Summary</h3>
-            <p style={{ fontSize: 16, color: "#000" }}>Average position brands appear in AI responses (lower is stronger)</p>
+            <p style={{ fontSize: 16, color: "#000", marginBottom: 6 }}>Average position brands appear in AI responses (lower is stronger)</p>
+            <p style={{ fontSize: 13, color: "#92400e", background: "rgba(217,119,6,0.07)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 6, padding: "7px 12px", margin: 0, lineHeight: 1.55 }}>
+              <strong>Small-sample caution:</strong> Average position is only meaningful with 10+ mentions. A brand that appeared once, in position 1, ranks ahead of brands with hundreds of mentions but a position-2 average — that&rsquo;s a data artefact, not a visibility win. Rows marked <span style={{ fontWeight: 700, color: "#d97706" }}>low sample</span> should not be compared directly to high-mention brands.
+            </p>
           </div>
           <div style={{ overflowX: "auto" }}>
             <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 17 }}>
@@ -586,7 +589,12 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                         {row.avgPos.toFixed(1)}
                       </span>
                     </td>
-                    <td style={{ padding: "11px 20px", color: "#000" }}>{row.mentions.toLocaleString()}</td>
+                    <td style={{ padding: "11px 20px", color: "#000" }}>
+                      {row.mentions.toLocaleString()}
+                      {row.mentions < 10 && (
+                        <span style={{ marginLeft: 8, fontSize: 11, fontWeight: 700, color: "#d97706", background: "rgba(217,119,6,0.10)", border: "1px solid rgba(217,119,6,0.25)", borderRadius: 3, padding: "1px 5px" }}>low sample</span>
+                      )}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -1087,7 +1095,10 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
       <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
         <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
           <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>Product Feature Opportunities</h3>
-          <p style={{ fontSize: 15, color: "#000", margin: "6px 0 0" }}>Three moves Ralfi is positioned to make — based on what this cohort's data reveals</p>
+          <p style={{ fontSize: 15, color: "#000", margin: "6px 0 8px" }}>Three moves Ralfi is positioned to make — drawn from the feature scores above</p>
+          <p style={{ fontSize: 13, color: "#1e3a5f", background: "rgba(37,99,235,0.05)", border: "1px solid rgba(37,99,235,0.18)", borderRadius: 6, padding: "7px 12px", margin: 0, lineHeight: 1.55 }}>
+            <strong>Analyst interpretation, not pipeline output.</strong> The feature scores and not_documented verdicts above were independently verified by the AI collection pipeline. The three opportunities below are analyst conclusions drawn from that data — each is grounded in the cohort&rsquo;s feature scores and mention volumes, but the interpretation (what Ralfi should do with them) is editorial judgment, not a separately verified finding.
+          </p>
         </div>
         <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 0 }}>
 
