@@ -115,20 +115,20 @@ export default function Navbar() {
                       <div style={{ height: 1, background: "#f0f0f4", marginBottom: 16 }} />
                       {[
                         { label: "Marketing", desc: "Visibility & sentiment tracking for marketing AI agents.", href: "/solutions/marketing",
-                          iconBg: "rgba(240,97,122,0.10)",
-                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 17V8l4-4h6l4 4v9H3z" stroke="#F0617A" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(240,97,122,0.12)"/><path d="M8 17v-5h4v5" stroke="#F0617A" strokeWidth="1.5" strokeLinejoin="round"/></svg> },
+                          iconBg: "linear-gradient(135deg,#e11d48,#f43f5e)",
+                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M2.5 10.5L10 3.5l7.5 7" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.5 8.5V16.5h4v-3.5h3v3.5h4V8.5" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg> },
                         { label: "Skincare", desc: "Visibility & sentiment tracking for skincare AI agents.", href: "/solutions/skincare",
-                          iconBg: "rgba(30,58,138,0.10)",
-                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3c0 0-5 3.5-5 8a5 5 0 0010 0c0-4.5-5-8-5-8z" stroke="#1E3A8A" strokeWidth="1.5" strokeLinejoin="round" fill="rgba(30,58,138,0.12)"/><circle cx="10" cy="11" r="1.5" fill="#1E3A8A"/></svg> },
+                          iconBg: "linear-gradient(135deg,#7c3aed,#a78bfa)",
+                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2.5C10 2.5 4 8.5 4 13a6 6 0 0012 0c0-4.5-6-10.5-6-10.5z" stroke="white" strokeWidth="1.7" strokeLinejoin="round" fill="rgba(255,255,255,0.18)"/><circle cx="10" cy="13.5" r="1.5" fill="white" opacity="0.8"/></svg> },
                         { label: "Sales", desc: "Visibility & sentiment tracking for sales AI agents.", href: "/solutions/sales",
-                          iconBg: "rgba(37,99,235,0.10)",
-                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 14l4-5 4 3 3-4 3 3" stroke="#2563EB" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/><circle cx="17" cy="11" r="1.5" fill="#2563EB"/></svg> },
+                          iconBg: "linear-gradient(135deg,#2563eb,#60a5fa)",
+                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><polyline points="2.5,15.5 7.5,9 12,12.5 17.5,4.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><polyline points="14,4.5 17.5,4.5 17.5,8" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
                         { label: "Legal", desc: "Visibility & sentiment tracking for legal AI agents.", href: "/solutions/legal",
-                          iconBg: "rgba(5,150,105,0.10)",
-                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 3l1.5 4.5H16l-3.5 2.5 1.5 4.5L10 12l-4 2.5 1.5-4.5L4 7.5h4.5L10 3z" stroke="#059669" strokeWidth="1.4" strokeLinejoin="round" fill="rgba(5,150,105,0.12)"/></svg> },
+                          iconBg: "linear-gradient(135deg,#059669,#10b981)",
+                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2v16M7 17.5h6" stroke="white" strokeWidth="1.7" strokeLinecap="round"/><path d="M4 7.5c0 0 1.5-3 3-3s3 3 3 3-1.5 2-3 2-3-2-3-2z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/><path d="M10 7.5c0 0 1.5-3 3-3s3 3 3 3-1.5 2-3 2-3-2-3-2z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/></svg> },
                         { label: "Insurance Broker (Finance)", desc: "Visibility & sentiment tracking for insurance broker AI agents.", href: "/product/ralfi-visibility/login",
-                          iconBg: "rgba(13,148,136,0.10)",
-                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M4 10c0-3.3 2.7-6 6-6s6 2.7 6 6-2.7 6-6 6-6-2.7-6-6z" stroke="#0D9488" strokeWidth="1.5" fill="rgba(13,148,136,0.12)"/><path d="M10 7v3l2 2" stroke="#0D9488" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+                          iconBg: "linear-gradient(135deg,#0d9488,#14b8a6)",
+                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2L3.5 5.5V10c0 4.5 3 7.5 6.5 8.5 3.5-1 6.5-4 6.5-8.5V5.5L10 2z" stroke="white" strokeWidth="1.6" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/><polyline points="7,10 9.5,12.5 13.5,7.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
                       ].map((item) => (
                         <a key={item.href} href={item.href} className="flex items-start gap-4 py-4 rounded-xl px-3" style={{ textDecoration: "none" }}
                           onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
