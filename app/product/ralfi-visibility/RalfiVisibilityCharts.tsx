@@ -978,7 +978,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
             })()}
             <div style={{ background: "linear-gradient(135deg, rgba(37,99,235,0.06) 0%, rgba(37,99,235,0.03) 100%)", border: "1px solid rgba(37,99,235,0.18)", borderLeft: "4px solid #2563eb", borderRadius: "0 10px 10px 0", padding: "14px 18px" }}>
               <p style={{ fontSize: 13, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#2563eb", margin: "0 0 6px" }}>Takeaway</p>
-              <p style={{ fontSize: 16, color: "#000", lineHeight: 1.65, margin: 0 }}>The Celent Luminary designation is the highest-confidence signal in this report because it&rsquo;s the one thing Snapsheet could not have written itself &mdash; an independent research firm reviewed 66 systems and chose 6. Combine that with two journalists independently covering the Claimtouch integration, and Snapsheet has third-party corroboration at analyst level and editorial level simultaneously. Ralfi currently has neither.</p>
+              <p style={{ fontSize: 16, color: "#000", lineHeight: 1.65, margin: 0 }}>The Celent Luminary designation is the highest-confidence signal in this report because it&rsquo;s the one thing Snapsheet could not have written itself &mdash; an independent research firm reviewed 66 systems and chose 6. Combine that with two journalists independently covering the Claimtouch integration, and Snapsheet has third-party corroboration at analyst level and editorial level simultaneously.</p>
             </div>
           </div>
 
