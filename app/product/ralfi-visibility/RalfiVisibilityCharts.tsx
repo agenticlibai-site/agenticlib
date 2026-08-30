@@ -832,8 +832,9 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
       {/* ── LLM Visibility Playbook ── */}
       <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
         <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
-          <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>LLM Visibility Playbook: New Research</h3>
+          <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>LLM Visibility Playbook</h3>
           <p style={{ fontSize: 15, color: "#000", margin: "6px 0 0" }}>How Broker Buddha and Snapsheet got visible to AI models — and what Ralfi should do next</p>
+          <p style={{ fontSize: 13, color: "#888", margin: "5px 0 0" }}>Sourced from <a href="https://parallel.ai" target="_blank" rel="noopener noreferrer" style={{ color: "#888", textDecoration: "underline" }}>parallel.ai</a></p>
         </div>
         <div style={{ padding: "20px 24px" }}>
 
