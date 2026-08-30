@@ -616,13 +616,6 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                         <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                           {rows.map(r => {
                             const ev = cleanEvidence(r.evidence) ?? BAND_FALLBACK[r.score_band];
-                            const capLabel = r.has_capability === "yes" ? "Fully capable"
-                              : r.has_capability === "partial" ? "Partially capable"
-                              : r.has_capability === "no" ? "Not capable"
-                              : null;
-                            const capColor = r.has_capability === "yes" ? { bg: "rgba(22,163,74,0.10)", text: "#15803d" }
-                              : r.has_capability === "partial" ? { bg: "rgba(217,119,6,0.10)", text: "#b45309" }
-                              : { bg: "rgba(220,38,38,0.10)", text: "#b91c1c" };
                             return (
                               <div key={r.brand_name}>
                                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -632,12 +625,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                                   </div>
                                   <span style={{ fontSize: 16, fontWeight: 700, color: BAND_COLORS[r.score_band] ?? NAVY, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>{r.score ?? "—"}</span>
                                 </div>
-                                <div style={{ paddingLeft: 178, marginTop: 6, display: "flex", flexDirection: "column", gap: 4 }}>
-                                  {capLabel && (
-                                    <span style={{ alignSelf: "flex-start", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: capColor.text, background: capColor.bg, borderRadius: 4, padding: "2px 7px" }}>{capLabel}</span>
-                                  )}
-                                  {ev && <p style={{ fontSize: 15, color: "#000", lineHeight: 1.6, margin: 0 }}>{ev}</p>}
-                                </div>
+                                {ev && <p style={{ paddingLeft: 178, fontSize: 15, color: "#000", lineHeight: 1.6, margin: "6px 0 0" }}>{ev}</p>}
                               </div>
                             );
                           })}
@@ -695,8 +683,17 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                   const posPct = Math.round((brand.positive_count / total) * 100);
                   const neuPct = Math.round((brand.neutral_count  / total) * 100);
                   const negPct = 100 - posPct - neuPct;
+                  const SENTIMENT_TAG_BLOCKLIST = [
+                    "insufficient public documentation for insurance broker evaluation",
+                    "product 'amy by cover whale' not found in available sources",
+                    "limited public documentation on broker-specific capabilities",
+                  ];
                   const tags = deduplicateTags(
-                    [...new Set(brand.top_descriptors)].filter(d => !d.includes("<cite") && d.length <= 68)
+                    [...new Set(brand.top_descriptors)].filter(d =>
+                      !d.includes("<cite") &&
+                      d.length <= 68 &&
+                      !SENTIMENT_TAG_BLOCKLIST.some(blocked => d.toLowerCase().includes(blocked.toLowerCase()))
+                    )
                   ).slice(0, 5);
                   return (
                     <div key={brand.brand_name}>
@@ -1017,7 +1014,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                 <span style={{ fontSize: 13, fontWeight: 600, color: GREEN, background: "rgba(5,150,105,0.08)", border: "1px solid rgba(5,150,105,0.2)", borderRadius: 4, padding: "1px 7px", whiteSpace: "nowrap" as const }}>Risk &amp; Submission</span>
               </div>
               <p style={{ fontSize: 15, color: "#000", margin: "0 0 8px", lineHeight: 1.6 }}>
-                Indio scores 65 on exactly this pattern: its submission review flags completeness gaps before terms go to an insurer. Ralfi's &ldquo;Analyze&rdquo; step already ingests renewal data from Outlook and policy sources — extending it to surface missing payroll figures or turnover data before terms are sent out is the same mechanism Ralfi has already built, one step earlier in the pipeline.
+                Indio scores 65 on exactly this pattern: its submission review flags completeness gaps before terms go to an insurer. Ralfi's &ldquo;Analyse&rdquo; step already ingests renewal data from Outlook and policy sources — extending it to surface missing payroll figures or turnover data before terms are sent out is the same mechanism Ralfi has already built, one step earlier in the pipeline.
               </p>
               <p style={{ fontSize: 13, color: "#000", margin: 0, fontStyle: "italic" }}>Benchmark: Indio 65 · nearest competitor. No other brand scores above low on this feature.</p>
             </div>
