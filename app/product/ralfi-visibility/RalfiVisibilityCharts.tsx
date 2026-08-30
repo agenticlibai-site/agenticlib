@@ -550,32 +550,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
         </>
       )}
 
-      {/* ── Row 4: Brand mentions by model ── */}
-      {hasReal && modelMentionsData.length > 0 && (
-        <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "24px 28px 20px" }}>
-          <div style={{ marginBottom: 16 }}>
-            <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>Brand Mentions · 14 Days · by Model</h3>
-            <p style={{ fontSize: 16, color: "#000" }}>Total mentions per brand across Claude Haiku and GPT-4o mini</p>
-          </div>
-          <div style={{ display: "flex", gap: 20, marginBottom: 14 }}>
-            {[{ label: "Claude Haiku", color: "#2563EB" }, { label: "GPT-4o mini", color: GREEN }].map(({ label, color }) => (
-              <div key={label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <div style={{ width: 10, height: 10, borderRadius: 2, background: color, flexShrink: 0 }} />
-                <span style={{ fontSize: 15, fontWeight: 600, color: NAVY }}>{label}</span>
-              </div>
-            ))}
-          </div>
-          <ResponsiveContainer width="100%" height={modelMentionsData.length * 28 + 10}>
-            <BarChart layout="vertical" data={modelMentionsData} margin={{ top: 0, right: 48, left: 0, bottom: 0 }} barSize={14}>
-              <XAxis type="number" hide />
-              <YAxis type="category" dataKey="brand" width={150} tick={{ fontSize: 15, fill: NAVY }} axisLine={false} tickLine={false} />
-              <Tooltip contentStyle={{ borderRadius: 8, border: "1px solid rgba(0,0,0,0.10)", fontSize: 16 }} formatter={(value, name) => [value, name === "claude" ? "Claude Haiku" : "GPT-4o mini"]} />
-              <Bar dataKey="claude" stackId="a" fill="#2563EB" radius={[0, 0, 0, 0]} />
-              <Bar dataKey="gpt"    stackId="a" fill={GREEN}  radius={[3, 3, 3, 3]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      )}
+      {/* ── Row 4: Brand mentions by model — removed ── */}
 
       {/* ── Row 4b: Position table ── */}
       {posTable.length > 0 && (
