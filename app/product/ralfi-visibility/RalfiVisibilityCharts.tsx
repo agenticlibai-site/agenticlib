@@ -265,25 +265,39 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
     <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "20px 24px" }}>
       <h3 style={{ fontSize: 18, fontWeight: 700, color: NAVY, marginBottom: 4, letterSpacing: "-0.01em" }}>{cluster.label}</h3>
       <p style={{ fontSize: 15, color: "#000", marginBottom: 16 }}>Share of voice · Aug 21–28</p>
-      <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
-        <div style={{ flexShrink: 0 }}>
-          <PieChart width={150} height={150} style={{ overflow: "visible" }}>
-            <Pie data={slices} dataKey="total_appearances" cx={70} cy={70} innerRadius={38} outerRadius={65} paddingAngle={2} labelLine={false} label={(props) => <PieSliceLabel {...props} />}>
-              {slices.map(r => <Cell key={r.brand} fill={colorMap[r.brand]} />)}
-            </Pie>
-            <Tooltip contentStyle={{ borderRadius: 8, fontSize: 15, border: "1px solid rgba(0,0,0,0.1)" }} formatter={(_v, _n, p) => [`${Math.round((p.payload as SOVRow & { sov_pct: number }).sov_pct)}%`, (p.payload as SOVRow).brand]} />
-          </PieChart>
-        </div>
-        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 5 }}>
+      {slices.length === 1 ? (
+        /* Single-brand cluster — skip pie (Recharts tooltip artefact on 100% donuts) */
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           {slices.map(r => (
-            <div key={r.brand} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <div key={r.brand} style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <div style={{ width: 8, height: 8, borderRadius: 2, flexShrink: 0, background: colorMap[r.brand] }} />
-              <span style={{ fontSize: 15, color: NAVY, flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{r.brand}</span>
-              <span style={{ fontSize: 15, fontWeight: 600, color: "#000", flexShrink: 0 }}>{Math.round(r.sov_pct)}%</span>
+              <span style={{ fontSize: 15, color: NAVY, flex: 1 }}>{r.brand}</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: "#000" }}>{Math.round(r.sov_pct)}%</span>
             </div>
           ))}
+          <p style={{ fontSize: 13, color: "#888", margin: "4px 0 0" }}>Sole locked brand in this cluster</p>
         </div>
-      </div>
+      ) : (
+        <div style={{ display: "flex", gap: 16, alignItems: "center" }}>
+          <div style={{ flexShrink: 0 }}>
+            <PieChart width={150} height={150} style={{ overflow: "visible" }}>
+              <Pie data={slices} dataKey="total_appearances" cx={70} cy={70} innerRadius={38} outerRadius={65} paddingAngle={2} labelLine={false} label={(props) => <PieSliceLabel {...props} />}>
+                {slices.map(r => <Cell key={r.brand} fill={colorMap[r.brand]} />)}
+              </Pie>
+              <Tooltip contentStyle={{ borderRadius: 8, fontSize: 15, border: "1px solid rgba(0,0,0,0.1)" }} formatter={(_v, _n, p) => [`${Math.round((p.payload as SOVRow & { sov_pct: number }).sov_pct)}%`, (p.payload as SOVRow).brand]} />
+            </PieChart>
+          </div>
+          <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 5 }}>
+            {slices.map(r => (
+              <div key={r.brand} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <div style={{ width: 8, height: 8, borderRadius: 2, flexShrink: 0, background: colorMap[r.brand] }} />
+                <span style={{ fontSize: 15, color: NAVY, flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{r.brand}</span>
+                <span style={{ fontSize: 15, fontWeight: 600, color: "#000", flexShrink: 0 }}>{Math.round(r.sov_pct)}%</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
