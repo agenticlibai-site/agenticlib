@@ -1008,7 +1008,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
           {/* ── Ralfi recommended moves ── */}
           <div style={{ borderTop: "1px solid rgba(0,0,0,0.07)", paddingTop: 20 }}>
             <p style={{ fontSize: 14, fontWeight: 700, color: NAVY, letterSpacing: "0.06em", textTransform: "uppercase" as const, marginBottom: 4 }}>Ralfi&rsquo;s recommended moves &mdash; ranked by LLM citation impact</p>
-            <p style={{ fontSize: 14, color: "#555", marginBottom: 16 }}>The research above shows two separate playbooks: one for what Ralfi publishes on its own site, and one for building third-party corroboration. Both are needed. Owned documentation is the primary retrieval surface &mdash; without it, even strong third-party mentions cite the wrong things. Earned corroboration is what raises confidence from &ldquo;mentioned&rdquo; to &ldquo;cited with conviction.&rdquo;</p>
+            <p style={{ fontSize: 14, color: "#555", marginBottom: 16 }}>The research above shows two separate playbooks: one for what Ralfi publishes on its own site, and one for building third-party corroboration. Below are the suggestions for improved LLM visibility.</p>
             <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
               {[
                 {
