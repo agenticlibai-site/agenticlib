@@ -119,20 +119,29 @@ export default async function RalfiLoginPage({
               Incorrect password — please try again.
             </p>
           )}
-          <button
-            type="submit"
-            style={{
-              background: "#059669",
-              color: "#fff",
-              border: "none",
-              borderRadius: 8,
-              padding: "13px 0",
-              fontSize: 15,
-              fontWeight: 700,
-              cursor: "pointer",
-              letterSpacing: "0.02em",
-            }}
-          >
+          <style>{`
+            .ralfi-submit {
+              background: #059669;
+              color: #fff;
+              border: none;
+              border-radius: 8px;
+              padding: 13px 0;
+              font-size: 15px;
+              font-weight: 700;
+              cursor: pointer;
+              letter-spacing: 0.02em;
+              width: 100%;
+              box-shadow: 0 2px 0 #037a52;
+              transition: transform 80ms ease, box-shadow 80ms ease, background 80ms ease;
+            }
+            .ralfi-submit:hover { background: #047857; }
+            .ralfi-submit:active {
+              transform: translateY(2px);
+              box-shadow: 0 0 0 #037a52;
+              background: #036648;
+            }
+          `}</style>
+          <button type="submit" className="ralfi-submit">
             Access report
           </button>
         </form>
