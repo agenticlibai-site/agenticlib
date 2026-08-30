@@ -552,83 +552,8 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
 
       {/* ── Row 4: Brand mentions by model — removed ── */}
 
-      {/* ── Row 4b: Position table ── */}
-      {posTable.length > 0 && (
-        <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
-          <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
-            <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 2 }}>Brand Position Summary</h3>
-            <p style={{ fontSize: 16, color: "#000", marginBottom: 6 }}>Average position brands appear in AI responses (lower is stronger)</p>
-            <p style={{ fontSize: 13, color: "#92400e", background: "rgba(217,119,6,0.07)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 6, padding: "7px 12px", margin: 0, lineHeight: 1.55 }}>
-              <strong>Small-sample caution:</strong> Average position is only meaningful with 10+ mentions. A brand that appeared once, in position 1, ranks ahead of brands with hundreds of mentions but a position-2 average — that&rsquo;s a data artefact, not a visibility win. Rows marked <span style={{ fontWeight: 700, color: "#d97706" }}>low sample</span> should not be compared directly to high-mention brands.
-            </p>
-          </div>
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 17 }}>
-              <thead>
-                <tr style={{ background: "rgba(0,0,0,0.025)" }}>
-                  {["Rank","Brand","Avg Position","Mentions (Aug 21–28)"].map(h => (
-                    <th key={h} style={{ padding: "10px 20px", textAlign: "left", fontSize: 15, fontWeight: 700, color: "#000", textTransform: "uppercase" as const, letterSpacing: "0.07em", whiteSpace: "nowrap" }}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {posTable.map((row, i) => (
-                  <tr key={row.brand} style={{ borderTop: "1px solid rgba(0,0,0,0.05)", background: i % 2 === 0 ? "transparent" : "rgba(0,0,0,0.012)" }}>
-                    <td style={{ padding: "11px 20px", color: "#000", fontWeight: 600 }}>#{row.rank}</td>
-                    <td style={{ padding: "11px 20px", fontWeight: 600, color: NAVY }}>
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                        <span style={{ width: 8, height: 8, borderRadius: "50%", background: brandColor(row.brand), flexShrink: 0, display: "inline-block" }} />
-                        {row.brand}
-                      </span>
-                    </td>
-                    <td style={{ padding: "11px 20px", color: NAVY }}>
-                      <span style={{ display: "inline-block", padding: "2px 8px", borderRadius: 4, fontSize: 16, fontWeight: 700, fontVariantNumeric: "tabular-nums", background: row.avgPos <= 3 ? "rgba(5,150,105,0.10)" : "rgba(0,0,0,0.05)", color: row.avgPos <= 3 ? GREEN : "#000" }}>
-                        {row.avgPos.toFixed(1)}
-                      </span>
-                    </td>
-                    <td style={{ padding: "11px 20px", color: "#000" }}>
-                      {row.mentions.toLocaleString()}
-                      {row.mentions < 10 && (
-                        <span style={{ marginLeft: 8, fontSize: 11, fontWeight: 700, color: "#d97706", background: "rgba(217,119,6,0.10)", border: "1px solid rgba(217,119,6,0.25)", borderRadius: 3, padding: "1px 5px" }}>low sample</span>
-                      )}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {/* ── Row 5: Avg position by use case ── */}
-      {hasClusterPos && (
-        <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
-          <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
-            <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 2 }}>Avg Brand Position by Use Case</h3>
-            <p style={{ fontSize: 16, color: "#000" }}>Each brand shown in its primary use case · lower is better</p>
-          </div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 0 }}>
-            {clusterGroups.map((cluster, ci) => (
-              <div key={cluster.tag} style={{ padding: "16px 20px", borderRight: ci % 3 !== 2 ? "1px solid rgba(0,0,0,0.06)" : undefined, borderBottom: ci < 3 ? "1px solid rgba(0,0,0,0.06)" : undefined }}>
-                <p style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: "#000", marginBottom: 12 }}>{cluster.label}</p>
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  {cluster.brands.map(({ brand, avg_position }) => (
-                    <div key={brand} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <span style={{ width: 8, height: 8, borderRadius: "50%", background: brandColor(brand), flexShrink: 0, display: "inline-block" }} />
-                      <span style={{ flex: 1, fontSize: 16, fontWeight: 600, color: NAVY }}>{brand}</span>
-                      {avg_position != null ? (
-                        <span style={{ padding: "2px 7px", borderRadius: 4, fontSize: 15, fontWeight: 700, fontVariantNumeric: "tabular-nums", background: avg_position <= 3 ? "rgba(5,150,105,0.10)" : "rgba(0,0,0,0.05)", color: avg_position <= 3 ? GREEN : "#000" }}>
-                          {avg_position.toFixed(1)}
-                        </span>
-                      ) : <span style={{ fontSize: 15, color: "#000" }}>—</span>}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
+      {/* ── Row 4b: Position table — removed ── */}
+      {/* ── Row 5: Avg position by use case — removed ── */}
 
       {/* ── Row 6: SOV donuts ── */}
       {sovData.length > 0 && (
