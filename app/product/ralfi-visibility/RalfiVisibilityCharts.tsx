@@ -865,15 +865,6 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                 <span><a href="http://capterra.com/p/190786/Broker-Buddha" target="_blank" rel="noopener" style={{ color: GREEN }}>Capterra 4.6/5 (13 reviews) ↗</a>: reviewers independently use &ldquo;prefilled renewals&rdquo; and &ldquo;automated follow-ups&rdquo; &mdash; the same language as the product pages. Cross-source match is what turns a self-reported claim into a corroborated one.</span>
               </li>
             </ul>
-            {(() => {
-              const bb = weeklyTotals["Broker Buddha"];
-              return (
-                <p style={{ fontSize: 16, color: "#000", lineHeight: 1.6, margin: "0 0 12px", background: "rgba(250,204,21,0.15)", border: "1px solid rgba(250,204,21,0.4)", borderRadius: 6, padding: "8px 12px" }}>
-                  <span style={{ fontWeight: 700 }}>Broker Buddha data: </span>
-                  {bb ? <>{bb.mentions.toLocaleString()} mentions{bb.avgPos != null ? `, avg position ${bb.avgPos.toFixed(1)}` : ""} across all clusters in this report.</> : "Data loading."}
-                </p>
-              );
-            })()}
           </div>
 
           {/* ── Snapsheet ── */}
@@ -911,15 +902,6 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                 <span>When Snapsheet integrated with Claimtouch (August 2026), two trade publications &mdash; <em>FFNews</em> and <em>Insurance Innovation Reporter</em> &mdash; wrote independent stories about it without being handed a press release to reprint. Independent editorial coverage carries more weight than a vendor announcement because a journalist chose to write it; AI models distinguish between the two.</span>
               </li>
             </ul>
-            {(() => {
-              const ss = weeklyTotals["Snapsheet"];
-              return (
-                <p style={{ fontSize: 16, color: "#000", lineHeight: 1.6, margin: "0 0 12px", background: "rgba(250,204,21,0.15)", border: "1px solid rgba(250,204,21,0.4)", borderRadius: 6, padding: "8px 12px" }}>
-                  <span style={{ fontWeight: 700 }}>Snapsheet data: </span>
-                  {ss ? <>{ss.mentions.toLocaleString()} mentions{ss.avgPos != null ? `, avg position ${ss.avgPos.toFixed(1)}` : ""} across all clusters; sole designated Claims Advocacy brand in this cohort.</> : "Data loading."}
-                </p>
-              );
-            })()}
           </div>
 
           {/* ── Verdict ── */}
@@ -1000,7 +982,6 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                     <div style={{ width: 28, height: 28, borderRadius: "50%", background: `${color}18`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <span style={{ fontSize: 13, fontWeight: 800, color }}>{rank}</span>
                     </div>
-                    <span style={{ fontSize: 10, fontWeight: 700, color: trackColor, background: `${trackColor}12`, border: `1px solid ${trackColor}30`, borderRadius: 3, padding: "1px 5px", whiteSpace: "nowrap" as const }}>{track}</span>
                   </div>
                   <div style={{ flex: 1 }}>
                     <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginBottom: 4, flexWrap: "wrap" as const }}>
