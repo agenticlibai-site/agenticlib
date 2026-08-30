@@ -398,6 +398,26 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
   }
   const sentimentReady = (sentimentData.meta.dual_model_dates ?? 0) >= 3;
 
+  // Remove near-duplicate tags — stems words, then drops any tag whose meaningful words
+  // overlap ≥ 70% with an already-kept tag (catches "integrates/integration", "streamlines/streamlined", etc.)
+  function deduplicateTags(tags: string[]): string[] {
+    const stem = (w: string) => w.replace(/ing$|tion$|ed$|s$/, "");
+    const keyWords = (s: string) => new Set(s.toLowerCase().split(/\s+/).filter(w => w.length > 3).map(stem));
+    const kept: string[] = [];
+    for (const tag of tags) {
+      const tagWords = keyWords(tag);
+      const isDupe = kept.some(k => {
+        const kWords = keyWords(k);
+        const smaller = Math.min(tagWords.size, kWords.size);
+        if (smaller === 0) return false;
+        const overlap = [...tagWords].filter(w => kWords.has(w)).length;
+        return overlap / smaller >= 0.7;
+      });
+      if (!isDupe) kept.push(tag);
+    }
+    return kept;
+  }
+
   const hasVis = llmVisibility.length > 0;
 
   return (
@@ -757,9 +777,9 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                   const posPct = Math.round((brand.positive_count / total) * 100);
                   const neuPct = Math.round((brand.neutral_count  / total) * 100);
                   const negPct = 100 - posPct - neuPct;
-                  const tags = [...new Set(brand.top_descriptors)]
-                    .filter(d => !d.includes("<cite") && d.length <= 68)
-                    .slice(0, 5);
+                  const tags = deduplicateTags(
+                    [...new Set(brand.top_descriptors)].filter(d => !d.includes("<cite") && d.length <= 68)
+                  ).slice(0, 5);
                   return (
                     <div key={brand.brand_name}>
                       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 7 }}>
