@@ -269,7 +269,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
             <Pie data={slices} dataKey="total_appearances" cx={70} cy={70} innerRadius={38} outerRadius={65} paddingAngle={2} labelLine={false} label={(props) => <PieSliceLabel {...props} />}>
               {slices.map(r => <Cell key={r.brand} fill={colorMap[r.brand]} />)}
             </Pie>
-            <Tooltip contentStyle={{ borderRadius: 8, fontSize: 15, border: "1px solid rgba(0,0,0,0.1)" }} formatter={(_v, _n, p) => [`${(p.payload as SOVRow & { sov_pct: number }).sov_pct}%`, (p.payload as SOVRow).brand]} />
+            <Tooltip contentStyle={{ borderRadius: 8, fontSize: 15, border: "1px solid rgba(0,0,0,0.1)" }} formatter={(_v, _n, p) => [`${Math.round((p.payload as SOVRow & { sov_pct: number }).sov_pct)}%`, (p.payload as SOVRow).brand]} />
           </PieChart>
         </div>
         <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 5 }}>
@@ -277,7 +277,7 @@ function SOVCard({ cluster, rows }: { cluster: typeof SOV_CLUSTERS[number]; rows
             <div key={r.brand} style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <div style={{ width: 8, height: 8, borderRadius: 2, flexShrink: 0, background: colorMap[r.brand] }} />
               <span style={{ fontSize: 15, color: NAVY, flex: 1, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{r.brand}</span>
-              <span style={{ fontSize: 15, fontWeight: 600, color: "#000", flexShrink: 0 }}>{r.sov_pct}%</span>
+              <span style={{ fontSize: 15, fontWeight: 600, color: "#000", flexShrink: 0 }}>{Math.round(r.sov_pct)}%</span>
             </div>
           ))}
         </div>
@@ -436,7 +436,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
           <CardLabel>Brand Mentions · Aug 21–28</CardLabel>
           <BigNumber
             value={hasWeekly ? totalMentions.toLocaleString() : "—"}
-            sub={hasWeekly ? `across ${brands.filter(b => (weeklyTotals[b]?.mentions ?? 0) > 0).length} brands · 2 models` : "No data yet"}
+            sub={hasWeekly ? `across ${LOCKED_RALFI_BRANDS.size} brands · 2 models` : "No data yet"}
           />
         </Card>
 
@@ -592,7 +592,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                   const scoredRows = allRows
                     .filter(r => r.score !== null && r.score_band !== "not_documented")
                     .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
-                    .slice(0, 3);
+                    .slice(0, 4);
                   const allNotDocumented = allRows.length > 0 && allRows.every(r => r.score_band === "not_documented");
                   return { featureId, rows: scoredRows, allNotDocumented };
                 });
@@ -637,7 +637,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
               );
             })}
             <p style={{ fontSize: 15, color: "#000", borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 12, marginTop: 4 }}>
-              Top 3 brands per feature · scored by both Claude Haiku and GPT-4o mini
+              Top brands per feature (up to 4) · scored by both Claude Haiku and GPT-4o mini
             </p>
           </div>
         )}
@@ -658,7 +658,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
           </div>
         ) : (
           <div style={{ padding: "20px 24px" }}>
-            <p style={{ fontSize: 15, color: "#000", marginBottom: 16 }}>How Claude Haiku and GPT-4o-mini describe each brand when asked about AI agents in insurance brokerage · {sentimentDateLabel()}</p>
+            <p style={{ fontSize: 15, color: "#000", marginBottom: 16 }}>How Claude Haiku and GPT-4o-mini describe each brand when asked about AI agents in insurance brokerage · Aug 21–28</p>
 
             {/* Legend */}
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" as const, alignItems: "center", marginBottom: 22, padding: "9px 12px", background: "rgba(0,0,0,0.025)", borderRadius: 6 }}>
@@ -1031,9 +1031,9 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                 <span style={{ fontSize: 13, fontWeight: 600, color: GREEN, background: "rgba(5,150,105,0.08)", border: "1px solid rgba(5,150,105,0.2)", borderRadius: 4, padding: "1px 7px", whiteSpace: "nowrap" as const }}>Client Communication</span>
               </div>
               <p style={{ fontSize: 15, color: "#000", margin: "0 0 8px", lineHeight: 1.6 }}>
-                The single highest-scoring feature across the entire cohort — Chisel AI, InsuredMine, and Better Agency all score 80 on client self-service, the strongest three-way consensus of any feature scored. Ralfi already has client-facing infrastructure (the portal where clients fill in details, sign, and return forms). Extending that surface to answer routine questions — &ldquo;what&rsquo;s my excess,&rdquo; &ldquo;when does my policy renew&rdquo; — enters a category the market has clearly validated.
+                The single highest-scoring feature across the entire cohort — Broker Buddha, Chisel AI, InsuredMine, and Better Agency all score 80 on client self-service, the strongest four-way consensus of any feature scored. Better Agency (now acquired by Glovebox) carries this capability into the combined entity. Ralfi already has client-facing infrastructure (the portal where clients fill in details, sign, and return forms). Extending that surface to answer routine questions — &ldquo;what&rsquo;s my excess,&rdquo; &ldquo;when does my policy renew&rdquo; — enters a category the market has clearly validated.
               </p>
-              <p style={{ fontSize: 13, color: "#000", margin: 0, fontStyle: "italic" }}>Benchmark: Chisel AI · InsuredMine · Better Agency all score 80. Market consensus is strong.</p>
+              <p style={{ fontSize: 13, color: "#000", margin: 0, fontStyle: "italic" }}>Benchmark: Broker Buddha · Chisel AI · InsuredMine · Better Agency (Glovebox) all score 80. Market consensus is strong.</p>
             </div>
           </div>
 
