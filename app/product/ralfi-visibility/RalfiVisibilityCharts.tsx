@@ -768,6 +768,11 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
             cluster: "Claims Advocacy",
             description: "Snapsheet's AI product lets users select a foundational model, configure system and user prompts, deploy AI actions inside no-code workflows using real-time claim data, chain outputs into if/then logic, and route to human oversight when required. Named a Celent Luminary in the 2026 North America P&C Claims Systems Report — the highest distinction, awarded to 6 of 66 systems evaluated.",
           },
+          "Outmarket": {
+            feature: "Claim Denial Analysis & Appeal Packaging",
+            cluster: "Claims Advocacy",
+            description: "Outmarket includes broker-facing claims advocacy workflows not captured by the pipeline's auto-tracking features. Its platform lets brokers run claim-denial analysis directly from a denial letter and generate a full appeal package — documentation, arguments, and supporting evidence — for challenging the decision with the insurer. It also runs coverage gap analysis upstream to flag issues before a denial occurs. These capabilities sit outside the scored feature set (open-claim tracking and quiet alerts) but represent a documented claims advocacy offering.",
+          },
         };
         const spotlight = Array.from(LOCKED_RALFI_BRANDS).map(brand => {
           // Only consider features with a genuine positive score (> 0) — score=0 means "no" verdict
