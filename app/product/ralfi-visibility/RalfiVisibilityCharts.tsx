@@ -401,7 +401,13 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
   // Remove near-duplicate tags — stems words, then drops any tag whose meaningful words
   // overlap ≥ 70% with an already-kept tag (catches "integrates/integration", "streamlines/streamlined", etc.)
   function deduplicateTags(tags: string[]): string[] {
-    const stem = (w: string) => w.replace(/ing$|tion$|ed$|s$/, "");
+    // Multi-pass stem: strip common suffixes sequentially so "streamlines"/"streamlined"/"streamlining" all reduce to the same root
+    const stem = (w: string) => w
+      .replace(/tion$/, "te").replace(/sion$/, "se")  // communication→communicate
+      .replace(/ing$/, "").replace(/ness$/, "")        // streamlining→streamlin
+      .replace(/ment$/, "").replace(/ful$/, "")
+      .replace(/ed$/, "").replace(/es$/, "")            // streamlined→streamlin, streamlines→streamlin
+      .replace(/e$/, "").replace(/s$/, "");              // streamline→streamlin
     const keyWords = (s: string) => new Set(s.toLowerCase().split(/\s+/).filter(w => w.length > 3).map(stem));
     const kept: string[] = [];
     for (const tag of tags) {
