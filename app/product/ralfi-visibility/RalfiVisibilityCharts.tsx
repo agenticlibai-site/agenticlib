@@ -813,9 +813,15 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
             cluster: "Compliance & Audit",
             description: "TrustLayer automates certificate of insurance collection and compliance verification — tracking vendor and contractor insurance requirements, flagging coverage gaps, and identifying expired policies. The AI layer reduces the manual work of chasing and reviewing compliance documentation across broker and client networks.",
           },
+          "Snapsheet": {
+            feature: "AI-Configured Claims Workflow",
+            cluster: "Claims Advocacy",
+            description: "Snapsheet's AI product lets users select a foundational model, configure system and user prompts, deploy AI actions inside no-code workflows using real-time claim data, chain outputs into if/then logic, and route to human oversight when required. Named a Celent Luminary in the 2026 North America P&C Claims Systems Report — the highest distinction, awarded to 6 of 66 systems evaluated.",
+          },
         };
         const spotlight = Array.from(LOCKED_RALFI_BRANDS).map(brand => {
-          const top = featureScores.filter(r => r.brand_name === brand && r.score !== null).sort((a, b) => (b.score ?? 0) - (a.score ?? 0))[0] ?? null;
+          // Only consider features with a genuine positive score (> 0) — score=0 means "no" verdict
+          const top = featureScores.filter(r => r.brand_name === brand && r.score !== null && r.score > 0).sort((a, b) => (b.score ?? 0) - (a.score ?? 0))[0] ?? null;
           return { brand, top };
         });
         return (
@@ -835,7 +841,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                   const description = override
                     ? override.description
                     : (top ? (cleanEvidence(top.evidence) ?? null) : null);
-                  const descShort = description ? (description.length > 200 ? description.slice(0, 197) + "…" : description) : null;
+                  const descShort = description ?? null;
                   return (
                     <div key={brand} style={{
                       border: "1px solid rgba(0,0,0,0.08)",
