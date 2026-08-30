@@ -878,11 +878,9 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
         <div style={{ padding: "20px 24px" }}>
 
           {/* Framing */}
-          <div style={{ marginBottom: 24, padding: "12px 16px", background: "rgba(5,150,105,0.04)", borderRadius: 8, border: "1px solid rgba(5,150,105,0.12)" }}>
-            <p style={{ fontSize: 13, color: "#333", lineHeight: 1.65, margin: 0 }}>
-              LLM visibility is built through two channels. The first is what a brand publishes on its own site: product pages, integration documentation, case studies, pricing. The second is what third parties independently write about the brand: review sites, press coverage, analyst reports. Both matter. A brand with strong self-documentation but no third-party corroboration is cited with less confidence. A brand with press coverage but thin product documentation gets cited for the wrong things. The research below covers both channels for each brand, with the sources that back each finding.
-            </p>
-          </div>
+          <p style={{ fontSize: 16, color: "#444", lineHeight: 1.6, margin: "0 0 24px" }}>
+            Here&rsquo;s how your two most visible competitors built that visibility &mdash; and what to take from each.
+          </p>
 
           {/* ── Broker Buddha ── */}
           <div style={{ marginBottom: 32 }}>
