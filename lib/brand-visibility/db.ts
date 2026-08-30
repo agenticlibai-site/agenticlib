@@ -3372,13 +3372,14 @@ export async function getRalfiFeatureScores(): Promise<{
   score_band:         string;
   flagged_for_review: boolean;
   evidence:           string | null;
+  has_capability:     string | null;
   terminology_tags:   string[] | null;
 }[]> {
   await initRalfiDB();
   const result = await sql`
     WITH best_evidence AS (
       SELECT DISTINCT ON (brand_name, feature_id)
-        brand_name, feature_id, evidence, terminology_tags
+        brand_name, feature_id, evidence, has_capability, terminology_tags
       FROM ralfi_feature_responses
       WHERE parse_error = false
         AND evidence IS NOT NULL AND evidence != ''
@@ -3400,7 +3401,7 @@ export async function getRalfiFeatureScores(): Promise<{
     )
     SELECT s.brand_name, s.feature_id, s.feature_tag, s.score::int AS score,
            s.score_band, s.flagged_for_review,
-           be.evidence, be.terminology_tags
+           be.evidence, be.has_capability, be.terminology_tags
     FROM ralfi_feature_scores s
     LEFT JOIN best_evidence be ON be.brand_name = s.brand_name AND be.feature_id = s.feature_id
     ORDER BY s.feature_tag, s.score DESC NULLS LAST
@@ -3408,7 +3409,7 @@ export async function getRalfiFeatureScores(): Promise<{
   return result.rows as {
     brand_name: string; feature_id: string; feature_tag: string;
     score: number | null; score_band: string; flagged_for_review: boolean;
-    evidence: string | null; terminology_tags: string[] | null;
+    evidence: string | null; has_capability: string | null; terminology_tags: string[] | null;
   }[];
 }
 

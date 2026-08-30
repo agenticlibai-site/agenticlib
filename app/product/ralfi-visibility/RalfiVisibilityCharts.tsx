@@ -69,7 +69,7 @@ interface WeeklyRow       { brand: string; model: string; mention_count: number;
 interface LLMVisRow       { model: string; visibility_pct: number; total_responses: number }
 interface SOVRow          { cluster_tag: string; brand: string; total_appearances: number; sov_pct: number }
 interface ClusterPosRow   { cluster_tag: string; brand: string; avg_position: number; appearances: number }
-interface FeatureScoreRow { brand_name: string; feature_id: string; feature_tag: string; score: number | null; score_band: string; flagged_for_review: boolean; evidence: string | null }
+interface FeatureScoreRow { brand_name: string; feature_id: string; feature_tag: string; score: number | null; score_band: string; flagged_for_review: boolean; evidence: string | null; has_capability: string | null; terminology_tags?: string[] | null }
 interface SentimentRow    { brand_name: string; bucket_tag: string; positive_count: number; neutral_count: number; negative_count: number; total_count: number; top_descriptors: string[] }
 interface SentimentMeta   { dual_model_dates: number; earliest_date: string | null; latest_date: string | null }
 
@@ -170,7 +170,7 @@ function cleanEvidence(raw: string | null): string | null {
     lower.includes("no specific documentation") || lower.includes("not documented") ||
     lower.includes("cannot be confirmed") || lower.includes("no available information")
   ) return null;
-  const LIMIT = 300;
+  const LIMIT = 500;
   if (stripped.length <= LIMIT) return stripped;
   const cut = stripped.lastIndexOf(". ", LIMIT);
   return cut > 0 ? stripped.slice(0, cut + 1) : stripped;
@@ -613,9 +613,16 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                           LLMs found no publicly available information confirming any brand in this cohort has documented this capability — meaning a brand that does document it clearly will have no competition for LLM citation on this feature.
                         </p>
                       ) : (
-                        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                           {rows.map(r => {
                             const ev = cleanEvidence(r.evidence) ?? BAND_FALLBACK[r.score_band];
+                            const capLabel = r.has_capability === "yes" ? "Fully capable"
+                              : r.has_capability === "partial" ? "Partially capable"
+                              : r.has_capability === "no" ? "Not capable"
+                              : null;
+                            const capColor = r.has_capability === "yes" ? { bg: "rgba(22,163,74,0.10)", text: "#15803d" }
+                              : r.has_capability === "partial" ? { bg: "rgba(217,119,6,0.10)", text: "#b45309" }
+                              : { bg: "rgba(220,38,38,0.10)", text: "#b91c1c" };
                             return (
                               <div key={r.brand_name}>
                                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -625,7 +632,12 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                                   </div>
                                   <span style={{ fontSize: 16, fontWeight: 700, color: BAND_COLORS[r.score_band] ?? NAVY, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>{r.score ?? "—"}</span>
                                 </div>
-                                {ev && <p style={{ paddingLeft: 178, fontSize: 17, color: "#000", lineHeight: 1.5, margin: "4px 0 0" }}>{ev}</p>}
+                                <div style={{ paddingLeft: 178, marginTop: 6, display: "flex", flexDirection: "column", gap: 4 }}>
+                                  {capLabel && (
+                                    <span style={{ alignSelf: "flex-start", fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: capColor.text, background: capColor.bg, borderRadius: 4, padding: "2px 7px" }}>{capLabel}</span>
+                                  )}
+                                  {ev && <p style={{ fontSize: 15, color: "#000", lineHeight: 1.6, margin: 0 }}>{ev}</p>}
+                                </div>
                               </div>
                             );
                           })}
