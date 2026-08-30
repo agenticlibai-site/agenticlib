@@ -894,54 +894,34 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                 ))}
               </div>
             </div>
-
-            <div style={{ padding: "16px 18px", display: "flex", flexDirection: "column", gap: 20 }}>
-
-              {/* What they published */}
+            <div style={{ padding: "16px 18px", display: "flex", flexDirection: "column", gap: 18 }}>
               <div>
                 <p style={{ fontSize: 12, fontWeight: 800, color: GREEN, letterSpacing: "0.09em", textTransform: "uppercase" as const, margin: "0 0 10px" }}>What they published on their own site</p>
-
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: "0 0 10px" }}>
-                  Broker Buddha&rsquo;s LLM visibility was not built through high content volume. Research identified roughly 5&ndash;7 notable items across the past 18 months &mdash; a product launch, podcast appearances, and partner announcements &mdash; not a large editorial program. What made those items effective for LLM citation is how specific they were, not how many there were. The{" "}
-                  <a href="https://www.brokerbuddha.com/simplicity/introducing-broker-buddha-ai-public-beta" target="_blank" rel="noopener" style={{ color: GREEN, fontSize: 12 }}>March 2026 public beta announcement ↗</a>{" "}
-                  positioned the platform as a unified operating system combining seven named insurance workflows: insured-data intake, opportunity and placement management, market submissions, loss-run sourcing, policy servicing, policy administration, and eSign. That level of enumeration &mdash; seven specific workflows listed by name &mdash; gives LLMs something concrete to retrieve and quote when a buyer asks what Broker Buddha actually does.
-                </p>
-
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: "0 0 10px" }}>
-                  Integration documentation follows the same pattern of specificity. The{" "}
-                  <a href="http://brokerbuddha.com/en/faqs" target="_blank" rel="noopener" style={{ color: GREEN, fontSize: 12 }}>FAQ ↗</a>{" "}
-                  names <strong>AMS360, Applied Epic, HawkSoft, and Momentum Amp</strong> explicitly rather than saying &ldquo;integrates with your existing systems.&rdquo; A{" "}
-                  <a href="http://brokerbuddha.com/integrations/applied-epic" target="_blank" rel="noopener" style={{ color: GREEN, fontSize: 12 }}>dedicated Applied Epic page ↗</a>{" "}
-                  lists exactly which data objects sync, in which direction (live / periodic / not available), and what API scope is covered. Named systems with direction labels give LLMs precise anchor strings &mdash; far more citable than generic integration claims.
-                </p>
-
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: "0 0 10px" }}>
-                  Product page language describes mechanisms, not just outcomes. The{" "}
-                  <a href="http://brokerbuddha.com/en/products" target="_blank" rel="noopener" style={{ color: GREEN, fontSize: 12 }}>products page ↗</a>{" "}
-                  uses operational nouns throughout: &ldquo;captures insured information through guided smart forms and generates ACORD forms automatically, pre-filling data from your AMS&rdquo;; &ldquo;multi-carrier submissions wizard with status tracking, quote comparison, and market evaluation.&rdquo; When a model is asked whether Broker Buddha can handle a specific task, it can point to named mechanisms &mdash; not just a marketing promise.
-                </p>
-
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: "0 0 4px" }}>
-                  Broker Buddha also directly names competitors on its{" "}
-                  <a href="http://brokerbuddha.com/en/products" target="_blank" rel="noopener" style={{ color: GREEN, fontSize: 12 }}>products page ↗</a>{" "}
-                  in &ldquo;Switch from&rdquo; migration copy: Indio, Wunderite, CSR24, InsurLink, AgencyZoom, InsuredMine, and HubSpot are all named. This is a deliberate visibility tactic &mdash; a buyer searching for &ldquo;Broker Buddha vs Indio&rdquo; or &ldquo;switch from AgencyZoom&rdquo; lands directly on migration-oriented product copy. It is not a deep comparison strategy (no feature matrices, no pricing tables), but it captures high-intent switching searches that Ralfi currently does not have a content answer for.
-                </p>
+                <ul style={{ margin: 0, padding: "0 0 0 18px", display: "flex", flexDirection: "column", gap: 8 }}>
+                  <li style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>
+                    <a href="https://www.brokerbuddha.com/simplicity/introducing-broker-buddha-ai-public-beta" target="_blank" rel="noopener" style={{ color: GREEN }}>March 2026 beta announcement ↗</a> named 7 specific workflows: insured-data intake, opportunity &amp; placement, market submissions, loss-run sourcing, policy servicing, policy administration, eSign. Enumeration gives LLMs something concrete to retrieve.
+                  </li>
+                  <li style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>
+                    <a href="http://brokerbuddha.com/en/faqs" target="_blank" rel="noopener" style={{ color: GREEN }}>FAQ ↗</a> names <strong>AMS360, Applied Epic, HawkSoft, and Momentum Amp</strong> explicitly &mdash; not &ldquo;your existing systems.&rdquo; A <a href="http://brokerbuddha.com/integrations/applied-epic" target="_blank" rel="noopener" style={{ color: GREEN }}>dedicated Applied Epic page ↗</a> shows exact sync objects, data direction (live / periodic / not available), and API scope.
+                  </li>
+                  <li style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>
+                    <a href="http://brokerbuddha.com/en/products" target="_blank" rel="noopener" style={{ color: GREEN }}>Products page ↗</a> uses mechanism language: &ldquo;ACORD forms auto pre-filled from AMS,&rdquo; &ldquo;multi-carrier submissions wizard with status tracking and quote comparison.&rdquo; Named mechanisms are citable; outcomes alone are not.
+                  </li>
+                  <li style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>
+                    &ldquo;Switch from&rdquo; migration copy names 7 competitors directly: <strong>Indio, Wunderite, CSR24, InsurLink, AgencyZoom, InsuredMine, HubSpot</strong>. A buyer searching &ldquo;switch from Indio&rdquo; lands on Broker Buddha&rsquo;s own product page.
+                  </li>
+                </ul>
               </div>
-
-              {/* What third parties said */}
               <div>
                 <p style={{ fontSize: 12, fontWeight: 800, color: "#2563eb", letterSpacing: "0.09em", textTransform: "uppercase" as const, margin: "0 0 10px" }}>What third parties said about them</p>
-
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: "0 0 10px" }}>
-                  The{" "}
-                  <a href="https://www.prnewswire.com/news-releases/hawksoft-and-broker-buddha-announce-two-way-integration-partnership-302824900.html" target="_blank" rel="noopener" style={{ color: "#2563eb", fontSize: 12 }}>HawkSoft integration was announced via PR Newswire on July 14, 2026 ↗</a>{" "}
-                  &mdash; a third-party wire, not just a Broker Buddha blog post &mdash; which anchors the AMS360/HawkSoft named integration in an independently indexed source. Loss Run Pro (July 21) and CoverForce (July 28) followed as formal partner announcements. This pattern of ecosystem announcements creates a cluster of indexed documents that all reference the same product name in the same month, which raises LLM citation confidence across sources.
-                </p>
-
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: 0 }}>
-                  <a href="http://capterra.com/p/190786/Broker-Buddha" target="_blank" rel="noopener" style={{ color: "#2563eb", fontSize: 12 }}>Capterra reviews (4.6/5 from 13 reviews) ↗</a>{" "}
-                  show a pattern that matters for LLM citation: reviewers independently use language like &ldquo;prefilled renewals&rdquo; and &ldquo;automated follow-ups&rdquo; &mdash; the same terms Broker Buddha uses on its own product pages. When an LLM encounters the same capability language on a vendor&rsquo;s own site and again in independent reviews, it treats the claim as corroborated rather than self-reported. That cross-source alignment is what raises citation confidence beyond what owned copy alone can achieve.
-                </p>
+                <ul style={{ margin: 0, padding: "0 0 0 18px", display: "flex", flexDirection: "column", gap: 8 }}>
+                  <li style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>
+                    <a href="https://www.prnewswire.com/news-releases/hawksoft-and-broker-buddha-announce-two-way-integration-partnership-302824900.html" target="_blank" rel="noopener" style={{ color: "#2563eb" }}>HawkSoft integration on PR Newswire (July 14) ↗</a>, then Loss Run Pro (July 21) and CoverForce (July 28) &mdash; three independently indexed documents naming the same product in one month, which raises LLM citation confidence across sources.
+                  </li>
+                  <li style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>
+                    <a href="http://capterra.com/p/190786/Broker-Buddha" target="_blank" rel="noopener" style={{ color: "#2563eb" }}>Capterra 4.6/5 (13 reviews) ↗</a>: reviewers independently use &ldquo;prefilled renewals&rdquo; and &ldquo;automated follow-ups&rdquo; &mdash; the same language as the product pages. Cross-source match is what turns a self-reported claim into a corroborated one.
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -952,58 +932,34 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
               <span style={{ fontSize: 15, fontWeight: 800, color: NAVY }}>Snapsheet</span>
               <span style={{ fontSize: 11, fontWeight: 600, color: "#0D9488", background: "rgba(13,148,136,0.10)", borderRadius: 4, padding: "2px 7px" }}>Claims Advocacy</span>
             </div>
-
-            <div style={{ padding: "16px 18px", display: "flex", flexDirection: "column", gap: 20 }}>
-
-              {/* What they published */}
+            <div style={{ padding: "16px 18px", display: "flex", flexDirection: "column", gap: 18 }}>
               <div>
                 <p style={{ fontSize: 12, fontWeight: 800, color: "#0D9488", letterSpacing: "0.09em", textTransform: "uppercase" as const, margin: "0 0 10px" }}>What they published on their own site</p>
-
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: "0 0 10px" }}>
-                  Snapsheet&rsquo;s public content index shows approximately 15 unique pieces (10 blog posts, 3 news items, 2 press items), with titles focused on thought leadership rather than product announcements: <em>&ldquo;Using AI and operationalizing AI are not the same. Know the difference.&rdquo;</em> <em>&ldquo;Redefining the Claims Process With Agentic AI-Powered Workflows.&rdquo;</em>{" "}
-                  <a href="https://www.snapsheetclaims.com/resources/blog" target="_blank" rel="noopener" style={{ color: "#0D9488", fontSize: 12 }}>Blog ↗</a>{" "}
-                  The content index does not show publication dates, which means the exact publishing cadence is not measurable from the outside &mdash; but the visible mix suggests a program built around claims operations and AI governance thinking, not just product announcements.
-                </p>
-
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: "0 0 10px" }}>
-                  The strongest owned-visibility asset is the{" "}
-                  <a href="https://www.snapsheetclaims.com/products/snapsheet-ai" target="_blank" rel="noopener" style={{ color: "#0D9488", fontSize: 12 }}>AI product page ↗</a>,{" "}
-                  which documents a complete mechanism chain rather than just claiming &ldquo;AI-powered.&rdquo; Users can select a foundational model, configure system and user prompts, deploy AI actions in a side panel or inside no-code workflows using real-time claim data, chain outputs into if/then logic, and route to humans when oversight is required. This is an operational description &mdash; it answers how the AI works, not just what it claims to do &mdash; which is what LLMs retrieve as evidence of a specific capability.
-                </p>
-
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: "0 0 10px" }}>
-                  Every major capability has its own stable URL:{" "}
-                  <a href="https://www.snapsheetclaims.com/products/snapsheet-ai" target="_blank" rel="noopener" style={{ color: "#0D9488", fontSize: 12 }}>/products/snapsheet-ai ↗</a>,{" "}
-                  <a href="https://www.snapsheetclaims.com/products/workflows" target="_blank" rel="noopener" style={{ color: "#0D9488", fontSize: 12 }}>/products/workflows ↗</a>,{" "}
-                  <a href="https://www.snapsheetclaims.com/products/integration-apis" target="_blank" rel="noopener" style={{ color: "#0D9488", fontSize: 12 }}>/products/integration-apis ↗</a>,{" "}
-                  <a href="https://www.snapsheetclaims.com/products/analytics-oversight" target="_blank" rel="noopener" style={{ color: "#0D9488", fontSize: 12 }}>/products/analytics-oversight ↗</a>. Each page is a clean retrieval target for a single capability question. When a model is asked whether Snapsheet handles analytics, there is a dedicated indexed page to find &mdash; not a paragraph buried inside a longer product overview.
-                </p>
-
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: "0 0 4px" }}>
-                  Their{" "}
-                  <a href="http://snapsheetclaims.com/partnerships" target="_blank" rel="noopener" style={{ color: "#0D9488", fontSize: 12 }}>partner directory ↗</a>{" "}
-                  names Foundation AI, CCC Intelligent Solutions, CLARA Analytics, AWS, CARFAX, and KeyBank &mdash; each with a described integration function. Like Broker Buddha&rsquo;s named AMS integrations, named partner names give LLMs distinctive anchor strings. Notably, Snapsheet publishes no official &ldquo;Snapsheet vs. [rival]&rdquo; comparison pages. G2 names Guidewire, FileHandler, and others as Snapsheet alternatives, but G2 wrote those pages &mdash; Snapsheet did not. Their competitive posture is differentiation-led: let the platform breadth and customer outcomes speak, and let directories supply the explicit comparison framing.
-                </p>
+                <ul style={{ margin: 0, padding: "0 0 0 18px", display: "flex", flexDirection: "column", gap: 8 }}>
+                  <li style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>
+                    <a href="https://www.snapsheetclaims.com/products/snapsheet-ai" target="_blank" rel="noopener" style={{ color: "#0D9488" }}>AI product page ↗</a> documents the full mechanism chain: select model &rarr; configure prompts &rarr; deploy AI actions in no-code workflows &rarr; if/then logic &rarr; human routing when needed. Mechanism description is what LLMs retrieve as evidence of capability.
+                  </li>
+                  <li style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>
+                    One stable URL per capability: <a href="https://www.snapsheetclaims.com/products/snapsheet-ai" target="_blank" rel="noopener" style={{ color: "#0D9488" }}>/snapsheet-ai ↗</a>, <a href="https://www.snapsheetclaims.com/products/workflows" target="_blank" rel="noopener" style={{ color: "#0D9488" }}>/workflows ↗</a>, <a href="https://www.snapsheetclaims.com/products/integration-apis" target="_blank" rel="noopener" style={{ color: "#0D9488" }}>/integration-apis ↗</a>, <a href="https://www.snapsheetclaims.com/products/analytics-oversight" target="_blank" rel="noopener" style={{ color: "#0D9488" }}>/analytics-oversight ↗</a>. Each is a clean retrieval target for one question.
+                  </li>
+                  <li style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>
+                    <a href="http://snapsheetclaims.com/partnerships" target="_blank" rel="noopener" style={{ color: "#0D9488" }}>Partner directory ↗</a> names Foundation AI, CCC Intelligent Solutions, CLARA Analytics, AWS, CARFAX, KeyBank &mdash; each with a described function. No vs-competitor pages published; G2 provides that framing instead.
+                  </li>
+                </ul>
               </div>
-
-              {/* What third parties said */}
               <div>
                 <p style={{ fontSize: 12, fontWeight: 800, color: "#2563eb", letterSpacing: "0.09em", textTransform: "uppercase" as const, margin: "0 0 10px" }}>What third parties said about them</p>
-
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: "0 0 10px" }}>
-                  The highest-confidence earned signal is analyst recognition. On July 7, 2026, Celent named Snapsheet a{" "}
-                  <a href="https://www.prnewswire.com/news-releases/snapsheet-named-a-luminary-in-celents-2026-north-america-pc-claims-systems-report-302819057.html" target="_blank" rel="noopener" style={{ color: "#2563eb", fontSize: 12 }}>Luminary in its 2026 North America P&amp;C Claims Systems Report ↗</a>{" "}
-                  &mdash; Celent&rsquo;s highest distinction, awarded to 6 of 66 systems evaluated. This is not a press release; it is an independent analyst firm publishing its evaluation of the market and selecting Snapsheet as a top-tier product. When LLMs encounter analyst-tier recognition, they treat it as strong corroborating evidence of capability claims &mdash; a qualitatively different signal than a customer announcement or a product page.
-                </p>
-
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: "0 0 10px" }}>
-                  <a href="https://www.prnewswire.com/news-releases/aspire-general-insurance-selects-snapsheet-as-the-claims-management-system-to-support-their-next-phase-of-growth-302616632.html" target="_blank" rel="noopener" style={{ color: "#2563eb", fontSize: 12 }}>Aspire General Insurance (November 17, 2025) ↗</a>{" "}
-                  reported 90-day implementation, more than a dozen custom workflow automations built without engineering resources, and tasks that previously took an hour completing in minutes. This is a vendor-distributed announcement rather than independent journalism &mdash; Snapsheet issued it via PR Newswire &mdash; which means it functions as customer evidence, not independent validation. The distinction matters: LLMs weight vendor-distributed press releases lower than independent editorial coverage.
-                </p>
-
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: 0 }}>
-                  The Claimtouch integration (August 20&ndash;21, 2026) is a stronger earned signal precisely because it was covered by independent trade press, not just a Snapsheet announcement. FFNews and Insurance Innovation Reporter both reported on the partnership independently, describing AI, machine learning, and big-data validation including pricing and fraud flags flowing into Snapsheet workflows. When two trade publications cover the same integration without being handed a press release to reprint verbatim, LLMs encounter the claim from multiple independent perspectives &mdash; a qualitatively different corroboration than a single vendor-distributed announcement.
-                </p>
+                <ul style={{ margin: 0, padding: "0 0 0 18px", display: "flex", flexDirection: "column", gap: 8 }}>
+                  <li style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>
+                    <a href="https://www.prnewswire.com/news-releases/snapsheet-named-a-luminary-in-celents-2026-north-america-pc-claims-systems-report-302819057.html" target="_blank" rel="noopener" style={{ color: "#2563eb" }}>Celent Luminary (July 7, 2026) ↗</a> &mdash; highest distinction, 6 of 66 systems evaluated. Independent analyst selection, not self-published. LLMs weight this above customer PRs and review sites.
+                  </li>
+                  <li style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>
+                    <a href="https://www.prnewswire.com/news-releases/aspire-general-insurance-selects-snapsheet-as-the-claims-management-system-to-support-their-next-phase-of-growth-302616632.html" target="_blank" rel="noopener" style={{ color: "#2563eb" }}>Aspire General Insurance (November 2025) ↗</a>: 90-day implementation, 12+ custom automations &mdash; vendor-distributed PR Newswire announcement, so it functions as customer evidence rather than independent validation.
+                  </li>
+                  <li style={{ fontSize: 13, color: "#333", lineHeight: 1.6 }}>
+                    Claimtouch integration (August 20&ndash;21, 2026): FFNews and Insurance Innovation Reporter both covered it independently &mdash; neither was given a press release to reprint. Two independent trade publications covering the same integration is a stronger earned signal than any vendor announcement.
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
@@ -1180,6 +1136,15 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
         <p style={{ fontSize: 11, color: "#000", margin: "0 auto", textAlign: "center", maxWidth: 680 }}>
           Scores require agreement between both AI models. When models disagree, we take the more conservative rating, so a lower score sometimes means models disagree, not that documentation is absent.
         </p>
+      </div>
+
+      {/* ── Disclaimer footer ── */}
+      <div style={{ borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: 20, display: "flex", flexDirection: "column", gap: 6 }}>
+        <p style={{ fontSize: 13, fontWeight: 700, color: "#333", margin: 0 }}>Disclaimer &amp; Terms of Use</p>
+        <p style={{ fontSize: 12, color: "#555", lineHeight: 1.65, margin: 0, maxWidth: 820 }}>
+          This report was created by AgenticLib. All feature scores, rankings, and assessments are based on publicly available information at the time of research and represent AgenticLib&rsquo;s independent evaluation. Competitive intelligence data is derived from automated queries to Claude Haiku and GPT-4o-mini APIs. This data reflects model output at specific points in time and may not represent the current or future state of any brand&rsquo;s market position.
+        </p>
+        <p style={{ fontSize: 12, color: "#888", margin: 0 }}>&copy; 2026 AgenticLib. All rights reserved.</p>
       </div>
 
     </div>
