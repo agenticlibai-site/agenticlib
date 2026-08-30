@@ -69,7 +69,7 @@ interface WeeklyRow       { brand: string; model: string; mention_count: number;
 interface LLMVisRow       { model: string; visibility_pct: number; total_responses: number }
 interface SOVRow          { cluster_tag: string; brand: string; total_appearances: number; sov_pct: number }
 interface ClusterPosRow   { cluster_tag: string; brand: string; avg_position: number; appearances: number }
-interface FeatureScoreRow { brand_name: string; feature_id: string; feature_tag: string; score: number; score_band: string; flagged_for_review: boolean; evidence: string | null }
+interface FeatureScoreRow { brand_name: string; feature_id: string; feature_tag: string; score: number | null; score_band: string; flagged_for_review: boolean; evidence: string | null }
 interface SentimentRow    { brand_name: string; bucket_tag: string; positive_count: number; neutral_count: number; negative_count: number; total_count: number; top_descriptors: string[] }
 interface SentimentMeta   { dual_model_dates: number; earliest_date: string | null; latest_date: string | null }
 
@@ -666,20 +666,30 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
               const groupFeatures = group.features
                 .filter(featureId => !HIDDEN_FEATURE_IDS.has(featureId))
                 .map(featureId => {
-                  const rows = featureScores.filter(r => r.feature_id === featureId).sort((a, b) => b.score - a.score).slice(0, 3);
-                  return { featureId, rows };
+                  const allRows = featureScores.filter(r => r.feature_id === featureId);
+                  const scoredRows = allRows
+                    .filter(r => r.score !== null && r.score_band !== "not_documented")
+                    .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
+                    .slice(0, 3);
+                  const allNotDocumented = allRows.length > 0 && allRows.every(r => r.score_band === "not_documented");
+                  return { featureId, rows: scoredRows, allNotDocumented };
                 });
               return (
                 <div key={group.label} style={{ marginBottom: 28 }}>
                   <p style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: GREEN, marginBottom: 14 }}>{group.label}</p>
-                  {groupFeatures.map(({ featureId, rows }) => (
+                  {groupFeatures.map(({ featureId, rows, allNotDocumented }) => (
                     <div key={featureId} style={{ marginBottom: 18 }}>
                       <p style={{ fontSize: 18, fontWeight: 600, color: NAVY, marginBottom: 4 }}>{featureName(featureId)}</p>
                       {FEATURE_DESCRIPTIONS[featureId] && (
                         <p style={{ fontSize: 15, color: GREEN, lineHeight: 1.6, margin: "0 0 10px" }}>{FEATURE_DESCRIPTIONS[featureId]}</p>
                       )}
-                      {rows.length === 0 ? (
+                      {rows.length === 0 && !allNotDocumented ? (
                         <p style={{ fontSize: 14, color: "#94a3b8", fontStyle: "italic", margin: 0 }}>Scoring in progress — no brand has documented this feature yet.</p>
+                      ) : rows.length === 0 && allNotDocumented ? (
+                        <p style={{ fontSize: 14, color: "#94a3b8", margin: 0, lineHeight: 1.55 }}>
+                          <strong style={{ color: "#64748b" }}>Not documented across all 10 brands.</strong>{" "}
+                          LLMs found no publicly available information confirming any brand in this cohort has documented this capability — meaning a brand that does document it clearly will have no competition for LLM citation on this feature.
+                        </p>
                       ) : (
                         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                           {rows.map(r => {
@@ -689,9 +699,9 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                                   <span style={{ fontSize: 16, fontWeight: 500, color: NAVY, width: 168, flexShrink: 0, lineHeight: 1.3 }}>{r.brand_name}</span>
                                   <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
-                                    <div style={{ width: `${r.score}%`, height: 6, borderRadius: 999, background: BAND_COLORS[r.score_band] ?? "#94a3b8" }} />
+                                    <div style={{ width: `${r.score ?? 0}%`, height: 6, borderRadius: 999, background: BAND_COLORS[r.score_band] ?? "#94a3b8" }} />
                                   </div>
-                                  <span style={{ fontSize: 16, fontWeight: 700, color: BAND_COLORS[r.score_band] ?? NAVY, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>{r.score}</span>
+                                  <span style={{ fontSize: 16, fontWeight: 700, color: BAND_COLORS[r.score_band] ?? NAVY, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>{r.score ?? "—"}</span>
                                 </div>
                                 {ev && <p style={{ paddingLeft: 178, fontSize: 17, color: "#000", lineHeight: 1.5, margin: "4px 0 0" }}>{ev}</p>}
                               </div>
@@ -805,7 +815,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
           },
         };
         const spotlight = Array.from(LOCKED_RALFI_BRANDS).map(brand => {
-          const top = featureScores.filter(r => r.brand_name === brand).sort((a, b) => b.score - a.score)[0] ?? null;
+          const top = featureScores.filter(r => r.brand_name === brand && r.score !== null).sort((a, b) => (b.score ?? 0) - (a.score ?? 0))[0] ?? null;
           return { brand, top };
         });
         return (
