@@ -983,18 +983,14 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
           </div>
 
           {/* ── Verdict ── */}
-          <div style={{ marginBottom: 24, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
+          <div style={{ marginBottom: 24, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 12 }}>
             <div style={{ padding: "12px 14px", background: "rgba(5,150,105,0.05)", border: "1px solid rgba(5,150,105,0.15)", borderRadius: 8 }}>
               <p style={{ fontSize: 12, fontWeight: 800, color: GREEN, letterSpacing: "0.08em", textTransform: "uppercase" as const, margin: "0 0 5px" }}>Broker Buddha: specificity over volume</p>
-              <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6, margin: 0 }}>Built visibility through 5&ndash;7 highly specific items &mdash; named integrations with data-direction labels, workflow enumeration, ACORD mechanism language &mdash; not through publishing volume. Proves that LLM visibility is a documentation quality problem, not a quantity problem.</p>
+              <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6, margin: 0 }}>Built visibility through a small number of highly specific documentation choices &mdash; naming the exact 7 workflows in the beta announcement, giving each AMS integration its own page with data-direction labels, using mechanism language like &ldquo;ACORD forms auto pre-filled from AMS&rdquo; rather than generic benefit claims. AI models retrieve named, specific facts; they skip vague capability summaries. LLM visibility is a documentation quality problem, not a quantity problem.</p>
             </div>
             <div style={{ padding: "12px 14px", background: "rgba(37,99,235,0.05)", border: "1px solid rgba(37,99,235,0.15)", borderRadius: 8 }}>
-              <p style={{ fontSize: 12, fontWeight: 800, color: "#2563eb", letterSpacing: "0.08em", textTransform: "uppercase" as const, margin: "0 0 5px" }}>Snapsheet: analyst recognition as the gold standard</p>
-              <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6, margin: 0 }}>Celent Luminary (6 of 66 systems) is the highest-confidence earned signal in this research &mdash; it&rsquo;s the one thing a vendor cannot self-publish. Combined with two journalists independently covering the Claimtouch integration, Snapsheet has third-party corroboration at analyst level and editorial level simultaneously.</p>
-            </div>
-            <div style={{ padding: "12px 14px", background: "rgba(217,119,6,0.05)", border: "1px solid rgba(217,119,6,0.15)", borderRadius: 8 }}>
-              <p style={{ fontSize: 12, fontWeight: 800, color: "#d97706", letterSpacing: "0.08em", textTransform: "uppercase" as const, margin: "0 0 5px" }}>Both: community presence is unclaimed</p>
-              <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6, margin: 0 }}>Neither brand has any meaningful broker community, Reddit, or independent forum footprint. A Reddit search for Broker Buddha returns gaming results; Snapsheet&rsquo;s only Reddit result is a 4-year-old career question. First-mover organic community presence in broker communities is genuinely unclaimed territory.</p>
+              <p style={{ fontSize: 12, fontWeight: 800, color: "#2563eb", letterSpacing: "0.08em", textTransform: "uppercase" as const, margin: "0 0 5px" }}>Snapsheet: third-party proof that can&rsquo;t be faked</p>
+              <p style={{ fontSize: 13, color: "#444", lineHeight: 1.6, margin: 0 }}>When an AI model decides how confidently to cite a brand, it weighs who said it and whether multiple independent sources agree. Snapsheet&rsquo;s mechanism-depth product page gave AI models something specific to retrieve. But what raised confidence from &ldquo;mentioned&rdquo; to &ldquo;cited with conviction&rdquo; was corroboration from sources Snapsheet couldn&rsquo;t control: Celent &mdash; an independent insurance tech research firm &mdash; chose Snapsheet as one of 6 top systems out of 66 it evaluated, and two separate journalists wrote about the Claimtouch integration without being handed a press release. Neither of those things can be self-published. That&rsquo;s the signal AI models trust most.</p>
             </div>
           </div>
 
