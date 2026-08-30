@@ -237,14 +237,16 @@ function BigNumber({ value, sub }: { value: string; sub: string }) {
 
 // ── Pie label ─────────────────────────────────────────────────────────────────
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-function PieSliceLabel({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) {
+function PieSliceLabel({ cx, cy, midAngle, innerRadius, outerRadius, percent, sov_pct }: any) {
   if (percent < 0.06) return null;
   const RADIAN = Math.PI / 180;
   const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
   const angle = percent >= 0.999 ? 90 : midAngle;
   const x = cx + radius * Math.cos(-angle * RADIAN);
   const y = cy + radius * Math.sin(-angle * RADIAN);
-  return <text x={x} y={y} fill="#fff" textAnchor="middle" dominantBaseline="central" style={{ fontSize: 13, fontWeight: 700, pointerEvents: "none" }}>{`${Math.round(percent * 100)}%`}</text>;
+  // Use precomputed sov_pct so pie label matches the legend (avoids float rounding split)
+  const pct = sov_pct != null ? Math.round(sov_pct) : Math.round(percent * 100);
+  return <text x={x} y={y} fill="#fff" textAnchor="middle" dominantBaseline="central" style={{ fontSize: 13, fontWeight: 700, pointerEvents: "none" }}>{`${pct}%`}</text>;
 }
 
 // ── SOV donut card ────────────────────────────────────────────────────────────
@@ -592,7 +594,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                   const scoredRows = allRows
                     .filter(r => r.score !== null && r.score_band !== "not_documented")
                     .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
-                    .slice(0, 4);
+                    .slice(0, 5);
                   const allNotDocumented = allRows.length > 0 && allRows.every(r => r.score_band === "not_documented");
                   return { featureId, rows: scoredRows, allNotDocumented };
                 });
@@ -637,7 +639,7 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
               );
             })}
             <p style={{ fontSize: 15, color: "#000", borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 12, marginTop: 4 }}>
-              Top brands per feature (up to 4) · scored by both Claude Haiku and GPT-4o mini
+              Top brands per feature (up to 5) · scored by both Claude Haiku and GPT-4o mini
             </p>
           </div>
         )}
@@ -1031,9 +1033,9 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                 <span style={{ fontSize: 13, fontWeight: 600, color: GREEN, background: "rgba(5,150,105,0.08)", border: "1px solid rgba(5,150,105,0.2)", borderRadius: 4, padding: "1px 7px", whiteSpace: "nowrap" as const }}>Client Communication</span>
               </div>
               <p style={{ fontSize: 15, color: "#000", margin: "0 0 8px", lineHeight: 1.6 }}>
-                The single highest-scoring feature across the entire cohort — Broker Buddha, Chisel AI, InsuredMine, and Better Agency all score 80 on client self-service, the strongest four-way consensus of any feature scored. Better Agency (now acquired by Glovebox) carries this capability into the combined entity. Ralfi already has client-facing infrastructure (the portal where clients fill in details, sign, and return forms). Extending that surface to answer routine questions — &ldquo;what&rsquo;s my excess,&rdquo; &ldquo;when does my policy renew&rdquo; — enters a category the market has clearly validated.
+                The single highest-scoring feature across the entire cohort — Broker Buddha, Chisel AI, InsuredMine, Amy by Cover Whale, and Better Agency all score 80 on client self-service, the strongest five-way consensus of any feature scored. Better Agency (now acquired by Glovebox) carries this capability into the combined entity. Ralfi already has client-facing infrastructure (the portal where clients fill in details, sign, and return forms). Extending that surface to answer routine questions — &ldquo;what&rsquo;s my excess,&rdquo; &ldquo;when does my policy renew&rdquo; — enters a category the market has clearly validated.
               </p>
-              <p style={{ fontSize: 13, color: "#000", margin: 0, fontStyle: "italic" }}>Benchmark: Broker Buddha · Chisel AI · InsuredMine · Better Agency (Glovebox) all score 80. Market consensus is strong.</p>
+              <p style={{ fontSize: 13, color: "#000", margin: 0, fontStyle: "italic" }}>Benchmark: Broker Buddha · Chisel AI · InsuredMine · Amy by Cover Whale · Better Agency (Glovebox) all score 80. Market consensus is strong.</p>
             </div>
           </div>
 
