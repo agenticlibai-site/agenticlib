@@ -5,8 +5,6 @@ name: Ralfi Feature Collection (Claude)
 # 18 features × brands × 3 runs. Includes grounding pass for low-confidence results.
 
 on:
-  schedule:
-    - cron: '0 10 * * *'  # 10:00 UTC daily = 20:00 AEST (UTC+10)
   workflow_dispatch:
     inputs:
       date:

@@ -6,8 +6,6 @@ name: Ralfi Sentiment Aggregate
 # No-ops gracefully if no sentiment responses exist yet.
 
 on:
-  schedule:
-    - cron: '0 3 * * 0'   # 03:00 UTC Sunday = 13:00 AEST Sunday (UTC+10)
   workflow_dispatch:
 
 jobs:

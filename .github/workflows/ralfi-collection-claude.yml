@@ -1,8 +1,6 @@
 name: Ralfi Collection (Claude)
 
 on:
-  schedule:
-    - cron: '0 6 * * *'   # 06:00 UTC daily = 16:00 AEST (UTC+10)
   workflow_dispatch:
 
 jobs:

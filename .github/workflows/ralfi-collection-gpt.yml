@@ -1,8 +1,6 @@
 name: Ralfi Collection (GPT)
 
 on:
-  schedule:
-    - cron: '10 6 * * *'  # 06:10 UTC daily = 16:10 AEST (UTC+10)
   workflow_dispatch:
 
 jobs:

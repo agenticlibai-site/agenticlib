@@ -4,8 +4,6 @@ name: Ralfi Sentiment Collection (GPT)
 # is populated with verified competitor brands after the Day 2 denylist review.
 
 on:
-  schedule:
-    - cron: '30 9 * * *'  # 09:30 UTC daily = 19:30 AEST (UTC+10)
   workflow_dispatch:
 
 jobs:

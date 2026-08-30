@@ -1,8 +1,6 @@
 name: Ralfi Aggregate
 
 on:
-  schedule:
-    - cron: '45 6 * * *'  # 06:45 UTC daily = 16:45 AEST (UTC+10)
   workflow_dispatch:
 
 jobs:
