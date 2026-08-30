@@ -69,7 +69,7 @@ interface WeeklyRow       { brand: string; model: string; mention_count: number;
 interface LLMVisRow       { model: string; visibility_pct: number; total_responses: number }
 interface SOVRow          { cluster_tag: string; brand: string; total_appearances: number; sov_pct: number }
 interface ClusterPosRow   { cluster_tag: string; brand: string; avg_position: number; appearances: number }
-interface FeatureScoreRow { brand_name: string; feature_id: string; feature_tag: string; score: number | null; score_band: string; flagged_for_review: boolean; evidence: string | null; has_capability: string | null; terminology_tags?: string[] | null }
+interface FeatureScoreRow { brand_name: string; feature_id: string; feature_tag: string; score: number | null; score_band: string; flagged_for_review: boolean; runs_agreeing?: number | null; runs_total?: number | null; evidence: string | null; has_capability: string | null; terminology_tags?: string[] | null }
 interface SentimentRow    { brand_name: string; bucket_tag: string; positive_count: number; neutral_count: number; negative_count: number; total_count: number; top_descriptors: string[] }
 interface SentimentMeta   { dual_model_dates: number; earliest_date: string | null; latest_date: string | null }
 
@@ -618,9 +618,14 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                           LLMs found no publicly available information confirming any brand in this cohort has documented this capability — meaning a brand that does document it clearly will have no competition for LLM citation on this feature.
                         </p>
                       ) : (
-                        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+                        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                           {rows.map(r => {
                             const ev = cleanEvidence(r.evidence) ?? BAND_FALLBACK[r.score_band];
+                            const bandLabel: Record<string, string> = { high: "Strong", present: "Present", partial: "Partial", weak: "Weak" };
+                            const tags = (r.terminology_tags ?? []).filter(t => t && t.length > 0);
+                            const consensus = (r.runs_agreeing != null && r.runs_total != null && r.runs_total > 0)
+                              ? `${r.runs_agreeing} of ${r.runs_total} model runs agreed`
+                              : null;
                             return (
                               <div key={r.brand_name}>
                                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -628,9 +633,22 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                                   <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
                                     <div style={{ width: `${r.score ?? 0}%`, height: 6, borderRadius: 999, background: BAND_COLORS[r.score_band] ?? "#94a3b8" }} />
                                   </div>
-                                  <span style={{ fontSize: 16, fontWeight: 700, color: BAND_COLORS[r.score_band] ?? NAVY, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>{r.score ?? "—"}</span>
+                                  <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
+                                    <span style={{ fontSize: 16, fontWeight: 700, color: BAND_COLORS[r.score_band] ?? NAVY, width: 28, textAlign: "right" as const, fontVariantNumeric: "tabular-nums" }}>{r.score ?? "—"}</span>
+                                    {bandLabel[r.score_band] && <span style={{ fontSize: 11, fontWeight: 700, color: BAND_COLORS[r.score_band], background: `${BAND_COLORS[r.score_band]}14`, border: `1px solid ${BAND_COLORS[r.score_band]}30`, borderRadius: 4, padding: "1px 6px", letterSpacing: "0.04em" }}>{bandLabel[r.score_band]}</span>}
+                                  </div>
                                 </div>
-                                {ev && <p style={{ paddingLeft: 178, fontSize: 15, color: "#000", lineHeight: 1.6, margin: "6px 0 0" }}>{ev}</p>}
+                                <div style={{ paddingLeft: 178, marginTop: 6, display: "flex", flexDirection: "column", gap: 5 }}>
+                                  {ev && <p style={{ fontSize: 15, color: "#000", lineHeight: 1.6, margin: 0 }}>{ev}</p>}
+                                  {tags.length > 0 && (
+                                    <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 5 }}>
+                                      {tags.map(t => (
+                                        <span key={t} style={{ fontSize: 11, color: "#555", background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.09)", borderRadius: 4, padding: "2px 7px" }}>{t}</span>
+                                      ))}
+                                    </div>
+                                  )}
+                                  {consensus && <p style={{ fontSize: 12, color: "#888", margin: 0 }}>{consensus}</p>}
+                                </div>
                               </div>
                             );
                           })}

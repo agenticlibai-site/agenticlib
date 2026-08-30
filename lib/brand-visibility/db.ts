@@ -3401,6 +3401,7 @@ export async function getRalfiFeatureScores(): Promise<{
     )
     SELECT s.brand_name, s.feature_id, s.feature_tag, s.score::int AS score,
            s.score_band, s.flagged_for_review,
+           s.runs_agreeing, s.runs_total,
            be.evidence, be.has_capability, be.terminology_tags
     FROM ralfi_feature_scores s
     LEFT JOIN best_evidence be ON be.brand_name = s.brand_name AND be.feature_id = s.feature_id
@@ -3409,6 +3410,7 @@ export async function getRalfiFeatureScores(): Promise<{
   return result.rows as {
     brand_name: string; feature_id: string; feature_tag: string;
     score: number | null; score_band: string; flagged_for_review: boolean;
+    runs_agreeing: number | null; runs_total: number | null;
     evidence: string | null; has_capability: string | null; terminology_tags: string[] | null;
   }[];
 }
