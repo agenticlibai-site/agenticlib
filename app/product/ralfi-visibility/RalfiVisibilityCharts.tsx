@@ -193,14 +193,7 @@ const SOV_CLUSTERS = [
   { tag: "ralfi-compliance", label: "Compliance & Audit" },
 ];
 
-const SENTIMENT_CLUSTERS = [
-  { tag: "ralfi-renewal",    label: "Renewal Management" },
-  { tag: "ralfi-documents",  label: "Document Processing" },
-  { tag: "ralfi-risk",       label: "Risk & Submission" },
-  { tag: "ralfi-claims",     label: "Claims Advocacy" },
-  { tag: "ralfi-comms",      label: "Client Communication" },
-  { tag: "ralfi-compliance", label: "Compliance & Audit" },
-];
+// bucket_tags in ralfi_sentiment_responses are "overall" and "overall-criticism"
 
 // ── Tooltip ───────────────────────────────────────────────────────────────────
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -398,8 +391,11 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
     const fmt = (d: string) => new Date(d + "T00:00:00Z").toLocaleDateString("en-AU", { month: "short", day: "numeric", timeZone: "UTC" });
     return e === l ? fmt(e) : `${fmt(e)} – ${fmt(l)}`;
   }
+  // Count how many brands use each descriptor (overall bucket only) — used to classify tags as brand-specific vs. generic
   const globalDescFreq = new Map<string, number>();
-  for (const r of sentimentData.rows) for (const d of r.top_descriptors) globalDescFreq.set(d, (globalDescFreq.get(d) ?? 0) + 1);
+  for (const r of sentimentData.rows.filter(r => r.bucket_tag === "overall")) {
+    for (const d of r.top_descriptors) globalDescFreq.set(d, (globalDescFreq.get(d) ?? 0) + 1);
+  }
   const sentimentReady = (sentimentData.meta.dual_model_dates ?? 0) >= 3;
 
   const hasVis = llmVisibility.length > 0;
@@ -736,54 +732,68 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
           </div>
         ) : (
           <div style={{ padding: "20px 24px" }}>
-            <p style={{ fontSize: 15, color: "#000", marginBottom: 24 }}>How Claude Haiku and GPT-4o-mini describe each brand · {sentimentDateLabel()}</p>
-            {SENTIMENT_CLUSTERS.map(cluster => {
-              const clusterBrands = sentimentData.rows.filter(r => r.bucket_tag === cluster.tag).sort((a, b) => b.positive_count - a.positive_count);
-              if (clusterBrands.length === 0) return null;
-              return (
-                <div key={cluster.tag} style={{ marginBottom: 28 }}>
-                  <p style={{ fontSize: 16, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const, color: GREEN, marginBottom: 14 }}>{cluster.label}</p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                    {clusterBrands.map(brand => {
-                      const total = brand.total_count || 1;
-                      const posPct = Math.round((brand.positive_count / total) * 100);
-                      const neuPct = Math.round((brand.neutral_count  / total) * 100);
-                      const negPct = 100 - posPct - neuPct;
-                      return (
-                        <div key={brand.brand_name}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 7 }}>
-                            <span style={{ fontSize: 16, fontWeight: 600, color: NAVY, width: 148, flexShrink: 0, lineHeight: 1.25 }}>{brand.brand_name}</span>
-                            <div style={{ flex: 1, height: 8, borderRadius: 999, background: "rgba(0,0,0,0.06)", overflow: "hidden", display: "flex" }}>
-                              {posPct > 0 && <div style={{ width: `${posPct}%`, height: "100%", background: "#16a34a" }} />}
-                              {neuPct > 0 && <div style={{ width: `${neuPct}%`, height: "100%", background: "#d97706" }} />}
-                              {negPct > 0 && <div style={{ width: `${negPct}%`, height: "100%", background: "#dc2626" }} />}
-                            </div>
-                            <span style={{ fontSize: 15, fontWeight: 700, color: "#16a34a", width: 34, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>{posPct}%</span>
-                          </div>
-                          <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 5, paddingLeft: 158 }}>
-                            {[...new Set(brand.top_descriptors)].slice(0, 4).map((d, i) => {
-                              const unique = globalDescFreq.get(d) === 1;
-                              return (
-                                <span key={i} style={{ fontSize: 15, color: unique ? GREEN : "#000", background: unique ? "rgba(5,150,105,0.08)" : "rgba(0,0,0,0.04)", border: `1px solid ${unique ? "rgba(5,150,105,0.25)" : "rgba(0,0,0,0.08)"}`, borderRadius: 4, padding: "2px 7px", fontWeight: unique ? 600 : 400 }}>{d}</span>
-                              );
-                            })}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
-            <div style={{ display: "flex", gap: 16, borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 12, marginTop: 4 }}>
-              {[["#16a34a","Positive"],["#d97706","Neutral"],["#dc2626","Negative"]].map(([color, label]) => (
-                <div key={label} style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                  <div style={{ width: 10, height: 10, borderRadius: 2, background: color, flexShrink: 0 }} />
-                  <span style={{ fontSize: 15, color: "#000" }}>{label}</span>
+            <p style={{ fontSize: 15, color: "#000", marginBottom: 16 }}>How Claude Haiku and GPT-4o-mini describe each brand when asked about AI agents in insurance brokerage · {sentimentDateLabel()}</p>
+
+            {/* Legend */}
+            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" as const, alignItems: "center", marginBottom: 22, padding: "9px 12px", background: "rgba(0,0,0,0.025)", borderRadius: 6 }}>
+              <span style={{ fontSize: 13, color: "#555", marginRight: 2 }}>Sentiment:</span>
+              {([["#16a34a","Positive"],["#d97706","Neutral"],["#dc2626","Negative"]] as [string,string][]).map(([color, label]) => (
+                <div key={label} style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                  <div style={{ width: 8, height: 8, borderRadius: 2, background: color, flexShrink: 0 }} />
+                  <span style={{ fontSize: 13, color: "#000" }}>{label}</span>
                 </div>
               ))}
-              <span style={{ fontSize: 15, color: "#000", marginLeft: "auto" }}>Both models · updates weekly</span>
+              <span style={{ fontSize: 13, color: "#555", marginLeft: 8, marginRight: 2 }}>Tags:</span>
+              <span style={{ fontSize: 12, color: GREEN, background: "rgba(5,150,105,0.09)", border: "1px solid rgba(5,150,105,0.25)", borderRadius: 4, padding: "1px 7px", fontWeight: 600 }}>LLM uniquely describes this brand with this term</span>
+              <span style={{ fontSize: 12, color: "#666", background: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 4, padding: "1px 7px" }}>Generic — used across multiple brands</span>
             </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+              {sentimentData.rows
+                .filter(r => r.bucket_tag === "overall")
+                .sort((a, b) => b.positive_count - a.positive_count)
+                .map(brand => {
+                  const total = brand.total_count || 1;
+                  const posPct = Math.round((brand.positive_count / total) * 100);
+                  const neuPct = Math.round((brand.neutral_count  / total) * 100);
+                  const negPct = 100 - posPct - neuPct;
+                  const tags = [...new Set(brand.top_descriptors)]
+                    .filter(d => !d.includes("<cite") && d.length <= 68)
+                    .slice(0, 5);
+                  return (
+                    <div key={brand.brand_name}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 7 }}>
+                        <span style={{ fontSize: 16, fontWeight: 600, color: NAVY, width: 148, flexShrink: 0, lineHeight: 1.25 }}>{brand.brand_name}</span>
+                        <div style={{ flex: 1, height: 8, borderRadius: 999, background: "rgba(0,0,0,0.06)", overflow: "hidden", display: "flex" }}>
+                          {posPct > 0 && <div style={{ width: `${posPct}%`, height: "100%", background: "#16a34a" }} />}
+                          {neuPct > 0 && <div style={{ width: `${neuPct}%`, height: "100%", background: "#d97706" }} />}
+                          {negPct > 0 && <div style={{ width: `${negPct}%`, height: "100%", background: "#dc2626" }} />}
+                        </div>
+                        <span style={{ fontSize: 15, fontWeight: 700, color: "#16a34a", width: 34, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>{posPct}%</span>
+                      </div>
+                      {tags.length > 0 && (
+                        <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 5, paddingLeft: 158 }}>
+                          {tags.map((d, i) => {
+                            const isGeneric = (globalDescFreq.get(d) ?? 0) > 2;
+                            return (
+                              <span key={i} style={{
+                                fontSize: 12, borderRadius: 4, padding: "2px 7px",
+                                color:      isGeneric ? "#666"                    : GREEN,
+                                background: isGeneric ? "rgba(0,0,0,0.04)"        : "rgba(5,150,105,0.09)",
+                                border:     `1px solid ${isGeneric ? "rgba(0,0,0,0.08)" : "rgba(5,150,105,0.25)"}`,
+                                fontWeight: isGeneric ? 400 : 600,
+                              }}>
+                                {d}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+            </div>
+            <p style={{ fontSize: 13, color: "#888", borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: 12, marginTop: 18 }}>Both Claude Haiku and GPT-4o-mini · updates daily</p>
           </div>
         )}
       </div>
