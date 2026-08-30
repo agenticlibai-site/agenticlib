@@ -1080,11 +1080,8 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
       {/* ── Product feature opportunities ── */}
       <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", overflow: "hidden" }}>
         <div style={{ padding: "16px 24px", borderBottom: "1px solid rgba(0,0,0,0.07)" }}>
-          <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>Product Feature Opportunities</h3>
-          <p style={{ fontSize: 15, color: "#000", margin: "6px 0 8px" }}>Three moves Ralfi is positioned to make — drawn from the feature scores above</p>
-          <p style={{ fontSize: 13, color: "#1e3a5f", background: "rgba(37,99,235,0.05)", border: "1px solid rgba(37,99,235,0.18)", borderRadius: 6, padding: "7px 12px", margin: 0, lineHeight: 1.55 }}>
-            <strong>Analyst interpretation, not pipeline output.</strong> The feature scores and not_documented verdicts above were independently verified by the AI collection pipeline. The three opportunities below are analyst conclusions drawn from that data — each is grounded in the cohort&rsquo;s feature scores and mention volumes, but the interpretation (what Ralfi should do with them) is editorial judgment, not a separately verified finding.
-          </p>
+          <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>Product Feature Improvement Opportunities</h3>
+          <p style={{ fontSize: 15, color: "#000", margin: "6px 0 0" }}>Suggested product feature improvement opportunities based on the feature scores above</p>
         </div>
         <div style={{ padding: "20px 24px", display: "flex", flexDirection: "column", gap: 0 }}>
 
