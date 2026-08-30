@@ -914,25 +914,10 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                   &mdash; a third-party wire, not just a Broker Buddha blog post &mdash; which anchors the AMS360/HawkSoft named integration in an independently indexed source. Loss Run Pro (July 21) and CoverForce (July 28) followed as formal partner announcements. This pattern of ecosystem announcements creates a cluster of indexed documents that all reference the same product name in the same month, which raises LLM citation confidence across sources.
                 </p>
 
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: "0 0 10px" }}>
+                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: 0 }}>
                   <a href="http://capterra.com/p/190786/Broker-Buddha" target="_blank" rel="noopener" style={{ color: "#2563eb", fontSize: 12 }}>Capterra reviews (4.6/5 from 13 reviews) ↗</a>{" "}
                   show a pattern that matters for LLM citation: reviewers independently use language like &ldquo;prefilled renewals&rdquo; and &ldquo;automated follow-ups&rdquo; &mdash; the same terms Broker Buddha uses on its own product pages. When an LLM encounters the same capability language on a vendor&rsquo;s own site and again in independent reviews, it treats the claim as corroborated rather than self-reported. That cross-source alignment is what raises citation confidence beyond what owned copy alone can achieve.
                 </p>
-
-                <div style={{ background: "rgba(239,68,68,0.05)", border: "1px solid rgba(239,68,68,0.2)", borderRadius: 6, padding: "10px 12px", marginBottom: 10 }}>
-                  <p style={{ fontSize: 12, color: "#b91c1c", margin: "0 0 4px", fontWeight: 700 }}>Negative signal: NowCerts integration complaint</p>
-                  <p style={{ fontSize: 12, color: "#7f1d1d", margin: 0, lineHeight: 1.6 }}>
-                    A documented reviewer complaint about a failed NowCerts integration exists in the third-party record. This matters beyond the individual review: when an LLM encounters a specific connector complaint, it learns to qualify the vendor&rsquo;s integration claims as connector-specific rather than universal. The result is the difference between a model citing &ldquo;Broker Buddha integrates with AMS360 and Applied Epic&rdquo; (specific, high confidence) and &ldquo;Broker Buddha integrates with most AMS platforms&rdquo; (a claim the model will hedge). For Ralfi: name only integrations that are fully tested and documented, because a single negative review of one connector creates a lasting qualifier in training data.
-                  </p>
-                </div>
-
-                <div style={{ background: "rgba(217,119,6,0.06)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 6, padding: "10px 12px" }}>
-                  <p style={{ fontSize: 12, color: "#92400e", fontWeight: 700, margin: "0 0 4px" }}>Three gaps worth noting</p>
-                  <p style={{ fontSize: 12, color: "#92400e", lineHeight: 1.65, margin: 0 }}>
-                    <strong>Customer proof is aging.</strong> Broker Buddha&rsquo;s visible case studies number roughly seven pages, but the ones with verifiable dates are from November 2022 &mdash; including PWS &amp; Company and IBOAZ. The recent public footprint is partner-led and announcement-led, not new customer outcomes.{" "}
-                    <strong>Headline inconsistency.</strong> The March 2026 beta announcement says seven workflows; the July 2026 HawkSoft press release says eight distinct workflows. When primary sources disagree on a core headline number, LLMs hedge or omit it rather than commit &mdash; that&rsquo;s a direct visibility cost. <strong>No Reddit or forum presence.</strong> A Reddit search for &ldquo;Broker Buddha&rdquo; returns gaming results (Blox Fruits) and unrelated posts &mdash; no insurance-software discussion, no company posts, no customer threads.
-                  </p>
-                </div>
               </div>
             </div>
           </div>
@@ -992,18 +977,9 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
                   reported 90-day implementation, more than a dozen custom workflow automations built without engineering resources, and tasks that previously took an hour completing in minutes. This is a vendor-distributed announcement rather than independent journalism &mdash; Snapsheet issued it via PR Newswire &mdash; which means it functions as customer evidence, not independent validation. The distinction matters: LLMs weight vendor-distributed press releases lower than independent editorial coverage.
                 </p>
 
-                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: "0 0 10px" }}>
+                <p style={{ fontSize: 13, color: "#333", lineHeight: 1.7, margin: 0 }}>
                   The Claimtouch integration (August 20&ndash;21, 2026) is a stronger earned signal precisely because it was covered by independent trade press, not just a Snapsheet announcement. FFNews and Insurance Innovation Reporter both reported on the partnership independently, describing AI, machine learning, and big-data validation including pricing and fraud flags flowing into Snapsheet workflows. When two trade publications cover the same integration without being handed a press release to reprint verbatim, LLMs encounter the claim from multiple independent perspectives &mdash; a qualitatively different corroboration than a single vendor-distributed announcement.
                 </p>
-
-                <div style={{ background: "rgba(217,119,6,0.06)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 6, padding: "10px 12px" }}>
-                  <p style={{ fontSize: 12, color: "#92400e", fontWeight: 700, margin: "0 0 4px" }}>Three gaps worth noting</p>
-                  <p style={{ fontSize: 12, color: "#92400e", lineHeight: 1.65, margin: 0 }}>
-                    <strong>No public pricing.</strong> Snapsheet publishes no pricing page, which limits an LLM&rsquo;s ability to characterise cost tier when a buyer asks &ldquo;how much does Snapsheet cost&rdquo; or &ldquo;is Snapsheet enterprise-only?&rdquo;{" "}
-                    <strong>Case study dates are hidden.</strong> The case study index (Aspire, Getaround, Mutual of Enumclaw, Clearcover) shows no publication dates, so LLMs cannot determine how recent the proof is.{" "}
-                    <strong>No Reddit or forum presence.</strong> The only identifiable Reddit result for Snapsheet is a 4-year-old r/Geico post asking whether it is a good employer &mdash; an employment question, not a product discussion, with no official Snapsheet account visible. Like Broker Buddha, Snapsheet has no meaningful community footprint that an LLM could draw on for organic third-party discussion.
-                  </p>
-                </div>
               </div>
             </div>
           </div>
