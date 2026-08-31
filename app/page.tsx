@@ -471,7 +471,7 @@ export default function Home() {
               <img src="/dexify-logo.png" alt="Dexify" style={{ height: 32, width: "auto", objectFit: "contain" }} />
             </a>
             <a href="/product/ralfi-visibility/login" style={{ textDecoration: "none", outline: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)", transition: "opacity 0.2s, filter 0.2s" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; }}>
-              <img src="/Ralfi ai.png" alt="Ralfi AI" style={{ height: 32, width: "auto", objectFit: "contain" }} />
+              <img src="/Ralfi ai.png" alt="Ralfi AI" style={{ height: 44, width: "auto", objectFit: "contain", mixBlendMode: "multiply" }} />
             </a>
           </div>
         </div>
