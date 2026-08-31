@@ -1,3 +1,13 @@
 {
-  "crons": []
+  "crons": [
+    { "path": "/api/cron/esai-collection?model=claude-haiku-4-5", "schedule": "5 7 * * *" },
+    { "path": "/api/cron/esai-collection?model=gpt-4o-mini",      "schedule": "15 7 * * *" },
+    { "path": "/api/cron/esai-aggregate",                          "schedule": "50 7 * * *" },
+    { "path": "/api/cron/esai-sentiment-collection?model=claude-haiku-4-5", "schedule": "10 9 * * *" },
+    { "path": "/api/cron/esai-sentiment-collection?model=gpt-4o-mini",      "schedule": "40 9 * * *" },
+    { "path": "/api/cron/esai-sentiment-aggregate",                          "schedule": "0 4 * * 0" },
+    { "path": "/api/cron/esai-feature-collection?model=claude-haiku-4-5", "schedule": "5 11 * * *" },
+    { "path": "/api/cron/esai-feature-collection?model=gpt-4o-mini",      "schedule": "20 11 * * *" },
+    { "path": "/api/cron/esai-feature-aggregate",                          "schedule": "55 11 * * *" }
+  ]
 }

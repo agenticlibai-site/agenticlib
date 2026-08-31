@@ -3498,6 +3498,321 @@ export async function getRalfiSentimentData(): Promise<{
 }
 
 // ═══════════════════════════════════════════════════════════════════════════════
+// ESAI pipeline — AI Estimating for Australian Construction
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let _esaiDbInit: Promise<void> | null = null;
+
+export function initEsaiDB(): Promise<void> {
+  if (!_esaiDbInit) {
+    _esaiDbInit = _runEsaiDDL().catch(err => {
+      _esaiDbInit = null;
+      return Promise.reject(err);
+    });
+  }
+  return _esaiDbInit;
+}
+
+async function _runEsaiDDL(): Promise<void> {
+  await sql`
+    CREATE TABLE IF NOT EXISTS esai_raw_responses (
+      id             SERIAL PRIMARY KEY,
+      date           DATE    NOT NULL,
+      prompt_id      INTEGER NOT NULL,
+      prompt_text    TEXT    NOT NULL,
+      cluster_tag    TEXT    NOT NULL,
+      model          TEXT    NOT NULL,
+      model_snapshot TEXT,
+      run_number     INTEGER NOT NULL,
+      brands         JSONB   NOT NULL DEFAULT '[]',
+      created_at     TIMESTAMP DEFAULT NOW(),
+      UNIQUE (date, prompt_id, model, run_number)
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS esai_daily_summary (
+      id            SERIAL PRIMARY KEY,
+      date          DATE    NOT NULL,
+      brand         TEXT    NOT NULL,
+      model         TEXT    NOT NULL,
+      cluster_tag   TEXT    NOT NULL,
+      mention_count INTEGER NOT NULL DEFAULT 0,
+      avg_position  FLOAT,
+      created_at    TIMESTAMP DEFAULT NOW(),
+      UNIQUE (date, brand, model, cluster_tag)
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS esai_denylist (
+      brand_name TEXT NOT NULL UNIQUE,
+      reason     TEXT,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS esai_sentiment_responses (
+      id          SERIAL PRIMARY KEY,
+      brand_name  TEXT    NOT NULL,
+      prompt_id   INTEGER NOT NULL,
+      bucket_tag  TEXT    NOT NULL,
+      model       TEXT    NOT NULL,
+      run_date    DATE    NOT NULL DEFAULT CURRENT_DATE,
+      sentiment   TEXT    CHECK (sentiment IN ('positive', 'neutral', 'negative')),
+      confidence  TEXT    CHECK (confidence IN ('high', 'medium', 'low')),
+      descriptors TEXT[],
+      limitations TEXT[],
+      raw_json    JSONB,
+      parse_error BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at  TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS esai_sentiment_scores (
+      id              SERIAL PRIMARY KEY,
+      brand_name      TEXT    NOT NULL,
+      bucket_tag      TEXT    NOT NULL,
+      positive_count  INTEGER NOT NULL DEFAULT 0,
+      neutral_count   INTEGER NOT NULL DEFAULT 0,
+      negative_count  INTEGER NOT NULL DEFAULT 0,
+      total_count     INTEGER NOT NULL DEFAULT 0,
+      top_descriptors TEXT[],
+      unique_flags    TEXT[],
+      week_start      DATE    NOT NULL,
+      scored_at       TIMESTAMP DEFAULT NOW(),
+      UNIQUE (brand_name, bucket_tag, week_start)
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS esai_sentiment_drift (
+      id           SERIAL PRIMARY KEY,
+      brand_name   TEXT    NOT NULL,
+      bucket_tag   TEXT    NOT NULL,
+      week_start   DATE    NOT NULL,
+      positive_pct FLOAT   NOT NULL,
+      neutral_pct  FLOAT   NOT NULL,
+      negative_pct FLOAT   NOT NULL,
+      drift_flag   BOOLEAN NOT NULL DEFAULT FALSE,
+      drift_reason TEXT,
+      created_at   TIMESTAMP DEFAULT NOW(),
+      UNIQUE (brand_name, bucket_tag, week_start)
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS esai_feature_responses (
+      id              SERIAL PRIMARY KEY,
+      brand_name      TEXT    NOT NULL,
+      feature_id      TEXT    NOT NULL,
+      feature_tag     TEXT    NOT NULL,
+      model           TEXT    NOT NULL,
+      run_number      INTEGER NOT NULL,
+      run_date        DATE    NOT NULL DEFAULT CURRENT_DATE,
+      has_capability  TEXT    CHECK (has_capability IN ('yes','no','partial','not_documented')),
+      evidence        TEXT,
+      limitations     TEXT,
+      confidence      TEXT    CHECK (confidence IN ('high','medium','low')),
+      terminology_tags TEXT[],
+      raw_json        JSONB,
+      parse_error     BOOLEAN NOT NULL DEFAULT FALSE,
+      grounded        BOOLEAN NOT NULL DEFAULT FALSE,
+      created_at      TIMESTAMP DEFAULT NOW()
+    )
+  `;
+  await sql`
+    CREATE TABLE IF NOT EXISTS esai_feature_scores (
+      id                 SERIAL PRIMARY KEY,
+      brand_name         TEXT    NOT NULL,
+      feature_id         TEXT    NOT NULL,
+      feature_tag        TEXT    NOT NULL,
+      score              NUMERIC,
+      score_band         TEXT,
+      runs_agreeing      INTEGER,
+      runs_total         INTEGER NOT NULL DEFAULT 0,
+      flagged_for_review BOOLEAN NOT NULL DEFAULT FALSE,
+      flag_reason        TEXT,
+      notes              TEXT,
+      grounded_source    BOOLEAN DEFAULT FALSE,
+      scored_at          TIMESTAMP DEFAULT NOW(),
+      UNIQUE (brand_name, feature_id)
+    )
+  `;
+}
+
+export async function insertEsaiRawResponse(row: {
+  date: string; promptId: number; promptText: string; clusterTag: string;
+  model: string; modelSnapshot: string; runNumber: number; brands: string[];
+}): Promise<void> {
+  await sql`
+    INSERT INTO esai_raw_responses
+      (date, prompt_id, prompt_text, cluster_tag, model, model_snapshot, run_number, brands)
+    VALUES
+      (${row.date}::date, ${row.promptId}, ${row.promptText}, ${row.clusterTag},
+       ${row.model}, ${row.modelSnapshot}, ${row.runNumber}, ${JSON.stringify(row.brands)}::jsonb)
+    ON CONFLICT (date, prompt_id, model, run_number) DO UPDATE SET
+      brands = EXCLUDED.brands, model_snapshot = EXCLUDED.model_snapshot
+  `;
+}
+
+export async function getEsaiTopBrandsForFeatureScoring(): Promise<string[]> {
+  const { LOCKED_ESAI_BRANDS } = await import("@/lib/brand-visibility/esai-features");
+  return [...LOCKED_ESAI_BRANDS];
+}
+
+export async function insertEsaiFeatureResponse(row: {
+  brand_name: string; feature_id: string; feature_tag: string;
+  model: string; run_number: number; run_date: string;
+  has_capability: string | null; evidence: string | null;
+  limitations: string | null; confidence: string | null;
+  terminology_tags: string[] | null; raw_json: object | null;
+  parse_error: boolean; grounded: boolean;
+}): Promise<void> {
+  await sql`
+    INSERT INTO esai_feature_responses
+      (brand_name, feature_id, feature_tag, model, run_number, run_date,
+       has_capability, evidence, limitations, confidence, terminology_tags,
+       raw_json, parse_error, grounded)
+    VALUES
+      (${row.brand_name}, ${row.feature_id}, ${row.feature_tag}, ${row.model},
+       ${row.run_number}, ${row.run_date}::date,
+       ${row.has_capability}, ${row.evidence}, ${row.limitations}, ${row.confidence},
+       ${row.terminology_tags ?? null}::text[],
+       ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb,
+       ${row.parse_error}, ${row.grounded})
+  `;
+}
+
+export async function getEsaiFeatureResponsesForScoring(runDate: string): Promise<{
+  brand_name: string; feature_id: string; feature_tag: string;
+  has_capability: string | null; confidence: string | null;
+  evidence: string | null; parse_error: boolean; grounded: boolean;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, feature_id, feature_tag, has_capability, confidence, evidence, parse_error, grounded
+    FROM esai_feature_responses
+    WHERE run_date = ${runDate}::date
+    ORDER BY brand_name, feature_id
+  `;
+  return result.rows as {
+    brand_name: string; feature_id: string; feature_tag: string;
+    has_capability: string | null; confidence: string | null;
+    evidence: string | null; parse_error: boolean; grounded: boolean;
+  }[];
+}
+
+export async function upsertEsaiFeatureScore(row: {
+  brand_name: string; feature_id: string; feature_tag: string;
+  score: number | null; score_band: string;
+  runs_agreeing: number | null; runs_total: number;
+  flagged_for_review: boolean; flag_reason: string | null;
+  notes: string | null; grounded_source: boolean;
+}): Promise<void> {
+  await sql`
+    INSERT INTO esai_feature_scores
+      (brand_name, feature_id, feature_tag, score, score_band,
+       runs_agreeing, runs_total, flagged_for_review, flag_reason, notes, grounded_source)
+    VALUES
+      (${row.brand_name}, ${row.feature_id}, ${row.feature_tag},
+       ${row.score}, ${row.score_band}, ${row.runs_agreeing}, ${row.runs_total},
+       ${row.flagged_for_review}, ${row.flag_reason}, ${row.notes}, ${row.grounded_source})
+    ON CONFLICT (brand_name, feature_id) DO UPDATE SET
+      score = EXCLUDED.score, score_band = EXCLUDED.score_band,
+      runs_agreeing = EXCLUDED.runs_agreeing, runs_total = EXCLUDED.runs_total,
+      flagged_for_review = EXCLUDED.flagged_for_review, flag_reason = EXCLUDED.flag_reason,
+      notes = EXCLUDED.notes, grounded_source = EXCLUDED.grounded_source,
+      scored_at = NOW()
+  `;
+}
+
+export async function insertEsaiSentimentResponse(row: {
+  brand_name: string; prompt_id: number; bucket_tag: string; model: string; run_date: string;
+  sentiment: string | null; confidence: string | null; descriptors: string[] | null;
+  limitations: string[] | null; raw_json: object | null; parse_error: boolean;
+}): Promise<void> {
+  await sql`
+    INSERT INTO esai_sentiment_responses
+      (brand_name, prompt_id, bucket_tag, model, run_date,
+       sentiment, confidence, descriptors, limitations, raw_json, parse_error)
+    VALUES
+      (${row.brand_name}, ${row.prompt_id}, ${row.bucket_tag}, ${row.model}, ${row.run_date}::date,
+       ${row.sentiment}, ${row.confidence}, ${row.descriptors ?? null}::text[],
+       ${row.limitations ?? null}::text[],
+       ${row.raw_json ? JSON.stringify(row.raw_json) : null}::jsonb,
+       ${row.parse_error})
+  `;
+}
+
+export async function getEsaiSentimentResponsesForWeek(weekStart: string, weekEnd: string): Promise<{
+  brand_name: string; bucket_tag: string; sentiment: string | null;
+  confidence: string | null; descriptors: string[] | null; limitations: string[] | null;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, bucket_tag, sentiment, confidence, descriptors, limitations
+    FROM esai_sentiment_responses
+    WHERE run_date >= ${weekStart}::date AND run_date <= ${weekEnd}::date
+      AND parse_error = false
+    ORDER BY brand_name, bucket_tag
+  `;
+  return result.rows as {
+    brand_name: string; bucket_tag: string; sentiment: string | null;
+    confidence: string | null; descriptors: string[] | null; limitations: string[] | null;
+  }[];
+}
+
+export async function getPrevEsaiSentimentScores(prevWeekStart: string): Promise<{
+  brand_name: string; bucket_tag: string;
+  positive_count: number; neutral_count: number; negative_count: number; total_count: number;
+}[]> {
+  const result = await sql`
+    SELECT brand_name, bucket_tag, positive_count, neutral_count, negative_count, total_count
+    FROM esai_sentiment_scores
+    WHERE week_start = ${prevWeekStart}::date
+  `;
+  return result.rows as {
+    brand_name: string; bucket_tag: string;
+    positive_count: number; neutral_count: number; negative_count: number; total_count: number;
+  }[];
+}
+
+export async function upsertEsaiSentimentScore(row: {
+  brand_name: string; bucket_tag: string; week_start: string;
+  positive_count: number; neutral_count: number; negative_count: number; total_count: number;
+  top_descriptors: string[]; unique_flags: string[];
+}): Promise<void> {
+  await sql`
+    INSERT INTO esai_sentiment_scores
+      (brand_name, bucket_tag, week_start, positive_count, neutral_count, negative_count,
+       total_count, top_descriptors, unique_flags)
+    VALUES
+      (${row.brand_name}, ${row.bucket_tag}, ${row.week_start}::date,
+       ${row.positive_count}, ${row.neutral_count}, ${row.negative_count}, ${row.total_count},
+       ${row.top_descriptors}::text[], ${row.unique_flags}::text[])
+    ON CONFLICT (brand_name, bucket_tag, week_start) DO UPDATE SET
+      positive_count = EXCLUDED.positive_count, neutral_count = EXCLUDED.neutral_count,
+      negative_count = EXCLUDED.negative_count, total_count = EXCLUDED.total_count,
+      top_descriptors = EXCLUDED.top_descriptors, unique_flags = EXCLUDED.unique_flags,
+      scored_at = NOW()
+  `;
+}
+
+export async function upsertEsaiSentimentDrift(row: {
+  brand_name: string; bucket_tag: string; week_start: string;
+  positive_pct: number; neutral_pct: number; negative_pct: number;
+  drift_flag: boolean; drift_reason: string | null;
+}): Promise<void> {
+  await sql`
+    INSERT INTO esai_sentiment_drift
+      (brand_name, bucket_tag, week_start, positive_pct, neutral_pct, negative_pct, drift_flag, drift_reason)
+    VALUES
+      (${row.brand_name}, ${row.bucket_tag}, ${row.week_start}::date,
+       ${row.positive_pct}, ${row.neutral_pct}, ${row.negative_pct},
+       ${row.drift_flag}, ${row.drift_reason})
+    ON CONFLICT (brand_name, bucket_tag, week_start) DO UPDATE SET
+      positive_pct = EXCLUDED.positive_pct, neutral_pct = EXCLUDED.neutral_pct,
+      negative_pct = EXCLUDED.negative_pct, drift_flag = EXCLUDED.drift_flag,
+      drift_reason = EXCLUDED.drift_reason, created_at = NOW()
+  `;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
 // SDAI pipeline — AI Video Creation for Customer Education
 // ═══════════════════════════════════════════════════════════════════════════════
 
