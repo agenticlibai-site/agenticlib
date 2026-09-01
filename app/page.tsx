@@ -278,6 +278,23 @@ export default function Home() {
         </div>
       )}
       <style>{`
+        @keyframes marquee-scroll {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
+        }
+
+        /* Logo marquee — desktop: normal centered row */
+        .logo-marquee { width: 100%; }
+        .logo-track { display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; }
+        .logo-dupe { display: none; }
+
+        @media (max-width: 640px) {
+          .logo-marquee { overflow: hidden; }
+          .logo-track { flex-wrap: nowrap; justify-content: flex-start; gap: 40px; animation: marquee-scroll 10s linear infinite; width: max-content; }
+          .logo-track > * { flex-shrink: 0 !important; }
+          .logo-dupe { display: flex !important; align-items: center; }
+        }
+
         @media (max-width: 900px) {
           .hero-content { padding: 90px 24px 0 !important; max-width: 100% !important; }
           .hero-snap-wrap { margin-top: 36px !important; border-radius: 10px !important; }
@@ -295,10 +312,7 @@ export default function Home() {
           /* Trusted By spacing */
           .trusted-by-section { padding: 40px 16px 44px !important; }
 
-          /* Trusted By logos — horizontal scroll on mobile */
-          .logo-row { overflow-x: auto; flex-wrap: nowrap !important; justify-content: flex-start !important; gap: 36px !important; padding: 0 4px 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; width: 100%; }
-          .logo-row::-webkit-scrollbar { display: none; }
-          .logo-row > * { flex-shrink: 0 !important; }
+          /* Trusted By spacing only — marquee handled globally above */
 
           /* Sage AI header */
           .sage-header { padding: 0 20px !important; }
@@ -471,17 +485,31 @@ export default function Home() {
             </span>
             <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
           </div>
-          <div className="logo-row" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 48, flexWrap: "wrap" }}>
-            <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" className="dewwie-logo" style={{ textDecoration: "none" }}>dewwie</a>
-            <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", borderBottom: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "grayscale(1) brightness(0)"; el.style.textDecoration = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; el.style.textDecoration = "none"; }}>
-              <img src="/lamigo logo .png" alt="Lamigo" style={{ height: 38, width: "auto", objectFit: "contain" }} />
-            </a>
-            <a href="https://dexifyai.com/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; }}>
-              <img src="/dexify-logo.png" alt="Dexify" style={{ height: 32, width: "auto", objectFit: "contain" }} />
-            </a>
-            <a href="https://ralfi.io/" target="_blank" rel="noopener noreferrer" className="ralfi-logo-link">
-              <img src="/Ralfi ai.png" alt="Ralfi AI" className="ralfi-logo-img" />
-            </a>
+          <div className="logo-marquee">
+            <div className="logo-track">
+              {/* — original set — */}
+              <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" className="dewwie-logo" style={{ textDecoration: "none" }}>dewwie</a>
+              <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", borderBottom: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "grayscale(1) brightness(0)"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; }}>
+                <img src="/lamigo logo .png" alt="Lamigo" style={{ height: 38, width: "auto", objectFit: "contain" }} />
+              </a>
+              <a href="https://dexifyai.com/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; }}>
+                <img src="/dexify-logo.png" alt="Dexify" style={{ height: 32, width: "auto", objectFit: "contain" }} />
+              </a>
+              <a href="https://ralfi.io/" target="_blank" rel="noopener noreferrer" className="ralfi-logo-link">
+                <img src="/Ralfi ai.png" alt="Ralfi AI" className="ralfi-logo-img" />
+              </a>
+              {/* — duplicate set for seamless loop (mobile only) — */}
+              <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" className="dewwie-logo logo-dupe" style={{ textDecoration: "none" }}>dewwie</a>
+              <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" className="logo-dupe" style={{ opacity: 0.45, filter: "grayscale(1)" }}>
+                <img src="/lamigo logo .png" alt="Lamigo" style={{ height: 38, width: "auto", objectFit: "contain" }} />
+              </a>
+              <a href="https://dexifyai.com/" target="_blank" rel="noopener noreferrer" className="logo-dupe" style={{ opacity: 0.45, filter: "grayscale(1)" }}>
+                <img src="/dexify-logo.png" alt="Dexify" style={{ height: 32, width: "auto", objectFit: "contain" }} />
+              </a>
+              <a href="https://ralfi.io/" target="_blank" rel="noopener noreferrer" className="ralfi-logo-link logo-dupe">
+                <img src="/Ralfi ai.png" alt="Ralfi AI" className="ralfi-logo-img" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
