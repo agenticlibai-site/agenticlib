@@ -296,8 +296,9 @@ export default function Home() {
           .trusted-by-section { padding: 40px 16px 44px !important; }
 
           /* Trusted By logos — horizontal scroll on mobile */
-          .logo-row { overflow-x: auto; flex-wrap: nowrap !important; justify-content: flex-start !important; padding-bottom: 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+          .logo-row { overflow-x: auto; flex-wrap: nowrap !important; justify-content: flex-start !important; gap: 36px !important; padding: 0 4px 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; width: 100%; }
           .logo-row::-webkit-scrollbar { display: none; }
+          .logo-row > * { flex-shrink: 0 !important; }
 
           /* Sage AI header */
           .sage-header { padding: 0 20px !important; }
