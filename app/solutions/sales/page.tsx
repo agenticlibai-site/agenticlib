@@ -1,6 +1,27 @@
-export const metadata = {
-  title: "Sales Solutions – AgenticLib",
-  description: "AgenticLib helps sales AI agents compete — track LLM visibility among revenue teams, benchmark capabilities, and understand how buyers evaluate sales AI before shortlisting.",
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Sales AI Agents – AgenticLib",
+  description: "AgenticLib helps sales AI agents compete. Track your LLM visibility among revenue teams, benchmark capabilities against tools like Outreach, Apollo and Gong, and understand how buyers evaluate sales AI before shortlisting.",
+  keywords: [
+    "sales AI agents", "AI sales tools comparison", "LLM visibility sales AI",
+    "compare sales AI platforms", "AI agent benchmarking sales", "sales AI competitive intelligence",
+  ],
+  alternates: { canonical: "https://agenticlib.com/solutions/sales" },
+  openGraph: {
+    type: "website",
+    siteName: "AgenticLib",
+    title: "Sales AI Agents – AgenticLib",
+    description: "Track your sales AI agent's visibility in LLM search, benchmark capabilities against competitors, and surface where revenue teams are finding alternatives.",
+    url: "https://agenticlib.com/solutions/sales",
+    images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "AgenticLib – Sales AI" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sales AI Agents – AgenticLib",
+    description: "Track your sales AI agent's visibility in LLM search, benchmark capabilities against competitors, and surface where revenue teams are finding alternatives.",
+    images: ["/recommendations-cover.png"],
+  },
 };
 
 const ACCENT = "#2563EB";

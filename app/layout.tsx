@@ -103,6 +103,21 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
 
+        {/* JSON-LD — Organization schema */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "AgenticLib",
+            "url": "https://agenticlib.com",
+            "logo": "https://agenticlib.com/logo.png",
+            "description": "AgenticLib is the comparison intelligence platform for AI agent builders. Track LLM search visibility, benchmark features against competitors, and turn gaps into a roadmap.",
+            "sameAs": [],
+            "contactPoint": { "@type": "ContactPoint", "contactType": "customer support", "email": "hello@agenticlib.com" },
+          }) }}
+        />
+
         <Navbar />
 
         {/* Page content */}

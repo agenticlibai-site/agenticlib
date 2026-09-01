@@ -3,7 +3,28 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Company – AgenticLib",
   description:
-    "AgenticLib is the comparison intelligence platform for AI agent builders. Stop learning what you're losing to from a lost customer and start competing where buyers are actually asking.",
+    "AgenticLib is the comparison intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search, benchmark features against competitors, and turn gaps into a roadmap.",
+  keywords: [
+    "AgenticLib company", "AI agent comparison platform", "AI visibility tracking",
+    "LLM search visibility", "AI competitive intelligence", "AI agent benchmarking",
+  ],
+  alternates: { canonical: "https://agenticlib.com/company" },
+  openGraph: {
+    type: "website",
+    siteName: "AgenticLib",
+    title: "Company – AgenticLib",
+    description:
+      "AgenticLib is the comparison intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search and benchmark features against competitors.",
+    url: "https://agenticlib.com/company",
+    images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "AgenticLib" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Company – AgenticLib",
+    description:
+      "AgenticLib is the comparison intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search and benchmark features against competitors.",
+    images: ["/recommendations-cover.png"],
+  },
 };
 
 export default function CompanyPage() {

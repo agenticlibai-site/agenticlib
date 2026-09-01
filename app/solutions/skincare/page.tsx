@@ -1,6 +1,27 @@
-export const metadata = {
-  title: "Skincare & Beauty Solutions – AgenticLib",
-  description: "AgenticLib helps skincare and beauty AI agents compete — track LLM visibility, benchmark personalisation depth, and understand consumer trust signals against competitors.",
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Skincare & Beauty AI Agents – AgenticLib",
+  description: "AgenticLib helps skincare and beauty AI agents compete. Track LLM visibility, benchmark personalisation depth and ingredient intelligence against competitors, and understand consumer trust signals before buyers shortlist.",
+  keywords: [
+    "skincare AI agents", "beauty AI tools comparison", "AI skincare personalisation",
+    "LLM visibility beauty AI", "compare skincare AI platforms", "AI agent benchmarking skincare",
+  ],
+  alternates: { canonical: "https://agenticlib.com/solutions/skincare" },
+  openGraph: {
+    type: "website",
+    siteName: "AgenticLib",
+    title: "Skincare & Beauty AI Agents – AgenticLib",
+    description: "Track your skincare AI agent's visibility in LLM search, benchmark personalisation depth against competitors, and surface where consumers are finding alternatives.",
+    url: "https://agenticlib.com/solutions/skincare",
+    images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "AgenticLib – Skincare AI" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Skincare & Beauty AI Agents – AgenticLib",
+    description: "Track your skincare AI agent's visibility in LLM search, benchmark personalisation depth against competitors, and surface where consumers are finding alternatives.",
+    images: ["/recommendations-cover.png"],
+  },
 };
 
 const ACCENT = "#C2186A";

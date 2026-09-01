@@ -1,6 +1,27 @@
-export const metadata = {
-  title: "Marketing Solutions – AgenticLib",
-  description: "AgenticLib helps marketing AI agents compete — track visibility, benchmark features, and surface where buyers are finding your competitors across LLMs.",
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Marketing AI Agents – AgenticLib",
+  description: "AgenticLib helps marketing AI agents compete. Track your LLM visibility, benchmark features against competitors like Jasper, Copy.ai and Typeface, and surface exactly where buyers are finding alternatives.",
+  keywords: [
+    "marketing AI agents", "AI marketing tools comparison", "AI content generation visibility",
+    "LLM search marketing", "AI agent benchmarking marketing", "compare marketing AI tools",
+  ],
+  alternates: { canonical: "https://agenticlib.com/solutions/marketing" },
+  openGraph: {
+    type: "website",
+    siteName: "AgenticLib",
+    title: "Marketing AI Agents – AgenticLib",
+    description: "Track your marketing AI agent's visibility in LLM search, benchmark features against competitors, and turn gaps into a roadmap.",
+    url: "https://agenticlib.com/solutions/marketing",
+    images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "AgenticLib – Marketing AI" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Marketing AI Agents – AgenticLib",
+    description: "Track your marketing AI agent's visibility in LLM search, benchmark features against competitors, and turn gaps into a roadmap.",
+    images: ["/recommendations-cover.png"],
+  },
 };
 
 const ACCENT = "#7C3AED";
