@@ -4,14 +4,14 @@
 // ── Grounding & output templates ───────────────────────────────────────────────
 
 export const ESAI_FEATURE_SYSTEM_PROMPT =
-  "You are a competitive intelligence analyst evaluating AI estimating agents for Australian builders, trades and estimators. " +
+  "You are a competitive intelligence analyst evaluating estimating and takeoff software used by Australian builders, trades and estimators. " +
   "For each feature, explain the brand's specific implementation and the practical value it delivers to a builder pricing a construction job — not generic feature existence. " +
   "Return ONLY valid JSON matching the exact schema. No markdown, no explanation — just the JSON object.";
 
 export const ESAI_GROUNDING_INSTRUCTION =
   "Only include information specific to [BRAND]'s documented product. " +
   "Do not infer capabilities from what similar tools typically do. " +
-  "If you are uncertain whether [BRAND] specifically has this capability for construction estimating, " +
+  "If you are uncertain whether [BRAND] specifically has this capability for Australian construction estimating, " +
   "set has_capability to not_documented rather than guessing.";
 
 export const ESAI_JSON_OUTPUT_SPEC =

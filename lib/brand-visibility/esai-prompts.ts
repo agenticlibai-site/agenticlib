@@ -1,9 +1,12 @@
-// ESAI pipeline — AI agent visibility for Australian construction estimating
-// Collection system prompt + 39 prompts (9 overall + 10 clusters × 3).
+// ESAI pipeline — Australian Construction Estimating
+// Collection system prompt + 39 prompts (9 overall + 30 SoV across 10 clusters).
+// Scope: any estimating/takeoff/quoting tool used by Australian builders and trades —
+// traditional, AI-assisted, or AI-native. Not restricted to AI agents only.
 
 export const ESAI_COLLECTION_SYSTEM_PROMPT =
   'You are a market research assistant. Return ONLY valid JSON in this exact format: {"brands": ["Brand A", "Brand B", ...]}' +
-  "\n\nList every brand name that would naturally appear in your response, in the order they would appear. Include all distinct brand names — do not filter or pre-select. Include every AI agent, platform, or product that comes up naturally when answering the question." +
+  "\n\nAnswer the user's question naturally, then list every brand name you would mention in your answer, in the order they appear. Include any company, product, or platform name that is relevant — do not over-filter." +
+  "\n\nIf the question is about estimating or takeoff software for Australian builders and trades, include any software product, platform, or tool that Australian builders, estimators or trades use for estimating, quoting, takeoff or job pricing — whether traditional software, AI-assisted, or AI-native. When in doubt, include it." +
   "\n\nNo other text, no markdown formatting, no explanation — just the JSON object.";
 
 export interface EsaiPrompt {
@@ -15,63 +18,63 @@ export interface EsaiPrompt {
 export const ESAI_PROMPTS: EsaiPrompt[] = [
 
   // ── Overall Brand Mentions · esai-overall (9 prompts) ────────────────────────
-  { id: 1,  tag: "esai-overall", text: "Which AI agents do Australian builders use to estimate the cost of a new home build?" },
-  { id: 2,  tag: "esai-overall", text: "Which AI agents do Australian construction estimators use to measure quantities from drawings?" },
-  { id: 3,  tag: "esai-overall", text: "Which AI agents are Australian builders and trades using for construction estimating?" },
-  { id: 4,  tag: "esai-overall", text: "Which AI agents help Australian builders produce faster, more accurate quotes?" },
-  { id: 5,  tag: "esai-overall", text: "Which AI agents do custom home builders in Australia use to price a job before tender?" },
-  { id: 6,  tag: "esai-overall", text: "Which AI agents let builders upload PDF plans and get a trade-by-trade cost breakdown?" },
-  { id: 7,  tag: "esai-overall", text: "Which AI agents are leading construction takeoff and estimating in Australia?" },
-  { id: 8,  tag: "esai-overall", text: "Which AI agents do Australian estimators and quantity surveyors use to price residential projects?" },
-  { id: 9,  tag: "esai-overall", text: "Which AI agents do Australian builders use to quote subcontract packages?" },
+  { id: 1,  tag: "esai-overall", text: "What estimating software do Australian builders use?" },
+  { id: 2,  tag: "esai-overall", text: "What tools do Australian residential builders use to price jobs?" },
+  { id: 3,  tag: "esai-overall", text: "What software do Australian estimators use for quantity takeoff?" },
+  { id: 4,  tag: "esai-overall", text: "What estimating platforms are popular with Australian building companies?" },
+  { id: 5,  tag: "esai-overall", text: "What software helps Australian builders price new homes?" },
+  { id: 6,  tag: "esai-overall", text: "What tools do Australian trades and estimators use to quote jobs?" },
+  { id: 7,  tag: "esai-overall", text: "What estimating software do Australian commercial builders use?" },
+  { id: 8,  tag: "esai-overall", text: "What are Australian builders using to speed up their estimating process in 2025?" },
+  { id: 9,  tag: "esai-overall", text: "Which estimating software companies are targeting the Australian construction market?" },
 
   // ── Cluster 1 — Quantity Takeoff · esai-takeoff (3 prompts) ─────────────────
-  { id: 10, tag: "esai-takeoff", text: "Which AI agents automatically measure quantities from PDF building plans?" },
-  { id: 11, tag: "esai-takeoff", text: "Which AI agents perform automated takeoffs from architectural and structural drawings?" },
-  { id: 12, tag: "esai-takeoff", text: "Which AI agents let builders complete a quantity takeoff without manually scaling drawings?" },
+  { id: 10, tag: "esai-takeoff", text: "What software do Australian builders use for quantity takeoff from plans?" },
+  { id: 11, tag: "esai-takeoff", text: "What tools do Australian estimators use to measure quantities from PDF drawings?" },
+  { id: 12, tag: "esai-takeoff", text: "What platforms help Australian builders do automated takeoff from building plans?" },
 
   // ── Cluster 2 — Plan & Document Reading · esai-plans (3 prompts) ─────────────
-  { id: 13, tag: "esai-plans", text: "Which AI agents can read and interpret PDF architectural drawings for estimating?" },
-  { id: 14, tag: "esai-plans", text: "Which AI agents cross-reference architectural, structural and engineering documents for estimating?" },
-  { id: 15, tag: "esai-plans", text: "Which AI agents extract measurements directly from uploaded construction plans?" },
+  { id: 13, tag: "esai-plans", text: "What software do Australian builders use to read and extract information from architectural drawings?" },
+  { id: 14, tag: "esai-plans", text: "What tools help Australian estimators work with multiple building documents in one project?" },
+  { id: 15, tag: "esai-plans", text: "What platforms let Australian builders upload and read plans, specs and engineering drawings together?" },
 
-  // ── Cluster 3 — Trade Scoping · esai-scope (3 prompts) ───────────────────────
-  { id: 16, tag: "esai-scope", text: "Which AI agents break a construction job down trade by trade — concrete, framing, brickwork, roofing?" },
-  { id: 17, tag: "esai-scope", text: "Which AI agents help builders scope a full new build across all construction trades?" },
-  { id: 18, tag: "esai-scope", text: "Which AI agents organise a construction estimate by trade package for subcontractor pricing?" },
+  // ── Cluster 3 — Trade Scoping · esai-scope (3 prompts) ──────────────────────
+  { id: 16, tag: "esai-scope", text: "What software do Australian builders use to break down a job by trade?" },
+  { id: 17, tag: "esai-scope", text: "What tools help Australian estimators organise scope by trade package?" },
+  { id: 18, tag: "esai-scope", text: "What platforms automatically scope a construction job by trade for Australian builders?" },
 
   // ── Cluster 4 — Rate Management & Pricing · esai-pricing (3 prompts) ─────────
-  { id: 19, tag: "esai-pricing", text: "Which AI agents let builders apply their own rates when estimating a construction project?" },
-  { id: 20, tag: "esai-pricing", text: "Which AI agents include an Australian construction pricing database?" },
-  { id: 21, tag: "esai-pricing", text: "Which AI agents let estimators store and apply custom labour and material rates per trade?" },
+  { id: 19, tag: "esai-pricing", text: "What software do Australian builders use to price materials and labour?" },
+  { id: 20, tag: "esai-pricing", text: "What estimating tools include Australian construction pricing databases?" },
+  { id: 21, tag: "esai-pricing", text: "What estimating platforms let Australian builders apply their own rates?" },
 
   // ── Cluster 5 — Quote & Estimate Output · esai-quote (3 prompts) ─────────────
-  { id: 22, tag: "esai-quote", text: "Which AI agents export a professional, trade-broken quote PDF for Australian building projects?" },
-  { id: 23, tag: "esai-quote", text: "Which AI agents produce a client-ready quote from a set of construction drawings?" },
-  { id: 24, tag: "esai-quote", text: "Which AI agents generate estimates that can be handed directly to a subcontractor?" },
+  { id: 22, tag: "esai-quote", text: "What software do Australian builders use to produce a formal quote or estimate?" },
+  { id: 23, tag: "esai-quote", text: "What tools help Australian builders export a professional PDF quote?" },
+  { id: 24, tag: "esai-quote", text: "What platforms produce trade-broken estimates for Australian construction projects?" },
 
   // ── Cluster 6 — Residential New Build · esai-residential (3 prompts) ─────────
-  { id: 25, tag: "esai-residential", text: "Which AI agents do Australian residential builders use for new home build estimating?" },
-  { id: 26, tag: "esai-residential", text: "Which AI agents do Australian volume and custom home builders use to estimate construction costs?" },
-  { id: 27, tag: "esai-residential", text: "Which AI agents handle the full estimating workflow for a new house — from plans to priced quote?" },
+  { id: 25, tag: "esai-residential", text: "What estimating software do Australian residential builders use?" },
+  { id: 26, tag: "esai-residential", text: "What tools do Australian house builders use to price new home builds?" },
+  { id: 27, tag: "esai-residential", text: "What platforms are popular with Australian volume and custom home builders for estimating?" },
 
   // ── Cluster 7 — Commercial Construction · esai-commercial (3 prompts) ─────────
-  { id: 28, tag: "esai-commercial", text: "Which AI agents do Australian commercial builders and contractors use for estimating?" },
-  { id: 29, tag: "esai-commercial", text: "Which AI agents handle commercial construction estimating and tender pricing in Australia?" },
-  { id: 30, tag: "esai-commercial", text: "Which AI agents support multi-trade estimating for commercial projects in Australia?" },
+  { id: 28, tag: "esai-commercial", text: "What estimating software do Australian commercial builders use?" },
+  { id: 29, tag: "esai-commercial", text: "What tools help Australian commercial contractors price large construction projects?" },
+  { id: 30, tag: "esai-commercial", text: "What platforms do Australian commercial builders use for tender estimating?" },
 
   // ── Cluster 8 — Subcontractor & Trade Quoting · esai-subcontract (3 prompts) ──
-  { id: 31, tag: "esai-subcontract", text: "Which AI agents help Australian trades and subcontractors produce their own quotes?" },
-  { id: 32, tag: "esai-subcontract", text: "Which AI agents let a carpenter, concreter or bricklayer price a job from a set of drawings?" },
-  { id: 33, tag: "esai-subcontract", text: "Which AI agents do Australian trades use to quote on builder-issued documents?" },
+  { id: 31, tag: "esai-subcontract", text: "What estimating software do Australian subcontractors and trades use?" },
+  { id: 32, tag: "esai-subcontract", text: "What tools help Australian trades price jobs from builder-issued drawings?" },
+  { id: 33, tag: "esai-subcontract", text: "What platforms do Australian subcontractors use to produce trade quotes quickly?" },
 
   // ── Cluster 9 — AI-Powered Estimating · esai-ai (3 prompts) ─────────────────
-  { id: 34, tag: "esai-ai", text: "Which AI agents are automating construction estimating for Australian builders?" },
-  { id: 35, tag: "esai-ai", text: "Which AI agents are changing how builders produce quotes and takeoffs in Australia?" },
-  { id: 36, tag: "esai-ai", text: "Which AI agents read plans and generate cost estimates automatically for Australian construction?" },
+  { id: 34, tag: "esai-ai", text: "What AI-powered estimating tools are available for Australian builders?" },
+  { id: 35, tag: "esai-ai", text: "What software uses AI to automate quantity takeoff for Australian construction?" },
+  { id: 36, tag: "esai-ai", text: "What platforms use artificial intelligence to help Australian builders price jobs faster?" },
 
   // ── Cluster 10 — Tender & Bid Preparation · esai-tender (3 prompts) ──────────
-  { id: 37, tag: "esai-tender", text: "Which AI agents help Australian builders prepare and submit tender pricing packages?" },
-  { id: 38, tag: "esai-tender", text: "Which AI agents do estimators use to manage bid preparation for construction tenders in Australia?" },
-  { id: 39, tag: "esai-tender", text: "Which AI agents support the full tender workflow from drawings to submitted price in Australia?" },
+  { id: 37, tag: "esai-tender", text: "What software do Australian builders use to prepare tender submissions?" },
+  { id: 38, tag: "esai-tender", text: "What tools help Australian estimators manage multiple tender bids?" },
+  { id: 39, tag: "esai-tender", text: "What platforms support the full tender preparation workflow for Australian construction?" },
 ];
