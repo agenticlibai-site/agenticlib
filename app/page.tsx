@@ -295,6 +295,10 @@ export default function Home() {
           /* Trusted By spacing */
           .trusted-by-section { padding: 40px 16px 44px !important; }
 
+          /* Trusted By logos — horizontal scroll on mobile */
+          .logo-row { overflow-x: auto; flex-wrap: nowrap !important; justify-content: flex-start !important; padding-bottom: 8px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+          .logo-row::-webkit-scrollbar { display: none; }
+
           /* Sage AI header */
           .sage-header { padding: 0 20px !important; }
           .sage-desc { font-size: 15px !important; }
@@ -466,7 +470,7 @@ export default function Home() {
             </span>
             <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
           </div>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 48, flexWrap: "wrap" }}>
+          <div className="logo-row" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 48, flexWrap: "wrap" }}>
             <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" className="dewwie-logo" style={{ textDecoration: "none" }}>dewwie</a>
             <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", borderBottom: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "grayscale(1) brightness(0)"; el.style.textDecoration = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; el.style.textDecoration = "none"; }}>
               <img src="/lamigo logo .png" alt="Lamigo" style={{ height: 38, width: "auto", objectFit: "contain" }} />
