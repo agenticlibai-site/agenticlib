@@ -25,14 +25,7 @@ export const metadata: Metadata = {
 };
 
 const ACCENT = "#7C3AED";
-
-const USE_CASES = [
-  { title: "Content Marketing & SEO", tag: "AI-generated content, keyword research, publishing workflows" },
-  { title: "Paid Advertising & Campaign Optimisation", tag: "Creative testing, bid automation, audience targeting" },
-  { title: "Outbound & Email Outreach", tag: "Personalised sequences, multi-channel delivery, reply intelligence" },
-  { title: "Brand Intelligence & Competitive Monitoring", tag: "Sentiment tracking, share of voice, competitor signals" },
-  { title: "Social Media Management", tag: "Scheduling, community engagement, content generation across channels" },
-];
+const A = "124,58,237";
 
 const FEATURES = [
   { name: "Content generation quality", desc: "Blog, email, social copy — output depth and accuracy" },
@@ -44,6 +37,22 @@ const FEATURES = [
   { name: "Workflow automation", desc: "Triggers, approval flows, publishing schedules" },
   { name: "Competitor content tracking", desc: "Gap analysis, topic monitoring, positioning alerts" },
 ];
+
+const SIGNALS = [
+  { label: "Buyer Intent", icon: "search" },
+  { label: "Market Insights", icon: "chart" },
+  { label: "Competitor Landscape", icon: "grid" },
+  { label: "Lost Deal Tracking", icon: "x" },
+  { label: "Customer Requests", icon: "bubble" },
+];
+
+function SignalIcon({ type, color }: { type: string; color: string }) {
+  if (type === "search") return <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.5" stroke={color} strokeWidth="1.7"/><path d="M13 13l3.5 3.5" stroke={color} strokeWidth="1.7" strokeLinecap="round"/></svg>;
+  if (type === "chart") return <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><polyline points="2,14 7,9 11,12 18,5" stroke={color} strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>;
+  if (type === "grid") return <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.6"/><rect x="12" y="2" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.6"/><rect x="2" y="12" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.6"/><rect x="12" y="12" width="6" height="6" rx="1.5" stroke={color} strokeWidth="1.6"/></svg>;
+  if (type === "x") return <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke={color} strokeWidth="1.6"/><path d="M7 13l6-6M7 7l6 6" stroke={color} strokeWidth="1.6" strokeLinecap="round"/></svg>;
+  return <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><path d="M3 5.5C3 4.4 3.9 3.5 5 3.5h10c1.1 0 2 .9 2 2V12c0 1.1-.9 2-2 2H7l-4 3V5.5z" stroke={color} strokeWidth="1.6" strokeLinejoin="round"/></svg>;
+}
 
 export default function MarketingPage() {
   return (
@@ -82,154 +91,183 @@ export default function MarketingPage() {
         </div>
       </section>
 
-      {/* ── Use Cases ── */}
-      <section style={{ maxWidth: 860, margin: "0 auto", padding: "56px 48px 0" }}>
-        <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: ACCENT, marginBottom: 10 }}>Use Cases</p>
-        <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, letterSpacing: "-0.02em", color: "#0A0A0A", lineHeight: 1.2, marginBottom: 36 }}>
-          Where marketing AI agents compete
+      {/* ── How It Works ── */}
+      <section style={{ maxWidth: 860, margin: "0 auto", padding: "80px 48px 0" }}>
+        <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: ACCENT, marginBottom: 10 }}>How It Works</p>
+        <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, letterSpacing: "-0.02em", color: "#0A0A0A", lineHeight: 1.2, marginBottom: 12 }}>
+          Five signals. One roadmap.
         </h2>
-        <div style={{ borderTop: "1px solid rgba(0,0,0,0.07)" }}>
-          {USE_CASES.map((uc, i) => (
-            <div key={i} className="uc-row" style={{ display: "flex", alignItems: "center", gap: 20, padding: "20px 0", borderBottom: "1px solid rgba(0,0,0,0.07)", cursor: "default" }}>
-              <div style={{ width: 3, height: 36, borderRadius: 2, background: ACCENT, flexShrink: 0, opacity: 0.5 }} />
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 700, fontSize: 15, color: "#0A0A0A", marginBottom: 3 }}>{uc.title}</div>
-                <div style={{ fontSize: 13, color: "#777", lineHeight: 1.5 }}>{uc.tag}</div>
-              </div>
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, opacity: 0.3 }}>
-                <path d="M3 8h10M9 4l4 4-4 4" stroke="#000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Signal → Roadmap ── */}
-      <section style={{ maxWidth: 860, margin: "0 auto", padding: "72px 48px 0" }}>
-        <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: ACCENT, marginBottom: 10 }}>Intelligence Layer</p>
-        <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, letterSpacing: "-0.02em", color: "#0A0A0A", lineHeight: 1.2, marginBottom: 14 }}>
-          Where your roadmap actually comes from
-        </h2>
-        <p style={{ fontSize: 15, color: "#555", lineHeight: 1.7, maxWidth: 620, marginBottom: 40 }}>
-          Most marketing AI builders piece together lost deals from memory, hear about competitor launches from customers, and run roadmap calls where the loudest voice wins. AgenticLib reads five signals simultaneously — and surfaces what they agree on.
+        <p style={{ fontSize: 15, color: "#555", lineHeight: 1.65, maxWidth: 580, marginBottom: 36 }}>
+          Most AI agent builders find out what buyers wanted after losing the deal. AgenticLib collects five intelligence signals and combines them into a prioritised product roadmap — so you build from evidence, not memory.
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 14, marginBottom: 14 }}>
-          {/* Buyer Intent */}
-          <div style={{ background: "rgba(255,255,255,0.7)", border: "1px solid rgba(124,58,237,0.11)", borderRadius: 16, padding: "28px 28px 26px", backdropFilter: "blur(12px)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-              <div style={{ width: 34, height: 34, borderRadius: 9, background: "rgba(124,58,237,0.09)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.5" stroke="#7C3AED" strokeWidth="1.7"/><path d="M13 13l3.5 3.5" stroke="#7C3AED" strokeWidth="1.7" strokeLinecap="round"/></svg>
-              </div>
-              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: ACCENT }}>Buyer Intent</span>
-            </div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 12, lineHeight: 1.4 }}>What marketers ask LLMs before they talk to you</div>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-              {["\"What AI writes best for SEO blogs at scale?\" — long-form quality is the shortlist filter", "\"Which marketing AI connects natively with HubSpot?\" — integration is table stakes, not a differentiator", "\"AI tool for LinkedIn content and scheduling\" — social cluster is growing faster than email"].map((s, i) => (
-                <li key={i} style={{ fontSize: 13, color: "#555", lineHeight: 1.55, paddingLeft: 14, position: "relative" }}>
-                  <span style={{ position: "absolute", left: 0, top: 7, width: 5, height: 5, borderRadius: "50%", background: ACCENT, opacity: 0.5, display: "block" }} />
-                  {s}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/* Market Insights */}
-          <div style={{ background: "rgba(255,255,255,0.7)", border: "1px solid rgba(124,58,237,0.11)", borderRadius: 16, padding: "28px 28px 26px", backdropFilter: "blur(12px)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-              <div style={{ width: 34, height: 34, borderRadius: 9, background: "rgba(124,58,237,0.09)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><polyline points="2,14 7,9 11,12 18,5" stroke="#7C3AED" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>
-              </div>
-              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: ACCENT }}>Market Insights</span>
-            </div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 12, lineHeight: 1.4 }}>How the marketing AI market is shifting right now</div>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-              {["Brands mentioned alongside CRM integrations are 2× more likely to appear in LLM shortlists", "Outbound & email outreach is the most under-served use case — fewest dominant players in any cluster", "Multi-language and localisation queries have grown 38% — driven by global GTM teams"].map((s, i) => (
-                <li key={i} style={{ fontSize: 13, color: "#555", lineHeight: 1.55, paddingLeft: 14, position: "relative" }}>
-                  <span style={{ position: "absolute", left: 0, top: 7, width: 5, height: 5, borderRadius: "50%", background: ACCENT, opacity: 0.5, display: "block" }} />
-                  {s}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/* Competitor Landscape */}
-          <div style={{ background: "rgba(255,255,255,0.7)", border: "1px solid rgba(124,58,237,0.11)", borderRadius: 16, padding: "28px 28px 26px", backdropFilter: "blur(12px)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-              <div style={{ width: 34, height: 34, borderRadius: 9, background: "rgba(124,58,237,0.09)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="6" height="6" rx="1.5" stroke="#7C3AED" strokeWidth="1.6"/><rect x="12" y="2" width="6" height="6" rx="1.5" stroke="#7C3AED" strokeWidth="1.6"/><rect x="2" y="12" width="6" height="6" rx="1.5" stroke="#7C3AED" strokeWidth="1.6"/><rect x="12" y="12" width="6" height="6" rx="1.5" stroke="#7C3AED" strokeWidth="1.6"/></svg>
-              </div>
-              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: ACCENT }}>Competitor Landscape</span>
-            </div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 12, lineHeight: 1.4 }}>Which clusters are owned and where the gaps are</div>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-              {["Jasper dominates long-form and SEO clusters; Copy.ai leads outbound sequences — both clusters have a clear owner", "Typeface and Writer are pulling enterprise deals on brand consistency alone — not feature depth", "Social media management has no clear leader — the most open cluster in the category right now"].map((s, i) => (
-                <li key={i} style={{ fontSize: 13, color: "#555", lineHeight: 1.55, paddingLeft: 14, position: "relative" }}>
-                  <span style={{ position: "absolute", left: 0, top: 7, width: 5, height: 5, borderRadius: "50%", background: ACCENT, opacity: 0.5, display: "block" }} />
-                  {s}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/* Lost Deal Tracking */}
-          <div style={{ background: "rgba(255,255,255,0.7)", border: "1px solid rgba(124,58,237,0.11)", borderRadius: 16, padding: "28px 28px 26px", backdropFilter: "blur(12px)" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-              <div style={{ width: 34, height: 34, borderRadius: 9, background: "rgba(124,58,237,0.09)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="#7C3AED" strokeWidth="1.6"/><path d="M7 13l6-6M7 7l6 6" stroke="#7C3AED" strokeWidth="1.6" strokeLinecap="round"/></svg>
-              </div>
-              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: ACCENT }}>Lost Deal Tracking</span>
-            </div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 12, lineHeight: 1.4 }}>The real reasons buyers chose someone else</div>
-            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-              {["\"We chose them because it connected directly to our HubSpot\" — integration gaps drove 40% of losses", "Teams that evaluated 4+ tools made the final call on workflow automation depth, not content quality", "Budget losses rarely cite price — they cite missing CRM sync and approval workflows"].map((s, i) => (
-                <li key={i} style={{ fontSize: 13, color: "#555", lineHeight: 1.55, paddingLeft: 14, position: "relative" }}>
-                  <span style={{ position: "absolute", left: 0, top: 7, width: 5, height: 5, borderRadius: "50%", background: ACCENT, opacity: 0.5, display: "block" }} />
-                  {s}
-                </li>
-              ))}
-            </ul>
-          </div>
-          {/* Customer Requests */}
-          <div style={{ background: "rgba(255,255,255,0.7)", border: "1px solid rgba(124,58,237,0.11)", borderRadius: 16, padding: "28px 28px 26px", backdropFilter: "blur(12px)", gridColumn: "1 / -1" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
-              <div style={{ width: 34, height: 34, borderRadius: 9, background: "rgba(124,58,237,0.09)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><path d="M3 5.5C3 4.4 3.9 3.5 5 3.5h10c1.1 0 2 .9 2 2V12c0 1.1-.9 2-2 2H7l-4 3V5.5z" stroke="#7C3AED" strokeWidth="1.6" strokeLinejoin="round"/></svg>
-              </div>
-              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: ACCENT }}>Customer Requests</span>
-            </div>
-            <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 12, lineHeight: 1.4 }}>When three unrelated customers describe the same gap in the same words — that&apos;s the feature</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
-              {[
-                { req: "Multi-brand voice profiles", detail: "Teams managing 3+ clients need content that stays in-character per brand, not one shared tone" },
-                { req: "Competitor content alerts", detail: "Know when a rival publishes in your keyword territory — before your customers tell you" },
-                { req: "Approval workflows", detail: "Compliance-sensitive teams won't publish without a human sign-off step — this is blocking adoption" },
-              ].map((r, i) => (
-                <div key={i} style={{ background: "rgba(124,58,237,0.04)", borderRadius: 10, padding: "14px 16px" }}>
-                  <div style={{ fontSize: 13, fontWeight: 700, color: "#111", marginBottom: 4 }}>{r.req}</div>
-                  <div style={{ fontSize: 12, color: "#666", lineHeight: 1.5 }}>{r.detail}</div>
+
+        {/* Three-panel diagram */}
+        <div className="signal-diagram" style={{ display: "grid", gridTemplateColumns: "1fr 56px 1fr", alignItems: "stretch", background: "rgba(255,255,255,0.7)", border: "1px solid rgba(0,0,0,0.07)", borderRadius: 18, overflow: "hidden", marginBottom: 44, backdropFilter: "blur(16px)" }}>
+          {/* Left: signal inputs */}
+          <div style={{ padding: "28px 26px" }}>
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#bbb", marginBottom: 14 }}>Signals collected</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {SIGNALS.map(s => (
+                <div key={s.label} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 13px", borderRadius: 9, background: `rgba(${A},0.05)`, border: `1px solid rgba(${A},0.1)` }}>
+                  <div style={{ width: 28, height: 28, borderRadius: 7, background: `rgba(${A},0.1)`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    <SignalIcon type={s.icon} color={ACCENT} />
+                  </div>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "#444" }}>{s.label}</span>
                 </div>
               ))}
             </div>
           </div>
+          {/* Center: arrow */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", background: `rgba(${A},0.03)`, borderLeft: `1px solid rgba(${A},0.08)`, borderRight: `1px solid rgba(${A},0.08)` }}>
+            <div style={{ width: 34, height: 34, borderRadius: "50%", background: ACCENT, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 4px 16px rgba(${A},0.3)` }}>
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 6.5h9M7.5 3l3 3.5-3 3" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </div>
+          </div>
+          {/* Right: roadmap output */}
+          <div style={{ padding: "28px 26px", background: `rgba(${A},0.03)` }}>
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: ACCENT, marginBottom: 14 }}>Product roadmap</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {[
+                "HubSpot & Salesforce integration depth",
+                "Expand into Outbound & Email cluster",
+                "Multi-brand voice profiles",
+              ].map((title, i) => (
+                <div key={i} style={{ display: "flex", gap: 11, alignItems: "flex-start", padding: "10px 13px", background: "rgba(255,255,255,0.8)", borderRadius: 9, border: "1px solid rgba(0,0,0,0.06)" }}>
+                  <span style={{ fontSize: 11, fontWeight: 800, color: ACCENT, opacity: 0.45, flexShrink: 0, paddingTop: 1 }}>0{i + 1}</span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "#111", lineHeight: 1.4 }}>{title}</span>
+                </div>
+              ))}
+            </div>
+            <p style={{ fontSize: 11, color: "#bbb", marginTop: 14, lineHeight: 1.5 }}>Automatically derived where all five signals agree on the same gap.</p>
+          </div>
         </div>
 
-        {/* Roadmap output */}
-        <div style={{ background: "linear-gradient(135deg, rgba(124,58,237,0.06) 0%, rgba(194,24,106,0.05) 100%)", border: "1.5px solid rgba(124,58,237,0.15)", borderRadius: 18, padding: "36px 36px 38px" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
-            <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 17l4-8 5 3 5-9" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="17" cy="3" r="2" fill="#7C3AED" opacity="0.7"/></svg>
-            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: ACCENT }}>Product Feature Roadmap</span>
+        {/* Signal detail cards */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 14, marginBottom: 14 }}>
+          {[
+            {
+              label: "Buyer Intent",
+              icon: "search",
+              stat: null,
+              subtitle: "What buyers search before they reach you",
+              signals: [
+                "SEO blog quality is the first shortlist filter — not brand name or price",
+                "HubSpot or Salesforce integration is applied as a gate before evaluation begins",
+                "Social content searches are growing faster than email outreach queries",
+              ],
+            },
+            {
+              label: "Market Insights",
+              icon: "chart",
+              stat: "2×",
+              subtitle: "Where the market is moving right now",
+              signals: [
+                "Tools with CRM integration appear in LLM shortlists 2× more often than standalone tools",
+                "Outbound & email is the most under-served cluster — fewest dominant players",
+                "Multi-language queries up 38%, driven by global GTM teams expanding beyond English",
+              ],
+            },
+            {
+              label: "Competitor Landscape",
+              icon: "grid",
+              stat: null,
+              subtitle: "Who owns which cluster — and what's open",
+              signals: [
+                "Jasper owns long-form SEO; Copy.ai owns outbound sequences — both clusters are closed",
+                "Typeface and Writer win enterprise on brand consistency alone, not feature depth",
+                "Social media management has no clear leader — the widest-open cluster in the category",
+              ],
+            },
+            {
+              label: "Lost Deal Tracking",
+              icon: "x",
+              stat: "40%",
+              subtitle: "Why you've been losing deals",
+              signals: [
+                "Missing CRM integration drove 40% of losses — the single most cited reason across deals",
+                "In 4+ tool evaluations, workflow automation depth was the tiebreaker — not content quality",
+                "Budget losses rarely cite price — they cite missing approval flows and CRM sync",
+              ],
+            },
+          ].map((card) => (
+            <div key={card.label} style={{ background: "rgba(255,255,255,0.75)", border: `1px solid rgba(${A},0.12)`, borderRadius: 16, overflow: "hidden", backdropFilter: "blur(12px)" }}>
+              {/* Accent header zone */}
+              <div style={{ background: `rgba(${A},0.06)`, borderBottom: `1px solid rgba(${A},0.09)`, padding: "18px 22px 16px" }}>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <div style={{ width: 36, height: 36, borderRadius: 10, background: `rgba(${A},0.12)`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                      <SignalIcon type={card.icon} color={ACCENT} />
+                    </div>
+                    <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: ACCENT }}>{card.label}</span>
+                  </div>
+                  {card.stat && <span style={{ fontSize: 24, fontWeight: 900, color: ACCENT, opacity: 0.6, lineHeight: 1 }}>{card.stat}</span>}
+                </div>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "#666", lineHeight: 1.4 }}>{card.subtitle}</div>
+              </div>
+              {/* Content zone */}
+              <div style={{ padding: "16px 22px 20px" }}>
+                <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 9 }}>
+                  {card.signals.map((s, i) => (
+                    <li key={i} style={{ fontSize: 13, color: "#444", lineHeight: 1.5, paddingLeft: 14, position: "relative" }}>
+                      <span style={{ position: "absolute", left: 0, top: 6, width: 5, height: 5, borderRadius: "50%", background: ACCENT, opacity: 0.35, display: "block" }} />
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          ))}
+
+          {/* Customer Requests — full width */}
+          <div style={{ background: "rgba(255,255,255,0.75)", border: `1px solid rgba(${A},0.12)`, borderRadius: 16, overflow: "hidden", backdropFilter: "blur(12px)", gridColumn: "1 / -1" }}>
+            <div style={{ background: `rgba(${A},0.06)`, borderBottom: `1px solid rgba(${A},0.09)`, padding: "18px 22px 16px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 10, background: `rgba(${A},0.12)`, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <SignalIcon type="bubble" color={ACCENT} />
+                </div>
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: ACCENT }}>Customer Requests</span>
+              </div>
+              <div style={{ fontSize: 13, fontWeight: 600, color: "#666", lineHeight: 1.4 }}>What your customers keep asking for</div>
+            </div>
+            <div style={{ padding: "18px 22px 22px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
+                {[
+                  { req: "Multi-brand voice profiles", detail: "Teams managing multiple clients need content that stays in-character per brand — not one shared tone" },
+                  { req: "Competitor content alerts", detail: "Know when a rival publishes in your keyword territory before customers tell you about it" },
+                  { req: "Approval workflows", detail: "Compliance-sensitive teams won't publish without a human sign-off step — this is blocking adoption" },
+                ].map((r, i) => (
+                  <div key={i} style={{ background: `rgba(${A},0.04)`, borderRadius: 10, padding: "14px 16px", border: `1px solid rgba(${A},0.08)` }}>
+                    <div style={{ fontSize: 13, fontWeight: 700, color: "#111", marginBottom: 4 }}>{r.req}</div>
+                    <div style={{ fontSize: 12, color: "#666", lineHeight: 1.5 }}>{r.detail}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-          <h3 style={{ fontSize: 20, fontWeight: 700, color: "#0A0A0A", letterSpacing: "-0.02em", marginBottom: 6, lineHeight: 1.3 }}>
-            What to build next — and which use case cluster to expand to
-          </h3>
-          <p style={{ fontSize: 14, color: "#666", lineHeight: 1.65, marginBottom: 26, maxWidth: 560 }}>
-            When buyer intent, lost deals, and customer requests all point to the same gap, that&apos;s the feature. AgenticLib surfaces the agreement across all five signals so roadmap calls stop being a debate about whose customer was louder.
+        </div>
+
+        {/* Roadmap detail */}
+        <div style={{ background: `linear-gradient(135deg, rgba(${A},0.07) 0%, rgba(194,24,106,0.05) 100%)`, border: `1.5px solid rgba(${A},0.15)`, borderRadius: 18, padding: "36px 36px 38px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: ACCENT, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M3 17l4-8 5 3 5-9" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="17" cy="3" r="2" fill="#fff" opacity="0.7"/></svg>
+            </div>
+            <div>
+              <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: ACCENT, marginBottom: 2 }}>Product Roadmap</p>
+              <h3 style={{ fontSize: 18, fontWeight: 700, color: "#0A0A0A", letterSpacing: "-0.02em", lineHeight: 1.2 }}>What to build next</h3>
+            </div>
+          </div>
+          <p style={{ fontSize: 14, color: "#666", lineHeight: 1.65, marginBottom: 22, maxWidth: 540 }}>
+            When all five signals point to the same gap, that&apos;s the feature. AgenticLib surfaces the agreement so your roadmap is built on market evidence — not whoever spoke loudest in the last planning call.
           </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {[
-              { priority: "01", title: "HubSpot & Salesforce integration depth", reason: "Biggest lost-deal signal (40% of losses) + reinforced by 60% of buyer intent queries. Integration isn't a nice-to-have — it's the shortlist gate." },
-              { priority: "02", title: "Expand into Outbound & Email Outreach cluster", reason: "Market gap confirmed: no dominant player, rising search intent, and your customers are already asking for sequences. This cluster is open to own." },
-              { priority: "03", title: "Multi-brand voice profiles", reason: "Customer request frequency crossed the threshold — 3+ independent asks in 30 days from unrelated accounts. The ask is always the same: stay in-character across clients." },
+              { priority: "01", title: "HubSpot & Salesforce integration depth", reason: "Biggest lost-deal signal (40% of losses) and reinforced by buyer intent data. Integration isn't a differentiator — it's the shortlist gate." },
+              { priority: "02", title: "Expand into Outbound & Email Outreach cluster", reason: "No dominant player, rising search intent, customers already asking for it. This cluster is open to own." },
+              { priority: "03", title: "Multi-brand voice profiles", reason: "Three independent accounts made the same request within 30 days. When unrelated customers describe the same gap in the same words, that's the feature." },
             ].map((p) => (
-              <div key={p.priority} style={{ display: "flex", gap: 16, alignItems: "flex-start", background: "rgba(255,255,255,0.6)", borderRadius: 12, padding: "16px 20px" }}>
-                <span style={{ fontSize: 13, fontWeight: 800, color: ACCENT, opacity: 0.5, flexShrink: 0, width: 24, paddingTop: 1 }}>{p.priority}</span>
+              <div key={p.priority} style={{ display: "flex", gap: 16, alignItems: "flex-start", background: "rgba(255,255,255,0.7)", borderRadius: 12, padding: "16px 20px", border: "1px solid rgba(255,255,255,0.9)" }}>
+                <span style={{ fontSize: 13, fontWeight: 900, color: ACCENT, opacity: 0.4, flexShrink: 0, width: 24, paddingTop: 1 }}>{p.priority}</span>
                 <div>
                   <div style={{ fontSize: 14, fontWeight: 700, color: "#111", marginBottom: 4 }}>{p.title}</div>
                   <div style={{ fontSize: 13, color: "#666", lineHeight: 1.55 }}>{p.reason}</div>
@@ -242,22 +280,13 @@ export default function MarketingPage() {
 
       {/* ── Product Feature Intelligence ── */}
       <section style={{ maxWidth: 860, margin: "0 auto", padding: "72px 48px 96px" }}>
-        <div style={{
-          background: "rgba(255,255,255,0.65)",
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          border: "1px solid rgba(124,58,237,0.12)",
-          borderRadius: 20,
-          padding: "44px 44px 48px",
-          boxShadow: "0 4px 32px rgba(124,58,237,0.07), 0 1px 4px rgba(0,0,0,0.04)",
-        }}>
+        <div style={{ background: "rgba(255,255,255,0.65)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: `1px solid rgba(${A},0.12)`, borderRadius: 20, padding: "44px 44px 48px", boxShadow: `0 4px 32px rgba(${A},0.07), 0 1px 4px rgba(0,0,0,0.04)` }}>
           <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: ACCENT, marginBottom: 12 }}>Product Intelligence</p>
           <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, letterSpacing: "-0.02em", color: "#0A0A0A", lineHeight: 1.2, marginBottom: 12 }}>
             What a marketing AI agent needs to win
           </h2>
           <p style={{ fontSize: 15, color: "#555", lineHeight: 1.65, maxWidth: 560, marginBottom: 36 }}>
-            AgenticLib tracks these features across every marketing AI agent in the market —
-            benchmarking where your product leads, where it lags, and what your roadmap needs to prioritise.
+            AgenticLib tracks these features across every marketing AI agent in the market — benchmarking where your product leads, where it lags, and what your roadmap needs to prioritise.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
             {FEATURES.map((f) => (
@@ -274,10 +303,9 @@ export default function MarketingPage() {
       </section>
 
       <style>{`
-        .uc-row:hover { background: rgba(124,58,237,0.03); border-radius: 10px; }
-        .uc-row:hover > div:first-child { opacity: 1 !important; }
-        .uc-row:hover > svg { opacity: 0.6 !important; }
-        @media (max-width: 640px) {
+        @media (max-width: 680px) {
+          .signal-diagram { grid-template-columns: 1fr !important; }
+          .signal-diagram > div:nth-child(2) { display: none !important; }
           main > section { padding-left: 20px !important; padding-right: 20px !important; }
           main > section:first-child { padding-top: 72px !important; }
         }
