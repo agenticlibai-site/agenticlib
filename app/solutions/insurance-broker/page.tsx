@@ -105,6 +105,83 @@ export default function InsuranceBrokerPage() {
         </div>
       </section>
 
+      {/* ── Signal → Roadmap ── */}
+      <section style={{ maxWidth: 860, margin: "0 auto", padding: "72px 48px 0" }}>
+        <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: ACCENT, marginBottom: 10 }}>Intelligence Layer</p>
+        <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, letterSpacing: "-0.02em", color: "#0A0A0A", lineHeight: 1.2, marginBottom: 14 }}>Where your roadmap actually comes from</h2>
+        <p style={{ fontSize: 15, color: "#555", lineHeight: 1.7, maxWidth: 620, marginBottom: 40 }}>
+          Most insurance broker AI builders find out they lost a deal because of AFSL compliance framing from the principal who never came back. AgenticLib tracks five signals simultaneously so the gap is visible before the deal, not after.
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 14, marginBottom: 14 }}>
+          {[
+            { label: "Buyer Intent", icon: <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.5" stroke="#059669" strokeWidth="1.7"/><path d="M13 13l3.5 3.5" stroke="#059669" strokeWidth="1.7" strokeLinecap="round"/></svg>, title: "What brokerage principals ask LLMs when evaluating AI tools", signals: ["\"AI that automates renewal follow-ups so my brokers don't chase insurers manually\" — renewal automation is the first use case evaluated, and the baseline expectation", "\"Insurance broker AI that handles AFSL compliance logging automatically\" — compliance logging is a hard requirement, not a nice-to-have; tools without it are screened out before demos", "\"AI for brokers that isn't just another generic CRM\" — principals are actively rejecting horizontal tools in favour of insurance-native AI built around their workflows"] },
+            { label: "Market Insights", icon: <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><polyline points="2,14 7,9 11,12 18,5" stroke="#059669" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: "How the insurance broker AI market is shifting right now", signals: ["Compliance-related queries grew 67% following the Insurance Brokers Code of Practice review — AFSL-specific framing now appears in nearly every evaluation conversation", "Claims advocacy is the most-searched cluster with the least competitive density — brokers want tools that actively chase insurers on claims, and nothing in the market does it well", "No Australian-native insurance broker AI exists at scale — US-built tools don't meet AFSL requirements, and AU brokers know it, creating a structural gap for a local builder"] },
+            { label: "Competitor Landscape", icon: <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="6" height="6" rx="1.5" stroke="#059669" strokeWidth="1.6"/><rect x="12" y="2" width="6" height="6" rx="1.5" stroke="#059669" strokeWidth="1.6"/><rect x="2" y="12" width="6" height="6" rx="1.5" stroke="#059669" strokeWidth="1.6"/><rect x="12" y="12" width="6" height="6" rx="1.5" stroke="#059669" strokeWidth="1.6"/></svg>, title: "Which clusters are owned and where the gaps are", signals: ["Renewal automation has the most competitors — Vertafore, Applied Epic, and several AU point solutions all claim the space, but none do active insurer chasing (they do reminders)", "Claims advocacy is entirely open — no tool owns it, and brokers are actively searching for it, making it the highest-value uncontested cluster in the AU market", "AFSL compliance logging has no clear winner — most tools log loosely; none produce export-ready regulatory records that satisfy a principal's PI insurer"] },
+            { label: "Lost Deal Tracking", icon: <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="#059669" strokeWidth="1.6"/><path d="M7 13l6-6M7 7l6 6" stroke="#059669" strokeWidth="1.6" strokeLinecap="round"/></svg>, title: "The real reasons buyers chose someone else", signals: ["\"It doesn't frame around AFSL — we can't take the compliance risk\" — AFSL compliance framing was the reason cited in more than 50% of lost evaluations with AU broker principals", "\"It reminds us to chase the insurer — we needed it to chase the insurer\" — the distinction between passive reminders and active insurer outreach drives more losses than any feature comparison", "Winbeat and INSIGHT integration losses: firms already invested in their broker management system won't replace it — the integration must come to them"] },
+          ].map((card) => (
+            <div key={card.label} style={{ background: "rgba(255,255,255,0.7)", border: "1px solid rgba(5,150,105,0.11)", borderRadius: 16, padding: "28px 28px 26px", backdropFilter: "blur(12px)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                <div style={{ width: 34, height: 34, borderRadius: 9, background: "rgba(5,150,105,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{card.icon}</div>
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: ACCENT }}>{card.label}</span>
+              </div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 12, lineHeight: 1.4 }}>{card.title}</div>
+              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+                {card.signals.map((s, i) => (
+                  <li key={i} style={{ fontSize: 13, color: "#555", lineHeight: 1.55, paddingLeft: 14, position: "relative" }}>
+                    <span style={{ position: "absolute", left: 0, top: 7, width: 5, height: 5, borderRadius: "50%", background: ACCENT, opacity: 0.5, display: "block" }} />
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div style={{ background: "rgba(255,255,255,0.7)", border: "1px solid rgba(5,150,105,0.11)", borderRadius: 16, padding: "28px 28px 26px", backdropFilter: "blur(12px)", gridColumn: "1 / -1" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+              <div style={{ width: 34, height: 34, borderRadius: 9, background: "rgba(5,150,105,0.08)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><path d="M3 5.5C3 4.4 3.9 3.5 5 3.5h10c1.1 0 2 .9 2 2V12c0 1.1-.9 2-2 2H7l-4 3V5.5z" stroke="#059669" strokeWidth="1.6" strokeLinejoin="round"/></svg>
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: ACCENT }}>Customer Requests</span>
+            </div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 12, lineHeight: 1.4 }}>When three unrelated broker principals describe the same gap in the same words — that&apos;s the feature</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
+              {[
+                { req: "Automated insurer chasing on renewals", detail: "Principals want the AI to send the follow-up to the insurer — not remind the broker to do it. The distinction is the difference between automation and a calendar" },
+                { req: "AFSL-compliant audit trail export", detail: "Principals need a record their PI insurer will accept — timestamped, complete, and exportable in a format that satisfies a compliance review, not just an internal log" },
+                { req: "Client self-serve portal", detail: "Brokers want clients to check renewal status and update their own details without calling the broker — reducing inbound volume during peak renewal season" },
+              ].map((r, i) => (
+                <div key={i} style={{ background: "rgba(5,150,105,0.04)", borderRadius: 10, padding: "14px 16px" }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#111", marginBottom: 4 }}>{r.req}</div>
+                  <div style={{ fontSize: 12, color: "#666", lineHeight: 1.5 }}>{r.detail}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        <div style={{ background: "linear-gradient(135deg, rgba(5,150,105,0.06) 0%, rgba(20,184,166,0.04) 100%)", border: "1.5px solid rgba(5,150,105,0.15)", borderRadius: 18, padding: "36px 36px 38px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 17l4-8 5 3 5-9" stroke="#059669" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="17" cy="3" r="2" fill="#059669" opacity="0.7"/></svg>
+            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: ACCENT }}>Product Feature Roadmap</span>
+          </div>
+          <h3 style={{ fontSize: 20, fontWeight: 700, color: "#0A0A0A", letterSpacing: "-0.02em", marginBottom: 6, lineHeight: 1.3 }}>What to build next — and which use case cluster to expand to</h3>
+          <p style={{ fontSize: 14, color: "#666", lineHeight: 1.65, marginBottom: 26, maxWidth: 560 }}>When buyer intent, lost deals, and customer requests all point to the same gap, that&apos;s the feature. AgenticLib shows you the agreement across five signals so your roadmap reflects what the market is ready to pay for — not what the last principal mentioned on a call.</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {[
+              { priority: "01", title: "Active insurer chasing — not reminders", reason: "The single biggest lost-deal signal in AU broker AI. Principals want the tool to send the follow-up itself. Every competitor does reminders; no one does active chasing. First mover wins this cluster." },
+              { priority: "02", title: "Expand into Claims Advocacy cluster", reason: "Highest buyer interest, zero competitive density, and growing 67% YoY. Brokers want to track open claims and automatically follow up with insurers — no existing tool does it at all." },
+              { priority: "03", title: "AFSL-compliant audit trail export", reason: "Required by 50%+ of evaluating principals before they can get sign-off from their PI insurer. A properly formatted, exportable compliance record removes the last gate in enterprise broker deals." },
+            ].map((p) => (
+              <div key={p.priority} style={{ display: "flex", gap: 16, alignItems: "flex-start", background: "rgba(255,255,255,0.6)", borderRadius: 12, padding: "16px 20px" }}>
+                <span style={{ fontSize: 13, fontWeight: 800, color: ACCENT, opacity: 0.5, flexShrink: 0, width: 24, paddingTop: 1 }}>{p.priority}</span>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: "#111", marginBottom: 4 }}>{p.title}</div>
+                  <div style={{ fontSize: 13, color: "#666", lineHeight: 1.55 }}>{p.reason}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Product Feature Intelligence ── */}
       <section style={{ maxWidth: 860, margin: "0 auto", padding: "72px 48px 96px" }}>
         <div style={{

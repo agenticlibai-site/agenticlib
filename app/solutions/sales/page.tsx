@@ -104,6 +104,87 @@ export default function SalesPage() {
         </div>
       </section>
 
+      {/* ── Signal → Roadmap ── */}
+      <section style={{ maxWidth: 860, margin: "0 auto", padding: "72px 48px 0" }}>
+        <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: ACCENT, marginBottom: 10 }}>Intelligence Layer</p>
+        <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, letterSpacing: "-0.02em", color: "#0A0A0A", lineHeight: 1.2, marginBottom: 14 }}>
+          Where your roadmap actually comes from
+        </h2>
+        <p style={{ fontSize: 15, color: "#555", lineHeight: 1.7, maxWidth: 620, marginBottom: 40 }}>
+          Most sales AI builders hear about competitor launches from reps in the field, piece together lost deals from memory, and run roadmap calls where whoever managed the last customer call sets the agenda. AgenticLib reads five signals simultaneously — and surfaces what they agree on.
+        </p>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 14, marginBottom: 14 }}>
+          {[
+            { label: "Buyer Intent", icon: <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="5.5" stroke="#2563EB" strokeWidth="1.7"/><path d="M13 13l3.5 3.5" stroke="#2563EB" strokeWidth="1.7" strokeLinecap="round"/></svg>, title: "What revenue teams ask LLMs before they book a demo", signals: ["\"Best AI for cold email outreach and LinkedIn\" — multi-channel is the first filter, not the differentiator", "\"AI sales tool that works with Salesforce\" — CRM integration is applied as a hard filter before evaluation even starts", "\"Gong alternative that also does outreach\" — buyers want consolidation, not another point tool in the stack"] },
+            { label: "Market Insights", icon: <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><polyline points="2,14 7,9 11,12 18,5" stroke="#2563EB" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg>, title: "How the sales AI market is shifting right now", signals: ["Multi-channel outreach (email + LinkedIn + phone) is the fastest-growing evaluation criteria — single-channel tools are being filtered out", "Call intelligence has shifted from nice-to-have to a shortlist requirement in enterprise sales deals above $50k", "Pipeline forecasting queries have grown 44% — CFOs are requiring revenue teams to justify AI investment with forecast accuracy data"] },
+            { label: "Competitor Landscape", icon: <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><rect x="2" y="2" width="6" height="6" rx="1.5" stroke="#2563EB" strokeWidth="1.6"/><rect x="12" y="2" width="6" height="6" rx="1.5" stroke="#2563EB" strokeWidth="1.6"/><rect x="2" y="12" width="6" height="6" rx="1.5" stroke="#2563EB" strokeWidth="1.6"/><rect x="12" y="12" width="6" height="6" rx="1.5" stroke="#2563EB" strokeWidth="1.6"/></svg>, title: "Which clusters are owned and where the gaps are", signals: ["Apollo dominates lead sourcing and email volume; Outreach leads enterprise sequence depth — both clusters have a clear owner", "Gong owns call intelligence; no single player leads on combined call + sequence + CRM — the consolidation gap is real", "Pipeline forecasting has the weakest competitive density of any cluster — the fewest dominant players, the most open to own"] },
+            { label: "Lost Deal Tracking", icon: <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7.5" stroke="#2563EB" strokeWidth="1.6"/><path d="M7 13l6-6M7 7l6 6" stroke="#2563EB" strokeWidth="1.6" strokeLinecap="round"/></svg>, title: "The real reasons buyers chose someone else", signals: ["\"We went with them because it pushed activity into Salesforce automatically\" — bi-directional CRM sync drove 35% of losses", "Multi-channel losses: shortlisted for email, lost the moment the buyer needed LinkedIn + phone in the same workflow", "CFO-involved deals almost always require board-ready forecasting output — pipeline health isn't enough"] },
+          ].map((card) => (
+            <div key={card.label} style={{ background: "rgba(255,255,255,0.7)", border: "1px solid rgba(37,99,235,0.11)", borderRadius: 16, padding: "28px 28px 26px", backdropFilter: "blur(12px)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+                <div style={{ width: 34, height: 34, borderRadius: 9, background: "rgba(37,99,235,0.09)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{card.icon}</div>
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: ACCENT }}>{card.label}</span>
+              </div>
+              <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 12, lineHeight: 1.4 }}>{card.title}</div>
+              <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: 8 }}>
+                {card.signals.map((s, i) => (
+                  <li key={i} style={{ fontSize: 13, color: "#555", lineHeight: 1.55, paddingLeft: 14, position: "relative" }}>
+                    <span style={{ position: "absolute", left: 0, top: 7, width: 5, height: 5, borderRadius: "50%", background: ACCENT, opacity: 0.5, display: "block" }} />
+                    {s}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          {/* Customer Requests */}
+          <div style={{ background: "rgba(255,255,255,0.7)", border: "1px solid rgba(37,99,235,0.11)", borderRadius: 16, padding: "28px 28px 26px", backdropFilter: "blur(12px)", gridColumn: "1 / -1" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 14 }}>
+              <div style={{ width: 34, height: 34, borderRadius: 9, background: "rgba(37,99,235,0.09)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><path d="M3 5.5C3 4.4 3.9 3.5 5 3.5h10c1.1 0 2 .9 2 2V12c0 1.1-.9 2-2 2H7l-4 3V5.5z" stroke="#2563EB" strokeWidth="1.6" strokeLinejoin="round"/></svg>
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: ACCENT }}>Customer Requests</span>
+            </div>
+            <div style={{ fontSize: 14, fontWeight: 600, color: "#111", marginBottom: 12, lineHeight: 1.4 }}>When three unrelated customers describe the same gap in the same words — that&apos;s the feature</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 10 }}>
+              {[
+                { req: "Reply detection & auto-next-step", detail: "Manual triage after a reply is killing reps' time — they want the AI to categorise and trigger the follow-up, not remind them to do it" },
+                { req: "Email + LinkedIn + SMS in one sequence", detail: "Switching between tools for each channel is the biggest daily friction — reps want one workflow, not three" },
+                { req: "Forecast confidence scores reps can defend", detail: "Reps need to justify pipeline numbers to management — a deal stage percentage isn't enough, they need signals they can explain" },
+              ].map((r, i) => (
+                <div key={i} style={{ background: "rgba(37,99,235,0.04)", borderRadius: 10, padding: "14px 16px" }}>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#111", marginBottom: 4 }}>{r.req}</div>
+                  <div style={{ fontSize: 12, color: "#666", lineHeight: 1.5 }}>{r.detail}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+        {/* Roadmap output */}
+        <div style={{ background: "linear-gradient(135deg, rgba(37,99,235,0.06) 0%, rgba(124,58,237,0.05) 100%)", border: "1.5px solid rgba(37,99,235,0.15)", borderRadius: 18, padding: "36px 36px 38px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M3 17l4-8 5 3 5-9" stroke="#2563EB" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="17" cy="3" r="2" fill="#2563EB" opacity="0.7"/></svg>
+            <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.12em", textTransform: "uppercase", color: ACCENT }}>Product Feature Roadmap</span>
+          </div>
+          <h3 style={{ fontSize: 20, fontWeight: 700, color: "#0A0A0A", letterSpacing: "-0.02em", marginBottom: 6, lineHeight: 1.3 }}>What to build next — and which use case cluster to expand to</h3>
+          <p style={{ fontSize: 14, color: "#666", lineHeight: 1.65, marginBottom: 26, maxWidth: 560 }}>When buyer intent, lost deals, and customer requests all point to the same gap, that&apos;s the feature. AgenticLib shows you the agreement across all five signals so you stop building what the loudest customer asked for and start building what the market is ready to pay for.</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {[
+              { priority: "01", title: "Multi-channel outreach in a single workflow", reason: "Lost-deal pattern + buyer intent + customer requests all converge here. Reps don't want a tool for each channel — they want one sequence that covers email, LinkedIn and phone." },
+              { priority: "02", title: "Bi-directional Salesforce & HubSpot sync", reason: "35% of closed-lost cites CRM sync as the deciding factor. Buyers apply this as a hard filter — not a differentiator to evaluate." },
+              { priority: "03", title: "Expand into Pipeline Forecasting cluster", reason: "Weakest competitive density of any cluster + 44% query growth + CFO buying pressure. This is the most open cluster in sales AI right now." },
+            ].map((p) => (
+              <div key={p.priority} style={{ display: "flex", gap: 16, alignItems: "flex-start", background: "rgba(255,255,255,0.6)", borderRadius: 12, padding: "16px 20px" }}>
+                <span style={{ fontSize: 13, fontWeight: 800, color: ACCENT, opacity: 0.5, flexShrink: 0, width: 24, paddingTop: 1 }}>{p.priority}</span>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: "#111", marginBottom: 4 }}>{p.title}</div>
+                  <div style={{ fontSize: 13, color: "#666", lineHeight: 1.55 }}>{p.reason}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── Product Feature Intelligence ── */}
       <section style={{ maxWidth: 860, margin: "0 auto", padding: "72px 48px 96px" }}>
         <div style={{
