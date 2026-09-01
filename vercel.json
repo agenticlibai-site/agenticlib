@@ -8,6 +8,16 @@
     { "path": "/api/cron/esai-sentiment-aggregate",                          "schedule": "0 4 * * 0" },
     { "path": "/api/cron/esai-feature-collection?model=claude-haiku-4-5", "schedule": "5 11 * * *" },
     { "path": "/api/cron/esai-feature-collection?model=gpt-4o-mini",      "schedule": "20 11 * * *" },
-    { "path": "/api/cron/esai-feature-aggregate",                          "schedule": "55 11 * * *" }
+    { "path": "/api/cron/esai-feature-aggregate",                          "schedule": "55 11 * * *" },
+
+    { "path": "/api/cron/sdai-collection?model=claude-haiku-4-5", "schedule": "0 13 * * *" },
+    { "path": "/api/cron/sdai-collection?model=gpt-4o-mini",      "schedule": "10 13 * * *" },
+    { "path": "/api/cron/sdai-aggregate",                          "schedule": "50 13 * * *" },
+    { "path": "/api/cron/sdai-sentiment-collection?model=claude-haiku-4-5", "schedule": "0 14 * * *" },
+    { "path": "/api/cron/sdai-sentiment-collection?model=gpt-4o-mini",      "schedule": "30 14 * * *" },
+    { "path": "/api/cron/sdai-sentiment-aggregate",                          "schedule": "5 4 * * 0" },
+    { "path": "/api/cron/sdai-feature-collection?model=claude-haiku-4-5", "schedule": "0 15 * * *" },
+    { "path": "/api/cron/sdai-feature-collection?model=gpt-4o-mini",      "schedule": "15 15 * * *" },
+    { "path": "/api/cron/sdai-feature-aggregate",                          "schedule": "55 15 * * *" }
   ]
 }
