@@ -1199,7 +1199,7 @@ export default function SdaiVisibilityCharts({
                 Takeaway
               </p>
               <p style={{ fontSize: 16, color: "#000", lineHeight: 1.65, margin: 0, fontWeight: 400 }}>
-                Superdegree already has a version of this on its site — agents record in a cloud browser, edit, add zooms, captions, and narration, and output a video or written guide — but it is not yet anchored at a stable, indexable URL with that exact claim front and centre.
+                Superdegree already has a version of this on its site — agents record in a cloud browser, edit, add zooms, captions, and narration, and output a polished video — but it is not yet anchored at a stable, indexable URL with that exact claim front and centre. Written guide output from the same recording is on Superdegree&apos;s publicly announced roadmap (&ldquo;very soon&rdquo; per the product FAQ), which makes now the right moment to establish that canonical page: the documentation feature will slot directly into an already-indexed URL when it ships.
               </p>
             </div>
           </div>
@@ -1452,7 +1452,7 @@ export default function SdaiVisibilityCharts({
                 impact: "High",
                 type: "Owned",
                 action: "Publish a canonical autonomous-browser-agent workflow page",
-                what: `Create a stable URL such as /features/autonomous-browser-video-agent and document the exact sequence: task brief or product URL, cloud-browser navigation, screen recording, automatic editing with zooms, captions, and narration, then a finished product video plus a written guide. Include a short worked example showing the agent's starting instruction, observed browser actions, and final artefacts.`,
+                what: `Create a stable URL such as /features/autonomous-browser-video-agent and document the exact sequence: task brief or product URL, cloud-browser navigation, screen recording, automatic editing with zooms, captions, and narration, and a finished product video. Include a short worked example showing the agent's starting instruction, observed browser actions, and final artefacts. Add a note that written guide output — step-by-step instructions with annotated screenshots from the same recording — is on the product roadmap. Superdegree has already announced this publicly ("very soon," per the product FAQ), so establishing the canonical page now means the documentation feature lands into an already-indexed URL with an existing citation trail.`,
                 why: `Descript and Synthesia make their identities citable by expressing a complete input-to-output workflow. Superdegree already has the underlying claim on its site but spread across multiple pages rather than anchored at one stable URL.`,
                 source: "Evidence: descript.com/video-editing, synthesia.io/features/text-to-video, super.degree/learn",
               },
@@ -1506,9 +1506,9 @@ export default function SdaiVisibilityCharts({
                 impact: "Medium",
                 type: "Owned + Earned",
                 action: "Publish transparent pricing and a limitations page",
-                what: `Put at least one exact plan or a transparent credit formula on /pricing, explain what consumes credits, and state when a human review step is recommended. Add a public limitations page covering browser-only recording, recording duration, dynamic interfaces, authentication, failed steps, and revision behaviour.`,
-                why: `Both comparators make pricing discoverable. Their review and Reddit visibility also includes criticism: Descript's AI-credit complaints and Synthesia's avatar limitations. Transparent constraints make Superdegree more trustworthy and give independent writers concrete, testable material.`,
-                source: "Evidence: descript.com/pricing, synthesia.io/pricing",
+                what: `Put at least one exact plan or a transparent credit formula on /pricing, explain what consumes credits, and state when a human review step is recommended. Add a public limitations page covering browser-only recording, recording duration, dynamic interfaces, authentication, failed steps, and revision behaviour. Separately, Superdegree's FAQ already contains precisely the kind of mechanism-level security language that LLMs retrieve and cite — three statements that are currently buried in a FAQ and need a dedicated home: "We never train models on your recordings, transcripts, voice samples or agent sessions." "Data is encrypted in transit and at rest, isolated per organisation with row-level security." "Media is served through signed, time-limited URLs." These are specific, verifiable, and structurally identical to the claims Synthesia surfaces on security.synthesia.io. Publishing them on a /security or /trust page — with the source (super.degree/faq) cited — converts an existing FAQ answer into a citable trust claim that AI models can retrieve with confidence.`,
+                why: `Both comparators make pricing discoverable. Their review and Reddit visibility also includes criticism: Descript's AI-credit complaints and Synthesia's avatar limitations. Transparent constraints make Superdegree more trustworthy and give independent writers concrete, testable material. The security quotes are a direct application of the LLM Visibility principle this report is teaching: mechanism-level language, not marketing language. They already exist — they just need to move out of a FAQ and onto a stable, indexable URL.`,
+                source: "Evidence: descript.com/pricing, synthesia.io/pricing, security.synthesia.io · Security quotes sourced from super.degree/faq (current at time of research)",
               },
             ].map(({ rank, impact, type, action, what, why, source }) => (
               <div key={rank} style={{
