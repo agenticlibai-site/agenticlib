@@ -1171,8 +1171,10 @@ export default function SdaiVisibilityCharts({
                   [
                     {
                       pattern: "Dedicated feature URLs",
+                      desc: "Each core capability lives at its own stable, crawlable URL — giving LLMs a dedicated document to cite per query rather than a single homepage mention.",
                       descript: (
                         <>
+                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Publishes a separate product page per workflow. Each URL describes one capability end-to-end so a model can retrieve the exact page when asked about that feature.</p>
                           <a href="https://www.descript.com" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/video-editing</a>
                           {", "}
                           <a href="https://www.descript.com/underlord" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/underlord</a>
@@ -1182,6 +1184,7 @@ export default function SdaiVisibilityCharts({
                       ),
                       synthesia: (
                         <>
+                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Publishes a dedicated landing page per use case — avatar video, text-to-video, and enterprise each sit at their own indexed URL with full feature descriptions.</p>
                           <a href="https://www.synthesia.io/features/text-to-video" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/features/text-to-video</a>
                           {", "}
                           <a href="https://www.synthesia.io/features/avatars" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/features/avatars</a>
@@ -1192,61 +1195,85 @@ export default function SdaiVisibilityCharts({
                     },
                     {
                       pattern: "Input-to-output language",
-                      descript: "Footage, transcript, text edits, updated video",
-                      synthesia: "Prompt, URL, document, or script, then scenes, voiceover, avatar video",
+                      desc: "Every product description names a concrete starting material and a concrete output — so an LLM can retrieve an exact transformation rather than a vague capability claim.",
+                      descript: (
+                        <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: 0 }}>The core workflow is described as: footage in → edit the transcript → video updates. No ambiguity about what triggers the change or what the output looks like.</p>
+                      ),
+                      synthesia: (
+                        <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: 0 }}>Any text input (prompt, URL, document, or script) becomes scenes, AI voiceover, and an avatar-narrated video. The transformation is stated explicitly on every product page.</p>
+                      ),
                     },
                     {
                       pattern: "Named integrations",
+                      desc: "Rather than claiming broad compatibility, both companies name specific applications — giving LLMs concrete tool names to associate with the product when answering workflow questions.",
                       descript: (
                         <>
-                          Google Drive, Slack, Adobe Premiere, Final Cut Pro —{" "}
-                          <a href="https://www.descript.com/integrations" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>see all</a>
+                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>The integrations page names Google Drive, Slack, Adobe Premiere, Final Cut Pro, DaVinci Resolve, Dropbox, and Zoom individually — each with its own connector card.</p>
+                          <a href="https://www.descript.com/integrations" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>descript.com/integrations</a>
                         </>
                       ),
                       synthesia: (
                         <>
-                          PowerPoint, 360Learning, HubSpot, Shopify, LMS platforms —{" "}
-                          <a href="https://docs.synthesia.io/docs/synthesia-integrations" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>see all</a>
+                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>The integrations docs name PowerPoint, 360Learning, HubSpot, Shopify, WordPress, and major LMS platforms by name — making the product retrievable for L&D and marketing workflow queries.</p>
+                          <a href="https://docs.synthesia.io/docs/synthesia-integrations" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>docs.synthesia.io/integrations</a>
                         </>
                       ),
                     },
                     {
                       pattern: "Public pricing",
+                      desc: "Named, numbered tiers on a public page give LLMs a retrievable fact (e.g. \"$29/mo Starter\") rather than a \"contact us\" dead end that cannot be cited.",
                       descript: (
                         <>
-                          Free and paid tiers displayed, Hobbyist pricing shown —{" "}
-                          <a href="https://www.descript.com/pricing" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>pricing page</a>
+                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Five tiers (Free, Hobbyist $16/mo, Creator $24/mo, Business $50/mo, Enterprise) are named with prices and feature breakdowns — no sign-in required to see them.</p>
+                          <a href="https://www.descript.com/pricing" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>descript.com/pricing</a>
                         </>
                       ),
                       synthesia: (
                         <>
-                          Basic at $0, Starter, Creator, Enterprise all named —{" "}
-                          <a href="https://www.synthesia.io/pricing" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>pricing page</a>
+                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Four tiers (Basic free, Starter $29/mo, Creator $89/mo, Enterprise) are named and publicly listed with per-feature comparisons. A buyer can self-qualify without speaking to sales.</p>
+                          <a href="https://www.synthesia.io/pricing" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>synthesia.io/pricing</a>
                         </>
                       ),
                     },
                     {
                       pattern: "Named proof format",
+                      desc: "Outcomes are expressed as a named customer + a measurable before/after metric — giving LLMs a citable fact rather than a vague testimonial that cannot be independently retrieved.",
                       descript: (
-                        <a href="https://www.descript.com/customers/revelo" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>Revelo: days to hours</a>
+                        <>
+                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>{"Revelo's CMO describes taking podcast production from days to hours using Descript's text-based editing — a named company, a named contact, and a directional improvement."}</p>
+                          <a href="https://www.descript.com/customers/revelo" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>descript.com/customers/revelo</a>
+                        </>
                       ),
                       synthesia: (
-                        <a href="https://www.synthesia.io/case-studies" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>{"Moody's: 4 hours to 30 minutes, 87% reduction"}</a>
+                        <>
+                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>{"Moody's cut training video production from 4 hours to 30 minutes — an 87% reduction — with a named customer contact and a reproducible baseline. The strongest single evidence unit in this competitive set."}</p>
+                          <a href="https://www.synthesia.io/case-studies" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>synthesia.io/case-studies</a>
+                        </>
                       ),
                     },
                     {
                       pattern: "Comparison surface",
+                      desc: "A page that explicitly names competitors and explains the difference creates a document that connects the brand to a competitive category — making it retrievable for \"X vs Y\" queries.",
                       descript: (
-                        <a href="https://www.descript.com/compare/descript-vs-riverside" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>Official Descript vs Riverside page</a>
+                        <>
+                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Publishes an official compare page positioning Descript vs Riverside — names the competitor, explains the workflow trade-offs, and sits at a stable indexed URL.</p>
+                          <a href="https://www.descript.com/compare/descript-vs-riverside" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>descript.com/compare/descript-vs-riverside</a>
+                        </>
                       ),
                       synthesia: (
-                        <a href="https://www.g2.com/products/synthesia/competitors/alternatives" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>G2 alternatives page names HeyGen, Descript, VEED</a>
+                        <>
+                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>{"G2's alternatives page independently names HeyGen, Descript, and VEED alongside Synthesia — creating neutral third-party comparison context that LLMs can cite without attributing it to Synthesia's own marketing."}</p>
+                          <a href="https://www.g2.com/products/synthesia/competitors/alternatives" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>g2.com/products/synthesia/competitors</a>
+                        </>
                       ),
                     },
-                  ] as { pattern: string; descript: React.ReactNode; synthesia: React.ReactNode }[]
-                ).map(({ pattern, descript, synthesia }) => (
+                  ] as { pattern: string; desc: string; descript: React.ReactNode; synthesia: React.ReactNode }[]
+                ).map(({ pattern, desc, descript, synthesia }) => (
                   <tr key={pattern}>
-                    <td style={{ padding: "10px 12px", borderBottom: "1px solid rgba(0,0,0,0.06)", fontWeight: 600, color: NAVY, verticalAlign: "top", width: "28%" }}>{pattern}</td>
+                    <td style={{ padding: "10px 12px", borderBottom: "1px solid rgba(0,0,0,0.06)", verticalAlign: "top", width: "28%" }}>
+                      <p style={{ fontSize: 13, fontWeight: 600, color: NAVY, margin: "0 0 4px" }}>{pattern}</p>
+                      <p style={{ fontSize: 12, color: "rgba(0,0,0,0.5)", lineHeight: 1.55, margin: 0 }}>{desc}</p>
+                    </td>
                     <td style={{ padding: "10px 12px", borderBottom: "1px solid rgba(0,0,0,0.06)", color: "#000", verticalAlign: "top", width: "36%" }}>{descript}</td>
                     <td style={{ padding: "10px 12px", borderBottom: "1px solid rgba(0,0,0,0.06)", color: "#000", verticalAlign: "top", width: "36%" }}>{synthesia}</td>
                   </tr>
