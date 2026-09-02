@@ -1553,7 +1553,7 @@ export default function SdaiVisibilityCharts({
               Make the browser agent a named, testable, cross-source entity
             </p>
             <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: 0 }}>
-              Superdegree&apos;s genuine differentiator is an autonomous browser-navigating agent that neither Descript nor Synthesia has built. But this differentiator currently exists only on Superdegree&apos;s own domain. The highest-leverage move is to publish one canonical claim at a stable URL, in mechanism-level language, and then facilitate independent tests that reproduce the exact workflow and publish their own observations. The goal is for a language model to encounter the same claim across Superdegree&apos;s own documentation, a customer case study, an independent reviewer&apos;s article, and a review platform. That converts a marketing assertion into a named, testable entity that Claude and GPT-4o-mini can confidently cite.
+              Superdegree&apos;s genuine differentiator is an autonomous browser-navigating agent that no brand in this competitive set has built — all seven tracked brands (Descript, Synthesia, HeyGen, Opus Clip, D-ID, DeepBrain, Renderforest) score 0 on autonomous browser recording in the feature scores above, each for a different reason. But this differentiator currently exists only on Superdegree&apos;s own domain. The highest-leverage move is to publish one canonical claim at a stable URL, in mechanism-level language, and then facilitate independent tests that reproduce the exact workflow and publish their own observations. The goal is for a language model to encounter the same claim across Superdegree&apos;s own documentation, a customer case study, an independent reviewer&apos;s article, and a review platform. That converts a marketing assertion into a named, testable entity that Claude and GPT-4o-mini can confidently cite.
             </p>
           </div>
           <p style={{ fontSize: 11, color: "rgba(0,0,0,0.3)", marginTop: 10, textAlign: "center" as const }}>
@@ -1574,7 +1574,7 @@ export default function SdaiVisibilityCharts({
             </span>
           </div>
           <p style={{ fontSize: 15, color: "#000", margin: 0, lineHeight: 1.6 }}>
-            Three capabilities where Superdegree&apos;s current product is well-positioned but a targeted expansion would improve AI model coverage — and team outcomes.
+            Three capabilities where Superdegree&apos;s current product is well-positioned but a targeted expansion would improve AI model coverage — and team outcomes. All three require net-new product work, not documentation of existing features.
           </p>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
@@ -1612,7 +1612,10 @@ export default function SdaiVisibilityCharts({
                 </div>
               </div>
               <div style={{ flex: 1 }}>
-                <p style={{ fontSize: 15, fontWeight: 700, color: NAVY, margin: "0 0 8px", letterSpacing: "-0.01em" }}>{title}</p>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8, flexWrap: "wrap" as const }}>
+                  <p style={{ fontSize: 15, fontWeight: 700, color: NAVY, margin: 0, letterSpacing: "-0.01em" }}>{title}</p>
+                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#d97706", background: "rgba(217,119,6,0.08)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 4, padding: "1px 7px", whiteSpace: "nowrap" as const, flexShrink: 0 }}>Product build required</span>
+                </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                   <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
                     <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#059669", background: "rgba(5,150,105,0.08)", borderRadius: 999, padding: "2px 8px", flexShrink: 0, marginTop: 1 }}>Current</span>
