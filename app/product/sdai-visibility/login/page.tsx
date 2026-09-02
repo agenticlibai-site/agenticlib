@@ -148,31 +148,44 @@ export default async function SdaiLoginPage({
         </form>
       </div>
 
-      {/* Feedback form button — visible to anyone on the login page */}
+      {/* Feedback form button */}
       <style>{`
         .sdai-feedback-btn {
-          display: block;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 9px;
           width: 100%;
-          padding: 13px 0;
+          padding: 14px 0;
           text-align: center;
           font-size: 15px;
           font-weight: 700;
-          color: #7C3AED;
+          color: #fff;
           text-decoration: none;
-          background: rgba(124,58,237,0.08);
-          border: 1.5px solid rgba(124,58,237,0.25);
+          background: #7C3AED;
+          border: none;
           border-radius: 12px;
           letter-spacing: 0.01em;
-          transition: background 0.15s, border-color 0.15s;
+          box-shadow: 0 4px 16px rgba(124,58,237,0.32), 0 1px 3px rgba(124,58,237,0.20);
+          transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
           box-sizing: border-box;
         }
         .sdai-feedback-btn:hover {
-          background: rgba(124,58,237,0.14);
-          border-color: rgba(124,58,237,0.5);
+          background: #6D28D9;
+          box-shadow: 0 6px 22px rgba(124,58,237,0.42), 0 2px 6px rgba(124,58,237,0.22);
+          transform: translateY(-1px);
+        }
+        .sdai-feedback-btn:active {
+          transform: translateY(1px);
+          box-shadow: 0 2px 8px rgba(124,58,237,0.28);
         }
       `}</style>
       <a href="/product/sdai-visibility/feedback" className="sdai-feedback-btn">
-        📋 Feedback form
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+          <path d="M4 6h12M4 10h8M4 14h6" stroke="white" strokeWidth="1.7" strokeLinecap="round"/>
+          <rect x="2" y="2" width="16" height="16" rx="3" stroke="white" strokeWidth="1.5" fill="none" opacity="0.4"/>
+        </svg>
+        Share your feedback
       </a>
       </div>
     </main>

@@ -151,28 +151,41 @@ export default async function RalfiLoginPage({
       {/* Feedback form button */}
       <style>{`
         .ralfi-feedback-btn {
-          display: block;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 9px;
           width: 100%;
-          padding: 13px 0;
+          padding: 14px 0;
           text-align: center;
           font-size: 15px;
           font-weight: 700;
-          color: #059669;
+          color: #fff;
           text-decoration: none;
-          background: rgba(5,150,105,0.08);
-          border: 1.5px solid rgba(5,150,105,0.25);
+          background: #059669;
+          border: none;
           border-radius: 12px;
           letter-spacing: 0.01em;
-          transition: background 0.15s, border-color 0.15s;
+          box-shadow: 0 4px 16px rgba(5,150,105,0.32), 0 1px 3px rgba(5,150,105,0.20);
+          transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
           box-sizing: border-box;
         }
         .ralfi-feedback-btn:hover {
-          background: rgba(5,150,105,0.14);
-          border-color: rgba(5,150,105,0.5);
+          background: #047857;
+          box-shadow: 0 6px 22px rgba(5,150,105,0.42), 0 2px 6px rgba(5,150,105,0.22);
+          transform: translateY(-1px);
+        }
+        .ralfi-feedback-btn:active {
+          transform: translateY(1px);
+          box-shadow: 0 2px 8px rgba(5,150,105,0.28);
         }
       `}</style>
       <a href="/product/ralfi-visibility/feedback" className="ralfi-feedback-btn">
-        📋 Feedback form
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
+          <path d="M4 6h12M4 10h8M4 14h6" stroke="white" strokeWidth="1.7" strokeLinecap="round"/>
+          <rect x="2" y="2" width="16" height="16" rx="3" stroke="white" strokeWidth="1.5" fill="none" opacity="0.4"/>
+        </svg>
+        Share your feedback
       </a>
       </div>
     </main>
