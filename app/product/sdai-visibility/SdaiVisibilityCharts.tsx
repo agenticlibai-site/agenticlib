@@ -1173,9 +1173,9 @@ export default function SdaiVisibilityCharts({
                       pattern: "Dedicated feature URLs",
                       descript: (
                         <>
-                          <a href="https://www.descript.com/video-editing" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/video-editing</a>
+                          <a href="https://www.descript.com" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/video-editing</a>
                           {", "}
-                          <a href="https://help.descript.com/underlord" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/underlord</a>
+                          <a href="https://www.descript.com/underlord" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/underlord</a>
                           {", "}
                           <a href="https://www.descript.com/integrations" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/integrations</a>
                         </>
@@ -1237,7 +1237,7 @@ export default function SdaiVisibilityCharts({
                     {
                       pattern: "Comparison surface",
                       descript: (
-                        <a href="https://www.descript.com/vs/riverside" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>Official Descript vs Riverside page</a>
+                        <a href="https://www.descript.com/compare/descript-vs-riverside" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>Official Descript vs Riverside page</a>
                       ),
                       synthesia: (
                         <a href="https://www.g2.com/products/synthesia/competitors/alternatives" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>G2 alternatives page names HeyGen, Descript, VEED</a>
