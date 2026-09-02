@@ -4167,3 +4167,215 @@ export async function upsertSdaiSentimentDrift(row: {
       drift_reason = EXCLUDED.drift_reason, created_at = NOW()
   `;
 }
+
+// ── SDAI report query functions ───────────────────────────────────────────────
+
+export async function getSdaiDailySummary(days = 7): Promise<
+  { date: string; brand: string; model: string; mention_count: number; avg_position: number | null }[]
+> {
+  await initSdaiDB();
+  const result = await sql`
+    SELECT date::text AS date, brand, model, mention_count, avg_position
+    FROM sdai_daily_summary
+    WHERE date >= CURRENT_DATE - ${days}::int * INTERVAL '1 day'
+      AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM sdai_denylist)
+    ORDER BY date ASC, mention_count DESC
+  `;
+  return result.rows as { date: string; brand: string; model: string; mention_count: number; avg_position: number | null }[];
+}
+
+export async function getSdaiWeeklySummary(): Promise<
+  { brand: string; model: string; mention_count: number; avg_position: number | null }[]
+> {
+  await initSdaiDB();
+  const result = await sql`
+    SELECT brand, model,
+      SUM(mention_count)::int AS mention_count,
+      AVG(avg_position)       AS avg_position
+    FROM sdai_daily_summary
+    WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+      AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM sdai_denylist)
+    GROUP BY brand, model
+    ORDER BY SUM(mention_count) DESC
+  `;
+  return result.rows as { brand: string; model: string; mention_count: number; avg_position: number | null }[];
+}
+
+export async function getSdaiLLMVisibility(): Promise<
+  { model: string; visibility_pct: number; total_responses: number }[]
+> {
+  await initSdaiDB();
+  const result = await sql`
+    SELECT model,
+      ROUND(COUNT(CASE WHEN jsonb_array_length(brands) > 0 THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0), 1)::float AS visibility_pct,
+      COUNT(*)::int AS total_responses
+    FROM sdai_raw_responses
+    WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+    GROUP BY model ORDER BY model
+  `;
+  return result.rows as { model: string; visibility_pct: number; total_responses: number }[];
+}
+
+export async function getSdaiSOVData(): Promise<
+  { cluster_tag: string; brand: string; total_appearances: number; sov_pct: number }[]
+> {
+  await initSdaiDB();
+  const result = await sql`
+    SELECT
+      r.cluster_tag,
+      TRIM(t.brand_name) AS brand,
+      COUNT(*)::int AS total_appearances,
+      ROUND(COUNT(*) * 100.0 / NULLIF(SUM(COUNT(*)) OVER (PARTITION BY r.cluster_tag), 0), 1)::float AS sov_pct
+    FROM sdai_raw_responses r,
+         jsonb_array_elements_text(r.brands) AS t(brand_name)
+    WHERE r.date >= CURRENT_DATE - INTERVAL '7 days'
+      AND LENGTH(TRIM(t.brand_name)) > 0
+      AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sdai_denylist)
+    GROUP BY r.cluster_tag, TRIM(t.brand_name)
+    ORDER BY r.cluster_tag, COUNT(*) DESC
+  `;
+  return result.rows as { cluster_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
+}
+
+export async function getSdaiCollectionHealth(): Promise<{
+  total_rows: number; dates_collected: number;
+  earliest_date: string | null; latest_date: string | null;
+  model_breakdown: { model: string; row_count: number }[];
+}> {
+  await initSdaiDB();
+  const [totals, models] = await Promise.all([
+    sql`SELECT COUNT(*)::int AS total_rows, COUNT(DISTINCT date)::int AS dates_collected,
+        MIN(date)::text AS earliest_date, MAX(date)::text AS latest_date
+        FROM sdai_raw_responses`,
+    sql`SELECT model, COUNT(*)::int AS row_count FROM sdai_raw_responses GROUP BY model ORDER BY model`,
+  ]);
+  return {
+    total_rows:      totals.rows[0]?.total_rows ?? 0,
+    dates_collected: totals.rows[0]?.dates_collected ?? 0,
+    earliest_date:   totals.rows[0]?.earliest_date ?? null,
+    latest_date:     totals.rows[0]?.latest_date ?? null,
+    model_breakdown: models.rows as { model: string; row_count: number }[],
+  };
+}
+
+export async function getSdaiClusterBrandPositions(): Promise<
+  { cluster_tag: string; brand: string; avg_position: number; appearances: number }[]
+> {
+  await initSdaiDB();
+  const result = await sql`
+    SELECT
+      r.cluster_tag,
+      TRIM(t.brand_name) AS brand,
+      ROUND(AVG(t.pos)::numeric, 1)::float AS avg_position,
+      COUNT(*)::int AS appearances
+    FROM sdai_raw_responses r,
+         LATERAL jsonb_array_elements_text(r.brands) WITH ORDINALITY AS t(brand_name, pos)
+    WHERE r.date >= CURRENT_DATE - INTERVAL '7 days'
+      AND r.cluster_tag != 'sdai-overall'
+      AND LENGTH(TRIM(t.brand_name)) > 0
+      AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sdai_denylist)
+    GROUP BY r.cluster_tag, TRIM(t.brand_name)
+    ORDER BY r.cluster_tag, AVG(t.pos) ASC
+  `;
+  return result.rows as { cluster_tag: string; brand: string; avg_position: number; appearances: number }[];
+}
+
+export async function getSdaiFeatureScores(): Promise<{
+  brand_name: string; feature_id: string; feature_tag: string;
+  score: number | null; score_band: string; flagged_for_review: boolean;
+  runs_agreeing: number | null; runs_total: number | null;
+  evidence: string | null; has_capability: string | null;
+}[]> {
+  await initSdaiDB();
+  const result = await sql`
+    WITH best_evidence AS (
+      SELECT DISTINCT ON (brand_name, feature_id)
+        brand_name, feature_id, evidence, has_capability
+      FROM sdai_feature_responses
+      WHERE parse_error = false AND evidence IS NOT NULL AND evidence != ''
+        AND evidence NOT ILIKE '%not explicitly document%'
+        AND evidence NOT ILIKE '%does not document%'
+        AND evidence NOT ILIKE '%no specific documentation%'
+        AND evidence NOT ILIKE '%not documented%'
+      ORDER BY brand_name, feature_id,
+        CASE has_capability WHEN 'yes' THEN 0 WHEN 'partial' THEN 1 ELSE 2 END,
+        run_date DESC
+    )
+    SELECT s.brand_name, s.feature_id, s.feature_tag, s.score::int AS score,
+           s.score_band, s.flagged_for_review, s.runs_agreeing, s.runs_total,
+           be.evidence, be.has_capability
+    FROM sdai_feature_scores s
+    LEFT JOIN best_evidence be ON be.brand_name = s.brand_name AND be.feature_id = s.feature_id
+    ORDER BY s.feature_tag, s.score DESC NULLS LAST
+  `;
+  return result.rows as {
+    brand_name: string; feature_id: string; feature_tag: string;
+    score: number | null; score_band: string; flagged_for_review: boolean;
+    runs_agreeing: number | null; runs_total: number | null;
+    evidence: string | null; has_capability: string | null;
+  }[];
+}
+
+export async function getSdaiSentimentData(): Promise<{
+  rows: {
+    brand_name: string; bucket_tag: string;
+    positive_count: number; neutral_count: number; negative_count: number;
+    total_count: number; top_descriptors: string[];
+  }[];
+  meta: { dual_model_dates: number; earliest_date: string | null; latest_date: string | null };
+}> {
+  await initSdaiDB();
+  const metaResult = await sql`
+    SELECT COUNT(*)::int AS dual_model_dates,
+      MIN(run_date)::text AS earliest_date, MAX(run_date)::text AS latest_date
+    FROM (
+      SELECT run_date FROM sdai_sentiment_responses
+      WHERE run_date >= CURRENT_DATE - INTERVAL '21 days' AND NOT parse_error
+      GROUP BY run_date HAVING COUNT(DISTINCT model) >= 2
+    ) d
+  `;
+  const meta = metaResult.rows[0] as { dual_model_dates: number; earliest_date: string | null; latest_date: string | null };
+
+  const result = await sql`
+    WITH base AS (
+      SELECT brand_name, bucket_tag, sentiment, descriptors
+      FROM sdai_sentiment_responses
+      WHERE run_date >= CURRENT_DATE - INTERVAL '21 days' AND NOT parse_error
+    ),
+    counts AS (
+      SELECT brand_name, bucket_tag,
+        COUNT(CASE WHEN sentiment = 'positive' THEN 1 END)::int AS positive_count,
+        COUNT(CASE WHEN sentiment = 'neutral'  THEN 1 END)::int AS neutral_count,
+        COUNT(CASE WHEN sentiment = 'negative' THEN 1 END)::int AS negative_count,
+        COUNT(*)::int AS total_count
+      FROM base GROUP BY brand_name, bucket_tag
+    ),
+    descriptors_agg AS (
+      SELECT brand_name, bucket_tag,
+        ARRAY(
+          SELECT d FROM (
+            SELECT TRIM(d.word) AS d, COUNT(*) AS cnt
+            FROM base b2, jsonb_array_elements_text(b2.descriptors) AS d(word)
+            WHERE b2.brand_name = base_g.brand_name AND b2.bucket_tag = base_g.bucket_tag
+              AND LENGTH(TRIM(d.word)) > 2
+            GROUP BY TRIM(d.word) ORDER BY cnt DESC LIMIT 6
+          ) top
+        ) AS top_descriptors
+      FROM (SELECT DISTINCT brand_name, bucket_tag FROM base) AS base_g
+    )
+    SELECT c.brand_name, c.bucket_tag, c.positive_count, c.neutral_count,
+           c.negative_count, c.total_count,
+           COALESCE(da.top_descriptors, '{}') AS top_descriptors
+    FROM counts c
+    LEFT JOIN descriptors_agg da ON da.brand_name = c.brand_name AND da.bucket_tag = c.bucket_tag
+    ORDER BY c.brand_name, c.bucket_tag
+  `;
+  return {
+    rows: result.rows as {
+      brand_name: string; bucket_tag: string;
+      positive_count: number; neutral_count: number; negative_count: number;
+      total_count: number; top_descriptors: string[];
+    }[],
+    meta,
+  };
+}
