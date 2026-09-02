@@ -778,7 +778,7 @@ export default function SdaiVisibilityCharts({
               }}>
                 <h4 style={{ fontSize: 17, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>{label}</h4>
                 {clusterDesc && (
-                  <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", marginBottom: 4, lineHeight: 1.55 }}>{clusterDesc}</p>
+                  <p style={{ fontSize: 13, color: PURPLE, marginBottom: 4, lineHeight: 1.55 }}>{clusterDesc}</p>
                 )}
                 <p style={{ fontSize: 15, color: "#000", marginBottom: 14 }}>7-day mentions · both models</p>
                 <ResponsiveContainer width="100%" height={220}>

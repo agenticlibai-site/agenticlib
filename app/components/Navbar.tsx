@@ -129,6 +129,9 @@ export default function Navbar() {
                         { label: "Insurance Broker (Finance)", desc: "Visibility & sentiment tracking for insurance broker AI agents.", href: "/product/ralfi-visibility/login",
                           iconBg: "linear-gradient(135deg,#0d9488,#14b8a6)",
                           icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2L3.5 5.5V10c0 4.5 3 7.5 6.5 8.5 3.5-1 6.5-4 6.5-8.5V5.5L10 2z" stroke="white" strokeWidth="1.6" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/><polyline points="7,10 9.5,12.5 13.5,7.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+                        { label: "Video Creation", desc: "Visibility & sentiment tracking for AI video creation platforms.", href: "/product/sdai-visibility/login",
+                          iconBg: "linear-gradient(135deg,#7c3aed,#a78bfa)",
+                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5.5" width="12" height="9" rx="2" stroke="white" strokeWidth="1.6" fill="rgba(255,255,255,0.18)"/><path d="M14.5 8.5l3-2v5l-3-2v-1z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.25)" strokeLinejoin="round"/></svg> },
                       ].map((item) => (
                         <a key={item.href} href={item.href} className="flex items-start gap-4 py-4 rounded-xl px-3" style={{ textDecoration: "none" }}
                           onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
