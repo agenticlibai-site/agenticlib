@@ -1288,14 +1288,84 @@ export default function SdaiVisibilityCharts({
                 </tr>
               </thead>
               <tbody>
-                {[
-                  ["Dedicated feature URLs", "/video-editing, /underlord, /integrations", "/features/text-to-video, /features/avatars, /enterprise"],
-                  ["Input-to-output language", "Footage, transcript, text edits, updated video", "Prompt, URL, document, or script, then scenes, voiceover, avatar video"],
-                  ["Named integrations", "Google Drive, Slack, Adobe Premiere, Final Cut Pro", "PowerPoint, 360Learning, HubSpot, Shopify, LMS platforms"],
-                  ["Public pricing", "Free and paid tiers displayed, Hobbyist pricing shown", "Basic at $0, Starter, Creator, Enterprise all named"],
-                  ["Named proof format", "Revelo: days to hours", "Moody's: 4 hours to 30 minutes, 87% reduction"],
-                  ["Comparison surface", "Official Descript vs Riverside page", "G2 alternatives page names HeyGen, Descript, VEED"],
-                ].map(([pattern, descript, synthesia], i) => (
+                {(
+                  [
+                    {
+                      pattern: "Dedicated feature URLs",
+                      descript: (
+                        <>
+                          <a href="https://www.descript.com/video-editing" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/video-editing</a>
+                          {", "}
+                          <a href="https://help.descript.com/underlord" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/underlord</a>
+                          {", "}
+                          <a href="https://www.descript.com/integrations" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/integrations</a>
+                        </>
+                      ),
+                      synthesia: (
+                        <>
+                          <a href="https://www.synthesia.io/features/text-to-video" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/features/text-to-video</a>
+                          {", "}
+                          <a href="https://www.synthesia.io/features/avatars" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/features/avatars</a>
+                          {", "}
+                          <a href="https://www.synthesia.io/enterprise" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/enterprise</a>
+                        </>
+                      ),
+                    },
+                    {
+                      pattern: "Input-to-output language",
+                      descript: "Footage, transcript, text edits, updated video",
+                      synthesia: "Prompt, URL, document, or script, then scenes, voiceover, avatar video",
+                    },
+                    {
+                      pattern: "Named integrations",
+                      descript: (
+                        <>
+                          Google Drive, Slack, Adobe Premiere, Final Cut Pro —{" "}
+                          <a href="https://www.descript.com/integrations" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>see all</a>
+                        </>
+                      ),
+                      synthesia: (
+                        <>
+                          PowerPoint, 360Learning, HubSpot, Shopify, LMS platforms —{" "}
+                          <a href="https://docs.synthesia.io/docs/synthesia-integrations" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>see all</a>
+                        </>
+                      ),
+                    },
+                    {
+                      pattern: "Public pricing",
+                      descript: (
+                        <>
+                          Free and paid tiers displayed, Hobbyist pricing shown —{" "}
+                          <a href="https://www.descript.com/pricing" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>pricing page</a>
+                        </>
+                      ),
+                      synthesia: (
+                        <>
+                          Basic at $0, Starter, Creator, Enterprise all named —{" "}
+                          <a href="https://www.synthesia.io/pricing" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>pricing page</a>
+                        </>
+                      ),
+                    },
+                    {
+                      pattern: "Named proof format",
+                      descript: (
+                        <a href="https://www.descript.com/customers/revelo" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>Revelo: days to hours</a>
+                      ),
+                      synthesia: (
+                        <a href="https://www.synthesia.io/case-studies" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>{"Moody's: 4 hours to 30 minutes, 87% reduction"}</a>
+                      ),
+                    },
+                    {
+                      pattern: "Comparison surface",
+                      descript: (
+                        <a href="https://www.descript.com/vs/riverside" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>Official Descript vs Riverside page</a>
+                      ),
+                      synthesia: (
+                        <a href="https://www.g2.com/products/synthesia/competitors/alternatives" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>G2 alternatives page names HeyGen, Descript, VEED</a>
+                      ),
+                    },
+                  ] as { pattern: string; descript: React.ReactNode; synthesia: React.ReactNode }[]
+                ).map(({ pattern, descript, synthesia }) => (
                   <tr key={pattern}>
                     <td style={{ padding: "10px 12px", borderBottom: "1px solid rgba(0,0,0,0.06)", fontWeight: 600, color: NAVY, verticalAlign: "top", width: "28%" }}>{pattern}</td>
                     <td style={{ padding: "10px 12px", borderBottom: "1px solid rgba(0,0,0,0.06)", color: "#000", verticalAlign: "top", width: "36%" }}>{descript}</td>
