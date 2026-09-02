@@ -44,6 +44,7 @@ export default async function RalfiLoginPage({
 
   return (
     <main
+      className="page-gap-fix"
       style={{
         minHeight: "100vh",
         display: "flex",
@@ -52,6 +53,7 @@ export default async function RalfiLoginPage({
         background: "#F3FAF7",
       }}
     >
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 18, width: "100%", maxWidth: 400 }}>
       <div
         style={{
           background: "#fff",
@@ -59,7 +61,6 @@ export default async function RalfiLoginPage({
           boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
           padding: "40px 44px",
           width: "100%",
-          maxWidth: 400,
         }}
       >
         <div
@@ -145,6 +146,34 @@ export default async function RalfiLoginPage({
             Access report
           </button>
         </form>
+      </div>
+
+      {/* Feedback form button */}
+      <style>{`
+        .ralfi-feedback-btn {
+          display: block;
+          width: 100%;
+          padding: 13px 0;
+          text-align: center;
+          font-size: 15px;
+          font-weight: 700;
+          color: #059669;
+          text-decoration: none;
+          background: rgba(5,150,105,0.08);
+          border: 1.5px solid rgba(5,150,105,0.25);
+          border-radius: 12px;
+          letter-spacing: 0.01em;
+          transition: background 0.15s, border-color 0.15s;
+          box-sizing: border-box;
+        }
+        .ralfi-feedback-btn:hover {
+          background: rgba(5,150,105,0.14);
+          border-color: rgba(5,150,105,0.5);
+        }
+      `}</style>
+      <a href="/product/ralfi-visibility/feedback" className="ralfi-feedback-btn">
+        📋 Feedback form
+      </a>
       </div>
     </main>
   );

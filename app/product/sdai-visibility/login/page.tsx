@@ -44,6 +44,7 @@ export default async function SdaiLoginPage({
 
   return (
     <main
+      className="page-gap-fix"
       style={{
         minHeight: "100vh",
         display: "flex",
