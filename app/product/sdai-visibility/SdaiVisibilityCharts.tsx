@@ -193,16 +193,16 @@ function twoSentences(text: string): string {
 
 // ── Cluster config ─────────────────────────────────────────────────────────────
 const SOV_CLUSTERS = [
-  { tag: "sdai-recording",    label: "Screen Recording" },
-  { tag: "sdai-production",   label: "AI Production" },
-  { tag: "sdai-editor",       label: "Video Editor" },
-  { tag: "sdai-voice",        label: "Voice & Avatar" },
-  { tag: "sdai-captions",     label: "Captions" },
-  { tag: "sdai-translation",  label: "Translation" },
-  { tag: "sdai-distribution", label: "Distribution" },
-  { tag: "sdai-branding",     label: "Branding" },
-  { tag: "sdai-collab",       label: "Collaboration" },
-  { tag: "sdai-agents",       label: "AI Agents" },
+  { tag: "sdai-recording",    label: "Screen Recording",  description: "Which brands LLMs surface when asked about capturing app flows in the browser — no install, no extension, just record and go." },
+  { tag: "sdai-production",   label: "AI Production",     description: "Which brands LLMs surface when asked about automatic zoom generation, pacing, dead-air trimming, and transition slides between sections." },
+  { tag: "sdai-editor",       label: "Video Editor",      description: "Which brands LLMs surface when asked about timeline editing, text effects, and fine-grained manual control over the final cut." },
+  { tag: "sdai-voice",        label: "Voice & Avatar",    description: "Which brands LLMs surface when asked about AI voice cloning, talking-head avatars, and narration generation without recording again." },
+  { tag: "sdai-captions",     label: "Captions",          description: "Which brands LLMs surface when asked about auto-generated captions, caption styling, and on-brand subtitle presentation." },
+  { tag: "sdai-translation",  label: "Translation",       description: "Which brands LLMs surface when asked about multi-language dubbing and narration regeneration — one recording, every market." },
+  { tag: "sdai-distribution", label: "Distribution",      description: "Which brands LLMs surface when asked about embedding finished videos, sharing via a hosted player, and tracking viewer engagement." },
+  { tag: "sdai-branding",     label: "Branding",          description: "Which brands LLMs surface when asked about brand kits, custom backgrounds, logo watermarking, and reusable video templates." },
+  { tag: "sdai-collab",       label: "Collaboration",     description: "Which brands LLMs surface when asked about team workspaces, role-based access, and timestamped review and approval workflows." },
+  { tag: "sdai-agents",       label: "AI Agents",         description: "Which brands LLMs surface when asked about autonomous AI that records app flows without a human at the keyboard." },
 ];
 
 const SENTIMENT_CLUSTERS = [
@@ -586,13 +586,16 @@ export default function SdaiVisibilityCharts({
             Brand Mentions: 7-Day Trend by Cluster
           </h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {clusterCharts.filter(c => c.hasData).map(({ tag, label, clusterBrands, rows }) => (
+            {clusterCharts.filter(c => c.hasData).map(({ tag, label, description: clusterDesc, clusterBrands, rows }) => (
               <div key={tag} style={{
                 background: "#fff", borderRadius: 10,
                 boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
                 padding: "20px 24px 16px",
               }}>
                 <h4 style={{ fontSize: 17, fontWeight: 700, color: NAVY, marginBottom: 2, letterSpacing: "-0.01em" }}>{label}</h4>
+                {clusterDesc && (
+                  <p style={{ fontSize: 13, color: "rgba(0,0,0,0.5)", marginBottom: 4, lineHeight: 1.55 }}>{clusterDesc}</p>
+                )}
                 <p style={{ fontSize: 15, color: "#000", marginBottom: 14 }}>7-day mentions · both models</p>
                 <ResponsiveContainer width="100%" height={220}>
                   <LineChart data={rows} margin={{ top: 4, right: 8, left: 0, bottom: 0 }}>
@@ -954,6 +957,73 @@ export default function SdaiVisibilityCharts({
           </div>
         );
       })()}
+
+      {/* ── Row 10: Product improvement opportunities ───────────────────────── */}
+      <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "24px 28px 24px" }}>
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+            <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
+              Product Feature Opportunities
+            </h3>
+            <span style={{ fontSize: 12, fontWeight: 600, background: "rgba(124,58,237,0.1)", color: PURPLE, borderRadius: 999, padding: "3px 10px" }}>
+              Superdegree
+            </span>
+          </div>
+          <p style={{ fontSize: 15, color: "#000", margin: 0, lineHeight: 1.6 }}>
+            Three capabilities where Superdegree&apos;s current product is well-positioned but a targeted expansion would improve AI model coverage — and team outcomes.
+          </p>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+          {[
+            {
+              title: "Reusable flow library",
+              current: "Superdegree offers brand formats and reusable templates.",
+              improvement: `Add a "flow library" where common app segments — login, settings navigation, key UI states — are saved as reusable clips. When the UI changes, updating the clip propagates to every video that references it, turning one-time recordings into maintainable assets. This addresses a gap the Collaboration and AI Agents clusters are already probing for.`,
+            },
+            {
+              title: "Agent decision notes",
+              current: "The Ask agent drives the app autonomously in a hosted browser and captures the full flow without a human at the keyboard.",
+              improvement: `Surface lightweight agent decision notes alongside the captured recording — "I clicked here because this is the primary CTA," "I paused here because I detected a required field" — as a review layer editors see before publishing. Closes the gap between autonomous capture and trustworthy autonomous capture, and gives LLMs concrete language to describe the feature.`,
+            },
+            {
+              title: "Cross-team narration consistency",
+              current: "Superdegree clones individual voices and lets anyone re-record lines without re-recording. The brand kit covers visual consistency.",
+              improvement: "Add a narration consistency check that surfaces when a new video's pacing or tone reads significantly differently from the team's existing library. Useful for CS and product teams publishing to a shared help centre, and directly addressable by AI models when asked about enterprise video governance — a currently underdocumented cluster.",
+            },
+          ].map(({ title, current, improvement }, i, arr) => (
+            <div key={title} style={{
+              display: "flex",
+              gap: 20,
+              padding: "20px 0",
+              borderBottom: i < arr.length - 1 ? "1px solid rgba(0,0,0,0.06)" : "none",
+            }}>
+              <div style={{ width: 28, flexShrink: 0, paddingTop: 2 }}>
+                <div style={{
+                  width: 24, height: 24, borderRadius: "50%",
+                  background: PURPLE, color: "#fff",
+                  fontSize: 13, fontWeight: 700,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  {i + 1}
+                </div>
+              </div>
+              <div style={{ flex: 1 }}>
+                <p style={{ fontSize: 15, fontWeight: 700, color: NAVY, margin: "0 0 8px", letterSpacing: "-0.01em" }}>{title}</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#059669", background: "rgba(5,150,105,0.08)", borderRadius: 999, padding: "2px 8px", flexShrink: 0, marginTop: 1 }}>Current</span>
+                    <p style={{ fontSize: 14, color: "#000", margin: 0, lineHeight: 1.65 }}>{current}</p>
+                  </div>
+                  <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: PURPLE, background: "rgba(124,58,237,0.08)", borderRadius: 999, padding: "2px 8px", flexShrink: 0, marginTop: 1 }}>Opportunity</span>
+                    <p style={{ fontSize: 14, color: "#000", margin: 0, lineHeight: 1.65 }}>{improvement}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* ── Footnotes ────────────────────────────────────────────────────────── */}
       <div style={{ display: "flex", flexDirection: "column", gap: 6, padding: "0 4px" }}>
