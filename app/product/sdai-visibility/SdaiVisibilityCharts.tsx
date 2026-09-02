@@ -850,9 +850,7 @@ export default function SdaiVisibilityCharts({
       {/* ── Row 9: Sentiment ────────────────────────────────────────────────── */}
       {(() => {
         const { rows: sentimentRows, meta: sentimentMeta } = sentimentData;
-        const GATE = 3;
-        const daysHave = sentimentMeta.dual_model_dates ?? 0;
-        const ready = daysHave >= GATE;
+        const ready = sentimentRows.length > 0;
 
         const globalDescFreq = new Map<string, number>();
         for (const r of sentimentRows) for (const d of r.top_descriptors) globalDescFreq.set(d, (globalDescFreq.get(d) ?? 0) + 1);
@@ -873,20 +871,14 @@ export default function SdaiVisibilityCharts({
               </h3>
               {!ready && (
                 <span style={{ fontSize: 14, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "#000", background: "rgba(0,0,0,0.06)", borderRadius: 999, padding: "3px 8px" }}>
-                  Collecting
+                  No data yet
                 </span>
               )}
             </div>
 
             {!ready && (
               <div style={{ padding: "28px 24px", textAlign: "center" as const }}>
-                <p style={{ fontSize: 18, fontWeight: 600, color: NAVY, marginBottom: 8 }}>
-                  Collecting data: {daysHave} of {GATE} minimum days
-                </p>
-                <p style={{ fontSize: 16, color: "#000", maxWidth: 380, margin: "0 auto" }}>
-                  Sentiment bars appear once both Claude Haiku and GPT-4o-mini have collected on {GATE} separate days.
-                  Check back in {GATE - daysHave} day{GATE - daysHave !== 1 ? "s" : ""}.
-                </p>
+                <p style={{ fontSize: 16, color: "#000" }}>No sentiment data collected yet.</p>
               </div>
             )}
 
