@@ -38,20 +38,24 @@ const labelStyle: React.CSSProperties = {
   letterSpacing: "-0.01em",
 };
 
-const taStyle: React.CSSProperties = {
+const inputStyle: React.CSSProperties = {
   width: "100%",
   padding: "12px 14px",
   fontSize: 14,
   border: "1.5px solid rgba(0,0,0,0.12)",
   borderRadius: 8,
   outline: "none",
-  resize: "vertical" as const,
   fontFamily: "inherit",
   lineHeight: 1.55,
   color: "#111",
   background: "#FAF9FF",
   marginTop: 12,
   boxSizing: "border-box" as const,
+};
+
+const taStyle: React.CSSProperties = {
+  ...inputStyle,
+  resize: "vertical" as const,
 };
 
 const ynBtnStyle = (selected: boolean): React.CSSProperties => ({
@@ -82,12 +86,12 @@ const radioOptStyle = (selected: boolean): React.CSSProperties => ({
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function SdaiFeedbackPage() {
+  const [company, setCompany] = useState("");
   const [q1, setQ1] = useState("");
   const [q2, setQ2] = useState("");
   const [q2b, setQ2b] = useState("");
   const [q3, setQ3] = useState("");
-  const [q4, setQ4] = useState("");
-  const [q5, setQ5] = useState("");
+  const [q4, setQ4] = useState(""); // want monthly
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -96,7 +100,7 @@ export default function SdaiFeedbackPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!q1.trim() || !q2 || !q3.trim() || !q4 || !q5) {
+    if (!company.trim() || !q1.trim() || !q2 || !q3.trim() || !q4) {
       setError("Please answer all questions before submitting.");
       return;
     }
@@ -107,12 +111,12 @@ export default function SdaiFeedbackPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          company_name: company.trim(),
           q1_didnt_know: q1.trim(),
           q2_changed_plans: q2,
           q2b_what_specifically: showFollowup ? q2b.trim() : "",
           q3_whats_missing: q3.trim(),
-          q4_followup_ok: q4,
-          q5_want_monthly: q5,
+          q4_want_monthly: q4,
           submittedAt: new Date().toISOString(),
         }),
       });
@@ -169,7 +173,7 @@ export default function SdaiFeedbackPage() {
             Your take on the AI Video Creation report
           </h1>
           <p style={{ fontSize: 14, color: "#555", margin: 0, lineHeight: 1.55 }}>
-            Five questions. Takes about 3 minutes. Answers go directly to the team.
+            Four questions. Takes about 2 minutes. Answers go directly to the team.
           </p>
         </div>
 
@@ -201,7 +205,7 @@ export default function SdaiFeedbackPage() {
               </svg>
             </div>
             <h2 style={{ fontSize: 22, fontWeight: 800, color: "#000", letterSpacing: "-0.02em", marginBottom: 10 }}>
-              Thank you, Anuj
+              Thank you, {company || "Anuj"}
             </h2>
             <p style={{ fontSize: 15, color: "#555", lineHeight: 1.6, margin: 0 }}>
               Your feedback is saved. We&apos;ll be in touch.
@@ -217,6 +221,24 @@ export default function SdaiFeedbackPage() {
                 overflow: "hidden",
               }}
             >
+
+              {/* Company name */}
+              <div style={qStyle}>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <label htmlFor="company" style={{ ...labelStyle, fontSize: 13, fontWeight: 600, color: PURPLE, letterSpacing: "0.04em", textTransform: "uppercase" as const }}>
+                    Company
+                  </label>
+                  <input
+                    id="company"
+                    type="text"
+                    value={company}
+                    onChange={(e) => setCompany(e.target.value)}
+                    placeholder="Your company name"
+                    autoFocus
+                    style={inputStyle}
+                  />
+                </div>
+              </div>
 
               {/* Q1 */}
               <div style={qStyle}>
@@ -266,14 +288,7 @@ export default function SdaiFeedbackPage() {
                           }}
                         >
                           {q2 === opt.val && (
-                            <span
-                              style={{
-                                width: 8,
-                                height: 8,
-                                borderRadius: "50%",
-                                background: PURPLE,
-                              }}
-                            />
+                            <span style={{ width: 8, height: 8, borderRadius: "50%", background: PURPLE }} />
                           )}
                         </span>
                         <input
@@ -335,31 +350,9 @@ export default function SdaiFeedbackPage() {
                 </div>
               </div>
 
-              {/* Q4 */}
-              <div style={qStyle}>
-                <div style={numStyle}>4</div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <span style={labelStyle}>
-                    Can I follow up in 2–4 weeks to see if anything in here played out?
-                  </span>
-                  <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
-                    {(["Yes", "No"] as const).map((v) => (
-                      <button
-                        key={v}
-                        type="button"
-                        onClick={() => setQ4(v.toLowerCase())}
-                        style={ynBtnStyle(q4 === v.toLowerCase())}
-                      >
-                        {v}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Q5 */}
+              {/* Q4 — would you want this monthly */}
               <div style={{ ...qStyle, borderBottom: "none" }}>
-                <div style={numStyle}>5</div>
+                <div style={numStyle}>4</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <span style={labelStyle}>Would you want this report monthly?</span>
                   <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
@@ -367,8 +360,8 @@ export default function SdaiFeedbackPage() {
                       <button
                         key={v}
                         type="button"
-                        onClick={() => setQ5(v.toLowerCase())}
-                        style={ynBtnStyle(q5 === v.toLowerCase())}
+                        onClick={() => setQ4(v.toLowerCase())}
+                        style={ynBtnStyle(q4 === v.toLowerCase())}
                       >
                         {v}
                       </button>

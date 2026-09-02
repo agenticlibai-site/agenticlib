@@ -129,40 +129,19 @@ export default function Navbar() {
                         { label: "Insurance Broker (Finance)", desc: "Visibility & sentiment tracking for insurance broker AI agents.", href: "/product/ralfi-visibility/login",
                           iconBg: "linear-gradient(135deg,#0d9488,#14b8a6)",
                           icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2L3.5 5.5V10c0 4.5 3 7.5 6.5 8.5 3.5-1 6.5-4 6.5-8.5V5.5L10 2z" stroke="white" strokeWidth="1.6" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/><polyline points="7,10 9.5,12.5 13.5,7.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-                        { label: "Video Creation", desc: "Visibility & sentiment tracking for AI video creation platforms.", href: "/product/sdai-visibility/login", feedbackHref: "/product/sdai-visibility/feedback",
+                        { label: "Video Creation", desc: "Visibility & sentiment tracking for AI video creation platforms.", href: "/product/sdai-visibility/login",
                           iconBg: "linear-gradient(135deg,#7c3aed,#a78bfa)",
                           icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5.5" width="12" height="9" rx="2" stroke="white" strokeWidth="1.6" fill="rgba(255,255,255,0.18)"/><path d="M14.5 8.5l3-2v5l-3-2v-1z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.25)" strokeLinejoin="round"/></svg> },
                       ].map((item) => (
-                        <div key={item.href}>
-                          <a href={item.href} className="flex items-start gap-4 py-4 rounded-xl px-3" style={{ textDecoration: "none" }}
-                            onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
-                            onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
-                            <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: item.iconBg }}>{item.icon}</div>
-                            <div className="flex flex-col">
-                              <span style={{ fontSize: 14, fontWeight: 600, color: "#000000", lineHeight: 1.4 }}>{item.label}</span>
-                              <span style={{ fontSize: 12.5, color: "#000000", marginTop: 3, lineHeight: 1.5 }}>{item.desc}</span>
-                            </div>
-                          </a>
-                          {"feedbackHref" in item && item.feedbackHref && (
-                            <a
-                              href={item.feedbackHref}
-                              style={{
-                                display: "block",
-                                fontSize: 12,
-                                fontWeight: 600,
-                                color: "#7C3AED",
-                                textDecoration: "none",
-                                padding: "0 12px 10px 68px",
-                                marginTop: -10,
-                                lineHeight: 1,
-                              }}
-                              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "0.7"; }}
-                              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.opacity = "1"; }}
-                            >
-                              Feedback form →
-                            </a>
-                          )}
-                        </div>
+                        <a key={item.href} href={item.href} className="flex items-start gap-4 py-4 rounded-xl px-3" style={{ textDecoration: "none" }}
+                          onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
+                          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
+                          <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: item.iconBg }}>{item.icon}</div>
+                          <div className="flex flex-col">
+                            <span style={{ fontSize: 14, fontWeight: 600, color: "#000000", lineHeight: 1.4 }}>{item.label}</span>
+                            <span style={{ fontSize: 12.5, color: "#000000", marginTop: 3, lineHeight: 1.5 }}>{item.desc}</span>
+                          </div>
+                        </a>
                       ))}
                     </div>
 
