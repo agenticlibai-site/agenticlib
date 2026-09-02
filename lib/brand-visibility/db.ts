@@ -4171,17 +4171,17 @@ export async function upsertSdaiSentimentDrift(row: {
 // ── SDAI report query functions ───────────────────────────────────────────────
 
 export async function getSdaiDailySummary(days = 7): Promise<
-  { date: string; brand: string; model: string; mention_count: number; avg_position: number | null }[]
+  { date: string; brand: string; model: string; cluster_tag: string; mention_count: number; avg_position: number | null }[]
 > {
   await initSdaiDB();
   const result = await sql`
-    SELECT date::text AS date, brand, model, mention_count, avg_position
+    SELECT date::text AS date, brand, model, cluster_tag, mention_count, avg_position
     FROM sdai_daily_summary
     WHERE date >= CURRENT_DATE - ${days}::int * INTERVAL '1 day'
       AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM sdai_denylist)
     ORDER BY date ASC, mention_count DESC
   `;
-  return result.rows as { date: string; brand: string; model: string; mention_count: number; avg_position: number | null }[];
+  return result.rows as { date: string; brand: string; model: string; cluster_tag: string; mention_count: number; avg_position: number | null }[];
 }
 
 export async function getSdaiWeeklySummary(): Promise<

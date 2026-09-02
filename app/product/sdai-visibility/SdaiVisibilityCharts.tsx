@@ -55,7 +55,7 @@ function fmtDate(d: string) {
 }
 
 // ── Types ──────────────────────────────────────────────────────────────────────
-interface DailyRow        { date: string; brand: string; model: string; mention_count: number; avg_position: number | null }
+interface DailyRow        { date: string; brand: string; model: string; cluster_tag: string; mention_count: number; avg_position: number | null }
 interface WeeklyRow       { brand: string; model: string; mention_count: number; avg_position: number | null }
 interface LLMVisRow       { model: string; visibility_pct: number; total_responses: number }
 interface SOVRow          { cluster_tag: string; brand: string; total_appearances: number; sov_pct: number }
@@ -370,13 +370,22 @@ export default function SdaiVisibilityCharts({
 
   // ── Build chart indexes ───────────────────────────────────────────────────────
   const dateSet = new Set<string>();
+  // overall index: date → brand → total mentions (all clusters combined)
   const index: Record<string, Record<string, number>> = {};
+  // per-cluster index: cluster_tag → date → brand → mentions
+  const clusterIndex: Record<string, Record<string, Record<string, number>>> = {};
 
   for (const row of dailySummary) {
     if (!LOCKED_SDAI_BRANDS.has(row.brand)) continue;
     dateSet.add(row.date);
+    // overall
     if (!index[row.date]) index[row.date] = {};
     index[row.date][row.brand] = (index[row.date][row.brand] ?? 0) + row.mention_count;
+    // per-cluster
+    const ct = row.cluster_tag;
+    if (!clusterIndex[ct]) clusterIndex[ct] = {};
+    if (!clusterIndex[ct][row.date]) clusterIndex[ct][row.date] = {};
+    clusterIndex[ct][row.date][row.brand] = (clusterIndex[ct][row.date][row.brand] ?? 0) + row.mention_count;
   }
 
   // Weekly totals
@@ -400,21 +409,17 @@ export default function SdaiVisibilityCharts({
     return row;
   });
 
-  // ── Per-cluster chart rows ────────────────────────────────────────────────────
+  // ── Per-cluster chart rows (using cluster_tag-specific data) ─────────────────
   const clusterCharts = SOV_CLUSTERS.map(cluster => {
-    // Filter daily summary by cluster
-    const clusterIndex: Record<string, Record<string, number>> = {};
-    for (const row of dailySummary) {
-      if (!LOCKED_SDAI_BRANDS.has(row.brand)) continue;
-      if (row.date < dates[0] || row.date > dates[dates.length - 1]) continue;
-      // All brands compete in all clusters — use overall data (cluster filter done at DB)
-    }
+    const ci = clusterIndex[cluster.tag] ?? {};
     const rows = dates.map(date => {
       const row: Record<string, number | string> = { date };
-      for (const b of brands) row[b] = index[date]?.[b] ?? 0;
+      for (const b of brands) row[b] = ci[date]?.[b] ?? 0;
       return row;
     });
-    return { ...cluster, clusterBrands: brands, rows };
+    // Only show clusters that have any data
+    const hasData = rows.some(r => brands.some(b => (r[b] as number) > 0));
+    return { ...cluster, clusterBrands: brands, rows, hasData };
   });
 
   // ── Aggregate weekly metrics ──────────────────────────────────────────────────
@@ -589,7 +594,7 @@ export default function SdaiVisibilityCharts({
             Brand Mentions: 7-Day Trend by Cluster
           </h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-            {clusterCharts.map(({ tag, label, clusterBrands, rows }) => (
+            {clusterCharts.filter(c => c.hasData).map(({ tag, label, clusterBrands, rows }) => (
               <div key={tag} style={{
                 background: "#fff", borderRadius: 10,
                 boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)",
