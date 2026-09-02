@@ -4355,7 +4355,7 @@ export async function getSdaiSentimentData(): Promise<{
         ARRAY(
           SELECT d FROM (
             SELECT TRIM(d.word) AS d, COUNT(*) AS cnt
-            FROM base b2, jsonb_array_elements_text(b2.descriptors) AS d(word)
+            FROM base b2, unnest(b2.descriptors) AS d(word)
             WHERE b2.brand_name = base_g.brand_name AND b2.bucket_tag = base_g.bucket_tag
               AND LENGTH(TRIM(d.word)) > 2
             GROUP BY TRIM(d.word) ORDER BY cnt DESC LIMIT 6
