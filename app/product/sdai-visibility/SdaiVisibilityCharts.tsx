@@ -990,15 +990,64 @@ export default function SdaiVisibilityCharts({
             <p style={{ fontSize: 18, fontWeight: 700, color: NAVY, margin: "0 0 12px", lineHeight: 1.3 }}>
               Descript: Mechanism-First Documentation
             </p>
-            <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 12px" }}>
-              What makes Descript&apos;s approach distinctive is that every public page is built around a specific workflow, not a product category. The video-editing page states the exact sequence: footage is transcribed, the user edits the text, and the video changes to match. The Underlord help page goes further, describing it as an &ldquo;agentic co-editor&rdquo; that &ldquo;can act on your behalf.&rdquo; The filler-words help page specifies that Descript &ldquo;detects filler words and silences, then removes them automatically from the transcript and audio in one pass.&rdquo; That level of mechanism gives AI models something concrete to cite when a buyer asks whether the feature works and how.
-            </p>
-            <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 12px" }}>
-              The second layer is dedicated, stable URLs per capability: <strong>/video-editing</strong>, <strong>/underlord</strong>, <strong>/integrations</strong>, <strong>/pricing</strong>, <strong>/customers/revelo</strong>. Each URL is a retrievable, indexable document for a specific query. The integrations page names Google Drive, Slack, Adobe Premiere, Ecamm, Final Cut Pro, and Dropbox and says they &ldquo;enable 1-click imports&rdquo; — more citable than a generic &ldquo;works with your existing tools&rdquo; claim. Pricing is displayed publicly, including the Hobbyist tier at $16 per month annually.
-            </p>
-            <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 4px" }}>
-              Earned visibility adds a third layer. A Vizard roundup in March 2026 independently labelled Descript &ldquo;the best transcript-first editor for podcasts, interviews, and talking-head videos.&rdquo; G2 reviews repeat the mechanism in user language — both praise and criticism — giving AI models realistic decision-context. Reddit discussions, including one titled &ldquo;Descript AI Video Editing is a Disaster,&rdquo; add unprompted, specific vocabulary about pricing and failure modes that makes the entity appear in a wider range of queries. The Revelo case study names the customer and states the outcome: podcast workflow went from &ldquo;a couple of days&rdquo; to &ldquo;a couple of hours.&rdquo;
-            </p>
+            <ul style={{ margin: "0 0 14px", paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column" as const, gap: 10 }}>
+              {([
+                {
+                  text: "Every public page is built around a specific workflow, not a product category. The video-editing page states the exact sequence: footage is transcribed, the user edits the text, and the video changes to match.",
+                  cite: "descript.com/video-editing",
+                  url: "https://www.descript.com/video-editing",
+                },
+                {
+                  text: `The Underlord help page describes it as an "agentic co-editor" that "can act on your behalf." The filler-words page specifies it "detects filler words and silences, then removes them automatically from the transcript and audio in one pass."`,
+                  cite: "help.descript.com/underlord",
+                  url: "https://help.descript.com/hc/en-us/articles/36803785502221",
+                },
+                {
+                  text: "Dedicated stable URLs per capability: /video-editing, /underlord, /integrations, /pricing, /customers/revelo. Each one is a retrievable, indexable document for a specific query rather than a homepage mention.",
+                  cite: null, url: null,
+                },
+                {
+                  text: `The integrations page names Google Drive, Slack, Adobe Premiere, Ecamm, Final Cut Pro, and Dropbox and says they "enable 1-click imports" — more citable than a generic "works with your existing tools" claim.`,
+                  cite: "descript.com/integrations",
+                  url: "https://www.descript.com/integrations",
+                },
+                {
+                  text: "Pricing is displayed publicly, including the Hobbyist tier at $16 per month annually — no sales-call gate.",
+                  cite: "descript.com/pricing",
+                  url: "https://www.descript.com/pricing",
+                },
+                {
+                  text: `Vizard's March 2026 roundup independently labelled Descript "the best transcript-first editor for podcasts, interviews, and talking-head videos."`,
+                  cite: "vizard.ai — Best AI Video Editors 2026",
+                  url: "https://vizard.ai/blog/best-ai-video-editing-tools-2026",
+                },
+                {
+                  text: `G2 reviews repeat the mechanism in user language — praise ("the most intuitive software I've ever used") and criticism ("an incredibly frustrating user experience") — giving AI models realistic decision-context rather than vendor-curated claims.`,
+                  cite: "g2.com/products/descript/reviews",
+                  url: "https://www.g2.com/products/descript/reviews?qs=pros-and-cons",
+                },
+                {
+                  text: `Reddit threads including "Descript AI Video Editing is a Disaster" and reports of consuming "half of my monthly AI credits" add unprompted, specific vocabulary about pricing and failure modes that broadens the range of queries the brand appears in.`,
+                  cite: "r/podcasting, r/Descript",
+                  url: "https://www.reddit.com/r/podcasting/comments/1l4irrs/descript_ai_video_editing_is_a_disaster_all_ai",
+                },
+                {
+                  text: `Revelo case study: podcast workflow went from "a couple of days" to "a couple of hours" — named customer, named outcome, no PR assistance required to cite it.`,
+                  cite: "descript.com/customers/revelo",
+                  url: "https://www.descript.com/customers/revelo",
+                },
+              ] as { text: string; cite: string | null; url: string | null }[]).map((pt, i) => (
+                <li key={i} style={{ fontSize: 16, color: "#000", lineHeight: 1.6, display: "flex", alignItems: "flex-start", gap: 10 }}>
+                  <span style={{ flexShrink: 0, width: 7, height: 7, borderRadius: "50%", background: NAVY, marginTop: 7 }} />
+                  <span>
+                    {pt.text}
+                    {pt.cite && pt.url && (
+                      <a href={pt.url} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", marginLeft: 5, fontSize: 14, textDecoration: "underline" }}>{pt.cite}</a>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
             <p style={{
               fontSize: 16, color: "#000", lineHeight: 1.6, margin: "12px 0",
               background: "rgba(250,204,21,0.15)",
@@ -1030,15 +1079,64 @@ export default function SdaiVisibilityCharts({
             <p style={{ fontSize: 18, fontWeight: 700, color: NAVY, margin: "0 0 12px", lineHeight: 1.3 }}>
               Synthesia: Enterprise Positioning via Independent Press
             </p>
-            <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 12px" }}>
-              Synthesia earns visibility through a different mechanism than Descript. Its strongest layer is not documentation depth but independent repetition: CNBC and TechCrunch both describe Synthesia&apos;s product in their own words across multiple articles in 2025. CNBC calls it &ldquo;a platform creating AI-generated clips with human avatars that speak multiple languages.&rdquo; TechCrunch reports &ldquo;approximately 60,000 enterprises and 1 million users using avatar-based videos from text.&rdquo; These are press descriptions, not press releases — two independent sources repeating the same category claim in their own language.
-            </p>
-            <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 12px" }}>
-              Owned documentation reinforces the same identity. The text-to-video page explicitly names accepted inputs: &ldquo;Use a prompt, a URL, a document, or a script,&rdquo; then describes the output as scenes, voiceover, and an AI avatar. The Learning and Development page breaks the workflow into a machine-readable four-step sequence: Create your script, Customise your video, Collaborate, Share and export. Integration documentation names 360Learning, HubSpot, Shopify, WordPress, and PowerPoint. Each named entity is a retrieval anchor — a signal to language models that the claim is specific, documented, and linked to something real. Pricing is public: Basic at $0, with Starter, Creator, and Enterprise tiers named.
-            </p>
-            <p style={{ fontSize: 16, color: "#000", lineHeight: 1.7, margin: "0 0 4px" }}>
-              G2 and Trustpilot add a third corroboration layer. Reviews carry both praise (&ldquo;The ability to make edits without having to reshoot an entire video is a huge advantage&rdquo;) and criticism (&ldquo;The avatars I used mostly look flat and expressionless&rdquo;). This combination matters: criticism adds realistic decision-context that only appears in actual user reviews, and AI models encounter the brand in both positive and negative discussions. The Moody&apos;s case study anchors everything with a named customer, a baseline, and an outcome: &ldquo;If something took us 4 hours, it&apos;s taking us 30 minutes with Synthesia&rdquo; — an 87% reduction.
-            </p>
+            <ul style={{ margin: "0 0 14px", paddingLeft: 0, listStyle: "none", display: "flex", flexDirection: "column" as const, gap: 10 }}>
+              {([
+                {
+                  text: "CNBC and TechCrunch both independently describe Synthesia's product in their own words across multiple 2025 articles — editorial coverage, not press releases.",
+                  cite: "cnbc.com, techcrunch.com",
+                  url: "https://cnbc.com/2025/01/15/ai-video-platform-synthesia-doubles-valuation-to-2point1-billion.html",
+                },
+                {
+                  text: `CNBC: "a platform creating AI-generated clips with human avatars that speak multiple languages." TechCrunch: "approximately 60,000 enterprises and 1 million users using avatar-based videos from text."`,
+                  cite: null, url: null,
+                },
+                {
+                  text: `The text-to-video page explicitly names accepted inputs: "Use a prompt, a URL, a document, or a script," then describes the output as scenes, voiceover, and an AI avatar.`,
+                  cite: "synthesia.io/features/text-to-video",
+                  url: "https://www.synthesia.io/features/text-to-video",
+                },
+                {
+                  text: "The Learning and Development page breaks the workflow into a machine-readable four-step sequence: Create your script, Customise your video, Collaborate, Share and export — each step specifying an input and an output.",
+                  cite: "synthesia.io/learning-and-development",
+                  url: "https://www.synthesia.io/learning-and-development",
+                },
+                {
+                  text: "Integration documentation names 360Learning, HubSpot, Shopify, WordPress, and PowerPoint. Each named platform is a retrieval anchor — a signal that the claim is specific, documented, and linked to something real.",
+                  cite: "docs.synthesia.io/docs/synthesia-integrations",
+                  url: "https://docs.synthesia.io/docs/synthesia-integrations",
+                },
+                {
+                  text: "Pricing is public: Basic at $0, with Starter, Creator, and Enterprise tiers named. No sales-call gate on the entry tier.",
+                  cite: "synthesia.io/pricing",
+                  url: "https://www.synthesia.io/pricing",
+                },
+                {
+                  text: `G2 reviews carry both praise ("The ability to make edits without having to reshoot an entire video is a huge advantage") and criticism ("The avatars I used mostly look flat and expressionless") — adding realistic decision-context AI models encounter in the wild.`,
+                  cite: "g2.com/products/synthesia/reviews",
+                  url: "https://www.g2.com/products/synthesia/reviews?qs=pros-and-cons",
+                },
+                {
+                  text: "Trustpilot adds an additional independent corroboration layer with both positive and negative feedback, including commentary on content policy limits.",
+                  cite: "trustpilot.com/review/synthesia.io",
+                  url: "https://www.trustpilot.com/review/synthesia.io",
+                },
+                {
+                  text: `Moody's case study: "If something took us 4 hours, it's taking us 30 minutes with Synthesia" — 87% reduction, named customer, stated baseline, and direct quote. The most citation-ready evidence unit in this category.`,
+                  cite: "synthesia.io/case-studies",
+                  url: "https://www.synthesia.io/case-studies",
+                },
+              ] as { text: string; cite: string | null; url: string | null }[]).map((pt, i) => (
+                <li key={i} style={{ fontSize: 16, color: "#000", lineHeight: 1.6, display: "flex", alignItems: "flex-start", gap: 10 }}>
+                  <span style={{ flexShrink: 0, width: 7, height: 7, borderRadius: "50%", background: NAVY, marginTop: 7 }} />
+                  <span>
+                    {pt.text}
+                    {pt.cite && pt.url && (
+                      <a href={pt.url} target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", marginLeft: 5, fontSize: 14, textDecoration: "underline" }}>{pt.cite}</a>
+                    )}
+                  </span>
+                </li>
+              ))}
+            </ul>
             <p style={{
               fontSize: 16, color: "#000", lineHeight: 1.6, margin: "12px 0",
               background: "rgba(250,204,21,0.15)",
