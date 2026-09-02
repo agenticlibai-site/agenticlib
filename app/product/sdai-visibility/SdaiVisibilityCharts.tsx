@@ -206,16 +206,8 @@ const SOV_CLUSTERS = [
 ];
 
 const SENTIMENT_CLUSTERS = [
-  { tag: "sdai-recording",    label: "Screen Recording" },
-  { tag: "sdai-production",   label: "AI Production" },
-  { tag: "sdai-editor",       label: "Video Editor" },
-  { tag: "sdai-voice",        label: "Voice & Avatar" },
-  { tag: "sdai-captions",     label: "Captions" },
-  { tag: "sdai-translation",  label: "Translation" },
-  { tag: "sdai-distribution", label: "Distribution" },
-  { tag: "sdai-branding",     label: "Branding" },
-  { tag: "sdai-collab",       label: "Collaboration" },
-  { tag: "sdai-agents",       label: "AI Agents" },
+  { tag: "overall",          label: "Overall" },
+  { tag: "overall-criticism", label: "Criticism & Limitations" },
 ];
 
 // ── Custom tooltip ─────────────────────────────────────────────────────────────
