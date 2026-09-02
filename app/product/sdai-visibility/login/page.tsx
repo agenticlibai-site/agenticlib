@@ -52,6 +52,7 @@ export default async function SdaiLoginPage({
         background: "#F5F3FF",
       }}
     >
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 18, width: "100%", maxWidth: 400 }}>
       <div
         style={{
           background: "#fff",
@@ -59,7 +60,6 @@ export default async function SdaiLoginPage({
           boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
           padding: "40px 44px",
           width: "100%",
-          maxWidth: 400,
         }}
       >
         <div
@@ -145,6 +145,37 @@ export default async function SdaiLoginPage({
             Access report
           </button>
         </form>
+      </div>
+
+      {/* Feedback form button — visible to anyone on the login page */}
+      <a
+        href="/product/sdai-visibility/feedback"
+        style={{
+          display: "block",
+          width: "100%",
+          padding: "13px 0",
+          textAlign: "center" as const,
+          fontSize: 15,
+          fontWeight: 700,
+          color: "#7C3AED",
+          textDecoration: "none",
+          background: "rgba(124,58,237,0.08)",
+          border: "1.5px solid rgba(124,58,237,0.25)",
+          borderRadius: 12,
+          letterSpacing: "0.01em",
+          transition: "background 0.15s, border-color 0.15s",
+        }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.14)";
+          (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(124,58,237,0.5)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.08)";
+          (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(124,58,237,0.25)";
+        }}
+      >
+        📋 Feedback form
+      </a>
       </div>
     </main>
   );

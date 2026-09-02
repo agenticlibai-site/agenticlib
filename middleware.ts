@@ -52,7 +52,8 @@ export async function middleware(request: NextRequest) {
   // ── SDAI (AI Video Creation) visibility gate ────────────────────────────────
   if (
     pathname.startsWith("/product/sdai-visibility") &&
-    !pathname.startsWith("/product/sdai-visibility/login")
+    !pathname.startsWith("/product/sdai-visibility/login") &&
+    !pathname.startsWith("/product/sdai-visibility/feedback")
   ) {
     const token = request.cookies.get("sdai_auth")?.value;
     const expected = await hashToken(process.env.SDAI_ACCESS_PASSWORD ?? "", SDAI_SALT);
