@@ -126,13 +126,14 @@ export default function SdaiFeedbackPage() {
 
   return (
     <main
+      className="page-gap-fix"
       style={{
         minHeight: "100vh",
         background: BG,
         display: "flex",
         alignItems: "flex-start",
         justifyContent: "center",
-        padding: "60px 20px 80px",
+        padding: "96px 20px 80px",
       }}
     >
       <div style={{ width: "100%", maxWidth: 580 }}>
