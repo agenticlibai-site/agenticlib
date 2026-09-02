@@ -958,7 +958,419 @@ export default function SdaiVisibilityCharts({
         );
       })()}
 
-      {/* ── Row 10: Product improvement opportunities ───────────────────────── */}
+      {/* ── Row 10: LLM Visibility Playbook ─────────────────────────────────── */}
+      <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "24px 28px 32px" }}>
+        {/* Header */}
+        <div style={{ marginBottom: 28 }}>
+          <div style={{
+            fontSize: 11, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const,
+            color: PURPLE, marginBottom: 8,
+          }}>Research · LLM Visibility</div>
+          <h3 style={{ fontSize: 22, fontWeight: 700, color: NAVY, letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: 8 }}>
+            How AI Video Companies Earn LLM Visibility
+          </h3>
+          <p style={{ fontSize: 14, color: "rgba(0,0,0,0.55)", lineHeight: 1.65, maxWidth: 620 }}>
+            Why Descript and Synthesia are consistently cited by Claude and GPT when asked about AI video creation, and what Superdegree should do about it.
+          </p>
+        </div>
+
+        {/* Descript */}
+        <div style={{ marginBottom: 32 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+            <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#B45309", flexShrink: 0 }} />
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.45)" }}>Descript</span>
+          </div>
+          <h4 style={{ fontSize: 18, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 4 }}>
+            How Descript Became LLM-Visible
+          </h4>
+          <p style={{ fontSize: 13, color: "rgba(0,0,0,0.45)", fontStyle: "italic", marginBottom: 18 }}>
+            Transcript-first video and audio editor with an agentic AI co-editor
+          </p>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
+            {[
+              {
+                kind: "Owned",
+                kindColor: "#B45309",
+                kindBg: "rgba(180,83,9,0.08)",
+                title: "Dedicated feature URLs",
+                body: `One stable page per capability: /video-editing, /underlord, /integrations, /pricing, /customers/revelo. Each exists to be found on a specific query, not to serve the homepage.`,
+                source: "descript.com/underlord, descript.com/integrations",
+              },
+              {
+                kind: "Owned",
+                kindColor: "#B45309",
+                kindBg: "rgba(180,83,9,0.08)",
+                title: "Mechanism-level workflow language",
+                body: `The video-editing page states the exact sequence: footage is transcribed, the user edits the text, and the video changes to match. The Underlord help page says it "can act on your behalf" and calls it "an agentic co-editor." The filler-words page states that Descript "detects filler words and silences, then removes them automatically."`,
+                source: "descript.com/video-editing, help.descript.com/underlord",
+              },
+              {
+                kind: "Owned",
+                kindColor: "#B45309",
+                kindBg: "rgba(180,83,9,0.08)",
+                title: "Named integrations and public pricing",
+                body: `The integrations page names Google Drive, Slack, YouTube, Adobe Premiere, Ecamm, Final Cut Pro, and Dropbox and says they "enable 1-click imports." Pricing is displayed publicly: Hobbyist at $16 per month annually.`,
+                source: "descript.com/integrations, descript.com/pricing",
+              },
+              {
+                kind: "Earned",
+                kindColor: "#374151",
+                kindBg: "rgba(0,0,0,0.05)",
+                title: "G2 reviews repeat the mechanism",
+                body: `Review text uses concrete workflow language. Both praise and criticism appear, which gives the entity decision-context across source types. "This is the most intuitive software I've ever used!!!" alongside "It's an incredibly frustrating user experience."`,
+                source: "g2.com/products/descript/reviews",
+              },
+              {
+                kind: "Earned",
+                kindColor: "#374151",
+                kindBg: "rgba(0,0,0,0.05)",
+                title: "Organic Reddit criticism",
+                body: `Reddit surfaces mechanism-adjacent language that adds realistic decision context. One user describes a "productivity boost became a nightmare" experience; another reports editing "consumed half of my monthly AI credits." A podcasting thread is titled "Descript AI Video Editing is a Disaster." Unprompted and specific, this is more citable than vendor claims.`,
+                source: "r/Descript, r/podcasting",
+              },
+              {
+                kind: "Earned",
+                kindColor: "#374151",
+                kindBg: "rgba(0,0,0,0.05)",
+                title: "Roundup category label",
+                body: `Vizard's March 2026 roundup gives Descript a stable, independently attributed label a model can retrieve and reuse: "The best transcript-first editor for podcasts, interviews, and talking-head videos."`,
+                source: "vizard.ai/blog/best-ai-video-editing-tools-2026",
+              },
+            ].map(({ kind, kindColor, kindBg, title, body, source }) => (
+              <div key={title} style={{
+                display: "flex", gap: 12, alignItems: "flex-start",
+                padding: "14px 16px",
+                background: "#FAFAFA",
+                borderRadius: 8,
+                border: "1px solid rgba(0,0,0,0.06)",
+              }}>
+                <div style={{ width: 3, borderRadius: 2, background: "#B45309", flexShrink: 0, alignSelf: "stretch" }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 5 }}>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const,
+                      color: kindColor, background: kindBg, borderRadius: 999, padding: "2px 8px",
+                    }}>{kind}</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: NAVY }}>{title}</span>
+                  </div>
+                  <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: 0 }}>{body}</p>
+                  <p style={{ fontSize: 11, color: "rgba(0,0,0,0.35)", marginTop: 5 }}>{source}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Proof point */}
+          <div style={{
+            background: "rgba(254,243,199,0.6)", border: "1px solid rgba(253,230,138,0.8)",
+            borderRadius: 8, padding: "14px 18px", marginTop: 12,
+          }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "#B45309", marginBottom: 5 }}>Named proof point</div>
+            <p style={{ fontSize: 15, fontWeight: 700, color: NAVY, marginBottom: 3 }}>Days to a couple of hours</p>
+            <p style={{ fontSize: 13, color: "rgba(0,0,0,0.6)", lineHeight: 1.6, margin: 0 }}>
+              Revelo case study: podcast workflow went from "what used to take a couple of days" to "just a couple of hours." Named customer, named outcome, no PR assistance required to cite it.
+            </p>
+            <p style={{ fontSize: 11, color: "rgba(0,0,0,0.3)", marginTop: 6 }}>descript.com/customers/revelo</p>
+          </div>
+          {/* Gap */}
+          <div style={{
+            background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.07)",
+            borderRadius: 8, padding: "12px 16px", marginTop: 10,
+          }}>
+            <span style={{ fontSize: 13, color: "rgba(0,0,0,0.55)", lineHeight: 1.6 }}>
+              <strong style={{ color: NAVY }}>Visibility gap:</strong> Recent independent press is thinner than Synthesia&apos;s. The strongest recent result is a third-party roundup; the TechCrunch article found dates from 2022. Descript&apos;s agentic Underlord identity is strongly documented on its own pages but is not yet independently repeated as consistently as its older transcript-editing identity.
+            </span>
+          </div>
+        </div>
+
+        <div style={{ borderTop: "1px solid rgba(0,0,0,0.07)", margin: "8px 0 28px" }} />
+
+        {/* Synthesia */}
+        <div style={{ marginBottom: 32 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+            <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#0F766E", flexShrink: 0 }} />
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.45)" }}>Synthesia</span>
+          </div>
+          <h4 style={{ fontSize: 18, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 4 }}>
+            How Synthesia Became LLM-Visible
+          </h4>
+          <p style={{ fontSize: 13, color: "rgba(0,0,0,0.45)", fontStyle: "italic", marginBottom: 18 }}>
+            Enterprise AI video platform: text and business content into avatar-led, multilingual video
+          </p>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
+            {[
+              {
+                kind: "Owned",
+                kindColor: "#0F766E",
+                kindBg: "rgba(15,118,110,0.08)",
+                title: "Dedicated feature and workflow pages",
+                body: `URLs are structured to match query intent: /features/text-to-video, /features/avatars, /enterprise, /case-studies, /docs/synthesia-integrations. The text-to-video page names accepted inputs explicitly: "Use a prompt, a URL, a document, or a script" and Synthesia builds a complete video with scenes, voiceover, and an AI avatar.`,
+                source: "synthesia.io/features/text-to-video",
+              },
+              {
+                kind: "Owned",
+                kindColor: "#0F766E",
+                kindBg: "rgba(15,118,110,0.08)",
+                title: "Mechanism-level enterprise workflow",
+                body: `The Learning and Development page breaks the workflow into a machine-readable sequence: Create your script, Customise your video, Collaborate, Share and export. Each step specifies the accepted input and the resulting output, making the whole chain citable as a unit rather than as a marketing assertion.`,
+                source: "synthesia.io/learning-and-development",
+              },
+              {
+                kind: "Owned",
+                kindColor: "#0F766E",
+                kindBg: "rgba(15,118,110,0.08)",
+                title: "Named integrations, API, and public pricing",
+                body: `Documentation names 360Learning, HubSpot, Shopify, WordPress, and PowerPoint. An API reference covers automated personalised video creation. Pricing is publicly visible: Basic at $0, with Starter, Creator, and Enterprise tiers named.`,
+                source: "docs.synthesia.io/docs/synthesia-integrations, synthesia.io/pricing",
+              },
+              {
+                kind: "Earned",
+                kindColor: "#374151",
+                kindBg: "rgba(0,0,0,0.05)",
+                title: "Press independently repeats the core category",
+                body: `CNBC and TechCrunch both describe Synthesia's product in their own words across multiple articles in 2025. CNBC: "a platform creating AI-generated clips with human avatars that speak multiple languages." TechCrunch: "approximately 60,000 enterprises and 1 million users using avatar-based videos from text."`,
+                source: "cnbc.com 2025, techcrunch.com 2025",
+              },
+              {
+                kind: "Earned",
+                kindColor: "#374151",
+                kindBg: "rgba(0,0,0,0.05)",
+                title: "Reviews expose both value and limitations",
+                body: `G2 and Trustpilot carry both praise and criticism. G2: "The ability to make edits without having to reshoot an entire video is a huge advantage." Also on G2: "The avatars I used mostly look flat and expressionless." This makes the entity appear in realistic decision contexts.`,
+                source: "g2.com/products/synthesia/reviews, trustpilot.com/review/synthesia.io",
+              },
+              {
+                kind: "Earned",
+                kindColor: "#374151",
+                kindBg: "rgba(0,0,0,0.05)",
+                title: "Comparison surface",
+                body: `G2's alternatives page names HeyGen, Descript, VEED, and Colossyan Creator alongside Synthesia, placing the brand inside a named comparison frame that models can retrieve for any category query. Synthesia also appears in the AI Video Picks 2026 roundup of the 10 best AI video tools.`,
+                source: "g2.com/products/synthesia/competitors/alternatives",
+              },
+            ].map(({ kind, kindColor, kindBg, title, body, source }) => (
+              <div key={title} style={{
+                display: "flex", gap: 12, alignItems: "flex-start",
+                padding: "14px 16px",
+                background: "#FAFAFA",
+                borderRadius: 8,
+                border: "1px solid rgba(0,0,0,0.06)",
+              }}>
+                <div style={{ width: 3, borderRadius: 2, background: "#0F766E", flexShrink: 0, alignSelf: "stretch" }} />
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 7, marginBottom: 5 }}>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const,
+                      color: kindColor, background: kindBg, borderRadius: 999, padding: "2px 8px",
+                    }}>{kind}</span>
+                    <span style={{ fontSize: 13, fontWeight: 600, color: NAVY }}>{title}</span>
+                  </div>
+                  <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: 0 }}>{body}</p>
+                  <p style={{ fontSize: 11, color: "rgba(0,0,0,0.35)", marginTop: 5 }}>{source}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Proof point */}
+          <div style={{
+            background: "rgba(204,251,241,0.5)", border: "1px solid rgba(153,246,228,0.8)",
+            borderRadius: 8, padding: "14px 18px", marginTop: 12,
+          }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "#0F766E", marginBottom: 5 }}>Named proof point</div>
+            <p style={{ fontSize: 15, fontWeight: 700, color: NAVY, marginBottom: 3 }}>87% reduction in production time</p>
+            <p style={{ fontSize: 13, color: "rgba(0,0,0,0.6)", lineHeight: 1.6, margin: 0 }}>
+              Moody&apos;s case study: "If something took us 4 hours, it&apos;s taking us 30 minutes with Synthesia." Named customer, a baseline of 4 hours, an outcome of 30 minutes, and a direct quote. This combination is unusually citation-ready.
+            </p>
+            <p style={{ fontSize: 11, color: "rgba(0,0,0,0.3)", marginTop: 6 }}>synthesia.io/case-studies</p>
+          </div>
+          {/* Gap */}
+          <div style={{
+            background: "rgba(0,0,0,0.025)", border: "1px solid rgba(0,0,0,0.07)",
+            borderRadius: 8, padding: "12px 16px", marginTop: 10,
+          }}>
+            <span style={{ fontSize: 13, color: "rgba(0,0,0,0.55)", lineHeight: 1.6 }}>
+              <strong style={{ color: NAVY }}>Visibility gap:</strong> The research did not retrieve a clean, substantive Synthesia Reddit thread with product-specific user language. Review and press coverage is strong; community discussion is not. Many homepage claims are broad superlatives (&ldquo;#1 AI Video Platform for Business&rdquo;, &ldquo;160+ languages&rdquo;) that are less informative than the input-to-output documentation.
+            </span>
+          </div>
+        </div>
+
+        <div style={{ borderTop: "1px solid rgba(0,0,0,0.07)", margin: "8px 0 28px" }} />
+
+        {/* Shared pattern table */}
+        <div style={{ marginBottom: 32 }}>
+          <h4 style={{ fontSize: 16, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 6 }}>The Shared Visibility Pattern</h4>
+          <p style={{ fontSize: 13, color: "rgba(0,0,0,0.55)", lineHeight: 1.6, marginBottom: 16 }}>
+            Both companies have built an evidence system, not just a marketing site. The same claim appears across a product page, a documentation page, a customer story, a review, and an independent article.
+          </p>
+          <div style={{ overflowX: "auto" as const }}>
+            <table style={{ width: "100%", borderCollapse: "collapse" as const, fontSize: 12 }}>
+              <thead>
+                <tr>
+                  {["Pattern", "Descript", "Synthesia"].map(h => (
+                    <th key={h} style={{
+                      textAlign: "left", padding: "8px 12px", fontSize: 10, fontWeight: 700,
+                      letterSpacing: "0.07em", textTransform: "uppercase" as const,
+                      color: "rgba(0,0,0,0.4)", borderBottom: "2px solid rgba(0,0,0,0.08)",
+                    }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["Dedicated feature URLs", "/video-editing, /underlord, /integrations", "/features/text-to-video, /features/avatars, /enterprise"],
+                  ["Input-to-output language", "Footage, transcript, text edits, updated video", "Prompt, URL, document, or script, then scenes, voiceover, avatar video"],
+                  ["Named integrations", "Google Drive, Slack, Adobe Premiere, Final Cut Pro", "PowerPoint, 360Learning, HubSpot, Shopify, LMS platforms"],
+                  ["Public pricing", "Free and paid tiers displayed, Hobbyist pricing shown", "Basic at $0, Starter, Creator, Enterprise all named"],
+                  ["Named proof format", "Revelo: days to hours", "Moody's: 4 hours to 30 minutes, 87% reduction"],
+                  ["Comparison surface", "Official Descript vs Riverside page", "G2 alternatives page names HeyGen, Descript, VEED"],
+                ].map(([pattern, descript, synthesia], i) => (
+                  <tr key={pattern}>
+                    <td style={{ padding: "10px 12px", borderBottom: "1px solid rgba(0,0,0,0.06)", fontWeight: 600, color: NAVY, verticalAlign: "top", width: "28%" }}>{pattern}</td>
+                    <td style={{ padding: "10px 12px", borderBottom: "1px solid rgba(0,0,0,0.06)", color: "#000", verticalAlign: "top", width: "36%" }}>{descript}</td>
+                    <td style={{ padding: "10px 12px", borderBottom: "1px solid rgba(0,0,0,0.06)", color: "#000", verticalAlign: "top", width: "36%" }}>{synthesia}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div style={{ borderTop: "1px solid rgba(0,0,0,0.07)", margin: "8px 0 28px" }} />
+
+        {/* Playbook */}
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 14 }}>
+            <div style={{ width: 10, height: 10, borderRadius: "50%", background: PURPLE, flexShrink: 0 }} />
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.45)" }}>Superdegree</span>
+          </div>
+          <h4 style={{ fontSize: 18, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 4 }}>
+            How Superdegree Becomes LLM-Visible
+          </h4>
+          <div style={{
+            background: "rgba(124,58,237,0.06)", border: "1px solid rgba(124,58,237,0.15)",
+            borderRadius: 8, padding: "14px 18px", margin: "14px 0 24px",
+          }}>
+            <p style={{ fontSize: 13, fontWeight: 600, color: NAVY, marginBottom: 4 }}>The core opportunity</p>
+            <p style={{ fontSize: 13, color: "rgba(0,0,0,0.6)", lineHeight: 1.65, margin: 0 }}>
+              Superdegree already has the mechanism. It is missing the evidence system around it. The agent claim exists on the domain but has not yet been independently corroborated across review platforms, press, and community discussion.
+            </p>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
+            {[
+              {
+                rank: 1,
+                impact: "High",
+                type: "Owned",
+                action: "Publish a canonical autonomous-browser-agent workflow page",
+                what: `Create a stable URL such as /features/autonomous-browser-video-agent and document the exact sequence: task brief or product URL, cloud-browser navigation, screen recording, automatic editing with zooms, captions, and narration, then a finished product video plus a written guide. Include a short worked example showing the agent's starting instruction, observed browser actions, and final artefacts.`,
+                why: `Descript and Synthesia make their identities citable by expressing a complete input-to-output workflow. Superdegree already has the underlying claim on its site but spread across multiple pages rather than anchored at one stable URL.`,
+                source: "Evidence: descript.com/video-editing, synthesia.io/features/text-to-video, super.degree/learn",
+              },
+              {
+                rank: 2,
+                impact: "High",
+                type: "Owned",
+                action: "Name the agent and publish its exact action primitives",
+                what: `Give the system a stable product name and publish an action inventory: open URL, click, type, navigate, recover from a changed interface, record, detect steps, add zoom, narrate, caption, generate guide. Do not describe it only as "AI-powered." Define what the agent observes, does, and returns.`,
+                why: `Descript's phrase "It's an agentic co-editor" and "can act on your behalf" gives a language model an identifiable object and a set of behaviours to retrieve. Without a named entity, the claim cannot be cited with confidence.`,
+                source: "Evidence: help.descript.com/underlord, synthesia.io/learning-and-development",
+              },
+              {
+                rank: 3,
+                impact: "High",
+                type: "Earned",
+                action: "Commission independently auditable benchmark case studies",
+                what: `Recruit three product, support, or enablement teams and publish before-and-after measures: recording time, editing time, interface steps, revision count, guide creation time, and percentage of screens successfully completed without human intervention. Give customers permission to publish their own versions on their own domains or on neutral review platforms.`,
+                why: `Synthesia's Moody's case is citable because it gives a named customer, a baseline, an outcome, and a direct quote. A claim that exists only on Superdegree's own domain cannot be independently corroborated.`,
+                source: "Evidence: synthesia.io/case-studies, descript.com/customers/revelo",
+              },
+              {
+                rank: 4,
+                impact: "High",
+                type: "Earned",
+                action: "Earn neutral category labels through hands-on reviews and roundups",
+                what: `Offer Superdegree to independent reviewers who cover AI video, product education, browser agents, and screen-recording automation. Provide a reproducible test brief but do not script the conclusion. The target is a phrase such as "best autonomous browser agent for product demo videos" supported by the reviewer's own observed workflow.`,
+                why: `Vizard gives Descript a durable category label in its 2026 roundup. G2's alternatives page creates named comparison context around Synthesia. A neutral category description is the largest missing evidence layer for Superdegree.`,
+                source: "Evidence: vizard.ai/blog/best-ai-video-editing-tools-2026",
+              },
+              {
+                rank: 5,
+                impact: "Medium",
+                type: "Owned",
+                action: "Build factual comparison pages against adjacent tools",
+                what: `Publish comparisons such as Superdegree vs Descript for autonomous product walkthroughs, Superdegree vs Synthesia for browser-grounded demos, and Superdegree vs conventional screen recorders. Use a capability matrix covering browser navigation, recording, editing, avatars, transcript editing, written guides, and integrations. State only what each public source documents.`,
+                why: `Descript has an official "Descript vs Riverside" comparison page. G2's Synthesia alternatives page names several competitors and maps their positioning. Competitor nouns help models resolve the category.`,
+                source: "Evidence: descript.com/blog/article/descript-vs-riverside-best-remote-recording-tool",
+              },
+              {
+                rank: 6,
+                impact: "Medium",
+                type: "Owned",
+                action: "Publish named integrations, export formats, and operational constraints",
+                what: `Create /integrations and /docs pages naming the browser environment, supported application types, export formats, caption and narration options, guide formats, and handoff destinations. State constraints plainly, including the 10-minute recording limit and the fact that no extension or desktop app is required.`,
+                why: `Descript names every major integration and says they enable "1-click imports." Superdegree already has a differentiating constraint documented on its homepage but it is not yet on a dedicated, indexable page.`,
+                source: "Evidence: descript.com/integrations, docs.synthesia.io/docs/synthesia-integrations",
+              },
+              {
+                rank: 7,
+                impact: "Medium",
+                type: "Owned + Earned",
+                action: "Publish transparent pricing and a limitations page",
+                what: `Put at least one exact plan or a transparent credit formula on /pricing, explain what consumes credits, and state when a human review step is recommended. Add a public limitations page covering browser-only recording, recording duration, dynamic interfaces, authentication, failed steps, and revision behaviour.`,
+                why: `Both comparators make pricing discoverable. Their review and Reddit visibility also includes criticism: Descript's AI-credit complaints and Synthesia's avatar limitations. Transparent constraints make Superdegree more trustworthy and give independent writers concrete, testable material.`,
+                source: "Evidence: descript.com/pricing, synthesia.io/pricing",
+              },
+            ].map(({ rank, impact, type, action, what, why, source }) => (
+              <div key={rank} style={{
+                display: "flex", gap: 16, alignItems: "flex-start",
+                padding: "18px 20px",
+                background: "#FAFAFA",
+                borderRadius: 8,
+                border: "1px solid rgba(0,0,0,0.06)",
+              }}>
+                <div style={{
+                  width: 30, height: 30, borderRadius: "50%", background: PURPLE,
+                  color: "#fff", fontSize: 13, fontWeight: 700,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  flexShrink: 0, marginTop: 2,
+                }}>{rank}</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap" as const, marginBottom: 7 }}>
+                    <span style={{
+                      fontSize: 10, fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase" as const,
+                      color: PURPLE, background: "rgba(124,58,237,0.1)", borderRadius: 999, padding: "2px 8px",
+                    }}>Impact: {impact}</span>
+                    <span style={{
+                      fontSize: 10, fontWeight: 600, color: "rgba(0,0,0,0.45)",
+                      background: "rgba(0,0,0,0.05)", borderRadius: 999, padding: "2px 8px",
+                    }}>{type}</span>
+                  </div>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: NAVY, marginBottom: 8, lineHeight: 1.3 }}>{action}</p>
+                  <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, marginBottom: 8 }}><strong style={{ color: NAVY }}>What to do: </strong>{what}</p>
+                  <p style={{ fontSize: 13, color: "rgba(0,0,0,0.55)", lineHeight: 1.6, paddingLeft: 10, borderLeft: `3px solid rgba(124,58,237,0.25)`, marginBottom: 6 }}><strong style={{ color: NAVY }}>Why it works: </strong>{why}</p>
+                  <p style={{ fontSize: 11, color: "rgba(0,0,0,0.3)" }}>{source}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Key move */}
+          <div style={{
+            background: NAVY, borderRadius: 10, padding: "24px 26px", marginTop: 20,
+          }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "rgba(255,255,255,0.4)", marginBottom: 8 }}>Single highest-leverage move</div>
+            <p style={{ fontSize: 17, fontWeight: 700, color: "#fff", lineHeight: 1.3, marginBottom: 10 }}>
+              Make the browser agent a named, testable, cross-source entity
+            </p>
+            <p style={{ fontSize: 14, color: "rgba(255,255,255,0.65)", lineHeight: 1.7, margin: 0 }}>
+              Superdegree&apos;s genuine differentiator is an autonomous browser-navigating agent that neither Descript nor Synthesia has built. But this differentiator currently exists only on Superdegree&apos;s own domain. The highest-leverage move is to publish one canonical claim at a stable URL, in mechanism-level language, and then facilitate independent tests that reproduce the exact workflow and publish their own observations. The goal is for a language model to encounter the same claim across Superdegree&apos;s own documentation, a customer case study, an independent reviewer&apos;s article, and a review platform. That converts a marketing assertion into a named, testable entity that Claude and GPT-4o-mini can confidently cite.
+            </p>
+          </div>
+          <p style={{ fontSize: 11, color: "rgba(0,0,0,0.3)", marginTop: 10, textAlign: "center" as const }}>
+            Research conducted via Parallel.ai · August 2026 · AgenticLib
+          </p>
+        </div>
+      </div>
+
+      {/* ── Row 11: Product improvement opportunities ───────────────────────── */}
       <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "24px 28px 24px" }}>
         <div style={{ marginBottom: 20 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
