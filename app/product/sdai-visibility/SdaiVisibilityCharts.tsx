@@ -386,7 +386,7 @@ const SOV_CLUSTERS = [
   { tag: "sdai-distribution", label: "Distribution",      description: "Which brands LLMs surface when asked about embedding finished videos, sharing via a hosted player, and tracking viewer engagement." },
   { tag: "sdai-branding",     label: "Branding",          description: "Which brands LLMs surface when asked about brand kits, custom backgrounds, logo watermarking, and reusable video templates." },
   { tag: "sdai-collab",       label: "Collaboration",     description: "Which brands LLMs surface when asked about team workspaces, role-based access, and timestamped review and approval workflows." },
-  { tag: "sdai-agents",       label: "AI Agents",         description: "Which brands LLMs surface when asked about autonomous AI that records app flows without a human at the keyboard." },
+  { tag: "sdai-agents",       label: "AI Agents",         description: "Which brands LLMs surface when asked about software that can record a product walkthrough on its own — navigating your app in a browser, capturing every step, and producing a finished video or guide without anyone at the keyboard." },
 ];
 
 const SENTIMENT_CLUSTERS = [
@@ -1103,7 +1103,7 @@ export default function SdaiVisibilityCharts({
             How AI Video Companies Earn LLM Visibility
           </h3>
           <p style={{ fontSize: 14, color: "rgba(0,0,0,0.55)", lineHeight: 1.65, maxWidth: 620 }}>
-            Why Descript and Synthesia are consistently cited by Claude and GPT when asked about AI video creation, and what Superdegree should do about it.
+            Why Descript and Synthesia are consistently cited by Claude and GPT when asked about AI video creation.
           </p>
         </div>
 
@@ -1202,7 +1202,7 @@ export default function SdaiVisibilityCharts({
                 Takeaway
               </p>
               <p style={{ fontSize: 16, color: "#000", lineHeight: 1.65, margin: 0, fontWeight: 400 }}>
-                Descript&apos;s most replicable lesson is to describe every capability as an input-to-output sequence rather than a feature name. Superdegree already has a version of this on its site — agents record in a cloud browser, edit, add zooms, captions, and narration, and output a video or written guide — but it is not yet anchored at a stable, indexable URL with that exact claim front and centre.
+                Superdegree already has a version of this on its site — agents record in a cloud browser, edit, add zooms, captions, and narration, and output a video or written guide — but it is not yet anchored at a stable, indexable URL with that exact claim front and centre.
               </p>
             </div>
           </div>
@@ -1328,7 +1328,7 @@ export default function SdaiVisibilityCharts({
                       desc: "Each core capability lives at its own stable, crawlable URL — giving LLMs a dedicated document to cite per query rather than a single homepage mention.",
                       descript: (
                         <>
-                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Publishes a separate product page per workflow. Each URL describes one capability end-to-end so a model can retrieve the exact page when asked about that feature.</p>
+                          <p style={{ fontSize: 14, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Publishes a separate product page per workflow. Each URL describes one capability end-to-end so a model can retrieve the exact page when asked about that feature.</p>
                           <a href="https://www.descript.com" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/video-editing</a>
                           {", "}
                           <a href="https://www.descript.com/underlord" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/underlord</a>
@@ -1338,7 +1338,7 @@ export default function SdaiVisibilityCharts({
                       ),
                       synthesia: (
                         <>
-                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Publishes a dedicated landing page per use case — avatar video, text-to-video, and enterprise each sit at their own indexed URL with full feature descriptions.</p>
+                          <p style={{ fontSize: 14, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Publishes a dedicated landing page per use case — avatar video, text-to-video, and enterprise each sit at their own indexed URL with full feature descriptions.</p>
                           <a href="https://www.synthesia.io/features/text-to-video" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/features/text-to-video</a>
                           {", "}
                           <a href="https://www.synthesia.io/features/avatars" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>/features/avatars</a>
@@ -1351,10 +1351,10 @@ export default function SdaiVisibilityCharts({
                       pattern: "Input-to-output language",
                       desc: "Every product description names a concrete starting material and a concrete output — so an LLM can retrieve an exact transformation rather than a vague capability claim.",
                       descript: (
-                        <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: 0 }}>The core workflow is described as: footage in → edit the transcript → video updates. No ambiguity about what triggers the change or what the output looks like.</p>
+                        <p style={{ fontSize: 14, color: "#000", lineHeight: 1.55, margin: 0 }}>The core workflow is described as: footage in → edit the transcript → video updates. No ambiguity about what triggers the change or what the output looks like.</p>
                       ),
                       synthesia: (
-                        <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: 0 }}>Any text input (prompt, URL, document, or script) becomes scenes, AI voiceover, and an avatar-narrated video. The transformation is stated explicitly on every product page.</p>
+                        <p style={{ fontSize: 14, color: "#000", lineHeight: 1.55, margin: 0 }}>Any text input (prompt, URL, document, or script) becomes scenes, AI voiceover, and an avatar-narrated video. The transformation is stated explicitly on every product page.</p>
                       ),
                     },
                     {
@@ -1362,13 +1362,13 @@ export default function SdaiVisibilityCharts({
                       desc: "Rather than claiming broad compatibility, both companies name specific applications — giving LLMs concrete tool names to associate with the product when answering workflow questions.",
                       descript: (
                         <>
-                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>The integrations page names Google Drive, Slack, Adobe Premiere, Final Cut Pro, DaVinci Resolve, Dropbox, and Zoom individually — each with its own connector card.</p>
+                          <p style={{ fontSize: 14, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>The integrations page names Google Drive, Slack, Adobe Premiere, Final Cut Pro, DaVinci Resolve, Dropbox, and Zoom individually — each with its own connector card.</p>
                           <a href="https://www.descript.com/integrations" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>descript.com/integrations</a>
                         </>
                       ),
                       synthesia: (
                         <>
-                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>The integrations docs name PowerPoint, 360Learning, HubSpot, Shopify, WordPress, and major LMS platforms by name — making the product retrievable for L&D and marketing workflow queries.</p>
+                          <p style={{ fontSize: 14, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>The integrations docs name PowerPoint, 360Learning, HubSpot, Shopify, WordPress, and major LMS platforms by name — making the product retrievable for L&D and marketing workflow queries.</p>
                           <a href="https://docs.synthesia.io/docs/synthesia-integrations" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>docs.synthesia.io/integrations</a>
                         </>
                       ),
@@ -1378,13 +1378,13 @@ export default function SdaiVisibilityCharts({
                       desc: "Named, numbered tiers on a public page give LLMs a retrievable fact (e.g. \"$29/mo Starter\") rather than a \"contact us\" dead end that cannot be cited.",
                       descript: (
                         <>
-                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Five tiers (Free, Hobbyist $16/mo, Creator $24/mo, Business $50/mo, Enterprise) are named with prices and feature breakdowns — no sign-in required to see them.</p>
+                          <p style={{ fontSize: 14, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Five tiers (Free, Hobbyist $16/mo, Creator $24/mo, Business $50/mo, Enterprise) are named with prices and feature breakdowns — no sign-in required to see them.</p>
                           <a href="https://www.descript.com/pricing" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>descript.com/pricing</a>
                         </>
                       ),
                       synthesia: (
                         <>
-                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Four tiers (Basic free, Starter $29/mo, Creator $89/mo, Enterprise) are named and publicly listed with per-feature comparisons. A buyer can self-qualify without speaking to sales.</p>
+                          <p style={{ fontSize: 14, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Four tiers (Basic free, Starter $29/mo, Creator $89/mo, Enterprise) are named and publicly listed with per-feature comparisons. A buyer can self-qualify without speaking to sales.</p>
                           <a href="https://www.synthesia.io/pricing" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>synthesia.io/pricing</a>
                         </>
                       ),
@@ -1394,13 +1394,13 @@ export default function SdaiVisibilityCharts({
                       desc: "Outcomes are expressed as a named customer + a measurable before/after metric — giving LLMs a citable fact rather than a vague testimonial that cannot be independently retrieved.",
                       descript: (
                         <>
-                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>{"Revelo's CMO describes taking podcast production from days to hours using Descript's text-based editing — a named company, a named contact, and a directional improvement."}</p>
+                          <p style={{ fontSize: 14, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>{"Revelo's CMO describes taking podcast production from days to hours using Descript's text-based editing — a named company, a named contact, and a directional improvement."}</p>
                           <a href="https://www.descript.com/customers/revelo" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>descript.com/customers/revelo</a>
                         </>
                       ),
                       synthesia: (
                         <>
-                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>{"Moody's cut training video production from 4 hours to 30 minutes — an 87% reduction — with a named customer contact and a reproducible baseline. The strongest single evidence unit in this competitive set."}</p>
+                          <p style={{ fontSize: 14, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>{"Moody's cut training video production from 4 hours to 30 minutes — an 87% reduction — with a named customer contact and a reproducible baseline. The strongest single evidence unit in this competitive set."}</p>
                           <a href="https://www.synthesia.io/case-studies" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>synthesia.io/case-studies</a>
                         </>
                       ),
@@ -1410,13 +1410,13 @@ export default function SdaiVisibilityCharts({
                       desc: "A page that explicitly names competitors and explains the difference creates a document that connects the brand to a competitive category — making it retrievable for \"X vs Y\" queries.",
                       descript: (
                         <>
-                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Publishes an official compare page positioning Descript vs Riverside — names the competitor, explains the workflow trade-offs, and sits at a stable indexed URL.</p>
+                          <p style={{ fontSize: 14, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>Publishes an official compare page positioning Descript vs Riverside — names the competitor, explains the workflow trade-offs, and sits at a stable indexed URL.</p>
                           <a href="https://www.descript.com/compare/descript-vs-riverside" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>descript.com/compare/descript-vs-riverside</a>
                         </>
                       ),
                       synthesia: (
                         <>
-                          <p style={{ fontSize: 12, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>{"G2's alternatives page independently names HeyGen, Descript, and VEED alongside Synthesia — creating neutral third-party comparison context that LLMs can cite without attributing it to Synthesia's own marketing."}</p>
+                          <p style={{ fontSize: 14, color: "#000", lineHeight: 1.55, margin: "0 0 6px" }}>{"G2's alternatives page independently names HeyGen, Descript, and VEED alongside Synthesia — creating neutral third-party comparison context that LLMs can cite without attributing it to Synthesia's own marketing."}</p>
                           <a href="https://www.g2.com/products/synthesia/competitors/alternatives" target="_blank" rel="noopener noreferrer" style={{ color: "#2563eb", textDecoration: "underline" }}>g2.com/products/synthesia/competitors</a>
                         </>
                       ),
@@ -1426,7 +1426,7 @@ export default function SdaiVisibilityCharts({
                   <tr key={pattern}>
                     <td style={{ padding: "10px 12px", borderBottom: "1px solid rgba(0,0,0,0.06)", verticalAlign: "top", width: "28%" }}>
                       <p style={{ fontSize: 13, fontWeight: 600, color: NAVY, margin: "0 0 4px" }}>{pattern}</p>
-                      <p style={{ fontSize: 12, color: "rgba(0,0,0,0.5)", lineHeight: 1.55, margin: 0 }}>{desc}</p>
+                      <p style={{ fontSize: 14, color: "#000", lineHeight: 1.55, margin: 0 }}>{desc}</p>
                     </td>
                     <td style={{ padding: "10px 12px", borderBottom: "1px solid rgba(0,0,0,0.06)", color: "#000", verticalAlign: "top", width: "36%" }}>{descript}</td>
                     <td style={{ padding: "10px 12px", borderBottom: "1px solid rgba(0,0,0,0.06)", color: "#000", verticalAlign: "top", width: "36%" }}>{synthesia}</td>
@@ -1446,17 +1446,8 @@ export default function SdaiVisibilityCharts({
             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: "rgba(0,0,0,0.45)" }}>Superdegree</span>
           </div>
           <h4 style={{ fontSize: 18, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", marginBottom: 4 }}>
-            How Superdegree Becomes LLM-Visible
+            The recommended steps Superdegree can take to become LLM-Visible
           </h4>
-          <div style={{
-            background: "rgba(124,58,237,0.06)", border: "1px solid rgba(124,58,237,0.15)",
-            borderRadius: 8, padding: "14px 18px", margin: "14px 0 24px",
-          }}>
-            <p style={{ fontSize: 13, fontWeight: 600, color: NAVY, marginBottom: 4 }}>The core opportunity</p>
-            <p style={{ fontSize: 13, color: "rgba(0,0,0,0.6)", lineHeight: 1.65, margin: 0 }}>
-              Superdegree already has the mechanism. It is missing the evidence system around it. The agent claim exists on the domain but has not yet been independently corroborated across review platforms, press, and community discussion.
-            </p>
-          </div>
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
             {[
               {
