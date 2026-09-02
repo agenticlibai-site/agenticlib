@@ -847,6 +847,126 @@ export default function SdaiVisibilityCharts({
         </div>
       )}
 
+      {/* ── Row 8b: Pricing · Security · Integrations (research-sourced) ──── */}
+      {(() => {
+        const PURPLE = "#7C3AED";
+        const NAVY   = "#0F172A";
+
+        const BAND_COLORS_LOCAL: Record<string, string> = {
+          high:   "#16a34a",
+          strong: "#16a34a",
+          medium: "#7C3AED",
+          low:    "#d97706",
+          weak:   "#dc2626",
+        };
+
+        const scoreBand = (score: number): string => {
+          if (score >= 80) return "high";
+          if (score >= 60) return "medium";
+          if (score >= 40) return "low";
+          return "weak";
+        };
+
+        type BrandScore = { brand: string; score: number; evidence: string };
+
+        const PRICING: BrandScore[] = [
+          { brand: "Descript",     score: 90, evidence: "Free + Creator $12/mo + Pro $24/mo; named tiers fully listed on public /pricing page." },
+          { brand: "Synthesia",    score: 90, evidence: "Basic $0 + Starter $29/mo; all tiers named and priced at /pricing." },
+          { brand: "HeyGen",       score: 90, evidence: "Free + Creator $29/mo + Pro $49/mo + Business $149/mo; complete public pricing grid." },
+          { brand: "D-ID",         score: 80, evidence: "Lite $9/mo + Advanced $299/mo; studio and API pricing pages publicly accessible." },
+          { brand: "DeepBrain",    score: 80, evidence: "Starter $30/mo + Pro $225/mo publicly listed on aistudios.com/pricing." },
+          { brand: "Renderforest", score: 80, evidence: "Free tier + plans from $9.99/mo; /subscription page lists all tiers." },
+          { brand: "Opus Clip",    score: 70, evidence: "Free + Pro documented but monthly price unclear; Business tier is contact-only." },
+        ].sort((a, b) => b.score - a.score);
+
+        const SECURITY: BrandScore[] = [
+          { brand: "Synthesia",    score: 100, evidence: "SOC 2 Type II + ISO 27001:2022 + ISO 42001; dedicated Trust Centre at security.synthesia.io; SSO." },
+          { brand: "Descript",     score:  90, evidence: "SOC 2 Type II, GDPR, CCPA, AES-256 encryption; public /security page." },
+          { brand: "HeyGen",       score:  90, evidence: "SOC 2 Type II, GDPR, EU AI Act compliance; SAML SSO, SCIM, RBAC, audit logs, DPO." },
+          { brand: "D-ID",         score:  70, evidence: "SOC 2 certified per blog post; GDPR implied; no public trust centre." },
+          { brand: "Opus Clip",    score:  50, evidence: "trust.opus.pro security portal; policies documented; no confirmed SOC 2." },
+          { brand: "Renderforest", score:  40, evidence: "GDPR compliance only; no SOC 2 or ISO certifications; consumer-focused posture." },
+          { brand: "DeepBrain",    score:  30, evidence: "No verifiable public security certifications found at time of research." },
+        ].sort((a, b) => b.score - a.score);
+
+        const INTEGRATIONS: BrandScore[] = [
+          { brand: "Descript",     score: 90, evidence: "API in open beta; /integrations page; Google Drive, Slack, Adobe Premiere, FCP, Dropbox, Zapier, Claude MCP connector." },
+          { brand: "Synthesia",    score: 90, evidence: "Full API at docs.synthesia.io; PowerPoint, 360Learning, HubSpot, Shopify, WordPress, LMS connectors." },
+          { brand: "HeyGen",       score: 80, evidence: "Zapier (Pro+, 9 000+ apps), native API + API pricing page, Video Agent API." },
+          { brand: "Opus Clip",    score: 80, evidence: "API (Business only); Zapier + Make.com native; Adobe Premiere + DaVinci Resolve export; social auto-post." },
+          { brand: "D-ID",         score: 80, evidence: "API-first product; d-id.com/pricing/api; PowerPoint plugin; Creative Reality Studio API." },
+          { brand: "DeepBrain",    score: 60, evidence: "API at docs.aistudios.com with webhooks; limited named third-party integrations." },
+          { brand: "Renderforest", score: 50, evidence: "API for subscribers; Google Analytics, Meta Pixel, SEMRush; backend SDKs only, no LMS/CRM." },
+        ].sort((a, b) => b.score - a.score);
+
+        const DIM_META = [
+          { key: "pricing",      label: "Pricing Transparency",   note: "How clearly pricing tiers and costs are disclosed publicly.",                                    data: PRICING      },
+          { key: "security",     label: "Enterprise Security",     note: "Breadth of certifications (SOC 2, ISO), trust centre, and enterprise IAM features.",           data: SECURITY     },
+          { key: "integrations", label: "Technical Integrations",  note: "API availability, named third-party connectors, and ecosystem depth.",                          data: INTEGRATIONS },
+        ] as const;
+
+        return (
+          <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 1px 3px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.05)", padding: "24px 28px 32px", marginBottom: 0 }}>
+            {/* Header */}
+            <div style={{ marginBottom: 28 }}>
+              <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.09em", textTransform: "uppercase" as const, color: PURPLE, marginBottom: 8 }}>
+                Research · Pricing · Security · Integrations
+              </div>
+              <h3 style={{ fontSize: 22, fontWeight: 700, color: NAVY, letterSpacing: "-0.02em", lineHeight: 1.2, margin: "0 0 6px" }}>
+                Buyer-Readiness Scores
+              </h3>
+              <p style={{ fontSize: 14, color: "rgba(0,0,0,0.5)", margin: 0, lineHeight: 1.55 }}>
+                Researched scores — not pipeline-collected. Based on public documentation at time of research.
+              </p>
+            </div>
+
+            {/* Three dimension columns */}
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 24 }}>
+              {DIM_META.map(({ key, label, note, data }) => (
+                <div key={key}>
+                  <p style={{ fontSize: 13, fontWeight: 700, color: NAVY, margin: "0 0 2px" }}>{label}</p>
+                  <p style={{ fontSize: 12, color: "rgba(0,0,0,0.45)", margin: "0 0 14px", lineHeight: 1.5 }}>{note}</p>
+                  <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
+                    {data.map(({ brand, score, evidence }) => {
+                      const band  = scoreBand(score);
+                      const color = BAND_COLORS_LOCAL[band] ?? "#000";
+                      return (
+                        <div key={brand} title={evidence}>
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                            <span style={{ fontSize: 13, fontWeight: 600, color: NAVY }}>{brand}</span>
+                            <span style={{ fontSize: 13, fontWeight: 700, color }}>{score}</span>
+                          </div>
+                          <div style={{ height: 6, borderRadius: 3, background: "rgba(0,0,0,0.07)", overflow: "hidden" }}>
+                            <div style={{ height: "100%", width: `${score}%`, borderRadius: 3, background: color, transition: "width 0.4s" }} />
+                          </div>
+                          <p style={{ fontSize: 11, color: "rgba(0,0,0,0.45)", margin: "4px 0 0", lineHeight: 1.4 }}>{evidence}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Legend */}
+            <div style={{ marginTop: 24, paddingTop: 16, borderTop: "1px solid rgba(0,0,0,0.06)", display: "flex", gap: 20, flexWrap: "wrap" as const }}>
+              {[
+                { label: "High (80–100)", color: "#16a34a" },
+                { label: "Medium (60–79)", color: "#7C3AED" },
+                { label: "Low (40–59)", color: "#d97706" },
+                { label: "Weak (<40)", color: "#dc2626" },
+              ].map(({ label, color }) => (
+                <div key={label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <div style={{ width: 10, height: 10, borderRadius: "50%", background: color }} />
+                  <span style={{ fontSize: 12, color: "rgba(0,0,0,0.55)" }}>{label}</span>
+                </div>
+              ))}
+              <span style={{ fontSize: 12, color: "rgba(0,0,0,0.35)", marginLeft: "auto" }}>Hover a bar for detailed evidence</span>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* ── Row 9: Sentiment ────────────────────────────────────────────────── */}
       {(() => {
         const { rows: sentimentRows, meta: sentimentMeta } = sentimentData;
