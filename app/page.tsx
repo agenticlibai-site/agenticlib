@@ -286,7 +286,7 @@ export default function Home() {
         /* Logo marquee — desktop: normal centered row */
         .logo-marquee { width: 100%; }
         .logo-track { display: flex; align-items: center; justify-content: center; gap: 48px; flex-wrap: wrap; }
-        .logo-dupe { display: none; }
+        .logo-dupe { display: none !important; }
 
         @media (max-width: 640px) {
           .logo-marquee { overflow: hidden; }
