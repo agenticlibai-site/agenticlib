@@ -148,32 +148,29 @@ export default async function SdaiLoginPage({
       </div>
 
       {/* Feedback form button — visible to anyone on the login page */}
-      <a
-        href="/product/sdai-visibility/feedback"
-        style={{
-          display: "block",
-          width: "100%",
-          padding: "13px 0",
-          textAlign: "center" as const,
-          fontSize: 15,
-          fontWeight: 700,
-          color: "#7C3AED",
-          textDecoration: "none",
-          background: "rgba(124,58,237,0.08)",
-          border: "1.5px solid rgba(124,58,237,0.25)",
-          borderRadius: 12,
-          letterSpacing: "0.01em",
-          transition: "background 0.15s, border-color 0.15s",
-        }}
-        onMouseEnter={(e) => {
-          (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.14)";
-          (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(124,58,237,0.5)";
-        }}
-        onMouseLeave={(e) => {
-          (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.08)";
-          (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(124,58,237,0.25)";
-        }}
-      >
+      <style>{`
+        .sdai-feedback-btn {
+          display: block;
+          width: 100%;
+          padding: 13px 0;
+          text-align: center;
+          font-size: 15px;
+          font-weight: 700;
+          color: #7C3AED;
+          text-decoration: none;
+          background: rgba(124,58,237,0.08);
+          border: 1.5px solid rgba(124,58,237,0.25);
+          border-radius: 12px;
+          letter-spacing: 0.01em;
+          transition: background 0.15s, border-color 0.15s;
+          box-sizing: border-box;
+        }
+        .sdai-feedback-btn:hover {
+          background: rgba(124,58,237,0.14);
+          border-color: rgba(124,58,237,0.5);
+        }
+      `}</style>
+      <a href="/product/sdai-visibility/feedback" className="sdai-feedback-btn">
         📋 Feedback form
       </a>
       </div>
