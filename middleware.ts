@@ -49,20 +49,6 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // ── SDAI visibility gate ────────────────────────────────────────────────────
-  if (
-    pathname.startsWith("/product/sdai-visibility") &&
-    !pathname.startsWith("/product/sdai-visibility/login")
-  ) {
-    const token = request.cookies.get("sdai_auth")?.value;
-    const expected = await hashToken(process.env.SDAI_ACCESS_PASSWORD ?? "", SDAI_SALT);
-    if (!token || token !== expected) {
-      const url = request.nextUrl.clone();
-      url.pathname = "/product/sdai-visibility/login";
-      return NextResponse.redirect(url);
-    }
-  }
-
   return NextResponse.next();
 }
 
@@ -70,6 +56,5 @@ export const config = {
   matcher: [
     "/product/sales-visibility/:path*",
     "/product/dexify-visibility/:path*",
-    "/product/sdai-visibility/:path*",
   ],
 };
