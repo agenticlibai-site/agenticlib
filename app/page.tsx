@@ -1029,7 +1029,7 @@ export default function Home() {
               },
               {
                 q: "What problem does AgenticLib solve?",
-                a: "AI agent builders in competitive verticals — healthcare, finance, legal — are flying blind. They find out a competitor shipped a new feature when a customer mentions it mid-deal. They decide what to build next from the loudest customer request, a gut call, or a conversation that happened to stick. They have no clear view of which use cases they're winning or losing, and by the time they piece together what buyers are actually comparing across scattered lost-deal notes and sales calls, the window to act has usually passed. AgenticLib replaces that manual, reactive process with one platform: automated competitor monitoring, use-case benchmarking, and buyer signal capture — all turned into a prioritised product roadmap so you stop losing deals to things you didn't see coming.",
+                a: "In competitive verticals, AI agent builders often can't see what competitors are shipping, which use cases they're winning or losing, or what buyers are comparing before they make contact. Roadmap decisions tend to default to the loudest customer request or gut feel — not a reliable signal. AgenticLib replaces that reactive process with automated competitor monitoring, use-case benchmarking, and buyer signal capture, all turned into a prioritised product roadmap.",
               },
             ] as { q: string; a: string }[]).map(({ q, a }, i) => (
               <div key={i} style={{ borderTop: i === 0 ? "1px solid rgba(124,58,237,0.15)" : undefined, borderBottom: "1px solid rgba(124,58,237,0.15)" }}>
