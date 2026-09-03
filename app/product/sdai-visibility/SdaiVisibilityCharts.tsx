@@ -769,7 +769,7 @@ export default function SdaiVisibilityCharts({
       </div>
 
       {/* ── Competitor Intelligence heading ─────────────────────────────────── */}
-      <h2 style={{ fontSize: 22, fontWeight: 800, color: NAVY, letterSpacing: "-0.02em", margin: "8px 0 0" }}>
+      <h2 style={{ fontSize: 40, fontWeight: 900, color: NAVY, letterSpacing: "-0.03em", margin: "16px 0 0" }}>
         Competitor Intelligence
       </h2>
 
