@@ -342,6 +342,14 @@ function bandScore(band: string): number {
   return { high: 90, strong: 90, medium: 70, present: 70, low: 35, partial: 35, weak: 10 }[band] ?? 50;
 }
 
+function getScoreColor(score: number | null, band: string): string {
+  const n = score ?? bandScore(band);
+  if (n >= 70) return "#16a34a"; // green
+  if (n >= 40) return "#d97706"; // amber
+  if (n > 0)   return "#dc2626"; // red
+  return "#94a3b8";              // grey (zero / no capability)
+}
+
 function featureName(id: string): string {
   return FEATURE_NAMES[id] ?? id.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
 }
@@ -885,9 +893,9 @@ export default function SdaiVisibilityCharts({
                                   {r.brand_name}
                                 </span>
                                 <div style={{ flex: 1, height: 6, borderRadius: 999, background: "rgba(0,0,0,0.07)" }}>
-                                  <div style={{ width: `${score}%`, height: 6, borderRadius: 999, background: BAND_COLORS[r.score_band] ?? "#94a3b8" }} />
+                                  <div style={{ width: `${score}%`, height: 6, borderRadius: 999, background: getScoreColor(r.score, r.score_band) }} />
                                 </div>
-                                <span style={{ fontSize: 16, fontWeight: 700, color: BAND_COLORS[r.score_band] ?? NAVY, width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>
+                                <span style={{ fontSize: 16, fontWeight: 700, color: getScoreColor(r.score, r.score_band), width: 28, textAlign: "right" as const, flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>
                                   {score}
                                 </span>
                               </div>
