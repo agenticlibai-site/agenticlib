@@ -25,7 +25,7 @@ export default function SiteFooter() {
       id="contact"
       style={{
         background: "transparent",
-        padding: "64px 48px 0",
+        padding: "40px 48px 0",
       }}
     >
       {/* Rounded card — light lavender, extends flush to bottom */}
@@ -34,18 +34,18 @@ export default function SiteFooter() {
         borderRadius: "28px 28px 0 0",
         border: "1.5px solid rgba(108,76,241,0.45)",
         borderBottom: "none",
-        padding: "72px 64px 0",
+        padding: "48px 64px 0",
       }}>
         <div style={{ maxWidth: 1120, margin: "0 auto" }}>
 
           {/* ── CTA ───────────────────────────────────────────────────────── */}
-          <div style={{ textAlign: "center", marginBottom: 80 }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{
               fontSize: "clamp(40px, 7vw, 88px)",
               fontWeight: 900,
               letterSpacing: "-0.04em",
               lineHeight: 1,
-              margin: "0 0 40px",
+              margin: 0,
               background: "linear-gradient(90deg, #FF6B6B 0%, #F43F8F 45%, #7C3AED 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
@@ -53,31 +53,6 @@ export default function SiteFooter() {
             }}>
               AgenticLib
             </h2>
-            <a
-              href="mailto:srinidhi.murali@agenticlib.com"
-              style={{
-                display: "inline-block",
-                background: "#0F0B1E",
-                color: "#fff",
-                padding: "15px 34px",
-                borderRadius: 999,
-                fontSize: 16,
-                fontWeight: 700,
-                textDecoration: "none",
-                letterSpacing: "-0.01em",
-                transition: "background 0.15s, transform 0.1s",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background = PURPLE;
-                (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(-1px)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "#0F0B1E";
-                (e.currentTarget as HTMLAnchorElement).style.transform = "translateY(0)";
-              }}
-            >
-              Talk to us
-            </a>
           </div>
 
           {/* ── Columns ───────────────────────────────────────────────────── */}
@@ -85,7 +60,7 @@ export default function SiteFooter() {
             display: "grid",
             gridTemplateColumns: "1.8fr 1fr 1fr 1fr",
             gap: 40,
-            paddingBottom: 48,
+            paddingBottom: 32,
           }}>
 
             {/* Brand */}
