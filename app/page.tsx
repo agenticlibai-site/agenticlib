@@ -355,7 +355,7 @@ export default function Home() {
         .dewwie-logo:hover { color: #0c00b0; }
         .ralfi-logo-link { opacity: 0.45; transition: opacity 0.2s; text-decoration: none; outline: none; display: flex; align-items: center; }
         .ralfi-logo-link:hover { opacity: 1; }
-        .ralfi-logo-img { height: 44px; width: auto; object-fit: contain; filter: grayscale(1); transition: filter 0.2s; }
+        .ralfi-logo-img { height: 40px; width: auto; object-fit: contain; filter: grayscale(1); transition: filter 0.2s; }
         .ralfi-logo-link:hover .ralfi-logo-img { filter: none; }
       `}</style>
 
@@ -491,30 +491,30 @@ export default function Home() {
               {/* — original set — */}
               <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" className="dewwie-logo" style={{ textDecoration: "none" }}>dewwie</a>
               <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", borderBottom: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "grayscale(1) brightness(0)"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; }}>
-                <img src="/lamigo logo .png" alt="Lamigo" style={{ height: 32, width: "auto", objectFit: "contain" }} />
+                <img src="/lamigo logo .png" alt="Lamigo" style={{ height: 40, width: "auto", objectFit: "contain" }} />
               </a>
               <a href="https://dexifyai.com/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; }}>
-                <img src="/dexify-logo.png" alt="Dexify" style={{ height: 32, width: "auto", objectFit: "contain" }} />
+                <img src="/dexify-logo.png" alt="Dexify" style={{ height: 40, width: "auto", objectFit: "contain" }} />
               </a>
               <a href="https://ralfi.io/" target="_blank" rel="noopener noreferrer" className="ralfi-logo-link">
                 <img src="/Ralfi ai.png" alt="Ralfi AI" className="ralfi-logo-img" />
               </a>
-              <a href="https://www.superdegree.com/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)", transition: "opacity 0.2s, filter 0.2s" }} onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; }}>
-                <img src="/superdegree-logo.png" alt="Superdegree" style={{ height: 32, width: "auto", objectFit: "contain" }} />
+              <a href="https://www.super.degree/" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", outline: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)", transition: "opacity 0.2s, filter 0.2s" }} onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; }}>
+                <img src="/superdegree-logo.png" alt="Superdegree" style={{ height: 40, width: "auto", objectFit: "contain" }} />
               </a>
               {/* — duplicate set for seamless loop (mobile only) — */}
               <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" className="dewwie-logo logo-dupe" style={{ textDecoration: "none" }}>dewwie</a>
               <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" className="logo-dupe" style={{ opacity: 0.45, filter: "grayscale(1)" }}>
-                <img src="/lamigo logo .png" alt="Lamigo" style={{ height: 32, width: "auto", objectFit: "contain" }} />
+                <img src="/lamigo logo .png" alt="Lamigo" style={{ height: 40, width: "auto", objectFit: "contain" }} />
               </a>
               <a href="https://dexifyai.com/" target="_blank" rel="noopener noreferrer" className="logo-dupe" style={{ opacity: 0.45, filter: "grayscale(1)" }}>
-                <img src="/dexify-logo.png" alt="Dexify" style={{ height: 32, width: "auto", objectFit: "contain" }} />
+                <img src="/dexify-logo.png" alt="Dexify" style={{ height: 40, width: "auto", objectFit: "contain" }} />
               </a>
               <a href="https://ralfi.io/" target="_blank" rel="noopener noreferrer" className="ralfi-logo-link logo-dupe">
                 <img src="/Ralfi ai.png" alt="Ralfi AI" className="ralfi-logo-img" />
               </a>
-              <a href="https://www.superdegree.com/" target="_blank" rel="noopener noreferrer" className="logo-dupe" style={{ opacity: 0.45, filter: "grayscale(1)" }}>
-                <img src="/superdegree-logo.png" alt="Superdegree" style={{ height: 32, width: "auto", objectFit: "contain" }} />
+              <a href="https://www.super.degree/" target="_blank" rel="noopener noreferrer" className="logo-dupe" style={{ opacity: 0.45, filter: "grayscale(1)" }}>
+                <img src="/superdegree-logo.png" alt="Superdegree" style={{ height: 40, width: "auto", objectFit: "contain" }} />
               </a>
             </div>
           </div>
