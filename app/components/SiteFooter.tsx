@@ -41,12 +41,12 @@ export default function SiteFooter() {
           {/* ── CTA ───────────────────────────────────────────────────────── */}
           <div style={{ textAlign: "center", marginBottom: 80 }}>
             <h2 style={{
-              fontSize: "clamp(64px, 12vw, 140px)",
+              fontSize: "clamp(40px, 7vw, 88px)",
               fontWeight: 900,
               letterSpacing: "-0.04em",
               lineHeight: 1,
               margin: "0 0 40px",
-              background: "linear-gradient(135deg, #6C4CF1 0%, #A855F7 45%, #EC4899 100%)",
+              background: "linear-gradient(135deg, #7C3AED 0%, #EC4899 52%, #FF6B6B 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
