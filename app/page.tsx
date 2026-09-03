@@ -452,7 +452,7 @@ export default function Home() {
               style={{
                 width: "100%",
                 marginTop: 52,
-                aspectRatio: "1060 / 800",
+                aspectRatio: "1060 / 830",
                 borderRadius: 14,
                 overflow: "hidden",
                 border: "1.5px solid rgba(124,58,237,0.28)",

@@ -46,6 +46,7 @@ export default function SiteFooter() {
               letterSpacing: "-0.04em",
               lineHeight: 1,
               margin: 0,
+              paddingBottom: "0.12em",
               background: "linear-gradient(90deg, #EC4899 0%, #A855F7 55%, #7C3AED 100%)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
