@@ -731,6 +731,61 @@ export default function SdaiVisibilityCharts({
         </div>
       </div>
 
+      {/* ── Use Case Expansion Recommendations ─────────────────────────────── */}
+      <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "24px 28px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+          <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
+            Use Case Expansion Recommendation
+          </h3>
+          <span style={{ fontSize: 12, fontWeight: 600, background: "rgba(124,58,237,0.1)", color: PURPLE, borderRadius: 999, padding: "3px 10px" }}>
+            Superdegree
+          </span>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+          {[
+            {
+              number: 1,
+              cluster: "Distribution",
+              priority: "Highest priority",
+              body: "Superdegree's entire value prop is customer education — \"products that educate with videos convert 10x better.\" But once a video is exported, Superdegree loses the customer. There is no hosted player, no embed code, no viewer analytics. The report data confirms this: Distribution is the weakest cluster across the whole competitive set, with only Synthesia scoring well. That is not a red flag — it is white space. A CS team making onboarding videos needs to know who watched, how far they got, and which steps they replayed. That completion signal is also the proof point for Superdegree's own conversion claim — right now they can assert it but cannot show it. A hosted player with per-video completion tracking would close that loop and make Superdegree the only platform in the set that both produces the video and tells you whether it worked.",
+            },
+            {
+              number: 2,
+              cluster: "Written Guides",
+              priority: "Already on roadmap",
+              body: "The FAQ confirms it is coming: the same recording becoming step-by-step docs with annotated screenshots. In the report's cluster structure this does not exist yet — no brand in the competitive set covers it — which means the moment Superdegree ships it, they own a zero-competition cluster in LLM recall. The framing matters: do not position it as a video export format. Position it as a separate deliverable from the same session — one recording, two assets — because that is how buyers in customer education actually think. Help centres need both, and no current platform delivers both from a single browser recording.",
+            },
+          ].map(({ number, cluster, priority, body }, i, arr) => (
+            <div key={cluster} style={{
+              display: "flex",
+              gap: 20,
+              padding: "20px 0",
+              borderBottom: i < arr.length - 1 ? "1px solid rgba(0,0,0,0.06)" : "none",
+            }}>
+              <div style={{ width: 28, flexShrink: 0, paddingTop: 2 }}>
+                <div style={{
+                  width: 24, height: 24, borderRadius: "50%",
+                  background: PURPLE, color: "#fff",
+                  fontSize: 13, fontWeight: 700,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  {number}
+                </div>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8, flexWrap: "wrap" as const }}>
+                  <p style={{ fontSize: 15, fontWeight: 700, color: NAVY, margin: 0, letterSpacing: "-0.01em" }}>
+                    <span style={{ color: PURPLE }}>Use Case {number}: </span>{cluster}
+                  </p>
+                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#059669", background: "rgba(5,150,105,0.08)", border: "1px solid rgba(5,150,105,0.2)", borderRadius: 4, padding: "1px 7px", whiteSpace: "nowrap" as const, flexShrink: 0 }}>{priority}</span>
+                </div>
+                <p style={{ fontSize: 14, color: "#000", margin: 0, lineHeight: 1.65 }}>{body}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ── Competitor Intelligence heading ─────────────────────────────────── */}
       <h2 style={{ fontSize: 22, fontWeight: 800, color: NAVY, letterSpacing: "-0.02em", margin: "8px 0 0" }}>
         Competitor Intelligence
