@@ -290,6 +290,64 @@ const CSS = `
 .c3-bf-pills { display:flex; flex-wrap:wrap; gap:4px; }
 .c3-bf-pill { font-size:11px; font-weight:600; padding:3px 9px; border-radius:5px; background:#ECEFFE; color:#4F6EF7; }
 
+/* ── Laptop mockup (cards c0 & c1) ─────────────────────────────── */
+.lm-outer {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  width: 86% !important;
+  height: auto !important;
+  max-width: 100% !important;
+}
+.lm-screen-frame {
+  width: 100%;
+  background: #1B1B28;
+  border-radius: 8px 8px 0 0;
+  border: 2px solid #2C2C3E;
+  border-bottom: none;
+  padding: 13px 6px 0;
+  position: relative;
+  box-shadow: 0 -6px 24px rgba(0,0,0,0.20);
+}
+.lm-cam {
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #363650;
+}
+.lm-viewport {
+  aspect-ratio: 16 / 10;
+  position: relative;
+  overflow: hidden;
+  border-radius: 2px 2px 0 0;
+  background: #fff;
+}
+.lm-viewport iframe {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border: none !important;
+  display: block !important;
+}
+.lm-base {
+  width: 110%;
+  height: 11px;
+  background: linear-gradient(180deg, #D4D4DC 0%, #BEBEC6 100%);
+  border-radius: 0 0 2px 2px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.13);
+}
+.lm-notch {
+  width: 52%;
+  height: 5px;
+  background: #B8B8C0;
+  border-radius: 0 0 4px 4px;
+}
+
 /* ── Mobile layout ─────────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .card { padding: 4px 10px; }
@@ -370,13 +428,22 @@ const CARDS_HTML = `
         <p class="card-body">Sage continuously monitors top AI agent brands by use case and detects changes across competitor websites the moment they happen, alerting you the instant a rival ships or upgrades a product feature.</p>
         <span style="display:inline-flex;align-items:center;background:rgba(22,163,74,0.10);color:#16A34A;padding:5px 14px;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;">Coming Soon</span>
       </div>
-      <div class="card-right" style="background:#EDEAF8;display:flex;align-items:center;justify-content:center;padding:0;">
-        <iframe
-          src="/competitor-feed.html"
-          style="width:100%;height:100%;border:none;"
-          title="Sage AI Competitor Feed"
-          loading="lazy"
-        ></iframe>
+      <div class="card-right" style="background:#F0EEF8;display:flex;align-items:center;justify-content:center;padding:16px 12px;">
+        <div class="lm-outer">
+          <div class="lm-screen-frame">
+            <div class="lm-cam"></div>
+            <div class="lm-viewport">
+              <iframe
+                src="/competitor-feed.html"
+                style="position:absolute;inset:0;width:100%;height:100%;border:none;display:block;"
+                title="Sage AI Competitor Feed"
+                loading="lazy"
+              ></iframe>
+            </div>
+          </div>
+          <div class="lm-base"></div>
+          <div class="lm-notch"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -398,12 +465,21 @@ const CARDS_HTML = `
         <p class="card-body">Every product feature gets a score per use case, built from live queries across Claude and GPT. No analyst opinion. Click any score to read the exact quotes that produced it.</p>
         <a href="/sage" style="display:inline-flex;align-items:center;gap:6px;width:fit-content;background:linear-gradient(95deg,#7C3AED,#C2186A);color:#fff;font-weight:700;font-size:13px;padding:10px 22px;border-radius:9999px;text-decoration:none;box-shadow:0 4px 16px rgba(124,58,237,0.30);letter-spacing:0.01em;">Get started <span style="font-size:15px;">›</span></a>
       </div>
-      <div class="card-right" style="background:#EDEAF8;display:flex;align-items:center;justify-content:center;padding:0;">
-        <iframe
-          data-src="/product-features.html"
-          style="width:100%;height:100%;border:none;"
-          title="Sage AI Product Features"
-        ></iframe>
+      <div class="card-right" style="background:#F0EEF8;display:flex;align-items:center;justify-content:center;padding:16px 12px;">
+        <div class="lm-outer">
+          <div class="lm-screen-frame">
+            <div class="lm-cam"></div>
+            <div class="lm-viewport">
+              <iframe
+                data-src="/product-features.html"
+                style="position:absolute;inset:0;width:100%;height:100%;border:none;display:block;"
+                title="Sage AI Product Features"
+              ></iframe>
+            </div>
+          </div>
+          <div class="lm-base"></div>
+          <div class="lm-notch"></div>
+        </div>
       </div>
     </div>
   </div>
