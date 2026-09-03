@@ -729,6 +729,11 @@ export default function SdaiVisibilityCharts({
         </div>
       </div>
 
+      {/* ── Competitor Intelligence heading ─────────────────────────────────── */}
+      <h2 style={{ fontSize: 22, fontWeight: 800, color: NAVY, letterSpacing: "-0.02em", margin: "8px 0 0" }}>
+        Competitor Intelligence
+      </h2>
+
       {/* ── Row 1: Metric cards ─────────────────────────────────────────────── */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
 
