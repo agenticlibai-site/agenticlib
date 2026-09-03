@@ -452,7 +452,7 @@ export default function Home() {
               style={{
                 width: "100%",
                 marginTop: 52,
-                aspectRatio: "1060 / 830",
+                aspectRatio: "1060 / 815",
                 borderRadius: 14,
                 overflow: "hidden",
                 border: "1.5px solid rgba(124,58,237,0.28)",
@@ -465,7 +465,7 @@ export default function Home() {
                 ref={snapIframeRef}
                 src="/sage-platform-demo.html"
                 title="Sage AI Platform"
-                style={{ width: 1060, height: 800, border: "none", display: "block", transformOrigin: "top left" }}
+                style={{ width: 1060, height: 815, border: "none", display: "block", transformOrigin: "top left" }}
               />
             </div>
           </div>
