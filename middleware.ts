@@ -38,7 +38,8 @@ export async function middleware(request: NextRequest) {
   // ── Dexify visibility gate ──────────────────────────────────────────────────
   if (
     pathname.startsWith("/product/dexify-visibility") &&
-    !pathname.startsWith("/product/dexify-visibility/login")
+    !pathname.startsWith("/product/dexify-visibility/login") &&
+    !pathname.startsWith("/product/dexify-visibility/feedback")
   ) {
     const token = request.cookies.get("dexify_auth")?.value;
     const expected = await hashToken(process.env.DEXIFY_ACCESS_PASSWORD ?? "", DEXIFY_SALT);
