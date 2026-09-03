@@ -673,9 +673,6 @@ export default function SdaiVisibilityCharts({
               Superdegree
             </span>
           </div>
-          <p style={{ fontSize: 15, color: "#000", margin: 0, lineHeight: 1.6 }}>
-            Three capabilities where Superdegree&apos;s current product is well-positioned but a targeted expansion would improve AI model coverage — and team outcomes. All three require net-new product work, not documentation of existing features.
-          </p>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
           {[
