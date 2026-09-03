@@ -662,6 +662,76 @@ export default function SdaiVisibilityCharts({
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
 
+      {/* ── Product Feature Opportunities (top of report) ───────────────────── */}
+      <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "24px 28px 24px" }}>
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+            <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
+              Product Feature Opportunities
+            </h3>
+            <span style={{ fontSize: 12, fontWeight: 600, background: "rgba(124,58,237,0.1)", color: PURPLE, borderRadius: 999, padding: "3px 10px" }}>
+              Superdegree
+            </span>
+          </div>
+          <p style={{ fontSize: 15, color: "#000", margin: 0, lineHeight: 1.6 }}>
+            Three capabilities where Superdegree&apos;s current product is well-positioned but a targeted expansion would improve AI model coverage — and team outcomes. All three require net-new product work, not documentation of existing features.
+          </p>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
+          {[
+            {
+              title: "Reusable flow library",
+              current: "Superdegree offers brand formats and reusable templates.",
+              improvement: "Product teams record the same UI flows repeatedly every time something changes — a new onboarding step, a redesigned settings screen, a renamed button. A reusable flow library would let teams save common app segments (login, key navigation, critical UI states) as versioned clips that other recordings can reference. When the underlying UI changes, editors update the clip once and the change propagates to every video built on it. What was a one-time recording asset becomes a maintainable component — the same principle as a design system, applied to video. This is the gap the Collaboration and AI Agents query clusters are already surfacing: buyers are asking which tools treat recordings as long-term assets rather than throwaway artefacts.",
+            },
+            {
+              title: "Agent decision notes",
+              current: "The Ask agent drives the app autonomously in a hosted browser and captures the full flow without a human at the keyboard.",
+              improvement: "Autonomous capture is genuinely novel, but it introduces a new problem: the editor who receives the recording has no way to know why the agent made the choices it did. A lightweight decision log — surfaced as an inline review layer before publishing — would close that gap. Notes like \"I clicked this because it was the primary CTA\" or \"I paused here because a required field was detected\" give editors the context they need to confidently approve or correct the output. This also solves an LLM visibility problem: right now, language models cannot describe what makes autonomous capture trustworthy, because the mechanism isn't documented anywhere. Surfacing and naming the decision layer creates the concrete, citable language models need to recommend the feature accurately.",
+            },
+            {
+              title: "Cross-team narration consistency",
+              current: "Superdegree clones individual voices and lets anyone re-record lines without re-recording. The brand kit covers visual consistency.",
+              improvement: "Visual consistency is solved — the brand kit handles it. The harder problem for teams publishing at scale is narration consistency: a CS team and a product team recording to the same help centre sound like different organisations, with different pacing, different levels of formality, and different assumptions about what the viewer already knows. A narration consistency check would analyse a new video against the team's existing library and surface when the tone or pacing diverges significantly — before it goes live, not after a manager flags it. This is a directly addressable capability gap: when AI models are asked about enterprise video governance, narration consistency is currently underdocumented across every platform in this competitive set, which means the first product to name and ship it owns the query.",
+            },
+          ].map(({ title, current, improvement }, i, arr) => (
+            <div key={title} style={{
+              display: "flex",
+              gap: 20,
+              padding: "20px 0",
+              borderBottom: i < arr.length - 1 ? "1px solid rgba(0,0,0,0.06)" : "none",
+            }}>
+              <div style={{ width: 28, flexShrink: 0, paddingTop: 2 }}>
+                <div style={{
+                  width: 24, height: 24, borderRadius: "50%",
+                  background: PURPLE, color: "#fff",
+                  fontSize: 13, fontWeight: 700,
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  {i + 1}
+                </div>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8, flexWrap: "wrap" as const }}>
+                  <p style={{ fontSize: 15, fontWeight: 700, color: NAVY, margin: 0, letterSpacing: "-0.01em" }}>{title}</p>
+                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#d97706", background: "rgba(217,119,6,0.08)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 4, padding: "1px 7px", whiteSpace: "nowrap" as const, flexShrink: 0 }}>Product build required</span>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#059669", background: "rgba(5,150,105,0.08)", borderRadius: 999, padding: "2px 8px", flexShrink: 0, marginTop: 1 }}>Current</span>
+                    <p style={{ fontSize: 14, color: "#000", margin: 0, lineHeight: 1.65 }}>{current}</p>
+                  </div>
+                  <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: PURPLE, background: "rgba(124,58,237,0.08)", borderRadius: 999, padding: "2px 8px", flexShrink: 0, marginTop: 1 }}>Opportunity</span>
+                    <p style={{ fontSize: 14, color: "#000", margin: 0, lineHeight: 1.65 }}>{improvement}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* ── Row 1: Metric cards ─────────────────────────────────────────────── */}
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 }}>
 
@@ -1567,76 +1637,6 @@ export default function SdaiVisibilityCharts({
           <p style={{ fontSize: 11, color: "rgba(0,0,0,0.3)", marginTop: 10, textAlign: "center" as const }}>
             Research conducted via Parallel.ai · August 2026 · AgenticLib
           </p>
-        </div>
-      </div>
-
-      {/* ── Row 11: Product improvement opportunities ───────────────────────── */}
-      <div style={{ background: "#fff", borderRadius: 10, boxShadow: "0 2px 8px rgba(0,0,0,0.07), 0 1px 2px rgba(0,0,0,0.04)", padding: "24px 28px 24px" }}>
-        <div style={{ marginBottom: 20 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
-            <h3 style={{ fontSize: 19, fontWeight: 700, color: NAVY, letterSpacing: "-0.01em", margin: 0 }}>
-              Product Feature Opportunities
-            </h3>
-            <span style={{ fontSize: 12, fontWeight: 600, background: "rgba(124,58,237,0.1)", color: PURPLE, borderRadius: 999, padding: "3px 10px" }}>
-              Superdegree
-            </span>
-          </div>
-          <p style={{ fontSize: 15, color: "#000", margin: 0, lineHeight: 1.6 }}>
-            Three capabilities where Superdegree&apos;s current product is well-positioned but a targeted expansion would improve AI model coverage — and team outcomes. All three require net-new product work, not documentation of existing features.
-          </p>
-        </div>
-        <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-          {[
-            {
-              title: "Reusable flow library",
-              current: "Superdegree offers brand formats and reusable templates.",
-              improvement: `Add a "flow library" where common app segments — login, settings navigation, key UI states — are saved as reusable clips. When the UI changes, updating the clip propagates to every video that references it, turning one-time recordings into maintainable assets. This addresses a gap the Collaboration and AI Agents clusters are already probing for.`,
-            },
-            {
-              title: "Agent decision notes",
-              current: "The Ask agent drives the app autonomously in a hosted browser and captures the full flow without a human at the keyboard.",
-              improvement: `Surface lightweight agent decision notes alongside the captured recording — "I clicked here because this is the primary CTA," "I paused here because I detected a required field" — as a review layer editors see before publishing. Closes the gap between autonomous capture and trustworthy autonomous capture, and gives LLMs concrete language to describe the feature.`,
-            },
-            {
-              title: "Cross-team narration consistency",
-              current: "Superdegree clones individual voices and lets anyone re-record lines without re-recording. The brand kit covers visual consistency.",
-              improvement: "Add a narration consistency check that surfaces when a new video's pacing or tone reads significantly differently from the team's existing library. Useful for CS and product teams publishing to a shared help centre, and directly addressable by AI models when asked about enterprise video governance — a currently underdocumented cluster.",
-            },
-          ].map(({ title, current, improvement }, i, arr) => (
-            <div key={title} style={{
-              display: "flex",
-              gap: 20,
-              padding: "20px 0",
-              borderBottom: i < arr.length - 1 ? "1px solid rgba(0,0,0,0.06)" : "none",
-            }}>
-              <div style={{ width: 28, flexShrink: 0, paddingTop: 2 }}>
-                <div style={{
-                  width: 24, height: 24, borderRadius: "50%",
-                  background: PURPLE, color: "#fff",
-                  fontSize: 13, fontWeight: 700,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                }}>
-                  {i + 1}
-                </div>
-              </div>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8, flexWrap: "wrap" as const }}>
-                  <p style={{ fontSize: 15, fontWeight: 700, color: NAVY, margin: 0, letterSpacing: "-0.01em" }}>{title}</p>
-                  <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#d97706", background: "rgba(217,119,6,0.08)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 4, padding: "1px 7px", whiteSpace: "nowrap" as const, flexShrink: 0 }}>Product build required</span>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                  <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#059669", background: "rgba(5,150,105,0.08)", borderRadius: 999, padding: "2px 8px", flexShrink: 0, marginTop: 1 }}>Current</span>
-                    <p style={{ fontSize: 14, color: "#000", margin: 0, lineHeight: 1.65 }}>{current}</p>
-                  </div>
-                  <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: PURPLE, background: "rgba(124,58,237,0.08)", borderRadius: 999, padding: "2px 8px", flexShrink: 0, marginTop: 1 }}>Opportunity</span>
-                    <p style={{ fontSize: 14, color: "#000", margin: 0, lineHeight: 1.65 }}>{improvement}</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
 
