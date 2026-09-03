@@ -1,5 +1,5 @@
 // ESAI feature config, prompt templates, and scoring logic.
-// 20 features per brand: 2 per cluster × 10 clusters.
+// 22 features per brand: 2 per cluster × 11 clusters.
 
 // ── Grounding & output templates ───────────────────────────────────────────────
 
@@ -24,15 +24,32 @@ export const ESAI_JSON_OUTPUT_SPEC =
   '}';
 
 // ── Locked brand list ──────────────────────────────────────────────────────────
-// Populated after Day 1 denylist review of esai_daily_summary mention data.
-// Criteria (applied after reviewing Day 1 data):
-//   - AI agent (autonomous AI that reads drawings and produces estimates) OR
-//   - AI agent platform (platform whose core product includes an AI agent for estimating)
-// Traditional estimating SaaS with bolted-on AI marketing → esai_denylist instead.
-// Leave empty until denylist review is complete.
-// Feature + sentiment scoring will no-op gracefully until this is populated.
+// Locked 2026-09-03 after brand eligibility review.
+// Includes:
+//   (a) AI-native / agentic estimating platforms — direct comps to EstiMate AI
+//   (b) Dominant traditional tools — benchmark context for the report
+// Excluded: general AI models (Claude, GPT, Gemini), general PM tools (Procore,
+//           Monday, Asana), workforce tools (Bridgit), progress monitoring only
+//           (Doxel, Buildots excluded as wrong domain despite being AI-native),
+//           residential PM tools (CoConstruct, Buildertrend), accounting (Xero,
+//           QuickBooks), noise/duplicates.
 export const LOCKED_ESAI_BRANDS: readonly string[] = [
-  // Populated after Day 1 review — see esai_daily_summary for top brands.
+  // ── AI-native estimating (direct EstiMate AI competitors) ──────────────────
+  "Togal.AI",        // AI takeoff — auto-detects/measures from drawings, chat with plans
+  "Buildr",          // Agentic preconstruction — Kit agent reads RFPs, prices jobs
+  "Buildxact",       // AI-assisted estimating — Blu assistant, Estimate Generator
+  // ── Traditional estimating leaders (benchmark context) ─────────────────────
+  "PlanSwift",       // #1 by mention — leading takeoff/estimating tool
+  "Bluebeam",        // #2 by mention — PDF markup + takeoff
+  "CostX",           // #11 — BIM-based estimating, strong in ANZ
+  "On-Screen Takeoff", // #12 — On Center Software's takeoff tool
+  "ProEst",          // #17 — cloud estimating for GCs
+  "STACK",           // #34 — cloud takeoff and estimating
+  "eTakeoff",        // #24 — digital takeoff (partnered with Togal.AI SnapAI)
+  "Estimating Edge", // #25 — specialised trade estimating
+  "Sage Estimating", // #9 — Sage's construction estimating product
+  "Esticom",         // #37 — now Procore Estimating, still a known brand name
+  "Glodon",          // #94 — BIM-based takeoff, strong in ANZ/Asia market
 ];
 
 // ── Feature definitions ────────────────────────────────────────────────────────
@@ -213,7 +230,25 @@ ${FOOTER}`,
 ${FOOTER}`,
   },
 
-  // ── Cluster 10 — Tender & Bid Preparation · esai-tender ─────────────────────
+  // ── Cluster 10 — Security & Data Trust · esai-security ──────────────────────
+  {
+    feature_id:   "security_data_residency",
+    feature_tag:  "esai-security",
+    feature_name: "Australian data hosting / data sovereignty",
+    description:  "Whether project data and uploaded drawings are stored in Australian data centres, meeting Australian data sovereignty requirements.",
+    prompt: `Australian builders upload sensitive project documents — drawings, specifications, and pricing — to these platforms. Does [BRAND] store project data and uploaded files in Australian data centres, explicitly offering Australian data sovereignty or data residency guarantees rather than defaulting to US or European servers?
+${FOOTER}`,
+  },
+  {
+    feature_id:   "security_compliance",
+    feature_tag:  "esai-security",
+    feature_name: "Security certification — SOC 2 or ISO 27001",
+    description:  "Whether the platform holds SOC 2 Type II or ISO 27001 certification, or equivalent independently audited security standard.",
+    prompt: `Enterprise builders and commercial contractors increasingly require vendors to hold independently audited security certifications before trusting them with project documents. Does [BRAND] hold SOC 2 Type II, ISO 27001, or an equivalent independently audited security certification — with the certification publicly documented rather than just claimed?
+${FOOTER}`,
+  },
+
+  // ── Cluster 11 — Tender & Bid Preparation · esai-tender ─────────────────────
   {
     feature_id:   "tender_preparation",
     feature_tag:  "esai-tender",
