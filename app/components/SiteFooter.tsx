@@ -64,7 +64,7 @@ export default function SiteFooter() {
           }}>
 
             {/* Brand */}
-            <div>
+            <div className="footer-brand">
               <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 14 }}>
                 <img src="/logo.png" alt="AgenticLib" style={{ height: 28, width: "auto", objectFit: "contain" }} />
                 <span style={{ fontSize: 17, fontWeight: 800, color: "#0F0B1E", letterSpacing: "-0.02em" }}>AgenticLib</span>
@@ -103,7 +103,6 @@ export default function SiteFooter() {
               <p style={{ fontSize: 14, fontWeight: 700, color: "#0F0B1E", marginBottom: 16, marginTop: 0 }}>Product</p>
               <NavLink href="/#sage">Sage AI</NavLink>
               <NavLink href="/#pricing">Pricing</NavLink>
-              <NavLink href="/explore">Explore agents</NavLink>
             </div>
 
             {/* Company */}
@@ -141,16 +140,38 @@ export default function SiteFooter() {
       </div>
 
       <style>{`
-        @media (max-width: 900px) {
-          footer[id="contact"] { padding: 48px 24px 0 !important; }
-          footer[id="contact"] > div { padding: 56px 36px 0 !important; }
-          .footer-cols { grid-template-columns: 1fr 1fr !important; gap: 32px 24px !important; }
+        /* Tablet */
+        @media (max-width: 860px) {
+          footer[id="contact"] { padding: 40px 20px 0 !important; }
+          footer[id="contact"] > div { padding: 48px 32px 0 !important; }
+          .footer-cols {
+            grid-template-columns: 1fr 1fr 1fr !important;
+            gap: 28px 20px !important;
+          }
+          .footer-brand { grid-column: 1 / -1 !important; }
         }
+        /* Phone */
         @media (max-width: 560px) {
-          footer[id="contact"] { padding: 32px 16px 0 !important; }
-          footer[id="contact"] > div { padding: 48px 24px 0 !important; border-radius: 20px 20px 0 0 !important; }
-          .footer-cols { grid-template-columns: 1fr 1fr !important; gap: 28px 16px !important; padding-bottom: 36px !important; }
-          .footer-bottom { flex-direction: column !important; align-items: flex-start !important; gap: 4px !important; }
+          footer[id="contact"] { padding: 24px 12px 0 !important; }
+          footer[id="contact"] > div {
+            padding: 36px 20px 0 !important;
+            border-radius: 18px 18px 0 0 !important;
+          }
+          footer[id="contact"] > div > div > div:first-child h2 {
+            font-size: 36px !important;
+          }
+          .footer-cols {
+            grid-template-columns: 1fr 1fr !important;
+            gap: 24px 16px !important;
+            padding-bottom: 28px !important;
+          }
+          .footer-brand { grid-column: 1 / -1 !important; margin-bottom: 4px !important; }
+          .footer-bottom {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 4px !important;
+            padding: 16px 0 24px !important;
+          }
         }
       `}</style>
     </footer>
