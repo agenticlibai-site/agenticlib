@@ -1199,7 +1199,7 @@ export default function SdaiVisibilityCharts({
                 Takeaway
               </p>
               <p style={{ fontSize: 16, color: "#000", lineHeight: 1.65, margin: 0, fontWeight: 400 }}>
-                Superdegree already has a version of this on its site — agents record in a cloud browser, edit, add zooms, captions, and narration, and output a polished video — but it is not yet anchored at a stable, indexable URL with that exact claim front and centre. Written guide output from the same recording is on Superdegree&apos;s publicly announced roadmap (&ldquo;very soon&rdquo; per the product FAQ), which makes now the right moment to establish that canonical page: the documentation feature will slot directly into an already-indexed URL when it ships.
+                Descript&apos;s LLM visibility is anchored on stable, indexable feature pages where each capability — transcript-based editing, auto-zoom, Overdub voice cloning — is named with the exact terms buyers use when querying an LLM. Models surface what they can reliably ground: a product that maintains a canonical URL for each claim gives the model a consistent source to cite, and that citation compounds every time the model is queried for that use case.
               </p>
             </div>
           </div>
@@ -1452,8 +1452,8 @@ export default function SdaiVisibilityCharts({
                 impact: "High",
                 type: "Owned",
                 action: "Publish a canonical autonomous-browser-agent workflow page",
-                what: `Create a stable URL such as /features/autonomous-browser-video-agent and document the exact sequence: task brief or product URL, cloud-browser navigation, screen recording, automatic editing with zooms, captions, and narration, and a finished product video. Include a short worked example showing the agent's starting instruction, observed browser actions, and final artefacts. Add a note that written guide output — step-by-step instructions with annotated screenshots from the same recording — is on the product roadmap. Superdegree has already announced this publicly ("very soon," per the product FAQ), so establishing the canonical page now means the documentation feature lands into an already-indexed URL with an existing citation trail.`,
-                why: `Descript and Synthesia make their identities citable by expressing a complete input-to-output workflow. Superdegree already has the underlying claim on its site but spread across multiple pages rather than anchored at one stable URL.`,
+                what: `Create a stable URL such as /features/autonomous-browser-video-agent and document the exact sequence: task brief or product URL, cloud-browser navigation, screen recording, automatic editing with zooms, captions, and narration, and a finished product video. Include a short worked example showing the agent's starting instruction, observed browser actions, and final artefacts.`,
+                why: `Descript and Synthesia make their identities citable by expressing a complete input-to-output workflow on stable, indexed pages — a canonical URL for each claim gives models a consistent source to cite.`,
                 source: "Evidence: descript.com/video-editing, synthesia.io/features/text-to-video, super.degree/learn",
               },
               {
@@ -1498,7 +1498,7 @@ export default function SdaiVisibilityCharts({
                 type: "Owned",
                 action: "Publish named integrations, export formats, and operational constraints",
                 what: `Create /integrations and /docs pages naming the browser environment, supported application types, export formats, caption and narration options, guide formats, and handoff destinations. State constraints plainly, including the 10-minute recording limit and the fact that no extension or desktop app is required.`,
-                why: `Descript names every major integration and says they enable "1-click imports." Superdegree already has a differentiating constraint documented on its homepage but it is not yet on a dedicated, indexable page.`,
+                why: `Descript names every major integration and says they enable "1-click imports." A dedicated, indexable page for each constraint or integration gives models a stable source to cite when buyers ask those exact questions.`,
                 source: "Evidence: descript.com/integrations, docs.synthesia.io/docs/synthesia-integrations",
               },
               {
