@@ -710,7 +710,9 @@ export default function SdaiVisibilityCharts({
               </div>
               <div style={{ flex: 1 }}>
                 <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginBottom: 8, flexWrap: "wrap" as const }}>
-                  <p style={{ fontSize: 15, fontWeight: 700, color: NAVY, margin: 0, letterSpacing: "-0.01em" }}>{title}</p>
+                  <p style={{ fontSize: 15, fontWeight: 700, color: NAVY, margin: 0, letterSpacing: "-0.01em" }}>
+                    <span style={{ color: PURPLE }}>Product Feature {i + 1}: </span>{title}
+                  </p>
                   <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const, color: "#d97706", background: "rgba(217,119,6,0.08)", border: "1px solid rgba(217,119,6,0.2)", borderRadius: 4, padding: "1px 7px", whiteSpace: "nowrap" as const, flexShrink: 0 }}>Product build required</span>
                 </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
