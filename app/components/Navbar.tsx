@@ -106,41 +106,69 @@ export default function Navbar() {
                   <path d="M2.5 4.5l3.5 3.5 3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </button>
-              <div className="absolute left-0 top-full pt-2 hidden group-hover:block" style={{ zIndex: 9999, width: 500 }}>
+              <div className="absolute top-full pt-2 hidden group-hover:block" style={{ zIndex: 9999, width: 660, left: "50%", transform: "translateX(-50%)" }}>
                 <div className="rounded-2xl" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 20px 60px rgba(0,0,0,0.13), 0 4px 12px rgba(0,0,0,0.06)" }}>
-                  <div className="flex" style={{ padding: "28px 8px 24px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 0, padding: "24px 8px 20px" }}>
 
-                    <div className="flex-1 px-6">
-                      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#000000", textTransform: "uppercase", marginBottom: 12 }}>For AI Agent Builders</p>
-                      <div style={{ height: 1, background: "#f0f0f4", marginBottom: 16 }} />
+                    {/* Vertical Domain */}
+                    <div style={{ padding: "0 16px", borderRight: "1px solid #f0f0f4" }}>
+                      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#7c3aed", textTransform: "uppercase", marginBottom: 10, marginTop: 0 }}>Vertical Domain</p>
+                      <div style={{ height: 1, background: "#f0f0f4", marginBottom: 12 }} />
                       {[
-                        { label: "Marketing", desc: "Visibility & sentiment tracking for marketing AI agents.", href: "/solutions/marketing",
-                          iconBg: "linear-gradient(135deg,#e11d48,#f43f5e)",
-                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M2.5 10.5L10 3.5l7.5 7" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.5 8.5V16.5h4v-3.5h3v3.5h4V8.5" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-                        { label: "Skincare", desc: "Visibility & sentiment tracking for skincare AI agents.", href: "/solutions/skincare",
+                        { label: "Skincare", href: "/solutions/skincare",
                           iconBg: "linear-gradient(135deg,#7c3aed,#a78bfa)",
-                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2.5C10 2.5 4 8.5 4 13a6 6 0 0012 0c0-4.5-6-10.5-6-10.5z" stroke="white" strokeWidth="1.7" strokeLinejoin="round" fill="rgba(255,255,255,0.18)"/><circle cx="10" cy="13.5" r="1.5" fill="white" opacity="0.8"/></svg> },
-                        { label: "Sales", desc: "Visibility & sentiment tracking for sales AI agents.", href: "/solutions/sales",
-                          iconBg: "linear-gradient(135deg,#2563eb,#60a5fa)",
-                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><polyline points="2.5,15.5 7.5,9 12,12.5 17.5,4.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><polyline points="14,4.5 17.5,4.5 17.5,8" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-                        { label: "Legal", desc: "Visibility & sentiment tracking for legal AI agents.", href: "/solutions/legal",
-                          iconBg: "linear-gradient(135deg,#059669,#10b981)",
-                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2v16M7 17.5h6" stroke="white" strokeWidth="1.7" strokeLinecap="round"/><path d="M4 7.5c0 0 1.5-3 3-3s3 3 3 3-1.5 2-3 2-3-2-3-2z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/><path d="M10 7.5c0 0 1.5-3 3-3s3 3 3 3-1.5 2-3 2-3-2-3-2z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/></svg> },
-                        { label: "Insurance Broker (Finance)", desc: "Visibility & sentiment tracking for insurance broker AI agents.", href: "/product/ralfi-visibility/login",
+                          icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2.5C10 2.5 4 8.5 4 13a6 6 0 0012 0c0-4.5-6-10.5-6-10.5z" stroke="white" strokeWidth="1.7" strokeLinejoin="round" fill="rgba(255,255,255,0.18)"/><circle cx="10" cy="13.5" r="1.5" fill="white" opacity="0.8"/></svg> },
+                        { label: "Insurance Broker", href: "/product/ralfi-visibility/login",
                           iconBg: "linear-gradient(135deg,#0d9488,#14b8a6)",
-                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><path d="M10 2L3.5 5.5V10c0 4.5 3 7.5 6.5 8.5 3.5-1 6.5-4 6.5-8.5V5.5L10 2z" stroke="white" strokeWidth="1.6" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/><polyline points="7,10 9.5,12.5 13.5,7.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-                        { label: "Video Creation", desc: "Visibility & sentiment tracking for AI video creation platforms.", href: "/product/sdai-visibility/login",
-                          iconBg: "linear-gradient(135deg,#7c3aed,#a78bfa)",
-                          icon: <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5.5" width="12" height="9" rx="2" stroke="white" strokeWidth="1.6" fill="rgba(255,255,255,0.18)"/><path d="M14.5 8.5l3-2v5l-3-2v-1z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.25)" strokeLinejoin="round"/></svg> },
+                          icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2L3.5 5.5V10c0 4.5 3 7.5 6.5 8.5 3.5-1 6.5-4 6.5-8.5V5.5L10 2z" stroke="white" strokeWidth="1.6" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/><polyline points="7,10 9.5,12.5 13.5,7.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
                       ].map((item) => (
-                        <a key={item.href} href={item.href} className="flex items-start gap-4 py-4 rounded-xl px-3" style={{ textDecoration: "none" }}
+                        <a key={item.href} href={item.href} className="flex items-center gap-3 py-2.5 rounded-xl px-2" style={{ textDecoration: "none" }}
                           onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
                           onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
-                          <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: item.iconBg }}>{item.icon}</div>
-                          <div className="flex flex-col">
-                            <span style={{ fontSize: 14, fontWeight: 600, color: "#000000", lineHeight: 1.4 }}>{item.label}</span>
-                            <span style={{ fontSize: 12.5, color: "#000000", marginTop: 3, lineHeight: 1.5 }}>{item.desc}</span>
-                          </div>
+                          <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: item.iconBg }}>{item.icon}</div>
+                          <span style={{ fontSize: 13.5, fontWeight: 600, color: "#000" }}>{item.label}</span>
+                        </a>
+                      ))}
+                    </div>
+
+                    {/* Horizontal Domain */}
+                    <div style={{ padding: "0 16px", borderRight: "1px solid #f0f0f4" }}>
+                      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#2563eb", textTransform: "uppercase", marginBottom: 10, marginTop: 0 }}>Horizontal Domain</p>
+                      <div style={{ height: 1, background: "#f0f0f4", marginBottom: 12 }} />
+                      {[
+                        { label: "Marketing", href: "/solutions/marketing",
+                          iconBg: "linear-gradient(135deg,#e11d48,#f43f5e)",
+                          icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M2.5 10.5L10 3.5l7.5 7" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.5 8.5V16.5h4v-3.5h3v3.5h4V8.5" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+                        { label: "Sales", href: "/solutions/sales",
+                          iconBg: "linear-gradient(135deg,#2563eb,#60a5fa)",
+                          icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><polyline points="2.5,15.5 7.5,9 12,12.5 17.5,4.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><polyline points="14,4.5 17.5,4.5 17.5,8" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+                        { label: "Legal", href: "/solutions/legal",
+                          iconBg: "linear-gradient(135deg,#059669,#10b981)",
+                          icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2v16M7 17.5h6" stroke="white" strokeWidth="1.7" strokeLinecap="round"/><path d="M4 7.5c0 0 1.5-3 3-3s3 3 3 3-1.5 2-3 2-3-2-3-2z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/><path d="M10 7.5c0 0 1.5-3 3-3s3 3 3 3-1.5 2-3 2-3-2-3-2z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/></svg> },
+                      ].map((item) => (
+                        <a key={item.href} href={item.href} className="flex items-center gap-3 py-2.5 rounded-xl px-2" style={{ textDecoration: "none" }}
+                          onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
+                          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
+                          <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: item.iconBg }}>{item.icon}</div>
+                          <span style={{ fontSize: 13.5, fontWeight: 600, color: "#000" }}>{item.label}</span>
+                        </a>
+                      ))}
+                    </div>
+
+                    {/* Tech Domain */}
+                    <div style={{ padding: "0 16px" }}>
+                      <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#d97706", textTransform: "uppercase", marginBottom: 10, marginTop: 0 }}>Tech Domain</p>
+                      <div style={{ height: 1, background: "#f0f0f4", marginBottom: 12 }} />
+                      {[
+                        { label: "Video Creation", href: "/product/sdai-visibility/login",
+                          iconBg: "linear-gradient(135deg,#7c3aed,#a78bfa)",
+                          icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5.5" width="12" height="9" rx="2" stroke="white" strokeWidth="1.6" fill="rgba(255,255,255,0.18)"/><path d="M14.5 8.5l3-2v5l-3-2v-1z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.25)" strokeLinejoin="round"/></svg> },
+                      ].map((item) => (
+                        <a key={item.href} href={item.href} className="flex items-center gap-3 py-2.5 rounded-xl px-2" style={{ textDecoration: "none" }}
+                          onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
+                          onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
+                          <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: item.iconBg }}>{item.icon}</div>
+                          <span style={{ fontSize: 13.5, fontWeight: 600, color: "#000" }}>{item.label}</span>
                         </a>
                       ))}
                     </div>
@@ -258,13 +286,35 @@ export default function Navbar() {
             </button>
             {productExpanded && (
               <div style={{ background: "#fafafa", borderBottom: "1px solid #f3f4f6" }}>
-                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#000000", textTransform: "uppercase", padding: "10px 20px 6px", margin: 0 }}>For AI Agent Builders</p>
+                {/* Vertical Domain */}
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#7c3aed", textTransform: "uppercase", padding: "10px 20px 4px", margin: 0 }}>Vertical Domain</p>
+                {[
+                  { label: "Skincare", href: "/solutions/skincare" },
+                  { label: "Insurance Broker", href: "/product/ralfi-visibility/login" },
+                ].map((item) => (
+                  <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                    className="block pl-8 pr-5 py-3 text-sm text-black hover:text-black hover:bg-gray-100 transition-colors"
+                    style={{ textDecoration: "none", borderBottom: "1px solid #f0f0f0" }}>
+                    {item.label}
+                  </a>
+                ))}
+                {/* Horizontal Domain */}
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#2563eb", textTransform: "uppercase", padding: "10px 20px 4px", margin: 0 }}>Horizontal Domain</p>
                 {[
                   { label: "Marketing", href: "/solutions/marketing" },
-                  { label: "Skincare", href: "/solutions/skincare" },
                   { label: "Sales", href: "/solutions/sales" },
                   { label: "Legal", href: "/solutions/legal" },
-                  { label: "Insurance Broker (Finance)", href: "/product/ralfi-visibility/login" },
+                ].map((item) => (
+                  <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
+                    className="block pl-8 pr-5 py-3 text-sm text-black hover:text-black hover:bg-gray-100 transition-colors"
+                    style={{ textDecoration: "none", borderBottom: "1px solid #f0f0f0" }}>
+                    {item.label}
+                  </a>
+                ))}
+                {/* Tech Domain */}
+                <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", color: "#d97706", textTransform: "uppercase", padding: "10px 20px 4px", margin: 0 }}>Tech Domain</p>
+                {[
+                  { label: "Video Creation", href: "/product/sdai-visibility/login" },
                 ].map((item) => (
                   <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                     className="block pl-8 pr-5 py-3 text-sm text-black hover:text-black hover:bg-gray-100 transition-colors"
