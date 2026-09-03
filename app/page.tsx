@@ -354,7 +354,7 @@ export default function Home() {
         .dewwie-logo:hover { color: #0c00b0; }
         .ralfi-logo-link { opacity: 0.45; transition: opacity 0.2s; text-decoration: none; outline: none; display: flex; align-items: center; }
         .ralfi-logo-link:hover { opacity: 1; }
-        .ralfi-logo-img { height: 40px; width: auto; object-fit: contain; filter: grayscale(1); transition: filter 0.2s; }
+        .ralfi-logo-img { height: 48px; width: auto; object-fit: contain; filter: grayscale(1); transition: filter 0.2s; }
         .ralfi-logo-link:hover .ralfi-logo-img { filter: none; }
       `}</style>
 
