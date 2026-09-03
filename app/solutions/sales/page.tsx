@@ -1,4 +1,31 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import { createHash } from "node:crypto";
+
+const SALT = "|sales_gate_agenticlib_2026";
+
+async function verifyPassword(formData: FormData) {
+  "use server";
+  const entered = String(formData.get("password") ?? "").trim();
+  const correct = process.env.SALES_ACCESS_PASSWORD ?? "";
+
+  if (!entered || entered !== correct) {
+    redirect("/solutions/sales?error=1");
+  }
+
+  const token = createHash("sha256").update(entered + SALT).digest("hex");
+  const jar = await cookies();
+  jar.set("sales_auth", token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30,
+  });
+
+  redirect("/product/sales-visibility/report");
+}
 
 export const metadata: Metadata = {
   title: "Sales AI Agents – AgenticLib",
@@ -39,7 +66,12 @@ function SignalIcon({ type, color }: { type: string; color: string }) {
   return <svg width="15" height="15" viewBox="0 0 20 20" fill="none"><path d="M3 5.5C3 4.4 3.9 3.5 5 3.5h10c1.1 0 2 .9 2 2V12c0 1.1-.9 2-2 2H7l-4 3V5.5z" stroke={color} strokeWidth="1.6" strokeLinejoin="round"/></svg>;
 }
 
-export default function SalesPage() {
+export default async function SalesPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
   return (
     <main className="min-h-screen page-gap-fix" style={{ background: "linear-gradient(170deg, #EFF6FF 0%, #FDFAFF 28%, #FFF8FC 52%, #F8F3FF 76%, #EFF6FF 100%)" }}>
       {/* ── Hero ── */}
@@ -202,6 +234,95 @@ export default function SalesPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── Lamigo Report Access ── */}
+      <section style={{ padding: "0 48px 100px", display: "flex", justifyContent: "center" }}>
+        <div
+          style={{
+            background: "#fff",
+            borderRadius: 16,
+            boxShadow: "0 4px 24px rgba(0,0,0,0.10)",
+            padding: "40px 44px",
+            width: "100%",
+            maxWidth: 400,
+          }}
+        >
+          <div
+            style={{
+              display: "inline-block",
+              fontSize: 11,
+              fontWeight: 700,
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              background: "rgba(37,99,235,0.10)",
+              color: "#2563EB",
+              borderRadius: 999,
+              padding: "4px 12px",
+              marginBottom: 20,
+            }}
+          >
+            Brand Intelligence · Sales
+          </div>
+
+          <h2
+            style={{
+              fontSize: 22,
+              fontWeight: 800,
+              color: "#000",
+              letterSpacing: "-0.02em",
+              lineHeight: 1.2,
+              margin: "0 0 8px",
+            }}
+          >
+            Sales AI Visibility Report
+          </h2>
+          <p style={{ fontSize: 14, color: "#000", margin: "0 0 28px", lineHeight: 1.5 }}>
+            This report is available to invited partners only. Enter the access password below.
+          </p>
+
+          <form action={verifyPassword} style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            <input
+              name="password"
+              type="password"
+              placeholder="Enter access password"
+              required
+              autoFocus
+              style={{
+                width: "100%",
+                padding: "12px 14px",
+                fontSize: 15,
+                border: error ? "1.5px solid #DC2626" : "1.5px solid rgba(0,0,0,0.15)",
+                borderRadius: 8,
+                outline: "none",
+                color: "#000",
+                background: "#fff",
+                boxSizing: "border-box",
+              }}
+            />
+            {error === "1" && (
+              <p style={{ fontSize: 13, color: "#DC2626", margin: "-4px 0 0" }}>
+                Incorrect password — please try again.
+              </p>
+            )}
+            <button
+              type="submit"
+              style={{
+                background: "#2563EB",
+                color: "#fff",
+                border: "none",
+                borderRadius: 8,
+                padding: "13px 0",
+                fontSize: 15,
+                fontWeight: 700,
+                cursor: "pointer",
+                letterSpacing: "0.02em",
+              }}
+            >
+              Access report
+            </button>
+          </form>
         </div>
       </section>
 

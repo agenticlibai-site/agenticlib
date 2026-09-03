@@ -27,7 +27,7 @@ async function verifyPassword(formData: FormData) {
     maxAge: 60 * 60 * 24 * 30, // 30 days
   });
 
-  redirect("/product/sales-visibility");
+  redirect("/product/sales-visibility/report");
 }
 
 export const metadata = {
