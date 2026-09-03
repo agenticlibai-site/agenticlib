@@ -71,34 +71,6 @@ export default async function SdaiReportPage() {
             How AI models recommend and describe AI video creation platforms across Claude Haiku and GPT-4o-mini, updated daily.
           </p>
 
-          {/* Collection health strip */}
-          <div style={{
-            marginTop: 14,
-            display: "inline-flex",
-            flexWrap: "wrap" as const,
-            gap: "6px 18px",
-            fontSize: 13,
-            color: "#000",
-            background: "rgba(124,58,237,0.05)",
-            border: "1px solid rgba(124,58,237,0.15)",
-            borderRadius: 8,
-            padding: "8px 14px",
-          }}>
-            <span><strong style={{ color: "#7C3AED" }}>Days collected:</strong> {health.dates_collected}</span>
-            <span><strong style={{ color: "#7C3AED" }}>Total rows:</strong> {health.total_rows.toLocaleString()}</span>
-            {health.model_breakdown.map((m) => (
-              <span key={m.model}>
-                <strong style={{ color: "#7C3AED" }}>{m.model}:</strong> {m.row_count.toLocaleString()} rows
-              </span>
-            ))}
-            {health.earliest_date && (
-              <span>
-                <strong style={{ color: "#7C3AED" }}>Range:</strong>{" "}
-                {health.earliest_date} → {health.latest_date}
-              </span>
-            )}
-            <span style={{ color: "rgba(0,0,0,0.4)" }}>Updated {now} AEST</span>
-          </div>
         </div>
       </div>
 
