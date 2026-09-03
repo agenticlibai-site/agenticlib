@@ -219,6 +219,7 @@ export default function Home() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [pricingModal, setPricingModal] = useState<{ open: boolean; plan: "free" | "premium" }>({ open: false, plan: "free" });
   const [demoOpen, setDemoOpen] = useState(false);
   const demoVideoRef = useRef<HTMLVideoElement>(null);
@@ -1009,6 +1010,55 @@ export default function Home() {
               </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ──────────────────────────────────────────────────────── */}
+      <section style={{ padding: "80px 24px 88px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 720, margin: "0 auto" }}>
+          <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", marginBottom: 16 }}>FAQ</p>
+          <h2 style={{ fontSize: "clamp(26px, 3.5vw, 40px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.12, color: "#0F0B1E", margin: "0 0 40px" }}>
+            Frequently asked questions
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
+            {([
+              {
+                q: "What is AgenticLib?",
+                a: "AgenticLib is an intelligence platform that combines market insights, buyer intent and competitor signals to advise AI agent builders on their product feature roadmap.",
+              },
+              {
+                q: "What problem does AgenticLib solve?",
+                a: "AI agent builders in competitive verticals — healthcare, finance, legal — are flying blind. They find out a competitor shipped a new feature when a customer mentions it mid-deal. They decide what to build next from the loudest customer request, a gut call, or a conversation that happened to stick. They have no clear view of which use cases they're winning or losing, and by the time they piece together what buyers are actually comparing across scattered lost-deal notes and sales calls, the window to act has usually passed. AgenticLib replaces that manual, reactive process with one platform: automated competitor monitoring, use-case benchmarking, and buyer signal capture — all turned into a prioritised product roadmap so you stop losing deals to things you didn't see coming.",
+              },
+            ] as { q: string; a: string }[]).map(({ q, a }, i) => (
+              <div key={i} style={{ borderTop: i === 0 ? "1px solid rgba(124,58,237,0.15)" : undefined, borderBottom: "1px solid rgba(124,58,237,0.15)" }}>
+                <button
+                  onClick={() => setFaqOpen(faqOpen === i ? null : i)}
+                  style={{
+                    width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+                    gap: 16, padding: "22px 0", background: "none", border: "none", cursor: "pointer",
+                    textAlign: "left" as const, fontFamily: "inherit",
+                  }}
+                >
+                  <span style={{ fontSize: 17, fontWeight: 700, color: "#0F0B1E", letterSpacing: "-0.01em", lineHeight: 1.3 }}>{q}</span>
+                  <svg
+                    width="20" height="20" viewBox="0 0 20 20" fill="none"
+                    style={{ flexShrink: 0, transform: faqOpen === i ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.25s ease", color: "#7C3AED" }}
+                  >
+                    <path d="M5 7.5l5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                <div style={{
+                  overflow: "hidden",
+                  maxHeight: faqOpen === i ? 400 : 0,
+                  opacity: faqOpen === i ? 1 : 0,
+                  transition: "max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease",
+                }}>
+                  <p style={{ fontSize: 15.5, lineHeight: 1.75, color: "rgba(15,11,30,0.62)", margin: "0 0 24px", maxWidth: "62ch" }}>{a}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
