@@ -173,7 +173,7 @@ export default function RalfiFeedbackPage() {
             Your take on the Insurance Broker report
           </h1>
           <p style={{ fontSize: 14, color: "#555", margin: 0, lineHeight: 1.55 }}>
-            Four questions. Takes about 2 minutes. Answers go directly to the team.
+            Four questions. Takes about 5 minutes. Answers go directly to the team.
           </p>
         </div>
 
