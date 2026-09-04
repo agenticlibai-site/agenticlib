@@ -19,8 +19,6 @@ import {
   getSdaiSOVData,
   getSdaiSentimentData,
   getSdaiDailySummary,
-  getSdaiWeeklySummary,
-  getSdaiLLMVisibility,
   initSdaiDB,
 } from "@/lib/brand-visibility/db";
 import { getSkincareUseCaseBuckets } from "@/lib/skincare-visibility/db";
@@ -57,8 +55,6 @@ const getSageData = unstable_cache(
       videoSOV,
       videoSentimentResult,
       videoDailySummary,
-      videoWeeklySummary,
-      videoLLMVisibility,
     ] = await Promise.all([
       getLockedSOVByClusters(),
       getFeatureScores(),
@@ -80,8 +76,6 @@ const getSageData = unstable_cache(
       getSdaiSOVData().catch(() => []),
       getSdaiSentimentData().catch(() => ({ rows: [], meta: { dual_model_dates: 0, earliest_date: null, latest_date: null } })),
       getSdaiDailySummary(7).catch(() => []),
-      getSdaiWeeklySummary().catch(() => []),
-      getSdaiLLMVisibility().catch(() => []),
     ]);
     // Normalise SDAI feature scores to match the shared feature score shape
     const videoFeatures = videoFeaturesRaw.map(f => ({
@@ -101,7 +95,7 @@ const getSageData = unstable_cache(
       dexifyClusters, dexifyFeatures, dexifySentimentResult,
       skincareClusters,
       videoClusters, videoFeatures, videoSOV, videoSentimentResult,
-      videoDailySummary, videoWeeklySummary, videoLLMVisibility,
+      videoDailySummary,
     };
   },
   ["sage-dashboard-data"],
@@ -120,7 +114,7 @@ export default async function SagePage() {
     dexifyClusters, dexifyFeatures, dexifySentimentResult,
     skincareClusters,
     videoClusters, videoFeatures, videoSOV, videoSentimentResult,
-    videoDailySummary, videoWeeklySummary, videoLLMVisibility,
+    videoDailySummary,
   } = await getSageData();
 
   return (
@@ -144,8 +138,6 @@ export default async function SagePage() {
       videoSentiment={videoSentimentResult.rows}
       videoFeatureDefs={SDAI_FEATURE_DEFS_FULL.map(f => ({ feature_id: f.feature_id, feature_tag: f.feature_tag, feature_name: f.feature_name, feature_desc: f.description }))}
       videoDailySummary={videoDailySummary}
-      videoWeeklySummary={videoWeeklySummary}
-      videoLLMVisibility={videoLLMVisibility}
       dexifyClusters={dexifyClusters}
       dexifyFeatures={dexifyFeatures}
       dexifyFeatureDefs={DEXIFY_FEATURE_DEFS_FULL.map(f => ({ feature_id: f.feature_id, feature_tag: f.feature_tag, feature_name: f.feature_name, feature_desc: f.description }))}

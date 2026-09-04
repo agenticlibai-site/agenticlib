@@ -7,7 +7,6 @@ import {
 } from "recharts";
 import type { SOVRow, FeatureScoreRow, DexifyClusterRow } from "@/lib/brand-visibility/db";
 import type { UseCaseBucketBrandRow } from "@/lib/skincare-visibility/db";
-import SdaiVisibilityCharts from "@/app/product/sdai-visibility/SdaiVisibilityCharts";
 
 interface FeatureDef {
   feature_id:   string;
@@ -274,8 +273,6 @@ interface Props {
   videoSentiment:       SalesSentimentRow[];
   videoFeatureDefs:     FeatureDef[];
   videoDailySummary:    { date: string; brand: string; model: string; cluster_tag: string; mention_count: number; avg_position: number | null }[];
-  videoWeeklySummary:   { brand: string; model: string; mention_count: number; avg_position: number | null }[];
-  videoLLMVisibility:   { model: string; visibility_pct: number; total_responses: number }[];
   dexifyClusters:       DexifyClusterRow[];
   dexifyFeatures:       { brand_name: string; feature_id: string; feature_tag: string; score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null }[];
   dexifyFeatureDefs:    FeatureDef[];
@@ -902,7 +899,7 @@ export default function SageCharts({
   marketingClusters, marketingCoverage, marketingSOVAll, marketingSentiment,
   salesClusters, salesFeatures, salesCoverage, salesSOV, salesSentiment, salesFeatureDefs,
   videoClusters, videoFeatures, videoSOV, videoSentiment, videoFeatureDefs,
-  videoDailySummary, videoWeeklySummary, videoLLMVisibility,
+  videoDailySummary,
   dexifyClusters, dexifyFeatures, dexifyFeatureDefs, dexifySentiment,
   skincareClusters,
 }: Props) {
@@ -1273,27 +1270,7 @@ export default function SageCharts({
 
             {/* Use case cards */}
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              {domain === "video" ? (
-                // ── Video Creation: full Superdegree report embedded ───────────
-                <SdaiVisibilityCharts
-                  dailySummary={videoDailySummary}
-                  weeklySummary={videoWeeklySummary}
-                  llmVisibility={videoLLMVisibility}
-                  sovData={videoSOV}
-                  clusterPositions={videoClusters}
-                  featureScores={videoFeatures.map(f => ({
-                    brand_name:       f.brand_name,
-                    feature_id:       f.feature_id,
-                    feature_tag:      f.feature_tag,
-                    score:            f.score,
-                    score_band:       f.score_band,
-                    evidence:         f.evidence,
-                    flagged_for_review: f.flagged_for_review ?? false,
-                    has_capability:   f.has_capability ?? null,
-                  }))}
-                  sentimentData={{ rows: videoSentiment, meta: { dual_model_dates: 0, earliest_date: null, latest_date: null } }}
-                />
-              ) : !cluster ? (
+              {!cluster ? (
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: 320, gap: 12 }}>
                   <div style={{ width: 44, height: 44, borderRadius: 14, background: activeDomain?.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <DomainIcon id={domain} />
@@ -1303,11 +1280,58 @@ export default function SageCharts({
                     <p style={{ fontSize: 15.5, color: "rgba(0,0,0,0.4)", margin: 0 }}>Select one from the sidebar to see rankings, coverage, and feature scores</p>
                   </div>
                 </div>
+              ) : domain === "video" ? (
+                // ── Video Creation: top-7 brands per cluster, clickable feature scores ──
+                Object.entries(visibleClusters).map(([tag, lbl]) => {
+                  const clusterBrands = videoClusters
+                    .filter(r => r.cluster_tag === tag)
+                    .sort((a, b) => b.appearances - a.appearances)
+                    .slice(0, 7)
+                    .map(r => ({ brand: r.brand, avg_position: r.avg_position, appearances: r.appearances }));
+                  const clusterSOV = videoSOV
+                    .filter(r => r.cluster_tag === tag)
+                    .sort((a, b) => b.sov_pct - a.sov_pct)
+                    .map(r => ({ brand: r.brand, total_appearances: r.total_appearances, sov_pct: r.sov_pct }));
+                  const coverageMap = new Map<string, number>();
+                  videoDailySummary.filter(r => r.cluster_tag === tag).forEach(r => {
+                    const key = `${r.date}::${r.brand}`;
+                    coverageMap.set(key, (coverageMap.get(key) ?? 0) + r.mention_count);
+                  });
+                  const clusterCoverage = [...coverageMap.entries()].map(([k, mention_count]) => {
+                    const sep = k.indexOf("::");
+                    return { date: k.slice(0, sep), brand: k.slice(sep + 2), mention_count };
+                  });
+                  const featureDefs = videoFeatureDefs.filter(f => f.feature_tag === tag);
+                  const scoreMap    = new Map<string, { score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null }>();
+                  videoFeatures.filter(f => f.feature_tag === tag).forEach(f => {
+                    scoreMap.set(`${f.brand_name}::${f.feature_id}`, {
+                      score: f.score, score_band: f.score_band, evidence: f.evidence, terminology_tags: f.terminology_tags ?? null,
+                    });
+                  });
+                  const clusterSentiment = videoSentiment.filter(r => r.bucket_tag === tag);
+                  return (
+                    <SalesUseCaseCard
+                      key={tag}
+                      tag={tag}
+                      label={lbl}
+                      domain="video"
+                      clusterBrands={clusterBrands}
+                      coverage={clusterCoverage}
+                      sov={clusterSOV}
+                      featureDefs={featureDefs}
+                      scoreMap={scoreMap}
+                      sentimentRows={clusterSentiment}
+                      color={activeDomain!.color}
+                      bg={activeDomain!.bg}
+                      rgb={activeDomain!.rgb}
+                      onScoreClick={openScore}
+                    />
+                  );
+                })
               ) : (domain === "sales" || domain === "marketing") ? (
                 // ── Sales + Marketing: rich cards with charts (or scores-only for cross-cutting) ──
                 Object.entries(visibleClusters).map(([tag, lbl]) => {
                   const isMkt   = domain === "marketing";
-                  const isVideo = false; // video handled above
                   // Cross-cutting tags (technical / responsible-ai / cost) get a
                   // simplified scores-only card — no mention data exists for them.
                   if (isMkt && CROSS_CUTTING_TAGS.marketing?.has(tag)) {
