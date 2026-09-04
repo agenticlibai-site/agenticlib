@@ -7,6 +7,7 @@ import {
 } from "recharts";
 import type { SOVRow, FeatureScoreRow, DexifyClusterRow } from "@/lib/brand-visibility/db";
 import type { UseCaseBucketBrandRow } from "@/lib/skincare-visibility/db";
+import { BRAND_FEATURE_DESCRIPTIONS } from "@/app/product/sdai-visibility/SdaiVisibilityCharts";
 
 interface FeatureDef {
   feature_id:   string;
@@ -392,9 +393,11 @@ interface SalesCardProps {
   bg:             string;
   rgb:            string;
   onScoreClick:   (info: ModalScore) => void;
+  collapsible?:   boolean; // when true, card starts closed; click header to expand
 }
 
-function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, featureDefs, scoreMap, sentimentRows, color, bg, rgb, onScoreClick }: SalesCardProps) {
+function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, featureDefs, scoreMap, sentimentRows, color, bg, rgb, onScoreClick, collapsible }: SalesCardProps) {
+  const [expanded, setExpanded] = useState(!collapsible);
   const top5 = clusterBrands.slice(0, 5);
   const hasFeatures = featureDefs.length > 0 && top5.length > 0;
   const hasSentiment = sentimentRows.length > 0;
@@ -439,20 +442,39 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
   return (
     <div style={{ background: "#fff", borderRadius: 14, border: "1px solid rgba(0,0,0,0.07)", overflow: "hidden", boxShadow: "0 1px 3px rgba(0,0,0,0.04)" }}>
 
-      {/* Card header */}
-      <div style={{ padding: "16px 20px", borderBottom: "1px solid rgba(0,0,0,0.05)", background: "rgba(0,0,0,0.01)" }}>
-        <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: bg, borderRadius: 20, padding: "4px 11px", marginBottom: USE_CASE_DESCRIPTIONS[tag] ? 12 : 0 }}>
-          <div style={{ width: 5, height: 5, borderRadius: "50%", background: color }} />
-          <span style={{ fontSize: 14.5, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" as const, color }}>{label}</span>
+      {/* Card header — clickable when collapsible */}
+      <div
+        onClick={collapsible ? () => setExpanded(e => !e) : undefined}
+        style={{
+          padding: "16px 20px",
+          borderBottom: expanded ? "1px solid rgba(0,0,0,0.05)" : "none",
+          background: "rgba(0,0,0,0.01)",
+          cursor: collapsible ? "pointer" : "default",
+          userSelect: "none",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" as const }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 5, background: bg, borderRadius: 20, padding: "4px 11px" }}>
+              <div style={{ width: 5, height: 5, borderRadius: "50%", background: color }} />
+              <span style={{ fontSize: 14.5, fontWeight: 800, letterSpacing: "0.1em", textTransform: "uppercase" as const, color }}>{label}</span>
+            </div>
+            {USE_CASE_DESCRIPTIONS[tag] && expanded && (
+              <p style={{ margin: 0, fontSize: 14, lineHeight: 1.65, color: "rgba(0,0,0,0.52)", maxWidth: 780 }}>
+                {USE_CASE_DESCRIPTIONS[tag]}
+              </p>
+            )}
+          </div>
+          {collapsible && (
+            <span style={{ fontSize: 18, color: "rgba(0,0,0,0.3)", lineHeight: 1, flexShrink: 0, marginLeft: 12 }}>
+              {expanded ? "▲" : "▼"}
+            </span>
+          )}
         </div>
-        {USE_CASE_DESCRIPTIONS[tag] && (
-          <p style={{ margin: 0, fontSize: 14, lineHeight: 1.65, color: "rgba(0,0,0,0.52)", maxWidth: 780 }}>
-            {USE_CASE_DESCRIPTIONS[tag]}
-          </p>
-        )}
       </div>
 
-      {/* ── Row 1: Top brands + SOV pie ────────────────────────────────────── */}
+      {/* ── Body: only visible when expanded ───────────────────────────────── */}
+      {expanded && (<>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", borderBottom: "1px solid rgba(0,0,0,0.05)" }}>
 
         {/* Top 5 brands */}
@@ -763,6 +785,8 @@ function SalesUseCaseCard({ tag, label, domain, clusterBrands, coverage, sov, fe
         );
       })()}
 
+      </>)}
+
     </div>
   );
 }
@@ -1007,6 +1031,100 @@ export default function SageCharts({
   // Fixed brand set for the video domain — exactly the brands tracked in the
   // Superdegree report, shown consistently across every use-case cluster.
   const videoTop7Names = ["Descript", "Synthesia", "HeyGen", "Opus Clip", "D-ID", "DeepBrain", "Renderforest"];
+
+  // Which video use-case cluster is currently selected (pill nav)
+  const [selectedVideoTag, setSelectedVideoTag] = useState<string>("");
+
+  // ── Pre-compute video domain content (avoids IIFE-in-JSX-ternary) ─────────
+  const videoContent: React.ReactNode = (() => {
+    if (domain !== "video" || !activeDomain) return null;
+    const allVideoClusters = Object.entries(visibleClusters);
+    const activeVideoTag = selectedVideoTag && allVideoClusters.some(([t]) => t === selectedVideoTag)
+      ? selectedVideoTag
+      : allVideoClusters[0]?.[0] ?? "";
+    const activeVideoLabel = allVideoClusters.find(([t]) => t === activeVideoTag)?.[1] ?? "";
+
+    const clusterBrands = videoTop7Names.map(brand => {
+      const r = videoClusters.find(c => c.cluster_tag === activeVideoTag && c.brand === brand);
+      return { brand, avg_position: r?.avg_position ?? 999, appearances: r?.appearances ?? 0 };
+    });
+    const clusterSOV = videoTop7Names.flatMap(brand => {
+      const r = videoSOV.find(s => s.cluster_tag === activeVideoTag && s.brand === brand);
+      return r ? [{ brand, total_appearances: r.total_appearances, sov_pct: r.sov_pct }] : [];
+    });
+    const coverageMap = new Map<string, number>();
+    videoDailySummary
+      .filter(r => r.cluster_tag === activeVideoTag && videoTop7Names.includes(r.brand))
+      .forEach(r => {
+        const key = `${r.date}::${r.brand}`;
+        coverageMap.set(key, (coverageMap.get(key) ?? 0) + r.mention_count);
+      });
+    const clusterCoverage = [...coverageMap.entries()].map(([k, mc]) => {
+      const sep = k.indexOf("::");
+      return { date: k.slice(0, sep), brand: k.slice(sep + 2), mention_count: mc };
+    });
+    const featureDefs = videoFeatureDefs.filter(f => f.feature_tag === activeVideoTag);
+    const scoreMap = new Map<string, { score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null }>();
+    videoFeatures
+      .filter(f => f.feature_tag === activeVideoTag && videoTop7Names.includes(f.brand_name))
+      .forEach(f => {
+        const roundedScore = f.score !== null ? Math.round(f.score / 10) * 10 : null;
+        const curatedEvidence = BRAND_FEATURE_DESCRIPTIONS[f.feature_id]?.[f.brand_name] ?? f.evidence;
+        scoreMap.set(`${f.brand_name}::${f.feature_id}`, {
+          score: roundedScore, score_band: f.score_band, evidence: curatedEvidence, terminology_tags: f.terminology_tags ?? null,
+        });
+      });
+    const clusterSentiment = videoSentiment.filter(r => r.bucket_tag === activeVideoTag);
+
+    return (
+      <>
+        {/* Use case pill nav */}
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 4 }}>
+          {allVideoClusters.map(([tag, lbl]) => {
+            const isActive = tag === activeVideoTag;
+            return (
+              <button
+                key={tag}
+                onClick={() => setSelectedVideoTag(tag)}
+                style={{
+                  padding: "6px 14px",
+                  borderRadius: 20,
+                  border: isActive ? `1.5px solid ${activeDomain.color}` : "1.5px solid rgba(0,0,0,0.12)",
+                  background: isActive ? activeDomain.bg : "transparent",
+                  color: isActive ? activeDomain.color : "rgba(0,0,0,0.5)",
+                  fontSize: 14,
+                  fontWeight: isActive ? 700 : 500,
+                  cursor: "pointer",
+                  letterSpacing: isActive ? "0.03em" : 0,
+                  transition: "all 0.15s",
+                }}
+              >
+                {lbl}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Single cluster card */}
+        <SalesUseCaseCard
+          key={activeVideoTag}
+          tag={activeVideoTag}
+          label={activeVideoLabel}
+          domain="video"
+          clusterBrands={clusterBrands}
+          coverage={clusterCoverage}
+          sov={clusterSOV}
+          featureDefs={featureDefs}
+          scoreMap={scoreMap}
+          sentimentRows={clusterSentiment}
+          color={activeDomain.color}
+          bg={activeDomain.bg}
+          rgb={activeDomain.rgb}
+          onScoreClick={openScore}
+        />
+      </>
+    );
+  })();
 
   return (
     <>
@@ -1284,61 +1402,8 @@ export default function SageCharts({
                     <p style={{ fontSize: 15.5, color: "rgba(0,0,0,0.4)", margin: 0 }}>Select one from the sidebar to see rankings, coverage, and feature scores</p>
                   </div>
                 </div>
-              ) : domain === "video" ? (
-                // ── Video Creation: same top-7 brands across every use case ───
-                Object.entries(visibleClusters).map(([tag, lbl]) => {
-                  // Same 7 brands every time; per-cluster appearances (0 = not in this cluster)
-                  const clusterBrands = videoTop7Names.map(brand => {
-                    const r = videoClusters.find(c => c.cluster_tag === tag && c.brand === brand);
-                    return { brand, avg_position: r?.avg_position ?? 999, appearances: r?.appearances ?? 0 };
-                  });
-                  // SOV for the top-7 brands only in this cluster
-                  const clusterSOV = videoTop7Names.flatMap(brand => {
-                    const r = videoSOV.find(s => s.cluster_tag === tag && s.brand === brand);
-                    return r ? [{ brand, total_appearances: r.total_appearances, sov_pct: r.sov_pct }] : [];
-                  });
-                  // Coverage over time — top-7 brands, summed across models
-                  const coverageMap = new Map<string, number>();
-                  videoDailySummary
-                    .filter(r => r.cluster_tag === tag && videoTop7Names.includes(r.brand))
-                    .forEach(r => {
-                      const key = `${r.date}::${r.brand}`;
-                      coverageMap.set(key, (coverageMap.get(key) ?? 0) + r.mention_count);
-                    });
-                  const clusterCoverage = [...coverageMap.entries()].map(([k, mention_count]) => {
-                    const sep = k.indexOf("::");
-                    return { date: k.slice(0, sep), brand: k.slice(sep + 2), mention_count };
-                  });
-                  const featureDefs = videoFeatureDefs.filter(f => f.feature_tag === tag);
-                  const scoreMap    = new Map<string, { score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null }>();
-                  videoFeatures
-                    .filter(f => f.feature_tag === tag && videoTop7Names.includes(f.brand_name))
-                    .forEach(f => {
-                      scoreMap.set(`${f.brand_name}::${f.feature_id}`, {
-                        score: f.score, score_band: f.score_band, evidence: f.evidence, terminology_tags: f.terminology_tags ?? null,
-                      });
-                    });
-                  const clusterSentiment = videoSentiment.filter(r => r.bucket_tag === tag);
-                  return (
-                    <SalesUseCaseCard
-                      key={tag}
-                      tag={tag}
-                      label={lbl}
-                      domain="video"
-                      clusterBrands={clusterBrands}
-                      coverage={clusterCoverage}
-                      sov={clusterSOV}
-                      featureDefs={featureDefs}
-                      scoreMap={scoreMap}
-                      sentimentRows={clusterSentiment}
-                      color={activeDomain!.color}
-                      bg={activeDomain!.bg}
-                      rgb={activeDomain!.rgb}
-                      onScoreClick={openScore}
-                    />
-                  );
-                })
-              ) : (domain === "sales" || domain === "marketing") ? (
+              ) : domain === "video" ? videoContent
+              : (domain === "sales" || domain === "marketing") ? (
                 // ── Sales + Marketing: rich cards with charts (or scores-only for cross-cutting) ──
                 Object.entries(visibleClusters).map(([tag, lbl]) => {
                   const isMkt   = domain === "marketing";

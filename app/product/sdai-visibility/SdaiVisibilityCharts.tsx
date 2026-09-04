@@ -122,7 +122,7 @@ const FEATURE_DESCRIPTIONS: Record<string, string> = {
 };
 
 // Per-brand, per-feature descriptions — shown under each score bar
-const BRAND_FEATURE_DESCRIPTIONS: Record<string, Record<string, string>> = {
+export const BRAND_FEATURE_DESCRIPTIONS: Record<string, Record<string, string>> = {
   recording_no_install: {
     "Descript":     "Descript records screen and webcam via its desktop app — no browser extension is required, but the desktop application does need to be installed. Recording stops and the transcript appears immediately, with the session landing directly on the project timeline ready for text-based editing. This makes it fast for a repeat user but adds friction for a first-time team member who has not yet installed the app. For teams that need a zero-install, browser-tab solution, Descript is not the right fit.",
     "HeyGen":       "HeyGen offers in-browser screen capture with a webcam overlay and no extension required, making it genuinely accessible to new team members without any IT setup. Recordings import automatically into the HeyGen editor for further production — avatar overlays, captions, and multi-language dubbing can all be applied to the captured footage. The browser-based capture is designed for presenter-style screen walkthroughs rather than long multi-track recording sessions. It is a strong fit for teams that want to go from browser tab to polished video without leaving the browser.",

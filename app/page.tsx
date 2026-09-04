@@ -722,11 +722,19 @@ export default function Home() {
           </div>
 
           {/* Testimonial */}
-          <div style={{ maxWidth: 560, margin: "20px auto 0", textAlign: "center" }}>
+          <div style={{
+            maxWidth: 560,
+            margin: "20px auto 0",
+            textAlign: "center",
+            background: "#fff",
+            border: "2px dotted #7C3AED",
+            borderRadius: 20,
+            padding: "28px 32px",
+          }}>
             <p style={{
-              fontSize: 19,
-              fontWeight: 700,
-              lineHeight: 1.55,
+              fontSize: 16,
+              fontWeight: 400,
+              lineHeight: 1.6,
               color: "#0F0B1E",
               letterSpacing: "-0.01em",
               margin: "0 0 18px",
@@ -734,13 +742,7 @@ export default function Home() {
               <span className="testimonial-quote">&ldquo;Helped us map dewwie&apos;s features against the category to identify opportunities for differentiation, and making more informed product decisions.&rdquo;</span>
             </p>
             <div style={{ width: 36, height: 3, background: "#5B5BD6", borderRadius: 2, margin: "0 auto 14px" }} />
-            <span style={{
-              fontSize: 11,
-              fontWeight: 600,
-              letterSpacing: "0.18em",
-              textTransform: "uppercase" as const,
-              color: "#888",
-            }}>
+            <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#888" }}>
               Founder, Dewwie
             </span>
           </div>
@@ -773,7 +775,7 @@ export default function Home() {
               {
                 n: "01", accent: "#7C3AED",
                 title: "We track what's shipping.",
-                desc: "We scan your competitors: what's launched, what's changed, what's new in your category, so you're not finding out from a lost deal.",
+                desc: "We scan your competitors: what's launched, what's changed in the market, what's new in your category, so you're not finding out from a lost deal.",
                 icon: (
                   <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
                     <circle cx="15" cy="15" r="3.5" fill="#7C3AED"/>
@@ -803,7 +805,7 @@ export default function Home() {
               {
                 n: "03", accent: "#C2186A",
                 title: "We tell you what to build next.",
-                desc: "A prioritized 3-month roadmap of what to build, plus a clear path to becoming LLM-visible in the use cases you want to own, so you compete where your buyers are already asking.",
+                desc: "A prioritised 3-month roadmap of what to build, plus a clear path to becoming LLM-visible in the use cases you want to own, so you compete where your buyers are already asking.",
                 icon: (
                   <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
                     <rect x="2" y="5" width="16" height="5" rx="2.5" fill="#C2186A"/>

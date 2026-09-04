@@ -154,25 +154,36 @@ export default function SiteFooter() {
         }
         /* Phone */
         @media (max-width: 560px) {
-          footer[id="contact"] { padding: 24px 12px 0 !important; }
+          footer[id="contact"] {
+            padding: 0 !important;
+            margin: 0 !important;
+            width: 100% !important;
+          }
           footer[id="contact"] > div {
-            padding: 36px 20px 0 !important;
-            border-radius: 18px 18px 0 0 !important;
+            padding: 32px 20px 0 !important;
+            border-radius: 0 !important;
+            border-left: none !important;
+            border-right: none !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
           }
           footer[id="contact"] > div > div > div:first-child h2 {
-            font-size: 36px !important;
+            font-size: 32px !important;
           }
           .footer-cols {
-            grid-template-columns: 1fr 1fr !important;
-            gap: 24px 16px !important;
-            padding-bottom: 28px !important;
+            grid-template-columns: 1fr !important;
+            gap: 28px 0 !important;
+            padding-bottom: 24px !important;
           }
-          .footer-brand { grid-column: 1 / -1 !important; margin-bottom: 4px !important; }
+          .footer-brand {
+            grid-column: 1 / -1 !important;
+            margin-bottom: 0 !important;
+          }
           .footer-bottom {
             flex-direction: column !important;
             align-items: flex-start !important;
             gap: 4px !important;
-            padding: 16px 0 24px !important;
+            padding: 16px 0 28px !important;
           }
         }
       `}</style>
