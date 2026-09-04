@@ -7,6 +7,7 @@ import {
 } from "recharts";
 import type { SOVRow, FeatureScoreRow, DexifyClusterRow } from "@/lib/brand-visibility/db";
 import type { UseCaseBucketBrandRow } from "@/lib/skincare-visibility/db";
+import SdaiVisibilityCharts from "@/app/product/sdai-visibility/SdaiVisibilityCharts";
 
 interface FeatureDef {
   feature_id:   string;
@@ -268,10 +269,13 @@ interface Props {
   salesSentiment:       SalesSentimentRow[];
   salesFeatureDefs:     FeatureDef[];
   videoClusters:        { cluster_tag: string; brand: string; avg_position: number; appearances: number }[];
-  videoFeatures:        { brand_name: string; feature_id: string; feature_tag: string; score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null }[];
+  videoFeatures:        { brand_name: string; feature_id: string; feature_tag: string; score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null; flagged_for_review?: boolean; has_capability?: string | null }[];
   videoSOV:             { cluster_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
   videoSentiment:       SalesSentimentRow[];
   videoFeatureDefs:     FeatureDef[];
+  videoDailySummary:    { date: string; brand: string; model: string; cluster_tag: string; mention_count: number; avg_position: number | null }[];
+  videoWeeklySummary:   { brand: string; model: string; mention_count: number; avg_position: number | null }[];
+  videoLLMVisibility:   { model: string; visibility_pct: number; total_responses: number }[];
   dexifyClusters:       DexifyClusterRow[];
   dexifyFeatures:       { brand_name: string; feature_id: string; feature_tag: string; score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null }[];
   dexifyFeatureDefs:    FeatureDef[];
@@ -898,6 +902,7 @@ export default function SageCharts({
   marketingClusters, marketingCoverage, marketingSOVAll, marketingSentiment,
   salesClusters, salesFeatures, salesCoverage, salesSOV, salesSentiment, salesFeatureDefs,
   videoClusters, videoFeatures, videoSOV, videoSentiment, videoFeatureDefs,
+  videoDailySummary, videoWeeklySummary, videoLLMVisibility,
   dexifyClusters, dexifyFeatures, dexifyFeatureDefs, dexifySentiment,
   skincareClusters,
 }: Props) {
@@ -956,13 +961,6 @@ export default function SageCharts({
         .slice(0, 12)
         .map((r, i) => ({ brand: r.brand, rank: i + 1 }));
     }
-    if (dom === "video") {
-      return videoClusters
-        .filter(r => r.cluster_tag === tag)
-        .sort((a, b) => a.avg_position - b.avg_position)
-        .slice(0, 12)
-        .map((r, i) => ({ brand: r.brand, rank: i + 1 }));
-    }
     if (dom === "dexify") {
       return dexifyClusters
         .filter(r => r.cluster_tag === tag)
@@ -985,14 +983,13 @@ export default function SageCharts({
   function getFeatureDefs(dom: DomainId, tag: string): FeatureDef[] {
     if (dom === "sales")     return salesFeatureDefs.filter(f => f.feature_tag === tag);
     if (dom === "marketing") return marketingFeatureDefs.filter(f => f.feature_tag === tag);
-    if (dom === "video")     return videoFeatureDefs.filter(f => f.feature_tag === tag);
     if (dom === "dexify")    return dexifyFeatureDefs.filter(f => f.feature_tag === tag);
     return [];
   }
 
   function getScoreMap(dom: DomainId, tag: string): Map<string, { score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null }> {
     const map = new Map<string, { score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null }>();
-    const rows = dom === "sales" ? salesFeatures : dom === "marketing" ? marketingFeatures : dom === "video" ? videoFeatures : dom === "dexify" ? dexifyFeatures : [];
+    const rows = dom === "sales" ? salesFeatures : dom === "marketing" ? marketingFeatures : dom === "dexify" ? dexifyFeatures : [];
     for (const r of rows) {
       if (r.feature_tag === tag) map.set(`${r.brand_name}::${r.feature_id}`, { score: r.score, score_band: r.score_band, evidence: r.evidence, terminology_tags: r.terminology_tags ?? null });
     }
@@ -1276,7 +1273,27 @@ export default function SageCharts({
 
             {/* Use case cards */}
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-              {!cluster ? (
+              {domain === "video" ? (
+                // ── Video Creation: full Superdegree report embedded ───────────
+                <SdaiVisibilityCharts
+                  dailySummary={videoDailySummary}
+                  weeklySummary={videoWeeklySummary}
+                  llmVisibility={videoLLMVisibility}
+                  sovData={videoSOV}
+                  clusterPositions={videoClusters}
+                  featureScores={videoFeatures.map(f => ({
+                    brand_name:       f.brand_name,
+                    feature_id:       f.feature_id,
+                    feature_tag:      f.feature_tag,
+                    score:            f.score,
+                    score_band:       f.score_band,
+                    evidence:         f.evidence,
+                    flagged_for_review: f.flagged_for_review ?? false,
+                    has_capability:   f.has_capability ?? null,
+                  }))}
+                  sentimentData={{ rows: videoSentiment, meta: { dual_model_dates: 0, earliest_date: null, latest_date: null } }}
+                />
+              ) : !cluster ? (
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: 320, gap: 12 }}>
                   <div style={{ width: 44, height: 44, borderRadius: 14, background: activeDomain?.bg, display: "flex", alignItems: "center", justifyContent: "center" }}>
                     <DomainIcon id={domain} />
@@ -1286,11 +1303,11 @@ export default function SageCharts({
                     <p style={{ fontSize: 15.5, color: "rgba(0,0,0,0.4)", margin: 0 }}>Select one from the sidebar to see rankings, coverage, and feature scores</p>
                   </div>
                 </div>
-              ) : (domain === "sales" || domain === "marketing" || domain === "video") ? (
-                // ── Sales + Marketing + Video: rich cards with charts (or scores-only for cross-cutting) ──
+              ) : (domain === "sales" || domain === "marketing") ? (
+                // ── Sales + Marketing: rich cards with charts (or scores-only for cross-cutting) ──
                 Object.entries(visibleClusters).map(([tag, lbl]) => {
                   const isMkt   = domain === "marketing";
-                  const isVideo = domain === "video";
+                  const isVideo = false; // video handled above
                   // Cross-cutting tags (technical / responsible-ai / cost) get a
                   // simplified scores-only card — no mention data exists for them.
                   if (isMkt && CROSS_CUTTING_TAGS.marketing?.has(tag)) {
@@ -1311,21 +1328,16 @@ export default function SageCharts({
                     );
                   }
 
-                  const clusterBrands: { brand: string; avg_position: number; appearances: number }[] = isVideo
-                    ? videoClusters.filter(r => r.cluster_tag === tag).sort((a, b) => a.avg_position - b.avg_position)
-                    : (isMkt ? marketingClusters : salesClusters).filter(r => r.bucket_tag === tag).sort((a, b) => b.appearances - a.appearances);
-                  const clusterCoverage: { date: string; bucket_tag: string; brand: string; mention_count: number }[] = isVideo
-                    ? [] // no per-cluster daily coverage for video yet
-                    : (isMkt ? marketingCoverage : salesCoverage).filter(r => r.bucket_tag === tag);
-                  const clusterSOV: { brand: string; total_appearances: number; sov_pct: number }[] = isVideo
-                    ? videoSOV.filter(r => r.cluster_tag === tag).sort((a, b) => b.sov_pct - a.sov_pct)
-                    : (isMkt ? marketingSOVAll : salesSOV).filter(r => r.bucket_tag === tag).sort((a, b) => b.sov_pct - a.sov_pct);
-                  const clusterSentiment: SalesSentimentRow[] = isVideo
-                    ? videoSentiment.filter(r => r.bucket_tag === tag)
-                    : (isMkt ? marketingSentiment : salesSentiment).filter(r => r.bucket_tag === tag);
-                  const featureDefs: FeatureDef[] = isVideo
-                    ? videoFeatureDefs.filter(f => f.feature_tag === tag)
-                    : (isMkt ? marketingFeatureDefs : salesFeatureDefs).filter(f => f.feature_tag === tag);
+                  const clusterBrands = (isMkt ? marketingClusters : salesClusters)
+                    .filter(r => r.bucket_tag === tag).sort((a, b) => b.appearances - a.appearances);
+                  const clusterCoverage = (isMkt ? marketingCoverage : salesCoverage)
+                    .filter(r => r.bucket_tag === tag);
+                  const clusterSOV = (isMkt ? marketingSOVAll : salesSOV)
+                    .filter(r => r.bucket_tag === tag).sort((a, b) => b.sov_pct - a.sov_pct);
+                  const clusterSentiment = (isMkt ? marketingSentiment : salesSentiment)
+                    .filter(r => r.bucket_tag === tag);
+                  const featureDefs = (isMkt ? marketingFeatureDefs : salesFeatureDefs)
+                    .filter(f => f.feature_tag === tag);
 
                   const scoreMap = getScoreMap(domain, tag);
                   return (
