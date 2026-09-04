@@ -25,13 +25,14 @@ interface DomainConfig {
 }
 
 const DOMAINS: DomainConfig[] = [
-  { id: "marketing", label: "Marketing AI", color: "#7C3AED", bg: "rgba(124,58,237,0.09)",  rgb: "124,58,237"              },
-  { id: "sales",     label: "Sales AI",     color: "#2563EB", bg: "rgba(37,99,235,0.09)",   rgb: "37,99,235",  locked: true },
-  { id: "dexify",    label: "Tradie AI",    color: "#EA580C", bg: "rgba(234,88,12,0.09)",   rgb: "234,88,12",  locked: true },
-  { id: "skincare",  label: "Skincare AI",  color: "#BE185D", bg: "rgba(190,24,93,0.09)",   rgb: "190,24,93",  locked: true },
+  { id: "marketing", label: "Marketing AI",       color: "#7C3AED", bg: "rgba(124,58,237,0.09)",  rgb: "124,58,237"              },
+  { id: "sales",     label: "Sales AI",            color: "#2563EB", bg: "rgba(37,99,235,0.09)",   rgb: "37,99,235"               },
+  { id: "video",     label: "AI Video Creation",   color: "#C2186A", bg: "rgba(194,24,106,0.09)",  rgb: "194,24,106"              },
+  { id: "dexify",    label: "Tradie AI",           color: "#EA580C", bg: "rgba(234,88,12,0.09)",   rgb: "234,88,12",  locked: true },
+  { id: "skincare",  label: "Skincare AI",         color: "#BE185D", bg: "rgba(190,24,93,0.09)",   rgb: "190,24,93",  locked: true },
 ];
 
-type DomainId = "sales" | "marketing" | "dexify" | "skincare";
+type DomainId = "sales" | "marketing" | "video" | "dexify" | "skincare";
 
 const CLUSTERS: Record<DomainId, Record<string, string>> = {
   sales: {
@@ -40,6 +41,18 @@ const CLUSTERS: Record<DomainId, Record<string, string>> = {
     "sales-pipeline":   "Pipeline Management",
     "sales-outreach":   "Outreach & Sequencing",
     "sales-enablement": "Sales Enablement",
+  },
+  video: {
+    "sdai-recording":    "Screen Recording",
+    "sdai-production":   "AI Production",
+    "sdai-voice":        "AI Voice & Audio",
+    "sdai-captions":     "Captions & Subtitles",
+    "sdai-translation":  "Translation & Localisation",
+    "sdai-branding":     "Brand & Customisation",
+    "sdai-agents":       "AI Agents",
+    "sdai-distribution": "Distribution",
+    "sdai-collab":       "Collaboration",
+    "sdai-editor":       "Video Editor",
   },
   marketing: {
     "ads":            "Ads Management",
@@ -153,9 +166,21 @@ function SkincareIcon() {
     </svg>
   );
 }
+function VideoIcon() {
+  // Play button inside a film-strip / camera shape
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <rect x="1" y="3.5" width="10" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.4"/>
+      <path d="M11 6.5l4-2.5v7.5l-4-2.5V6.5Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
+      <path d="M5 8l-1.5-1v2L5 8Z" fill="currentColor" opacity="0.7"/>
+      <path d="M4.5 8l2.5-1.5v3L4.5 8Z" fill="currentColor" opacity="0.75"/>
+    </svg>
+  );
+}
 function DomainIcon({ id }: { id: string }) {
   if (id === "sales")     return <SalesIcon />;
   if (id === "marketing") return <MarketingIcon />;
+  if (id === "video")     return <VideoIcon />;
   if (id === "dexify")    return <TradieIcon />;
   return <SkincareIcon />;
 }
@@ -242,6 +267,11 @@ interface Props {
   salesSOV:             { bucket_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
   salesSentiment:       SalesSentimentRow[];
   salesFeatureDefs:     FeatureDef[];
+  videoClusters:        { cluster_tag: string; brand: string; avg_position: number; appearances: number }[];
+  videoFeatures:        { brand_name: string; feature_id: string; feature_tag: string; score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null }[];
+  videoSOV:             { cluster_tag: string; brand: string; total_appearances: number; sov_pct: number }[];
+  videoSentiment:       SalesSentimentRow[];
+  videoFeatureDefs:     FeatureDef[];
   dexifyClusters:       DexifyClusterRow[];
   dexifyFeatures:       { brand_name: string; feature_id: string; feature_tag: string; score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null }[];
   dexifyFeatureDefs:    FeatureDef[];
@@ -867,6 +897,7 @@ export default function SageCharts({
   marketingSOV, marketingFeatures, marketingFeatureDefs,
   marketingClusters, marketingCoverage, marketingSOVAll, marketingSentiment,
   salesClusters, salesFeatures, salesCoverage, salesSOV, salesSentiment, salesFeatureDefs,
+  videoClusters, videoFeatures, videoSOV, videoSentiment, videoFeatureDefs,
   dexifyClusters, dexifyFeatures, dexifyFeatureDefs, dexifySentiment,
   skincareClusters,
 }: Props) {
@@ -925,6 +956,13 @@ export default function SageCharts({
         .slice(0, 12)
         .map((r, i) => ({ brand: r.brand, rank: i + 1 }));
     }
+    if (dom === "video") {
+      return videoClusters
+        .filter(r => r.cluster_tag === tag)
+        .sort((a, b) => a.avg_position - b.avg_position)
+        .slice(0, 12)
+        .map((r, i) => ({ brand: r.brand, rank: i + 1 }));
+    }
     if (dom === "dexify") {
       return dexifyClusters
         .filter(r => r.cluster_tag === tag)
@@ -947,13 +985,14 @@ export default function SageCharts({
   function getFeatureDefs(dom: DomainId, tag: string): FeatureDef[] {
     if (dom === "sales")     return salesFeatureDefs.filter(f => f.feature_tag === tag);
     if (dom === "marketing") return marketingFeatureDefs.filter(f => f.feature_tag === tag);
+    if (dom === "video")     return videoFeatureDefs.filter(f => f.feature_tag === tag);
     if (dom === "dexify")    return dexifyFeatureDefs.filter(f => f.feature_tag === tag);
     return [];
   }
 
   function getScoreMap(dom: DomainId, tag: string): Map<string, { score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null }> {
     const map = new Map<string, { score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null }>();
-    const rows = dom === "sales" ? salesFeatures : dom === "marketing" ? marketingFeatures : dom === "dexify" ? dexifyFeatures : [];
+    const rows = dom === "sales" ? salesFeatures : dom === "marketing" ? marketingFeatures : dom === "video" ? videoFeatures : dom === "dexify" ? dexifyFeatures : [];
     for (const r of rows) {
       if (r.feature_tag === tag) map.set(`${r.brand_name}::${r.feature_id}`, { score: r.score, score_band: r.score_band, evidence: r.evidence, terminology_tags: r.terminology_tags ?? null });
     }
@@ -1247,10 +1286,11 @@ export default function SageCharts({
                     <p style={{ fontSize: 15.5, color: "rgba(0,0,0,0.4)", margin: 0 }}>Select one from the sidebar to see rankings, coverage, and feature scores</p>
                   </div>
                 </div>
-              ) : (domain === "sales" || domain === "marketing") ? (
-                // ── Sales + Marketing: rich cards with charts (or scores-only for cross-cutting) ──
+              ) : (domain === "sales" || domain === "marketing" || domain === "video") ? (
+                // ── Sales + Marketing + Video: rich cards with charts (or scores-only for cross-cutting) ──
                 Object.entries(visibleClusters).map(([tag, lbl]) => {
-                  const isMkt = domain === "marketing";
+                  const isMkt   = domain === "marketing";
+                  const isVideo = domain === "video";
                   // Cross-cutting tags (technical / responsible-ai / cost) get a
                   // simplified scores-only card — no mention data exists for them.
                   if (isMkt && CROSS_CUTTING_TAGS.marketing?.has(tag)) {
@@ -1271,14 +1311,23 @@ export default function SageCharts({
                     );
                   }
 
-                  const clusterBrands = (isMkt ? marketingClusters : salesClusters)
-                    .filter(r => r.bucket_tag === tag)
-                    .sort((a, b) => b.appearances - a.appearances); // most mentions first
-                  const clusterCoverage = (isMkt ? marketingCoverage : salesCoverage).filter(r => r.bucket_tag === tag);
-                  const clusterSOV      = (isMkt ? marketingSOVAll : salesSOV).filter(r => r.bucket_tag === tag).sort((a, b) => b.sov_pct - a.sov_pct);
-                  const clusterSentiment = (isMkt ? marketingSentiment : salesSentiment).filter(r => r.bucket_tag === tag);
-                  const featureDefs     = (isMkt ? marketingFeatureDefs : salesFeatureDefs).filter(f => f.feature_tag === tag);
-                  const scoreMap        = getScoreMap(domain, tag);
+                  const clusterBrands: { brand: string; avg_position: number; appearances: number }[] = isVideo
+                    ? videoClusters.filter(r => r.cluster_tag === tag).sort((a, b) => a.avg_position - b.avg_position)
+                    : (isMkt ? marketingClusters : salesClusters).filter(r => r.bucket_tag === tag).sort((a, b) => b.appearances - a.appearances);
+                  const clusterCoverage: { date: string; bucket_tag: string; brand: string; mention_count: number }[] = isVideo
+                    ? [] // no per-cluster daily coverage for video yet
+                    : (isMkt ? marketingCoverage : salesCoverage).filter(r => r.bucket_tag === tag);
+                  const clusterSOV: { brand: string; total_appearances: number; sov_pct: number }[] = isVideo
+                    ? videoSOV.filter(r => r.cluster_tag === tag).sort((a, b) => b.sov_pct - a.sov_pct)
+                    : (isMkt ? marketingSOVAll : salesSOV).filter(r => r.bucket_tag === tag).sort((a, b) => b.sov_pct - a.sov_pct);
+                  const clusterSentiment: SalesSentimentRow[] = isVideo
+                    ? videoSentiment.filter(r => r.bucket_tag === tag)
+                    : (isMkt ? marketingSentiment : salesSentiment).filter(r => r.bucket_tag === tag);
+                  const featureDefs: FeatureDef[] = isVideo
+                    ? videoFeatureDefs.filter(f => f.feature_tag === tag)
+                    : (isMkt ? marketingFeatureDefs : salesFeatureDefs).filter(f => f.feature_tag === tag);
+
+                  const scoreMap = getScoreMap(domain, tag);
                   return (
                     <SalesUseCaseCard
                       key={tag}
