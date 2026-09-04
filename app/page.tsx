@@ -315,7 +315,7 @@ function DomainRequestModal({ onClose }: { onClose: () => void }) {
 }
 
 export default function Home() {
-  const [faqOpen, setFaqOpen] = useState<number | null>(null);
+  const [faqOpen, setFaqOpen] = useState<Set<number>>(new Set());
   const [mobileOpen, setMobileOpen] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
@@ -1152,7 +1152,7 @@ export default function Home() {
             ] as { q: string; a: string; hasRequest?: boolean }[]).map(({ q, a, hasRequest }, i) => (
               <div key={i} style={{ borderTop: i === 0 ? "1px solid rgba(124,58,237,0.15)" : undefined, borderBottom: "1px solid rgba(124,58,237,0.15)" }}>
                 <button
-                  onClick={() => setFaqOpen(faqOpen === i ? null : i)}
+                  onClick={() => setFaqOpen(prev => { const next = new Set(prev); next.has(i) ? next.delete(i) : next.add(i); return next; })}
                   style={{
                     width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
                     gap: 16, padding: "22px 0", background: "none", border: "none", cursor: "pointer",
@@ -1162,15 +1162,15 @@ export default function Home() {
                   <span style={{ fontSize: 17, fontWeight: 700, color: "#0F0B1E", letterSpacing: "-0.01em", lineHeight: 1.3 }}>{q}</span>
                   <svg
                     width="20" height="20" viewBox="0 0 20 20" fill="none"
-                    style={{ flexShrink: 0, transform: faqOpen === i ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.25s ease", color: "#7C3AED" }}
+                    style={{ flexShrink: 0, transform: faqOpen.has(i) ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.25s ease", color: "#7C3AED" }}
                   >
                     <path d="M5 7.5l5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
                 </button>
                 <div style={{
                   overflow: "hidden",
-                  maxHeight: faqOpen === i ? 800 : 0,
-                  opacity: faqOpen === i ? 1 : 0,
+                  maxHeight: faqOpen.has(i) ? 800 : 0,
+                  opacity: faqOpen.has(i) ? 1 : 0,
                   transition: "max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease",
                 }}>
                   <p style={{ fontSize: 15.5, lineHeight: 1.75, color: "#000", margin: "0 0 16px" }}>{a}</p>
