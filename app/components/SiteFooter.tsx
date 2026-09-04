@@ -30,7 +30,7 @@ export default function SiteFooter() {
     >
       {/* Rounded card — light lavender, extends flush to bottom */}
       <div style={{
-        background: "linear-gradient(135deg, #D8CAFE 0%, #FBC8D4 100%)",
+        background: "linear-gradient(135deg, #E2CEFF 0%, #FFD8EA 100%)",
         borderRadius: "28px 28px 0 0",
         border: "1px solid #C2186A",
         borderBottom: "none",
