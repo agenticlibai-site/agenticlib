@@ -1004,6 +1004,19 @@ export default function SageCharts({
     ? Object.fromEntries(Object.entries(activeClusters).filter(([tag]) => tag === cluster))
     : activeClusters;
 
+  // Global top-7 brands for the video domain — same brands shown across every
+  // use-case cluster, matching the brands tracked in the Superdegree report.
+  const videoTop7Names = (() => {
+    const totalByBrand = new Map<string, number>();
+    videoClusters.forEach(r => {
+      totalByBrand.set(r.brand, (totalByBrand.get(r.brand) ?? 0) + r.appearances);
+    });
+    return [...totalByBrand.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 7)
+      .map(([brand]) => brand);
+  })();
+
   return (
     <>
     <div style={{ display: "flex", height: "100vh", marginTop: "-68px", overflow: "hidden", fontFamily: "var(--font-geist-sans), system-ui, sans-serif" }}>
@@ -1281,33 +1294,39 @@ export default function SageCharts({
                   </div>
                 </div>
               ) : domain === "video" ? (
-                // ── Video Creation: top-7 brands per cluster, clickable feature scores ──
+                // ── Video Creation: same top-7 brands across every use case ───
                 Object.entries(visibleClusters).map(([tag, lbl]) => {
-                  const clusterBrands = videoClusters
-                    .filter(r => r.cluster_tag === tag)
-                    .sort((a, b) => b.appearances - a.appearances)
-                    .slice(0, 7)
-                    .map(r => ({ brand: r.brand, avg_position: r.avg_position, appearances: r.appearances }));
-                  const clusterSOV = videoSOV
-                    .filter(r => r.cluster_tag === tag)
-                    .sort((a, b) => b.sov_pct - a.sov_pct)
-                    .map(r => ({ brand: r.brand, total_appearances: r.total_appearances, sov_pct: r.sov_pct }));
-                  const coverageMap = new Map<string, number>();
-                  videoDailySummary.filter(r => r.cluster_tag === tag).forEach(r => {
-                    const key = `${r.date}::${r.brand}`;
-                    coverageMap.set(key, (coverageMap.get(key) ?? 0) + r.mention_count);
+                  // Same 7 brands every time; per-cluster appearances (0 = not in this cluster)
+                  const clusterBrands = videoTop7Names.map(brand => {
+                    const r = videoClusters.find(c => c.cluster_tag === tag && c.brand === brand);
+                    return { brand, avg_position: r?.avg_position ?? 999, appearances: r?.appearances ?? 0 };
                   });
+                  // SOV for the top-7 brands only in this cluster
+                  const clusterSOV = videoTop7Names.flatMap(brand => {
+                    const r = videoSOV.find(s => s.cluster_tag === tag && s.brand === brand);
+                    return r ? [{ brand, total_appearances: r.total_appearances, sov_pct: r.sov_pct }] : [];
+                  });
+                  // Coverage over time — top-7 brands, summed across models
+                  const coverageMap = new Map<string, number>();
+                  videoDailySummary
+                    .filter(r => r.cluster_tag === tag && videoTop7Names.includes(r.brand))
+                    .forEach(r => {
+                      const key = `${r.date}::${r.brand}`;
+                      coverageMap.set(key, (coverageMap.get(key) ?? 0) + r.mention_count);
+                    });
                   const clusterCoverage = [...coverageMap.entries()].map(([k, mention_count]) => {
                     const sep = k.indexOf("::");
                     return { date: k.slice(0, sep), brand: k.slice(sep + 2), mention_count };
                   });
                   const featureDefs = videoFeatureDefs.filter(f => f.feature_tag === tag);
                   const scoreMap    = new Map<string, { score: number | null; score_band: string; evidence: string | null; terminology_tags: string[] | null }>();
-                  videoFeatures.filter(f => f.feature_tag === tag).forEach(f => {
-                    scoreMap.set(`${f.brand_name}::${f.feature_id}`, {
-                      score: f.score, score_band: f.score_band, evidence: f.evidence, terminology_tags: f.terminology_tags ?? null,
+                  videoFeatures
+                    .filter(f => f.feature_tag === tag && videoTop7Names.includes(f.brand_name))
+                    .forEach(f => {
+                      scoreMap.set(`${f.brand_name}::${f.feature_id}`, {
+                        score: f.score, score_band: f.score_band, evidence: f.evidence, terminology_tags: f.terminology_tags ?? null,
+                      });
                     });
-                  });
                   const clusterSentiment = videoSentiment.filter(r => r.bucket_tag === tag);
                   return (
                     <SalesUseCaseCard
