@@ -398,18 +398,19 @@ export default function Home() {
         }
 
         @media (max-width: 900px) {
-          .hero-content { padding: 90px 24px 0 !important; max-width: 100% !important; }
-          .hero-snap-wrap { margin-top: 36px !important; border-radius: 10px !important; }
+          .hero-content { padding: 90px 24px 0 !important; max-width: 100% !important; flex-direction: column !important; align-items: flex-start !important; }
+          .hero-content > div:first-child { width: 100% !important; }
+          .hero-snap-wrap { margin-top: 36px !important; border-radius: 10px !important; width: 100% !important; }
         }
         @media (max-width: 640px) {
           /* Hero */
           .hero-card-wrapper { margin: 0 0 16px !important; }
-          .hero-content { padding: 72px 20px 0 !important; }
+          .hero-content { padding: 72px 20px 0 !important; flex-direction: column !important; }
           .hero-tagline-text { font-size: 15px !important; }
           .hero-subhead { margin-top: 14px !important; font-size: 15px !important; max-width: 100% !important; }
 
           /* Product snap — show on mobile, tight margins */
-          .hero-snap-wrap { margin-top: 28px !important; border-radius: 8px !important; }
+          .hero-snap-wrap { margin-top: 28px !important; border-radius: 8px !important; width: 100% !important; }
 
           /* Trusted By spacing */
           .trusted-by-section { padding: 40px 16px 44px !important; }
@@ -490,23 +491,23 @@ export default function Home() {
             <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(60px) saturate(112%)", WebkitBackdropFilter: "blur(60px) saturate(112%)", background: "rgba(255,255,255,0.34)" }} />
           </div>
 
-          {/* Stacked hero — text centred, snap below */}
+          {/* Side-by-side hero */}
           <div
             className="hero-content relative"
             style={{
               zIndex: 2, position: "relative",
-              maxWidth: 900, margin: "0 auto",
-              padding: "120px 48px 0",
+              maxWidth: 1400, margin: "0 auto",
+              padding: "120px 48px 0 120px",
               display: "flex",
-              flexDirection: "column",
+              flexDirection: "row",
               alignItems: "center",
-              textAlign: "center",
+              gap: 40,
             }}
           >
-            {/* TOP — text + CTA */}
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            {/* LEFT — text + CTA */}
+            <div style={{ flex: "0 0 auto", width: "42%", display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
               <h1
-                className="text-[36px] sm:text-[42px] md:text-[48px] lg:text-[56px]"
+                className="text-[32px] sm:text-[38px] md:text-[44px] lg:text-[52px]"
                 style={{ color: "#000000", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.08, margin: 0 }}
               >
                 Comparison intelligence for{" "}
@@ -514,8 +515,8 @@ export default function Home() {
                   AI Agent Builders
                 </span>
               </h1>
-              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 24, fontWeight: 600, fontSize: 18, textAlign: "center", maxWidth: 700 }}>
-                Get an edge on your product feature growth, know your competitive landscape and scale in LLM visibility to show up where your buyers are asking.
+              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 24, fontWeight: 600, fontSize: 17, textAlign: "left", maxWidth: 480 }}>
+                See what competitors are shipping, what buyers actually care about, and where the market is heading to get an edge on your product feature growth.
               </p>
               <div style={{ marginTop: 32, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                 <button
@@ -529,7 +530,6 @@ export default function Home() {
                 <button
                   onClick={() => {
                     setDemoOpen(true);
-                    // Fire-and-forget — notify on every demo view
                     fetch("/api/demo-view", { method: "POST" }).catch(() => {});
                     setTimeout(() => {
                       const video = demoVideoRef.current;
@@ -548,12 +548,12 @@ export default function Home() {
               </div>
             </div>
 
-            {/* BELOW — product snapshot */}
+            {/* RIGHT — product snapshot */}
             <div
               className="hero-snap-wrap"
               style={{
-                width: "100%",
-                marginTop: 52,
+                flex: 1,
+                minWidth: 0,
                 aspectRatio: "1060 / 815",
                 borderRadius: 14,
                 overflow: "hidden",
