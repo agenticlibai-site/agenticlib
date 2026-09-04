@@ -75,7 +75,7 @@ const getSageData = unstable_cache(
       getSdaiFeatureScores().catch(() => []),
       getSdaiSOVData().catch(() => []),
       getSdaiSentimentData().catch(() => ({ rows: [], meta: { dual_model_dates: 0, earliest_date: null, latest_date: null } })),
-      getSdaiDailySummary(7).catch(() => []),
+      getSdaiDailySummary(90).catch(() => []),
     ]);
     // Normalise SDAI feature scores to match the shared feature score shape
     const videoFeatures = videoFeaturesRaw.map(f => ({
