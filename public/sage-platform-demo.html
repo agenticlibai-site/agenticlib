@@ -485,17 +485,17 @@ body {
             </svg>
           </div>
           <div class="domain-dropdown" id="domain-dropdown">
-            <div class="domain-option selected" onclick="selectDomain(this, 'AI Agent Builder · Marketing')">
+            <div class="domain-option selected" onclick="selectDomain(this,'marketing')">
               <span class="domain-option-dot"></span>AI Agent Builder · Marketing
             </div>
-            <div class="domain-option" onclick="selectDomain(this, 'AI Agent Builder · Sales')">
+            <div class="domain-option" onclick="selectDomain(this,'sales')">
               <span class="domain-option-dot"></span>AI Agent Builder · Sales
             </div>
-            <div class="domain-option" onclick="selectDomain(this, 'AI Agent Builder · Skincare & Beauty')">
-              <span class="domain-option-dot"></span>AI Agent Builder · Skincare &amp; Beauty
+            <div class="domain-option" onclick="selectDomain(this,'video')">
+              <span class="domain-option-dot"></span>AI Video Creation
             </div>
-            <div class="domain-option" onclick="selectDomain(this, 'AI Agent Builder · E-commerce')">
-              <span class="domain-option-dot"></span>AI Agent Builder · E-commerce
+            <div class="domain-option" onclick="selectDomain(this,'skincare')">
+              <span class="domain-option-dot"></span>AI Agent Builder · Skincare &amp; Beauty
             </div>
           </div>
         </div>
@@ -517,7 +517,7 @@ body {
            ═══════════════════════════════════════ -->
       <div class="tab-panel" id="panel-overview">
 
-        <div class="stat-grid">
+        <div class="stat-grid" id="stat-grid-ov">
           <div class="card stat-card">
             <div class="stat-label">Total Brand Mentions</div>
             <div class="stat-value">1,847</div>
@@ -563,7 +563,7 @@ body {
               <path d="M20,110 C70,108 90,106 100,105 C140,107 160,110 180,110 C220,107 240,102 260,100 C300,103 320,106 340,105 C380,109 400,111 420,110 C460,107 480,101 500,100" stroke="#DC2626" stroke-width="1.5" stroke-linecap="round"/>
               <circle cx="340" cy="25" r="3.5" fill="#C2186A" stroke="white" stroke-width="1.5"/>
             </svg>
-            <div class="chart-legend">
+            <div class="chart-legend" id="chart-legend-ov">
               <div class="legend-item"><div class="legend-dot" style="background:#C2186A"></div>Drift</div>
               <div class="legend-item"><div class="legend-dot" style="background:#7C3AED"></div>Copy.ai</div>
               <div class="legend-item"><div class="legend-dot" style="background:#2563EB"></div>Conversica</div>
@@ -572,7 +572,7 @@ body {
             </div>
           </div>
           <div class="right-panels">
-            <div class="card llm-panel">
+            <div class="card llm-panel" id="llm-vis-panel">
               <div class="llm-label">LLM Visibility · 7 Days</div>
               <div class="llm-row"><div class="llm-dot" style="background:#C2186A"></div><span class="llm-name">Drift</span><span class="llm-val" style="color:#C2186A">312</span></div>
               <div class="llm-bar-bg"><div class="llm-bar-fill" style="width:100%;background:#C2186A"></div></div>
@@ -585,7 +585,7 @@ body {
               <div class="llm-row"><div class="llm-dot" style="background:#DC2626"></div><span class="llm-name">Albert</span><span class="llm-val" style="color:#DC2626">88</span></div>
               <div class="llm-bar-bg"><div class="llm-bar-fill" style="width:28%;background:#DC2626"></div></div>
             </div>
-            <div class="card llm-panel">
+            <div class="card llm-panel" id="avg-pos-panel">
               <div class="llm-label">Avg Brand Position · 7 Days <span style="font-weight:400;text-transform:none;letter-spacing:0">(lower = better)</span></div>
               <div class="llm-row"><div class="llm-dot" style="background:#C2186A"></div><span class="llm-name">Drift</span><span class="llm-val" style="color:#059669">1.8</span></div>
               <div class="llm-row"><div class="llm-dot" style="background:#7C3AED"></div><span class="llm-name">Copy.ai</span><span class="llm-val">2.4</span></div>
@@ -597,9 +597,9 @@ body {
         </div>
 
         <!-- Use Case SoV (overview preview) -->
-        <div class="section-title">Use Case Share of Voice</div>
-        <div class="section-sub">Which brand dominates AI recommendations within each marketing use case cluster</div>
-        <div class="sov-grid">
+        <div class="section-title" id="sov-section-title">Use Case Share of Voice</div>
+        <div class="section-sub" id="sov-section-sub">Which brand dominates AI recommendations within each marketing use case cluster</div>
+        <div class="sov-grid" id="sov-grid-ov">
           <div class="card sov-card">
             <div class="donut-wrap" style="background:conic-gradient(#DC2626 0% 35%, #C2186A 35% 65%, #2563EB 65% 83%, #7C3AED 83% 95%, #059669 95% 100%)"></div>
             <div>
@@ -1442,6 +1442,166 @@ body {
 </div><!-- /browser-wrap -->
 
 <script>
+// ── Domain Data ──────────────────────────────────────────────────────────────
+const DOMAINS = {
+  marketing: {
+    label: 'AI Agent Builder · Marketing',
+    stats: [
+      { label: 'Total Brand Mentions', value: '1,847', sub: '↑ 12% vs prior week', subClass: '' },
+      { label: 'Avg Position Overall', value: '2.4',   sub: '1 = first mentioned',  subClass: 'neutral' },
+      { label: 'Use Case Clusters Tracked', value: '4', sub: '22 brands · 6 LLMs', subClass: 'neutral' },
+    ],
+    brands: [
+      { name: 'Drift',      color: '#C2186A', vis: 312, visW: 100, pos: '1.8' },
+      { name: 'Copy.ai',    color: '#7C3AED', vis: 218, visW: 70,  pos: '2.4' },
+      { name: 'Conversica', color: '#2563EB', vis: 174, visW: 56,  pos: '2.9' },
+      { name: 'Writesonic', color: '#059669', vis: 101, visW: 32,  pos: '3.5' },
+      { name: 'Albert',     color: '#DC2626', vis: 88,  visW: 28,  pos: '4.1' },
+    ],
+    sovTitle: 'Use Case Share of Voice',
+    sovSub:   'Which brand dominates AI recommendations within each marketing use case cluster',
+    sov: [
+      { title: 'Ads & Paid Campaigns',  donut: '#DC2626 0% 35%, #C2186A 35% 65%, #2563EB 65% 83%, #7C3AED 83% 95%, #059669 95% 100%',
+        rows: [['#DC2626','Albert','35%'],['#C2186A','Drift','30%'],['#2563EB','Conversica','18%'],['#7C3AED','Copy.ai','12%']] },
+      { title: 'Content & Brand Voice', donut: '#7C3AED 0% 35%, #059669 35% 63%, #C2186A 63% 85%, #2563EB 85% 95%, #DC2626 95% 100%',
+        rows: [['#7C3AED','Copy.ai','35%'],['#059669','Writesonic','28%'],['#C2186A','Drift','22%'],['#2563EB','Conversica','10%']] },
+      { title: 'Lead-Gen & Funnel',     donut: '#C2186A 0% 35%, #2563EB 35% 65%, #7C3AED 65% 83%, #059669 83% 93%, #DC2626 93% 100%',
+        rows: [['#C2186A','Drift','35%'],['#2563EB','Conversica','30%'],['#7C3AED','Copy.ai','18%'],['#059669','Writesonic','10%']] },
+      { title: 'Lifecycle & Retention', donut: '#C2186A 0% 32%, #2563EB 32% 60%, #DC2626 60% 80%, #7C3AED 80% 92%, #059669 92% 100%',
+        rows: [['#C2186A','Drift','32%'],['#2563EB','Conversica','28%'],['#DC2626','Albert','20%'],['#7C3AED','Copy.ai','12%']] },
+    ],
+  },
+  sales: {
+    label: 'AI Agent Builder · Sales',
+    stats: [
+      { label: 'Total Brand Mentions', value: '2,134', sub: '↑ 18% vs prior week', subClass: '' },
+      { label: 'Avg Position Overall', value: '2.1',   sub: '1 = first mentioned',  subClass: 'neutral' },
+      { label: 'Use Case Clusters Tracked', value: '4', sub: '18 brands · 6 LLMs', subClass: 'neutral' },
+    ],
+    brands: [
+      { name: 'Outreach',   color: '#C2186A', vis: 384, visW: 100, pos: '1.6' },
+      { name: 'Salesloft',  color: '#7C3AED', vis: 271, visW: 71,  pos: '2.2' },
+      { name: 'Apollo.io',  color: '#2563EB', vis: 198, visW: 52,  pos: '2.8' },
+      { name: 'Gong',       color: '#059669', vis: 143, visW: 37,  pos: '3.4' },
+      { name: 'Clari',      color: '#DC2626', vis: 96,  visW: 25,  pos: '4.0' },
+    ],
+    sovTitle: 'Use Case Share of Voice',
+    sovSub:   'Which brand dominates AI recommendations within each sales AI agent use case cluster',
+    sov: [
+      { title: 'Outreach & Prospecting', donut: '#C2186A 0% 40%, #2563EB 40% 68%, #7C3AED 68% 86%, #059669 86% 95%, #DC2626 95% 100%',
+        rows: [['#C2186A','Outreach','40%'],['#2563EB','Apollo.io','28%'],['#7C3AED','Salesloft','18%'],['#059669','Gong','9%']] },
+      { title: 'Deal Management',        donut: '#7C3AED 0% 38%, #C2186A 38% 68%, #DC2626 68% 86%, #059669 86% 96%, #2563EB 96% 100%',
+        rows: [['#7C3AED','Salesloft','38%'],['#C2186A','Outreach','30%'],['#DC2626','Clari','18%'],['#059669','Gong','10%']] },
+      { title: 'Revenue Forecasting',    donut: '#DC2626 0% 42%, #059669 42% 74%, #7C3AED 74% 90%, #C2186A 90% 97%, #2563EB 97% 100%',
+        rows: [['#DC2626','Clari','42%'],['#059669','Gong','32%'],['#7C3AED','Salesloft','16%'],['#C2186A','Outreach','7%']] },
+      { title: 'Conversation Intelligence', donut: '#059669 0% 52%, #2563EB 52% 77%, #7C3AED 77% 91%, #DC2626 91% 98%, #C2186A 98% 100%',
+        rows: [['#059669','Gong','52%'],['#2563EB','Apollo.io','25%'],['#7C3AED','Salesloft','14%'],['#DC2626','Clari','7%']] },
+    ],
+  },
+  video: {
+    label: 'AI Video Creation',
+    stats: [
+      { label: 'Total Brand Mentions', value: '1,623', sub: '↑ 9% vs prior week', subClass: '' },
+      { label: 'Avg Position Overall', value: '2.6',   sub: '1 = first mentioned',  subClass: 'neutral' },
+      { label: 'Use Case Clusters Tracked', value: '4', sub: '5 brands · 2 LLMs', subClass: 'neutral' },
+    ],
+    brands: [
+      { name: 'Synthesia',     color: '#C2186A', vis: 412, visW: 100, pos: '1.4' },
+      { name: 'HeyGen',        color: '#7C3AED', vis: 334, visW: 81,  pos: '2.0' },
+      { name: 'Descript',      color: '#2563EB', vis: 218, visW: 53,  pos: '2.9' },
+      { name: 'Opus Clip',     color: '#059669', vis: 156, visW: 38,  pos: '3.6' },
+      { name: 'Renderforest',  color: '#DC2626', vis: 89,  visW: 22,  pos: '4.3' },
+    ],
+    sovTitle: 'Use Case Share of Voice',
+    sovSub:   'Which brand dominates AI recommendations within each video creation use case cluster',
+    sov: [
+      { title: 'Avatar & Presenter Video', donut: '#C2186A 0% 48%, #7C3AED 48% 84%, #DC2626 84% 94%, #2563EB 94% 99%, #059669 99% 100%',
+        rows: [['#C2186A','Synthesia','48%'],['#7C3AED','HeyGen','36%'],['#DC2626','Renderforest','10%'],['#2563EB','Descript','5%']] },
+      { title: 'Short-form Clips',         donut: '#059669 0% 52%, #7C3AED 52% 80%, #2563EB 80% 94%, #C2186A 94% 99%, #DC2626 99% 100%',
+        rows: [['#059669','Opus Clip','52%'],['#7C3AED','HeyGen','28%'],['#2563EB','Descript','14%'],['#C2186A','Synthesia','5%']] },
+      { title: 'Recording & Editing',      donut: '#2563EB 0% 45%, #7C3AED 45% 75%, #059669 75% 91%, #DC2626 91% 98%, #C2186A 98% 100%',
+        rows: [['#2563EB','Descript','45%'],['#7C3AED','HeyGen','30%'],['#059669','Opus Clip','16%'],['#DC2626','Renderforest','7%']] },
+      { title: 'Translation & Dubbing',    donut: '#7C3AED 0% 44%, #C2186A 44% 82%, #2563EB 82% 94%, #DC2626 94% 99%, #059669 99% 100%',
+        rows: [['#7C3AED','HeyGen','44%'],['#C2186A','Synthesia','38%'],['#2563EB','Descript','12%'],['#DC2626','Renderforest','5%']] },
+    ],
+  },
+  skincare: {
+    label: 'AI Agent Builder · Skincare & Beauty',
+    stats: [
+      { label: 'Total Brand Mentions', value: '943',  sub: '↑ 7% vs prior week', subClass: '' },
+      { label: 'Avg Position Overall', value: '2.8',  sub: '1 = first mentioned', subClass: 'neutral' },
+      { label: 'Use Case Clusters Tracked', value: '4', sub: '14 brands · 6 LLMs', subClass: 'neutral' },
+    ],
+    brands: [
+      { name: 'Sophiie AI',   color: '#C2186A', vis: 187, visW: 100, pos: '2.1' },
+      { name: 'Revieve',      color: '#7C3AED', vis: 154, visW: 82,  pos: '2.6' },
+      { name: 'Proven',       color: '#2563EB', vis: 98,  visW: 52,  pos: '3.1' },
+      { name: 'Haut.AI',      color: '#059669', vis: 72,  visW: 38,  pos: '3.8' },
+      { name: 'Perfect Corp', color: '#DC2626', vis: 58,  visW: 31,  pos: '4.4' },
+    ],
+    sovTitle: 'Use Case Share of Voice',
+    sovSub:   'Which brand dominates AI recommendations within each skincare AI agent use case cluster',
+    sov: [
+      { title: 'Skin Analysis & Diagnosis', donut: '#7C3AED 0% 40%, #C2186A 40% 68%, #059669 68% 84%, #2563EB 84% 94%, #DC2626 94% 100%',
+        rows: [['#7C3AED','Revieve','40%'],['#C2186A','Sophiie AI','28%'],['#059669','Haut.AI','16%'],['#2563EB','Proven','10%']] },
+      { title: 'Product Recommendation',   donut: '#C2186A 0% 38%, #7C3AED 38% 68%, #2563EB 68% 84%, #DC2626 84% 94%, #059669 94% 100%',
+        rows: [['#C2186A','Sophiie AI','38%'],['#7C3AED','Revieve','30%'],['#2563EB','Proven','16%'],['#DC2626','Perfect Corp','10%']] },
+      { title: 'Virtual Try-On',            donut: '#DC2626 0% 45%, #7C3AED 45% 74%, #C2186A 74% 88%, #2563EB 88% 96%, #059669 96% 100%',
+        rows: [['#DC2626','Perfect Corp','45%'],['#7C3AED','Revieve','29%'],['#C2186A','Sophiie AI','14%'],['#2563EB','Proven','8%']] },
+      { title: 'Routine Builder',           donut: '#2563EB 0% 36%, #C2186A 36% 64%, #7C3AED 64% 80%, #059669 80% 92%, #DC2626 92% 100%',
+        rows: [['#2563EB','Proven','36%'],['#C2186A','Sophiie AI','28%'],['#7C3AED','Revieve','16%'],['#059669','Haut.AI','12%']] },
+    ],
+  },
+};
+
+function renderDomain(key) {
+  const d = DOMAINS[key] || DOMAINS.marketing;
+
+  // Stats
+  document.getElementById('stat-grid-ov').innerHTML = d.stats.map(s => `
+    <div class="card stat-card">
+      <div class="stat-label">${s.label}</div>
+      <div class="stat-value">${s.value}</div>
+      <div class="stat-sub ${s.subClass}">${s.sub}</div>
+    </div>`).join('');
+
+  // Chart legend
+  document.getElementById('chart-legend-ov').innerHTML = d.brands.map(b =>
+    `<div class="legend-item"><div class="legend-dot" style="background:${b.color}"></div>${b.name}</div>`
+  ).join('');
+
+  // LLM Visibility
+  document.getElementById('llm-vis-panel').innerHTML = `
+    <div class="llm-label">LLM Visibility · 7 Days</div>
+    ${d.brands.map(b => `
+      <div class="llm-row"><div class="llm-dot" style="background:${b.color}"></div><span class="llm-name">${b.name}</span><span class="llm-val" style="color:${b.color}">${b.vis}</span></div>
+      <div class="llm-bar-bg"><div class="llm-bar-fill" style="width:${b.visW}%;background:${b.color}"></div></div>
+    `).join('')}`;
+
+  // Avg Position
+  document.getElementById('avg-pos-panel').innerHTML = `
+    <div class="llm-label">Avg Brand Position · 7 Days <span style="font-weight:400;text-transform:none;letter-spacing:0">(lower = better)</span></div>
+    ${d.brands.map((b,i) => `
+      <div class="llm-row"><div class="llm-dot" style="background:${b.color}"></div><span class="llm-name">${b.name}</span><span class="llm-val"${i===0?' style="color:#059669"':''}>${b.pos}</span></div>
+    `).join('')}`;
+
+  // SoV section
+  document.getElementById('sov-section-title').textContent = d.sovTitle;
+  document.getElementById('sov-section-sub').textContent = d.sovSub;
+  document.getElementById('sov-grid-ov').innerHTML = d.sov.map(c => `
+    <div class="card sov-card">
+      <div class="donut-wrap" style="background:conic-gradient(${c.donut})"></div>
+      <div>
+        <div class="sov-title">${c.title}</div>
+        <div class="sov-legend">
+          ${c.rows.map(r => `
+            <div class="sov-row"><div class="sov-dot" style="background:${r[0]}"></div><span class="sov-brand">${r[1]}</span><span class="sov-pct" style="color:${r[0]}">${r[2]}</span></div>
+          `).join('')}
+        </div>
+      </div>
+    </div>`).join('');
+}
+
 function toggleDomain() {
   const badge = document.getElementById('domain-badge');
   const drop  = document.getElementById('domain-dropdown');
@@ -1449,12 +1609,14 @@ function toggleDomain() {
   drop.classList.toggle('open', !open);
   badge.classList.toggle('open', !open);
 }
-function selectDomain(el, label) {
-  document.getElementById('domain-label').textContent = label;
+function selectDomain(el, key) {
+  const d = DOMAINS[key] || DOMAINS.marketing;
+  document.getElementById('domain-label').textContent = d.label;
   document.querySelectorAll('.domain-option').forEach(o => o.classList.remove('selected'));
   el.classList.add('selected');
   document.getElementById('domain-dropdown').classList.remove('open');
   document.getElementById('domain-badge').classList.remove('open');
+  renderDomain(key);
 }
 document.addEventListener('click', function(e) {
   if (!document.getElementById('domain-selector').contains(e.target)) {
