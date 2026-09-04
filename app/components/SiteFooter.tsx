@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 
-const PURPLE = "#6C4CF1";
+const PURPLE = "#C2186A";
 
 function NavLink({ href, children, external }: { href: string; children: React.ReactNode; external?: boolean }) {
   const props = external ? { target: "_blank", rel: "noopener noreferrer" } : {};
@@ -10,9 +10,9 @@ function NavLink({ href, children, external }: { href: string; children: React.R
     <Tag
       href={href}
       {...props}
-      style={{ display: "block", fontSize: 15, color: "#555", textDecoration: "none", marginBottom: 10, transition: "color 0.15s" }}
-      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = PURPLE; }}
-      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#555"; }}
+      style={{ display: "block", fontSize: 15, color: "#000", textDecoration: "none", marginBottom: 10, transition: "color 0.15s" }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#C2186A"; }}
+      onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#000"; }}
     >
       {children}
     </Tag>
@@ -30,9 +30,10 @@ export default function SiteFooter() {
     >
       {/* Rounded card — light lavender, extends flush to bottom */}
       <div style={{
-        background: "#EDE9FE",
+        background: "linear-gradient(135deg, #D8CAFE 0%, #FBC8D4 100%)",
         borderRadius: "28px 28px 0 0",
-        border: "1.5px solid rgba(108,76,241,0.45)",
+        border: "1px solid #C2186A",
+        borderBottom: "none",
         borderBottom: "none",
         padding: "48px 64px 0",
       }}>
@@ -47,7 +48,7 @@ export default function SiteFooter() {
               lineHeight: 1,
               margin: 0,
               paddingBottom: "0.12em",
-              background: "linear-gradient(90deg, #EC4899 0%, #A855F7 55%, #7C3AED 100%)",
+              background: "linear-gradient(90deg, #7C3AED, #C73C8E, #F0617A)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
@@ -68,9 +69,9 @@ export default function SiteFooter() {
             <div className="footer-brand">
               <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 14 }}>
                 <img src="/logo.png" alt="AgenticLib" style={{ height: 28, width: "auto", objectFit: "contain" }} />
-                <span style={{ fontSize: 17, fontWeight: 800, color: "#0F0B1E", letterSpacing: "-0.02em" }}>AgenticLib</span>
+                <span style={{ fontSize: 17, fontWeight: 800, color: "#000", letterSpacing: "-0.02em" }}>AgenticLib</span>
               </div>
-              <p style={{ fontSize: 14, color: "#666", lineHeight: 1.65, margin: "0 0 20px", maxWidth: 220 }}>
+              <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 20px", maxWidth: 220 }}>
                 Helping AI agent builders succeed.
               </p>
               <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
@@ -85,9 +86,9 @@ export default function SiteFooter() {
                     rel="noopener noreferrer"
                     style={{
                       width: 34, height: 34, borderRadius: "50%",
-                      background: "rgba(108,76,241,0.12)",
+                      background: "rgba(0,0,0,0.10)",
                       display: "flex", alignItems: "center", justifyContent: "center",
-                      fontSize: 13, fontWeight: 700, color: PURPLE,
+                      fontSize: 13, fontWeight: 700, color: "#000",
                       textDecoration: "none", transition: "background 0.15s",
                     }}
                     onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(108,76,241,0.22)"; }}
@@ -134,8 +135,8 @@ export default function SiteFooter() {
             alignItems: "center",
             justifyContent: "space-between",
           }}>
-            <span style={{ fontSize: 13, color: "#888" }}>© 2026 AgenticLib. All rights reserved.</span>
-            <span style={{ fontSize: 13, color: "#888", fontStyle: "italic" }}>Follow along as we build</span>
+            <span style={{ fontSize: 13, color: "#000" }}>© 2026 AgenticLib. All rights reserved.</span>
+            <span style={{ fontSize: 13, color: "#000", fontStyle: "italic" }}>Follow along as we build</span>
           </div>
         </div>
       </div>

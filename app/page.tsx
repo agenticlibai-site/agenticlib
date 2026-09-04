@@ -215,10 +215,111 @@ function ReportModal({ onClose }: { onClose: () => void }) {
   );
 }
 
+function DomainRequestModal({ onClose }: { onClose: () => void }) {
+  const [email, setEmail]   = useState("");
+  const [domain, setDomain] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
+
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/domain-request", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, domain }),
+      });
+      setStatus(res.ok ? "done" : "error");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  return (
+    <div
+      style={{ position: "fixed", inset: 0, zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.45)", backdropFilter: "blur(4px)" }}
+      onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+    >
+      <div style={{ background: "#fff", borderRadius: 20, padding: "40px 36px", maxWidth: 420, width: "90%", boxShadow: "0 24px 64px rgba(0,0,0,0.18)", position: "relative" }}>
+        <button onClick={onClose} style={{ position: "absolute", top: 16, right: 18, background: "none", border: "none", fontSize: 22, color: "rgba(0,0,0,0.35)", cursor: "pointer", lineHeight: 1 }}>×</button>
+
+        {status === "done" ? (
+          <div style={{ textAlign: "center", padding: "16px 0" }}>
+            <div style={{ fontSize: 36, marginBottom: 12 }}>✓</div>
+            <h3 style={{ fontSize: 20, fontWeight: 700, color: "#0F0B1E", margin: "0 0 10px" }}>Request received</h3>
+            <p style={{ fontSize: 14, color: "rgba(0,0,0,0.55)", lineHeight: 1.6, margin: 0 }}>We&apos;ll be in touch at <strong>{email}</strong> shortly.</p>
+          </div>
+        ) : (
+          <>
+            <span style={{
+              display: "inline-block", fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+              textTransform: "uppercase" as const, color: "#7C3AED",
+              background: "rgba(124,58,237,0.09)", borderRadius: 999, padding: "3px 10px", marginBottom: 16,
+            }}>
+              Request a Domain
+            </span>
+            <h3 style={{ fontSize: 22, fontWeight: 700, color: "#0F0B1E", margin: "0 0 8px", letterSpacing: "-0.02em" }}>
+              Request your business domain
+            </h3>
+            <p style={{ fontSize: 14, color: "rgba(0,0,0,0.55)", lineHeight: 1.55, margin: "0 0 24px" }}>
+              Tell us your domain and we&apos;ll build a customised intelligence report for it.
+            </p>
+            <form onSubmit={submit} style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              <input
+                type="text"
+                required
+                autoFocus
+                placeholder="Your domain (e.g. Legal AI, HR Automation)"
+                value={domain}
+                onChange={e => setDomain(e.target.value)}
+                style={{
+                  width: "100%", boxSizing: "border-box" as const,
+                  padding: "12px 16px", borderRadius: 10, fontSize: 14, fontWeight: 500,
+                  border: "1.5px solid rgba(124,58,237,0.28)",
+                  outline: "none", fontFamily: "inherit", color: "#000",
+                }}
+              />
+              <input
+                type="email"
+                required
+                placeholder="you@company.com"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                style={{
+                  width: "100%", boxSizing: "border-box" as const,
+                  padding: "12px 16px", borderRadius: 10, fontSize: 14, fontWeight: 500,
+                  border: "1.5px solid rgba(124,58,237,0.28)",
+                  outline: "none", marginBottom: 2, fontFamily: "inherit", color: "#000",
+                }}
+              />
+              {status === "error" && (
+                <p style={{ fontSize: 13, color: "#dc2626", margin: "0 0 4px" }}>Something went wrong — please try again.</p>
+              )}
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                style={{
+                  width: "100%", padding: "13px", borderRadius: 10, border: "none", cursor: "pointer",
+                  background: "linear-gradient(95deg, #7C3AED, #C2186A)", color: "#fff",
+                  fontSize: 15, fontWeight: 700, opacity: status === "loading" ? 0.7 : 1,
+                }}
+              >
+                {status === "loading" ? "Sending…" : "Request domain report"}
+              </button>
+            </form>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
+  const [faqOpen, setFaqOpen] = useState<number | null>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [productExpanded, setProductExpanded] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [domainModalOpen, setDomainModalOpen] = useState(false);
   const [pricingModal, setPricingModal] = useState<{ open: boolean; plan: "free" | "premium" }>({ open: false, plan: "free" });
   const [demoOpen, setDemoOpen] = useState(false);
   const demoVideoRef = useRef<HTMLVideoElement>(null);
@@ -249,6 +350,7 @@ export default function Home() {
   return (
     <div className="page-bg relative text-black font-sans">
       {reportModalOpen && <ReportModal onClose={() => setReportModalOpen(false)} />}
+      {domainModalOpen && <DomainRequestModal onClose={() => setDomainModalOpen(false)} />}
       {pricingModal.open && <PricingModal plan={pricingModal.plan} onClose={() => setPricingModal(p => ({ ...p, open: false }))} />}
 
       {/* ── Sage AI Demo video modal ── */}
@@ -1009,6 +1111,91 @@ export default function Home() {
               </div>
             </div>
 
+          </div>
+        </div>
+      </section>
+
+      {/* ── FAQ ──────────────────────────────────────────────────────── */}
+      <section style={{ padding: "80px 24px 88px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 860, margin: "0 auto" }}>
+          <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", marginBottom: 12 }}>Got Questions?</p>
+          <h2 style={{ fontSize: "clamp(26px, 3.5vw, 40px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.12, color: "#0F0B1E", margin: "0 0 40px" }}>
+            Frequently Asked Questions
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
+            {([
+              {
+                q: "What is AgenticLib?",
+                a: "AgenticLib is an intelligence platform that combines market insights, buyer intent and competitor signals to advise AI agent builders on their product feature roadmap.",
+              },
+              {
+                q: "What problem does AgenticLib solve?",
+                a: "Most AI agent builders are making product feature decisions without real visibility into what competitors are shipping, which use cases they're winning or losing in, or what buyers are actually comparing before they make contact. Piecing that together manually from lost-deal notes, Slack screenshots, and customer calls is slow, manual, and almost no one actually does it consistently.",
+              },
+              {
+                q: "What is Sage AI?",
+                a: "Sage AI is AgenticLib's platform for AI agent builders. Pick your business domain and instantly see the top competitor brands, filterable by use case, with in-depth product feature scores across security, technical capability, and pricing, each backed by evidence from Claude and GPT. Sage AI currently gives builders insight into their competitive landscape and market insights. Live competitor shipment feeds, benchmarking analysis, and buyer-intent signals are coming next.",
+              },
+              {
+                q: "Is my business domain covered?",
+                a: "We currently cover three types of domains. Vertical domains are industry-specific - think skincare, insurance, or legal. Horizontal domains are cross-industry functions like sales, marketing, or HR. Tech domains are capability-specific categories like AI video creation or voice AI. If your domain isn't listed yet, you can request it - we'll build a customised report for your domain.",
+                hasRequest: true,
+              },
+              {
+                q: "What do the customised reports cover?",
+                a: "Every report covers product feature scores across security, integrations, pricing, and capability, brand and use case benchmarking to show you who owns each buying moment and why, sentiment analysis of how LLMs actually describe brands, and an LLM visibility playbook with citations and data collected from Parallel AI with actionable steps on exactly how to get LLM visible. On top of that, each report calls out the top 3 product features you should build next: specific, evidence-backed recommendations to close the gap on competitors and win the use cases your buyers care about.",
+              },
+              {
+                q: "Where is AgenticLib headed?",
+                a: "We're building toward fully automating the manual process of piecing together messy customer, market, and competitor signals, through integrations with the tools builders already use, like Granola for meeting notes and CRMs like Attio or HubSpot where lost-deal context actually lives. The idea is to connect a builder's own product context directly with our taxonomy of product features, so AgenticLib can continuously advise on what to build next and which use case clusters to expand into. We're also working on doing the content fix ourselves, so builders don't just get told what to publish, we actually do it for them to get them LLM-visible in the areas where their buyers are already asking.",
+              },
+            ] as { q: string; a: string; hasRequest?: boolean }[]).map(({ q, a, hasRequest }, i) => (
+              <div key={i} style={{ borderTop: i === 0 ? "1px solid rgba(124,58,237,0.15)" : undefined, borderBottom: "1px solid rgba(124,58,237,0.15)" }}>
+                <button
+                  onClick={() => setFaqOpen(faqOpen === i ? null : i)}
+                  style={{
+                    width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between",
+                    gap: 16, padding: "22px 0", background: "none", border: "none", cursor: "pointer",
+                    textAlign: "left" as const, fontFamily: "inherit",
+                  }}
+                >
+                  <span style={{ fontSize: 17, fontWeight: 700, color: "#0F0B1E", letterSpacing: "-0.01em", lineHeight: 1.3 }}>{q}</span>
+                  <svg
+                    width="20" height="20" viewBox="0 0 20 20" fill="none"
+                    style={{ flexShrink: 0, transform: faqOpen === i ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.25s ease", color: "#7C3AED" }}
+                  >
+                    <path d="M5 7.5l5 5 5-5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                </button>
+                <div style={{
+                  overflow: "hidden",
+                  maxHeight: faqOpen === i ? 800 : 0,
+                  opacity: faqOpen === i ? 1 : 0,
+                  transition: "max-height 0.35s cubic-bezier(0.4,0,0.2,1), opacity 0.25s ease",
+                }}>
+                  <p style={{ fontSize: 15.5, lineHeight: 1.75, color: "#000", margin: "0 0 16px" }}>{a}</p>
+                  {hasRequest && (
+                    <div style={{ marginBottom: 24 }}>
+                      <button
+                        onClick={() => setDomainModalOpen(true)}
+                        style={{
+                          display: "inline-flex", alignItems: "center", gap: 8,
+                          background: "linear-gradient(95deg, #7C3AED, #C2186A)", color: "#fff",
+                          fontWeight: 700, fontSize: 14, padding: "12px 24px", borderRadius: 9999,
+                          border: "none", cursor: "pointer",
+                          boxShadow: "none",
+                          transition: "opacity 0.2s ease, transform 0.15s ease",
+                        }}
+                        onMouseEnter={e => { const el = e.currentTarget as HTMLButtonElement; el.style.opacity = "0.88"; el.style.transform = "translateY(-1px)"; }}
+                        onMouseLeave={e => { const el = e.currentTarget as HTMLButtonElement; el.style.opacity = "1"; el.style.transform = "translateY(0)"; }}
+                      >
+                        Request a domain report <span aria-hidden style={{ fontSize: 16 }}>›</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
