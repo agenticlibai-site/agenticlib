@@ -25,10 +25,12 @@ export const ESAI_JSON_OUTPUT_SPEC =
 
 // ── Locked brand list ──────────────────────────────────────────────────────────
 // Locked 2026-09-03 after brand eligibility review.
-// Updated 2026-09-05: added EstiMate AI (the client's own product).
+// Updated 2026-09-05: added EstiMate (the client's own product).
+// Note: brand name is "EstiMate" (not "EstiMate AI") — confirmed via estimateai.com.au.
+//       Domain uses "AI" but the product and how LLMs refer to it is just "EstiMate".
 // Includes:
-//   (a) EstiMate AI — the subject of this report
-//   (b) AI-native / agentic estimating platforms — direct comps to EstiMate AI
+//   (a) EstiMate — the subject of this report
+//   (b) AI-native / agentic estimating platforms — direct comps to EstiMate
 //   (c) Dominant traditional tools — benchmark context for the report
 // Excluded: general AI models (Claude, GPT, Gemini), general PM tools (Procore,
 //           Monday, Asana), workforce tools (Bridgit), progress monitoring only
@@ -37,8 +39,8 @@ export const ESAI_JSON_OUTPUT_SPEC =
 //           QuickBooks), noise/duplicates.
 export const LOCKED_ESAI_BRANDS: readonly string[] = [
   // ── The subject ────────────────────────────────────────────────────────────
-  "EstiMate AI",     // The client's product — AI-native estimating for Australian builders
-  // ── AI-native estimating (direct EstiMate AI competitors) ──────────────────
+  "EstiMate",        // The client's product — AI-native estimating for Australian builders
+  // ── AI-native estimating (direct EstiMate competitors) ─────────────────────
   "Togal.AI",        // AI takeoff — auto-detects/measures from drawings, chat with plans
   "Buildr",          // Agentic preconstruction — Kit agent reads RFPs, prices jobs
   "Buildxact",       // AI-assisted estimating — Blu assistant, Estimate Generator
