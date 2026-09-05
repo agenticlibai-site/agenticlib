@@ -191,6 +191,10 @@ export async function GET(request: Request) {
     console.log(`[esai-feature-collection] done — succeeded=${succeeded}/${expected}, failed=${failed}`);
 
     let groundingRan = 0, groundingFailed = 0;
+    // Only ground the 3 AI-native competitors — they change frequently and benefit
+    // from web-search grounding. Traditional estimating tools (PlanSwift, Bluebeam,
+    // etc.) are stable and well-covered in training data; grounding them is wasted spend.
+    const GROUNDING_BRANDS = new Set(["Togal.AI", "Buildr", "Buildxact"]);
     if (model === "claude-haiku-4-5") {
       const groundingTasks: (() => Promise<void>)[] = [];
       for (const [pairKey, runs] of pairResults) {
@@ -198,6 +202,7 @@ export async function GET(request: Request) {
         const meta = pairMeta.get(pairKey);
         if (!meta) continue;
         const { brandName: b, feature: f } = meta;
+        if (!GROUNDING_BRANDS.has(b)) continue; // skip non-AI-native brands
         groundingTasks.push(async () => {
           try {
             const rawText = await withRetry(() => callClaudeGrounded(b, f), `${b}/${f.feature_id}/grounded`);
