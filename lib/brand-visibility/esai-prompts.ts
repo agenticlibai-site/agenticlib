@@ -1,5 +1,5 @@
 // ESAI pipeline — Australian Construction Estimating
-// Collection system prompt + 39 prompts (9 overall + 30 SoV across 10 clusters).
+// Collection system prompt + 42 prompts (9 overall + 33 SoV across 11 clusters).
 // Scope: any estimating/takeoff/quoting tool used by Australian builders and trades —
 // traditional, AI-assisted, or AI-native. Not restricted to AI agents only.
 
@@ -77,4 +77,11 @@ export const ESAI_PROMPTS: EsaiPrompt[] = [
   { id: 37, tag: "esai-tender", text: "What software do Australian builders use to prepare tender submissions?" },
   { id: 38, tag: "esai-tender", text: "What tools help Australian estimators manage multiple tender bids?" },
   { id: 39, tag: "esai-tender", text: "What platforms support the full tender preparation workflow for Australian construction?" },
+
+  // ── Cluster 11 — Buyer Intent · esai-buyer-intent (3 prompts) ───────────────
+  // Decision-stage prompts — simulates an Australian builder actively evaluating
+  // and about to choose an estimating tool, not just researching what exists.
+  { id: 40, tag: "esai-buyer-intent", text: "What estimating software should an Australian building company invest in right now?" },
+  { id: 41, tag: "esai-buyer-intent", text: "I'm an Australian builder looking to switch estimating software — what do most builders actually recommend and why?" },
+  { id: 42, tag: "esai-buyer-intent", text: "Which AI estimating tool is worth paying for as an Australian builder in 2025, and what are the alternatives?" },
 ];
