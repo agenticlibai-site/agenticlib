@@ -25,15 +25,19 @@ export const ESAI_JSON_OUTPUT_SPEC =
 
 // ── Locked brand list ──────────────────────────────────────────────────────────
 // Locked 2026-09-03 after brand eligibility review.
+// Updated 2026-09-05: added EstiMate AI (the client's own product).
 // Includes:
-//   (a) AI-native / agentic estimating platforms — direct comps to EstiMate AI
-//   (b) Dominant traditional tools — benchmark context for the report
+//   (a) EstiMate AI — the subject of this report
+//   (b) AI-native / agentic estimating platforms — direct comps to EstiMate AI
+//   (c) Dominant traditional tools — benchmark context for the report
 // Excluded: general AI models (Claude, GPT, Gemini), general PM tools (Procore,
 //           Monday, Asana), workforce tools (Bridgit), progress monitoring only
 //           (Doxel, Buildots excluded as wrong domain despite being AI-native),
 //           residential PM tools (CoConstruct, Buildertrend), accounting (Xero,
 //           QuickBooks), noise/duplicates.
 export const LOCKED_ESAI_BRANDS: readonly string[] = [
+  // ── The subject ────────────────────────────────────────────────────────────
+  "EstiMate AI",     // The client's product — AI-native estimating for Australian builders
   // ── AI-native estimating (direct EstiMate AI competitors) ──────────────────
   "Togal.AI",        // AI takeoff — auto-detects/measures from drawings, chat with plans
   "Buildr",          // Agentic preconstruction — Kit agent reads RFPs, prices jobs
