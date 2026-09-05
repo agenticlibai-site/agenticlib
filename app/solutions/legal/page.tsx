@@ -52,7 +52,7 @@ export default function LegalPage() {
             AI Agents · Legal
           </div>
           <h1 className="font-bold" style={{ fontSize: "clamp(36px, 5.5vw, 56px)", letterSpacing: "-0.03em", lineHeight: 1.08, color: "#0A0A0A", marginBottom: 24 }}>
-            Comparison intelligence<br />
+            Product and marketing intelligence<br />
             <span style={{ background: "linear-gradient(135deg, #059669 0%, #2563EB 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>for legal AI agents</span>
           </h1>
           <p style={{ fontSize: 18, lineHeight: 1.7, color: "#444", maxWidth: 540, margin: "0 auto 40px" }}>AgenticLib tracks where your product appears when GCs and law firms evaluate legal AI — and benchmarks every feature that earns trust in a high-stakes buying decision.</p>

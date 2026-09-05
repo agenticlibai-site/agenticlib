@@ -84,7 +84,7 @@ export default async function SalesPage({
             AI Agents · Sales
           </div>
           <h1 className="font-bold" style={{ fontSize: "clamp(36px, 5.5vw, 56px)", letterSpacing: "-0.03em", lineHeight: 1.08, color: "#0A0A0A", marginBottom: 24 }}>
-            Comparison intelligence<br />
+            Product and marketing intelligence<br />
             <span style={{ background: "linear-gradient(135deg, #2563EB 0%, #7C3AED 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>for sales AI agents</span>
           </h1>
           <p style={{ fontSize: 18, lineHeight: 1.7, color: "#444", maxWidth: 540, margin: "0 auto 40px" }}>AgenticLib tracks where your product appears when revenue leaders evaluate sales AI — and benchmarks every capability your buyers weigh before they shortlist.</p>

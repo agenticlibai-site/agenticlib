@@ -71,7 +71,7 @@ export default function MarketingPage() {
             AI Agents · Marketing
           </div>
           <h1 className="font-bold" style={{ fontSize: "clamp(36px, 5.5vw, 56px)", letterSpacing: "-0.03em", lineHeight: 1.08, color: "#0A0A0A", marginBottom: 24 }}>
-            Comparison intelligence<br />
+            Product and marketing intelligence<br />
             <span style={{ background: "linear-gradient(135deg, #7C3AED 0%, #C2186A 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
               for marketing AI agents
             </span>

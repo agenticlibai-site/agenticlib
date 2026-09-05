@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 const itemListJsonLd = {
   "@context": "https://schema.org",
   "@type": "ItemList",
-  name: "AgenticLib — Comparison Intelligence by Domain",
+  name: "AgenticLib — Product and Marketing Intelligence by Domain",
   description:
-    "Explore AI agent comparison intelligence organised by business domain on AgenticLib.",
+    "Explore AI agent product and marketing intelligence organised by business domain on AgenticLib.",
   url: "https://agenticlib.com/explore",
   numberOfItems: domains.length,
   itemListElement: domains.map((d, i) => ({

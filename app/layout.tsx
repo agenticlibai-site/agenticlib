@@ -44,7 +44,7 @@ const ebGaramond = EB_Garamond({
 export const metadata: Metadata = {
   metadataBase: new URL("https://agenticlib.com"),
   title: {
-    default: "AgenticLib — Comparison Intelligence for AI Agent Builders",
+    default: "AgenticLib — Product and Marketing Intelligence for AI Agent Builders",
     template: "%s | AgenticLib",
   },
   description:
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "AgenticLib",
-    title: "AgenticLib — Comparison Intelligence for AI Agent Builders",
+    title: "AgenticLib — Product and Marketing Intelligence for AI Agent Builders",
     description:
       "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
     url: "https://agenticlib.com",
@@ -71,13 +71,13 @@ export const metadata: Metadata = {
         url: "/recommendations-cover.png",
         width: 1200,
         height: 630,
-        alt: "AgenticLib — Comparison Intelligence for AI Agent Builders",
+        alt: "AgenticLib — Product and Marketing Intelligence for AI Agent Builders",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AgenticLib — Comparison Intelligence for AI Agent Builders",
+    title: "AgenticLib — Product and Marketing Intelligence for AI Agent Builders",
     description:
       "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
     images: ["/recommendations-cover.png"],
@@ -112,7 +112,7 @@ export default function RootLayout({
             "name": "AgenticLib",
             "url": "https://agenticlib.com",
             "logo": "https://agenticlib.com/logo.png",
-            "description": "AgenticLib is the comparison intelligence platform for AI agent builders. Track LLM search visibility, benchmark features against competitors, and turn gaps into a roadmap.",
+            "description": "AgenticLib is the product and marketing intelligence platform for AI agent builders. Track LLM search visibility, benchmark features against competitors, and turn gaps into a roadmap.",
             "sameAs": [],
             "contactPoint": { "@type": "ContactPoint", "contactType": "customer support", "email": "hello@agenticlib.com" },
           }) }}
