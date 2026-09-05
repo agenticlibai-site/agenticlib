@@ -1128,7 +1128,7 @@ export default function Home() {
             {([
               {
                 q: "What is AgenticLib?",
-                a: "AgenticLib is an intelligence platform that combines market insights, buyer intent and competitor signals to advise AI agent builders on their product feature roadmap.",
+                a: "AgenticLib is a product and marketing intelligence platform that combines market insights, buyer intent and competitor signals to advise AI agent builders on their product feature roadmap.",
               },
               {
                 q: "What problem does AgenticLib solve?",
