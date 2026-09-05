@@ -1132,7 +1132,7 @@ export default function Home() {
               },
               {
                 q: "What problem does AgenticLib solve?",
-                a: "Most AI agent builders are making product feature decisions without real visibility into what competitors are shipping, which use cases they're winning or losing in, or what buyers are actually comparing before they make contact. Piecing that together manually from lost-deal notes, Slack screenshots, and customer calls is slow, manual, and almost no one actually does it consistently.",
+                a: "Most AI agent builders are making product feature decisions without real visibility into what competitors are shipping, which use cases they're winning or losing in, or what buyers are actually comparing before they make contact. Piecing that together manually from lost-deal notes, Slack screenshots, and customer calls is slow, manual, and almost no one actually does it consistently. AgenticLib solves this through product and marketing intelligence.",
               },
               {
                 q: "What is Sage AI?",

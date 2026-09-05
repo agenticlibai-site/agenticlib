@@ -135,7 +135,10 @@ export default function SiteFooter() {
             alignItems: "center",
             justifyContent: "space-between",
           }}>
-            <span style={{ fontSize: 13, color: "#000" }}>© 2026 AgenticLib. All rights reserved.</span>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              <span style={{ fontSize: 13, color: "#000" }}>© 2026 AgenticLib. All rights reserved.</span>
+              <span style={{ fontSize: 12, color: "#000" }}>Sydney, Australia</span>
+            </div>
             <span style={{ fontSize: 13, color: "#000", fontStyle: "italic" }}>Follow along as we build</span>
           </div>
         </div>
