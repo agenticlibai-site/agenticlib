@@ -91,7 +91,8 @@ export default function SdaiFeedbackPage() {
   const [q2, setQ2] = useState("");
   const [q2b, setQ2b] = useState("");
   const [q3, setQ3] = useState("");
-  const [q4, setQ4] = useState(""); // want monthly
+  const [q4, setQ4] = useState("");
+  const [q5, setQ5] = useState(""); // want monthly
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -100,7 +101,7 @@ export default function SdaiFeedbackPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!company.trim() || !q1.trim() || !q2 || !q3.trim() || !q4) {
+    if (!company.trim() || !q1.trim() || !q2 || !q3.trim() || !q4.trim() || !q5) {
       setError("Please answer all questions before submitting.");
       return;
     }
@@ -116,7 +117,8 @@ export default function SdaiFeedbackPage() {
           q2_changed_plans: q2,
           q2b_what_specifically: showFollowup ? q2b.trim() : "",
           q3_whats_missing: q3.trim(),
-          q4_want_monthly: q4,
+          q4_positives: q4.trim(),
+          q5_want_monthly: q5,
           submittedAt: new Date().toISOString(),
         }),
       });
@@ -173,7 +175,7 @@ export default function SdaiFeedbackPage() {
             Your take on the AI Video Creation report
           </h1>
           <p style={{ fontSize: 14, color: "#555", margin: 0, lineHeight: 1.55 }}>
-            Four questions. Takes about 5 minutes. Answers go directly to the team.
+            Five questions. Takes about 5 minutes. Answers go directly to the team.
           </p>
         </div>
 
@@ -350,9 +352,27 @@ export default function SdaiFeedbackPage() {
                 </div>
               </div>
 
-              {/* Q4 — would you want this monthly */}
-              <div style={{ ...qStyle, borderBottom: "none" }}>
+              {/* Q4 */}
+              <div style={qStyle}>
                 <div style={numStyle}>4</div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <label htmlFor="q4" style={labelStyle}>
+                    What were the positive things about the product feature intelligence, use case intelligence, competitive intelligence and/or LLM playbook in this report?
+                  </label>
+                  <textarea
+                    id="q4"
+                    value={q4}
+                    onChange={(e) => setQ4(e.target.value)}
+                    placeholder="What worked well for you?"
+                    rows={3}
+                    style={taStyle}
+                  />
+                </div>
+              </div>
+
+              {/* Q5 — would you want this monthly */}
+              <div style={{ ...qStyle, borderBottom: "none" }}>
+                <div style={numStyle}>5</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <span style={labelStyle}>Would you want this report monthly?</span>
                   <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
@@ -360,8 +380,8 @@ export default function SdaiFeedbackPage() {
                       <button
                         key={v}
                         type="button"
-                        onClick={() => setQ4(v.toLowerCase())}
-                        style={ynBtnStyle(q4 === v.toLowerCase())}
+                        onClick={() => setQ5(v.toLowerCase())}
+                        style={ynBtnStyle(q5 === v.toLowerCase())}
                       >
                         {v}
                       </button>

@@ -77,6 +77,7 @@ export default function DexifyFeedbackPage() {
   const [q2, setQ2] = useState("");
   const [q2b, setQ2b] = useState("");
   const [q3, setQ3] = useState("");
+  const [q4, setQ4] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -85,7 +86,7 @@ export default function DexifyFeedbackPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!company.trim() || !q1.trim() || !q2 || !q3.trim()) {
+    if (!company.trim() || !q1.trim() || !q2 || !q3.trim() || !q4.trim()) {
       setError("Please answer all questions before submitting.");
       return;
     }
@@ -101,6 +102,7 @@ export default function DexifyFeedbackPage() {
           q2_changed_plans: q2,
           q2b_what_specifically: showFollowup ? q2b.trim() : "",
           q3_whats_missing: q3.trim(),
+          q4_positives: q4.trim(),
           submittedAt: new Date().toISOString(),
         }),
       });
@@ -157,7 +159,7 @@ export default function DexifyFeedbackPage() {
             Your take on the Dexify report
           </h1>
           <p style={{ fontSize: 14, color: "#555", margin: 0, lineHeight: 1.55 }}>
-            Three questions. Takes about 5 minutes. Answers go directly to the team.
+            Four questions. Takes about 5 minutes. Answers go directly to the team.
           </p>
         </div>
 
@@ -279,7 +281,7 @@ export default function DexifyFeedbackPage() {
               </div>
 
               {/* Q3 */}
-              <div style={{ ...qStyle, borderBottom: "none" }}>
+              <div style={qStyle}>
                 <div style={numStyle}>3</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <label htmlFor="q3" style={labelStyle}>
@@ -287,6 +289,18 @@ export default function DexifyFeedbackPage() {
                   </label>
                   <textarea id="q3" value={q3} onChange={(e) => setQ3(e.target.value)}
                     placeholder="What would you want that isn't here?" rows={3} style={taStyle} />
+                </div>
+              </div>
+
+              {/* Q4 */}
+              <div style={{ ...qStyle, borderBottom: "none" }}>
+                <div style={numStyle}>4</div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <label htmlFor="q4" style={labelStyle}>
+                    What were the positive things about the product feature intelligence, use case intelligence, competitive intelligence and/or LLM playbook in this report?
+                  </label>
+                  <textarea id="q4" value={q4} onChange={(e) => setQ4(e.target.value)}
+                    placeholder="What worked well for you?" rows={3} style={taStyle} />
                 </div>
               </div>
 
