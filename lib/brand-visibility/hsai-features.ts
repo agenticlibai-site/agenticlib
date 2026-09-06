@@ -138,21 +138,23 @@ ${FOOTER}`,
 ${FOOTER}`,
   },
 
-  // ── Cluster 5 — Lead Management · hsai-lead ─────────────────────────────────
+  // ── Cluster 5 — Staff Operations & Back-office · hsai-staff-ops ─────────────
+  // Maps to Simbastack's staff copilot: reservations, check-ins, pricing, scheduling.
+  // Dropped hsai-lead: Simbastack makes no claim to lead-nurture/top-of-funnel automation.
   {
-    feature_id:   "lead_capture",
-    feature_tag:  "hsai-lead",
-    feature_name: "Automated lead capture with guest data collection",
-    description:  "Whether the AI proactively collects guest contact details and travel intent during conversations, creating a lead record without manual input from staff.",
-    prompt: `When a guest makes an inquiry but doesn't book, does [BRAND] automatically capture their contact details, travel dates, and preferences — creating a structured lead record in the system that the operator can follow up on — without requiring any manual action from the property team?
+    feature_id:   "staff_ops_reservations",
+    feature_tag:  "hsai-staff-ops",
+    feature_name: "Staff copilot for reservations and check-in management",
+    description:  "Whether the platform provides a staff-facing conversational AI interface that lets property team members manage reservations, check-ins, and guest scheduling through chat — connected to live PMS data.",
+    prompt: `Does [BRAND] have a staff-facing AI copilot — separate from the guest-facing agent — that lets a property manager or front desk team ask questions and take actions through conversation? For example: pulling tomorrow's check-in list, updating a reservation, or confirming an arrival has paid — all without navigating the PMS manually?
 ${FOOTER}`,
   },
   {
-    feature_id:   "lead_followup",
-    feature_tag:  "hsai-lead",
-    feature_name: "Automated follow-up sequences for unconverted inquiries",
-    description:  "Whether the platform automatically sends follow-up messages to guests who inquired but didn't convert, over a defined time period.",
-    prompt: `If a guest asks about availability, receives a quote, but goes quiet — does [BRAND] automatically send follow-up messages over the next few days to re-engage them? Can operators customise the timing, tone, and content of these follow-up sequences without developer involvement?
+    feature_id:   "staff_ops_pricing",
+    feature_tag:  "hsai-staff-ops",
+    feature_name: "AI-assisted pricing and quoting decisions for staff",
+    description:  "Whether the platform gives staff an AI recommendation layer for pricing decisions — group inquiries, last-minute availability, package rates — based on occupancy and demand context, rather than leaving pricing as a fully manual judgement call.",
+    prompt: `When a staff member needs to price a group inquiry or decide whether to offer a late-availability discount, does [BRAND] give them an AI-assisted recommendation — based on current occupancy, booking pace, and demand signals — through a chat or copilot interface? Or is pricing still entirely manual with no AI input available to the operations team?
 ${FOOTER}`,
   },
 
