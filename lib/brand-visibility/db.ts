@@ -4434,7 +4434,7 @@ export async function getSdaiDailySummary(days = 7): Promise<
   const result = await sql`
     SELECT date::text AS date, brand, model, cluster_tag, mention_count, avg_position
     FROM sdai_daily_summary
-    WHERE date >= CURRENT_DATE - ${days}::int * INTERVAL '1 day'
+    WHERE date >= (SELECT MAX(date) FROM sdai_daily_summary) - ${days}::int * INTERVAL '1 day'
       AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM sdai_denylist)
     ORDER BY date ASC, mention_count DESC
   `;
@@ -4450,7 +4450,7 @@ export async function getSdaiWeeklySummary(): Promise<
       SUM(mention_count)::int AS mention_count,
       AVG(avg_position)       AS avg_position
     FROM sdai_daily_summary
-    WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+    WHERE date >= (SELECT MAX(date) FROM sdai_daily_summary) - INTERVAL '7 days'
       AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM sdai_denylist)
     GROUP BY brand, model
     ORDER BY SUM(mention_count) DESC
@@ -4467,7 +4467,7 @@ export async function getSdaiLLMVisibility(): Promise<
       ROUND(COUNT(CASE WHEN jsonb_array_length(brands) > 0 THEN 1 END) * 100.0 / NULLIF(COUNT(*), 0), 1)::float AS visibility_pct,
       COUNT(*)::int AS total_responses
     FROM sdai_raw_responses
-    WHERE date >= CURRENT_DATE - INTERVAL '7 days'
+    WHERE date >= (SELECT MAX(date) FROM sdai_raw_responses) - INTERVAL '7 days'
     GROUP BY model ORDER BY model
   `;
   return result.rows as { model: string; visibility_pct: number; total_responses: number }[];
@@ -4485,7 +4485,7 @@ export async function getSdaiSOVData(): Promise<
       ROUND(COUNT(*) * 100.0 / NULLIF(SUM(COUNT(*)) OVER (PARTITION BY r.cluster_tag), 0), 1)::float AS sov_pct
     FROM sdai_raw_responses r,
          jsonb_array_elements_text(r.brands) AS t(brand_name)
-    WHERE r.date >= CURRENT_DATE - INTERVAL '7 days'
+    WHERE r.date >= (SELECT MAX(date) FROM sdai_raw_responses) - INTERVAL '7 days'
       AND LENGTH(TRIM(t.brand_name)) > 0
       AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sdai_denylist)
     GROUP BY r.cluster_tag, TRIM(t.brand_name)
@@ -4527,7 +4527,7 @@ export async function getSdaiClusterBrandPositions(): Promise<
       COUNT(*)::int AS appearances
     FROM sdai_raw_responses r,
          LATERAL jsonb_array_elements_text(r.brands) WITH ORDINALITY AS t(brand_name, pos)
-    WHERE r.date >= CURRENT_DATE - INTERVAL '7 days'
+    WHERE r.date >= (SELECT MAX(date) FROM sdai_raw_responses) - INTERVAL '7 days'
       AND r.cluster_tag != 'sdai-overall'
       AND LENGTH(TRIM(t.brand_name)) > 0
       AND LOWER(TRIM(t.brand_name)) NOT IN (SELECT LOWER(brand_name) FROM sdai_denylist)
