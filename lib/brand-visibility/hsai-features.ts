@@ -33,20 +33,21 @@ export const HSAI_JSON_OUTPUT_SPEC =
 //           revenue management tools without a guest-agent component.
 export const LOCKED_HSAI_BRANDS: readonly string[] = [
   // ── The subject ─────────────────────────────────────────────────────────────
-  "Simbastack",          // Custom AI agents for hospitality — Ranger (concierge), ops agent
-  // ── AI-native hospitality agents (direct competitors) ───────────────────────
+  "Simbastack",          // Custom AI agents for hospitality — Ranger (concierge), ops copilot
+  // ── AI-native guest-facing agents ───────────────────────────────────────────
   "Asksuite",            // Hotel chatbot + booking engine, global
   "HiJiffy",             // AI guest communications hub — WhatsApp, webchat, OTA messaging
   "Quicktext",           // Hotel chatbot + AI upsell, Velma AI assistant
   "Akia",                // AI guest messaging for hotels and short-term rentals
+  // ── AI-native ops / full-journey agents ─────────────────────────────────────
   "Canary Technologies", // Digital guest journey — messaging, check-in, upsell
+  "Duve",                // AI guest experience platform — concierge, upsell, messaging, check-in
+  "Alliants",            // Enterprise guest messaging + Allin AI assistant layer
+  "BookBoost",           // Omnichannel AI agent powered by guest CDP
+  // ── Short-term rental AI agents ─────────────────────────────────────────────
   "Jurny",               // AI-powered short-term rental management
   "Hospitable",          // AI automation for vacation rental hosts
   "HostAI",              // AI assistant for short-term rental operators
-  // ── Traditional hospitality tech with significant AI (benchmark) ────────────
-  "Cloudbeds",           // PMS + Whistle AI guest messaging
-  "Revinate",            // Guest data platform + Ivy AI concierge
-  "Mews",                // Cloud PMS with automation and AI assistant features
 ];
 
 // ── Feature definitions ────────────────────────────────────────────────────────
