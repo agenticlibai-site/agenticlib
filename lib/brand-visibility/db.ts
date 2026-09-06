@@ -2422,7 +2422,7 @@ export async function getDexifyTrend(days = 7): Promise<DexifyTrendRow[]> {
       brand,
       SUM(mention_count)::int AS mention_count
     FROM dexify_daily_summary
-    WHERE date >= CURRENT_DATE - (${days} || ' days')::interval
+    WHERE date >= (SELECT MAX(date) FROM dexify_daily_summary) - ${days}::int * INTERVAL '1 day'
       AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
     GROUP BY date, brand
     ORDER BY date, mention_count DESC
