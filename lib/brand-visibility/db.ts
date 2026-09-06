@@ -2421,7 +2421,7 @@ export async function getDexifyTrend(
   await initDexifyDB();
   // When explicit dates are given, use them directly (frozen pipeline window).
   // Otherwise fall back to the last 7 days anchored to MAX(date).
-  const result = startDate && endDate
+  const result = startDate
     ? await sql`
         SELECT
           date::text,
@@ -2429,7 +2429,7 @@ export async function getDexifyTrend(
           SUM(mention_count)::int AS mention_count
         FROM dexify_daily_summary
         WHERE date >= ${startDate}::date
-          AND date <= ${endDate}::date
+          ${endDate ? sql`AND date <= ${endDate}::date` : sql``}
           AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
         GROUP BY date, brand
         ORDER BY date, mention_count DESC
