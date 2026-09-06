@@ -2414,19 +2414,37 @@ export async function getDexifyByModel(): Promise<DexifyModelRow[]> {
   return result.rows as DexifyModelRow[];
 }
 
-export async function getDexifyTrend(days = 7): Promise<DexifyTrendRow[]> {
+export async function getDexifyTrend(
+  startDate?: string,
+  endDate?: string,
+): Promise<DexifyTrendRow[]> {
   await initDexifyDB();
-  const result = await sql`
-    SELECT
-      date::text,
-      brand,
-      SUM(mention_count)::int AS mention_count
-    FROM dexify_daily_summary
-    WHERE date >= (SELECT MAX(date) FROM dexify_daily_summary) - ${days}::int * INTERVAL '1 day'
-      AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
-    GROUP BY date, brand
-    ORDER BY date, mention_count DESC
-  `;
+  // When explicit dates are given, use them directly (frozen pipeline window).
+  // Otherwise fall back to the last 7 days anchored to MAX(date).
+  const result = startDate && endDate
+    ? await sql`
+        SELECT
+          date::text,
+          brand,
+          SUM(mention_count)::int AS mention_count
+        FROM dexify_daily_summary
+        WHERE date >= ${startDate}::date
+          AND date <= ${endDate}::date
+          AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
+        GROUP BY date, brand
+        ORDER BY date, mention_count DESC
+      `
+    : await sql`
+        SELECT
+          date::text,
+          brand,
+          SUM(mention_count)::int AS mention_count
+        FROM dexify_daily_summary
+        WHERE date >= (SELECT MAX(date) FROM dexify_daily_summary) - 7 * INTERVAL '1 day'
+          AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
+        GROUP BY date, brand
+        ORDER BY date, mention_count DESC
+      `;
   return result.rows as DexifyTrendRow[];
 }
 
