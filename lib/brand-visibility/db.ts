@@ -2419,32 +2419,46 @@ export async function getDexifyTrend(
   endDate?: string,
 ): Promise<DexifyTrendRow[]> {
   await initDexifyDB();
-  // When explicit dates are given, use them directly (frozen pipeline window).
-  // Otherwise fall back to the last 7 days anchored to MAX(date).
-  const result = startDate
-    ? await sql`
-        SELECT
-          date::text,
-          brand,
-          SUM(mention_count)::int AS mention_count
-        FROM dexify_daily_summary
-        WHERE date >= ${startDate}::date
-          ${endDate ? sql`AND date <= ${endDate}::date` : sql``}
-          AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
-        GROUP BY date, brand
-        ORDER BY date, mention_count DESC
-      `
-    : await sql`
-        SELECT
-          date::text,
-          brand,
-          SUM(mention_count)::int AS mention_count
-        FROM dexify_daily_summary
-        WHERE date >= (SELECT MAX(date) FROM dexify_daily_summary) - 7 * INTERVAL '1 day'
-          AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
-        GROUP BY date, brand
-        ORDER BY date, mention_count DESC
-      `;
+  // Three separate branches — Neon sql`` doesn't support conditional nested tags.
+  let result;
+  if (startDate && endDate) {
+    result = await sql`
+      SELECT
+        date::text,
+        brand,
+        SUM(mention_count)::int AS mention_count
+      FROM dexify_daily_summary
+      WHERE date >= ${startDate}::date
+        AND date <= ${endDate}::date
+        AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
+      GROUP BY date, brand
+      ORDER BY date, mention_count DESC
+    `;
+  } else if (startDate) {
+    result = await sql`
+      SELECT
+        date::text,
+        brand,
+        SUM(mention_count)::int AS mention_count
+      FROM dexify_daily_summary
+      WHERE date >= ${startDate}::date
+        AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
+      GROUP BY date, brand
+      ORDER BY date, mention_count DESC
+    `;
+  } else {
+    result = await sql`
+      SELECT
+        date::text,
+        brand,
+        SUM(mention_count)::int AS mention_count
+      FROM dexify_daily_summary
+      WHERE date >= (SELECT MAX(date) FROM dexify_daily_summary) - 7 * INTERVAL '1 day'
+        AND LOWER(brand) NOT IN (SELECT LOWER(brand_name) FROM dexify_denylist)
+      GROUP BY date, brand
+      ORDER BY date, mention_count DESC
+    `;
+  }
   return result.rows as DexifyTrendRow[];
 }
 
