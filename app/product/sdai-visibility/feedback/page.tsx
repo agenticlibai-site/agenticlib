@@ -357,7 +357,7 @@ export default function SdaiFeedbackPage() {
                 <div style={numStyle}>4</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <label htmlFor="q4" style={labelStyle}>
-                    What were the positive things about the product feature intelligence, use case intelligence, competitive intelligence and/or LLM playbook in this report?
+                    What were the positive things about the product feature intelligence, use case intelligence and/or competitive intelligence that was useful to you?
                   </label>
                   <textarea
                     id="q4"
