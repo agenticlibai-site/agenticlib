@@ -92,7 +92,6 @@ export default function RalfiFeedbackPage() {
   const [q2b, setQ2b] = useState("");
   const [q3, setQ3] = useState("");
   const [q4, setQ4] = useState("");
-  const [q5, setQ5] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -101,7 +100,7 @@ export default function RalfiFeedbackPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!company.trim() || !q1.trim() || !q2 || !q3.trim() || !q4.trim() || !q5) {
+    if (!company.trim() || !q1.trim() || !q2 || !q3.trim() || !q4.trim()) {
       setError("Please answer all questions before submitting.");
       return;
     }
@@ -118,7 +117,6 @@ export default function RalfiFeedbackPage() {
           q2b_what_specifically: showFollowup ? q2b.trim() : "",
           q3_whats_missing: q3.trim(),
           q4_positives: q4.trim(),
-          q5_want_monthly: q5,
           submittedAt: new Date().toISOString(),
         }),
       });
@@ -175,7 +173,7 @@ export default function RalfiFeedbackPage() {
             Your take on the Insurance Broker report
           </h1>
           <p style={{ fontSize: 14, color: "#555", margin: 0, lineHeight: 1.55 }}>
-            Five questions. Takes about 5 minutes. Answers go directly to the team.
+            Four questions. Takes about 5 minutes. Answers go directly to the team.
           </p>
         </div>
 
@@ -309,7 +307,7 @@ export default function RalfiFeedbackPage() {
               </div>
 
               {/* Q4 */}
-              <div style={qStyle}>
+              <div style={{ ...qStyle, borderBottom: "none" }}>
                 <div style={numStyle}>4</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <label htmlFor="q4" style={labelStyle}>
@@ -320,20 +318,6 @@ export default function RalfiFeedbackPage() {
                 </div>
               </div>
 
-              {/* Q5 */}
-              <div style={{ ...qStyle, borderBottom: "none" }}>
-                <div style={numStyle}>5</div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <span style={labelStyle}>Would you want this report monthly?</span>
-                  <div style={{ display: "flex", gap: 10, marginTop: 12 }}>
-                    {(["Yes", "No"] as const).map((v) => (
-                      <button key={v} type="button" onClick={() => setQ5(v.toLowerCase())} style={ynBtnStyle(q5 === v.toLowerCase())}>
-                        {v}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
 
               {error && <p style={{ fontSize: 13, color: "#DC2626", padding: "0 32px 14px", margin: 0 }}>{error}</p>}
 
