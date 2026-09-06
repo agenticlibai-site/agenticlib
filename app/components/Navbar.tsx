@@ -121,6 +121,9 @@ export default function Navbar() {
                         { label: "Insurance Broker", href: "/product/ralfi-visibility/login",
                           iconBg: "linear-gradient(135deg,#0d9488,#14b8a6)",
                           icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2L3.5 5.5V10c0 4.5 3 7.5 6.5 8.5 3.5-1 6.5-4 6.5-8.5V5.5L10 2z" stroke="white" strokeWidth="1.6" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/><polyline points="7,10 9.5,12.5 13.5,7.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
+                        { label: "Trades", href: "/product/dexify-visibility/login",
+                          iconBg: "linear-gradient(135deg,#ea580c,#fb923c)",
+                          icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4 16l3.5-3.5M12.5 3.5a3 3 0 014 4L13 11l-4-4 3.5-3.5z" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="rgba(255,255,255,0.18)"/><path d="M7.5 12.5l-3 3a1 1 0 001.4 1.4l3-3" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg> },
                       ].map((item) => (
                         <a key={item.href} href={item.href} className="flex items-center gap-3 py-2.5 rounded-xl px-2" style={{ textDecoration: "none" }}
                           onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(124,58,237,0.04)"; }}
@@ -291,6 +294,7 @@ export default function Navbar() {
                 {[
                   { label: "Skincare", href: "/solutions/skincare" },
                   { label: "Insurance Broker", href: "/product/ralfi-visibility/login" },
+                  { label: "Trades", href: "/product/dexify-visibility/login" },
                 ].map((item) => (
                   <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
                     className="block pl-8 pr-5 py-3 text-sm text-black hover:text-black hover:bg-gray-100 transition-colors"
