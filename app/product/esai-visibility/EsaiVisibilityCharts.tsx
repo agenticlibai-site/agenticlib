@@ -65,17 +65,17 @@ const CLUSTERS: { tag: string; label: string; description: string }[] = [
 
 // Trend clusters (for per-cluster coverage charts)
 const TREND_CLUSTERS: { tag: string; label: string }[] = [
-  { tag: "esai-takeoff",      label: "Quantity Takeoff" },
-  { tag: "esai-plans",        label: "Plan & Document Reading" },
-  { tag: "esai-scope",        label: "Trade Scoping" },
-  { tag: "esai-pricing",      label: "Rate Management & Pricing" },
-  { tag: "esai-quote",        label: "Quote & Estimate Output" },
-  { tag: "esai-residential",  label: "Residential New Build" },
-  { tag: "esai-commercial",   label: "Commercial Construction" },
-  { tag: "esai-subcontract",  label: "Subcontractor & Trade Quoting" },
-  { tag: "esai-ai",           label: "AI-Powered Estimating" },
-  { tag: "esai-tender",       label: "Tender & Bid Preparation" },
-  { tag: "esai-buyer-intent", label: "Buyer Intent" },
+  { tag: "esai-takeoff",      label: "Quantity Takeoff",               description: "Auto-measuring areas, lengths & counts from digital plans" },
+  { tag: "esai-plans",        label: "Plan & Document Reading",        description: "Reading and interpreting architectural & structural drawing sets" },
+  { tag: "esai-scope",        label: "Trade Scoping",                  description: "Breaking a project into trade-by-trade work packages" },
+  { tag: "esai-pricing",      label: "Rate Management & Pricing",      description: "Managing labour, material & plant rate databases" },
+  { tag: "esai-quote",        label: "Quote & Estimate Output",        description: "Producing an editable, exportable bill of quantities or quote" },
+  { tag: "esai-residential",  label: "Residential New Build",          description: "Estimating new homes & multi-unit dwellings for AU builders" },
+  { tag: "esai-commercial",   label: "Commercial Construction",        description: "Multi-trade pricing for commercial construction & fitout" },
+  { tag: "esai-subcontract",  label: "Subcontractor & Trade Quoting",  description: "Getting trade prices and managing subie quote packages" },
+  { tag: "esai-ai",           label: "AI-Powered Estimating",          description: "Auto-scope, plan interpretation & predictive pricing via AI" },
+  { tag: "esai-tender",       label: "Tender & Bid Preparation",       description: "Compiling tender documents and tracking bid submissions" },
+  { tag: "esai-buyer-intent", label: "Buyer Intent",                   description: "Signals that a builder or estimator is actively evaluating tools" },
 ];
 
 // All feature clusters (for the feature scores section)
@@ -475,7 +475,10 @@ export default function EsaiVisibilityCharts({
               <h3 style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: "0 0 2px" }}>
                 {cluster.label}
               </h3>
-              <p style={{ fontSize: 11, color: "#000", margin: "0 0 12px", opacity: 0.55 }}>
+              <p style={{ fontSize: 11, fontWeight: 600, color: ACCENT, margin: "0 0 2px" }}>
+                {cluster.description}
+              </p>
+              <p style={{ fontSize: 11, color: "#000", margin: "0 0 12px", opacity: 0.45 }}>
                 AI estimating brands · daily mentions · EstiMate, Togal.AI &amp; Buildr pinned
               </p>
               <ResponsiveContainer width="100%" height={160}>
