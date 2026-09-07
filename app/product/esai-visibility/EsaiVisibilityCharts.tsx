@@ -25,7 +25,6 @@ const LINE_COLORS = [
   "#65A30D", "#0369A1", "#F43F5E", "#FB923C", "#818CF8",
 ];
 
-function lineColor(i: number) { return LINE_COLORS[i % LINE_COLORS.length]; }
 
 function fmtDate(d: string) {
   return new Date(d + "T00:00:00Z").toLocaleDateString("en-AU", {
@@ -198,83 +197,31 @@ export default function EsaiVisibilityCharts({
   // ── Hidden brands state (interactive trend) ───────────────────────────────
   const [hiddenBrands, setHiddenBrands] = useState<Set<string>>(new Set());
 
-  // ── Global brand→color map ────────────────────────────────────────────────
-  const brandColorMap: Record<string, string> = {};
-  [...topBrands]
-    .sort((a, b) => b.total_mentions - a.total_mentions)
-    .forEach((r, i) => { brandColorMap[r.brand] = LINE_COLORS[i % LINE_COLORS.length]; });
-  const brandColor = (brand: string) => brandColorMap[brand] ?? "#94a3b8";
+  // Only AI-native estimating agents appear in all charts
+  const AI_NATIVE = ["EstiMate", "Togal.AI", "Buildr"];
+  const AI_NATIVE_SET = new Set(AI_NATIVE);
+  const AI_NATIVE_COLORS: Record<string, string> = {
+    "EstiMate": "#EA580C",
+    "Togal.AI": "#059669",
+    "Buildr":   "#7C3AED",
+  };
+  const brandColor = (brand: string) => AI_NATIVE_COLORS[brand] ?? "#94a3b8";
 
-  // Non-estimating brands to filter out of coverage charts:
-  // construction management, scheduling, field service, accounting,
-  // AI chatbots, CAD tools, spreadsheets, productivity apps,
-  // and traditional estimating tools with no AI features
-  const NON_ESTIMATING = new Set([
-    // AI models mentioning themselves
-    "Claude", "ChatGPT", "Gemini", "Google Gemini", "Copilot", "Microsoft Copilot", "Perplexity",
-    // Construction management / scheduling
-    "Touchplan", "Buildots", "CoConstruct", "Buildertrend", "Contractor Foreman",
-    "Procore", "Synchro", "PlanGrid", "Aconex", "Fieldwire", "Raken", "Snag", "Blokable",
-    // Field service / job management
-    "SimPRO", "Tradify", "ServiceM8", "ServiceTitan",
-    // Workforce / HR
-    "Bridgit", "Bridgit Bench", "Deputy", "Airtasker",
-    // Accounting / finance
-    "QuickBooks", "Xero", "MYOB", "Zoho",
-    // Productivity / CRM
-    "Notion", "Monday.com", "Asana", "Airtable", "Slack", "HubSpot",
-    // Spreadsheets
-    "Excel", "Microsoft Excel", "Google Sheets",
-    // CAD / BIM authoring (not estimating platforms)
-    "AutoCAD", "Revit", "ArchiCAD", "Navisworks", "BIM 360",
-    // Broad company names rather than specific estimating products
-    "Autodesk", "Trimble",
-    // Generic terms being captured as brand names
-    "Estimate", "Estimator", "Estimation", "Takeoff", "Construct",
-    // Document markup tool (not an estimating platform)
-    "Bluebeam",
-    // Traditional estimating tools with no AI features (removed from locked set)
-    "CostX", "Sage Estimating", "Estimating Edge",
-    // Other non-estimating
-    "BuildCalc", "Speeko", "Nobul", "Juno",
-  ]);
-
-  // ── Aggregate from clusterTrend (excludes esai-overall — sums are equivalent) ──
+  // ── Aggregate from clusterTrend — only AI-native brands ──
   const allDates = [...new Set(clusterTrend.map(r => r.date))].sort();
 
   const overallByBrand: Record<string, number> = {};
   const overallTrendMap: Record<string, Record<string, number>> = {};
   for (const r of clusterTrend) {
-    if (NON_ESTIMATING.has(r.brand)) continue; // filter out non-estimating brands
+    if (!AI_NATIVE_SET.has(r.brand)) continue;
     overallByBrand[r.brand] = (overallByBrand[r.brand] ?? 0) + r.mention_count;
     if (!overallTrendMap[r.date]) overallTrendMap[r.date] = {};
     overallTrendMap[r.date][r.brand] = (overallTrendMap[r.date][r.brand] ?? 0) + r.mention_count;
   }
 
-  // Pinned AI-native brands always shown — even near-zero — to visualise the LLM gap
-  const PINNED_BRANDS = ["EstiMate", "Togal.AI", "Buildr"];
-
-  // Top brands by mention count from topBrands, then pin AI-native brands at end if not already included
-  const top15base = topBrands.slice(0, 15).map(r => r.brand);
-  const top15brands = [
-    ...top15base,
-    ...PINNED_BRANDS.filter(b => !top15base.includes(b)),
-  ];
-
-  // Assign stable colors: topBrands ordering first, then pinned extras get fixed colors
-  const PINNED_COLORS: Record<string, string> = {
-    "EstiMate": "#EA580C",   // accent orange
-    "Togal.AI": "#059669",   // emerald
-    "Buildr":   "#7C3AED",   // purple
-  };
-  // Override color map for pinned brands so they're always the same color
-  for (const b of PINNED_BRANDS) {
-    if (PINNED_COLORS[b]) brandColorMap[b] = PINNED_COLORS[b];
-  }
-
   const combinedTrendData = allDates.map(date => {
     const row: Record<string, string | number> = { date };
-    for (const brand of top15brands) row[brand] = overallTrendMap[date]?.[brand] ?? 0;
+    for (const brand of AI_NATIVE) row[brand] = overallTrendMap[date]?.[brand] ?? 0;
     return row;
   });
 
@@ -288,64 +235,54 @@ export default function EsaiVisibilityCharts({
   const perClusterTrend: Record<string, ClusterChartEntry> = {};
 
   for (const cluster of TREND_CLUSTERS) {
-    const rows = clusterTrend.filter(r => r.cluster_tag === cluster.tag);
-    if (rows.length === 0) continue;
-
-    const brandTotals: Record<string, number> = {};
-    for (const r of rows) {
-      if (NON_ESTIMATING.has(r.brand)) continue;
-      brandTotals[r.brand] = (brandTotals[r.brand] ?? 0) + r.mention_count;
+    const rows = clusterTrend.filter(r => r.cluster_tag === cluster.tag && AI_NATIVE_SET.has(r.brand));
+    if (rows.length === 0) {
+      // Still include the cluster with zero data so the chart renders
+      const data = allDates.map(date => {
+        const row: Record<string, string | number> = { date };
+        for (const brand of AI_NATIVE) row[brand] = 0;
+        return row;
+      });
+      perClusterTrend[cluster.tag] = { brands: AI_NATIVE, data };
+      continue;
     }
 
-    // Top 6 by mentions, then always pin EstiMate + Togal.AI at the end if not already included
-    const top6 = Object.entries(brandTotals)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 6)
-      .map(([b]) => b);
-    const clusterPinned = ["EstiMate", "Togal.AI"].filter(b => !top6.includes(b));
-    const topClusterBrands = [...top6, ...clusterPinned];
-
-    // Build date map for all included brands (pinned brands may have 0 data → kept as 0)
     const dateMap: Record<string, Record<string, number>> = {};
     for (const r of rows) {
-      if (NON_ESTIMATING.has(r.brand)) continue;
-      if (!topClusterBrands.includes(r.brand)) continue;
       if (!dateMap[r.date]) dateMap[r.date] = {};
       dateMap[r.date][r.brand] = r.mention_count;
     }
 
     const data = allDates.map(date => {
       const row: Record<string, string | number> = { date };
-      for (const brand of topClusterBrands) row[brand] = dateMap[date]?.[brand] ?? 0;
+      for (const brand of AI_NATIVE) row[brand] = dateMap[date]?.[brand] ?? 0;
       return row;
     });
 
-    perClusterTrend[cluster.tag] = { brands: topClusterBrands, data };
+    perClusterTrend[cluster.tag] = { brands: AI_NATIVE, data };
   }
 
-  // ── LLM split ────────────────────────────────────────────────────────────
-  const top12 = topBrands.slice(0, 15).map(r => r.brand);
+  // ── LLM split — AI-native brands only ───────────────────────────────────
   const modelMap: Record<string, { claude: number; gpt: number }> = {};
   for (const r of byModel) {
-    if (!top12.includes(r.brand)) continue;
+    if (!AI_NATIVE_SET.has(r.brand)) continue;
     if (!modelMap[r.brand]) modelMap[r.brand] = { claude: 0, gpt: 0 };
     if (r.model.includes("claude")) modelMap[r.brand].claude += r.total_mentions;
     else modelMap[r.brand].gpt += r.total_mentions;
   }
-  const modelData = top12
+  const modelData = AI_NATIVE
     .map(brand => ({ brand, claude: modelMap[brand]?.claude ?? 0, gpt: modelMap[brand]?.gpt ?? 0 }))
     .sort((a, b) => (b.claude + b.gpt) - (a.claude + a.gpt));
 
-  // ── Use case cluster charts (2×2 pie grid) ────────────────────────────────
+  // ── Use case cluster charts (2×2 pie grid) — AI-native brands only ────────
   const clusterMap: Record<string, { brand: string; mentions: number }[]> = {};
   for (const r of byCluster) {
+    if (!AI_NATIVE_SET.has(r.brand)) continue;
     if (!clusterMap[r.cluster_tag]) clusterMap[r.cluster_tag] = [];
     clusterMap[r.cluster_tag].push({ brand: r.brand, mentions: r.total_mentions });
   }
   for (const tag of Object.keys(clusterMap)) {
-    clusterMap[tag] = clusterMap[tag]
-      .sort((a, b) => b.mentions - a.mentions)
-      .slice(0, 10);
+    clusterMap[tag] = clusterMap[tag].sort((a, b) => b.mentions - a.mentions);
   }
 
   const hasData = topBrands.length > 0;
@@ -366,10 +303,10 @@ export default function EsaiVisibilityCharts({
           Note
         </p>
         <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
-          When LLMs are asked about AI-powered estimating and takeoff software for Australian builders, they overwhelmingly surface traditional tools — PlanSwift, Bluebeam, Buildxact, Procore — rather than AI-native estimating agents in <strong>Top Brands by Total Mentions</strong>, <strong>Coverage Over Time</strong>, and <strong>Use Case Share of Voice</strong>. These tools appear not because they are AI-native construction estimating agents, but because they dominate the LLM training corpus for this category. This is the core LLM visibility gap EstiMate is building against.
+          This report tracks only the three AI-native construction estimating agents: <strong>EstiMate</strong>, <strong>Togal.AI</strong>, and <strong>Buildr</strong>. Every chart — coverage over time, use case share of voice, feature scores, sentiment — shows only these brands.
         </p>
         <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: 0 }}>
-          <strong>Product Feature Scores</strong> below evaluates EstiMate and its direct AI-native competitors only — not the traditional platforms that dominate LLM recall in the sections above.
+          When LLMs are asked about AI-powered estimating for Australian builders, they rarely surface any of these AI-native tools unprompted — overwhelmingly defaulting to traditional platforms instead. The near-zero mention counts below are not a data gap; they are the finding. That LLM invisibility is the market opportunity EstiMate is building into.
         </p>
       </div>
 
@@ -379,7 +316,7 @@ export default function EsaiVisibilityCharts({
           <StatCard
             label="Total Mentions"
             value={totalMentions.toLocaleString()}
-            sub="All brands · Aug 31 – Sep 6"
+            sub="AI-native agents · Aug 31 – Sep 6"
           />
           <StatCard
             label="Top Brand"
@@ -407,7 +344,7 @@ export default function EsaiVisibilityCharts({
           Daily mention totals · Aug 31 – Sep 6
         </p>
         <p style={{ fontSize: 12, color: ACCENT, margin: "0 0 16px", fontWeight: 600 }}>
-          EstiMate, Togal.AI &amp; Buildr are pinned — they appear near‑zero because LLMs rarely surface them unprompted. That gap is the point.
+          These AI-native agents appear near‑zero because LLMs rarely surface them unprompted. That invisibility gap is the point.
         </p>
 
         {combinedTrendData.length === 0 ? (
@@ -427,7 +364,7 @@ export default function EsaiVisibilityCharts({
                 Select All
               </button>
               <button
-                onClick={() => setHiddenBrands(new Set(top15brands))}
+                onClick={() => setHiddenBrands(new Set(AI_NATIVE))}
                 style={{
                   fontSize: 11, fontWeight: 700, padding: "4px 10px",
                   border: "1px solid rgba(0,0,0,0.18)", borderRadius: 999,
@@ -436,10 +373,9 @@ export default function EsaiVisibilityCharts({
               >
                 Clear All
               </button>
-              {top15brands.map((brand, i) => {
+              {AI_NATIVE.map((brand) => {
                 const hidden = hiddenBrands.has(brand);
-                const color = brandColorMap[brand] ?? lineColor(i);
-                const isPinned = PINNED_BRANDS.includes(brand);
+                const color = AI_NATIVE_COLORS[brand];
                 return (
                   <button
                     key={brand}
@@ -457,8 +393,8 @@ export default function EsaiVisibilityCharts({
                       borderRadius: 999,
                       background: hidden ? "#fff" : `${color}18`,
                       color: hidden ? "rgba(0,0,0,0.35)" : color,
-                      cursor: "pointer", fontWeight: isPinned ? 700 : 600,
-                      outline: isPinned && !hidden ? `2px solid ${color}` : "none",
+                      cursor: "pointer", fontWeight: 700,
+                      outline: !hidden ? `2px solid ${color}` : "none",
                       outlineOffset: 1,
                     }}
                   >
@@ -479,18 +415,14 @@ export default function EsaiVisibilityCharts({
                 <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#000" }} tickFormatter={fmtDate} />
                 <YAxis tick={{ fontSize: 11, fill: "#000" }} allowDecimals={false} />
                 <Tooltip content={<TrendTooltip />} />
-                {top15brands.map((brand, i) => {
-                  const isPinned = PINNED_BRANDS.includes(brand);
-                  return (
-                    <Line
-                      key={brand} type="monotone" dataKey={brand}
-                      stroke={brandColorMap[brand] ?? lineColor(i)}
-                      strokeWidth={isPinned ? 2.5 : 1.5}
-                      strokeDasharray={isPinned ? "none" : undefined}
-                      dot={false} hide={hiddenBrands.has(brand)}
-                    />
-                  );
-                })}
+                {AI_NATIVE.map((brand) => (
+                  <Line
+                    key={brand} type="monotone" dataKey={brand}
+                    stroke={AI_NATIVE_COLORS[brand]}
+                    strokeWidth={2.5}
+                    dot={false} hide={hiddenBrands.has(brand)}
+                  />
+                ))}
               </LineChart>
             </ResponsiveContainer>
           </>
@@ -522,7 +454,7 @@ export default function EsaiVisibilityCharts({
                 {cluster.label}
               </h3>
               <p style={{ fontSize: 11, color: "#000", margin: "0 0 12px", opacity: 0.55 }}>
-                Top brands · daily mentions · EstiMate &amp; Togal.AI pinned
+                AI-native estimating agents · daily mentions
               </p>
               <ResponsiveContainer width="100%" height={160}>
                 <LineChart data={data} margin={{ left: -16, right: 8, top: 4, bottom: 0 }}>
@@ -530,33 +462,27 @@ export default function EsaiVisibilityCharts({
                   <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#000" }} tickFormatter={fmtDate} />
                   <YAxis tick={{ fontSize: 10, fill: "#000" }} allowDecimals={false} width={28} />
                   <Tooltip content={<TrendTooltip />} />
-                  {brands.map((brand, i) => {
-                    const isPinned = PINNED_BRANDS.includes(brand);
-                    const color = brandColorMap[brand] ?? (brandColor(brand) !== "#94a3b8" ? brandColor(brand) : lineColor(i));
-                    return (
-                      <Line
-                        key={brand} type="monotone" dataKey={brand}
-                        stroke={color}
-                        strokeWidth={isPinned ? 2 : 1.5}
-                        dot={false}
-                      />
-                    );
-                  })}
+                  {brands.map((brand) => (
+                    <Line
+                      key={brand} type="monotone" dataKey={brand}
+                      stroke={AI_NATIVE_COLORS[brand] ?? "#94a3b8"}
+                      strokeWidth={2}
+                      dot={false}
+                    />
+                  ))}
                 </LineChart>
               </ResponsiveContainer>
               {/* Mini legend */}
               <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 6, marginTop: 10 }}>
-                {brands.map((brand, i) => {
-                  const isPinned = PINNED_BRANDS.includes(brand);
-                  const color = brandColorMap[brand] ?? (brandColor(brand) !== "#94a3b8" ? brandColor(brand) : lineColor(i));
+                {brands.map((brand) => {
+                  const color = AI_NATIVE_COLORS[brand] ?? "#94a3b8";
                   return (
                     <span key={brand} style={{
                       display: "flex", alignItems: "center", gap: 4, fontSize: 11,
-                      color: isPinned ? color : "#000",
-                      fontWeight: isPinned ? 700 : 400,
+                      color, fontWeight: 700,
                     }}>
                       <span style={{
-                        width: 10, height: isPinned ? 4 : 3, borderRadius: 999,
+                        width: 10, height: 4, borderRadius: 999,
                         background: color, display: "inline-block", flexShrink: 0,
                       }} />
                       {brand}
@@ -572,9 +498,9 @@ export default function EsaiVisibilityCharts({
       {/* ── Visibility by LLM ─────────────────────────────────────────────── */}
       <Section
         title="Visibility by LLM"
-        subtitle="Claude Haiku vs GPT-4o-mini · all-time · top 15 brands"
+        subtitle="Claude Haiku vs GPT-4o-mini · AI-native estimating agents only"
       >
-        <ResponsiveContainer width="100%" height={Math.max(220, top12.length * 26)}>
+        <ResponsiveContainer width="100%" height={Math.max(120, modelData.length * 48)}>
           <BarChart data={modelData} layout="vertical" margin={{ left: 0, right: 40, top: 4, bottom: 4 }}>
             <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(0,0,0,0.05)" />
             <XAxis type="number" tick={{ fontSize: 11, fill: "#000" }} />
@@ -926,11 +852,11 @@ export default function EsaiVisibilityCharts({
               }}>AU differentiator</span>
             </div>
             <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 12px" }}>
-              Every Australian builder prices from Rawlinsons, Cordell, or Archicentre cost guides. No AI-native estimating tool in the locked brand set — including Togal.AI, Buildr, or Buildxact — natively pulls from these AU-specific databases. A builder who opens EstiMate and gets a line-item estimate auto-seeded with current Rawlinsons rates for their state has no reason to cross-check in a separate spreadsheet. This closes the single biggest credibility gap AI estimating tools face in the Australian market: the fear that AI-generated numbers are not real AU prices.
+              Every Australian builder prices from Rawlinsons, Cordell, or Archicentre cost guides. No AI-native estimating tool — Togal.AI, Buildr, or EstiMate — natively pulls from these AU-specific databases. A builder who opens EstiMate and gets a line-item estimate auto-seeded with current Rawlinsons rates for their state has no reason to cross-check in a separate spreadsheet. This closes the single biggest credibility gap AI estimating tools face in the Australian market: the fear that AI-generated numbers are not real AU prices.
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
-              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>No direct competitor has cracked this in AU:</span>
-              {["Togal.AI (US-only)", "Buildxact (partial)", "CostX (manual import)"].map((b) => (
+              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>No AI-native competitor has cracked this in AU:</span>
+              {["Togal.AI (US-only)", "Buildr (US-only)"].map((b) => (
                 <span key={b} style={{ fontSize: 12, color: "#000", background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px" }}>{b}</span>
               ))}
             </div>
