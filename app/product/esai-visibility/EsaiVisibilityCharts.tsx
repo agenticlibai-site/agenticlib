@@ -89,8 +89,8 @@ const ALL_CLUSTERS: { tag: string; label: string }[] = [
   { tag: "esai-commercial",  label: "Commercial Construction" },
   { tag: "esai-subcontract", label: "Subcontractor & Trade Quoting" },
   { tag: "esai-ai",          label: "AI-Powered Estimating" },
-  { tag: "esai-security",    label: "Security & Data Trust" },
   { tag: "esai-tender",      label: "Tender & Bid Preparation" },
+  { tag: "esai-security",    label: "Security & Data Trust" },
 ];
 
 // ── Empty state ────────────────────────────────────────────────────────────────
