@@ -258,11 +258,16 @@ export default function EsaiVisibilityCharts({
 
     const brandTotals: Record<string, number> = {};
     for (const r of rows) brandTotals[r.brand] = (brandTotals[r.brand] ?? 0) + r.mention_count;
-    const topClusterBrands = Object.entries(brandTotals)
-      .sort((a, b) => b[1] - a[1])
-      .slice(0, 8)
-      .map(([b]) => b);
 
+    // Top 6 by mentions, then always pin EstiMate + Togal.AI at the end if not already included
+    const top6 = Object.entries(brandTotals)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 6)
+      .map(([b]) => b);
+    const clusterPinned = ["EstiMate", "Togal.AI"].filter(b => !top6.includes(b));
+    const topClusterBrands = [...top6, ...clusterPinned];
+
+    // Build date map for all included brands (pinned brands may have 0 data → kept as 0)
     const dateMap: Record<string, Record<string, number>> = {};
     for (const r of rows) {
       if (!topClusterBrands.includes(r.brand)) continue;
@@ -478,7 +483,7 @@ export default function EsaiVisibilityCharts({
                 {cluster.label}
               </h3>
               <p style={{ fontSize: 11, color: "#000", margin: "0 0 12px", opacity: 0.55 }}>
-                Top {brands.length} brands · daily mentions
+                Top brands · daily mentions · EstiMate &amp; Togal.AI pinned
               </p>
               <ResponsiveContainer width="100%" height={160}>
                 <LineChart data={data} margin={{ left: -16, right: 8, top: 4, bottom: 0 }}>
@@ -486,23 +491,33 @@ export default function EsaiVisibilityCharts({
                   <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#000" }} tickFormatter={fmtDate} />
                   <YAxis tick={{ fontSize: 10, fill: "#000" }} allowDecimals={false} width={28} />
                   <Tooltip content={<TrendTooltip />} />
-                  {brands.map((brand, i) => (
-                    <Line
-                      key={brand} type="monotone" dataKey={brand}
-                      stroke={brandColor(brand) !== "#94a3b8" ? brandColor(brand) : lineColor(i)}
-                      strokeWidth={1.5} dot={false}
-                    />
-                  ))}
+                  {brands.map((brand, i) => {
+                    const isPinned = PINNED_BRANDS.includes(brand);
+                    const color = brandColorMap[brand] ?? (brandColor(brand) !== "#94a3b8" ? brandColor(brand) : lineColor(i));
+                    return (
+                      <Line
+                        key={brand} type="monotone" dataKey={brand}
+                        stroke={color}
+                        strokeWidth={isPinned ? 2 : 1.5}
+                        dot={false}
+                      />
+                    );
+                  })}
                 </LineChart>
               </ResponsiveContainer>
               {/* Mini legend */}
               <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 6, marginTop: 10 }}>
                 {brands.map((brand, i) => {
-                  const color = brandColor(brand) !== "#94a3b8" ? brandColor(brand) : lineColor(i);
+                  const isPinned = PINNED_BRANDS.includes(brand);
+                  const color = brandColorMap[brand] ?? (brandColor(brand) !== "#94a3b8" ? brandColor(brand) : lineColor(i));
                   return (
-                    <span key={brand} style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 11, color: "#000" }}>
+                    <span key={brand} style={{
+                      display: "flex", alignItems: "center", gap: 4, fontSize: 11,
+                      color: isPinned ? color : "#000",
+                      fontWeight: isPinned ? 700 : 400,
+                    }}>
                       <span style={{
-                        width: 10, height: 3, borderRadius: 999,
+                        width: 10, height: isPinned ? 4 : 3, borderRadius: 999,
                         background: color, display: "inline-block", flexShrink: 0,
                       }} />
                       {brand}
