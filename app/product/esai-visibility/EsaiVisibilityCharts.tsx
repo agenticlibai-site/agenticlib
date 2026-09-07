@@ -68,23 +68,22 @@ const TREND_CLUSTERS: { tag: string; label: string; description: string }[] = [
   { tag: "esai-subcontract",  label: "Subcontractor & Trade Quoting",  description: "Getting trade prices and managing subie quote packages" },
   { tag: "esai-ai",           label: "AI-Powered Estimating",          description: "Auto-scope, plan interpretation & predictive pricing via AI" },
   { tag: "esai-tender",       label: "Tender & Bid Preparation",       description: "Compiling tender documents and tracking bid submissions" },
-  { tag: "esai-buyer-intent", label: "Buyer Intent",                   description: "Signals that a builder or estimator is actively evaluating tools" },
 ];
 
 // All feature clusters (for the feature scores section)
 const ALL_CLUSTERS: { tag: string; label: string }[] = [
-  { tag: "esai-takeoff",     label: "Quantity Takeoff" },
-  { tag: "esai-plans",       label: "Plan & Document Reading" },
-  { tag: "esai-scope",       label: "Trade Scoping" },
-  { tag: "esai-pricing",     label: "Rate Management & Pricing" },
-  { tag: "esai-quote",       label: "Quote & Estimate Output" },
-  { tag: "esai-residential", label: "Residential New Build" },
-  { tag: "esai-commercial",  label: "Commercial Construction" },
-  { tag: "esai-subcontract", label: "Subcontractor & Trade Quoting" },
+  { tag: "esai-takeoff",      label: "Quantity Takeoff" },
+  { tag: "esai-plans",        label: "Plan & Document Reading" },
+  { tag: "esai-scope",        label: "Trade Scoping" },
+  { tag: "esai-quote",        label: "Quote & Estimate Output" },
+  { tag: "esai-residential",  label: "Residential New Build" },
+  { tag: "esai-commercial",   label: "Commercial Construction" },
+  { tag: "esai-subcontract",  label: "Subcontractor & Trade Quoting" },
   { tag: "esai-ai",           label: "AI-Powered Estimating" },
   { tag: "esai-tender",       label: "Tender & Bid Preparation" },
   { tag: "esai-integrations", label: "Technical Capabilities & Integrations" },
   { tag: "esai-security",     label: "Security & Data Trust" },
+  { tag: "esai-pricing",      label: "Rate Management & Pricing" },
 ];
 
 // ── Empty state ────────────────────────────────────────────────────────────────
@@ -153,6 +152,8 @@ interface FeatureScoreRow {
   score:              number | null;
   score_band:         string;
   flagged_for_review: boolean;
+  notes:              string | null;
+  grounded_source:    boolean;
   evidence:           string | null;
 }
 
@@ -173,6 +174,192 @@ interface SentimentData {
 }
 
 const SENTIMENT_GATE = 1;
+
+// ── Pipeline Prompts component ─────────────────────────────────────────────────
+// Shows the 42 LLM prompts used to measure brand visibility, grouped by cluster.
+// Helps readers understand *why* AI-native brands appear near-zero — it's not
+// that we didn't ask; it's that LLMs default to traditional incumbents.
+const PIPELINE_PROMPT_CLUSTERS = [
+  {
+    tag: "esai-overall",
+    label: "Overall Brand Mentions",
+    description: "9 prompts — broad awareness across all estimating tools",
+    prompts: [
+      "What estimating software do Australian builders use?",
+      "What tools do Australian residential builders use to price jobs?",
+      "What software do Australian estimators use for quantity takeoff?",
+      "What estimating platforms are popular with Australian building companies?",
+      "What software helps Australian builders price new homes?",
+      "What tools do Australian trades and estimators use to quote jobs?",
+      "What estimating software do Australian commercial builders use?",
+      "What are Australian builders using to speed up their estimating process in 2025?",
+      "Which estimating software companies are targeting the Australian construction market?",
+    ],
+  },
+  {
+    tag: "esai-takeoff",
+    label: "Quantity Takeoff",
+    description: "3 prompts",
+    prompts: [
+      "What software do Australian builders use for quantity takeoff from plans?",
+      "What tools do Australian estimators use to measure quantities from PDF drawings?",
+      "What platforms help Australian builders do automated takeoff from building plans?",
+    ],
+  },
+  {
+    tag: "esai-plans",
+    label: "Plan & Document Reading",
+    description: "3 prompts",
+    prompts: [
+      "What software do Australian builders use to read and extract information from architectural drawings?",
+      "What tools help Australian estimators work with multiple building documents in one project?",
+      "What platforms let Australian builders upload and read plans, specs and engineering drawings together?",
+    ],
+  },
+  {
+    tag: "esai-scope",
+    label: "Trade Scoping",
+    description: "3 prompts",
+    prompts: [
+      "What software do Australian builders use to break down a job by trade?",
+      "What tools help Australian estimators organise scope by trade package?",
+      "What platforms automatically scope a construction job by trade for Australian builders?",
+    ],
+  },
+  {
+    tag: "esai-pricing",
+    label: "Rate Management & Pricing",
+    description: "3 prompts",
+    prompts: [
+      "What software do Australian builders use to price materials and labour?",
+      "What estimating tools include Australian construction pricing databases?",
+      "What estimating platforms let Australian builders apply their own rates?",
+    ],
+  },
+  {
+    tag: "esai-quote",
+    label: "Quote & Estimate Output",
+    description: "3 prompts",
+    prompts: [
+      "What software do Australian builders use to produce a formal quote or estimate?",
+      "What tools help Australian builders export a professional PDF quote?",
+      "What platforms produce trade-broken estimates for Australian construction projects?",
+    ],
+  },
+  {
+    tag: "esai-residential",
+    label: "Residential New Build",
+    description: "3 prompts",
+    prompts: [
+      "What estimating software do Australian residential builders use?",
+      "What tools do Australian house builders use to price new home builds?",
+      "What platforms are popular with Australian volume and custom home builders for estimating?",
+    ],
+  },
+  {
+    tag: "esai-commercial",
+    label: "Commercial Construction",
+    description: "3 prompts",
+    prompts: [
+      "What estimating software do Australian commercial builders use?",
+      "What tools help Australian commercial contractors price large construction projects?",
+      "What platforms do Australian commercial builders use for tender estimating?",
+    ],
+  },
+  {
+    tag: "esai-subcontract",
+    label: "Subcontractor & Trade Quoting",
+    description: "3 prompts",
+    prompts: [
+      "What estimating software do Australian subcontractors and trades use?",
+      "What tools help Australian trades price jobs from builder-issued drawings?",
+      "What platforms do Australian subcontractors use to produce trade quotes quickly?",
+    ],
+  },
+  {
+    tag: "esai-ai",
+    label: "AI-Powered Estimating",
+    description: "3 prompts",
+    prompts: [
+      "What AI-powered estimating tools are available for Australian builders?",
+      "What software uses AI to automate quantity takeoff for Australian construction?",
+      "What platforms use artificial intelligence to help Australian builders price jobs faster?",
+    ],
+  },
+  {
+    tag: "esai-tender",
+    label: "Tender & Bid Preparation",
+    description: "3 prompts",
+    prompts: [
+      "What software do Australian builders use to prepare tender submissions?",
+      "What tools help Australian estimators manage multiple tender bids?",
+      "What platforms support the full tender preparation workflow for Australian construction?",
+    ],
+  },
+];
+
+function PipelinePrompts() {
+  const [open, setOpen] = useState(false);
+  const total = PIPELINE_PROMPT_CLUSTERS.reduce((s, c) => s + c.prompts.length, 0);
+  return (
+    <div style={{
+      background: "#fff", borderRadius: 14,
+      boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+      padding: "20px 24px", marginBottom: 20,
+    }}>
+      <div
+        onClick={() => setOpen(o => !o)}
+        style={{ display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer" }}
+      >
+        <div>
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: "0 0 3px" }}>
+            Pipeline Prompts
+          </h3>
+          <p style={{ fontSize: 12, color: "#000", opacity: 0.5, margin: 0 }}>
+            {total} prompts across 11 use case clusters — what LLMs were asked each day
+          </p>
+        </div>
+        <div style={{
+          fontSize: 12, fontWeight: 700, color: ACCENT,
+          border: `1px solid ${ACCENT}`, borderRadius: 999,
+          padding: "4px 12px", flexShrink: 0,
+        }}>
+          {open ? "Hide" : "Show prompts"}
+        </div>
+      </div>
+
+      {open && (
+        <div style={{ marginTop: 20 }}>
+          <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: "0 0 18px", opacity: 0.7 }}>
+            These are the exact questions sent to the LLM each day. <strong>EstiMate</strong>, <strong>Togal.AI</strong> and <strong>Buildr</strong> appear near‑zero not because they weren't queried for — they were — but because LLMs default to well-documented incumbents (Buildxact, PlanSwift, ProEst) when asked generic market questions. The AI-native agents need direct, specific prompts to surface; broad awareness queries almost never return them.
+          </p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 14 }}>
+            {PIPELINE_PROMPT_CLUSTERS.map((cluster) => (
+              <div key={cluster.tag} style={{
+                background: "rgba(0,0,0,0.025)", borderRadius: 10,
+                padding: "14px 16px",
+              }}>
+                <p style={{ fontSize: 12, fontWeight: 700, color: "#000", margin: "0 0 2px" }}>
+                  {cluster.label}
+                </p>
+                <p style={{ fontSize: 11, color: ACCENT, fontWeight: 600, margin: "0 0 10px" }}>
+                  {cluster.description}
+                </p>
+                <ol style={{ margin: 0, paddingLeft: 18 }}>
+                  {cluster.prompts.map((p, i) => (
+                    <li key={i} style={{ fontSize: 12, color: "#000", lineHeight: 1.6, opacity: 0.75, marginBottom: 4 }}>
+                      {p}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
 
 // ── Props ──────────────────────────────────────────────────────────────────────
 interface Props {
@@ -445,6 +632,9 @@ export default function EsaiVisibilityCharts({
         )}
       </div>
 
+      {/* ── Pipeline Prompts ──────────────────────────────────────────────── */}
+      <PipelinePrompts />
+
       {/* ── Per-cluster coverage over time ────────────────────────────────── */}
       <div style={{ marginTop: 8, marginBottom: 4 }}>
         <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
@@ -672,9 +862,13 @@ export default function EsaiVisibilityCharts({
                             : row.score_band === "partial" ? "#d97706"
                             : row.score_band === "weak"    ? "#dc2626"
                             : "rgba(0,0,0,0.18)";
+
+                          // Reasoning: prefer notes (human-written, web-researched) then pipeline evidence
                           const cleanEvidence = row.evidence
                             ? row.evidence.replace(/<cite[^>]*>|<\/cite>/g, "").trim()
                             : null;
+                          const reasoning = row.notes?.trim() || cleanEvidence || null;
+                          const isWebResearched = row.grounded_source === true;
 
                           if (isNd) {
                             return (
@@ -691,7 +885,7 @@ export default function EsaiVisibilityCharts({
 
                           return (
                             <div key={row.brand_name}>
-                              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: cleanEvidence ? 6 : 0 }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: reasoning ? 6 : 0 }}>
                                 <span style={{ fontSize: 13, fontWeight: 600, color: "#000", width: 160, flexShrink: 0 }}>
                                   {row.brand_name}
                                 </span>
@@ -713,13 +907,26 @@ export default function EsaiVisibilityCharts({
                                   {score}
                                 </span>
                               </div>
-                              {cleanEvidence && (
-                                <p style={{
-                                  fontSize: 12, color: "#000", lineHeight: 1.65,
-                                  margin: 0, paddingLeft: 172,
-                                }}>
-                                  {cleanEvidence}
-                                </p>
+                              {reasoning && (
+                                <div style={{ paddingLeft: 172, display: "flex", gap: 6, alignItems: "flex-start" }}>
+                                  {isWebResearched && (
+                                    <span style={{
+                                      fontSize: 9, fontWeight: 800, letterSpacing: "0.08em",
+                                      textTransform: "uppercase" as const,
+                                      color: ACCENT, background: "rgba(234,88,12,0.10)",
+                                      borderRadius: 4, padding: "2px 5px",
+                                      flexShrink: 0, marginTop: 1, lineHeight: 1.4,
+                                    }}>
+                                      web
+                                    </span>
+                                  )}
+                                  <p style={{
+                                    fontSize: 12, color: "#000", lineHeight: 1.65,
+                                    margin: 0, opacity: 0.68,
+                                  }}>
+                                    {reasoning}
+                                  </p>
+                                </div>
                               )}
                             </div>
                           );

@@ -3955,6 +3955,8 @@ export async function getEsaiFeatureScores(): Promise<{
   score:              number | null;
   score_band:         string;
   flagged_for_review: boolean;
+  notes:              string | null;
+  grounded_source:    boolean;
   evidence:           string | null;
 }[]> {
   await initEsaiDB();
@@ -3978,6 +3980,7 @@ export async function getEsaiFeatureScores(): Promise<{
         CASE confidence WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END
     )
     SELECT s.brand_name, s.feature_id, s.feature_tag, s.score, s.score_band, s.flagged_for_review,
+           s.notes, s.grounded_source,
            be.evidence
     FROM esai_feature_scores s
     LEFT JOIN best_evidence be ON be.brand_name = s.brand_name AND be.feature_id = s.feature_id
@@ -3986,6 +3989,7 @@ export async function getEsaiFeatureScores(): Promise<{
   return result.rows as {
     brand_name: string; feature_id: string; feature_tag: string;
     score: number | null; score_band: string; flagged_for_review: boolean;
+    notes: string | null; grounded_source: boolean;
     evidence: string | null;
   }[];
 }
