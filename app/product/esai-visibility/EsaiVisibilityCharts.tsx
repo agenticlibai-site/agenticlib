@@ -211,10 +211,42 @@ export default function EsaiVisibilityCharts({
   const overallByBrand: Record<string, number> = {};
   const overallTrendMap: Record<string, Record<string, number>> = {};
   for (const r of clusterTrend) {
+    if (NON_ESTIMATING.has(r.brand)) continue; // filter out non-estimating brands
     overallByBrand[r.brand] = (overallByBrand[r.brand] ?? 0) + r.mention_count;
     if (!overallTrendMap[r.date]) overallTrendMap[r.date] = {};
     overallTrendMap[r.date][r.brand] = (overallTrendMap[r.date][r.brand] ?? 0) + r.mention_count;
   }
+
+  // Non-estimating brands to filter out of coverage charts:
+  // construction management, scheduling, field service, accounting,
+  // AI chatbots, CAD tools, spreadsheets, productivity apps
+  const NON_ESTIMATING = new Set([
+    // AI models mentioning themselves
+    "Claude", "ChatGPT", "Gemini", "Google Gemini", "Copilot", "Microsoft Copilot", "Perplexity",
+    // Construction management / scheduling
+    "Touchplan", "Buildots", "CoConstruct", "Buildertrend", "Contractor Foreman",
+    "Procore", "Synchro", "PlanGrid", "Aconex", "Fieldwire", "Raken", "Snag", "Blokable",
+    // Field service / job management
+    "SimPRO", "Tradify", "ServiceM8", "ServiceTitan",
+    // Workforce / HR
+    "Bridgit", "Bridgit Bench", "Deputy", "Airtasker",
+    // Accounting / finance
+    "QuickBooks", "Xero", "MYOB", "Zoho",
+    // Productivity / CRM
+    "Notion", "Monday.com", "Asana", "Airtable", "Slack", "HubSpot",
+    // Spreadsheets
+    "Excel", "Microsoft Excel", "Google Sheets",
+    // CAD / BIM authoring (not estimating platforms)
+    "AutoCAD", "Revit", "ArchiCAD", "Navisworks", "BIM 360",
+    // Broad company names rather than specific estimating products
+    "Autodesk", "Trimble",
+    // Generic terms being captured as brand names
+    "Estimate", "Estimator", "Estimation", "Takeoff", "Construct",
+    // Document markup tool (not an estimating platform)
+    "Bluebeam",
+    // Other non-estimating
+    "BuildCalc", "Speeko", "Nobul", "Juno",
+  ]);
 
   // Pinned AI-native brands always shown — even near-zero — to visualise the LLM gap
   const PINNED_BRANDS = ["EstiMate", "Togal.AI", "Buildr"];
@@ -257,7 +289,10 @@ export default function EsaiVisibilityCharts({
     if (rows.length === 0) continue;
 
     const brandTotals: Record<string, number> = {};
-    for (const r of rows) brandTotals[r.brand] = (brandTotals[r.brand] ?? 0) + r.mention_count;
+    for (const r of rows) {
+      if (NON_ESTIMATING.has(r.brand)) continue;
+      brandTotals[r.brand] = (brandTotals[r.brand] ?? 0) + r.mention_count;
+    }
 
     // Top 6 by mentions, then always pin EstiMate + Togal.AI at the end if not already included
     const top6 = Object.entries(brandTotals)
@@ -270,6 +305,7 @@ export default function EsaiVisibilityCharts({
     // Build date map for all included brands (pinned brands may have 0 data → kept as 0)
     const dateMap: Record<string, Record<string, number>> = {};
     for (const r of rows) {
+      if (NON_ESTIMATING.has(r.brand)) continue;
       if (!topClusterBrands.includes(r.brand)) continue;
       if (!dateMap[r.date]) dateMap[r.date] = {};
       dateMap[r.date][r.brand] = r.mention_count;
