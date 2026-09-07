@@ -1,15 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, LineChart, Line, Legend,
-  PieChart, Pie, Cell,
+  ResponsiveContainer, LineChart, Line,
+  PieChart, Pie, Cell, Legend,
 } from "recharts";
 import type {
   EsaiTopBrandRow,
   EsaiClusterRow,
   EsaiModelRow,
-  EsaiTrendRow,
+  EsaiClusterTrendRow,
 } from "@/lib/brand-visibility/db";
 import { ESAI_FEATURES } from "@/lib/brand-visibility/esai-features";
 
@@ -26,6 +27,12 @@ const LINE_COLORS = [
 
 function lineColor(i: number) { return LINE_COLORS[i % LINE_COLORS.length]; }
 
+function fmtDate(d: string) {
+  return new Date(d + "T00:00:00Z").toLocaleDateString("en-AU", {
+    month: "short", day: "numeric", timeZone: "UTC",
+  });
+}
+
 // ── Trend tooltip ──────────────────────────────────────────────────────────────
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function TrendTooltip({ active, payload, label }: any) {
@@ -38,7 +45,7 @@ function TrendTooltip({ active, payload, label }: any) {
       background: "#fff", border: "1px solid rgba(0,0,0,0.1)", borderRadius: 8,
       fontSize: 12, padding: "8px 12px", boxShadow: "0 4px 12px rgba(0,0,0,0.08)",
     }}>
-      <p style={{ fontWeight: 700, marginBottom: 4, color: "#000" }}>{label}</p>
+      <p style={{ fontWeight: 700, marginBottom: 4, color: "#000" }}>{fmtDate(String(label))}</p>
       {sorted.map((p: any) => (
         <div key={p.dataKey} style={{ display: "flex", alignItems: "center", gap: 6, padding: "1px 0" }}>
           <span style={{ width: 8, height: 8, borderRadius: "50%", background: p.color, flexShrink: 0, display: "inline-block" }} />
@@ -49,12 +56,27 @@ function TrendTooltip({ active, payload, label }: any) {
   );
 }
 
-// ── Cluster config (4 for the 2×2 grid) ──────────────────────────────────────
+// ── Cluster config (4 for the 2×2 pie grid) ───────────────────────────────────
 const CLUSTERS: { tag: string; label: string; description: string }[] = [
   { tag: "esai-takeoff",     label: "Quantity Takeoff",              description: "PDF measurement, auto area & volume calculation" },
   { tag: "esai-ai",          label: "AI-Powered Estimating",         description: "Autonomous scope, plan interpretation, AI pricing" },
   { tag: "esai-residential", label: "Residential New Build",         description: "New construction estimates for Australian builders" },
   { tag: "esai-commercial",  label: "Commercial Construction",       description: "Multi-trade and tender pricing for commercial GCs" },
+];
+
+// Trend clusters (for per-cluster coverage charts)
+const TREND_CLUSTERS: { tag: string; label: string }[] = [
+  { tag: "esai-takeoff",      label: "Quantity Takeoff" },
+  { tag: "esai-plans",        label: "Plan & Document Reading" },
+  { tag: "esai-scope",        label: "Trade Scoping" },
+  { tag: "esai-pricing",      label: "Rate Management & Pricing" },
+  { tag: "esai-quote",        label: "Quote & Estimate Output" },
+  { tag: "esai-residential",  label: "Residential New Build" },
+  { tag: "esai-commercial",   label: "Commercial Construction" },
+  { tag: "esai-subcontract",  label: "Subcontractor & Trade Quoting" },
+  { tag: "esai-ai",           label: "AI-Powered Estimating" },
+  { tag: "esai-tender",       label: "Tender & Bid Preparation" },
+  { tag: "esai-buyer-intent", label: "Buyer Intent" },
 ];
 
 // All feature clusters (for the feature scores section)
@@ -103,6 +125,33 @@ function Section({ title, subtitle, children }: { title: string; subtitle?: stri
   );
 }
 
+// ── Stat card ─────────────────────────────────────────────────────────────────
+function StatCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
+  return (
+    <div style={{
+      flex: "1 1 0", background: "#fff", borderRadius: 14,
+      boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+      padding: "22px 24px", display: "flex", flexDirection: "column" as const,
+      gap: 4, minWidth: 0,
+    }}>
+      <span style={{
+        fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+        textTransform: "uppercase" as const, color: ACCENT,
+      }}>
+        {label}
+      </span>
+      <span style={{
+        fontSize: 28, fontWeight: 800, color: "#000",
+        letterSpacing: "-0.02em", lineHeight: 1.1,
+        overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" as const,
+      }}>
+        {value}
+      </span>
+      {sub && <span style={{ fontSize: 12, color: "#000", opacity: 0.6, marginTop: 2 }}>{sub}</span>}
+    </div>
+  );
+}
+
 // ── Feature score types ────────────────────────────────────────────────────────
 interface FeatureScoreRow {
   brand_name:         string;
@@ -137,12 +186,17 @@ interface Props {
   topBrands:     EsaiTopBrandRow[];
   byCluster:     EsaiClusterRow[];
   byModel:       EsaiModelRow[];
-  trend:         EsaiTrendRow[];
+  clusterTrend:  EsaiClusterTrendRow[];
   featureScores: FeatureScoreRow[];
   sentimentData: SentimentData;
 }
 
-export default function EsaiVisibilityCharts({ topBrands, byCluster, byModel, trend, featureScores, sentimentData }: Props) {
+export default function EsaiVisibilityCharts({
+  topBrands, byCluster, byModel, clusterTrend, featureScores, sentimentData,
+}: Props) {
+
+  // ── Hidden brands state (interactive trend) ───────────────────────────────
+  const [hiddenBrands, setHiddenBrands] = useState<Set<string>>(new Set());
 
   // ── Global brand→color map ────────────────────────────────────────────────
   const brandColorMap: Record<string, string> = {};
@@ -151,26 +205,64 @@ export default function EsaiVisibilityCharts({ topBrands, byCluster, byModel, tr
     .forEach((r, i) => { brandColorMap[r.brand] = LINE_COLORS[i % LINE_COLORS.length]; });
   const brandColor = (brand: string) => brandColorMap[brand] ?? "#94a3b8";
 
-  // ── Overall top brands ───────────────────────────────────────────────────
-  const top20 = topBrands.slice(0, 20);
-  const overallData = [...top20]
-    .sort((a, b) => b.total_mentions - a.total_mentions)
-    .map((r) => ({ brand: r.brand, mentions: r.total_mentions }));
+  // ── Aggregate from clusterTrend (excludes esai-overall — sums are equivalent) ──
+  const allDates = [...new Set(clusterTrend.map(r => r.date))].sort();
 
-  // ── Trend: pivot to recharts format, top 15 brands ───────────────────────
-  const top15brands = topBrands.slice(0, 15).map((r) => r.brand);
-  const trendByDate: Record<string, Record<string, number | string>> = {};
-  for (const r of trend) {
-    if (!top15brands.includes(r.brand)) continue;
-    if (!trendByDate[r.date]) trendByDate[r.date] = { date: r.date };
-    trendByDate[r.date][r.brand] = r.mention_count;
+  const overallByBrand: Record<string, number> = {};
+  const overallTrendMap: Record<string, Record<string, number>> = {};
+  for (const r of clusterTrend) {
+    overallByBrand[r.brand] = (overallByBrand[r.brand] ?? 0) + r.mention_count;
+    if (!overallTrendMap[r.date]) overallTrendMap[r.date] = {};
+    overallTrendMap[r.date][r.brand] = (overallTrendMap[r.date][r.brand] ?? 0) + r.mention_count;
   }
-  const trendData = Object.values(trendByDate).sort((a, b) =>
-    String(a.date).localeCompare(String(b.date))
-  );
+
+  // Top 15 brands for the combined interactive trend (consistent with topBrands ordering → same colors)
+  const top15brands = topBrands.slice(0, 15).map(r => r.brand);
+
+  const combinedTrendData = allDates.map(date => {
+    const row: Record<string, string | number> = { date };
+    for (const brand of top15brands) row[brand] = overallTrendMap[date]?.[brand] ?? 0;
+    return row;
+  });
+
+  // ── Stat card metrics ─────────────────────────────────────────────────────
+  const totalMentions = Object.values(overallByBrand).reduce((a, b) => a + b, 0);
+  const [topBrandName, topBrandCount] = Object.entries(overallByBrand)
+    .sort((a, b) => b[1] - a[1])[0] ?? ["—", 0];
+
+  // ── Per-cluster coverage data ─────────────────────────────────────────────
+  type ClusterChartEntry = { brands: string[]; data: Record<string, string | number>[] };
+  const perClusterTrend: Record<string, ClusterChartEntry> = {};
+
+  for (const cluster of TREND_CLUSTERS) {
+    const rows = clusterTrend.filter(r => r.cluster_tag === cluster.tag);
+    if (rows.length === 0) continue;
+
+    const brandTotals: Record<string, number> = {};
+    for (const r of rows) brandTotals[r.brand] = (brandTotals[r.brand] ?? 0) + r.mention_count;
+    const topClusterBrands = Object.entries(brandTotals)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 8)
+      .map(([b]) => b);
+
+    const dateMap: Record<string, Record<string, number>> = {};
+    for (const r of rows) {
+      if (!topClusterBrands.includes(r.brand)) continue;
+      if (!dateMap[r.date]) dateMap[r.date] = {};
+      dateMap[r.date][r.brand] = r.mention_count;
+    }
+
+    const data = allDates.map(date => {
+      const row: Record<string, string | number> = { date };
+      for (const brand of topClusterBrands) row[brand] = dateMap[date]?.[brand] ?? 0;
+      return row;
+    });
+
+    perClusterTrend[cluster.tag] = { brands: topClusterBrands, data };
+  }
 
   // ── LLM split ────────────────────────────────────────────────────────────
-  const top12 = topBrands.slice(0, 15).map((r) => r.brand);
+  const top12 = topBrands.slice(0, 15).map(r => r.brand);
   const modelMap: Record<string, { claude: number; gpt: number }> = {};
   for (const r of byModel) {
     if (!top12.includes(r.brand)) continue;
@@ -179,10 +271,10 @@ export default function EsaiVisibilityCharts({ topBrands, byCluster, byModel, tr
     else modelMap[r.brand].gpt += r.total_mentions;
   }
   const modelData = top12
-    .map((brand) => ({ brand, claude: modelMap[brand]?.claude ?? 0, gpt: modelMap[brand]?.gpt ?? 0 }))
+    .map(brand => ({ brand, claude: modelMap[brand]?.claude ?? 0, gpt: modelMap[brand]?.gpt ?? 0 }))
     .sort((a, b) => (b.claude + b.gpt) - (a.claude + a.gpt));
 
-  // ── Cluster charts ───────────────────────────────────────────────────────
+  // ── Use case cluster charts (2×2 pie grid) ────────────────────────────────
   const clusterMap: Record<string, { brand: string; mentions: number }[]> = {};
   for (const r of byCluster) {
     if (!clusterMap[r.cluster_tag]) clusterMap[r.cluster_tag] = [];
@@ -219,59 +311,180 @@ export default function EsaiVisibilityCharts({ topBrands, byCluster, byModel, tr
         </p>
       </div>
 
-      {/* ── Overall brand mentions ─────────────────────────────────────────── */}
-      <Section
-        title="Top Brands by Total Mentions"
-        subtitle="All clusters combined · both models"
-      >
-        {!hasData ? (
-          <EmptyState label="No data yet" />
-        ) : (
-          <ResponsiveContainer width="100%" height={Math.max(260, top20.length * 26)}>
-            <BarChart data={overallData} layout="vertical" margin={{ left: 0, right: 40, top: 4, bottom: 4 }}>
-              <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(0,0,0,0.05)" />
-              <XAxis type="number" tick={{ fontSize: 11, fill: "#000" }} />
-              <YAxis
-                type="category" dataKey="brand" width={130}
-                tick={{ fontSize: 12, fill: "#000" }} tickLine={false}
-              />
-              <Tooltip
-                cursor={{ fill: "rgba(234,88,12,0.06)" }}
-                contentStyle={{ fontSize: 12, borderRadius: 8, border: "1px solid rgba(0,0,0,0.1)" }}
-                formatter={(v: unknown) => [v as number, "mentions"]}
-              />
-              <Bar dataKey="mentions" fill={ACCENT} radius={[0, 4, 4, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        )}
-      </Section>
+      {/* ── Stat cards ────────────────────────────────────────────────────── */}
+      {hasData && (
+        <div style={{ display: "flex", gap: 16, marginBottom: 20, flexWrap: "wrap" as const }}>
+          <StatCard
+            label="Total Mentions"
+            value={totalMentions.toLocaleString()}
+            sub="All brands · Aug 31 – Sep 6"
+          />
+          <StatCard
+            label="Top Brand"
+            value={topBrandName}
+            sub={`${(topBrandCount as number).toLocaleString()} mentions across all clusters`}
+          />
+          <StatCard
+            label="Collection Period"
+            value="7 days"
+            sub="Aug 31 – Sep 6, 2026 · 11 use case clusters"
+          />
+        </div>
+      )}
 
-      {/* ── Coverage over time ────────────────────────────────────────────── */}
-      <Section
-        title="Coverage Over Time"
-        subtitle="Daily mention totals for the top 15 brands · Aug 31 – Sep 6"
-      >
-        {trendData.length === 0 ? (
+      {/* ── Interactive combined trend ─────────────────────────────────────── */}
+      <div style={{
+        background: "#fff", borderRadius: 14,
+        boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+        padding: "24px 28px", marginBottom: 20,
+      }}>
+        <h2 style={{ fontSize: 16, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
+          Coverage Over Time
+        </h2>
+        <p style={{ fontSize: 13, color: "#000", margin: "0 0 16px", opacity: 0.7 }}>
+          Daily mention totals for the top 15 brands · Aug 31 – Sep 6
+        </p>
+
+        {combinedTrendData.length === 0 ? (
           <EmptyState label="Trend builds after day 2" />
         ) : (
-          <ResponsiveContainer width="100%" height={280}>
-            <LineChart data={trendData} margin={{ left: 0, right: 16, top: 8, bottom: 4 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" />
-              <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#000" }} />
-              <YAxis tick={{ fontSize: 11, fill: "#000" }} />
-              <Tooltip content={<TrendTooltip />} />
-              <Legend wrapperStyle={{ fontSize: 12 }} />
-              {top15brands.map((brand) => (
-                <Line
-                  key={brand} type="monotone" dataKey={brand}
-                  stroke={brandColor(brand)} strokeWidth={2}
-                  dot={false} connectNulls
-                />
-              ))}
-            </LineChart>
-          </ResponsiveContainer>
+          <>
+            {/* Brand toggles */}
+            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 6, marginBottom: 16, alignItems: "center" }}>
+              <button
+                onClick={() => setHiddenBrands(new Set())}
+                style={{
+                  fontSize: 11, fontWeight: 700, padding: "4px 10px",
+                  border: "1px solid rgba(0,0,0,0.18)", borderRadius: 999,
+                  background: "#fff", color: "#000", cursor: "pointer",
+                }}
+              >
+                Select All
+              </button>
+              <button
+                onClick={() => setHiddenBrands(new Set(top15brands))}
+                style={{
+                  fontSize: 11, fontWeight: 700, padding: "4px 10px",
+                  border: "1px solid rgba(0,0,0,0.18)", borderRadius: 999,
+                  background: "#fff", color: "#000", cursor: "pointer",
+                }}
+              >
+                Clear All
+              </button>
+              {top15brands.map((brand, i) => {
+                const hidden = hiddenBrands.has(brand);
+                const color = lineColor(i);
+                return (
+                  <button
+                    key={brand}
+                    onClick={() => {
+                      setHiddenBrands(prev => {
+                        const next = new Set(prev);
+                        if (next.has(brand)) next.delete(brand); else next.add(brand);
+                        return next;
+                      });
+                    }}
+                    style={{
+                      display: "flex", alignItems: "center", gap: 5,
+                      fontSize: 11, padding: "4px 10px",
+                      border: `1px solid ${hidden ? "rgba(0,0,0,0.12)" : color}`,
+                      borderRadius: 999,
+                      background: hidden ? "#fff" : `${color}18`,
+                      color: hidden ? "rgba(0,0,0,0.35)" : color,
+                      cursor: "pointer", fontWeight: 600,
+                    }}
+                  >
+                    <span style={{
+                      width: 8, height: 8, borderRadius: "50%",
+                      background: hidden ? "rgba(0,0,0,0.12)" : color,
+                      flexShrink: 0, display: "inline-block",
+                    }} />
+                    {brand}
+                  </button>
+                );
+              })}
+            </div>
+
+            <ResponsiveContainer width="100%" height={280}>
+              <LineChart data={combinedTrendData} margin={{ left: 0, right: 16, top: 8, bottom: 4 }}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.05)" />
+                <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#000" }} tickFormatter={fmtDate} />
+                <YAxis tick={{ fontSize: 11, fill: "#000" }} allowDecimals={false} />
+                <Tooltip content={<TrendTooltip />} />
+                {top15brands.map((brand, i) => (
+                  <Line
+                    key={brand} type="monotone" dataKey={brand}
+                    stroke={lineColor(i)} strokeWidth={2}
+                    dot={false} hide={hiddenBrands.has(brand)}
+                  />
+                ))}
+              </LineChart>
+            </ResponsiveContainer>
+          </>
         )}
-      </Section>
+      </div>
+
+      {/* ── Per-cluster coverage over time ────────────────────────────────── */}
+      <div style={{ marginTop: 8, marginBottom: 4 }}>
+        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
+          Brand Coverage by Use Case
+        </h2>
+        <p style={{ fontSize: 13, color: "#000", margin: "0 0 16px", opacity: 0.7 }}>
+          Which brands appear in each use case cluster over time · Aug 31 – Sep 6
+        </p>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16, marginBottom: 24 }}>
+        {TREND_CLUSTERS.map((cluster) => {
+          const entry = perClusterTrend[cluster.tag];
+          if (!entry) return null;
+          const { brands, data } = entry;
+          return (
+            <div key={cluster.tag} style={{
+              background: "#fff", borderRadius: 14,
+              boxShadow: "0 2px 8px rgba(0,0,0,0.07)",
+              padding: "20px 22px",
+            }}>
+              <h3 style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: "0 0 2px" }}>
+                {cluster.label}
+              </h3>
+              <p style={{ fontSize: 11, color: "#000", margin: "0 0 12px", opacity: 0.55 }}>
+                Top {brands.length} brands · daily mentions
+              </p>
+              <ResponsiveContainer width="100%" height={160}>
+                <LineChart data={data} margin={{ left: -16, right: 8, top: 4, bottom: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.05)" />
+                  <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#000" }} tickFormatter={fmtDate} />
+                  <YAxis tick={{ fontSize: 10, fill: "#000" }} allowDecimals={false} width={28} />
+                  <Tooltip content={<TrendTooltip />} />
+                  {brands.map((brand, i) => (
+                    <Line
+                      key={brand} type="monotone" dataKey={brand}
+                      stroke={brandColor(brand) !== "#94a3b8" ? brandColor(brand) : lineColor(i)}
+                      strokeWidth={1.5} dot={false}
+                    />
+                  ))}
+                </LineChart>
+              </ResponsiveContainer>
+              {/* Mini legend */}
+              <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 6, marginTop: 10 }}>
+                {brands.map((brand, i) => {
+                  const color = brandColor(brand) !== "#94a3b8" ? brandColor(brand) : lineColor(i);
+                  return (
+                    <span key={brand} style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 11, color: "#000" }}>
+                      <span style={{
+                        width: 10, height: 3, borderRadius: 999,
+                        background: color, display: "inline-block", flexShrink: 0,
+                      }} />
+                      {brand}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
       {/* ── Visibility by LLM ─────────────────────────────────────────────── */}
       <Section

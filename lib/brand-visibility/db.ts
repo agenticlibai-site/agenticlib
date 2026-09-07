@@ -3921,6 +3921,33 @@ export async function getEsaiTrend(startDate?: string): Promise<EsaiTrendRow[]> 
   return result.rows as EsaiTrendRow[];
 }
 
+export interface EsaiClusterTrendRow { date: string; brand: string; cluster_tag: string; mention_count: number }
+
+export async function getEsaiTrendByCluster(startDate?: string): Promise<EsaiClusterTrendRow[]> {
+  await initEsaiDB();
+  let result;
+  if (startDate) {
+    result = await sql`
+      SELECT date::text, brand, cluster_tag, SUM(mention_count)::int AS mention_count
+      FROM esai_daily_summary
+      WHERE date >= ${startDate}::date
+        AND cluster_tag != 'esai-overall'
+      GROUP BY date, brand, cluster_tag
+      ORDER BY date, cluster_tag, mention_count DESC
+    `;
+  } else {
+    result = await sql`
+      SELECT date::text, brand, cluster_tag, SUM(mention_count)::int AS mention_count
+      FROM esai_daily_summary
+      WHERE date >= (SELECT MAX(date) FROM esai_daily_summary) - 7 * INTERVAL '1 day'
+        AND cluster_tag != 'esai-overall'
+      GROUP BY date, brand, cluster_tag
+      ORDER BY date, cluster_tag, mention_count DESC
+    `;
+  }
+  return result.rows as EsaiClusterTrendRow[];
+}
+
 export async function getEsaiFeatureScores(): Promise<{
   brand_name:         string;
   feature_id:         string;

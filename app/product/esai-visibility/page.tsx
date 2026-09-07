@@ -2,7 +2,7 @@ import {
   getEsaiTopBrands,
   getEsaiByCluster,
   getEsaiByModel,
-  getEsaiTrend,
+  getEsaiTrendByCluster,
   getEsaiFeatureScores,
   getEsaiSentimentData,
 } from "@/lib/brand-visibility/db";
@@ -17,11 +17,11 @@ export const metadata = {
 };
 
 export default async function EsaiVisibilityPage() {
-  const [topBrands, byCluster, byModel, trend, featureScores, sentimentData] = await Promise.all([
+  const [topBrands, byCluster, byModel, clusterTrend, featureScores, sentimentData] = await Promise.all([
     getEsaiTopBrands(25),
     getEsaiByCluster(),
     getEsaiByModel(),
-    getEsaiTrend("2026-08-31"),
+    getEsaiTrendByCluster("2026-08-31"),
     getEsaiFeatureScores(),
     getEsaiSentimentData(),
   ]);
@@ -55,7 +55,7 @@ export default async function EsaiVisibilityPage() {
           topBrands={topBrands}
           byCluster={byCluster}
           byModel={byModel}
-          trend={trend}
+          clusterTrend={clusterTrend}
           featureScores={featureScores}
           sentimentData={sentimentData}
         />
