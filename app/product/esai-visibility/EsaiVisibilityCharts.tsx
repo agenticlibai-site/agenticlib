@@ -216,8 +216,26 @@ export default function EsaiVisibilityCharts({
     overallTrendMap[r.date][r.brand] = (overallTrendMap[r.date][r.brand] ?? 0) + r.mention_count;
   }
 
-  // Top 15 brands for the combined interactive trend (consistent with topBrands ordering → same colors)
-  const top15brands = topBrands.slice(0, 15).map(r => r.brand);
+  // Pinned AI-native brands always shown — even near-zero — to visualise the LLM gap
+  const PINNED_BRANDS = ["EstiMate", "Togal.AI", "Buildr"];
+
+  // Top brands by mention count from topBrands, then pin AI-native brands at end if not already included
+  const top15base = topBrands.slice(0, 15).map(r => r.brand);
+  const top15brands = [
+    ...top15base,
+    ...PINNED_BRANDS.filter(b => !top15base.includes(b)),
+  ];
+
+  // Assign stable colors: topBrands ordering first, then pinned extras get fixed colors
+  const PINNED_COLORS: Record<string, string> = {
+    "EstiMate": "#EA580C",   // accent orange
+    "Togal.AI": "#059669",   // emerald
+    "Buildr":   "#7C3AED",   // purple
+  };
+  // Override color map for pinned brands so they're always the same color
+  for (const b of PINNED_BRANDS) {
+    if (PINNED_COLORS[b]) brandColorMap[b] = PINNED_COLORS[b];
+  }
 
   const combinedTrendData = allDates.map(date => {
     const row: Record<string, string | number> = { date };
@@ -341,8 +359,11 @@ export default function EsaiVisibilityCharts({
         <h2 style={{ fontSize: 16, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
           Coverage Over Time
         </h2>
-        <p style={{ fontSize: 13, color: "#000", margin: "0 0 16px", opacity: 0.7 }}>
-          Daily mention totals for the top 15 brands · Aug 31 – Sep 6
+        <p style={{ fontSize: 13, color: "#000", margin: "0 0 4px", opacity: 0.7 }}>
+          Daily mention totals · Aug 31 – Sep 6
+        </p>
+        <p style={{ fontSize: 12, color: ACCENT, margin: "0 0 16px", fontWeight: 600 }}>
+          EstiMate, Togal.AI &amp; Buildr are pinned — they appear near‑zero because LLMs rarely surface them unprompted. That gap is the point.
         </p>
 
         {combinedTrendData.length === 0 ? (
@@ -373,7 +394,8 @@ export default function EsaiVisibilityCharts({
               </button>
               {top15brands.map((brand, i) => {
                 const hidden = hiddenBrands.has(brand);
-                const color = lineColor(i);
+                const color = brandColorMap[brand] ?? lineColor(i);
+                const isPinned = PINNED_BRANDS.includes(brand);
                 return (
                   <button
                     key={brand}
@@ -391,7 +413,9 @@ export default function EsaiVisibilityCharts({
                       borderRadius: 999,
                       background: hidden ? "#fff" : `${color}18`,
                       color: hidden ? "rgba(0,0,0,0.35)" : color,
-                      cursor: "pointer", fontWeight: 600,
+                      cursor: "pointer", fontWeight: isPinned ? 700 : 600,
+                      outline: isPinned && !hidden ? `2px solid ${color}` : "none",
+                      outlineOffset: 1,
                     }}
                   >
                     <span style={{
@@ -411,13 +435,18 @@ export default function EsaiVisibilityCharts({
                 <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#000" }} tickFormatter={fmtDate} />
                 <YAxis tick={{ fontSize: 11, fill: "#000" }} allowDecimals={false} />
                 <Tooltip content={<TrendTooltip />} />
-                {top15brands.map((brand, i) => (
-                  <Line
-                    key={brand} type="monotone" dataKey={brand}
-                    stroke={lineColor(i)} strokeWidth={2}
-                    dot={false} hide={hiddenBrands.has(brand)}
-                  />
-                ))}
+                {top15brands.map((brand, i) => {
+                  const isPinned = PINNED_BRANDS.includes(brand);
+                  return (
+                    <Line
+                      key={brand} type="monotone" dataKey={brand}
+                      stroke={brandColorMap[brand] ?? lineColor(i)}
+                      strokeWidth={isPinned ? 2.5 : 1.5}
+                      strokeDasharray={isPinned ? "none" : undefined}
+                      dot={false} hide={hiddenBrands.has(brand)}
+                    />
+                  );
+                })}
               </LineChart>
             </ResponsiveContainer>
           </>
