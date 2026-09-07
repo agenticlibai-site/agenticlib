@@ -197,31 +197,54 @@ export default function EsaiVisibilityCharts({
   // ── Hidden brands state (interactive trend) ───────────────────────────────
   const [hiddenBrands, setHiddenBrands] = useState<Set<string>>(new Set());
 
-  // Only AI-native estimating agents appear in all charts
-  const AI_NATIVE = ["EstiMate", "Togal.AI", "Buildr"];
-  const AI_NATIVE_SET = new Set(AI_NATIVE);
-  const AI_NATIVE_COLORS: Record<string, string> = {
+  // All brands with AI features (locked set) — shown in all charts
+  const LOCKED_BRANDS = [
+    "EstiMate", "Togal.AI", "Buildr",          // AI-native (pinned)
+    "Buildxact", "PlanSwift", "On-Screen Takeoff",
+    "ProEst", "STACK", "eTakeoff", "Esticom", "Glodon",
+  ];
+  const LOCKED_SET = new Set(LOCKED_BRANDS);
+  // AI-native sub-set — pinned with bold lines in coverage charts
+  const PINNED_BRANDS = ["EstiMate", "Togal.AI", "Buildr"];
+  const PINNED_COLORS: Record<string, string> = {
     "EstiMate": "#EA580C",
     "Togal.AI": "#059669",
     "Buildr":   "#7C3AED",
   };
-  const brandColor = (brand: string) => AI_NATIVE_COLORS[brand] ?? "#94a3b8";
+  // Dynamic colors for the non-pinned locked brands
+  const LOCKED_COLORS: Record<string, string> = {
+    "Buildxact":        "#2563EB",
+    "PlanSwift":        "#D97706",
+    "On-Screen Takeoff":"#0891B2",
+    "ProEst":           "#C026D3",
+    "STACK":            "#0D9488",
+    "eTakeoff":         "#BE185D",
+    "Esticom":          "#65A30D",
+    "Glodon":           "#0369A1",
+  };
+  const brandColorMap: Record<string, string> = { ...PINNED_COLORS, ...LOCKED_COLORS };
+  const brandColor = (brand: string) => brandColorMap[brand] ?? "#94a3b8";
 
-  // ── Aggregate from clusterTrend — only AI-native brands ──
+  // ── Aggregate from clusterTrend — locked brands only ──
   const allDates = [...new Set(clusterTrend.map(r => r.date))].sort();
 
   const overallByBrand: Record<string, number> = {};
   const overallTrendMap: Record<string, Record<string, number>> = {};
   for (const r of clusterTrend) {
-    if (!AI_NATIVE_SET.has(r.brand)) continue;
+    if (!LOCKED_SET.has(r.brand)) continue;
     overallByBrand[r.brand] = (overallByBrand[r.brand] ?? 0) + r.mention_count;
     if (!overallTrendMap[r.date]) overallTrendMap[r.date] = {};
     overallTrendMap[r.date][r.brand] = (overallTrendMap[r.date][r.brand] ?? 0) + r.mention_count;
   }
 
+  // Sort locked brands by total mentions descending; pinned brands always included even at 0
+  const sortedLocked = [...LOCKED_BRANDS].sort(
+    (a, b) => (overallByBrand[b] ?? 0) - (overallByBrand[a] ?? 0)
+  );
+
   const combinedTrendData = allDates.map(date => {
     const row: Record<string, string | number> = { date };
-    for (const brand of AI_NATIVE) row[brand] = overallTrendMap[date]?.[brand] ?? 0;
+    for (const brand of sortedLocked) row[brand] = overallTrendMap[date]?.[brand] ?? 0;
     return row;
   });
 
@@ -235,17 +258,12 @@ export default function EsaiVisibilityCharts({
   const perClusterTrend: Record<string, ClusterChartEntry> = {};
 
   for (const cluster of TREND_CLUSTERS) {
-    const rows = clusterTrend.filter(r => r.cluster_tag === cluster.tag && AI_NATIVE_SET.has(r.brand));
-    if (rows.length === 0) {
-      // Still include the cluster with zero data so the chart renders
-      const data = allDates.map(date => {
-        const row: Record<string, string | number> = { date };
-        for (const brand of AI_NATIVE) row[brand] = 0;
-        return row;
-      });
-      perClusterTrend[cluster.tag] = { brands: AI_NATIVE, data };
-      continue;
-    }
+    const rows = clusterTrend.filter(r => r.cluster_tag === cluster.tag && LOCKED_SET.has(r.brand));
+
+    // Sort brands by cluster mentions; always include pinned brands even at 0
+    const clusterTotals: Record<string, number> = {};
+    for (const r of rows) clusterTotals[r.brand] = (clusterTotals[r.brand] ?? 0) + r.mention_count;
+    const sorted = [...LOCKED_BRANDS].sort((a, b) => (clusterTotals[b] ?? 0) - (clusterTotals[a] ?? 0));
 
     const dateMap: Record<string, Record<string, number>> = {};
     for (const r of rows) {
@@ -255,29 +273,29 @@ export default function EsaiVisibilityCharts({
 
     const data = allDates.map(date => {
       const row: Record<string, string | number> = { date };
-      for (const brand of AI_NATIVE) row[brand] = dateMap[date]?.[brand] ?? 0;
+      for (const brand of sorted) row[brand] = dateMap[date]?.[brand] ?? 0;
       return row;
     });
 
-    perClusterTrend[cluster.tag] = { brands: AI_NATIVE, data };
+    perClusterTrend[cluster.tag] = { brands: sorted, data };
   }
 
-  // ── LLM split — AI-native brands only ───────────────────────────────────
+  // ── LLM split — locked brands only ──────────────────────────────────────
   const modelMap: Record<string, { claude: number; gpt: number }> = {};
   for (const r of byModel) {
-    if (!AI_NATIVE_SET.has(r.brand)) continue;
+    if (!LOCKED_SET.has(r.brand)) continue;
     if (!modelMap[r.brand]) modelMap[r.brand] = { claude: 0, gpt: 0 };
     if (r.model.includes("claude")) modelMap[r.brand].claude += r.total_mentions;
     else modelMap[r.brand].gpt += r.total_mentions;
   }
-  const modelData = AI_NATIVE
+  const modelData = sortedLocked
     .map(brand => ({ brand, claude: modelMap[brand]?.claude ?? 0, gpt: modelMap[brand]?.gpt ?? 0 }))
     .sort((a, b) => (b.claude + b.gpt) - (a.claude + a.gpt));
 
-  // ── Use case cluster charts (2×2 pie grid) — AI-native brands only ────────
+  // ── Use case cluster charts (2×2 pie grid) — locked brands only ───────────
   const clusterMap: Record<string, { brand: string; mentions: number }[]> = {};
   for (const r of byCluster) {
-    if (!AI_NATIVE_SET.has(r.brand)) continue;
+    if (!LOCKED_SET.has(r.brand)) continue;
     if (!clusterMap[r.cluster_tag]) clusterMap[r.cluster_tag] = [];
     clusterMap[r.cluster_tag].push({ brand: r.brand, mentions: r.total_mentions });
   }
@@ -303,10 +321,10 @@ export default function EsaiVisibilityCharts({
           Note
         </p>
         <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
-          This report tracks only the three AI-native construction estimating agents: <strong>EstiMate</strong>, <strong>Togal.AI</strong>, and <strong>Buildr</strong>. Every chart — coverage over time, use case share of voice, feature scores, sentiment — shows only these brands.
+          Every chart in this report shows only the 11 brands with AI features in the construction estimating category. Three are AI-native agents (<strong>EstiMate</strong>, <strong>Togal.AI</strong>, <strong>Buildr</strong>); eight are traditional estimating platforms with meaningful AI capabilities (Buildxact, PlanSwift, On-Screen Takeoff, ProEst, STACK, eTakeoff, Esticom, Glodon). Construction management, accounting, CAD, and zero-AI tools are excluded.
         </p>
         <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: 0 }}>
-          When LLMs are asked about AI-powered estimating for Australian builders, they rarely surface any of these AI-native tools unprompted — overwhelmingly defaulting to traditional platforms instead. The near-zero mention counts below are not a data gap; they are the finding. That LLM invisibility is the market opportunity EstiMate is building into.
+          EstiMate, Togal.AI &amp; Buildr are pinned in coverage charts — they appear near-zero because LLMs rarely surface AI-native agents unprompted, defaulting instead to traditional incumbents. That invisibility gap is the market opportunity EstiMate is building into.
         </p>
       </div>
 
@@ -344,7 +362,7 @@ export default function EsaiVisibilityCharts({
           Daily mention totals · Aug 31 – Sep 6
         </p>
         <p style={{ fontSize: 12, color: ACCENT, margin: "0 0 16px", fontWeight: 600 }}>
-          These AI-native agents appear near‑zero because LLMs rarely surface them unprompted. That invisibility gap is the point.
+          EstiMate, Togal.AI &amp; Buildr are pinned — they appear near‑zero because LLMs rarely surface AI-native agents unprompted. That gap is the point.
         </p>
 
         {combinedTrendData.length === 0 ? (
@@ -364,7 +382,7 @@ export default function EsaiVisibilityCharts({
                 Select All
               </button>
               <button
-                onClick={() => setHiddenBrands(new Set(AI_NATIVE))}
+                onClick={() => setHiddenBrands(new Set(sortedLocked))}
                 style={{
                   fontSize: 11, fontWeight: 700, padding: "4px 10px",
                   border: "1px solid rgba(0,0,0,0.18)", borderRadius: 999,
@@ -373,9 +391,10 @@ export default function EsaiVisibilityCharts({
               >
                 Clear All
               </button>
-              {AI_NATIVE.map((brand) => {
+              {sortedLocked.map((brand) => {
                 const hidden = hiddenBrands.has(brand);
-                const color = AI_NATIVE_COLORS[brand];
+                const color = brandColorMap[brand] ?? "#94a3b8";
+                const isPinned = PINNED_BRANDS.includes(brand);
                 return (
                   <button
                     key={brand}
@@ -393,8 +412,8 @@ export default function EsaiVisibilityCharts({
                       borderRadius: 999,
                       background: hidden ? "#fff" : `${color}18`,
                       color: hidden ? "rgba(0,0,0,0.35)" : color,
-                      cursor: "pointer", fontWeight: 700,
-                      outline: !hidden ? `2px solid ${color}` : "none",
+                      cursor: "pointer", fontWeight: isPinned ? 700 : 600,
+                      outline: isPinned && !hidden ? `2px solid ${color}` : "none",
                       outlineOffset: 1,
                     }}
                   >
@@ -415,14 +434,17 @@ export default function EsaiVisibilityCharts({
                 <XAxis dataKey="date" tick={{ fontSize: 11, fill: "#000" }} tickFormatter={fmtDate} />
                 <YAxis tick={{ fontSize: 11, fill: "#000" }} allowDecimals={false} />
                 <Tooltip content={<TrendTooltip />} />
-                {AI_NATIVE.map((brand) => (
-                  <Line
-                    key={brand} type="monotone" dataKey={brand}
-                    stroke={AI_NATIVE_COLORS[brand]}
-                    strokeWidth={2.5}
-                    dot={false} hide={hiddenBrands.has(brand)}
-                  />
-                ))}
+                {sortedLocked.map((brand) => {
+                  const isPinned = PINNED_BRANDS.includes(brand);
+                  return (
+                    <Line
+                      key={brand} type="monotone" dataKey={brand}
+                      stroke={brandColorMap[brand] ?? "#94a3b8"}
+                      strokeWidth={isPinned ? 2.5 : 1.5}
+                      dot={false} hide={hiddenBrands.has(brand)}
+                    />
+                  );
+                })}
               </LineChart>
             </ResponsiveContainer>
           </>
@@ -454,7 +476,7 @@ export default function EsaiVisibilityCharts({
                 {cluster.label}
               </h3>
               <p style={{ fontSize: 11, color: "#000", margin: "0 0 12px", opacity: 0.55 }}>
-                AI-native estimating agents · daily mentions
+                AI estimating brands · daily mentions · EstiMate, Togal.AI &amp; Buildr pinned
               </p>
               <ResponsiveContainer width="100%" height={160}>
                 <LineChart data={data} margin={{ left: -16, right: 8, top: 4, bottom: 0 }}>
@@ -462,27 +484,32 @@ export default function EsaiVisibilityCharts({
                   <XAxis dataKey="date" tick={{ fontSize: 10, fill: "#000" }} tickFormatter={fmtDate} />
                   <YAxis tick={{ fontSize: 10, fill: "#000" }} allowDecimals={false} width={28} />
                   <Tooltip content={<TrendTooltip />} />
-                  {brands.map((brand) => (
-                    <Line
-                      key={brand} type="monotone" dataKey={brand}
-                      stroke={AI_NATIVE_COLORS[brand] ?? "#94a3b8"}
-                      strokeWidth={2}
-                      dot={false}
-                    />
-                  ))}
+                  {brands.map((brand) => {
+                    const isPinned = PINNED_BRANDS.includes(brand);
+                    return (
+                      <Line
+                        key={brand} type="monotone" dataKey={brand}
+                        stroke={brandColorMap[brand] ?? "#94a3b8"}
+                        strokeWidth={isPinned ? 2 : 1.5}
+                        dot={false}
+                      />
+                    );
+                  })}
                 </LineChart>
               </ResponsiveContainer>
               {/* Mini legend */}
               <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 6, marginTop: 10 }}>
                 {brands.map((brand) => {
-                  const color = AI_NATIVE_COLORS[brand] ?? "#94a3b8";
+                  const isPinned = PINNED_BRANDS.includes(brand);
+                  const color = brandColorMap[brand] ?? "#94a3b8";
                   return (
                     <span key={brand} style={{
                       display: "flex", alignItems: "center", gap: 4, fontSize: 11,
-                      color, fontWeight: 700,
+                      color: isPinned ? color : "#000",
+                      fontWeight: isPinned ? 700 : 400,
                     }}>
                       <span style={{
-                        width: 10, height: 4, borderRadius: 999,
+                        width: 10, height: isPinned ? 4 : 3, borderRadius: 999,
                         background: color, display: "inline-block", flexShrink: 0,
                       }} />
                       {brand}
