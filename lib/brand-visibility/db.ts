@@ -3844,6 +3844,216 @@ export async function upsertEsaiSentimentDrift(row: {
   `;
 }
 
+// ── ESAI report query functions ───────────────────────────────────────────────
+// Read-side functions for the EstiMate AI visibility report page.
+// These query the esai_daily_summary / esai_feature_scores / esai_sentiment_responses
+// tables that were populated by the (now-stopped) ESAI pipeline.
+
+export interface EsaiTopBrandRow   { brand: string; total_mentions: number; avg_position: number }
+export interface EsaiClusterRow    { cluster_tag: string; brand: string; total_mentions: number; avg_position: number }
+export interface EsaiModelRow      { model: string; brand: string; total_mentions: number }
+export interface EsaiTrendRow      { date: string; brand: string; mention_count: number }
+
+export async function getEsaiTopBrands(limit = 25): Promise<EsaiTopBrandRow[]> {
+  await initEsaiDB();
+  const result = await sql`
+    SELECT
+      brand,
+      SUM(mention_count)::int  AS total_mentions,
+      AVG(avg_position)::float AS avg_position
+    FROM esai_daily_summary
+    GROUP BY brand
+    ORDER BY total_mentions DESC
+    LIMIT ${limit}
+  `;
+  return result.rows as EsaiTopBrandRow[];
+}
+
+export async function getEsaiByCluster(): Promise<EsaiClusterRow[]> {
+  await initEsaiDB();
+  const result = await sql`
+    SELECT
+      cluster_tag,
+      brand,
+      SUM(mention_count)::int  AS total_mentions,
+      AVG(avg_position)::float AS avg_position
+    FROM esai_daily_summary
+    GROUP BY cluster_tag, brand
+    ORDER BY cluster_tag, total_mentions DESC
+  `;
+  return result.rows as EsaiClusterRow[];
+}
+
+export async function getEsaiByModel(): Promise<EsaiModelRow[]> {
+  await initEsaiDB();
+  const result = await sql`
+    SELECT
+      model,
+      brand,
+      SUM(mention_count)::int AS total_mentions
+    FROM esai_daily_summary
+    GROUP BY model, brand
+    ORDER BY total_mentions DESC
+  `;
+  return result.rows as EsaiModelRow[];
+}
+
+export async function getEsaiTrend(startDate?: string): Promise<EsaiTrendRow[]> {
+  await initEsaiDB();
+  let result;
+  if (startDate) {
+    result = await sql`
+      SELECT date::text, brand, SUM(mention_count)::int AS mention_count
+      FROM esai_daily_summary
+      WHERE date >= ${startDate}::date
+      GROUP BY date, brand
+      ORDER BY date, mention_count DESC
+    `;
+  } else {
+    result = await sql`
+      SELECT date::text, brand, SUM(mention_count)::int AS mention_count
+      FROM esai_daily_summary
+      WHERE date >= (SELECT MAX(date) FROM esai_daily_summary) - 7 * INTERVAL '1 day'
+      GROUP BY date, brand
+      ORDER BY date, mention_count DESC
+    `;
+  }
+  return result.rows as EsaiTrendRow[];
+}
+
+export async function getEsaiFeatureScores(): Promise<{
+  brand_name:         string;
+  feature_id:         string;
+  feature_tag:        string;
+  score:              number | null;
+  score_band:         string;
+  flagged_for_review: boolean;
+  evidence:           string | null;
+}[]> {
+  await initEsaiDB();
+  const result = await sql`
+    WITH best_evidence AS (
+      SELECT DISTINCT ON (brand_name, feature_id)
+        brand_name, feature_id, evidence
+      FROM esai_feature_responses
+      WHERE parse_error = false
+        AND evidence IS NOT NULL AND evidence != ''
+        AND evidence NOT ILIKE '%not explicitly document%'
+        AND evidence NOT ILIKE '%does not document%'
+        AND evidence NOT ILIKE '%no specific documentation%'
+        AND evidence NOT ILIKE '%not documented%'
+        AND evidence NOT ILIKE '%cannot be confirmed%'
+        AND evidence NOT ILIKE '%no available information%'
+      ORDER BY brand_name, feature_id,
+        CASE has_capability WHEN 'yes' THEN 0 WHEN 'partial' THEN 1 ELSE 2 END,
+        grounded DESC,
+        run_date DESC,
+        CASE confidence WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END
+    )
+    SELECT s.brand_name, s.feature_id, s.feature_tag, s.score, s.score_band, s.flagged_for_review,
+           be.evidence
+    FROM esai_feature_scores s
+    LEFT JOIN best_evidence be ON be.brand_name = s.brand_name AND be.feature_id = s.feature_id
+    ORDER BY s.feature_tag, s.score DESC NULLS LAST
+  `;
+  return result.rows as {
+    brand_name: string; feature_id: string; feature_tag: string;
+    score: number | null; score_band: string; flagged_for_review: boolean;
+    evidence: string | null;
+  }[];
+}
+
+export async function getEsaiSentimentData(): Promise<{
+  rows: {
+    brand_name:      string;
+    bucket_tag:      string;
+    positive_count:  number;
+    neutral_count:   number;
+    negative_count:  number;
+    total_count:     number;
+    top_descriptors: string[];
+  }[];
+  meta: { dual_model_dates: number; earliest_date: string | null; latest_date: string | null };
+}> {
+  await initEsaiDB();
+
+  const metaResult = await sql`
+    SELECT COUNT(*)::int AS dual_model_dates,
+      MIN(run_date)::text AS earliest_date,
+      MAX(run_date)::text AS latest_date
+    FROM (
+      SELECT run_date
+      FROM esai_sentiment_responses
+      WHERE NOT parse_error
+      GROUP BY run_date
+      HAVING COUNT(DISTINCT model) >= 2
+    ) d
+  `;
+  const meta = metaResult.rows[0] as {
+    dual_model_dates: number; earliest_date: string | null; latest_date: string | null;
+  };
+
+  if ((meta.dual_model_dates ?? 0) < 1) {
+    return { rows: [], meta };
+  }
+
+  const result = await sql`
+    WITH base AS (
+      SELECT brand_name, bucket_tag, sentiment, descriptors
+      FROM esai_sentiment_responses
+      WHERE NOT parse_error
+    ),
+    sentiments AS (
+      SELECT brand_name, bucket_tag,
+        COUNT(*) FILTER (WHERE sentiment='positive')::int AS positive_count,
+        COUNT(*) FILTER (WHERE sentiment='neutral')::int  AS neutral_count,
+        COUNT(*) FILTER (WHERE sentiment='negative')::int AS negative_count,
+        COUNT(*)::int AS total_count
+      FROM base
+      GROUP BY brand_name, bucket_tag
+    ),
+    desc_flat AS (
+      SELECT brand_name, bucket_tag, LOWER(TRIM(d)) AS d, COUNT(*) AS cnt
+      FROM base, LATERAL UNNEST(descriptors) AS d
+      WHERE descriptors IS NOT NULL
+      GROUP BY brand_name, bucket_tag, LOWER(TRIM(d))
+    ),
+    ranked AS (
+      SELECT *, ROW_NUMBER() OVER (PARTITION BY brand_name, bucket_tag ORDER BY cnt DESC) AS rn
+      FROM desc_flat
+    ),
+    top_descs AS (
+      SELECT brand_name, bucket_tag,
+        ARRAY_AGG(d ORDER BY cnt DESC) AS top_descriptors
+      FROM ranked WHERE rn <= 5
+      GROUP BY brand_name, bucket_tag
+    )
+    SELECT s.brand_name, s.bucket_tag,
+      s.positive_count, s.neutral_count, s.negative_count, s.total_count,
+      COALESCE(d.top_descriptors, ARRAY[]::text[]) AS top_descriptors
+    FROM sentiments s
+    LEFT JOIN top_descs d USING (brand_name, bucket_tag)
+    ORDER BY s.bucket_tag, s.brand_name
+  `;
+  const rawRows = result.rows as {
+    brand_name: string; bucket_tag: string;
+    positive_count: number; neutral_count: number; negative_count: number;
+    total_count: number; top_descriptors: string[];
+  }[];
+
+  const rows = rawRows.map(row => {
+    const othersDescs = new Set(
+      rawRows
+        .filter(r => r.bucket_tag === row.bucket_tag && r.brand_name !== row.brand_name)
+        .flatMap(r => r.top_descriptors),
+    );
+    const unique_flags = row.top_descriptors.map(d => (othersDescs.has(d) ? "false" : "true"));
+    return { ...row, unique_flags };
+  });
+
+  return { rows, meta };
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // HSAI pipeline — Hospitality AI Agents
 // ═══════════════════════════════════════════════════════════════════════════════
