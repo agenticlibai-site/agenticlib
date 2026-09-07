@@ -64,7 +64,7 @@ const CLUSTERS: { tag: string; label: string; description: string }[] = [
 ];
 
 // Trend clusters (for per-cluster coverage charts)
-const TREND_CLUSTERS: { tag: string; label: string }[] = [
+const TREND_CLUSTERS: { tag: string; label: string; description: string }[] = [
   { tag: "esai-takeoff",      label: "Quantity Takeoff",               description: "Auto-measuring areas, lengths & counts from digital plans" },
   { tag: "esai-plans",        label: "Plan & Document Reading",        description: "Reading and interpreting architectural & structural drawing sets" },
   { tag: "esai-scope",        label: "Trade Scoping",                  description: "Breaking a project into trade-by-trade work packages" },
