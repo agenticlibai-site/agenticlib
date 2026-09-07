@@ -56,13 +56,6 @@ function TrendTooltip({ active, payload, label }: any) {
 }
 
 // ── Cluster config (4 for the 2×2 pie grid) ───────────────────────────────────
-const CLUSTERS: { tag: string; label: string; description: string }[] = [
-  { tag: "esai-takeoff",     label: "Quantity Takeoff",              description: "PDF measurement, auto area & volume calculation" },
-  { tag: "esai-ai",          label: "AI-Powered Estimating",         description: "Autonomous scope, plan interpretation, AI pricing" },
-  { tag: "esai-residential", label: "Residential New Build",         description: "New construction estimates for Australian builders" },
-  { tag: "esai-commercial",  label: "Commercial Construction",       description: "Multi-trade and tender pricing for commercial GCs" },
-];
-
 // Trend clusters (for per-cluster coverage charts)
 const TREND_CLUSTERS: { tag: string; label: string; description: string }[] = [
   { tag: "esai-takeoff",      label: "Quantity Takeoff",               description: "Auto-measuring areas, lengths & counts from digital plans" },
@@ -88,9 +81,10 @@ const ALL_CLUSTERS: { tag: string; label: string }[] = [
   { tag: "esai-residential", label: "Residential New Build" },
   { tag: "esai-commercial",  label: "Commercial Construction" },
   { tag: "esai-subcontract", label: "Subcontractor & Trade Quoting" },
-  { tag: "esai-ai",          label: "AI-Powered Estimating" },
-  { tag: "esai-tender",      label: "Tender & Bid Preparation" },
-  { tag: "esai-security",    label: "Security & Data Trust" },
+  { tag: "esai-ai",           label: "AI-Powered Estimating" },
+  { tag: "esai-tender",       label: "Tender & Bid Preparation" },
+  { tag: "esai-integrations", label: "Technical Capabilities & Integrations" },
+  { tag: "esai-security",     label: "Security & Data Trust" },
 ];
 
 // ── Empty state ────────────────────────────────────────────────────────────────
@@ -560,7 +554,7 @@ export default function EsaiVisibilityCharts({
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 16, marginBottom: 20 }}>
-        {CLUSTERS.map((cluster) => {
+        {TREND_CLUSTERS.map((cluster) => {
           const data = clusterMap[cluster.tag] ?? [];
           const total = data.reduce((s, r) => s + r.mentions, 0);
           return (
@@ -572,7 +566,7 @@ export default function EsaiVisibilityCharts({
               <h3 style={{ fontSize: 16, fontWeight: 700, color: "#000", margin: "0 0 2px" }}>
                 {cluster.label}
               </h3>
-              <p style={{ fontSize: 12, color: "#000", margin: "0 0 16px" }}>
+              <p style={{ fontSize: 11, fontWeight: 600, color: ACCENT, margin: "0 0 14px" }}>
                 {cluster.description}
               </p>
               {data.length === 0 ? (

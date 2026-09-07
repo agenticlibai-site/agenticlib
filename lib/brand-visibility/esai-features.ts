@@ -271,6 +271,24 @@ ${FOOTER}`,
     prompt: `Estimators often work on multiple tenders simultaneously — each at a different stage, with different deadlines. Does [BRAND] let estimators track and manage multiple active bids or tender submissions at once, with project-level organisation, status tracking, and the ability to compare or reuse estimates across jobs?
 ${FOOTER}`,
   },
+
+  // ── Cluster 12 — Technical Capabilities & Integrations · esai-integrations ──
+  {
+    feature_id:   "integrations_accounting",
+    feature_tag:  "esai-integrations",
+    feature_name: "Integration with AU accounting software (Xero, MYOB, QuickBooks)",
+    description:  "Whether the platform syncs job costs and invoices directly with popular AU accounting platforms.",
+    prompt: `Australian builders run their finances through Xero, MYOB or QuickBooks — they need their estimating software to push approved job costs directly into their accounting platform without re-keying. Does [BRAND] integrate natively with Xero, MYOB or QuickBooks to sync job costs, purchase orders, or invoices — confirmed in its documentation, not just via CSV export?
+${FOOTER}`,
+  },
+  {
+    feature_id:   "integrations_construction_platforms",
+    feature_tag:  "esai-integrations",
+    feature_name: "Integration with construction platforms (Procore, Autodesk, PlanSwift)",
+    description:  "Whether the platform connects to major construction management or takeoff platforms for a joined-up workflow.",
+    prompt: `Builders use multiple platforms — project management (Procore, Aconex), takeoff (PlanSwift, On-Screen Takeoff), and BIM (Autodesk) — and need their estimating tool to fit into that ecosystem. Does [BRAND] offer native, documented integrations with major construction management or takeoff platforms — pushing data bidirectionally rather than relying on manual file export?
+${FOOTER}`,
+  },
 ];
 
 // ── Prompt builder ─────────────────────────────────────────────────────────────
