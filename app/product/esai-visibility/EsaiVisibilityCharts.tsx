@@ -205,21 +205,10 @@ export default function EsaiVisibilityCharts({
     .forEach((r, i) => { brandColorMap[r.brand] = LINE_COLORS[i % LINE_COLORS.length]; });
   const brandColor = (brand: string) => brandColorMap[brand] ?? "#94a3b8";
 
-  // ── Aggregate from clusterTrend (excludes esai-overall — sums are equivalent) ──
-  const allDates = [...new Set(clusterTrend.map(r => r.date))].sort();
-
-  const overallByBrand: Record<string, number> = {};
-  const overallTrendMap: Record<string, Record<string, number>> = {};
-  for (const r of clusterTrend) {
-    if (NON_ESTIMATING.has(r.brand)) continue; // filter out non-estimating brands
-    overallByBrand[r.brand] = (overallByBrand[r.brand] ?? 0) + r.mention_count;
-    if (!overallTrendMap[r.date]) overallTrendMap[r.date] = {};
-    overallTrendMap[r.date][r.brand] = (overallTrendMap[r.date][r.brand] ?? 0) + r.mention_count;
-  }
-
   // Non-estimating brands to filter out of coverage charts:
   // construction management, scheduling, field service, accounting,
-  // AI chatbots, CAD tools, spreadsheets, productivity apps
+  // AI chatbots, CAD tools, spreadsheets, productivity apps,
+  // and traditional estimating tools with no AI features
   const NON_ESTIMATING = new Set([
     // AI models mentioning themselves
     "Claude", "ChatGPT", "Gemini", "Google Gemini", "Copilot", "Microsoft Copilot", "Perplexity",
@@ -244,9 +233,23 @@ export default function EsaiVisibilityCharts({
     "Estimate", "Estimator", "Estimation", "Takeoff", "Construct",
     // Document markup tool (not an estimating platform)
     "Bluebeam",
+    // Traditional estimating tools with no AI features (removed from locked set)
+    "CostX", "Sage Estimating", "Estimating Edge",
     // Other non-estimating
     "BuildCalc", "Speeko", "Nobul", "Juno",
   ]);
+
+  // ── Aggregate from clusterTrend (excludes esai-overall — sums are equivalent) ──
+  const allDates = [...new Set(clusterTrend.map(r => r.date))].sort();
+
+  const overallByBrand: Record<string, number> = {};
+  const overallTrendMap: Record<string, Record<string, number>> = {};
+  for (const r of clusterTrend) {
+    if (NON_ESTIMATING.has(r.brand)) continue; // filter out non-estimating brands
+    overallByBrand[r.brand] = (overallByBrand[r.brand] ?? 0) + r.mention_count;
+    if (!overallTrendMap[r.date]) overallTrendMap[r.date] = {};
+    overallTrendMap[r.date][r.brand] = (overallTrendMap[r.date][r.brand] ?? 0) + r.mention_count;
+  }
 
   // Pinned AI-native brands always shown — even near-zero — to visualise the LLM gap
   const PINNED_BRANDS = ["EstiMate", "Togal.AI", "Buildr"];
