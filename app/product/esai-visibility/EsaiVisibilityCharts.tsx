@@ -68,23 +68,22 @@ const TREND_CLUSTERS: { tag: string; label: string; description: string }[] = [
   { tag: "esai-subcontract",  label: "Subcontractor & Trade Quoting",  description: "Getting trade prices and managing subie quote packages" },
   { tag: "esai-ai",           label: "AI-Powered Estimating",          description: "Auto-scope, plan interpretation & predictive pricing via AI" },
   { tag: "esai-tender",       label: "Tender & Bid Preparation",       description: "Compiling tender documents and tracking bid submissions" },
-  { tag: "esai-buyer-intent", label: "Buyer Intent",                   description: "Signals that a builder or estimator is actively evaluating tools" },
 ];
 
 // All feature clusters (for the feature scores section)
 const ALL_CLUSTERS: { tag: string; label: string }[] = [
-  { tag: "esai-takeoff",     label: "Quantity Takeoff" },
-  { tag: "esai-plans",       label: "Plan & Document Reading" },
-  { tag: "esai-scope",       label: "Trade Scoping" },
-  { tag: "esai-pricing",     label: "Rate Management & Pricing" },
-  { tag: "esai-quote",       label: "Quote & Estimate Output" },
-  { tag: "esai-residential", label: "Residential New Build" },
-  { tag: "esai-commercial",  label: "Commercial Construction" },
-  { tag: "esai-subcontract", label: "Subcontractor & Trade Quoting" },
+  { tag: "esai-takeoff",      label: "Quantity Takeoff" },
+  { tag: "esai-plans",        label: "Plan & Document Reading" },
+  { tag: "esai-scope",        label: "Trade Scoping" },
+  { tag: "esai-quote",        label: "Quote & Estimate Output" },
+  { tag: "esai-residential",  label: "Residential New Build" },
+  { tag: "esai-commercial",   label: "Commercial Construction" },
+  { tag: "esai-subcontract",  label: "Subcontractor & Trade Quoting" },
   { tag: "esai-ai",           label: "AI-Powered Estimating" },
   { tag: "esai-tender",       label: "Tender & Bid Preparation" },
   { tag: "esai-integrations", label: "Technical Capabilities & Integrations" },
   { tag: "esai-security",     label: "Security & Data Trust" },
+  { tag: "esai-pricing",      label: "Rate Management & Pricing" },
 ];
 
 // ── Empty state ────────────────────────────────────────────────────────────────
@@ -153,6 +152,8 @@ interface FeatureScoreRow {
   score:              number | null;
   score_band:         string;
   flagged_for_review: boolean;
+  notes:              string | null;
+  grounded_source:    boolean;
   evidence:           string | null;
 }
 
@@ -675,6 +676,7 @@ export default function EsaiVisibilityCharts({
                           const cleanEvidence = row.evidence
                             ? row.evidence.replace(/<cite[^>]*>|<\/cite>/g, "").trim()
                             : null;
+                          const reasoning = row.notes?.trim() || cleanEvidence || null;
 
                           if (isNd) {
                             return (
@@ -691,7 +693,7 @@ export default function EsaiVisibilityCharts({
 
                           return (
                             <div key={row.brand_name}>
-                              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: cleanEvidence ? 6 : 0 }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: reasoning ? 6 : 0 }}>
                                 <span style={{ fontSize: 13, fontWeight: 600, color: "#000", width: 160, flexShrink: 0 }}>
                                   {row.brand_name}
                                 </span>
@@ -713,12 +715,12 @@ export default function EsaiVisibilityCharts({
                                   {score}
                                 </span>
                               </div>
-                              {cleanEvidence && (
+                              {reasoning && (
                                 <p style={{
                                   fontSize: 12, color: "#000", lineHeight: 1.65,
-                                  margin: 0, paddingLeft: 172,
+                                  margin: 0, paddingLeft: 172, opacity: 0.68,
                                 }}>
-                                  {cleanEvidence}
+                                  {reasoning}
                                 </p>
                               )}
                             </div>
