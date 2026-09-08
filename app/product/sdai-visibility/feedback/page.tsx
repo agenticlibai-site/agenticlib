@@ -92,6 +92,7 @@ export default function SdaiFeedbackPage() {
   const [q2b, setQ2b] = useState("");
   const [q3, setQ3] = useState("");
   const [q4, setQ4] = useState("");
+  const [q5, setQ5] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -100,7 +101,7 @@ export default function SdaiFeedbackPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!company.trim() || !q1.trim() || !q2 || !q3.trim() || !q4.trim()) {
+    if (!company.trim() || !q1.trim() || !q2 || !q3.trim() || !q4.trim() || !q5.trim()) {
       setError("Please answer all questions before submitting.");
       return;
     }
@@ -117,6 +118,7 @@ export default function SdaiFeedbackPage() {
           q2b_what_specifically: showFollowup ? q2b.trim() : "",
           q3_whats_missing: q3.trim(),
           q4_positives: q4.trim(),
+          q5_feature_process: q5.trim(),
           submittedAt: new Date().toISOString(),
         }),
       });
@@ -173,7 +175,7 @@ export default function SdaiFeedbackPage() {
             Your take on the AI Video Creation report
           </h1>
           <p style={{ fontSize: 14, color: "#555", margin: 0, lineHeight: 1.55 }}>
-            Four questions. Takes about 5 minutes. Answers go directly to the team.
+            Five questions. Takes about 5 minutes. Answers go directly to the team.
           </p>
         </div>
 
@@ -351,7 +353,7 @@ export default function SdaiFeedbackPage() {
               </div>
 
               {/* Q4 */}
-              <div style={{ ...qStyle, borderBottom: "none" }}>
+              <div style={qStyle}>
                 <div style={numStyle}>4</div>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <label htmlFor="q4" style={labelStyle}>
@@ -368,6 +370,23 @@ export default function SdaiFeedbackPage() {
                 </div>
               </div>
 
+              {/* Q5 */}
+              <div style={{ ...qStyle, borderBottom: "none" }}>
+                <div style={numStyle}>5</div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <label htmlFor="q5" style={labelStyle}>
+                    Tell me about the last time you had to figure out what feature to build next — what does that entire process look like for you? Additionally, do you have any pain points as an AI Agent Builder?
+                  </label>
+                  <textarea
+                    id="q5"
+                    value={q5}
+                    onChange={(e) => setQ5(e.target.value)}
+                    placeholder="Walk us through your process..."
+                    rows={4}
+                    style={taStyle}
+                  />
+                </div>
+              </div>
 
               {/* Error */}
               {error && (

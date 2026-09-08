@@ -50,6 +50,10 @@ export async function POST(req: Request) {
             <td style="padding:8px 12px;font-weight:600;color:#3f3f46;background:#f4f4f5;">What were the positives?</td>
             <td style="padding:8px 12px;color:#18181b;">${data.q4_positives || "—"}</td>
           </tr>
+          <tr>
+            <td style="padding:8px 12px;font-weight:600;color:#3f3f46;background:#f4f4f5;">Feature prioritisation process &amp; AI Agent Builder pain points</td>
+            <td style="padding:8px 12px;color:#18181b;">${data.q5_feature_process || "—"}</td>
+          </tr>
         </table>
       `,
     });
