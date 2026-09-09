@@ -3993,6 +3993,29 @@ export async function getEsaiFeatureScores(): Promise<{
   }[];
 }
 
+export async function getEsaiBuyerIntent(): Promise<{
+  brand: string;
+  total_mentions: number;
+  avg_position: number | null;
+}[]> {
+  await initEsaiDB();
+  const LOCKED = ['EstiMate','Togal.AI','Buildr','Buildxact','PlanSwift','On-Screen Takeoff','ProEst','STACK','eTakeoff','Esticom','Glodon'];
+  const result = await sql`
+    SELECT brand,
+           SUM(mention_count)::integer   AS total_mentions,
+           AVG(avg_position)::float      AS avg_position
+    FROM esai_daily_summary
+    WHERE cluster_tag = 'esai-buyer-intent'
+      AND brand = ANY(${LOCKED})
+    GROUP BY brand
+    ORDER BY total_mentions DESC
+  `;
+  // Brands with zero mentions won't appear — pad them in
+  const found = new Set((result.rows as { brand: string }[]).map(r => r.brand));
+  const padded = LOCKED.filter(b => !found.has(b)).map(b => ({ brand: b, total_mentions: 0, avg_position: null }));
+  return [...result.rows, ...padded] as { brand: string; total_mentions: number; avg_position: number | null }[];
+}
+
 export async function getEsaiSentimentData(): Promise<{
   rows: {
     brand_name:      string;

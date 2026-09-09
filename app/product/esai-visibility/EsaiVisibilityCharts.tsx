@@ -175,6 +175,13 @@ interface SentimentData {
 
 const SENTIMENT_GATE = 1;
 
+// ── Buyer intent ───────────────────────────────────────────────────────────────
+interface BuyerIntentRow {
+  brand:           string;
+  total_mentions:  number;
+  avg_position:    number | null;
+}
+
 // ── Props ──────────────────────────────────────────────────────────────────────
 interface Props {
   topBrands:     EsaiTopBrandRow[];
@@ -183,10 +190,11 @@ interface Props {
   clusterTrend:  EsaiClusterTrendRow[];
   featureScores: FeatureScoreRow[];
   sentimentData: SentimentData;
+  buyerIntent:   BuyerIntentRow[];
 }
 
 export default function EsaiVisibilityCharts({
-  topBrands, byCluster, byModel, clusterTrend, featureScores, sentimentData,
+  topBrands, byCluster, byModel, clusterTrend, featureScores, sentimentData, buyerIntent,
 }: Props) {
 
   // ── Hidden brands state (interactive trend) ───────────────────────────────
@@ -739,6 +747,121 @@ export default function EsaiVisibilityCharts({
           );
         })
       )}
+
+      {/* ── LLM Buyer Intent Visibility ───────────────────────────────────── */}
+      {(() => {
+        const PINNED = new Set(["EstiMate", "Togal.AI", "Buildr"]);
+        const sorted = [...buyerIntent].sort((a, b) => b.total_mentions - a.total_mentions);
+        const maxMentions = sorted[0]?.total_mentions ?? 1;
+        const totalMentions = sorted.reduce((s, r) => s + r.total_mentions, 0);
+        const estimateMentions = sorted.find(r => r.brand === "EstiMate")?.total_mentions ?? 0;
+
+        const PROMPTS = [
+          "What estimating software should an Australian building company invest in right now?",
+          "I'm an Australian builder looking to switch estimating software — what do most builders actually recommend and why?",
+          "Which AI estimating tool is worth paying for as an Australian builder in 2025, and what are the alternatives?",
+        ];
+
+        return (
+          <Section
+            title="LLM Buyer Intent Visibility"
+            subtitle="When builders ask AI which estimating software to invest in or switch to, who gets recommended?"
+          >
+            {/* Prompts used */}
+            <div style={{ marginBottom: 28 }}>
+              <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase", color: "#EA580C", marginBottom: 12 }}>
+                Prompts tested
+              </p>
+              <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
+                {PROMPTS.map((p, i) => (
+                  <div key={i} style={{
+                    display: "flex", gap: 12, alignItems: "flex-start",
+                    background: "rgba(234,88,12,0.04)", borderLeft: "3px solid rgba(234,88,12,0.25)",
+                    borderRadius: "0 8px 8px 0", padding: "10px 14px",
+                  }}>
+                    <span style={{
+                      fontSize: 11, fontWeight: 700, color: "#EA580C",
+                      background: "rgba(234,88,12,0.12)", borderRadius: 999,
+                      padding: "2px 8px", flexShrink: 0, marginTop: 1,
+                    }}>{i + 1}</span>
+                    <p style={{ fontSize: 13, color: "#000", lineHeight: 1.6, margin: 0, fontStyle: "italic" }}>
+                      &ldquo;{p}&rdquo;
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Callout */}
+            <div style={{
+              background: "rgba(234,88,12,0.06)", border: "1px solid rgba(234,88,12,0.18)",
+              borderRadius: 10, padding: "14px 18px", marginBottom: 28,
+              display: "flex", gap: 12, alignItems: "flex-start",
+            }}>
+              <span style={{ fontSize: 20, flexShrink: 0 }}>⚠️</span>
+              <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: 0 }}>
+                <strong>EstiMate surfaces in {estimateMentions} out of ~{totalMentions} buyer-intent LLM responses.</strong>{" "}
+                When a builder asks AI which estimating software to invest in, traditional tools dominate the recommendations.
+                This is the gap: buyers using AI to shortlist software today won&apos;t encounter EstiMate unless they already know to search for it.
+              </p>
+            </div>
+
+            {/* Bar chart */}
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                <span style={{ fontSize: 11, fontWeight: 700, color: "#000", width: 180, flexShrink: 0 }}> </span>
+                <span style={{ fontSize: 11, color: "#000", opacity: 0.45 }}>← fewer mentions · more mentions →</span>
+              </div>
+              {sorted.map((row) => {
+                const isPinned = PINNED.has(row.brand);
+                const pct = maxMentions > 0 ? (row.total_mentions / maxMentions) * 100 : 0;
+                const barColor = isPinned ? "#EA580C" : "rgba(0,0,0,0.18)";
+                const barFill  = isPinned ? "#EA580C" : "#64748b";
+                return (
+                  <div key={row.brand} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                    <span style={{
+                      fontSize: 13, fontWeight: isPinned ? 700 : 600,
+                      color: isPinned ? "#EA580C" : "#000",
+                      width: 180, flexShrink: 0,
+                    }}>
+                      {row.brand}
+                      {isPinned && (
+                        <span style={{
+                          marginLeft: 6, fontSize: 10, fontWeight: 700,
+                          background: "rgba(234,88,12,0.12)", color: "#EA580C",
+                          borderRadius: 999, padding: "1px 6px", letterSpacing: "0.04em",
+                        }}>AI</span>
+                      )}
+                    </span>
+                    <div style={{ flex: 1, height: 10, borderRadius: 999, background: "rgba(0,0,0,0.06)", overflow: "hidden" }}>
+                      <div style={{
+                        width: `${pct}%`, height: "100%", borderRadius: 999,
+                        background: barFill, transition: "width 0.4s ease",
+                        opacity: pct === 0 ? 0 : 1,
+                      }} />
+                    </div>
+                    <span style={{
+                      fontSize: 13, fontWeight: 700, color: barColor,
+                      width: 28, textAlign: "right" as const, flexShrink: 0,
+                      fontVariantNumeric: "tabular-nums",
+                    }}>
+                      {row.total_mentions}
+                    </span>
+                    {row.avg_position !== null && (
+                      <span style={{ fontSize: 11, color: "#000", opacity: 0.45, width: 60, flexShrink: 0 }}>
+                        pos.{" "}{Math.round(row.avg_position)}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+            <p style={{ fontSize: 11, color: "#000", opacity: 0.45, marginTop: 16 }}>
+              Mentions = total times brand appeared across 3 prompts × 4 model runs (Claude Haiku + GPT-4o-mini, 2 collection dates). Position = average rank in the response when mentioned.
+            </p>
+          </Section>
+        );
+      })()}
 
       {/* ── Sentiment Analysis ────────────────────────────────────────────── */}
       {(() => {
