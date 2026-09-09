@@ -659,9 +659,12 @@ export default function EsaiVisibilityCharts({
 
               <div style={{ display: "flex", flexDirection: "column" as const, gap: 32 }}>
                 {clusterFeatures.map((feature, fi) => {
-                  const featureRows = clusterScores
+                  const ALWAYS_SHOW_BRANDS = new Set(["EstiMate", "Togal.AI", "Buildr"]);
+                  const allSortedRows = clusterScores
                     .filter((s) => s.feature_id === feature.feature_id && s.score_band !== "not_documented")
                     .sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+                  const top3Names = new Set(allSortedRows.slice(0, 3).map(r => r.brand_name));
+                  const featureRows = allSortedRows.filter(r => top3Names.has(r.brand_name) || ALWAYS_SHOW_BRANDS.has(r.brand_name));
                   if (featureRows.length === 0) return null;
 
                   return (
@@ -725,8 +728,8 @@ export default function EsaiVisibilityCharts({
                               </div>
                               {reasoning && (
                                 <p style={{
-                                  fontSize: 12, color: "#000", lineHeight: 1.65,
-                                  margin: 0, paddingLeft: 172, opacity: 0.68,
+                                  fontSize: 13, color: "#000", lineHeight: 1.7,
+                                  margin: "5px 0 0", paddingLeft: 172,
                                 }}>
                                   {reasoning}
                                 </p>
@@ -1597,100 +1600,6 @@ export default function EsaiVisibilityCharts({
             </div>
           </div>
 
-        </div>
-      </div>
-
-      {/* ── LLM Visibility Playbook ──────────────────────────────────────────── */}
-      <div style={{ marginTop: 40, marginBottom: 16 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
-          LLM Visibility Playbook
-        </h2>
-        <p style={{ fontSize: 13, color: "#000", margin: "0 0 20px" }}>
-          The moves that turn LLM invisibility into first-mover advantage, ranked by expected lift
-        </p>
-
-        <div style={{
-          background: "linear-gradient(135deg, #f8f4ff 0%, #f0f7ff 100%)",
-          border: "1px solid rgba(99,102,241,0.15)",
-          borderLeft: "3px solid #6366f1",
-          borderRadius: 10,
-          padding: "16px 20px",
-          marginBottom: 20,
-        }}>
-          <p style={{ fontSize: 13.5, lineHeight: 1.65, color: "#1e1b4b", margin: 0 }}>
-            <strong>No AI-native estimating tool has cracked LLM visibility in the Australian builder market.</strong> Every query currently defaults to traditional tools — Bluebeam, PlanSwift, Buildxact — or US-focused platforms like Procore. That is not a gap to close: it is white space nobody has claimed. The two tactics that consistently work in adjacent AI-agent categories are named-competitor comparison content and concentrated query-cluster ownership. EstiMate has the chance to be the first AI-native estimating brand to apply either in AU.
-          </p>
-        </div>
-
-        <div style={{ display: "flex", gap: 12, marginBottom: 12, flexWrap: "wrap" as const }}>
-          {([
-            {
-              label: "Model A: Named Comparison Pages",
-              title: "EstiMate vs Buildxact, vs Bluebeam, vs PlanSwift",
-              priority: "Highest impact",
-              priorityColor: "#16a34a",
-              body: "Publish a dedicated 'EstiMate vs [Competitor]' page for every tool LLMs currently default to: Buildxact, Bluebeam, PlanSwift, CostX. LLMs are trained on comparison content and retrieve it directly when users ask what alternatives exist. Each page must name the competitor in the title, URL slug, and H1 — include a feature table comparing AI capabilities — and end with a clear 'why EstiMate' section. Four pages covering four dominant incumbents is all it takes to seed LLM training data with EstiMate as a named alternative.",
-            },
-            {
-              label: "Model B: Cluster Ownership",
-              title: "Own 'AI estimating for Australian builders' with concentrated content",
-              priority: "High impact",
-              priorityColor: "#16a34a",
-              body: "Pick the single query cluster where EstiMate has the strongest story — AI-powered estimating for residential builders in Australia — and publish 10–15 pieces all using exactly the same phrase cluster. LLMs learn category labels through repeated co-occurrence. When every article, guide, and case study on this topic names EstiMate and uses the same anchor phrase, the model begins associating them. One post achieves nothing. Ten posts on one phrase, published over 90 days, can shift a model's associations for that query.",
-            },
-          ] as { label: string; title: string; priority: string; priorityColor: string; body: string }[]).map(({ label, title, priority, priorityColor, body }) => (
-            <div key={label} style={{
-              flex: "1 1 300px", background: "#fff",
-              border: "1px solid rgba(0,0,0,0.08)",
-              borderRadius: 12, padding: "18px 20px",
-            }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-                <span style={{ fontSize: 11, fontWeight: 700, color: "#000", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{label}</span>
-                <span style={{ fontSize: 11, fontWeight: 700, color: priorityColor, background: `${priorityColor}18`, padding: "2px 8px", borderRadius: 999 }}>{priority}</span>
-              </div>
-              <p style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: "0 0 8px", lineHeight: 1.3 }}>{title}</p>
-              <p style={{ fontSize: 12.5, lineHeight: 1.65, color: "#000", margin: 0 }}>{body}</p>
-            </div>
-          ))}
-        </div>
-
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
-          {([
-            {
-              tag: "AU-specific",
-              title: "Builder community and trade forum seeding",
-              body: "LLMs are trained on forums and communities. Genuine, helpful answers on HIA member forums, Master Builders community threads, r/AusFinance, and commercial builder Facebook groups — mentioning EstiMate by name with a specific use case ('we use EstiMate to auto-measure from PDFs on residential jobs') — generate training signal that a blog post on estimateai.com.au cannot match. Third-party community mentions carry outsized LLM weight because they read as unsponsored. One well-placed answer per week for 12 weeks compounds significantly.",
-            },
-            {
-              tag: "AU-specific",
-              title: "State-based and trade-specific landing pages",
-              body: "LLMs answer location+trade queries by surfacing whatever content exists for that combination. Create pages targeting: 'AI estimating for residential builders in NSW', 'construction estimating software for Queensland builders', 'AI takeoff tool for Australian commercial GCs'. No competitor has this content for the AU market. These pages train LLMs to associate EstiMate with specific contexts — the same way Buildxact captured 'estimating software for small builders' — but EstiMate can do it faster because the AI-native angle is unclaimed.",
-            },
-            {
-              tag: "Overall AI visibility",
-              title: "Third-party AI directory and product listings",
-              body: "G2, Capterra, ProductHunt, and Futurepedia are the directories LLMs trust most for product discovery. EstiMate needs a listing on each with 'AI-powered estimating for Australian builders' in the description — not just 'estimating software'. LLMs surface these directories directly in responses when a product lacks wider web presence. A complete G2 listing with reviews is a credibility shortcut and training data source simultaneously.",
-            },
-            {
-              tag: "Overall AI visibility",
-              title: "Publish the best AI estimating tools listicle yourself",
-              body: "LLMs frequently cite 'best-of' roundup articles for discovery queries. If no independent publication has written 'The best AI estimating tools for Australian builders in 2026', EstiMate should publish it — including a fair assessment of Togal.AI, Buildr, and Buildxact. LLMs do not penalise self-authored comparison content; they index it the same as any third party. This is how category-defining brands build LLM authority before analysts catch up: they write the category narrative before anyone else does.",
-            },
-          ] as { tag: string; title: string; body: string }[]).map(({ tag, title, body }) => (
-            <div key={title} style={{
-              background: "#fff", border: "1px solid rgba(0,0,0,0.08)",
-              borderRadius: 12, padding: "16px 20px",
-              display: "flex", gap: 16, alignItems: "flex-start",
-            }}>
-              <div style={{ flex: 1 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 7 }}>
-                  <span style={{ fontSize: 11, fontWeight: 700, color: "#000", textTransform: "uppercase" as const, letterSpacing: "0.08em" }}>{tag}</span>
-                </div>
-                <p style={{ fontSize: 13.5, fontWeight: 700, color: "#000", margin: "0 0 6px", lineHeight: 1.3 }}>{title}</p>
-                <p style={{ fontSize: 12.5, lineHeight: 1.65, color: "#000", margin: 0 }}>{body}</p>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
 
