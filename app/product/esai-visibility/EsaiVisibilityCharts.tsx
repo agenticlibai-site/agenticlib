@@ -204,7 +204,7 @@ export default function EsaiVisibilityCharts({
   const LOCKED_BRANDS = [
     "EstiMate", "Togal.AI", "Buildr",          // AI-native (pinned)
     "Buildxact", "PlanSwift", "On-Screen Takeoff",
-    "ProEst", "STACK", "eTakeoff", "Esticom", "Glodon",
+    "ProEst", "STACK", "Esticom", "Glodon",
   ];
   const LOCKED_SET = new Set(LOCKED_BRANDS);
   // AI-native sub-set — pinned with bold lines in coverage charts
@@ -221,7 +221,6 @@ export default function EsaiVisibilityCharts({
     "On-Screen Takeoff":"#0891B2",
     "ProEst":           "#C026D3",
     "STACK":            "#0D9488",
-    "eTakeoff":         "#BE185D",
     "Esticom":          "#65A30D",
     "Glodon":           "#0369A1",
   };
@@ -324,7 +323,7 @@ export default function EsaiVisibilityCharts({
           Note
         </p>
         <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
-          Every chart in this report shows only the 11 brands with AI features in the construction estimating category. Three are AI-native agents (<strong>EstiMate</strong>, <strong>Togal.AI</strong>, <strong>Buildr</strong>); eight are traditional estimating platforms with meaningful AI capabilities (Buildxact, PlanSwift, On-Screen Takeoff, ProEst, STACK, eTakeoff, Esticom, Glodon). Construction management, accounting, CAD, and zero-AI tools are excluded.
+          Every chart in this report shows only the 10 brands with AI features in the construction estimating category. Three are AI-native agents (<strong>EstiMate</strong>, <strong>Togal.AI</strong>, <strong>Buildr</strong>); seven are traditional estimating platforms with meaningful AI capabilities (Buildxact, PlanSwift, On-Screen Takeoff, ProEst, STACK, Esticom, Glodon). Construction management, accounting, CAD, and zero-AI tools are excluded.
         </p>
         <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: 0 }}>
           EstiMate, Togal.AI &amp; Buildr are pinned in coverage charts — they appear near-zero because LLMs rarely surface AI-native agents unprompted. EstiMate was mentioned twice in the Residential New Build use case cluster, both times by Claude Haiku (Aug 31 &amp; Sep 1), at position 13 — triggered by prompts asking <em>&ldquo;What estimating software do Australian residential builders use?&rdquo;</em> and <em>&ldquo;What tools do Australian house builders use to price new home builds?&rdquo;</em>
@@ -514,7 +513,7 @@ export default function EsaiVisibilityCharts({
           <StatCard
             label="Total Mentions"
             value={totalMentions.toLocaleString()}
-            sub="AI-native agents · Aug 31 – Sep 6"
+            sub="10 tracked brands · Aug 31 – Sep 6"
           />
           <StatCard
             label="Top Brand"

@@ -3999,7 +3999,7 @@ export async function getEsaiBuyerIntent(): Promise<{
   avg_position: number | null;
 }[]> {
   await initEsaiDB();
-  const LOCKED = ['EstiMate','Togal.AI','Buildr','Buildxact','PlanSwift','On-Screen Takeoff','ProEst','STACK','eTakeoff','Esticom','Glodon'];
+  const LOCKED = ['EstiMate','Togal.AI','Buildr','Buildxact','PlanSwift','On-Screen Takeoff','ProEst','STACK','Esticom','Glodon'];
   const result = await sql`
     SELECT brand,
            SUM(mention_count)::integer   AS total_mentions,

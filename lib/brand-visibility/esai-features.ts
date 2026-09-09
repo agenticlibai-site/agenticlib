@@ -51,7 +51,6 @@ export const LOCKED_ESAI_BRANDS: readonly string[] = [
   "On-Screen Takeoff", // #12 — On Center Software's takeoff tool
   "ProEst",          // #17 — cloud estimating for GCs
   "STACK",           // #34 — cloud takeoff and estimating
-  "eTakeoff",        // #24 — digital takeoff (partnered with Togal.AI SnapAI)
   "Estimating Edge", // #25 — specialised trade estimating
   "Sage Estimating", // #9 — Sage's construction estimating product
   "Esticom",         // #37 — now Procore Estimating, still a known brand name

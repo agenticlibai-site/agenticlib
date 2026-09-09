@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
 export const metadata = {
   title: "EstiMate: Construction Estimating AI Visibility – AgenticLib",
   description:
-    "Which estimating and takeoff software brands appear when LLMs are asked about AI-powered construction estimating for Australian builders. 11 use case clusters, 3 runs per prompt, collected daily.",
+    "Which estimating and takeoff software brands appear when LLMs are asked about AI-powered construction estimating for Australian builders. 10 tracked brands, 11 use case clusters, 3 runs per prompt, collected daily.",
 };
 
 export default async function EsaiVisibilityPage() {
@@ -49,7 +49,7 @@ export default async function EsaiVisibilityPage() {
           <p className="text-base" style={{ color: "#000000", lineHeight: 1.6, maxWidth: 600 }}>
             Which estimating and takeoff software brands appear when Claude Haiku and GPT-4o-mini are
             asked about AI-powered construction estimating, quantity takeoff, residential new build
-            pricing, and tender preparation for Australian builders. 11 use case clusters, 3 runs each.
+            pricing, and tender preparation for Australian builders. 10 tracked brands, 11 use case clusters, 3 runs each.
           </p>
         </div>
 
