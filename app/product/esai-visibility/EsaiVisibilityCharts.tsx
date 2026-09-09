@@ -310,27 +310,6 @@ export default function EsaiVisibilityCharts({
   return (
     <div>
 
-      {/* ── Stat cards ────────────────────────────────────────────────────── */}
-      {hasData && (
-        <div style={{ display: "flex", gap: 16, marginBottom: 24, flexWrap: "wrap" as const }}>
-          <StatCard
-            label="Total Mentions"
-            value={totalMentions.toLocaleString()}
-            sub="10 tracked brands · Aug 31 – Sep 6"
-          />
-          <StatCard
-            label="Top Brand"
-            value={topBrandName}
-            sub={`${(topBrandCount as number).toLocaleString()} mentions across all clusters`}
-          />
-          <StatCard
-            label="Collection Period"
-            value="7 days"
-            sub="Aug 31 – Sep 6, 2026 · 11 use case clusters"
-          />
-        </div>
-      )}
-
       {/* ── Note callout ──────────────────────────────────────────────────── */}
       <div style={{
         background: "rgba(234,88,12,0.06)",
@@ -528,6 +507,33 @@ export default function EsaiVisibilityCharts({
         </div>
       </div>
 
+
+      {/* ── Competitive Intelligence heading + stat cards ─────────────────── */}
+      <p style={{
+        fontSize: 52, fontWeight: 900, color: "#000000",
+        letterSpacing: "-0.03em", lineHeight: 1.05, margin: "0 0 20px",
+      }}>
+        Competitive Intelligence
+      </p>
+      {hasData && (
+        <div style={{ display: "flex", gap: 16, marginBottom: 20, flexWrap: "wrap" as const }}>
+          <StatCard
+            label="Total Mentions"
+            value={totalMentions.toLocaleString()}
+            sub="10 tracked brands · Aug 31 – Sep 6"
+          />
+          <StatCard
+            label="Top Brand"
+            value={topBrandName}
+            sub={`${(topBrandCount as number).toLocaleString()} mentions across all clusters`}
+          />
+          <StatCard
+            label="Collection Period"
+            value="7 days"
+            sub="Aug 31 – Sep 6, 2026 · 11 use case clusters"
+          />
+        </div>
+      )}
 
       {/* ── Interactive combined trend ─────────────────────────────────────── */}
       <div style={{

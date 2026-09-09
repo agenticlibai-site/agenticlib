@@ -12,7 +12,7 @@ import EsaiVisibilityCharts from "./EsaiVisibilityCharts";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "EstiMate — A Report – AgenticLib",
+  title: "EstiMate AI Report – AgenticLib",
   description:
     "Which estimating and takeoff software brands appear when LLMs are asked about AI-powered construction estimating for Australian builders. 10 tracked brands, 11 use case clusters, 3 runs per prompt, collected daily.",
 };
@@ -40,23 +40,11 @@ export default async function EsaiVisibilityPage() {
           >
             Brand Intelligence · Construction Estimating AI
           </div>
-          <p
-            style={{
-              fontSize: 52,
-              fontWeight: 900,
-              color: "#000000",
-              letterSpacing: "-0.03em",
-              lineHeight: 1.05,
-              margin: "0 0 10px",
-            }}
-          >
-            Competitive Intelligence
-          </p>
           <h1
             className="text-3xl md:text-4xl font-bold mb-3"
             style={{ color: "#000000", letterSpacing: "-0.02em", lineHeight: 1.15 }}
           >
-            EstiMate — A Report
+            EstiMate AI Report
           </h1>
           <p className="text-base" style={{ color: "#000000", lineHeight: 1.6, maxWidth: 600 }}>
             Which estimating and takeoff software brands appear when Claude Haiku and GPT-4o-mini are
