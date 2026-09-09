@@ -1300,7 +1300,7 @@ export default function EsaiVisibilityCharts({
               <span style={{ fontSize: 13.5, fontWeight: 700, color: "#000" }}>{title}</span>
               <span style={{ fontSize: 12, color: "#000", fontStyle: "italic" }}>— {why}</span>
             </div>
-            {explain && <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px", maxWidth: 560 }}>{explain}</p>}
+            {explain && <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px" }}>{explain}</p>}
             {children}
           </div>
         );
@@ -1348,7 +1348,7 @@ export default function EsaiVisibilityCharts({
         const PullQuote = ({ color, text, attr }: { color: string; text: string; attr: string }) => (
           <div style={{
             borderLeft: `3px solid ${color}`, background: `${color}10`,
-            borderRadius: "0 6px 6px 0", padding: "12px 16px", margin: "12px 0", maxWidth: 560,
+            borderRadius: "0 6px 6px 0", padding: "12px 16px", margin: "12px 0",
           }}>
             <p style={{ fontSize: 13, fontStyle: "italic", color: "#000", lineHeight: 1.65, margin: "0 0 6px" }}>&ldquo;{text}&rdquo;</p>
             <span style={{ fontSize: 11, fontFamily: "monospace", color: "#000", opacity: 0.45 }}>{attr}</span>
@@ -1505,7 +1505,7 @@ export default function EsaiVisibilityCharts({
               <div style={{ background: "rgba(234,88,12,0.05)", border: "1px solid rgba(234,88,12,0.15)", borderRadius: 12, padding: "32px 32px 36px", marginTop: 8 }}>
                 <div style={{ fontSize: 11, fontFamily: "monospace", letterSpacing: "0.12em", textTransform: "uppercase", color: "#EA580C", marginBottom: 6 }}>EstiMate AI</div>
                 <div style={{ fontSize: 20, fontWeight: 800, color: "#000", letterSpacing: "-0.02em", marginBottom: 8 }}>Recommended Moves to Build LLM Visibility</div>
-                <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.7, margin: "0 0 16px", maxWidth: 580 }}>
+                <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.7, margin: "0 0 16px" }}>
                   EstiMate AI surfaces in <strong>1 out of ~83 buyer-intent responses</strong>. The gap isn&apos;t a product gap — it&apos;s a content and signal gap. Neither Togal.AI nor Buildr publishes Australian-specific content. EstiMate can own this space.
                 </p>
                 <div style={{ background: "rgba(0,0,0,0.03)", border: "1px solid rgba(0,0,0,0.07)", borderRadius: 8, padding: "12px 16px", marginBottom: 32, display: "flex", gap: 12, alignItems: "flex-start" }}>
