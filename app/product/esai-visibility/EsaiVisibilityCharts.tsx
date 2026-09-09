@@ -863,6 +863,340 @@ export default function EsaiVisibilityCharts({
         );
       })()}
 
+      {/* ── LLM Visibility Playbook ───────────────────────────────────────── */}
+      {(() => {
+        const Cite = ({ children }: { children: React.ReactNode }) => (
+          <span style={{
+            fontFamily: "monospace", fontSize: 11, color: "#000", opacity: 0.45,
+            background: "rgba(0,0,0,0.05)", borderRadius: 3, padding: "1px 5px",
+            whiteSpace: "nowrap",
+          }}>{children}</span>
+        );
+
+        const Dot = ({ children }: { children: React.ReactNode }) => (
+          <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 8 }}>
+            <span style={{ color: "#EA580C", fontSize: 16, lineHeight: "1.65", flexShrink: 0, marginTop: 0 }}>·</span>
+            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: 0 }}>{children}</p>
+          </div>
+        );
+
+        const SignalBlock = ({ icon, title, why, children }: { icon: string; title: string; why: string; children: React.ReactNode }) => (
+          <div style={{ marginBottom: 28 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+              <span style={{ fontSize: 15 }}>{icon}</span>
+              <span style={{ fontSize: 13.5, fontWeight: 700, color: "#000" }}>{title}</span>
+              <span style={{ fontSize: 12, color: "#000", opacity: 0.45, fontStyle: "italic" }}>— {why}</span>
+            </div>
+            {children}
+          </div>
+        );
+
+        const CaseStudy = ({ color, number, name, subtitle, children }: { color: string; number: string; name: string; subtitle: string; children: React.ReactNode }) => (
+          <div style={{ borderLeft: `4px solid ${color}`, paddingLeft: 24, marginBottom: 48 }}>
+            <div style={{ fontSize: 11, fontFamily: "monospace", letterSpacing: "0.10em", textTransform: "uppercase", color, marginBottom: 4 }}>{number}</div>
+            <div style={{ fontSize: 22, fontWeight: 800, color: "#000", letterSpacing: "-0.02em", lineHeight: 1.2, marginBottom: 4 }}>{name}</div>
+            <div style={{ fontSize: 13, color: "#000", opacity: 0.5, fontStyle: "italic", marginBottom: 20 }}>{subtitle}</div>
+            {children}
+          </div>
+        );
+
+        const SnapGrid = ({ items }: { items: { label: string; value: string }[] }) => (
+          <div style={{
+            display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))",
+            gap: 1, background: "rgba(0,0,0,0.07)", border: "1px solid rgba(0,0,0,0.07)",
+            borderRadius: 8, overflow: "hidden", marginBottom: 28,
+          }}>
+            {items.map(({ label, value }) => (
+              <div key={label} style={{ background: "#fff", padding: "12px 14px" }}>
+                <div style={{ fontSize: 10, fontFamily: "monospace", letterSpacing: "0.10em", textTransform: "uppercase", color: "#000", opacity: 0.45, marginBottom: 4 }}>{label}</div>
+                <div style={{ fontSize: 12.5, fontWeight: 600, color: "#000", lineHeight: 1.4 }}>{value}</div>
+              </div>
+            ))}
+          </div>
+        );
+
+        const SubHeading = ({ children }: { children: React.ReactNode }) => (
+          <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase", color: "#000", opacity: 0.4, margin: "24px 0 10px" }}>
+            {children}
+          </div>
+        );
+
+        const PullQuote = ({ color, text, attr }: { color: string; text: string; attr: string }) => (
+          <div style={{
+            borderLeft: `3px solid ${color}`, background: `${color}10`,
+            borderRadius: "0 6px 6px 0", padding: "12px 16px", margin: "12px 0", maxWidth: 560,
+          }}>
+            <p style={{ fontSize: 13, fontStyle: "italic", color: "#000", lineHeight: 1.65, margin: "0 0 6px" }}>&ldquo;{text}&rdquo;</p>
+            <span style={{ fontSize: 11, fontFamily: "monospace", color: "#000", opacity: 0.45 }}>{attr}</span>
+          </div>
+        );
+
+        const GapBox = ({ children }: { children: React.ReactNode }) => (
+          <div style={{ background: "#fff", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 8, padding: "16px 18px", marginTop: 16 }}>
+            <div style={{ fontSize: 10, fontFamily: "monospace", letterSpacing: "0.12em", textTransform: "uppercase", color: "#000", opacity: 0.4, marginBottom: 10 }}>Visibility gaps — signals LLMs can&apos;t find</div>
+            {children}
+          </div>
+        );
+
+        const MentionBar = ({ label, color, pct, val }: { label: string; color: string; pct: number; val: string }) => (
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+            <span style={{ fontSize: 12.5, fontWeight: 600, color: color !== "#94a3b8" ? color : "#000", width: 110, flexShrink: 0 }}>{label}</span>
+            <div style={{ flex: 1, height: 8, background: "rgba(0,0,0,0.06)", borderRadius: 999, overflow: "hidden" }}>
+              <div style={{ width: `${pct}%`, height: "100%", background: color, borderRadius: 999 }} />
+            </div>
+            <span style={{ fontSize: 11, fontFamily: "monospace", color: "#000", opacity: 0.45, width: 70, flexShrink: 0 }}>{val}</span>
+          </div>
+        );
+
+        const Move = ({ num, title, why, children }: { num: number; title: string; why: string; children: React.ReactNode }) => (
+          <div style={{ display: "grid", gridTemplateColumns: "40px 1fr", gap: "0 18px", marginBottom: 36, alignItems: "start" }}>
+            <div style={{ fontSize: 30, fontWeight: 800, color: "#EA580C", lineHeight: 1, paddingTop: 2 }}>{num}</div>
+            <div>
+              <div style={{ fontSize: 14.5, fontWeight: 700, color: "#000", marginBottom: 3 }}>{title}</div>
+              <div style={{ fontSize: 10.5, fontFamily: "monospace", letterSpacing: "0.06em", textTransform: "uppercase", color: "#EA580C", marginBottom: 10 }}>{why}</div>
+              {children}
+            </div>
+          </div>
+        );
+
+        const MoveDot = ({ children }: { children: React.ReactNode }) => (
+          <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 7 }}>
+            <span style={{ color: "#EA580C", fontSize: 16, lineHeight: "1.65", flexShrink: 0 }}>·</span>
+            <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: 0 }}>{children}</p>
+          </div>
+        );
+
+        const defnStyle: React.CSSProperties = {
+          background: "rgba(234,88,12,0.06)", borderLeft: "4px solid #EA580C",
+          borderRadius: "0 8px 8px 0", padding: "14px 18px", margin: "16px 0 24px",
+        };
+
+        return (
+          <>
+            {/* Intro */}
+            <Section title="LLM Visibility Playbook" subtitle="How Togal.AI and Buildr are building LLM presence — and what EstiMate AI needs to do to become the answer">
+
+              {/* What is LLM visibility */}
+              <p style={{ fontSize: 14, color: "#000", lineHeight: 1.75, maxWidth: 640, marginBottom: 12 }}>
+                When a builder types <em>&ldquo;what estimating software should I use?&rdquo;</em> into an AI assistant, the brands it names are the shortlist. Brands it doesn&apos;t name don&apos;t exist in that moment. <strong>LLM Visibility is the likelihood that an AI model names, recommends, or describes your product</strong> when a potential buyer asks a relevant question.
+              </p>
+              <div style={defnStyle}>
+                <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.7, margin: 0 }}>
+                  The three signals that most reliably build LLM visibility are: <strong>(1) mechanism-level content</strong> — pages that explain exactly what your product does in input → process → output terms; <strong>(2) named associations</strong> — integration partners, named competitors, named customers, named outcomes; and <strong>(3) third-party proof</strong> — reviews, case studies, press, forum mentions. LLMs weight information that appears in multiple independent sources.
+                </p>
+              </div>
+              <div style={{ background: "rgba(0,0,0,0.03)", border: "1px solid rgba(0,0,0,0.08)", borderRadius: 8, padding: "14px 16px", marginBottom: 36, display: "flex", gap: 12, alignItems: "flex-start" }}>
+                <span style={{ fontSize: 18, flexShrink: 0 }}>📊</span>
+                <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: 0 }}>
+                  Our data: across 3 buyer-intent prompts run against Claude Haiku and GPT-4o-mini, <strong>PlanSwift was named 34 times, Buildxact 18, Buildr 16, Togal.AI 5, and EstiMate AI once.</strong> The two case studies below explain what&apos;s driving those numbers.
+                </p>
+              </div>
+
+              {/* ── CASE STUDY 1: TOGAL.AI ────────────────────────────── */}
+              <CaseStudy color="#2563EB" number="Case Study 1" name="Togal.AI" subtitle="togal.ai — US market, AI-powered quantity takeoff for contractors and estimators">
+                <SnapGrid items={[
+                  { label: "Product", value: "AI quantity takeoff" },
+                  { label: "Market", value: "US GCs & estimators" },
+                  { label: "Blog articles", value: "27+ visible" },
+                  { label: "Case studies", value: "13 named" },
+                  { label: "Buyer intent mentions", value: "5 / ~83 responses" },
+                  { label: "Avg position", value: "Position 16–17" },
+                ]} />
+
+                <SubHeading>What they&apos;re doing right</SubHeading>
+
+                <SignalBlock icon="📄" title="Content volume and architecture" why="gives LLMs many retrieval surfaces">
+                  <Dot>27+ visible blog/article cards across a multi-page archive. Content types span proof (case studies), education (blog guides), product mechanism (/features), competitive comparison (/vs/), and trade positioning (/trades) — each layer serves a different LLM retrieval query. <Cite>togal.ai/blog, togal.ai/trades</Cite></Dot>
+                  <Dot>13 named case-study cards, each with a dedicated slug URL (<code style={{ fontSize: 12 }}>/case-study/slug</code>). Named customers include Coastal Construction, University of Kansas, UrbanCore, Consigli, Select Painting, Stevens Construction. <Cite>togal.ai/case-studies</Cite></Dot>
+                  <Dot>Example titles that signal domain expertise: <em>&ldquo;How to Evaluate Construction Takeoff Software: Estimator&apos;s 8 Checkpoints,&rdquo;</em> <em>&ldquo;Repeating Groups: Stop Taking Off the Same Room Twice,&rdquo;</em> <em>&ldquo;5 Ways AI Takeoffs Can Stop Cash Burn in Construction.&rdquo;</em> <Cite>togal.ai/blog pages 1–3</Cite></Dot>
+                </SignalBlock>
+
+                <SignalBlock icon="⚙️" title="Mechanism-level product language" why="LLMs retrieve and repeat specific claims, not vague ones">
+                  <Dot><strong>Upload → auto-name → rename:</strong> &ldquo;Upload documents, use Togal&apos;s auto-naming tool, and rename them in seconds.&rdquo; <Cite>togal.ai/features</Cite></Dot>
+                  <Dot><strong>Draw bounding box → AI searches plan set → locate and count:</strong> &ldquo;Draw a box around an object, run AI-powered image, text, and pattern search across the plan set, and instantly locate and count it.&rdquo; <Cite>togal.ai/features</Cite></Dot>
+                  <Dot><strong>Drawings → automated takeoff → quantities exported:</strong> &ldquo;Hit the green Togal button and let AI handle the repetitive work — then export quantities and classifications to your estimating software or Excel.&rdquo; <Cite>togal.ai/features, togal.ai/blog/how-to-export-information-takeoffs-with-togal-ai</Cite></Dot>
+                </SignalBlock>
+
+                <SignalBlock icon="🔗" title="Named integrations and file formats" why="LLMs associate your product with named tools in their answers">
+                  <Dot><strong>Ediphi — native integration:</strong> &ldquo;Togal.AI and Ediphi built a native integration&rdquo; with quantities flowing directly to Ediphi&apos;s estimating environment. <Cite>togal.ai/blog/ediphi-togal-integration-techstack; Ediphi Instagram, Aug 5 2026</Cite></Dot>
+                  <Dot><strong>ServiceTitan</strong> — named in the help centre. <strong>Zebel</strong> — named in the UrbanCore case study with quantities flowing into Zebel for pricing estimates. <Cite>help.togal.ai; togal.ai/case-study/urbancore-case-study-togal-ai-zebel-integration</Cite></Dot>
+                  <Dot>File inputs explicitly named: <strong>PDF, CAD file, image</strong> (and in a separate article: PDFs, CAD exports, scanned images). Outputs: <strong>Excel and PDF</strong> confirmed. Note — Bluebeam and Procore integration were not found in reviewed official pages. <Cite>Parallel.ai research, Sep 2026</Cite></Dot>
+                </SignalBlock>
+
+                <SignalBlock icon="⚔️" title="Competitor comparison content" why="when a buyer asks 'Togal vs PlanSwift,' LLMs retrieve this page">
+                  <Dot>Dedicated <code style={{ fontSize: 12 }}>/vs/planswift</code> page: &ldquo;Togal.AI vs PlanSwift — which takeoff software is best?&rdquo; — directly named comparison. <Cite>togal.ai/vs/planswift</Cite></Dot>
+                  <Dot>University of Kansas comparative study naming On-Screen Takeoff (OST): ~70% time savings, accuracy within 5% of OST — a peer-reviewed study that answers the query &ldquo;Togal vs OST.&rdquo; <Cite>togal.ai/case-study/peer-reviewed-study-togal-ai-vs-on-screen-takeoff</Cite></Dot>
+                </SignalBlock>
+
+                <SignalBlock icon="📐" title="Named proof with measurable outcomes" why="specific numbers get cited; vague claims don't">
+                  <Dot>Coastal Construction (Miami): takeoff time reduced from 50% to 10%, 14.5 hours saved per plan set, 1,160 hrs/month, <strong>~$1M first-year savings</strong>, accuracy 97%→98%. <Cite>togal.ai/case-study/coastal-construction-case-study</Cite></Dot>
+                  <Dot>University of Kansas: <strong>76% time savings</strong> on Fire Station case; 71.03% average across two case studies; accuracy within 5% of OST. <Cite>togal.ai/case-study/ku-study-togal-vs-ost</Cite></Dot>
+                  <Dot>UrbanCore: takeoffs &ldquo;up to 80% faster&rdquo;; new interns proficient &ldquo;in weeks.&rdquo; SOC 2 Type II certification confirmed independently. <Cite>togal.ai/case-study/urbancore; togal.ai/news</Cite></Dot>
+                </SignalBlock>
+
+                <SubHeading>What LLMs currently say</SubHeading>
+                <div style={{ margin: "12px 0 4px" }}>
+                  <MentionBar label="PlanSwift" color="#94a3b8" pct={100} val="34 mentions" />
+                  <MentionBar label="Buildxact" color="#94a3b8" pct={53} val="18 mentions" />
+                  <MentionBar label="Togal.AI" color="#2563EB" pct={15} val="5 mentions" />
+                </div>
+                <p style={{ fontSize: 11, fontFamily: "monospace", color: "#000", opacity: 0.45, marginBottom: 16 }}>Avg position when named: 16–17. Appearing late means LLMs reach for it as an afterthought, not a primary recommendation.</p>
+
+                <PullQuote color="#2563EB" text="I love how Togal.AI organizes all our items in one easy-to-access software in the browser, which makes takeoffs effortless and super easy to get started." attr="Chris V., G2 · g2.com/products/togal-ai/reviews" />
+                <PullQuote color="#2563EB" text="The automated button is really only used for simple counts on a floor plan, so it doesn't really apply to masonry specifically." attr="Scott G. (critical), G2 · g2.com/products/togal-ai/reviews" />
+
+                <SubHeading>What&apos;s missing</SubHeading>
+                <GapBox>
+                  <Dot><strong>Zero AU market content.</strong> No Australian-specific blog posts, case studies, or pricing content. An AU builder asking an LLM gets a US-framed answer from Togal, if they get one at all.</Dot>
+                  <Dot><strong>No Reddit or community footprint.</strong> One organic r/estimators post found (a buyer asking pre-purchase questions), zero visible Togal brand responses. LLMs weight community discussion heavily because it&apos;s independent. <Cite>reddit.com/r/estimators/comments/1ljkj48</Cite></Dot>
+                  <Dot><strong>Capterra shows 0 reviews</strong> in reviewed pages — a dead third-party signal. <Cite>capterra.com/p/10001876/Togal-AI/reviews</Cite></Dot>
+                  <Dot><strong>Last verifiable funding: $5M pre-Series A SAFE, March 2023</strong> — outside the 12-month window. No recent mainstream press found. <Cite>constructiondive.com/news/togalai-raises-5m/646254</Cite></Dot>
+                </GapBox>
+              </CaseStudy>
+
+              {/* ── CASE STUDY 2: BUILDR ──────────────────────────────── */}
+              <CaseStudy color="#059669" number="Case Study 2" name="Buildr" subtitle="buildr.com — US/Canada GC market, AI-powered preconstruction workspace">
+                <SnapGrid items={[
+                  { label: "Product", value: "AI preconstruction (estimating, CRM, takeoff, bid leveling)" },
+                  { label: "Market", value: "US & Canada GCs only" },
+                  { label: "Dateable content assets", value: "~14–16 in 18 months" },
+                  { label: "Named GC customers", value: "17+ on /customers" },
+                  { label: "Buyer intent mentions", value: "16 / ~83 responses" },
+                  { label: "Avg position", value: "Position ~11" },
+                ]} />
+
+                <SubHeading>What they&apos;re doing right</SubHeading>
+
+                <SignalBlock icon="🏗️" title="Platform-level positioning" why="LLMs name platforms more reliably than single-feature tools">
+                  <Dot>Homepage: <em>&ldquo;The unified workspace for preconstruction&rdquo;</em> and <em>&ldquo;AI-powered preconstruction for general contractors.&rdquo;</em> Estimating, takeoff, CRM, bid leveling, and pipeline are all one product — so multiple LLM query types retrieve the same brand. <Cite>buildr.com</Cite></Dot>
+                  <Dot>March 2026 blog post frames AI beyond estimating: business development intelligence, workforce capacity, pursuit economics, and pipeline health — each phrase captures a different LLM query. <Cite>buildr.com/blog/ai-beyond-estimating-bd-workforce-pipeline</Cite></Dot>
+                  <Dot>A dedicated library page defines &ldquo;AI Agent in Construction&rdquo; — educational content LLMs retrieve when users ask what AI means for their industry. <Cite>buildr.com/library/ai-agent</Cite></Dot>
+                </SignalBlock>
+
+                <SignalBlock icon="🗂️" title="Layered URL architecture" why="separate pages for each use case = more retrieval surfaces">
+                  <Dot><code style={{ fontSize: 12 }}>/estimating</code> — AI construction estimating for GCs; <code style={{ fontSize: 12 }}>/library/ai-takeoff</code> — mechanism-level AI takeoff explainer, published Aug 28 2026; <code style={{ fontSize: 12 }}>/vs/autodesk</code>, <code style={{ fontSize: 12 }}>/vs/cosential</code>, <code style={{ fontSize: 12 }}>/vs/spreadsheets</code> — three comparison pages each capturing a different competitive query. <Cite>buildr.com</Cite></Dot>
+                  <Dot>Long-form content with dates: AI Construction GC Guide (Feb 20, 2026), AI Beyond Estimating (Mar 9, 2026), Construction Estimating Software guide (Apr 8, 2026), AI Takeoff library page (Aug 28, 2026). <Cite>buildr.com/blog</Cite></Dot>
+                </SignalBlock>
+
+                <SignalBlock icon="⚙️" title="Mechanism-level product language" why="three confirmed input→process→output descriptions">
+                  <Dot><strong>Estimate assembly:</strong> Kit turns &ldquo;budgets, spreadsheets, markups, and project files&rdquo; into &ldquo;a structured Buildr budget&rdquo; ready for review. <Cite>buildr.com/estimating</Cite></Dot>
+                  <Dot><strong>Bid-day handoff:</strong> Approved budget lines become bid packages; users compare &ldquo;gaps, risks, and alternates.&rdquo; <Cite>buildr.com/estimating</Cite></Dot>
+                  <Dot><strong>AI takeoff:</strong> AI reads construction drawings, classifies sheets, detects building elements, cross-references schedules and specifications, rolls up quantities, and presents for human review. <Cite>buildr.com/library/ai-takeoff</Cite></Dot>
+                </SignalBlock>
+
+                <SignalBlock icon="🔗" title="Named integration ecosystem" why="named tools increase chances of appearing in integration-related queries">
+                  <Dot><strong>Procore</strong> confirmed — dedicated help-centre collection titled &ldquo;Procore ⟷ Buildr Integration&rdquo; covering what is synced, best practices, and accessing Buildr inside a Procore account. <Cite>help.buildrtech.com/en/collections/2882875-procore-buildr-integration</Cite></Dot>
+                  <Dot>Homepage names tools by workflow group: <em>HubSpot · Unanet · Dynamics</em> (CRM), <em>Sage Estimating · Destini · PlanSwift · Excel</em> (estimating), <em>InDesign · Word</em> (proposals), <em>Bridgit Bench</em> (workforce). <Cite>buildr.com</Cite></Dot>
+                </SignalBlock>
+
+                <SignalBlock icon="⚔️" title="Direct competitor naming" why="captures buyers in active switching evaluation">
+                  <Dot>vs Autodesk: <em>&ldquo;Buildr is an Autodesk alternative built specifically for preconstruction&rdquo;</em> — frames Buildr as taking the &ldquo;opposite path.&rdquo; <Cite>buildr.com/vs/autodesk</Cite></Dot>
+                  <Dot>vs Cosential: direct comparison for GC preconstruction. vs Spreadsheets: <em>&ldquo;Spreadsheets are a tool. Buildr is a system.&rdquo;</em> <Cite>buildr.com/vs/cosential; buildr.com/vs/spreadsheets</Cite></Dot>
+                </SignalBlock>
+
+                <SignalBlock icon="📊" title="Named customer proof with measurable outcomes" why="self-reported but specific — LLMs cite named outcomes">
+                  <Dot>WPC (Central Florida GC, building with Buildr since Dec 2021): <em>&ldquo;Our internal communications are 5x more efficient.&rdquo;</em> <Cite>buildr.com/customers/wpc</Cite></Dot>
+                  <Dot>WPC: <em>&ldquo;We easily increased our monthly pursuits 3–4x without increasing headcount.&rdquo;</em> Previous tool: Cosential by Unanet — a specific named competitor switch. <Cite>buildr.com/customers</Cite></Dot>
+                  <Dot>Named customer roster: Mint Construction, Biltmore Construction, Rycon Construction, CoreBuilt, Magil Construction, EE Reed, Conlon, Lee Lewis, KPRS, SC Builders, Stout — breadth of named GCs strengthens the association between &ldquo;GC&rdquo; and &ldquo;Buildr.&rdquo; <Cite>buildr.com/customers</Cite></Dot>
+                </SignalBlock>
+
+                <SubHeading>What LLMs currently say</SubHeading>
+                <div style={{ margin: "12px 0 4px" }}>
+                  <MentionBar label="PlanSwift" color="#94a3b8" pct={100} val="34 mentions" />
+                  <MentionBar label="Buildr" color="#059669" pct={47} val="16 mentions" />
+                  <MentionBar label="Togal.AI" color="#94a3b8" pct={15} val="5 mentions" />
+                </div>
+                <p style={{ fontSize: 11, fontFamily: "monospace", color: "#000", opacity: 0.45, marginBottom: 16 }}>Buildr outperforms Togal.AI 3:1 on buyer intent — driven by its broader platform positioning and more named integrations. Still well behind traditional tools.</p>
+
+                <PullQuote color="#059669" text="Buildr gives me one source of truth for customer relations, helps expedite estimating on projects, and tracks project budgets effectively." attr="G2 review · g2.com/products/buildr/reviews" />
+                <PullQuote color="#059669" text="There are a few small improvements that could be made to the estimating tool that would make a big impact on its usability and efficiencies." attr="G2 review (critical) · g2.com/products/buildr/reviews" />
+
+                <SubHeading>What&apos;s missing</SubHeading>
+                <GapBox>
+                  <Dot><strong>Zero Reddit or community presence.</strong> No relevant threads, no brand-posted content found across targeted searches. <Cite>Parallel.ai research, Sep 2026</Cite></Dot>
+                  <Dot><strong>Pricing is fully gated.</strong> Says &ldquo;More predictable pricing&rdquo; and &ldquo;Unlimited Users&rdquo; but shows no dollar figures — only a sales email. LLMs can&apos;t tell a buyer what it costs. <Cite>buildr.com/pricing</Cite></Dot>
+                  <Dot><strong>No AU market presence.</strong> US and Canada only — no content, customers, or pricing for Australian GCs.</Dot>
+                  <Dot><strong>Uncorroborated funding signal.</strong> A $100K Signalbase entry dated March 24, 2026 — not confirmed by Tracxn, Crunchbase, or Caplight. No mainstream press in the last 12 months. <Cite>trysignalbase.com; tracxn.com</Cite></Dot>
+                </GapBox>
+              </CaseStudy>
+
+              {/* ── RECOMMENDED MOVES FOR ESTIMATE AI ─────────────────── */}
+              <div style={{ background: "rgba(234,88,12,0.05)", border: "1px solid rgba(234,88,12,0.15)", borderRadius: 12, padding: "32px 32px 36px", marginTop: 8 }}>
+                <div style={{ fontSize: 11, fontFamily: "monospace", letterSpacing: "0.12em", textTransform: "uppercase", color: "#EA580C", marginBottom: 6 }}>EstiMate AI</div>
+                <div style={{ fontSize: 20, fontWeight: 800, color: "#000", letterSpacing: "-0.02em", marginBottom: 8 }}>Recommended Moves to Build LLM Visibility</div>
+                <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.7, margin: "0 0 16px", maxWidth: 580 }}>
+                  EstiMate AI surfaces in <strong>1 out of ~83 buyer-intent responses</strong>. The gap isn&apos;t a product gap — it&apos;s a content and signal gap. Neither Togal.AI nor Buildr publishes Australian-specific content. EstiMate can own this space.
+                </p>
+                <div style={{ background: "rgba(0,0,0,0.03)", border: "1px solid rgba(0,0,0,0.07)", borderRadius: 8, padding: "12px 16px", marginBottom: 32, display: "flex", gap: 12, alignItems: "flex-start" }}>
+                  <span style={{ fontSize: 18, flexShrink: 0 }}>🇦🇺</span>
+                  <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: 0 }}><strong>The AU advantage:</strong> Neither Togal.AI nor Buildr publishes Australian-specific content, pricing, or customer stories. Every AU builder using an LLM to research estimating software today gets a US-framed answer. EstiMate can own this gap completely and be the brand LLMs associate with &ldquo;AI estimating for Australian builders.&rdquo;</p>
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
+                  <Move num={1} title="Publish a dedicated 'EstiMate vs [Competitor]' page for every tool LLMs currently recommend instead of you" why="Highest impact — captures buyers in active evaluation">
+                    <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>When a builder asks an LLM &ldquo;EstiMate vs Buildxact&rdquo; — which is the #1 AU-mentioned competitor in our data — there is currently no page for the LLM to retrieve. It guesses, or answers with the competitor&apos;s own marketing. A comparison page becomes the authoritative document the LLM retrieves for that query.</p>
+                    <MoveDot><strong>EstiMate vs Buildxact</strong> — Buildxact is the top AU estimating mention in LLM responses (18 mentions vs your 1)</MoveDot>
+                    <MoveDot><strong>EstiMate vs PlanSwift</strong> — leads overall at 34 mentions; it&apos;s what LLMs default to for &ldquo;estimating software&rdquo;</MoveDot>
+                    <MoveDot><strong>EstiMate vs CostX</strong> — AU-present competitor named in LLM responses</MoveDot>
+                    <MoveDot><strong>EstiMate vs Spreadsheets</strong> — captures the largest entry-level buyer segment</MoveDot>
+                    <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: "10px 0 0", opacity: 0.7 }}>Each page must name the competitor in the title, URL slug, and H1; include a feature table comparing AI capabilities; and end with a clear &ldquo;why EstiMate&rdquo; section.</p>
+                  </Move>
+
+                  <div style={{ borderTop: "1px solid rgba(234,88,12,0.15)", margin: "4px 0 32px" }} />
+
+                  <Move num={2} title="Rewrite your feature pages with input → process → output language for every core capability" why="Tells LLMs exactly what to say when asked how your product works">
+                    <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>Generic claims like &ldquo;AI-powered estimating&rdquo; or &ldquo;fast and accurate takeoffs&rdquo; don&apos;t get retrieved — they could apply to any product. Specific workflow descriptions get retrieved verbatim. For each feature, describe it as a transformation:</p>
+                    <MoveDot><strong>Builder uploads PDF plans → AI measures floor areas, wall lengths, openings → outputs quantities in Rawlinsons AU rates format</strong></MoveDot>
+                    <MoveDot><strong>Estimator reviews AI-generated quantities → adjusts line items → exports to Excel or sends as PDF quote</strong></MoveDot>
+                    <MoveDot><strong>AI flags ambiguous elements → estimator reviews flagged items → approved estimate with auditable change log</strong></MoveDot>
+                  </Move>
+
+                  <div style={{ borderTop: "1px solid rgba(234,88,12,0.15)", margin: "4px 0 32px" }} />
+
+                  <Move num={3} title="Publish one rigorous customer case study with measurable, named outcomes" why="Specific numbers get cited; testimonials without numbers don't">
+                    <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>Togal.AI&apos;s Coastal Construction case study reports 14.5 hours saved per plan set and ~$1M first-year savings. LLMs retrieve and cite those numbers. A generic &ldquo;our clients love us&rdquo; testimonial produces zero LLM mentions. What a high-impact EstiMate case study looks like:</p>
+                    <MoveDot>Named company (with permission), named state, named trade type — e.g. &ldquo;Coastal Homes, Queensland residential builder&rdquo;</MoveDot>
+                    <MoveDot>Before state: X hours per estimate, Y estimates per month — After state: A hours per estimate, B estimates per month</MoveDot>
+                    <MoveDot>Specific plan types tested — e.g. &ldquo;double-storey residential, 280m²&rdquo;</MoveDot>
+                    <MoveDot>A direct quote from the estimator with their name attached</MoveDot>
+                  </Move>
+
+                  <div style={{ borderTop: "1px solid rgba(234,88,12,0.15)", margin: "4px 0 32px" }} />
+
+                  <Move num={4} title="Name every integration and file format explicitly — create a dedicated /integrations page" why="LLMs associate your product with named tools; vague language produces no associations">
+                    <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>When a builder asks &ldquo;does EstiMate integrate with Xero?&rdquo; — the LLM can only answer from what&apos;s documented publicly. &ldquo;Connects to your existing software&rdquo; produces no answer. &ldquo;Accepts PDF, DWG, and JPG drawings; exports to Excel, CSV, and Xero via direct API&rdquo; produces a confident yes.</p>
+                    <MoveDot>List every accepted file format with the extension: <strong>.pdf, .dwg, .dxf, .jpg, .png</strong> (or whatever is accurate)</MoveDot>
+                    <MoveDot>Name every integration: <strong>Xero, MYOB, Buildxact, Procore</strong> — each named integration expands what LLMs associate EstiMate with</MoveDot>
+                    <MoveDot>Create a dedicated <code style={{ fontSize: 12 }}>/integrations</code> page with each integration as a named section — Buildr does this with Procore</MoveDot>
+                  </Move>
+
+                  <div style={{ borderTop: "1px solid rgba(234,88,12,0.15)", margin: "4px 0 32px" }} />
+
+                  <Move num={5} title="Publish AU-specific estimating content that neither Togal.AI nor Buildr publishes" why="Own the geography gap — LLMs will associate 'AU construction estimating AI' with whoever fills this vacuum">
+                    <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>Five pages that will be retrieved for the most common AU buyer queries:</p>
+                    <MoveDot><em>&ldquo;AI estimating software for Australian builders 2026&rdquo;</em> — the primary buyer-intent keyword in AU</MoveDot>
+                    <MoveDot><em>&ldquo;How to estimate a residential new build in Australia with AI&rdquo;</em> — captures the most common AU residential workflow</MoveDot>
+                    <MoveDot><em>&ldquo;Rawlinsons rates vs AI estimating — accuracy comparison&rdquo;</em> — AU-specific proof content for any pricing accuracy question</MoveDot>
+                    <MoveDot><em>&ldquo;AI takeoff for Australian architectural drawings&rdquo;</em> — captures the AU-specific plan-reading query</MoveDot>
+                    <MoveDot><em>&ldquo;EstiMate AI vs Buildxact — which is better for AU residential builders?&rdquo;</em> — the comparison page for the most LLM-mentioned AU competitor</MoveDot>
+                  </Move>
+
+                  <div style={{ borderTop: "1px solid rgba(234,88,12,0.15)", margin: "4px 0 32px" }} />
+
+                  <Move num={6} title="Seed a verified G2 or Capterra profile with real review text — not just star ratings" why="LLMs retrieve review text verbatim; star ratings produce no retrieval signal">
+                    <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>Togal.AI&apos;s G2 reviews are retrievable — LLMs can cite specific reviewer quotes. EstiMate currently has no equivalent third-party text for LLMs to retrieve. Ask your first 3–5 customers to leave a review with specific detail:</p>
+                    <MoveDot>What they did before EstiMate, what they do now, how long an estimate takes — specific before/after numbers</MoveDot>
+                    <MoveDot>The trade category (residential, commercial, subcontract) and plan types they used</MoveDot>
+                    <MoveDot>One honest critical review builds more LLM trust than five generic five-star reviews — LLMs weight balanced signals</MoveDot>
+                  </Move>
+                </div>
+              </div>
+
+            </Section>
+          </>
+        );
+      })()}
+
       {/* ── Sentiment Analysis ────────────────────────────────────────────── */}
       {(() => {
         const { rows: sentimentRows, meta: sentimentMeta } = sentimentData;
