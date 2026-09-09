@@ -1505,7 +1505,7 @@ export default function EsaiVisibilityCharts({
                 <div style={{ fontSize: 11, fontFamily: "monospace", letterSpacing: "0.12em", textTransform: "uppercase", color: "#EA580C", marginBottom: 6 }}>EstiMate AI</div>
                 <div style={{ fontSize: 20, fontWeight: 800, color: "#000", letterSpacing: "-0.02em", marginBottom: 8 }}>Recommended Moves to Build LLM Visibility</div>
                 <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.7, margin: "0 0 16px" }}>
-                  EstiMate AI surfaces in <strong>1 out of ~113 buyer-intent responses</strong>. The gap isn&apos;t a product gap — it&apos;s a content and signal gap. Neither Togal.AI nor Buildr publishes Australian-specific content. EstiMate can own this space.
+                  EstiMate AI surfaces in <strong>1 out of ~108 buyer-intent responses</strong>. The gap isn&apos;t a product gap — it&apos;s a content and signal gap. Neither Togal.AI nor Buildr publishes Australian-specific content. EstiMate can own this space.
                 </p>
                 <div style={{ background: "rgba(0,0,0,0.03)", border: "1px solid rgba(0,0,0,0.07)", borderRadius: 8, padding: "12px 16px", marginBottom: 32, display: "flex", gap: 12, alignItems: "flex-start" }}>
                   <span style={{ fontSize: 18, flexShrink: 0 }}>🇦🇺</span>
@@ -1583,7 +1583,7 @@ export default function EsaiVisibilityCharts({
         const ready = (sentimentMeta.dual_model_dates ?? 0) >= SENTIMENT_GATE;
 
         const overallBrands = sentimentRows
-          .filter((r) => r.bucket_tag === "overall")
+          .filter((r) => r.bucket_tag === "overall" && LOCKED_SET.has(r.brand_name))
           .sort((a, b) => b.positive_count - a.positive_count);
 
         const globalDescFreq = new Map<string, number>();

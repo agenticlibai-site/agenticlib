@@ -94,7 +94,7 @@ export default async function EsaiVisibilityPage() {
               },
               {
                 term: "Product Feature Scores",
-                def: "A 0–100 score per feature for each of the 15 locked AI-native and benchmark estimating brands. Scored by consensus across 3 model runs × 2 LLMs. Strong (≥70), Partial (40–69), Weak (1–39), Absent (0).",
+                def: "A 0–100 score per feature for each of the 10 tracked brands. Scored by consensus across 3 model runs × 2 LLMs. Strong (≥70), Partial (40–69), Weak (1–39), Absent (0).",
               },
               {
                 term: "Sentiment Analysis",
