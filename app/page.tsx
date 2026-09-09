@@ -10,6 +10,7 @@ const DOMAINS = [
   { label: "Marketing", href: "/solutions/marketing" },
   { label: "Skincare", href: "/solutions/skincare" },
   { label: "Sales", href: "/product/sales-visibility" },
+  { label: "Construction", href: "/solutions/construction" },
 ];
 
 function DomainSearch() {

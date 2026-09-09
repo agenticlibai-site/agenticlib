@@ -69,7 +69,8 @@ export async function middleware(request: NextRequest) {
   // ── ESAI (Construction Estimating AI) visibility gate ──────────────────────
   if (
     pathname.startsWith("/product/esai-visibility") &&
-    !pathname.startsWith("/product/esai-visibility/login")
+    !pathname.startsWith("/product/esai-visibility/login") &&
+    !pathname.startsWith("/product/esai-visibility/feedback")
   ) {
     const token = request.cookies.get("esai_auth")?.value;
     const expected = await hashToken(process.env.ESAI_ACCESS_PASSWORD ?? "", ESAI_SALT);
