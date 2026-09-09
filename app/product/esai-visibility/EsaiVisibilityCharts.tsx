@@ -863,6 +863,223 @@ export default function EsaiVisibilityCharts({
         );
       })()}
 
+      {/* ── AI Estimating Market Validation ──────────────────────────────── */}
+      <Section title="AI Estimating Market Validation" subtitle="Is the category real? 10-signal independent assessment of Togal.AI and Buildr — research by Parallel.ai, Sep 2026">
+        {(() => {
+          const Badge = ({ level }: { level: "strong" | "mixed" | "weak" | "none" }) => {
+            const map = {
+              strong: { label: "Strong signal", bg: "#dcfce7", color: "#15803d" },
+              mixed:  { label: "Mixed signal",  bg: "#fef9c3", color: "#a16207" },
+              weak:   { label: "Weak signal",   bg: "#fee2e2", color: "#b91c1c" },
+              none:   { label: "Insufficient data", bg: "#f3f4f6", color: "#6b7280" },
+            }[level];
+            return (
+              <span style={{ fontSize: 10, fontWeight: 700, padding: "2px 7px", borderRadius: 99, background: map.bg, color: map.color, whiteSpace: "nowrap" as const }}>
+                {map.label}
+              </span>
+            );
+          };
+
+          const signals: Array<{
+            id: string;
+            label: string;
+            icon: string;
+            togal: { badge: "strong" | "mixed" | "weak" | "none"; text: string };
+            buildr: { badge: "strong" | "mixed" | "weak" | "none"; text: string };
+          }> = [
+            {
+              id: "funding",
+              label: "Funding",
+              icon: "💰",
+              togal: {
+                badge: "strong",
+                text: "$17.23M total disclosed across 5 rounds (2019–2023). Latest: $5M pre-Series A SAFE, March 2023, $50M valuation cap, led by Florida Funders with participation from Meta and Goldman Sachs executives. Use of funds not stated publicly.",
+              },
+              buildr: {
+                badge: "weak",
+                text: "One $100K entry on a third-party funding database (Signalbase, March 2026). Not confirmed by Tracxn, Crunchbase, or Caplight. No press release or investor names found. Treat as a low-confidence signal only.",
+              },
+            },
+            {
+              id: "hiring",
+              label: "Hiring & Headcount",
+              icon: "👥",
+              togal: {
+                badge: "strong",
+                text: "7 open roles on Ashby: Customer Success Manager, Product Specialist, Senior PM (trades), Business Development Rep, Enterprise Campaign Manager, AI QA, security leadership. ~65–71 employees. Mix signals commercial scaling, not just product build.",
+              },
+              buildr: {
+                badge: "mixed",
+                text: "No current openings on Gusto careers page. However, headcount grew from 7 employees (2021) → 24 (2024) → ~35 on LinkedIn. May be in a hiring pause or using referral/private channels. Historical growth is real; current momentum is unclear.",
+              },
+            },
+            {
+              id: "pain",
+              label: "Status-Quo Pain",
+              icon: "🔥",
+              togal: {
+                badge: "strong",
+                text: "Reddit r/estimators documents PlanSwift lagging badly on large PDFs/DWG files. Bluebeam users cite cumbersome interface, crashes on large files, high cost. Togal directly addresses this with OST comparison study and explicit legacy-tool messaging. The problem is real and well-documented.",
+              },
+              buildr: {
+                badge: "mixed",
+                text: "Buildr positions against 'disconnected preconstruction workflows' and spreadsheets broadly — less tool-specific than Togal's messaging. The underlying pain (fragmented data across estimating, CRM, and bids) is real for GCs but the complaint volume is lower in public forums.",
+              },
+            },
+            {
+              id: "community",
+              label: "Community Pull",
+              icon: "💬",
+              togal: {
+                badge: "strong",
+                text: "Reddit r/Construction and r/estimators threads explicitly discuss AI takeoff tools and name Togal, Kreo, Attentive.ai, Beam AI, SnapAI, and others. Users discuss time savings and accuracy verification needs. The conversation has moved from 'should AI be used?' to 'which AI tool?'",
+              },
+              buildr: {
+                badge: "mixed",
+                text: "Category-level AI estimating conversation is active, but Buildr is named less frequently than Togal in community searches. Their workflow-level positioning is less visible in forums focused on takeoff and estimating software specifically.",
+              },
+            },
+            {
+              id: "partnerships",
+              label: "Partnerships & Integrations",
+              icon: "🔗",
+              togal: {
+                badge: "strong",
+                text: "ServiceTitan integration named in help centre. Ediphi native integration documented with a full workflow: Togal quantities → Ediphi catalog mapping → audit trail. Stevens Construction named as a joint customer. Ediphi announcement confirmed May 2026.",
+              },
+              buildr: {
+                badge: "mixed",
+                text: "Procore integration confirmed with dedicated help-centre documentation. Homepage names HubSpot, Unanet, Sage Estimating, PlanSwift, Bridgit Bench. However, no dated partnership announcement was found and no joint-customer evidence was surfaced.",
+              },
+            },
+            {
+              id: "customers",
+              label: "Customer Growth",
+              icon: "📈",
+              togal: {
+                badge: "mixed",
+                text: "13+ named case study cards spanning GCs, specialty trades, education, and international markets. 4.8/5 rating across 60 reviews. Quantified outcomes: $1M savings (Coastal), 76% faster (UKansas), 80% faster (UrbanCore). Case-study publication cadence not provable from available dates.",
+              },
+              buildr: {
+                badge: "mixed",
+                text: "17+ named GC customers including Mint, Rycon, Magil, Lee Lewis, EE Reed, CoreBuilt. WPC case study is detailed with revenue and productivity claims. Strong breadth but, like Togal, publication cadence cannot be established from available evidence.",
+              },
+            },
+            {
+              id: "press",
+              label: "Press Momentum",
+              icon: "📰",
+              togal: {
+                badge: "mixed",
+                text: "Philadelphia Inquirer article confirmed August 11, 2026 (most recent 6-month window). Media page lists Bloomberg, Fox Weather, South Florida Business Journal, Walls & Ceilings, Design and Build UK — but without verified publication dates. Direction: increasing from a low base.",
+              },
+              buildr: {
+                badge: "weak",
+                text: "No independently dated press articles surfaced in either 6-month window (Mar–Sep 2026 or Sep 2025–Mar 2026). Visible coverage is owned content only. Buildr's momentum appears concentrated in product, customer, and integration materials rather than independent media.",
+              },
+            },
+            {
+              id: "analyst",
+              label: "Analyst & Industry Recognition",
+              icon: "🏆",
+              togal: {
+                badge: "strong",
+                text: "Named in BuiltWorlds '40 AI-Driven AEC Solutions to Watch in 2026' (published Jan 21, 2026) — an industry-curated list, not a self-reported claim. Patrick Murphy (founder) confirmed keynote speaker at Smart Cities Conference 2026.",
+              },
+              buildr: {
+                badge: "none",
+                text: "No equivalent appearance found in the sampled corpus of industry reports or roundups. This is absence from the sampled sources, not proof of non-existence — but Togal's institutional visibility is materially stronger.",
+              },
+            },
+            {
+              id: "newentrants",
+              label: "New Entrant Activity",
+              icon: "🚀",
+              togal: {
+                badge: "strong",
+                text: "Category-level signal: Bobyard raised $35M Series A (Dec 2025) and expanded into drywall, electrical, HVAC, plumbing. Fresco (YC F24) backed by SignalFire and Bessemer, reports 140% MoM growth. OpenTakeoff launched on Hacker News as open-source. ScoutOut on Product Hunt. Capital and developers are both entering the space.",
+              },
+              buildr: {
+                badge: "strong",
+                text: "Same category signal applies — the new entrants validate the market Buildr operates in. Bobyard's $35M round in particular shows institutional capital is betting on AI taking over the estimating workflow. Competition increasing = category is real.",
+              },
+            },
+            {
+              id: "conference",
+              label: "Conference & Trade Presence",
+              icon: "🎤",
+              togal: {
+                badge: "mixed",
+                text: "Patrick Murphy confirmed keynote at Smart Cities Conference 2026. Togal's news page lists other media appearances. No verified major construction trade show exhibit (e.g. World of Concrete, AGC) found in reviewed evidence.",
+              },
+              buildr: {
+                badge: "none",
+                text: "No exhibitor or speaker listing surfaced in conference searches. This may reflect a private sales motion or lower event investment, not necessarily weak market position — but it limits independent visibility.",
+              },
+            },
+          ];
+
+          return (
+            <div>
+              {/* Category verdict callout */}
+              <div style={{ background: "rgba(21,128,61,0.06)", border: "1px solid rgba(21,128,61,0.2)", borderRadius: 10, padding: "16px 20px", marginBottom: 28, display: "flex", gap: 14, alignItems: "flex-start" }}>
+                <span style={{ fontSize: 20, flexShrink: 0, marginTop: 2 }}>✅</span>
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 700, color: "#15803d", marginBottom: 4 }}>Verdict: Genuine and growing market</div>
+                  <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: 0 }}>
+                    Across all 10 signal types, AI construction estimating shows the markers of a real category: funded companies, documented customer outcomes, active community discussion, new venture-backed entrants, and named integrations. <strong>Togal.AI is the stronger commercial scaling signal</strong> — more funding, more hiring, more press, and analyst recognition. <strong>Buildr validates through headcount growth and customer breadth</strong> but is less publicly documented. The combined evidence supports category confidence. The caveat: customer-side verification of AI takeoff accuracy on real-world plan complexity is still the missing piece of the investment thesis.
+                  </p>
+                </div>
+              </div>
+
+              {/* Signal rows */}
+              <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
+                {signals.map((sig, i) => (
+                  <div key={sig.id} style={{
+                    display: "grid", gridTemplateColumns: "140px 1fr 1fr",
+                    gap: 0, borderBottom: i < signals.length - 1 ? "1px solid rgba(0,0,0,0.06)" : "none",
+                    padding: "20px 0",
+                  }}>
+                    {/* Signal label */}
+                    <div style={{ paddingRight: 16 }}>
+                      <div style={{ fontSize: 15, marginBottom: 4 }}>{sig.icon}</div>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: "#000", lineHeight: 1.3 }}>{sig.label}</div>
+                    </div>
+                    {/* Togal column */}
+                    <div style={{ paddingRight: 20, borderRight: "1px solid rgba(0,0,0,0.06)" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: "#2563EB" }}>Togal.AI</span>
+                        <Badge level={sig.togal.badge} />
+                      </div>
+                      <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: 0 }}>{sig.togal.text}</p>
+                    </div>
+                    {/* Buildr column */}
+                    <div style={{ paddingLeft: 20 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                        <span style={{ fontSize: 11, fontWeight: 700, color: "#059669" }}>Buildr</span>
+                        <Badge level={sig.buildr.badge} />
+                      </div>
+                      <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: 0 }}>{sig.buildr.text}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* What this means for EstiMate */}
+              <div style={{ background: "rgba(234,88,12,0.05)", border: "1px solid rgba(234,88,12,0.15)", borderRadius: 10, padding: "18px 20px", marginTop: 28 }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.10em", textTransform: "uppercase" as const, color: "#EA580C", marginBottom: 8 }}>What this means for EstiMate AI</div>
+                <p style={{ fontSize: 13, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
+                  The AI construction estimating category is real, growing, and attracting capital — but it is still early. Togal.AI and Buildr have spent 3–4 years building LLM visibility through content, case studies, and integrations. EstiMate AI is entering a validated market, not a speculative one.
+                </p>
+                <p style={{ fontSize: 13, color: "#000", lineHeight: 1.7, margin: 0 }}>
+                  The gap EstiMate can exploit: <strong>neither Togal nor Buildr publishes Australia-specific content, pricing, or customer stories.</strong> Every AU builder using an LLM to research estimating software today gets a US-framed answer. EstiMate can own this space completely — and the playbook for how to do it is laid out in the section below.
+                </p>
+              </div>
+            </div>
+          );
+        })()}
+      </Section>
+
       {/* ── LLM Visibility Playbook ───────────────────────────────────────── */}
       {(() => {
         const Cite = ({ children }: { children: React.ReactNode }) => {
@@ -895,14 +1112,25 @@ export default function EsaiVisibilityCharts({
           </div>
         );
 
-        const SignalBlock = ({ icon, title, why, children }: { icon: string; title: string; why: string; children: React.ReactNode }) => (
+        const SignalBlock = ({ icon, title, why, explain, children }: { icon: string; title: string; why: string; explain?: string; children: React.ReactNode }) => (
           <div style={{ marginBottom: 28 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: explain ? 6 : 10 }}>
               <span style={{ fontSize: 15 }}>{icon}</span>
               <span style={{ fontSize: 13.5, fontWeight: 700, color: "#000" }}>{title}</span>
               <span style={{ fontSize: 12, color: "#000", opacity: 0.45, fontStyle: "italic" }}>— {why}</span>
             </div>
+            {explain && <p style={{ fontSize: 12.5, color: "#000", opacity: 0.65, lineHeight: 1.65, margin: "0 0 10px", maxWidth: 560 }}>{explain}</p>}
             {children}
+          </div>
+        );
+
+        const KeyTakeaway = ({ color, children }: { color: string; children: React.ReactNode }) => (
+          <div style={{
+            background: `${color}0d`, border: `1px solid ${color}30`,
+            borderRadius: 10, padding: "20px 22px", marginTop: 24, marginBottom: 8,
+          }}>
+            <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase" as const, color, marginBottom: 8 }}>Key Takeaway</div>
+            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.7, margin: 0 }}>{children}</p>
           </div>
         );
 
@@ -1009,30 +1237,30 @@ export default function EsaiVisibilityCharts({
 
                 <SubHeading>What they&apos;re doing right</SubHeading>
 
-                <SignalBlock icon="📄" title="Content volume and architecture" why="gives LLMs many retrieval surfaces">
+                <SignalBlock icon="📄" title="Content volume and architecture" why="gives LLMs many retrieval surfaces" explain="The more web pages you have explaining your product, the more chances an AI has to find and cite you. Togal publishes blog posts, case studies, feature pages, comparison pages, and trade-specific pages — so whether a buyer asks 'what is AI takeoff?', 'how do I speed up estimating?', or 'Togal vs PlanSwift?', there is a Togal page an LLM can retrieve and repeat back.">
                   <Dot>27+ visible blog/article cards across a multi-page archive. Content types span proof (case studies), education (blog guides), product mechanism (/features), competitive comparison (/vs/), and trade positioning (/trades) — each layer serves a different LLM retrieval query. <Cite>togal.ai/blog, togal.ai/trades</Cite></Dot>
                   <Dot>13 named case-study cards, each with a dedicated slug URL (<code style={{ fontSize: 12 }}>/case-study/slug</code>). Named customers include Coastal Construction, University of Kansas, UrbanCore, Consigli, Select Painting, Stevens Construction. <Cite>togal.ai/case-studies</Cite></Dot>
                   <Dot>Example titles that signal domain expertise: <em>&ldquo;How to Evaluate Construction Takeoff Software: Estimator&apos;s 8 Checkpoints,&rdquo;</em> <em>&ldquo;Repeating Groups: Stop Taking Off the Same Room Twice,&rdquo;</em> <em>&ldquo;5 Ways AI Takeoffs Can Stop Cash Burn in Construction.&rdquo;</em> <Cite>togal.ai/blog pages 1–3</Cite></Dot>
                 </SignalBlock>
 
-                <SignalBlock icon="⚙️" title="Mechanism-level product language" why="LLMs retrieve and repeat specific claims, not vague ones">
+                <SignalBlock icon="⚙️" title="Mechanism-level product language" why="LLMs retrieve and repeat specific claims, not vague ones" explain="LLMs don't repeat vague promises like 'faster takeoffs.' They repeat specific workflows. Togal describes exactly what you click, what happens next, and what comes out — so when someone asks an AI 'how does Togal work?', the AI has a concrete, step-by-step answer to give. This is the difference between a tool that gets cited and one that gets forgotten.">
                   <Dot><strong>Upload → auto-name → rename:</strong> &ldquo;Upload documents, use Togal&apos;s auto-naming tool, and rename them in seconds.&rdquo; <Cite>togal.ai/features</Cite></Dot>
                   <Dot><strong>Draw bounding box → AI searches plan set → locate and count:</strong> &ldquo;Draw a box around an object, run AI-powered image, text, and pattern search across the plan set, and instantly locate and count it.&rdquo; <Cite>togal.ai/features</Cite></Dot>
                   <Dot><strong>Drawings → automated takeoff → quantities exported:</strong> &ldquo;Hit the green Togal button and let AI handle the repetitive work — then export quantities and classifications to your estimating software or Excel.&rdquo; <Cite>togal.ai/features, togal.ai/blog/how-to-export-information-takeoffs-with-togal-ai</Cite></Dot>
                 </SignalBlock>
 
-                <SignalBlock icon="🔗" title="Named integrations and file formats" why="LLMs associate your product with named tools in their answers">
+                <SignalBlock icon="🔗" title="Named integrations and file formats" why="LLMs associate your product with named tools in their answers" explain="When a buyer asks their AI assistant 'does this tool connect to Ediphi?' or 'what software works with ServiceTitan?', the AI needs named evidence to give an answer. Togal has documented these integrations publicly — so they appear in answers to integration questions, not just general takeoff questions. Every named connection is an additional retrieval surface.">
                   <Dot><strong>Ediphi — native integration:</strong> &ldquo;Togal.AI and Ediphi built a native integration&rdquo; with quantities flowing directly to Ediphi&apos;s estimating environment. <Cite>togal.ai/blog/ediphi-togal-integration-techstack; Ediphi Instagram, Aug 5 2026</Cite></Dot>
                   <Dot><strong>ServiceTitan</strong> — named in the help centre. <strong>Zebel</strong> — named in the UrbanCore case study with quantities flowing into Zebel for pricing estimates. <Cite>help.togal.ai; togal.ai/case-study/urbancore-case-study-togal-ai-zebel-integration</Cite></Dot>
                   <Dot>File inputs explicitly named: <strong>PDF, CAD file, image</strong> (and in a separate article: PDFs, CAD exports, scanned images). Outputs: <strong>Excel and PDF</strong> confirmed. Note — Bluebeam and Procore integration were not found in reviewed official pages. <Cite>Parallel.ai research, Sep 2026</Cite></Dot>
                 </SignalBlock>
 
-                <SignalBlock icon="⚔️" title="Competitor comparison content" why="when a buyer asks 'Togal vs PlanSwift,' LLMs retrieve this page">
+                <SignalBlock icon="⚔️" title="Competitor comparison content" why="when a buyer asks 'Togal vs PlanSwift,' LLMs retrieve this page" explain="When a buyer has already shortlisted tools and types 'Togal vs PlanSwift' into an AI, they are very close to buying. Togal has a dedicated comparison page and a peer-reviewed university study that directly addresses this query. The AI retrieves it and Togal becomes the recommended answer — not just a brand on a general list.">
                   <Dot>Dedicated <code style={{ fontSize: 12 }}>/vs/planswift</code> page: &ldquo;Togal.AI vs PlanSwift — which takeoff software is best?&rdquo; — directly named comparison. <Cite>togal.ai/vs/planswift</Cite></Dot>
                   <Dot>University of Kansas comparative study naming On-Screen Takeoff (OST): ~70% time savings, accuracy within 5% of OST — a peer-reviewed study that answers the query &ldquo;Togal vs OST.&rdquo; <Cite>togal.ai/case-study/peer-reviewed-study-togal-ai-vs-on-screen-takeoff</Cite></Dot>
                 </SignalBlock>
 
-                <SignalBlock icon="📐" title="Named proof with measurable outcomes" why="specific numbers get cited; vague claims don't">
+                <SignalBlock icon="📐" title="Named proof with measurable outcomes" why="specific numbers get cited; vague claims don't" explain="AIs don't cite vague testimonials. They cite specific numbers: '$1M savings at Coastal Construction', '76% time reduction at University of Kansas', '80% faster at UrbanCore'. Togal's case studies give LLMs concrete facts to repeat, turning real customer outcomes into an always-on sales conversation happening inside AI tools — every time a buyer asks an AI for recommendations.">
                   <Dot>Coastal Construction (Miami): takeoff time reduced from 50% to 10%, 14.5 hours saved per plan set, 1,160 hrs/month, <strong>~$1M first-year savings</strong>, accuracy 97%→98%. <Cite>togal.ai/case-study/coastal-construction-case-study</Cite></Dot>
                   <Dot>University of Kansas: <strong>76% time savings</strong> on Fire Station case; 71.03% average across two case studies; accuracy within 5% of OST. <Cite>togal.ai/case-study/ku-study-togal-vs-ost</Cite></Dot>
                   <Dot>UrbanCore: takeoffs &ldquo;up to 80% faster&rdquo;; new interns proficient &ldquo;in weeks.&rdquo; SOC 2 Type II certification confirmed independently. <Cite>togal.ai/case-study/urbancore; togal.ai/news</Cite></Dot>
@@ -1041,13 +1269,9 @@ export default function EsaiVisibilityCharts({
                 <PullQuote color="#2563EB" text="I love how Togal.AI organizes all our items in one easy-to-access software in the browser, which makes takeoffs effortless and super easy to get started." attr="Chris V., G2 · g2.com/products/togal-ai/reviews" />
                 <PullQuote color="#2563EB" text="The automated button is really only used for simple counts on a floor plan, so it doesn't really apply to masonry specifically." attr="Scott G. (critical), G2 · g2.com/products/togal-ai/reviews" />
 
-                <SubHeading>What&apos;s missing</SubHeading>
-                <GapBox>
-                  <Dot><strong>Zero AU market content.</strong> No Australian-specific blog posts, case studies, or pricing content. An AU builder asking an LLM gets a US-framed answer from Togal, if they get one at all.</Dot>
-                  <Dot><strong>No Reddit or community footprint.</strong> One organic r/estimators post found (a buyer asking pre-purchase questions), zero visible Togal brand responses. LLMs weight community discussion heavily because it&apos;s independent. <Cite>reddit.com/r/estimators/comments/1ljkj48</Cite></Dot>
-                  <Dot><strong>Capterra shows 0 reviews</strong> in reviewed pages — a dead third-party signal. <Cite>capterra.com/p/10001876/Togal-AI/reviews</Cite></Dot>
-                  <Dot><strong>Last verifiable funding: $5M pre-Series A SAFE, March 2023</strong> — outside the 12-month window. No recent mainstream press found. <Cite>constructiondive.com/news/togalai-raises-5m/646254</Cite></Dot>
-                </GapBox>
+                <KeyTakeaway color="#2563EB">
+                  Togal.AI built LLM visibility by becoming the most documented tool in the AI takeoff category. They published 27+ articles, 13 named case studies with exact dollar and time savings, a peer-reviewed university study, and comparison pages against legacy competitors like PlanSwift and On-Screen Takeoff. The strategy is straightforward: give AI models so much evidence about your product that they can&apos;t help but cite you. Togal didn&apos;t wait for press coverage — they manufactured their own retrievable proof, page by page.
+                </KeyTakeaway>
               </CaseStudy>
 
               {/* ── CASE STUDY 2: BUILDR ──────────────────────────────── */}
@@ -1055,34 +1279,34 @@ export default function EsaiVisibilityCharts({
 
                 <SubHeading>What they&apos;re doing right</SubHeading>
 
-                <SignalBlock icon="🏗️" title="Platform-level positioning" why="LLMs name platforms more reliably than single-feature tools">
+                <SignalBlock icon="🏗️" title="Platform-level positioning" why="LLMs name platforms more reliably than single-feature tools" explain="LLMs are asked many different questions: 'what's the best AI estimating tool?', 'how do GCs manage bids?', 'what software handles preconstruction?'. Buildr positions itself as the answer to all of these at once — one connected workspace for estimating, CRM, takeoff, and bid management. This means any buyer question about GC preconstruction has a chance of surfacing Buildr, whereas a single-feature tool only appears when someone asks about that specific feature.">
                   <Dot>Homepage: <em>&ldquo;The unified workspace for preconstruction&rdquo;</em> and <em>&ldquo;AI-powered preconstruction for general contractors.&rdquo;</em> Estimating, takeoff, CRM, bid leveling, and pipeline are all one product — so multiple LLM query types retrieve the same brand. <Cite>buildr.com</Cite></Dot>
                   <Dot>March 2026 blog post frames AI beyond estimating: business development intelligence, workforce capacity, pursuit economics, and pipeline health — each phrase captures a different LLM query. <Cite>buildr.com/blog/ai-beyond-estimating-bd-workforce-pipeline</Cite></Dot>
                   <Dot>A dedicated library page defines &ldquo;AI Agent in Construction&rdquo; — educational content LLMs retrieve when users ask what AI means for their industry. <Cite>buildr.com/library/ai-agent</Cite></Dot>
                 </SignalBlock>
 
-                <SignalBlock icon="🗂️" title="Layered URL architecture" why="separate pages for each use case = more retrieval surfaces">
+                <SignalBlock icon="🗂️" title="Layered URL architecture" why="separate pages for each use case = more retrieval surfaces" explain="Search engines and AI models treat each URL as an independent piece of evidence. Buildr has separate pages for estimating, AI takeoff, and comparisons with Autodesk, Cosential, and spreadsheets, plus a growing blog archive. Each page is an independent signal LLMs can retrieve independently. More pages covering more buyer questions equals more chances to appear in AI-generated answers.">
                   <Dot><code style={{ fontSize: 12 }}>/estimating</code> — AI construction estimating for GCs; <code style={{ fontSize: 12 }}>/library/ai-takeoff</code> — mechanism-level AI takeoff explainer, published Aug 28 2026; <code style={{ fontSize: 12 }}>/vs/autodesk</code>, <code style={{ fontSize: 12 }}>/vs/cosential</code>, <code style={{ fontSize: 12 }}>/vs/spreadsheets</code> — three comparison pages each capturing a different competitive query. <Cite>buildr.com</Cite></Dot>
                   <Dot>Long-form content with dates: AI Construction GC Guide (Feb 20, 2026), AI Beyond Estimating (Mar 9, 2026), Construction Estimating Software guide (Apr 8, 2026), AI Takeoff library page (Aug 28, 2026). <Cite>buildr.com/blog</Cite></Dot>
                 </SignalBlock>
 
-                <SignalBlock icon="⚙️" title="Mechanism-level product language" why="three confirmed input→process→output descriptions">
+                <SignalBlock icon="⚙️" title="Mechanism-level product language" why="three confirmed input→process→output descriptions" explain="Same principle as Togal: LLMs remember and repeat specific workflows, not general claims. Buildr describes what files go in, what the AI does to them, and what comes out — so when a buyer asks an AI 'how does AI construction estimating actually work?', Buildr has a concrete, step-by-step answer ready to be cited.">
                   <Dot><strong>Estimate assembly:</strong> Kit turns &ldquo;budgets, spreadsheets, markups, and project files&rdquo; into &ldquo;a structured Buildr budget&rdquo; ready for review. <Cite>buildr.com/estimating</Cite></Dot>
                   <Dot><strong>Bid-day handoff:</strong> Approved budget lines become bid packages; users compare &ldquo;gaps, risks, and alternates.&rdquo; <Cite>buildr.com/estimating</Cite></Dot>
                   <Dot><strong>AI takeoff:</strong> AI reads construction drawings, classifies sheets, detects building elements, cross-references schedules and specifications, rolls up quantities, and presents for human review. <Cite>buildr.com/library/ai-takeoff</Cite></Dot>
                 </SignalBlock>
 
-                <SignalBlock icon="🔗" title="Named integration ecosystem" why="named tools increase chances of appearing in integration-related queries">
+                <SignalBlock icon="🔗" title="Named integration ecosystem" why="named tools increase chances of appearing in integration-related queries" explain="Buildr names the tools their GC customers already use: Procore for project management, HubSpot for CRM, Sage and PlanSwift for estimating, Bridgit Bench for workforce planning. When a buyer asks an AI 'does this tool work with Procore?' or 'what connects to HubSpot?', Buildr appears in the answer. Named tools aren't just features — they're search queries that Buildr now has a presence in.">
                   <Dot><strong>Procore</strong> confirmed — dedicated help-centre collection titled &ldquo;Procore ⟷ Buildr Integration&rdquo; covering what is synced, best practices, and accessing Buildr inside a Procore account. <Cite>help.buildrtech.com/en/collections/2882875-procore-buildr-integration</Cite></Dot>
                   <Dot>Homepage names tools by workflow group: <em>HubSpot · Unanet · Dynamics</em> (CRM), <em>Sage Estimating · Destini · PlanSwift · Excel</em> (estimating), <em>InDesign · Word</em> (proposals), <em>Bridgit Bench</em> (workforce). <Cite>buildr.com</Cite></Dot>
                 </SignalBlock>
 
-                <SignalBlock icon="⚔️" title="Direct competitor naming" why="captures buyers in active switching evaluation">
+                <SignalBlock icon="⚔️" title="Direct competitor naming" why="captures buyers in active switching evaluation" explain="Buyers who are actively considering switching will ask their AI 'is there an alternative to Autodesk for preconstruction?' or 'what's better than spreadsheets for GC bids?'. Buildr has dedicated pages that answer both of these questions directly, framing themselves as the modern solution to frustrations buyers are already looking to escape.">
                   <Dot>vs Autodesk: <em>&ldquo;Buildr is an Autodesk alternative built specifically for preconstruction&rdquo;</em> — frames Buildr as taking the &ldquo;opposite path.&rdquo; <Cite>buildr.com/vs/autodesk</Cite></Dot>
                   <Dot>vs Cosential: direct comparison for GC preconstruction. vs Spreadsheets: <em>&ldquo;Spreadsheets are a tool. Buildr is a system.&rdquo;</em> <Cite>buildr.com/vs/cosential; buildr.com/vs/spreadsheets</Cite></Dot>
                 </SignalBlock>
 
-                <SignalBlock icon="📊" title="Named customer proof with measurable outcomes" why="self-reported but specific — LLMs cite named outcomes">
+                <SignalBlock icon="📊" title="Named customer proof with measurable outcomes" why="self-reported but specific — LLMs cite named outcomes" explain="When an AI assistant recommends a product, it often backs that recommendation with customer examples. Buildr's WPC case study gives LLMs a specific story to tell: 3-4x more monthly pursuits, 5x communication efficiency, doubled revenue. Combined with 17+ named GC customers, an AI can say 'companies like Rycon, Lee Lewis, and Magil Construction use Buildr' — which sounds like a credible, researched recommendation rather than a generic mention.">
                   <Dot>WPC (Central Florida GC, building with Buildr since Dec 2021): <em>&ldquo;Our internal communications are 5x more efficient.&rdquo;</em> <Cite>buildr.com/customers/wpc</Cite></Dot>
                   <Dot>WPC: <em>&ldquo;We easily increased our monthly pursuits 3–4x without increasing headcount.&rdquo;</em> Previous tool: Cosential by Unanet — a specific named competitor switch. <Cite>buildr.com/customers</Cite></Dot>
                   <Dot>Named customer roster: Mint Construction, Biltmore Construction, Rycon Construction, CoreBuilt, Magil Construction, EE Reed, Conlon, Lee Lewis, KPRS, SC Builders, Stout — breadth of named GCs strengthens the association between &ldquo;GC&rdquo; and &ldquo;Buildr.&rdquo; <Cite>buildr.com/customers</Cite></Dot>
@@ -1091,13 +1315,9 @@ export default function EsaiVisibilityCharts({
                 <PullQuote color="#059669" text="Buildr gives me one source of truth for customer relations, helps expedite estimating on projects, and tracks project budgets effectively." attr="G2 review · g2.com/products/buildr/reviews" />
                 <PullQuote color="#059669" text="There are a few small improvements that could be made to the estimating tool that would make a big impact on its usability and efficiencies." attr="G2 review (critical) · g2.com/products/buildr/reviews" />
 
-                <SubHeading>What&apos;s missing</SubHeading>
-                <GapBox>
-                  <Dot><strong>Zero Reddit or community presence.</strong> No relevant threads, no brand-posted content found across targeted searches. <Cite>Parallel.ai research, Sep 2026</Cite></Dot>
-                  <Dot><strong>Pricing is fully gated.</strong> Says &ldquo;More predictable pricing&rdquo; and &ldquo;Unlimited Users&rdquo; but shows no dollar figures — only a sales email. LLMs can&apos;t tell a buyer what it costs. <Cite>buildr.com/pricing</Cite></Dot>
-                  <Dot><strong>No AU market presence.</strong> US and Canada only — no content, customers, or pricing for Australian GCs.</Dot>
-                  <Dot><strong>Uncorroborated funding signal.</strong> A $100K Signalbase entry dated March 24, 2026 — not confirmed by Tracxn, Crunchbase, or Caplight. No mainstream press in the last 12 months. <Cite>trysignalbase.com; tracxn.com</Cite></Dot>
-                </GapBox>
+                <KeyTakeaway color="#059669">
+                  Buildr built LLM visibility by positioning broader than their competitors. While Togal owns &ldquo;AI takeoff&rdquo;, Buildr claims &ldquo;everything that happens before a GC breaks ground.&rdquo; This platform-level positioning means any buyer question about preconstruction — estimating, bid management, CRM, workforce — has a chance of surfacing Buildr. Combined with 17+ named customer references, a deep Procore integration, and comparison pages against Autodesk and spreadsheets, Buildr shows up across a wider range of AI queries. The lesson: owning a broader category gives you more retrieval surfaces, even with less total content than Togal.
+                </KeyTakeaway>
               </CaseStudy>
 
               {/* ── RECOMMENDED MOVES FOR ESTIMATE AI ─────────────────── */}
