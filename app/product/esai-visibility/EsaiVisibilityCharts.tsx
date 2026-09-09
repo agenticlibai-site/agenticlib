@@ -331,6 +331,183 @@ export default function EsaiVisibilityCharts({
         </p>
       </div>
 
+      {/* ── Product Feature Improvement Opportunities ───────────────────────── */}
+      <div style={{ marginBottom: 24 }}>
+        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 14px" }}>
+          Product Feature Improvement Opportunities
+        </h2>
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
+
+          <div style={{
+            background: "#fff", border: "1px solid rgba(0,0,0,0.08)",
+            borderLeft: "4px solid #2563EB",
+            borderRadius: "0 12px 12px 0", padding: "18px 22px",
+          }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>
+                1. Australian Pricing Database Integration: Rawlinsons, Cordell, Archicentre
+              </p>
+              <span style={{
+                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                textTransform: "uppercase" as const, color: "#2563EB",
+                background: "rgba(37,99,235,0.08)", borderRadius: 4, padding: "3px 8px",
+              }}>AU differentiator</span>
+            </div>
+            <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 12px" }}>
+              Every Australian builder prices from Rawlinsons, Cordell, or Archicentre cost guides. No AI-native estimating tool — Togal.AI, Buildr, or EstiMate — natively pulls from these AU-specific databases. A builder who opens EstiMate and gets a line-item estimate auto-seeded with current Rawlinsons rates for their state has no reason to cross-check in a separate spreadsheet. This closes the single biggest credibility gap AI estimating tools face in the Australian market: the fear that AI-generated numbers are not real AU prices.
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
+              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>No AI-native competitor has cracked this in AU:</span>
+              {["Togal.AI (US-only)", "Buildr (US-only)"].map((b) => (
+                <span key={b} style={{ fontSize: 12, color: "#000", background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px" }}>{b}</span>
+              ))}
+            </div>
+          </div>
+
+          <div style={{
+            background: "#fff", border: "1px solid rgba(0,0,0,0.08)",
+            borderLeft: "4px solid #16a34a",
+            borderRadius: "0 12px 12px 0", padding: "18px 22px",
+          }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>
+                2. Voice-to-Scope from Site Visits: Describe the Job, Get the Estimate
+              </p>
+              <span style={{
+                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                textTransform: "uppercase" as const, color: "#16a34a",
+                background: "rgba(22,163,74,0.08)", borderRadius: 4, padding: "3px 8px",
+              }}>Deepens core</span>
+            </div>
+            <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 12px" }}>
+              A builder does a site measure, walks the job, and knows exactly what it takes. The missing step is getting that knowledge into an estimate without sitting at a desk. An AI that listens to a voice note describing the scope — &ldquo;three bedrooms, double brick extension, new slab, 120 square metres&rdquo; — and generates a structured line-item estimate automatically would eliminate the desk-time bottleneck entirely. This extends the AI estimation paradigm to the first moment of pricing, before any plans exist, which is where most residential builders actually start.
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
+              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>Partial in adjacent category:</span>
+              {["Dexify (tradie AI)", "Otter.ai (transcription only)"].map((b) => (
+                <span key={b} style={{ fontSize: 12, color: "#000", background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px" }}>{b}</span>
+              ))}
+            </div>
+          </div>
+
+          <div style={{
+            background: "#fff", border: "1px solid rgba(0,0,0,0.08)",
+            borderLeft: "4px solid #d97706",
+            borderRadius: "0 12px 12px 0", padding: "18px 22px",
+          }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>
+                3. Subcontractor Quote Request &amp; Comparison Automation
+              </p>
+              <span style={{
+                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                textTransform: "uppercase" as const, color: "#d97706",
+                background: "rgba(217,119,6,0.08)", borderRadius: 4, padding: "3px 8px",
+              }}>Adoption lever</span>
+            </div>
+            <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 12px" }}>
+              After an estimate is built, the biggest time sink is emailing subcontractors for trade quotes, tracking responses, and comparing them. An AI that automatically packages the relevant scope items per trade, sends quote requests, and presents a comparison table when responses arrive would close the estimating loop without the builder manually managing email threads. No AI-native estimating platform in the locked brand set has this end-to-end. It is the difference between EstiMate being a tool that helps price a job and one that actually gets the job priced.
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
+              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>Competitors with partial coverage:</span>
+              {["Procore (large GC only)", "Buildxact (manual)"].map((b) => (
+                <span key={b} style={{ fontSize: 12, color: "#000", background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px" }}>{b}</span>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      {/* ── Use Case Expansion Clusters ──────────────────────────────────────── */}
+      <div style={{ marginBottom: 24 }}>
+        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
+          Potential Use Case Clusters to Expand Into
+        </h2>
+        <p style={{ fontSize: 13, color: "#000", margin: "0 0 14px" }}>
+          Based on EstiMate&apos;s current product positioning, AU market data, and gaps in the locked-brand competitor set. Each cluster below is: (1) unowned by any AI-native AU estimating tool, (2) consistent with EstiMate&apos;s existing capabilities, and (3) a distinct LLM retrieval surface with its own query type.
+        </p>
+
+        <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
+
+          <div style={{
+            background: "#fff", border: "1px solid rgba(0,0,0,0.08)",
+            borderLeft: "4px solid #EA580C",
+            borderRadius: "0 12px 12px 0", padding: "18px 22px",
+          }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>Residential Renovations &amp; Extensions</p>
+              <span style={{
+                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                textTransform: "uppercase" as const, color: "#EA580C",
+                background: "rgba(234,88,12,0.08)", borderRadius: 4, padding: "3px 8px",
+              }}>Highest priority</span>
+            </div>
+            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px" }}>
+              Extensions, renovations, and additions are the most common residential building job type in Australia — higher volume than new builds, but harder to estimate because scope varies widely and plans are often incomplete or in alteration. EstiMate already lists extensions and renovations on its services page and completed a 3-minute-53-second additions/alterations estimate as its public product demo. <strong>No AI estimating tool has built a dedicated content cluster, landing page, or positioning around this specific job type for the AU market.</strong>
+            </p>
+            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px" }}>
+              Prompts EstiMate could own: <em>&ldquo;How do I estimate a home renovation in Australia?&rdquo;</em>, <em>&ldquo;What software do Australian builders use to price extensions?&rdquo;</em>, <em>&ldquo;AI estimating for house additions Australia.&rdquo;</em>
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
+              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>No AU AI-native competitor active in this cluster.</span>
+            </div>
+          </div>
+
+          <div style={{
+            background: "#fff", border: "1px solid rgba(0,0,0,0.08)",
+            borderLeft: "4px solid #7C3AED",
+            borderRadius: "0 12px 12px 0", padding: "18px 22px",
+          }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>Pre-Design Budget Estimates (No Plans Yet)</p>
+              <span style={{
+                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                textTransform: "uppercase" as const, color: "#7C3AED",
+                background: "rgba(124,58,237,0.08)", borderRadius: 4, padding: "3px 8px",
+              }}>Early-funnel</span>
+            </div>
+            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px" }}>
+              Most AU residential builders need a rough budget estimate before commissioning plans — to quote on a prospective job, assess feasibility, or give a client a ballpark. This is the first moment of pricing and it happens entirely without plans. EstiMate&apos;s Startmate roadmap explicitly names this expansion (budgeting, procurement, project intelligence). A voice-to-scope or brief-to-estimate feature would make EstiMate the only AI tool present at the start of the job lifecycle, not just the plan-reading stage.
+            </p>
+            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px" }}>
+              Prompts EstiMate could own: <em>&ldquo;How much does a 3-bedroom extension cost in Melbourne?&rdquo;</em>, <em>&ldquo;Rough cost estimate for a double-storey addition NSW&rdquo;</em>, <em>&ldquo;Feasibility cost for home renovation before getting plans drawn.&rdquo;</em>
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
+              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>Partial in adjacent space:</span>
+              {["HiPages (cost guides only)", "Archicentre (professional fee only)"].map((b) => (
+                <span key={b} style={{ fontSize: 12, color: "#000", background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px" }}>{b}</span>
+              ))}
+            </div>
+          </div>
+
+          <div style={{
+            background: "#fff", border: "1px solid rgba(0,0,0,0.08)",
+            borderLeft: "4px solid #059669",
+            borderRadius: "0 12px 12px 0", padding: "18px 22px",
+          }}>
+            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
+              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>Spec &amp; Finishes Pricing (Volume &amp; Custom Builders)</p>
+              <span style={{
+                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
+                textTransform: "uppercase" as const, color: "#059669",
+                background: "rgba(5,150,105,0.08)", borderRadius: 4, padding: "3px 8px",
+              }}>Product depth</span>
+            </div>
+            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px" }}>
+              Volume and custom home builders in Australia spend significant estimating time on finishes schedules — tiles, fixtures, joinery, appliances, fittings. These are highly variable, client-driven, and rarely covered by standard estimating tools. The Residential New Build cluster prompts — <em>&ldquo;What platforms are popular with Australian volume and custom home builders?&rdquo;</em> — are exactly the query type where EstiMate appeared at position 13. Dedicated finishes-schedule capability and content about this specific workflow would move EstiMate up from position 13 to position 3–5 in these responses.
+            </p>
+            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px" }}>
+              Prompts EstiMate could own: <em>&ldquo;How do custom home builders in Australia estimate finishes and selections?&rdquo;</em>, <em>&ldquo;AI tool for volume builder finishes schedule pricing AU.&rdquo;</em>
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
+              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>No AU AI-native competitor addressing this specifically.</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
       {/* ── Stat cards ────────────────────────────────────────────────────── */}
       {hasData && (
         <div style={{ display: "flex", gap: 16, marginBottom: 20, flexWrap: "wrap" as const }}>
@@ -1121,9 +1298,9 @@ export default function EsaiVisibilityCharts({
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: explain ? 6 : 10 }}>
               <span style={{ fontSize: 15 }}>{icon}</span>
               <span style={{ fontSize: 13.5, fontWeight: 700, color: "#000" }}>{title}</span>
-              <span style={{ fontSize: 12, color: "#000", opacity: 0.45, fontStyle: "italic" }}>— {why}</span>
+              <span style={{ fontSize: 12, color: "#000", fontStyle: "italic" }}>— {why}</span>
             </div>
-            {explain && <p style={{ fontSize: 12.5, color: "#000", opacity: 0.65, lineHeight: 1.65, margin: "0 0 10px", maxWidth: 560 }}>{explain}</p>}
+            {explain && <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px", maxWidth: 560 }}>{explain}</p>}
             {children}
           </div>
         );
@@ -1512,189 +1689,6 @@ export default function EsaiVisibilityCharts({
           </div>
         );
       })()}
-
-      {/* ── Product Feature Improvement Opportunities ───────────────────────── */}
-      <div style={{ marginTop: 40, marginBottom: 16 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
-          Product Feature Improvement Opportunities
-        </h2>
-        <p style={{ fontSize: 13, color: "#000", margin: "0 0 20px" }}>
-          Gaps identified from locked-brand AI estimating competitors and builder feedback across use case clusters
-        </p>
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 14 }}>
-
-          <div style={{
-            background: "#fff", border: "1px solid rgba(0,0,0,0.08)",
-            borderLeft: "4px solid #2563EB",
-            borderRadius: "0 12px 12px 0", padding: "18px 22px",
-          }}>
-            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
-              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>
-                1. Australian Pricing Database Integration: Rawlinsons, Cordell, Archicentre
-              </p>
-              <span style={{
-                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
-                textTransform: "uppercase" as const, color: "#2563EB",
-                background: "rgba(37,99,235,0.08)", borderRadius: 4, padding: "3px 8px",
-              }}>AU differentiator</span>
-            </div>
-            <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 12px" }}>
-              Every Australian builder prices from Rawlinsons, Cordell, or Archicentre cost guides. No AI-native estimating tool — Togal.AI, Buildr, or EstiMate — natively pulls from these AU-specific databases. A builder who opens EstiMate and gets a line-item estimate auto-seeded with current Rawlinsons rates for their state has no reason to cross-check in a separate spreadsheet. This closes the single biggest credibility gap AI estimating tools face in the Australian market: the fear that AI-generated numbers are not real AU prices.
-            </p>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
-              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>No AI-native competitor has cracked this in AU:</span>
-              {["Togal.AI (US-only)", "Buildr (US-only)"].map((b) => (
-                <span key={b} style={{ fontSize: 12, color: "#000", background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px" }}>{b}</span>
-              ))}
-            </div>
-          </div>
-
-          <div style={{
-            background: "#fff", border: "1px solid rgba(0,0,0,0.08)",
-            borderLeft: "4px solid #16a34a",
-            borderRadius: "0 12px 12px 0", padding: "18px 22px",
-          }}>
-            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
-              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>
-                2. Voice-to-Scope from Site Visits: Describe the Job, Get the Estimate
-              </p>
-              <span style={{
-                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
-                textTransform: "uppercase" as const, color: "#16a34a",
-                background: "rgba(22,163,74,0.08)", borderRadius: 4, padding: "3px 8px",
-              }}>Deepens core</span>
-            </div>
-            <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 12px" }}>
-              A builder does a site measure, walks the job, and knows exactly what it takes. The missing step is getting that knowledge into an estimate without sitting at a desk. An AI that listens to a voice note describing the scope — "three bedrooms, double brick extension, new slab, 120 square metres" — and generates a structured line-item estimate automatically would eliminate the desk-time bottleneck entirely. This extends the AI estimation paradigm to the first moment of pricing, before any plans exist, which is where most residential builders actually start.
-            </p>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
-              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>Partial in adjacent category:</span>
-              {["Dexify (tradie AI)", "Otter.ai (transcription only)"].map((b) => (
-                <span key={b} style={{ fontSize: 12, color: "#000", background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px" }}>{b}</span>
-              ))}
-            </div>
-          </div>
-
-          <div style={{
-            background: "#fff", border: "1px solid rgba(0,0,0,0.08)",
-            borderLeft: "4px solid #d97706",
-            borderRadius: "0 12px 12px 0", padding: "18px 22px",
-          }}>
-            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
-              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>
-                3. Subcontractor Quote Request & Comparison Automation
-              </p>
-              <span style={{
-                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
-                textTransform: "uppercase" as const, color: "#d97706",
-                background: "rgba(217,119,6,0.08)", borderRadius: 4, padding: "3px 8px",
-              }}>Adoption lever</span>
-            </div>
-            <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 12px" }}>
-              After an estimate is built, the biggest time sink is emailing subcontractors for trade quotes, tracking responses, and comparing them. An AI that automatically packages the relevant scope items per trade, sends quote requests, and presents a comparison table when responses arrive would close the estimating loop without the builder manually managing email threads. No AI-native estimating platform in the locked brand set has this end-to-end. It is the difference between EstiMate being a tool that helps price a job and one that actually gets the job priced.
-            </p>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
-              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>Competitors with partial coverage:</span>
-              {["Procore (large GC only)", "Buildxact (manual)"].map((b) => (
-                <span key={b} style={{ fontSize: 12, color: "#000", background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px" }}>{b}</span>
-              ))}
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      {/* ── Use Case Expansion Clusters ──────────────────────────────────────── */}
-      <div style={{ marginTop: 40, marginBottom: 16 }}>
-        <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
-          Potential Use Case Clusters to Expand Into
-        </h2>
-        <p style={{ fontSize: 13, color: "#000", margin: "0 0 6px" }}>
-          Based on EstiMate&apos;s current product positioning, AU market data, and gaps in the locked-brand competitor set
-        </p>
-        <p style={{ fontSize: 12.5, color: "#000", opacity: 0.55, margin: "0 0 20px" }}>
-          Each cluster below is: (1) unowned by any AI-native AU estimating tool, (2) consistent with EstiMate&apos;s existing capabilities, and (3) a distinct LLM retrieval surface with its own query type.
-        </p>
-
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 14 }}>
-
-          <div style={{
-            background: "#fff", border: "1px solid rgba(0,0,0,0.08)",
-            borderLeft: "4px solid #EA580C",
-            borderRadius: "0 12px 12px 0", padding: "18px 22px",
-          }}>
-            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
-              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>Residential Renovations & Extensions</p>
-              <span style={{
-                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
-                textTransform: "uppercase" as const, color: "#EA580C",
-                background: "rgba(234,88,12,0.08)", borderRadius: 4, padding: "3px 8px",
-              }}>Highest priority</span>
-            </div>
-            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px" }}>
-              Extensions, renovations, and additions are the most common residential building job type in Australia — higher volume than new builds, but harder to estimate because scope varies widely and plans are often incomplete or in alteration. EstiMate already lists extensions and renovations on its services page and completed a 3-minute-53-second additions/alterations estimate as its public product demo. <strong>No AI estimating tool has built a dedicated content cluster, landing page, or positioning around this specific job type for the AU market.</strong>
-            </p>
-            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px" }}>
-              Prompts EstiMate could own: <em>&ldquo;How do I estimate a home renovation in Australia?&rdquo;</em>, <em>&ldquo;What software do Australian builders use to price extensions?&rdquo;</em>, <em>&ldquo;AI estimating for house additions Australia.&rdquo;</em>
-            </p>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
-              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>No AU AI-native competitor active in this cluster.</span>
-            </div>
-          </div>
-
-          <div style={{
-            background: "#fff", border: "1px solid rgba(0,0,0,0.08)",
-            borderLeft: "4px solid #7C3AED",
-            borderRadius: "0 12px 12px 0", padding: "18px 22px",
-          }}>
-            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
-              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>Pre-Design Budget Estimates (No Plans Yet)</p>
-              <span style={{
-                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
-                textTransform: "uppercase" as const, color: "#7C3AED",
-                background: "rgba(124,58,237,0.08)", borderRadius: 4, padding: "3px 8px",
-              }}>Early-funnel</span>
-            </div>
-            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px" }}>
-              Most AU residential builders need a rough budget estimate before commissioning plans — to quote on a prospective job, assess feasibility, or give a client a ballpark. This is the first moment of pricing and it happens entirely without plans. EstiMate&apos;s Startmate roadmap explicitly names this expansion (budgeting, procurement, project intelligence). A voice-to-scope or brief-to-estimate feature would make EstiMate the only AI tool present at the start of the job lifecycle, not just the plan-reading stage.
-            </p>
-            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px" }}>
-              Prompts EstiMate could own: <em>&ldquo;How much does a 3-bedroom extension cost in Melbourne?&rdquo;</em>, <em>&ldquo;Rough cost estimate for a double-storey addition NSW&rdquo;</em>, <em>&ldquo;Feasibility cost for home renovation before getting plans drawn.&rdquo;</em>
-            </p>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
-              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>Partial in adjacent space:</span>
-              {["HiPages (cost guides only)", "Archicentre (professional fee only)"].map((b) => (
-                <span key={b} style={{ fontSize: 12, color: "#000", background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px" }}>{b}</span>
-              ))}
-            </div>
-          </div>
-
-          <div style={{
-            background: "#fff", border: "1px solid rgba(0,0,0,0.08)",
-            borderLeft: "4px solid #059669",
-            borderRadius: "0 12px 12px 0", padding: "18px 22px",
-          }}>
-            <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 8 }}>
-              <p style={{ fontSize: 15, fontWeight: 700, color: "#000", margin: 0 }}>Spec & Finishes Pricing (Volume & Custom Builders)</p>
-              <span style={{
-                flexShrink: 0, fontSize: 11, fontWeight: 700, letterSpacing: "0.08em",
-                textTransform: "uppercase" as const, color: "#059669",
-                background: "rgba(5,150,105,0.08)", borderRadius: 4, padding: "3px 8px",
-              }}>Product depth</span>
-            </div>
-            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px" }}>
-              Volume and custom home builders in Australia spend significant estimating time on finishes schedules — tiles, fixtures, joinery, appliances, fittings. These are highly variable, client-driven, and rarely covered by standard estimating tools. The Residential New Build cluster prompts — <em>&ldquo;What platforms are popular with Australian volume and custom home builders?&rdquo;</em> — are exactly the query type where EstiMate appeared at position 13. Dedicated finishes-schedule capability and content about this specific workflow would move EstiMate up from position 13 to position 3–5 in these responses.
-            </p>
-            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 10px" }}>
-              Prompts EstiMate could own: <em>&ldquo;How do custom home builders in Australia estimate finishes and selections?&rdquo;</em>, <em>&ldquo;AI tool for volume builder finishes schedule pricing AU.&rdquo;</em>
-            </p>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" as const }}>
-              <span style={{ fontSize: 12, color: "#000", fontWeight: 600 }}>No AU AI-native competitor addressing this specifically.</span>
-            </div>
-          </div>
-
-        </div>
-      </div>
 
     </div>
   );
