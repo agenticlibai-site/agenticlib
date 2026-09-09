@@ -101,7 +101,7 @@ function EmptyState({ label }: { label: string }) {
 }
 
 // ── Section wrapper ────────────────────────────────────────────────────────────
-function Section({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
+function Section({ title, subtitle, titleSize, children }: { title: string; subtitle?: string; titleSize?: number; children: React.ReactNode }) {
   return (
     <div style={{
       background: "#fff", borderRadius: 14,
@@ -109,7 +109,7 @@ function Section({ title, subtitle, children }: { title: string; subtitle?: stri
       padding: "24px 28px", marginBottom: 20,
     }}>
       <div style={{ marginBottom: subtitle ? 4 : 18 }}>
-        <h2 style={{ fontSize: 16, fontWeight: 700, color: "#000", margin: 0 }}>{title}</h2>
+        <h2 style={{ fontSize: titleSize ?? 16, fontWeight: 700, color: "#000", margin: 0 }}>{title}</h2>
         {subtitle && <p style={{ fontSize: 13, color: "#000", margin: "4px 0 18px" }}>{subtitle}</p>}
       </div>
       {children}
@@ -327,7 +327,7 @@ export default function EsaiVisibilityCharts({
           Every chart in this report shows only the 11 brands with AI features in the construction estimating category. Three are AI-native agents (<strong>EstiMate</strong>, <strong>Togal.AI</strong>, <strong>Buildr</strong>); eight are traditional estimating platforms with meaningful AI capabilities (Buildxact, PlanSwift, On-Screen Takeoff, ProEst, STACK, eTakeoff, Esticom, Glodon). Construction management, accounting, CAD, and zero-AI tools are excluded.
         </p>
         <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: 0 }}>
-          EstiMate, Togal.AI &amp; Buildr are pinned in coverage charts — they appear near-zero because LLMs rarely surface AI-native agents unprompted, defaulting instead to traditional incumbents. That invisibility gap is the market opportunity EstiMate is building into.
+          EstiMate, Togal.AI &amp; Buildr are pinned in coverage charts — they appear near-zero because LLMs rarely surface AI-native agents unprompted. EstiMate was mentioned twice in the Residential New Build use case cluster.
         </p>
       </div>
 
@@ -365,7 +365,7 @@ export default function EsaiVisibilityCharts({
           Daily mention totals · Aug 31 – Sep 6
         </p>
         <p style={{ fontSize: 12, color: ACCENT, margin: "0 0 16px", fontWeight: 600 }}>
-          EstiMate, Togal.AI &amp; Buildr are pinned — they appear near‑zero because LLMs rarely surface AI-native agents unprompted. That gap is the point.
+          EstiMate, Togal.AI &amp; Buildr are pinned — they appear near‑zero because LLMs rarely surface AI-native agents unprompted.
         </p>
 
         {combinedTrendData.length === 0 ? (
@@ -666,6 +666,7 @@ export default function EsaiVisibilityCharts({
                   const top3Names = new Set(allSortedRows.slice(0, 3).map(r => r.brand_name));
                   const featureRows = allSortedRows.filter(r => top3Names.has(r.brand_name) || ALWAYS_SHOW_BRANDS.has(r.brand_name));
                   if (featureRows.length === 0) return null;
+                  const r5 = (n: number) => Math.max(5, Math.round(n / 5) * 5);
 
                   return (
                     <div key={feature.feature_id}>
@@ -679,7 +680,7 @@ export default function EsaiVisibilityCharts({
                       <div style={{ display: "flex", flexDirection: "column" as const, gap: 16 }}>
                         {featureRows.map((row) => {
                           const isNd    = row.score_band === "not_documented";
-                          const score   = row.score ?? 0;
+                          const score   = r5(row.score ?? 0);
                           const barColor = row.score_band === "strong"  ? "#16a34a"
                             : row.score_band === "partial" ? "#d97706"
                             : row.score_band === "weak"    ? "#dc2626"
@@ -767,7 +768,8 @@ export default function EsaiVisibilityCharts({
 
         return (
           <Section
-            title="LLM Buyer Intent Visibility"
+            title="Buyer-Intent Insights"
+            titleSize={22}
             subtitle="When builders ask AI which estimating software to invest in or switch to, who gets recommended?"
           >
             {/* Prompts used */}
@@ -802,11 +804,15 @@ export default function EsaiVisibilityCharts({
               display: "flex", gap: 12, alignItems: "flex-start",
             }}>
               <span style={{ fontSize: 20, flexShrink: 0 }}>⚠️</span>
-              <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: 0 }}>
-                <strong>EstiMate surfaces in {estimateMentions} out of ~{totalMentions} buyer-intent LLM responses.</strong>{" "}
-                When a builder asks AI which estimating software to invest in, traditional tools dominate the recommendations.
-                This is the gap: buyers using AI to shortlist software today won&apos;t encounter EstiMate unless they already know to search for it.
-              </p>
+              <div>
+                <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: "0 0 8px" }}>
+                  <strong>EstiMate surfaces in {estimateMentions} out of ~{totalMentions} buyer-intent LLM responses.</strong>{" "}
+                  When a builder asks AI which estimating software to invest in, traditional tools dominate the recommendations.
+                </p>
+                <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: 0 }}>
+                  <strong>Which prompt triggered EstiMate&apos;s mention:</strong> GPT-4o-mini mentioned EstiMate once, most likely on Prompt 3 — <em>&ldquo;Which AI estimating tool is worth paying for as an Australian builder in 2025, and what are the alternatives?&rdquo;</em> — which explicitly asks for AI-native tools. Claude Haiku did not mention EstiMate in any of the three buyer-intent prompts.
+                </p>
+              </div>
             </div>
 
             {/* Bar chart */}
@@ -850,17 +856,12 @@ export default function EsaiVisibilityCharts({
                     }}>
                       {row.total_mentions}
                     </span>
-                    {row.avg_position !== null && (
-                      <span style={{ fontSize: 11, color: "#000", opacity: 0.45, width: 60, flexShrink: 0 }}>
-                        pos.{" "}{Math.round(row.avg_position)}
-                      </span>
-                    )}
                   </div>
                 );
               })}
             </div>
             <p style={{ fontSize: 11, color: "#000", opacity: 0.45, marginTop: 16 }}>
-              Mentions = total times brand appeared across 3 prompts × 4 model runs (Claude Haiku + GPT-4o-mini, 2 collection dates). Position = average rank in the response when mentioned.
+              Mentions = total times brand appeared across 3 prompts × 4 model runs (Claude Haiku + GPT-4o-mini, 2 collection dates).
             </p>
           </Section>
         );
