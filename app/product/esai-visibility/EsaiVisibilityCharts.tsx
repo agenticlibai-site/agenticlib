@@ -865,13 +865,28 @@ export default function EsaiVisibilityCharts({
 
       {/* ── LLM Visibility Playbook ───────────────────────────────────────── */}
       {(() => {
-        const Cite = ({ children }: { children: React.ReactNode }) => (
-          <span style={{
-            fontFamily: "monospace", fontSize: 11, color: "#000", opacity: 0.45,
+        const Cite = ({ children }: { children: React.ReactNode }) => {
+          const text = typeof children === "string" ? children : "";
+          const firstToken = text.split(/[\s;]/)[0];
+          const looksLikeUrl = firstToken.includes(".") && /^[a-zA-Z0-9]/.test(firstToken);
+          const href = looksLikeUrl
+            ? (firstToken.startsWith("http") ? firstToken : "https://" + firstToken)
+            : null;
+          const baseStyle: React.CSSProperties = {
+            fontFamily: "monospace", fontSize: 11,
             background: "rgba(0,0,0,0.05)", borderRadius: 3, padding: "1px 5px",
             whiteSpace: "nowrap",
-          }}>{children}</span>
-        );
+          };
+          if (href) {
+            return (
+              <a href={href} target="_blank" rel="noopener noreferrer"
+                style={{ ...baseStyle, color: "#EA580C", textDecoration: "none", opacity: 0.8 }}>
+                {children}
+              </a>
+            );
+          }
+          return <span style={{ ...baseStyle, color: "#000", opacity: 0.45 }}>{children}</span>;
+        };
 
         const Dot = ({ children }: { children: React.ReactNode }) => (
           <div style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 8 }}>
@@ -977,9 +992,6 @@ export default function EsaiVisibilityCharts({
             <Section title="LLM Visibility Playbook" subtitle="How Togal.AI and Buildr are building LLM presence — and what EstiMate AI needs to do to become the answer">
 
               {/* What is LLM visibility */}
-              <p style={{ fontSize: 14, color: "#000", lineHeight: 1.75, maxWidth: 640, marginBottom: 12 }}>
-                When a builder types <em>&ldquo;what estimating software should I use?&rdquo;</em> into an AI assistant, the brands it names are the shortlist. Brands it doesn&apos;t name don&apos;t exist in that moment. <strong>LLM Visibility is the likelihood that an AI model names, recommends, or describes your product</strong> when a potential buyer asks a relevant question.
-              </p>
               <div style={defnStyle}>
                 <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.7, margin: 0 }}>
                   The three signals that most reliably build LLM visibility are: <strong>(1) mechanism-level content</strong> — pages that explain exactly what your product does in input → process → output terms; <strong>(2) named associations</strong> — integration partners, named competitors, named customers, named outcomes; and <strong>(3) third-party proof</strong> — reviews, case studies, press, forum mentions. LLMs weight information that appears in multiple independent sources.
@@ -994,14 +1006,6 @@ export default function EsaiVisibilityCharts({
 
               {/* ── CASE STUDY 1: TOGAL.AI ────────────────────────────── */}
               <CaseStudy color="#2563EB" number="Case Study 1" name="Togal.AI" subtitle="togal.ai — US market, AI-powered quantity takeoff for contractors and estimators">
-                <SnapGrid items={[
-                  { label: "Product", value: "AI quantity takeoff" },
-                  { label: "Market", value: "US GCs & estimators" },
-                  { label: "Blog articles", value: "27+ visible" },
-                  { label: "Case studies", value: "13 named" },
-                  { label: "Buyer intent mentions", value: "5 / ~83 responses" },
-                  { label: "Avg position", value: "Position 16–17" },
-                ]} />
 
                 <SubHeading>What they&apos;re doing right</SubHeading>
 
@@ -1034,14 +1038,6 @@ export default function EsaiVisibilityCharts({
                   <Dot>UrbanCore: takeoffs &ldquo;up to 80% faster&rdquo;; new interns proficient &ldquo;in weeks.&rdquo; SOC 2 Type II certification confirmed independently. <Cite>togal.ai/case-study/urbancore; togal.ai/news</Cite></Dot>
                 </SignalBlock>
 
-                <SubHeading>What LLMs currently say</SubHeading>
-                <div style={{ margin: "12px 0 4px" }}>
-                  <MentionBar label="PlanSwift" color="#94a3b8" pct={100} val="34 mentions" />
-                  <MentionBar label="Buildxact" color="#94a3b8" pct={53} val="18 mentions" />
-                  <MentionBar label="Togal.AI" color="#2563EB" pct={15} val="5 mentions" />
-                </div>
-                <p style={{ fontSize: 11, fontFamily: "monospace", color: "#000", opacity: 0.45, marginBottom: 16 }}>Avg position when named: 16–17. Appearing late means LLMs reach for it as an afterthought, not a primary recommendation.</p>
-
                 <PullQuote color="#2563EB" text="I love how Togal.AI organizes all our items in one easy-to-access software in the browser, which makes takeoffs effortless and super easy to get started." attr="Chris V., G2 · g2.com/products/togal-ai/reviews" />
                 <PullQuote color="#2563EB" text="The automated button is really only used for simple counts on a floor plan, so it doesn't really apply to masonry specifically." attr="Scott G. (critical), G2 · g2.com/products/togal-ai/reviews" />
 
@@ -1056,14 +1052,6 @@ export default function EsaiVisibilityCharts({
 
               {/* ── CASE STUDY 2: BUILDR ──────────────────────────────── */}
               <CaseStudy color="#059669" number="Case Study 2" name="Buildr" subtitle="buildr.com — US/Canada GC market, AI-powered preconstruction workspace">
-                <SnapGrid items={[
-                  { label: "Product", value: "AI preconstruction (estimating, CRM, takeoff, bid leveling)" },
-                  { label: "Market", value: "US & Canada GCs only" },
-                  { label: "Dateable content assets", value: "~14–16 in 18 months" },
-                  { label: "Named GC customers", value: "17+ on /customers" },
-                  { label: "Buyer intent mentions", value: "16 / ~83 responses" },
-                  { label: "Avg position", value: "Position ~11" },
-                ]} />
 
                 <SubHeading>What they&apos;re doing right</SubHeading>
 
@@ -1099,14 +1087,6 @@ export default function EsaiVisibilityCharts({
                   <Dot>WPC: <em>&ldquo;We easily increased our monthly pursuits 3–4x without increasing headcount.&rdquo;</em> Previous tool: Cosential by Unanet — a specific named competitor switch. <Cite>buildr.com/customers</Cite></Dot>
                   <Dot>Named customer roster: Mint Construction, Biltmore Construction, Rycon Construction, CoreBuilt, Magil Construction, EE Reed, Conlon, Lee Lewis, KPRS, SC Builders, Stout — breadth of named GCs strengthens the association between &ldquo;GC&rdquo; and &ldquo;Buildr.&rdquo; <Cite>buildr.com/customers</Cite></Dot>
                 </SignalBlock>
-
-                <SubHeading>What LLMs currently say</SubHeading>
-                <div style={{ margin: "12px 0 4px" }}>
-                  <MentionBar label="PlanSwift" color="#94a3b8" pct={100} val="34 mentions" />
-                  <MentionBar label="Buildr" color="#059669" pct={47} val="16 mentions" />
-                  <MentionBar label="Togal.AI" color="#94a3b8" pct={15} val="5 mentions" />
-                </div>
-                <p style={{ fontSize: 11, fontFamily: "monospace", color: "#000", opacity: 0.45, marginBottom: 16 }}>Buildr outperforms Togal.AI 3:1 on buyer intent — driven by its broader platform positioning and more named integrations. Still well behind traditional tools.</p>
 
                 <PullQuote color="#059669" text="Buildr gives me one source of truth for customer relations, helps expedite estimating on projects, and tracks project budgets effectively." attr="G2 review · g2.com/products/buildr/reviews" />
                 <PullQuote color="#059669" text="There are a few small improvements that could be made to the estimating tool that would make a big impact on its usability and efficiencies." attr="G2 review (critical) · g2.com/products/buildr/reviews" />
