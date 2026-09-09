@@ -330,10 +330,10 @@ export default function EsaiVisibilityCharts({
         </p>
       </div>
 
-      {/* ── Product Feature Improvement Opportunities ───────────────────────── */}
+      {/* ── Product Feature Recommendations ───────────────────────────────── */}
       <div style={{ marginBottom: 24 }}>
         <h2 style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 14px" }}>
-          Product Feature Improvement Opportunities
+          Product Feature Recommendations
         </h2>
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
 
