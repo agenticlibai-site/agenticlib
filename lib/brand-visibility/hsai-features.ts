@@ -24,26 +24,36 @@ export const HSAI_JSON_OUTPUT_SPEC =
   '}';
 
 // ── Locked brand list ──────────────────────────────────────────────────────────
-// Locked 2026-09-05.
+// Locked 2026-09-05. Cluster structure re-verified 2026-09-10.
 // Includes:
 //   (a) Simbastack — the subject of this report
-//   (b) AI-native hospitality agents — direct competitors
-//   (c) Traditional hospitality tech with AI — benchmark context
+//   (b) AI-native guest-facing agents (8) — messaging, inquiry, booking, multilingual
+//   (c) AI-native staff-ops competitor (1) — Canary Technologies only; all others
+//       verified guest-facing, not staff-side workflow tooling
+//   (d) Short-term rental AI agents (3) — market context; STR cluster tracked but
+//       not forced into feature scoring for Simbastack (lodge operator, not STR)
 // Excluded: general PMS platforms with minor AI features only, OTA platforms,
 //           revenue management tools without a guest-agent component.
+//
+// FINDING: Simbastack's staff-copilot function (reservations/pricing/check-in via
+// chat) has only ONE verified competitor across 11 brands checked (Canary
+// Technologies). Duve, Alliants, and BookBoost were initially categorised as
+// "ops/full-journey" but re-verification confirmed all three are guest-facing
+// messaging platforms. This is a blue-ocean signal for Ranger's staff-copilot
+// side — flag explicitly in the report UI, not just as a data caveat.
 export const LOCKED_HSAI_BRANDS: readonly string[] = [
   // ── The subject ─────────────────────────────────────────────────────────────
-  "Simbastack",          // Custom AI agents for hospitality — Ranger (concierge), ops copilot
+  "Simbastack",          // Bespoke hospitality AI — Ranger (guest concierge) + staff copilot
   // ── AI-native guest-facing agents ───────────────────────────────────────────
   "Asksuite",            // Hotel chatbot + booking engine, global
   "HiJiffy",             // AI guest communications hub — WhatsApp, webchat, OTA messaging
   "Quicktext",           // Hotel chatbot + AI upsell, Velma AI assistant
   "Akia",                // AI guest messaging for hotels and short-term rentals
-  // ── AI-native ops / full-journey agents ─────────────────────────────────────
-  "Canary Technologies", // Digital guest journey — messaging, check-in, upsell
-  "Duve",                // AI guest experience platform — concierge, upsell, messaging, check-in
-  "Alliants",            // Enterprise guest messaging + Allin AI assistant layer
-  "BookBoost",           // Omnichannel AI agent powered by guest CDP
+  "Duve",                // Guest experience platform — pre-arrival messaging, digital check-in, upsell (guest-facing; no staff-copilot tooling verified)
+  "Alliants",            // Enterprise guest messaging + Allin AI layer — comms centralisation for hotel chains (guest-facing; no staff-ops tooling verified)
+  "BookBoost",           // Omnichannel CRM + AI messaging for hotels — guest communications (guest-facing; no staff-copilot tooling verified)
+  // ── AI-native staff-ops competitor (sole verified) ───────────────────────────
+  "Canary Technologies", // Digital guest journey + staff workflows — check-in, ID verification, authorization holds; the only brand with verified staff-side ops depth comparable to Ranger's copilot
   // ── Short-term rental AI agents ─────────────────────────────────────────────
   "Jurny",               // AI-powered short-term rental management
   "Hospitable",          // AI automation for vacation rental hosts

@@ -2,6 +2,12 @@
 // Collection system prompt + 39 prompts across 11 use-case clusters.
 // Scope: AI agent platforms purpose-built for hotels, lodges, resorts,
 // and vacation/short-term rentals — guest-facing and operations agents.
+//
+// Brand cluster structure (re-verified 2026-09-10):
+//   Guest-facing (8): Simbastack, Asksuite, HiJiffy, Quicktext, Akia, Duve, Alliants, BookBoost
+//   Staff-ops (1):    Canary Technologies — sole verified competitor on staff-copilot dimension
+//   STR (3):          Jurny, Hospitable, HostAI
+// Duve, Alliants, BookBoost were re-verified as guest-facing (not ops) — see hsai-features.ts.
 
 export const HSAI_COLLECTION_SYSTEM_PROMPT =
   'You are a market research assistant. Return ONLY valid JSON in this exact format: {"brands": ["Brand A", "Brand B", ...]}' +
