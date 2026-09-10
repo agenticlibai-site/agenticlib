@@ -5,6 +5,7 @@ const SALES_SALT  = "|sales_gate_agenticlib_2026";
 const DEXIFY_SALT = "|dexify_gate_agenticlib_2026";
 const SDAI_SALT   = "|sdai_gate_agenticlib_2026";
 const ESAI_SALT   = "|esai_gate_agenticlib_2026";
+const HSAI_SALT   = "|hsai_gate_agenticlib_2026";
 
 async function hashToken(password: string, salt: string): Promise<string> {
   const data = new TextEncoder().encode(password + salt);
@@ -81,6 +82,21 @@ export async function middleware(request: NextRequest) {
     }
   }
 
+  // ── HSAI (Hospitality AI Agents) visibility gate ───────────────────────────
+  if (
+    pathname.startsWith("/product/hsai-visibility") &&
+    !pathname.startsWith("/product/hsai-visibility/login") &&
+    !pathname.startsWith("/product/hsai-visibility/feedback")
+  ) {
+    const token = request.cookies.get("hsai_auth")?.value;
+    const expected = await hashToken(process.env.HSAI_ACCESS_PASSWORD ?? "", HSAI_SALT);
+    if (!token || token !== expected) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/product/hsai-visibility/login";
+      return NextResponse.redirect(url);
+    }
+  }
+
   return NextResponse.next();
 }
 
@@ -90,5 +106,6 @@ export const config = {
     "/product/dexify-visibility/:path*",
     "/product/sdai-visibility/:path*",
     "/product/esai-visibility/:path*",
+    "/product/hsai-visibility/:path*",
   ],
 };

@@ -4364,6 +4364,224 @@ export async function upsertHsaiSentimentScore(row: {
   `;
 }
 
+// ── HSAI read functions (for report UI) ───────────────────────────────────────
+
+export interface HsaiTopBrandRow    { brand: string; total_mentions: number; avg_position: number | null }
+export interface HsaiClusterRow     { cluster_tag: string; brand: string; total_mentions: number; avg_position: number | null }
+export interface HsaiModelRow       { model: string; brand: string; total_mentions: number }
+export interface HsaiClusterTrendRow{ date: string; brand: string; cluster_tag: string; mention_count: number }
+
+export async function getHsaiTopBrands(limit = 25): Promise<HsaiTopBrandRow[]> {
+  await initHsaiDB();
+  const result = await sql`
+    SELECT brand,
+           SUM(mention_count)::int  AS total_mentions,
+           AVG(avg_position)::float AS avg_position
+    FROM hsai_daily_summary
+    GROUP BY brand
+    ORDER BY total_mentions DESC
+    LIMIT ${limit}
+  `;
+  return result.rows as HsaiTopBrandRow[];
+}
+
+export async function getHsaiByCluster(): Promise<HsaiClusterRow[]> {
+  await initHsaiDB();
+  const result = await sql`
+    SELECT cluster_tag, brand,
+           SUM(mention_count)::int  AS total_mentions,
+           AVG(avg_position)::float AS avg_position
+    FROM hsai_daily_summary
+    GROUP BY cluster_tag, brand
+    ORDER BY cluster_tag, total_mentions DESC
+  `;
+  return result.rows as HsaiClusterRow[];
+}
+
+export async function getHsaiByModel(): Promise<HsaiModelRow[]> {
+  await initHsaiDB();
+  const result = await sql`
+    SELECT model, brand,
+           SUM(mention_count)::int AS total_mentions
+    FROM hsai_daily_summary
+    GROUP BY model, brand
+    ORDER BY total_mentions DESC
+  `;
+  return result.rows as HsaiModelRow[];
+}
+
+export async function getHsaiTrendByCluster(startDate?: string): Promise<HsaiClusterTrendRow[]> {
+  await initHsaiDB();
+  let result;
+  if (startDate) {
+    result = await sql`
+      SELECT date::text, brand, cluster_tag, SUM(mention_count)::int AS mention_count
+      FROM hsai_daily_summary
+      WHERE date >= ${startDate}::date
+        AND cluster_tag != 'hsai-overall'
+      GROUP BY date, brand, cluster_tag
+      ORDER BY date, cluster_tag, mention_count DESC
+    `;
+  } else {
+    result = await sql`
+      SELECT date::text, brand, cluster_tag, SUM(mention_count)::int AS mention_count
+      FROM hsai_daily_summary
+      WHERE date >= (SELECT MAX(date) FROM hsai_daily_summary) - 7 * INTERVAL '1 day'
+        AND cluster_tag != 'hsai-overall'
+      GROUP BY date, brand, cluster_tag
+      ORDER BY date, cluster_tag, mention_count DESC
+    `;
+  }
+  return result.rows as HsaiClusterTrendRow[];
+}
+
+export async function getHsaiFeatureScores(): Promise<{
+  brand_name:         string;
+  feature_id:         string;
+  feature_tag:        string;
+  score:              number | null;
+  score_band:         string;
+  flagged_for_review: boolean;
+  notes:              string | null;
+  grounded_source:    boolean;
+  evidence:           string | null;
+}[]> {
+  await initHsaiDB();
+  const result = await sql`
+    WITH best_evidence AS (
+      SELECT DISTINCT ON (brand_name, feature_id)
+        brand_name, feature_id, evidence
+      FROM hsai_feature_responses
+      WHERE parse_error = false
+        AND evidence IS NOT NULL AND evidence != ''
+        AND evidence NOT ILIKE '%not explicitly document%'
+        AND evidence NOT ILIKE '%does not document%'
+        AND evidence NOT ILIKE '%no specific documentation%'
+        AND evidence NOT ILIKE '%not documented%'
+        AND evidence NOT ILIKE '%cannot be confirmed%'
+        AND evidence NOT ILIKE '%no available information%'
+      ORDER BY brand_name, feature_id,
+        CASE has_capability WHEN 'yes' THEN 0 WHEN 'partial' THEN 1 ELSE 2 END,
+        grounded DESC,
+        run_date DESC,
+        CASE confidence WHEN 'high' THEN 0 WHEN 'medium' THEN 1 ELSE 2 END
+    )
+    SELECT s.brand_name, s.feature_id, s.feature_tag, s.score, s.score_band, s.flagged_for_review,
+           s.notes, s.grounded_source, be.evidence
+    FROM hsai_feature_scores s
+    LEFT JOIN best_evidence be ON be.brand_name = s.brand_name AND be.feature_id = s.feature_id
+    ORDER BY s.feature_tag, s.score DESC NULLS LAST
+  `;
+  return result.rows as {
+    brand_name: string; feature_id: string; feature_tag: string;
+    score: number | null; score_band: string; flagged_for_review: boolean;
+    notes: string | null; grounded_source: boolean; evidence: string | null;
+  }[];
+}
+
+export async function getHsaiBuyerIntent(): Promise<{
+  brand: string; total_mentions: number; avg_position: number | null;
+}[]> {
+  await initHsaiDB();
+  const LOCKED = ['Simbastack','Asksuite','HiJiffy','Quicktext','Akia','Duve','Alliants','BookBoost','Canary Technologies','Jurny','Hospitable','HostAI'];
+  const result = await sql`
+    SELECT brand,
+           SUM(mention_count)::integer AS total_mentions,
+           AVG(avg_position)::float    AS avg_position
+    FROM hsai_daily_summary
+    WHERE cluster_tag = 'hsai-buyer-intent'
+      AND brand = ANY(${LOCKED})
+    GROUP BY brand
+    ORDER BY total_mentions DESC
+  `;
+  const found = new Set((result.rows as { brand: string }[]).map(r => r.brand));
+  const padded = LOCKED.filter(b => !found.has(b)).map(b => ({ brand: b, total_mentions: 0, avg_position: null }));
+  return [...result.rows, ...padded] as { brand: string; total_mentions: number; avg_position: number | null }[];
+}
+
+export async function getHsaiSentimentData(): Promise<{
+  rows: {
+    brand_name:      string;
+    bucket_tag:      string;
+    positive_count:  number;
+    neutral_count:   number;
+    negative_count:  number;
+    total_count:     number;
+    top_descriptors: string[];
+  }[];
+  meta: { dual_model_dates: number; earliest_date: string | null; latest_date: string | null };
+}> {
+  await initHsaiDB();
+
+  const metaResult = await sql`
+    SELECT COUNT(*)::int AS dual_model_dates,
+      MIN(run_date)::text AS earliest_date,
+      MAX(run_date)::text AS latest_date
+    FROM (
+      SELECT run_date FROM hsai_sentiment_responses
+      WHERE NOT parse_error
+      GROUP BY run_date HAVING COUNT(DISTINCT model) >= 2
+    ) d
+  `;
+  const meta = metaResult.rows[0] as {
+    dual_model_dates: number; earliest_date: string | null; latest_date: string | null;
+  };
+
+  if ((meta.dual_model_dates ?? 0) < 1) return { rows: [], meta };
+
+  const result = await sql`
+    WITH base AS (
+      SELECT brand_name, bucket_tag, sentiment, descriptors
+      FROM hsai_sentiment_responses WHERE NOT parse_error
+    ),
+    sentiments AS (
+      SELECT brand_name, bucket_tag,
+        COUNT(*) FILTER (WHERE sentiment='positive')::int AS positive_count,
+        COUNT(*) FILTER (WHERE sentiment='neutral')::int  AS neutral_count,
+        COUNT(*) FILTER (WHERE sentiment='negative')::int AS negative_count,
+        COUNT(*)::int AS total_count
+      FROM base GROUP BY brand_name, bucket_tag
+    ),
+    desc_flat AS (
+      SELECT brand_name, bucket_tag, LOWER(TRIM(d)) AS d, COUNT(*) AS cnt
+      FROM base, LATERAL UNNEST(descriptors) AS d
+      WHERE descriptors IS NOT NULL
+      GROUP BY brand_name, bucket_tag, LOWER(TRIM(d))
+    ),
+    ranked AS (
+      SELECT *, ROW_NUMBER() OVER (PARTITION BY brand_name, bucket_tag ORDER BY cnt DESC) AS rn
+      FROM desc_flat
+    ),
+    top_descs AS (
+      SELECT brand_name, bucket_tag, ARRAY_AGG(d ORDER BY cnt DESC) AS top_descriptors
+      FROM ranked WHERE rn <= 5 GROUP BY brand_name, bucket_tag
+    )
+    SELECT s.brand_name, s.bucket_tag,
+      s.positive_count, s.neutral_count, s.negative_count, s.total_count,
+      COALESCE(d.top_descriptors, ARRAY[]::text[]) AS top_descriptors
+    FROM sentiments s
+    LEFT JOIN top_descs d USING (brand_name, bucket_tag)
+    ORDER BY s.bucket_tag, s.brand_name
+  `;
+  const rawRows = result.rows as {
+    brand_name: string; bucket_tag: string;
+    positive_count: number; neutral_count: number; negative_count: number;
+    total_count: number; top_descriptors: string[];
+  }[];
+
+  const rows = rawRows.map(row => {
+    const othersDescs = new Set(
+      rawRows
+        .filter(r => r.bucket_tag === row.bucket_tag && r.brand_name !== row.brand_name)
+        .flatMap(r => r.top_descriptors),
+    );
+    const unique_flags = row.top_descriptors.map(d => (othersDescs.has(d) ? "false" : "true"));
+    return { ...row, unique_flags };
+  });
+
+  return { rows, meta };
+}
+
 // ═══════════════════════════════════════════════════════════════════════════════
 // SDAI pipeline — AI Video Creation for Customer Education
 // ═══════════════════════════════════════════════════════════════════════════════
