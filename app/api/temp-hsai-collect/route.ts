@@ -57,6 +57,28 @@ export async function GET(request: Request) {
 
   await initHsaiDB();
 
+  // Test one call first
+  let testError = "";
+  try {
+    if (model === "claude-haiku-4-5") {
+      const res = await anthropic.messages.create({
+        model: "claude-haiku-4-5-20251001", max_tokens: 50,
+        system: HSAI_COLLECTION_SYSTEM_PROMPT,
+        messages: [{ role: "user", content: HSAI_PROMPTS[0].text }],
+      });
+      testError = `claude ok: ${res.model}`;
+    } else {
+      const res = await openai.chat.completions.create({
+        model: "gpt-4o-mini", max_tokens: 50,
+        messages: [{ role: "system", content: HSAI_COLLECTION_SYSTEM_PROMPT }, { role: "user", content: HSAI_PROMPTS[0].text }],
+      });
+      testError = `gpt ok: ${res.model}`;
+    }
+  } catch (e) {
+    testError = `API ERROR: ${e instanceof Error ? e.message : String(e)}`;
+    return Response.json({ date, model, test_result: testError });
+  }
+
   const tasks: (() => Promise<{ success: boolean }>)[] = [];
   for (const prompt of HSAI_PROMPTS) {
     for (let run = 1; run <= 3; run++) {
