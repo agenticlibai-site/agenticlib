@@ -343,7 +343,7 @@ export default function HsaiVisibilityCharts({
   const sentimentReady = (sentimentMeta.dual_model_dates ?? 0) >= 1;
 
   const overallBrands = sentimentData.rows
-    .filter(r => r.bucket_tag === "overall" && LOCKED_SENTIMENT_SET.has(r.brand_name))
+    .filter(r => r.bucket_tag === "hsai-sent-overall" && LOCKED_SENTIMENT_SET.has(r.brand_name))
     .sort((a, b) => b.positive_count - a.positive_count);
 
   // ── Buyer intent ───────────────────────────────────────────────────────────
