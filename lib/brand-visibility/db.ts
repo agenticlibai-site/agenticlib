@@ -4385,6 +4385,13 @@ export async function getHsaiTopBrands(limit = 25): Promise<HsaiTopBrandRow[]> {
   return result.rows as HsaiTopBrandRow[];
 }
 
+// Locked brand list — must match LOCKED_BRANDS in HsaiVisibilityCharts.tsx
+const HSAI_LOCKED_BRANDS = [
+  "Simbastack", "Asksuite", "HiJiffy", "Quicktext", "Akia",
+  "Duve", "Alliants", "BookBoost", "Canary Technologies",
+  "Jurny", "Hospitable", "HostAI",
+];
+
 export async function getHsaiByCluster(): Promise<HsaiClusterRow[]> {
   await initHsaiDB();
   const result = await sql`
@@ -4392,6 +4399,7 @@ export async function getHsaiByCluster(): Promise<HsaiClusterRow[]> {
            SUM(mention_count)::int  AS total_mentions,
            AVG(avg_position)::float AS avg_position
     FROM hsai_daily_summary
+    WHERE brand = ANY(${HSAI_LOCKED_BRANDS})
     GROUP BY cluster_tag, brand
     ORDER BY cluster_tag, total_mentions DESC
   `;
@@ -4404,6 +4412,7 @@ export async function getHsaiByModel(): Promise<HsaiModelRow[]> {
     SELECT model, brand,
            SUM(mention_count)::int AS total_mentions
     FROM hsai_daily_summary
+    WHERE brand = ANY(${HSAI_LOCKED_BRANDS})
     GROUP BY model, brand
     ORDER BY total_mentions DESC
   `;
@@ -4419,6 +4428,7 @@ export async function getHsaiTrendByCluster(startDate?: string): Promise<HsaiClu
       FROM hsai_daily_summary
       WHERE date >= ${startDate}::date
         AND cluster_tag != 'hsai-overall'
+        AND brand = ANY(${HSAI_LOCKED_BRANDS})
       GROUP BY date, brand, cluster_tag
       ORDER BY date, cluster_tag, mention_count DESC
     `;
@@ -4428,6 +4438,7 @@ export async function getHsaiTrendByCluster(startDate?: string): Promise<HsaiClu
       FROM hsai_daily_summary
       WHERE date >= (SELECT MAX(date) FROM hsai_daily_summary) - 7 * INTERVAL '1 day'
         AND cluster_tag != 'hsai-overall'
+        AND brand = ANY(${HSAI_LOCKED_BRANDS})
       GROUP BY date, brand, cluster_tag
       ORDER BY date, cluster_tag, mention_count DESC
     `;
