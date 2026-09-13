@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, LineChart, Line, ReferenceArea,
+  ResponsiveContainer, LineChart, Line,
   PieChart, Pie, Cell,
 } from "recharts";
 import type {
@@ -505,13 +505,6 @@ export default function HsaiVisibilityCharts({
                     <XAxis dataKey="date" tickFormatter={fmtDate} tick={{ fontSize: 11, fill: "#000" }} />
                     <YAxis tick={{ fontSize: 11, fill: "#000" }} allowDecimals={false} />
                     <Tooltip content={<TrendTooltip />} />
-                    {/* Shaded gap region — partial collection, values estimated */}
-                    <ReferenceArea
-                      x1="2026-09-08"
-                      x2="2026-09-09"
-                      fill="rgba(0,0,0,0.045)"
-                      strokeOpacity={0}
-                    />
                     {sortedLocked.map((brand) => {
                       const isPinned = PINNED_BRANDS.includes(brand);
                       return (
