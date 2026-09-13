@@ -676,11 +676,6 @@ export default function HsaiVisibilityCharts({
                               <span style={{ fontSize: 11, color: "#000", width: 28, textAlign: "right" as const, fontVariantNumeric: "tabular-nums" }}>
                                 {score ?? 0}
                               </span>
-                              <span style={{
-                                fontSize: 10, fontWeight: 600, letterSpacing: "0.06em",
-                                textTransform: "uppercase" as const, color: color,
-                                width: 64, textAlign: "right" as const,
-                              }}>{band}</span>
                             </div>
                             {row?.evidence && (
                               <p style={{ fontSize: 11, color: "#000", margin: "0 0 0 168px", lineHeight: 1.5, opacity: 0.65 }}>
