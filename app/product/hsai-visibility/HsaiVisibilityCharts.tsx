@@ -3,7 +3,7 @@
 import { useState } from "react";
 import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, LineChart, Line,
+  ResponsiveContainer, LineChart, Line, ReferenceArea,
   PieChart, Pie, Cell,
 } from "recharts";
 import type {
@@ -238,9 +238,33 @@ export default function HsaiVisibilityCharts({
     (a, b) => (overallByBrand[b] ?? 0) - (overallByBrand[a] ?? 0)
   );
 
-  const combinedTrendData = allDates.map(date => {
+  // Dates where only one model collected (Claude API was exhausted Sep 8-9 2026).
+  // Values are linearly interpolated between the nearest real days for display only.
+  const GAP_DATES = new Set(["2026-09-08", "2026-09-09"]);
+
+  const combinedTrendData = allDates.map((date, idx) => {
     const row: Record<string, string | number> = { date };
-    for (const brand of sortedLocked) row[brand] = overallTrendMap[date]?.[brand] ?? 0;
+
+    if (GAP_DATES.has(date)) {
+      const prevDate = [...allDates].slice(0, idx).reverse().find(d => !GAP_DATES.has(d));
+      const nextDate = allDates.slice(idx + 1).find(d => !GAP_DATES.has(d));
+      const prevIdx  = prevDate ? allDates.indexOf(prevDate) : -1;
+      const nextIdx  = nextDate ? allDates.indexOf(nextDate) : -1;
+
+      for (const brand of sortedLocked) {
+        const prevVal = prevDate ? (overallTrendMap[prevDate]?.[brand] ?? 0) : 0;
+        const nextVal = nextDate ? (overallTrendMap[nextDate]?.[brand] ?? 0) : 0;
+        if (prevDate && nextDate) {
+          const t = (idx - prevIdx) / (nextIdx - prevIdx);
+          row[brand] = Math.round(prevVal + t * (nextVal - prevVal));
+        } else {
+          row[brand] = overallTrendMap[date]?.[brand] ?? 0;
+        }
+      }
+    } else {
+      for (const brand of sortedLocked) row[brand] = overallTrendMap[date]?.[brand] ?? 0;
+    }
+
     return row;
   });
 
@@ -470,7 +494,7 @@ export default function HsaiVisibilityCharts({
       )}
 
       {/* ── Coverage Over Time (interactive trend) ────────────────────────── */}
-      <Section title="Coverage Over Time" subtitle="Daily brand mention totals across all use case clusters. Toggle brands using the legend below. Simbastack is pinned and shown even at zero — LLMs rarely surface bespoke boutique agents unprompted.">
+      <Section title="Coverage Over Time" subtitle="Daily brand mention totals across all use case clusters. Toggle brands using the legend below. Simbastack is pinned at zero — LLMs rarely surface bespoke boutique agents unprompted. Shaded region = estimated (Claude API was out Sep 8–9; values interpolated).">
         {!hasData ? <EmptyState label="Awaiting data collection" /> : (
           <>
             <div style={{ overflowX: "auto" }}>
@@ -481,7 +505,15 @@ export default function HsaiVisibilityCharts({
                     <XAxis dataKey="date" tickFormatter={fmtDate} tick={{ fontSize: 11, fill: "#000" }} />
                     <YAxis tick={{ fontSize: 11, fill: "#000" }} allowDecimals={false} />
                     <Tooltip content={<TrendTooltip />} />
-                    {sortedLocked.map((brand, i) => {
+                    {/* Shaded gap region — partial collection, values estimated */}
+                    <ReferenceArea
+                      x1="2026-09-08"
+                      x2="2026-09-09"
+                      fill="rgba(0,0,0,0.045)"
+                      strokeOpacity={0}
+                      label={{ value: "est.", position: "insideTop", fontSize: 10, fill: "#999", dy: 4 }}
+                    />
+                    {sortedLocked.map((brand) => {
                       const isPinned = PINNED_BRANDS.includes(brand);
                       return (
                         <Line
@@ -490,7 +522,6 @@ export default function HsaiVisibilityCharts({
                           dataKey={brand}
                           stroke={brandColor(brand)}
                           strokeWidth={isPinned ? 2.5 : 1.5}
-                          strokeDasharray={isPinned ? undefined : "4 2"}
                           dot={false}
                           hide={hiddenBrands.has(brand)}
                           connectNulls
