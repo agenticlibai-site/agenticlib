@@ -511,7 +511,6 @@ export default function HsaiVisibilityCharts({
                       x2="2026-09-09"
                       fill="rgba(0,0,0,0.045)"
                       strokeOpacity={0}
-                      label={{ value: "est.", position: "insideTop", fontSize: 10, fill: "#999", dy: 4 }}
                     />
                     {sortedLocked.map((brand) => {
                       const isPinned = PINNED_BRANDS.includes(brand);
