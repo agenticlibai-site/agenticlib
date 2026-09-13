@@ -195,16 +195,11 @@ export default function HsaiVisibilityCharts({
 
   // ── Brand sets ───────────────────────────────────────────────────────────────
   const LOCKED_BRANDS = [
-    "Simbastack",
     "Asksuite", "HiJiffy", "Quicktext", "Akia", "Duve", "Alliants", "BookBoost",
     "Canary Technologies",
     "Jurny", "Hospitable", "HostAI",
   ];
   const LOCKED_SET = new Set(LOCKED_BRANDS);
-
-  // Simbastack is the subject — pinned in all coverage charts
-  const PINNED_BRANDS = ["Simbastack"];
-  const PINNED_COLORS: Record<string, string> = { "Simbastack": "#047857" };
 
   const LOCKED_COLORS: Record<string, string> = {
     "Asksuite":           "#EA580C",
@@ -219,8 +214,7 @@ export default function HsaiVisibilityCharts({
     "Hospitable":         "#BE185D",
     "HostAI":             "#65A30D",
   };
-  const brandColorMap: Record<string, string> = { ...PINNED_COLORS, ...LOCKED_COLORS };
-  const brandColor = (brand: string) => brandColorMap[brand] ?? "#94a3b8";
+  const brandColor = (brand: string) => LOCKED_COLORS[brand] ?? "#94a3b8";
 
   // ── Aggregate from clusterTrend ───────────────────────────────────────────
   const allDates = [...new Set(clusterTrend.map(r => r.date))].sort();
@@ -341,14 +335,7 @@ export default function HsaiVisibilityCharts({
     fsByCluster[row.feature_tag][row.feature_id].push(row);
   }
 
-  // Brand ordering within feature score rows (Simbastack first, then by total score desc)
-  const brandScoreTotals: Record<string, number> = {};
-  for (const row of featureScores) {
-    if (!LOCKED_SET.has(row.brand_name)) continue;
-    brandScoreTotals[row.brand_name] = (brandScoreTotals[row.brand_name] ?? 0) + (row.score ?? 0);
-  }
-  const featureBrandOrder = ["Simbastack", ...LOCKED_BRANDS.filter(b => b !== "Simbastack")
-    .sort((a, b) => (brandScoreTotals[b] ?? 0) - (brandScoreTotals[a] ?? 0))];
+  // Per-feature brand ordering is done at render time (highest score first)
 
   // ── Sentiment helpers ──────────────────────────────────────────────────────
   const LOCKED_SENTIMENT_SET = LOCKED_SET;
@@ -360,12 +347,28 @@ export default function HsaiVisibilityCharts({
     .sort((a, b) => b.positive_count - a.positive_count);
 
   // ── Buyer intent ───────────────────────────────────────────────────────────
-  const LOCKED_BUYER = LOCKED_BRANDS;
   const buyerFiltered = buyerIntent
-    .filter(r => LOCKED_BUYER.includes(r.brand))
+    .filter(r => LOCKED_BRANDS.includes(r.brand))
     .sort((a, b) => b.total_mentions - a.total_mentions);
   const buyerTotal = buyerFiltered.reduce((s, r) => s + r.total_mentions, 0);
-  const simbaIntentRow = buyerFiltered.find(r => r.brand === "Simbastack");
+  // Ranger/Simbastack buyer-intent count — from raw prop (not in locked list)
+  const simbaIntentCount = buyerIntent.find(r => r.brand === "Simbastack")?.total_mentions ?? 0;
+
+  // ── Pie percentage label ──────────────────────────────────────────────────
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const PieLabel = ({ cx, cy, midAngle, innerRadius, outerRadius, percent }: any) => {
+    if (percent < 0.06) return null;
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.52;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
+    return (
+      <text x={x} y={y} fill="#fff" textAnchor="middle" dominantBaseline="central"
+        fontSize={9} fontWeight={700}>
+        {`${Math.round(percent * 100)}%`}
+      </text>
+    );
+  };
 
   return (
     <div>
@@ -383,10 +386,10 @@ export default function HsaiVisibilityCharts({
           Note
         </p>
         <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: "0 0 10px" }}>
-          Every chart in this report covers 12 brands across the hospitality AI agent category. <strong>Simbastack</strong> is the subject. Eight brands are AI-native guest-facing agents (Asksuite, HiJiffy, Quicktext, Akia, Duve, Alliants, BookBoost, and Simbastack). <strong>Canary Technologies</strong> is the only verified competitor with staff-side operations tooling comparable to Ranger&rsquo;s staff copilot. Three short-term rental AI agents (Jurny, Hospitable, HostAI) provide adjacent market context.
+          Every chart in this report covers 11 competitor brands across the hospitality AI agent category. Seven are AI-native guest-facing agents (Asksuite, HiJiffy, Quicktext, Akia, Duve, Alliants, BookBoost). <strong>Canary Technologies</strong> is the only verified competitor with staff-side operations tooling comparable to Ranger&rsquo;s staff copilot. Three short-term rental AI agents (Jurny, Hospitable, HostAI) provide adjacent market context.
         </p>
         <p style={{ fontSize: 15, color: "#000", lineHeight: 1.7, margin: 0 }}>
-          <strong>Simbastack</strong> is pinned in all coverage charts. It appears near-zero because LLMs rarely surface bespoke AI agents built by boutique operators — Ranger is deployed at one property (Mara Hilltop) and has minimal public documentation, which is the primary driver of its LLM invisibility. Data is collected daily using Claude Haiku and GPT-4o-mini across 39 prompts in 11 use case clusters, 3 runs each.
+          Data is collected daily using Claude Haiku and GPT-4o-mini across 39 prompts in 11 use case clusters, 3 runs each.
         </p>
       </div>
 
@@ -494,7 +497,7 @@ export default function HsaiVisibilityCharts({
       )}
 
       {/* ── Coverage Over Time (interactive trend) ────────────────────────── */}
-      <Section title="Coverage Over Time" subtitle="Daily brand mention totals across all use case clusters. Toggle brands using the legend below. Simbastack is pinned at zero — LLMs rarely surface bespoke boutique agents unprompted. Shaded region = estimated (Claude API was out Sep 8–9; values interpolated).">
+      <Section title="Coverage Over Time" subtitle="Daily brand mention totals across all use case clusters. Toggle brands using the legend below.">
         {!hasData ? <EmptyState label="Awaiting data collection" /> : (
           <>
             <div style={{ overflowX: "auto" }}>
@@ -505,21 +508,18 @@ export default function HsaiVisibilityCharts({
                     <XAxis dataKey="date" tickFormatter={fmtDate} tick={{ fontSize: 11, fill: "#000" }} />
                     <YAxis tick={{ fontSize: 11, fill: "#000" }} allowDecimals={false} />
                     <Tooltip content={<TrendTooltip />} />
-                    {sortedLocked.map((brand) => {
-                      const isPinned = PINNED_BRANDS.includes(brand);
-                      return (
-                        <Line
-                          key={brand}
-                          type="monotone"
-                          dataKey={brand}
-                          stroke={brandColor(brand)}
-                          strokeWidth={isPinned ? 2.5 : 1.5}
-                          dot={false}
-                          hide={hiddenBrands.has(brand)}
-                          connectNulls
-                        />
-                      );
-                    })}
+                    {sortedLocked.map((brand) => (
+                      <Line
+                        key={brand}
+                        type="monotone"
+                        dataKey={brand}
+                        stroke={brandColor(brand)}
+                        strokeWidth={1.5}
+                        dot={false}
+                        hide={hiddenBrands.has(brand)}
+                        connectNulls
+                      />
+                    ))}
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -528,7 +528,6 @@ export default function HsaiVisibilityCharts({
             <div style={{ display: "flex", flexWrap: "wrap" as const, gap: "6px 10px", marginTop: 14 }}>
               {sortedLocked.map(brand => {
                 const hidden = hiddenBrands.has(brand);
-                const isPinned = PINNED_BRANDS.includes(brand);
                 return (
                   <button
                     key={brand}
@@ -546,43 +545,13 @@ export default function HsaiVisibilityCharts({
                     }}
                   >
                     <span style={{ width: 8, height: 8, borderRadius: "50%", background: brandColor(brand), flexShrink: 0, display: "inline-block" }} />
-                    <span style={{ fontSize: 11, fontWeight: isPinned ? 700 : 400, color: "#000" }}>{brand}</span>
+                    <span style={{ fontSize: 11, color: "#000" }}>{brand}</span>
                   </button>
                 );
               })}
             </div>
           </>
         )}
-      </Section>
-
-      {/* ── Visibility by LLM ─────────────────────────────────────────────── */}
-      <Section title="Visibility by LLM" subtitle="How often each model mentions each brand. Differences reveal where brand perception diverges across Claude Haiku and GPT-4o-mini.">
-        {modelData.every(d => d.claude === 0 && d.gpt === 0) ? (
-          <EmptyState label="Awaiting data collection" />
-        ) : (
-          <div style={{ overflowX: "auto" }}>
-            <div style={{ minWidth: 480 }}>
-              <ResponsiveContainer width="100%" height={Math.max(200, modelData.length * 32)}>
-                <BarChart data={modelData} layout="vertical" margin={{ top: 0, right: 16, left: 100, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.06)" horizontal={false} />
-                  <XAxis type="number" tick={{ fontSize: 11, fill: "#000" }} allowDecimals={false} />
-                  <YAxis type="category" dataKey="brand" tick={{ fontSize: 11, fill: "#000" }} width={96} />
-                  <Tooltip contentStyle={{ fontSize: 12, borderRadius: 8 }} />
-                  <Bar dataKey="claude" name="Claude Haiku"   fill={CLAUDE} radius={[0, 3, 3, 0]} />
-                  <Bar dataKey="gpt"    name="GPT-4o-mini"   fill={GPT}    radius={[0, 3, 3, 0]} />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          </div>
-        )}
-        <div style={{ display: "flex", gap: 16, marginTop: 12 }}>
-          {[{ color: CLAUDE, label: "Claude Haiku" }, { color: GPT, label: "GPT-4o-mini" }].map(({ color, label }) => (
-            <div key={label} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <span style={{ width: 10, height: 10, borderRadius: 2, background: color, display: "inline-block" }} />
-              <span style={{ fontSize: 12, color: "#000" }}>{label}</span>
-            </div>
-          ))}
-        </div>
       </Section>
 
       {/* ── Use Case Coverage (cluster pies) ──────────────────────────────── */}
@@ -602,9 +571,11 @@ export default function HsaiVisibilityCharts({
                       <span style={{ fontSize: 12, color: "#000", opacity: 0.4 }}>No mentions yet</span>
                     </div>
                   ) : (
-                    <ResponsiveContainer width="100%" height={120}>
+                    <ResponsiveContainer width="100%" height={140}>
                       <PieChart>
-                        <Pie data={data} dataKey="mentions" nameKey="brand" cx="50%" cy="50%" outerRadius={50} innerRadius={24}>
+                        <Pie data={data} dataKey="mentions" nameKey="brand" cx="50%" cy="50%"
+                          outerRadius={58} innerRadius={28}
+                          label={PieLabel} labelLine={false}>
                           {data.map(entry => (
                             <Cell key={entry.brand} fill={brandColor(entry.brand)} />
                           ))}
@@ -632,7 +603,7 @@ export default function HsaiVisibilityCharts({
         <div style={{ marginBottom: 16 }}>
           <h2 style={{ fontSize: 16, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>Product Feature Scores</h2>
           <p style={{ fontSize: 13, color: "#000", margin: 0 }}>
-            0–100 score per feature for each of the 12 tracked brands. Scored by consensus across 3 model runs × 2 LLMs.
+            0–100 score per feature for each of the 11 tracked brands. Scored by consensus across 3 model runs × 2 LLMs.
             Strong ≥70 · Partial 40–69 · Weak 1–39 · Absent 0.
           </p>
         </div>
@@ -685,20 +656,19 @@ export default function HsaiVisibilityCharts({
                       {feature.feature_name}
                     </p>
                     <div style={{ display: "flex", flexDirection: "column" as const, gap: 6 }}>
-                      {featureBrandOrder.map(brand => {
-                        const row = brandRowMap[brand];
+                      {[...LOCKED_BRANDS]
+                        .map(brand => ({ brand, row: brandRowMap[brand] }))
+                        .sort((a, b) => (b.row?.score ?? 0) - (a.row?.score ?? 0))
+                        .map(({ brand, row }) => {
                         const score = row?.score != null ? r5(row.score) : null;
                         const band  = row?.score_band ?? "absent";
                         const color = scoreBandColor(band);
                         const pct   = score != null ? `${score}%` : "0%";
-                        const isSimbastack = brand === "Simbastack";
                         return (
                           <div key={brand}>
                             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
                               <span style={{
                                 fontSize: 11, color: "#000", width: 160, flexShrink: 0,
-                                fontWeight: isSimbastack ? 700 : 400,
-                                textDecoration: isSimbastack ? "underline" : "none",
                               }}>{brand}</span>
                               <div style={{ flex: 1, height: 8, background: "rgba(0,0,0,0.06)", borderRadius: 4, overflow: "hidden" }}>
                                 <div style={{ width: pct, height: "100%", background: color, borderRadius: 4, transition: "width 0.4s" }} />
@@ -744,7 +714,7 @@ export default function HsaiVisibilityCharts({
                 <div key={row.brand_name} style={{ paddingBottom: 18, borderBottom: "1px solid rgba(0,0,0,0.06)" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
                     <span style={{ width: 10, height: 10, borderRadius: "50%", background: brandColor(row.brand_name), flexShrink: 0, display: "inline-block" }} />
-                    <span style={{ fontSize: 14, fontWeight: row.brand_name === "Simbastack" ? 700 : 600, color: "#000" }}>{row.brand_name}</span>
+                    <span style={{ fontSize: 14, fontWeight: 600, color: "#000" }}>{row.brand_name}</span>
                     <span style={{ fontSize: 11, color: "#000", opacity: 0.45, marginLeft: "auto" }}>{total} responses</span>
                   </div>
                   <div style={{ display: "flex", gap: 2, height: 8, borderRadius: 4, overflow: "hidden", marginBottom: 8 }}>
@@ -795,7 +765,7 @@ export default function HsaiVisibilityCharts({
           LLM Visibility Playbook for Ranger
         </p>
         <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 20px" }}>
-          Ranger AI surfaces in <strong>{simbaIntentRow?.total_mentions ?? 0} out of ~{buyerTotal} buyer-intent LLM responses</strong> tracked in this report — the prompts that simulate a hospitality operator actively choosing an AI agent to invest in. That gap is not a brand awareness problem in the traditional sense; it is a documentation and discoverability problem. Here is what moves the needle.
+          Ranger AI surfaces in <strong>{simbaIntentCount} out of ~{buyerTotal} buyer-intent LLM responses</strong> tracked in this report — the prompts that simulate a hospitality operator actively choosing an AI agent to invest in. That gap is not a brand awareness problem in the traditional sense; it is a documentation and discoverability problem. Here is what moves the needle.
         </p>
 
         <div style={{ display: "flex", flexDirection: "column" as const, gap: 14 }}>
