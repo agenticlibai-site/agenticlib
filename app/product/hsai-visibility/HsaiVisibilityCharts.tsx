@@ -656,35 +656,58 @@ export default function HsaiVisibilityCharts({
                       {feature.feature_name}
                     </p>
                     <div style={{ display: "flex", flexDirection: "column" as const, gap: 6 }}>
-                      {[...LOCKED_BRANDS]
-                        .map(brand => ({ brand, row: brandRowMap[brand] }))
-                        .sort((a, b) => (b.row?.score ?? 0) - (a.row?.score ?? 0))
-                        .map(({ brand, row }) => {
-                        const score = row?.score != null ? r5(row.score) : null;
-                        const band  = row?.score_band ?? "absent";
-                        const color = scoreBandColor(band);
-                        const pct   = score != null ? `${score}%` : "0%";
+                      {(() => {
+                        const sorted = [...LOCKED_BRANDS]
+                          .map(brand => ({ brand, row: brandRowMap[brand] }))
+                          .sort((a, b) => (b.row?.score ?? 0) - (a.row?.score ?? 0));
+
+                        // Collapse tied bottom-score group: keep Canary + 2 others
+                        const bottomScore = sorted[sorted.length - 1]?.row?.score ?? 0;
+                        const bottomGroup = sorted.filter(x => (x.row?.score ?? 0) === bottomScore);
+                        let display = sorted;
+                        let hiddenCount = 0;
+                        if (bottomGroup.length >= 4) {
+                          const top = sorted.filter(x => (x.row?.score ?? 0) > bottomScore);
+                          const canary = bottomGroup.find(x => x.brand === "Canary Technologies");
+                          const others = bottomGroup.filter(x => x.brand !== "Canary Technologies").slice(0, 2);
+                          display = [...top, ...(canary ? [canary] : []), ...others];
+                          hiddenCount = bottomGroup.length - display.filter(x => (x.row?.score ?? 0) === bottomScore).length;
+                        }
+
                         return (
-                          <div key={brand}>
-                            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
-                              <span style={{
-                                fontSize: 11, color: "#000", width: 160, flexShrink: 0,
-                              }}>{brand}</span>
-                              <div style={{ flex: 1, height: 8, background: "rgba(0,0,0,0.06)", borderRadius: 4, overflow: "hidden" }}>
-                                <div style={{ width: pct, height: "100%", background: color, borderRadius: 4, transition: "width 0.4s" }} />
-                              </div>
-                              <span style={{ fontSize: 11, color: "#000", width: 28, textAlign: "right" as const, fontVariantNumeric: "tabular-nums" }}>
-                                {score ?? 0}
-                              </span>
-                            </div>
-                            {row?.evidence && (
-                              <p style={{ fontSize: 11, color: "#000", margin: "0 0 0 168px", lineHeight: 1.5, opacity: 0.65 }}>
-                                {row.evidence}
+                          <>
+                            {display.map(({ brand, row }) => {
+                              const score = row?.score != null ? r5(row.score) : null;
+                              const band  = row?.score_band ?? "absent";
+                              const color = scoreBandColor(band);
+                              const pct   = score != null ? `${score}%` : "0%";
+                              return (
+                                <div key={brand}>
+                                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
+                                    <span style={{ fontSize: 11, color: "#000", width: 160, flexShrink: 0 }}>{brand}</span>
+                                    <div style={{ flex: 1, height: 8, background: "rgba(0,0,0,0.06)", borderRadius: 4, overflow: "hidden" }}>
+                                      <div style={{ width: pct, height: "100%", background: color, borderRadius: 4, transition: "width 0.4s" }} />
+                                    </div>
+                                    <span style={{ fontSize: 11, color: "#000", width: 28, textAlign: "right" as const, fontVariantNumeric: "tabular-nums" }}>
+                                      {score ?? 0}
+                                    </span>
+                                  </div>
+                                  {row?.evidence && (
+                                    <p style={{ fontSize: 11, color: "#000", margin: "0 0 0 168px", lineHeight: 1.5, opacity: 0.65 }}>
+                                      {row.evidence}
+                                    </p>
+                                  )}
+                                </div>
+                              );
+                            })}
+                            {hiddenCount > 0 && (
+                              <p style={{ fontSize: 11, color: "#000", opacity: 0.4, margin: "2px 0 0 0", fontStyle: "italic" }}>
+                                +{hiddenCount} others also scored {r5(sorted[sorted.length - 1]?.row?.score ?? 0)}
                               </p>
                             )}
-                          </div>
+                          </>
                         );
-                      })}
+                      })()}
                     </div>
                   </div>
                 );
