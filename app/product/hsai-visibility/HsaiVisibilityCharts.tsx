@@ -1002,16 +1002,117 @@ export default function HsaiVisibilityCharts({
           },
         ];
 
+        const PROMPTS = [
+          "What AI agent should a boutique lodge or hotel invest in right now to automate guest communications?",
+          "I’m a hotel GM looking to replace our manual WhatsApp process with an AI agent — what do most operators actually recommend?",
+          "Which hospitality AI platform is worth paying for as an independent lodge operator, and what are the real alternatives?",
+        ];
+        const maxBuyerMentions = Math.max(...buyerFiltered.map(r => r.total_mentions), 1);
+
         return (
           <div style={{
             background: "#fff", borderRadius: 14, border: "1px solid rgba(0,0,0,0.07)",
             padding: "28px 28px", marginBottom: 20,
           }}>
-            <p style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
-              Buyer-Intent Signals
+
+            {/* ── Section header ── */}
+            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 6 }}>
+              <span style={{
+                fontSize: 14, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const,
+                color: "#047857", background: "rgba(4,120,87,0.08)", borderRadius: 999, padding: "6px 16px",
+              }}>
+                Buyer-Intent Insights
+              </span>
+              <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.07)" }} />
+            </div>
+            <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 24px", opacity: 0.65 }}>
+              When hospitality operators ask AI which platform to invest in or switch to, who gets recommended?
             </p>
-            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 20px", opacity: 0.6 }}>
-              Market readiness indicators for the hospitality AI agent category, assessed across Canary Technologies and Asksuite — the two most LLM-visible competitors to Ranger.
+
+            {/* ── Prompts tested ── */}
+            <div style={{ marginBottom: 24 }}>
+              <p style={{
+                fontSize: 12, fontWeight: 700, letterSpacing: "0.06em",
+                textTransform: "uppercase" as const, color: "#047857", marginBottom: 12,
+              }}>
+                Prompts tested
+              </p>
+              <div style={{ display: "flex", flexDirection: "column" as const, gap: 8 }}>
+                {PROMPTS.map((p, i) => (
+                  <div key={i} style={{
+                    display: "flex", gap: 12, alignItems: "flex-start",
+                    background: "rgba(4,120,87,0.04)", borderLeft: "3px solid rgba(4,120,87,0.25)",
+                    borderRadius: "0 8px 8px 0", padding: "10px 14px",
+                  }}>
+                    <span style={{
+                      fontSize: 11, fontWeight: 700, color: "#047857",
+                      background: "rgba(4,120,87,0.12)", borderRadius: 999,
+                      padding: "2px 8px", flexShrink: 0, marginTop: 1,
+                    }}>{i + 1}</span>
+                    <p style={{ fontSize: 13, color: "#000", lineHeight: 1.6, margin: 0, fontStyle: "italic" }}>
+                      &ldquo;{p}&rdquo;
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* ── Warning callout ── */}
+            <div style={{
+              background: "rgba(234,88,12,0.06)", border: "1px solid rgba(234,88,12,0.18)",
+              borderRadius: 10, padding: "14px 18px", marginBottom: 24,
+              display: "flex", gap: 12, alignItems: "flex-start",
+            }}>
+              <span style={{ fontSize: 20, flexShrink: 0 }}>⚠️</span>
+              <div>
+                <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: "0 0 8px" }}>
+                  <strong>Ranger (Simbastack) surfaces in {simbaIntentCount} out of ~{buyerTotal} buyer-intent LLM responses.</strong>{" "}
+                  When a lodge operator or hotel GM asks AI which platform to invest in, established competitors with broader public content dominate the recommendations.
+                </p>
+                {simbaIntentCount > 0 && (
+                  <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: 0 }}>
+                    <strong>Most likely trigger:</strong> Prompt 3 — <em>&ldquo;Which hospitality AI platform is worth paying for as an independent lodge operator, and what are the real alternatives?&rdquo;</em> — which explicitly asks for AI-native tools and names the independent lodge operator use case closest to Ranger&apos;s documented positioning.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* ── Bar chart ── */}
+            {!buyerFiltered.every(r => r.total_mentions === 0) && (
+              <div style={{ display: "flex", flexDirection: "column" as const, gap: 6, marginBottom: 36 }}>
+                {buyerFiltered.map(row => {
+                  const pct = maxBuyerMentions > 0 ? (row.total_mentions / maxBuyerMentions) * 100 : 0;
+                  const isSimba = row.brand === "Simbastack";
+                  return (
+                    <div key={row.brand} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <span style={{
+                        fontSize: 12, color: "#000", width: 160, flexShrink: 0,
+                        fontWeight: isSimba ? 700 : 400,
+                      }}>{row.brand}</span>
+                      <div style={{ flex: 1, height: 8, background: "rgba(0,0,0,0.06)", borderRadius: 4, overflow: "hidden" }}>
+                        <div style={{ width: `${pct}%`, height: "100%", background: isSimba ? "#047857" : brandColor(row.brand), borderRadius: 4 }} />
+                      </div>
+                      <span style={{ fontSize: 12, color: "#000", width: 36, textAlign: "right" as const, fontVariantNumeric: "tabular-nums" }}>
+                        {row.total_mentions}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* ── AI Hospitality Market Validation subheading ── */}
+            <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "0 0 16px" }}>
+              <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.08)" }} />
+              <span style={{
+                fontSize: 11, fontWeight: 700, letterSpacing: "0.07em",
+                textTransform: "uppercase" as const, color: "#047857",
+                whiteSpace: "nowrap" as const, padding: "0 4px",
+              }}>AI Hospitality Market Validation</span>
+              <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.08)" }} />
+            </div>
+            <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: "0 0 20px", opacity: 0.6 }}>
+              Market readiness indicators assessed across Canary Technologies and Asksuite — the two most LLM-visible competitors to Ranger.
             </p>
 
             {/* Verdict callout */}
@@ -1163,33 +1264,6 @@ export default function HsaiVisibilityCharts({
         </div>
       </div>
 
-      {/* ── Buyer Intent ──────────────────────────────────────────────────── */}
-      <Section title="Buyer Intent Visibility" subtitle="How often each brand appears in decision-stage prompts — simulating a hospitality operator actively choosing an AI agent to invest in.">
-        {buyerFiltered.every(r => r.total_mentions === 0) ? (
-          <EmptyState label="Buyer intent data pending" />
-        ) : (
-          <div style={{ display: "flex", flexDirection: "column" as const, gap: 6 }}>
-            {buyerFiltered.map(row => {
-              const pct = buyerTotal > 0 ? (row.total_mentions / buyerTotal) * 100 : 0;
-              const isSimbastack = row.brand === "Simbastack";
-              return (
-                <div key={row.brand} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <span style={{
-                    fontSize: 12, color: "#000", width: 160, flexShrink: 0,
-                    fontWeight: isSimbastack ? 700 : 400,
-                  }}>{row.brand}</span>
-                  <div style={{ flex: 1, height: 8, background: "rgba(0,0,0,0.06)", borderRadius: 4, overflow: "hidden" }}>
-                    <div style={{ width: `${pct}%`, height: "100%", background: brandColor(row.brand), borderRadius: 4 }} />
-                  </div>
-                  <span style={{ fontSize: 12, color: "#000", width: 36, textAlign: "right" as const, fontVariantNumeric: "tabular-nums" }}>
-                    {row.total_mentions}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </Section>
 
     </div>
   );
