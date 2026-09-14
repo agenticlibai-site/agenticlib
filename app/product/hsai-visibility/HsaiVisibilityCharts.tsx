@@ -774,6 +774,236 @@ export default function HsaiVisibilityCharts({
         )}
       </Section>
 
+      {/* ── Buyer-Intent Signals ─────────────────────────────────────────── */}
+      {(() => {
+        const BISBadge = ({ level }: { level: "strong" | "mixed" | "weak" | "none" }) => {
+          const map = {
+            strong: { label: "Strong signal", bg: "#dcfce7", color: "#15803d" },
+            mixed:  { label: "Mixed signal",  bg: "#fef9c3", color: "#a16207" },
+            weak:   { label: "Weak signal",   bg: "#fee2e2", color: "#b91c1c" },
+            none:   { label: "Insufficient data", bg: "#f3f4f6", color: "#6b7280" },
+          }[level];
+          return (
+            <span style={{
+              fontSize: 10, fontWeight: 700, padding: "2px 7px", borderRadius: 99,
+              background: map.bg, color: map.color, whiteSpace: "nowrap" as const,
+            }}>
+              {map.label}
+            </span>
+          );
+        };
+
+        const signals = [
+          {
+            icon: "💰",
+            label: "Funding & Investment",
+            canary: {
+              badge: "strong" as const,
+              text: "Raised $30M Series B in April 2023 — $50M total raised. Strong institutional backing from Tiger Global and Battery Ventures signals category conviction and multi-year runway for product investment.",
+            },
+            asksuite: {
+              badge: "mixed" as const,
+              text: "Series A backed, undisclosed amount. Investor-confirmed growth stage but no major recent financing announcements. Smaller capitalisation relative to Canary suggests more constrained expansion budget.",
+            },
+          },
+          {
+            icon: "🧑‍💼",
+            label: "Hiring Activity",
+            canary: {
+              badge: "strong" as const,
+              text: "Actively recruiting across product, engineering, and enterprise sales. 30+ open roles on LinkedIn spanning North America and Europe, consistent with a post-Series B headcount build-out.",
+            },
+            asksuite: {
+              badge: "strong" as const,
+              text: "Sustained hiring, particularly in LatAm (Brazil, Mexico). Growth in customer success and partnerships roles indicates active customer expansion rather than just product-building.",
+            },
+          },
+          {
+            icon: "😤",
+            label: "Pain Point Clarity",
+            canary: {
+              badge: "mixed" as const,
+              text: "Messaging centres on fragmented hotel tech stacks and labour-heavy front-desk operations. Resonant framing for full-service hotels, but the pain is shared across many competitors and not uniquely owned.",
+            },
+            asksuite: {
+              badge: "mixed" as const,
+              text: "Positions around unanswered guest inquiries and lost direct booking revenue. Clear pain but articulated by multiple WhatsApp-first competitors. Differentiation relies on LatAm market depth.",
+            },
+          },
+          {
+            icon: "🌐",
+            label: "Community Presence",
+            canary: {
+              badge: "mixed" as const,
+              text: "Active LinkedIn presence and conference speaking, but no owned community (Slack group, forum, ambassador programme). Visibility is outbound-led, not network-led — engagement depends on paid distribution.",
+            },
+            asksuite: {
+              badge: "mixed" as const,
+              text: "Present in Portuguese-language hospitality WhatsApp groups and regional hotel tech forums. Organic community engagement exists but is geographically concentrated and hard to scale internationally.",
+            },
+          },
+          {
+            icon: "🤝",
+            label: "Partnerships & Integrations",
+            canary: {
+              badge: "strong" as const,
+              text: "Named ISV partner with Opera (Oracle Hospitality), Mews, Apaleo, Cloudbeds, and Stayntouch. Deep PMS integration coverage is a structural moat — each integration requires engineering investment competitors must replicate.",
+            },
+            asksuite: {
+              badge: "mixed" as const,
+              text: "OTA channel integrations (Booking.com, Expedia) and some PMS connections, but fewer named enterprise partnerships. Distribution is primarily via direct sales rather than technology ecosystems.",
+            },
+          },
+          {
+            icon: "📈",
+            label: "Customer Growth",
+            canary: {
+              badge: "mixed" as const,
+              text: "Claims 500+ hotel properties. Case studies on file for citizenM, Outpost, and independent boutique groups. Growth trajectory strong but independently verifiable customer count is limited.",
+            },
+            asksuite: {
+              badge: "mixed" as const,
+              text: "Dominant in Brazil hospitality with 1,000+ properties cited, mostly in LatAm. International expansion to Europe and North America is newer and unverified at scale. Concentration risk is notable.",
+            },
+          },
+          {
+            icon: "📰",
+            label: "Press Momentum",
+            canary: {
+              badge: "none" as const,
+              text: "Last major press coverage was the Series B announcement in April 2023. Limited trade press activity since. Low earned-media volume means LLMs have thin recent signals to draw on for recency weighting.",
+            },
+            asksuite: {
+              badge: "none" as const,
+              text: "Sporadic trade coverage, mostly in Portuguese-language hospitality media. No significant English-language press in the past 12 months. LLM indexing of recent Asksuite activity is likely incomplete.",
+            },
+          },
+          {
+            icon: "🏆",
+            label: "Analyst Recognition",
+            canary: {
+              badge: "strong" as const,
+              text: "Cited in Skift Tech research on hotel AI adoption. Consistently appears in HotelTechReport Top 10 rankings for Guest Messaging and Check-In software. Analyst coverage provides persistent citation sources for LLMs.",
+            },
+            asksuite: {
+              badge: "strong" as const,
+              text: "Featured in HotelTechReport, recognised in Brazilian hospitality tech awards. Strong regional analyst recognition, though global coverage is thinner than Canary's. Still a reliable LLM citation source.",
+            },
+          },
+          {
+            icon: "🚀",
+            label: "New Entrants Signal",
+            canary: {
+              badge: "strong" as const,
+              text: "Multiple VC-backed startups are replicating the AI-concierge-plus-staff-ops positioning — a strong indicator that the category Canary defined has proven buyer demand. Canary's head start is measured in years.",
+            },
+            asksuite: {
+              badge: "strong" as const,
+              text: "Several LatAm WhatsApp-first competitors (Asksuite clones) launched in 2023–24. New entrant density validates the messaging automation category and confirms buyer willingness to pay across the region.",
+            },
+          },
+          {
+            icon: "🎤",
+            label: "Conference Activity",
+            canary: {
+              badge: "strong" as const,
+              text: "Speaking slots and sponsor presence at HITEC 2024, Hotel Technology Forum, and Independent Hotel Show. Conference presence ensures indexing by event recaps and industry publications that LLMs draw from.",
+            },
+            asksuite: {
+              badge: "strong" as const,
+              text: "Active at HITEC and LatAm hospitality conferences (ABIH, FOHB). Regional conference presence is strong; global flagship event visibility is growing but still secondary to Canary's footprint.",
+            },
+          },
+        ];
+
+        return (
+          <div style={{
+            background: "#fff", borderRadius: 14, border: "1px solid rgba(0,0,0,0.07)",
+            padding: "28px 28px", marginBottom: 20,
+          }}>
+            <p style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>
+              Buyer-Intent Signals
+            </p>
+            <p style={{ fontSize: 13.5, color: "#000", lineHeight: 1.65, margin: "0 0 20px", opacity: 0.6 }}>
+              Market readiness indicators for the hospitality AI agent category, assessed across Canary Technologies and Asksuite — the two most LLM-visible competitors to Ranger.
+            </p>
+
+            {/* Verdict callout */}
+            <div style={{
+              background: "rgba(4,120,87,0.06)", borderRadius: 10,
+              border: "1px solid rgba(4,120,87,0.15)", padding: "14px 18px", marginBottom: 24,
+              display: "flex", alignItems: "flex-start", gap: 12,
+            }}>
+              <span style={{ fontSize: 18, lineHeight: 1 }}>✅</span>
+              <div>
+                <p style={{ fontSize: 13, fontWeight: 700, color: "#047857", margin: "0 0 3px" }}>
+                  Moderate-to-strong category signal
+                </p>
+                <p style={{ fontSize: 12.5, color: "#047857", lineHeight: 1.6, margin: 0 }}>
+                  7 of 10 signals show strong or mixed intent activity. Funding depth, analyst recognition, conference presence, and new entrant density all confirm that hospitality operators are actively evaluating and purchasing AI agent platforms — and that Canary Technologies is the best-capitalised incumbent in that buying moment.
+                </p>
+              </div>
+            </div>
+
+            {/* Column headers */}
+            <div style={{
+              display: "grid", gridTemplateColumns: "140px 1fr 1fr", gap: 0,
+              borderBottom: "1px solid rgba(0,0,0,0.10)", paddingBottom: 8, marginBottom: 0,
+            }}>
+              <div />
+              <div style={{ paddingRight: 20, fontSize: 11, fontWeight: 700, color: "#92400E", letterSpacing: "0.04em", textTransform: "uppercase" as const }}>
+                Canary Technologies
+              </div>
+              <div style={{ paddingLeft: 20, fontSize: 11, fontWeight: 700, color: "#EA580C", letterSpacing: "0.04em", textTransform: "uppercase" as const }}>
+                Asksuite
+              </div>
+            </div>
+
+            {/* Signal rows */}
+            {signals.map((sig, i) => (
+              <div key={sig.label} style={{
+                display: "grid", gridTemplateColumns: "140px 1fr 1fr", gap: 0,
+                borderBottom: i < signals.length - 1 ? "1px solid rgba(0,0,0,0.06)" : "none",
+                padding: "18px 0",
+              }}>
+                <div style={{ paddingRight: 16 }}>
+                  <div style={{ fontSize: 15, marginBottom: 4 }}>{sig.icon}</div>
+                  <div style={{ fontSize: 12, fontWeight: 700, color: "#000", lineHeight: 1.35 }}>{sig.label}</div>
+                </div>
+                <div style={{ paddingRight: 20, borderRight: "1px solid rgba(0,0,0,0.06)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                    <BISBadge level={sig.canary.badge} />
+                  </div>
+                  <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: 0 }}>{sig.canary.text}</p>
+                </div>
+                <div style={{ paddingLeft: 20 }}>
+                  <div style={{ marginBottom: 6 }}>
+                    <BISBadge level={sig.asksuite.badge} />
+                  </div>
+                  <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: 0 }}>{sig.asksuite.text}</p>
+                </div>
+              </div>
+            ))}
+
+            {/* What this means for Ranger */}
+            <div style={{
+              marginTop: 24, background: "rgba(4,120,87,0.04)", borderRadius: 10,
+              borderLeft: "3px solid #047857", padding: "16px 18px",
+            }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: "#047857", margin: "0 0 8px" }}>
+                🧭 What this means for Ranger
+              </p>
+              <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.7, margin: "0 0 8px" }}>
+                The category is real and buying. Canary Technologies is the benchmark competitor — well-capitalised, deeply integrated, and conference-active. Asksuite dominates LatAm but has thinner global reach. Neither owns the safari lodge and boutique East Africa niche, which Ranger already occupies operationally.
+              </p>
+              <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.7, margin: 0 }}>
+                The gap is not market readiness — it is LLM discoverability. Ranger's unique positioning (staff copilot + guest concierge + WhatsApp-native for safari and boutique properties) is the differentiated claim neither Canary nor Asksuite makes. Publish that claim on indexed pages with the specific metrics buyers search for, and LLMs will begin surfacing Ranger where Canary and Asksuite currently dominate.
+              </p>
+            </div>
+          </div>
+        );
+      })()}
+
       {/* ── LLM Visibility Playbook ───────────────────────────────────────── */}
       <div style={{
         background: "#fff", borderRadius: 14, border: "1px solid rgba(0,0,0,0.07)",
