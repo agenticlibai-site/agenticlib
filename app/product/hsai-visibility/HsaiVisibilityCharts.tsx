@@ -799,11 +799,19 @@ export default function HsaiVisibilityCharts({
             label: "Funding & Investment",
             canary: {
               badge: "strong" as const,
-              text: "Raised $30M Series B in April 2023 — $50M total raised. Strong institutional backing from Tiger Global and Battery Ventures signals category conviction and multi-year runway for product investment.",
+              text: "Raised $50M Series C in June 2024 (led by Insight Partners) and $80M Series D in June 2025 (led by Brighton Park Capital), at an approximately $600M valuation — $175M total disclosed. Repeated large institutional rounds confirm category conviction and multi-year product and expansion runway.",
+              citations: [
+                { label: "Series C announcement", href: "http://canarytechnologies.com/press/canary-raises-50m-ai-hotel-technology" },
+                { label: "Series D announcement", href: "http://canarytechnologies.com/press/canary-raises-series-d" },
+              ],
             },
             asksuite: {
               badge: "mixed" as const,
-              text: "Series A backed, undisclosed amount. Investor-confirmed growth stage but no major recent financing announcements. Smaller capitalisation relative to Canary suggests more constrained expansion budget.",
+              text: "Institutional seed financing is confirmed — a R$4M investment from ABSeed in August 2020 and a $1.33M seed round in July 2021 — but figures conflict across databases and currencies, and no structured total or valuation is publicly disclosed.",
+              citations: [
+                { label: "TI Inside (R$4M, 2020)", href: "http://tiinside.com.br/en/25/08/2020/startup-asksuite-recebe-aporte-de-r-4-milhoes" },
+                { label: "PitchBook", href: "http://pitchbook.com/profiles/company/366558-04" },
+              ],
             },
           },
           {
@@ -811,11 +819,20 @@ export default function HsaiVisibilityCharts({
             label: "Hiring Activity",
             canary: {
               badge: "strong" as const,
-              text: "Actively recruiting across product, engineering, and enterprise sales. 30+ open roles on LinkedIn spanning North America and Europe, consistent with a post-Series B headcount build-out.",
+              text: "Public employee count rose from 14 in 2020 to 106 in 2024. Verified current postings include a Lead Physical Access Engineer and a Senior Software Engineer, LATAM Engineering — pointing to continued investment in product infrastructure, access workflows, and regional engineering.",
+              citations: [
+                { label: "Tracxn headcount history", href: "https://tracxn.com" },
+                { label: "Physical Access Engineer", href: "http://jobs.lever.co/canarytechnologies/5c38f67e-089d-4a52-900f-ea4bdb425efb" },
+                { label: "Senior SWE, LATAM", href: "http://jobs.lever.co/canarytechnologies/3fbb11e2-993a-4535-beb4-43d8d0634668" },
+              ],
             },
             asksuite: {
               badge: "strong" as const,
-              text: "Sustained hiring, particularly in LatAm (Brazil, Mexico). Growth in customer success and partnerships roles indicates active customer expansion rather than just product-building.",
+              text: "Recruiting page shows ~10 current roles across Customer Experience, Marketing, Product, Revenue Operations, Sales, Talent, and IT/Engineering — including a BDR EMEA role. Company materials describe 150+ employees across seven or more countries.",
+              citations: [
+                { label: "Asksuite careers", href: "http://asksuite.recruitee.com/l/en" },
+                { label: "BDR EMEA role", href: "http://asksuite.recruitee.com/l/en/o/business-development-representative-emea-south-africa-based" },
+              ],
             },
           },
           {
@@ -823,11 +840,18 @@ export default function HsaiVisibilityCharts({
             label: "Pain Point Clarity",
             canary: {
               badge: "mixed" as const,
-              text: "Messaging centres on fragmented hotel tech stacks and labour-heavy front-desk operations. Resonant framing for full-service hotels, but the pain is shared across many competitors and not uniquely owned.",
+              text: "The clearest documented pain is a G2 review of Oracle OPERA reporting integration problems and difficulty working with the legacy PMS. The public record did not yield a representative corpus of hotels broadly citing manual messaging as a purchase trigger — treat as a positioning hypothesis, not a proven market-wide pain.",
+              citations: [
+                { label: "G2 — Oracle OPERA reviews", href: "https://www.g2.com/products/oracle-hospitality-opera-property-management-system/reviews" },
+                { label: "Reddit: hotels using AI chatbots?", href: "https://www.reddit.com/r/hotels/comments/1cypdvk/are_there_any_hotels_using_ai_for_customer_service/" },
+              ],
             },
             asksuite: {
               badge: "mixed" as const,
-              text: "Positions around unanswered guest inquiries and lost direct booking revenue. Clear pain but articulated by multiple WhatsApp-first competitors. Differentiation relies on LatAm market depth.",
+              text: "Same legacy-PMS dissatisfaction signal applies. Asksuite's positioning directly addresses the pain — automating traveler communication and reservations — but public evidence does not show that frustrated OPERA users specifically moved to Asksuite.",
+              citations: [
+                { label: "G2 — Oracle OPERA reviews", href: "https://www.g2.com/products/oracle-hospitality-opera-property-management-system/reviews" },
+              ],
             },
           },
           {
@@ -835,11 +859,19 @@ export default function HsaiVisibilityCharts({
             label: "Community Presence",
             canary: {
               badge: "mixed" as const,
-              text: "Active LinkedIn presence and conference speaking, but no owned community (Slack group, forum, ambassador programme). Visibility is outbound-led, not network-led — engagement depends on paid distribution.",
+              text: "Category-level conversation exists on Reddit: threads ask whether hotels are using AI chatbots for 24/7 requests and which companies are building high-end AI concierge products. Discussion is exploratory — asking whether products exist — rather than documenting a large practitioner base.",
+              citations: [
+                { label: "Reddit: hotels + AI chatbots", href: "https://www.reddit.com/r/hotels/comments/1cypdvk/are_there_any_hotels_using_ai_for_customer_service/" },
+                { label: "Reddit: high-end AI concierge", href: "https://www.reddit.com/r/hotels/comments/12hb5p3/what_companies_are_doing_high_end_ai_concierge/" },
+              ],
             },
             asksuite: {
               badge: "mixed" as const,
-              text: "Present in Portuguese-language hospitality WhatsApp groups and regional hotel tech forums. Organic community engagement exists but is geographically concentrated and hard to scale internationally.",
+              text: "The same category-level Reddit threads are relevant to Asksuite. Public product discussion is present but shallow and fragmented across hospitality communities — awareness exists, but not a self-sustaining practitioner community.",
+              citations: [
+                { label: "Reddit: hotels + AI chatbots", href: "https://www.reddit.com/r/hotels/comments/1cypdvk/are_there_any_hotels_using_ai_for_customer_service/" },
+                { label: "Reddit: high-end AI concierge", href: "https://www.reddit.com/r/hotels/comments/12hb5p3/what_companies_are_doing_high_end_ai_concierge/" },
+              ],
             },
           },
           {
@@ -847,11 +879,19 @@ export default function HsaiVisibilityCharts({
             label: "Partnerships & Integrations",
             canary: {
               badge: "strong" as const,
-              text: "Named ISV partner with Opera (Oracle Hospitality), Mews, Apaleo, Cloudbeds, and Stayntouch. Deep PMS integration coverage is a structural moat — each integration requires engineering investment competitors must replicate.",
+              text: "Announced a Host Hotel Systems PMS integration in July 2026 (Portugal, Spain, LatAm) and a strategic partnership with the Curator Hotel and Resort Collection in 2026. Recent activity signals a push to become part of the operating stack — not just a messaging layer.",
+              citations: [
+                { label: "Host Hotel Systems integration", href: "https://www.canarytechnologies.com/press/host-hotel-systems-integration" },
+                { label: "Curator partnership", href: "https://www.curatorhotelsandresorts.com/news/curator-hotel-resort-collection-announces-strategic-partnership-with-canary-technologies-to-bring-ai-powered-guest-management-tools-to-independent-lifestyle-hotels/" },
+              ],
             },
             asksuite: {
               badge: "mixed" as const,
-              text: "OTA channel integrations (Booking.com, Expedia) and some PMS connections, but fewer named enterprise partnerships. Distribution is primarily via direct sales rather than technology ecosystems.",
+              text: "Announced a strategic partnership with PC Hospitality in May 2026. Claims 250+ integrations, but this is company-reported; reviewed evidence did not verify a newly announced named PMS or OTA integration with deep write-enabled operational connections in the past 12–18 months.",
+              citations: [
+                { label: "PC Hospitality partnership", href: "https://thefridaytimes.com/15-May-2026/pc-hospitality-partners-asksuite-enhance-guest-experience-ai-powered-automation" },
+                { label: "Integrations page", href: "https://asksuite.com/integrations/" },
+              ],
             },
           },
           {
@@ -859,11 +899,21 @@ export default function HsaiVisibilityCharts({
             label: "Customer Growth",
             canary: {
               badge: "mixed" as const,
-              text: "Claims 500+ hotel properties. Case studies on file for citizenM, Outpost, and independent boutique groups. Growth trajectory strong but independently verifiable customer count is limited.",
+              text: "Named case study: Point Hotel saved nearly 300 staff hours and generated $60K+ in upsell revenue over six months. Proper Hospitality selected the platform in September 2025. Canary's site claims thousands of hotels, but that is company-reported; no clean acquisition cadence is verifiable from the public case archive.",
+              citations: [
+                { label: "Point Hotel case study", href: "https://www.canarytechnologies.com/customers/point-hotel" },
+                { label: "Proper Hospitality", href: "https://www.canarytechnologies.com/press/proper-hospitality" },
+                { label: "Customer cases", href: "https://www.canarytechnologies.com/customers" },
+              ],
             },
             asksuite: {
               badge: "mixed" as const,
-              text: "Dominant in Brazil hospitality with 1,000+ properties cited, mostly in LatAm. International expansion to Europe and North America is newer and unverified at scale. Concentration risk is notable.",
+              text: "Named outcomes: AKTV Resorts ($150K in new business), 4R Hotels (54.6% after-hours interaction share, 17× ROI in 7 months), Parque Cerdeira (28:1 ROI). Company reports 5,500+ hotels across 80+ countries, but those scale figures are self-reported.",
+              citations: [
+                { label: "Customer cases", href: "https://asksuite.com/cases-ask/" },
+                { label: "4R Hotels — 17× ROI", href: "http://asksuite.com/blog/4r-hotels" },
+                { label: "Asksuite platform", href: "https://asksuite.com/" },
+              ],
             },
           },
           {
@@ -871,11 +921,18 @@ export default function HsaiVisibilityCharts({
             label: "Press Momentum",
             canary: {
               badge: "none" as const,
-              text: "Last major press coverage was the Series B announcement in April 2023. Limited trade press activity since. Low earned-media volume means LLMs have thin recent signals to draw on for recency weighting.",
+              text: "Recent visibility includes a 2026 AI Agent Studio launch announcement and Inc. 5000 recognition in August 2026. These show current activity, but the available evidence does not support a reproducible count of independent press articles across comparable six-month windows — classified as insufficient data, not declining.",
+              citations: [
+                { label: "AI Agent Studio launch", href: "http://canarytechnologies.com/press/hospitality-ai-agent-studio-launched" },
+                { label: "Inc. 5000 (August 2026)", href: "https://www.prnewswire.com/news-releases/canary-technologies-named-to-the-2026-inc-5000-list-302851020.html" },
+              ],
             },
             asksuite: {
               badge: "none" as const,
-              text: "Sporadic trade coverage, mostly in Portuguese-language hospitality media. No significant English-language press in the past 12 months. LLM indexing of recent Asksuite activity is likely incomplete.",
+              text: "Available evidence is dominated by company pages, award listings, and owned announcements rather than independent headlines. A low visible press count may reflect indexing, language, or publication practices rather than low activity — classified as insufficient data.",
+              citations: [
+                { label: "Tracxn profile", href: "http://platform.tracxn.com/a/d/company/58de0689e4b027db5f624b20/asksuite#a:about" },
+              ],
             },
           },
           {
@@ -883,11 +940,20 @@ export default function HsaiVisibilityCharts({
             label: "Analyst Recognition",
             canary: {
               badge: "strong" as const,
-              text: "Cited in Skift Tech research on hotel AI adoption. Consistently appears in HotelTechReport Top 10 rankings for Guest Messaging and Check-In software. Analyst coverage provides persistent citation sources for LLMs.",
+              text: "Eight HotelTechReport award wins in 2025 and nine in 2026, including Best Guest Experience System. Repeated top-category recognition provides persistent third-party visibility — meaningful for buyer awareness even if not equivalent to audited performance data.",
+              citations: [
+                { label: "HTR 2026 — Best Guest Experience", href: "https://www.canarytechnologies.com/press/canary-sweeps-hoteltechawards-2026" },
+                { label: "HTR 2025 — 8 wins", href: "https://www.canarytechnologies.com/press/canary-sweeps-2025-hoteltechawards" },
+                { label: "HTR 2026 HotelTechAwards", href: "https://hoteltechreport.com/news/2026-hta-pr" },
+              ],
             },
             asksuite: {
               badge: "strong" as const,
-              text: "Featured in HotelTechReport, recognised in Brazilian hospitality tech awards. Strong regional analyst recognition, though global coverage is thinner than Canary's. Still a reliable LLM citation source.",
+              text: "Ranked #1 in Hotel Chatbot and #6 in Hotelier's Choice Top Companies on HotelTechReport 2026, in a field of 800+ companies. Strong buyer-facing visibility — indicating the product is actively evaluated, though rankings are not audited proof of retention or performance.",
+              citations: [
+                { label: "HTR #1 Hotel Chatbot (2026)", href: "https://asksuite.com/blog/global-leader-ai-reservation-assistance/" },
+                { label: "HTR 2026 HotelTechAwards", href: "https://hoteltechreport.com/news/2026-hta-pr" },
+              ],
             },
           },
           {
@@ -895,11 +961,23 @@ export default function HsaiVisibilityCharts({
             label: "New Entrants Signal",
             canary: {
               badge: "strong" as const,
-              text: "Multiple VC-backed startups are replicating the AI-concierge-plus-staff-ops positioning — a strong indicator that the category Canary defined has proven buyer demand. Canary's head start is measured in years.",
+              text: "Multiple recent product launches validate the category: roommaster's Concierge (Sadie AI, July 2025), Yanolja Cloud's Pulse AI (August 2026, 1,000+ hotels in India), Hoteza AI Concierge, and NEWT Chat (multilingual, Japan). The mix includes established hospitality tech vendors — not just startups — signalling strategic, not experimental, intent.",
+              citations: [
+                { label: "roommaster / Sadie AI", href: "https://www.hotel-online.com/news/roommaster-launches-concierge-ai-powered-virtual-concierge-powered-by-sadie-ai-for-24-7-guest-engagement" },
+                { label: "Yanolja Pulse AI", href: "https://www.digitaltoday.co.kr/en/view/92657/yanolja-launches-pulse-ai-ai-concierge-solution" },
+                { label: "Hoteza AI Concierge", href: "https://hoteza.com/products/ai-concierge" },
+                { label: "NEWT Chat", href: "https://hunted.space/dashboard/newt-chat" },
+              ],
             },
             asksuite: {
               badge: "strong" as const,
-              text: "Several LatAm WhatsApp-first competitors (Asksuite clones) launched in 2023–24. New entrant density validates the messaging automation category and confirms buyer willingness to pay across the region.",
+              text: "The same expanding competitive field applies. PMS vendors, distribution companies, and AI specialists are all approaching the same hospitality workflow from different entry points — raising the bar for differentiation beyond a messaging layer.",
+              citations: [
+                { label: "roommaster / Sadie AI", href: "https://www.hotel-online.com/news/roommaster-launches-concierge-ai-powered-virtual-concierge-powered-by-sadie-ai-for-24-7-guest-engagement" },
+                { label: "Yanolja Pulse AI", href: "https://www.digitaltoday.co.kr/en/view/92657/yanolja-launches-pulse-ai-ai-concierge-solution" },
+                { label: "Hoteza AI Concierge", href: "https://hoteza.com/products/ai-concierge" },
+                { label: "NEWT Chat", href: "https://hunted.space/dashboard/newt-chat" },
+              ],
             },
           },
           {
@@ -907,11 +985,19 @@ export default function HsaiVisibilityCharts({
             label: "Conference Activity",
             canary: {
               badge: "strong" as const,
-              text: "Speaking slots and sponsor presence at HITEC 2024, Hotel Technology Forum, and Independent Hotel Show. Conference presence ensures indexing by event recaps and industry publications that LLMs draw from.",
+              text: "Verified exhibitor presence at HITEC Indianapolis 2025 and HITEC San Antonio 2026 — the category's flagship trade event. Repeated HITEC participation is a commercial signal of ecosystem distribution strategy, though it does not by itself prove conversion or customer growth.",
+              citations: [
+                { label: "HITEC Indianapolis 2025", href: "https://s23.a2zinc.net/clients/HFTP/HITEC2025/Public/eBooth.aspx?BoothID=116356&Nav=False" },
+                { label: "HITEC San Antonio 2026", href: "https://www.canarytechnologies.com/company/events-new/hitec-2026" },
+              ],
             },
             asksuite: {
               badge: "strong" as const,
-              text: "Active at HITEC and LatAm hospitality conferences (ABIH, FOHB). Regional conference presence is strong; global flagship event visibility is growing but still secondary to Canary's footprint.",
+              text: "Verified booth at Equipotel 2025 (Latin America's leading hospitality event, booth N38) and hosted Asksuite Insights 2025, its own industry event. Trade presence supports commercial intent and community participation, primarily within LatAm.",
+              citations: [
+                { label: "Equipotel 2025 (booth N38)", href: "https://www.facebook.com/asksuite/posts/were-thrilled-to-be-at-equipotel-the-leading-event-in-hospitality-visit-us-at-bo/1482594282933865/" },
+                { label: "Asksuite Insights 2025", href: "https://content.asksuite.com/es-rr-evento-asksuite_insights-10-2025/" },
+              ],
             },
           },
         ];
@@ -974,13 +1060,35 @@ export default function HsaiVisibilityCharts({
                   <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
                     <BISBadge level={sig.canary.badge} />
                   </div>
-                  <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: 0 }}>{sig.canary.text}</p>
+                  <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: "0 0 8px" }}>{sig.canary.text}</p>
+                  {sig.canary.citations.length > 0 && (
+                    <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 4 }}>
+                      {sig.canary.citations.map(c => (
+                        <a key={c.href} href={c.href} target="_blank" rel="noopener noreferrer" style={{
+                          fontSize: 10, fontWeight: 600, color: "#92400E",
+                          background: "rgba(146,64,14,0.07)", borderRadius: 3,
+                          padding: "2px 6px", textDecoration: "none", lineHeight: 1.5,
+                        }}>↗ {c.label}</a>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div style={{ paddingLeft: 20 }}>
                   <div style={{ marginBottom: 6 }}>
                     <BISBadge level={sig.asksuite.badge} />
                   </div>
-                  <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: 0 }}>{sig.asksuite.text}</p>
+                  <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: "0 0 8px" }}>{sig.asksuite.text}</p>
+                  {sig.asksuite.citations.length > 0 && (
+                    <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 4 }}>
+                      {sig.asksuite.citations.map(c => (
+                        <a key={c.href} href={c.href} target="_blank" rel="noopener noreferrer" style={{
+                          fontSize: 10, fontWeight: 600, color: "#EA580C",
+                          background: "rgba(234,88,12,0.07)", borderRadius: 3,
+                          padding: "2px 6px", textDecoration: "none", lineHeight: 1.5,
+                        }}>↗ {c.label}</a>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
