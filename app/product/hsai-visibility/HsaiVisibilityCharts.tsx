@@ -1188,55 +1188,97 @@ export default function HsaiVisibilityCharts({
         );
       })()}
 
-      {/* ── LLM Visibility Playbook ───────────────────────────────────────── */}
+      {/* ── Recommended Moves ────────────────────────────────────────────── */}
       <div style={{
         background: "#fff", borderRadius: 14, border: "1px solid rgba(0,0,0,0.07)",
         padding: "28px 28px", marginBottom: 20,
       }}>
-        <p style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 6px" }}>
-          LLM Visibility Playbook for Ranger
-        </p>
-        <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 20px" }}>
-          Ranger AI surfaces in <strong>{simbaIntentCount} out of ~{buyerTotal} buyer-intent LLM responses</strong> tracked in this report — the prompts that simulate a hospitality operator actively choosing an AI agent to invest in. That gap is not a brand awareness problem in the traditional sense; it is a documentation and discoverability problem. Here is what moves the needle.
+        <p style={{ fontSize: 18, fontWeight: 700, color: "#000", margin: "0 0 20px" }}>
+          Recommended moves to improve LLM Visibility
         </p>
 
-        <div style={{ display: "flex", flexDirection: "column" as const, gap: 14 }}>
+        {(() => {
+          const Tag = ({ label, color, bg }: { label: string; color: string; bg: string }) => (
+            <span style={{
+              fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 99,
+              background: bg, color, whiteSpace: "nowrap" as const, letterSpacing: "0.04em",
+              textTransform: "uppercase" as const,
+            }}>{label}</span>
+          );
+          const CompList = ({ brands }: { brands: string[] }) => (
+            <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+              <p style={{ fontSize: 11, fontWeight: 700, color: "#000", opacity: 0.4, margin: "0 0 6px", letterSpacing: "0.04em", textTransform: "uppercase" as const }}>
+                Competitors with this capability
+              </p>
+              <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 6 }}>
+                {brands.map(b => (
+                  <span key={b} style={{
+                    fontSize: 11, fontWeight: 600, color: "#000",
+                    background: "rgba(0,0,0,0.05)", borderRadius: 4, padding: "2px 8px",
+                  }}>{b}</span>
+                ))}
+              </div>
+            </div>
+          );
 
-          <div style={{ background: "rgba(4,120,87,0.04)", borderRadius: 10, padding: "16px 18px" }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: "0 0 10px" }}>
-              1. Publish a detailed Mara Hilltop case study
-            </p>
-            <Dot>Title it around a real outcome Ranger actually delivered — something an operator would search: <em>&ldquo;How a Maasai Mara safari lodge automated [your actual %] of WhatsApp guest inquiries with an AI concierge.&rdquo;</em> The specific number must be Simbastack&apos;s own verified figure; do not use a placeholder in the published title.</Dot>
-            <Dot>Include the specific metrics LLMs learn to cite: inquiry-to-booking conversion rate, average response time before vs. after Ranger, languages handled, and number of staff hours freed per week. These should all be real, sourced figures — LLMs that cite fabricated numbers create reputational risk if an operator cross-checks them.</Dot>
-            <Dot>Publish it on simbastack.com and submit it to well-indexed hospitality trade publications — Skift and Hotel Management are the most broadly crawled in this category; Cloudbeds&apos; Resource Hub and Hotelogix Blog also surface frequently in hospitality search results. Getting byline coverage in any of these raises the probability of the content reaching LLM training pipelines, though this is an inference based on indexing patterns rather than a verified causal link.</Dot>
-          </div>
+          return (
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 14 }}>
 
-          <div style={{ background: "rgba(4,120,87,0.04)", borderRadius: 10, padding: "16px 18px" }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: "0 0 10px" }}>
-              2. Build a public feature page for Ranger
-            </p>
-            <Dot>Create a dedicated <strong>simbastack.com/ranger</strong> page listing every capability in plain language — omnichannel messaging, live PMS quotes, multilingual responses, staff copilot, human handoff.</Dot>
-            <Dot>Use the exact language hospitality operators use in buyer-intent queries: &ldquo;AI concierge for lodges,&rdquo; &ldquo;WhatsApp booking automation,&rdquo; &ldquo;safari lodge AI agent.&rdquo; These are the phrases LLMs pattern-match against when deciding which brands to surface.</Dot>
-            <Dot>Add schema markup (Product, SoftwareApplication) to help search engines and LLM crawlers understand what Ranger is and who it is for.</Dot>
-          </div>
+              <div style={{ background: "rgba(4,120,87,0.04)", borderRadius: 10, padding: "16px 18px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: 0 }}>
+                    1. Multi-PMS Integration: Cloudbeds, Mews, and Guesty
+                  </p>
+                  <Tag label="Scale unlock" color="#15803d" bg="#dcfce7" />
+                </div>
+                <Dot>Ranger is currently built on KaribuKit — Simbastack&apos;s own PMS — which is the right foundation for Mara Hilltop but limits expansion to any property not on KaribuKit. Every verified competitor leads with Cloudbeds, Mews, Opera, and Guesty integrations.</Dot>
+                <Dot>A lodge operator evaluating AI agents will dismiss any tool that cannot read their existing PMS data. Native integration with the top 3–4 PMS platforms is the prerequisite for Ranger to become a product other properties can buy, not just a tool Simbastack built for itself.</Dot>
+                <CompList brands={["Asksuite", "HiJiffy", "Canary Technologies", "Duve"]} />
+              </div>
 
-          <div style={{ background: "rgba(4,120,87,0.04)", borderRadius: 10, padding: "16px 18px" }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: "0 0 10px" }}>
-              3. Claim the staff-copilot positioning explicitly
-            </p>
-            <Dot>Canary Technologies is the only verified competitor with documented staff-side reservation and check-in tooling. Every other brand in this report is positioning on the guest-facing side. Ranger does both — name that explicitly in all marketing copy and documentation.</Dot>
-            <Dot>A phrase like <em>&ldquo;the only hospitality AI with both a guest concierge and a staff operations copilot in one system&rdquo;</em> is specific enough for LLMs to cite and differentiated enough to earn the positioning — but only once it appears on a published page they can index.</Dot>
-          </div>
+              <div style={{ background: "rgba(4,120,87,0.04)", borderRadius: 10, padding: "16px 18px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: 0 }}>
+                    2. Lead Follow-up Automation: Re-engage Unconverted Inquiries
+                  </p>
+                  <Tag label="Revenue lever" color="#a16207" bg="#fef9c3" />
+                </div>
+                <Dot>Ranger handles live inquiries well — availability quotes, instant replies, multilingual responses. The gap is what happens after a guest receives a quote and goes silent.</Dot>
+                <Dot>For safari lodges where conversion windows stretch 2–6 weeks and guests compare multiple properties, automated follow-up sequences — a WhatsApp nudge at day 3, a personalised package offer at day 7 — are where the booking is actually won or lost. No current Ranger documentation claims this capability.</Dot>
+                <CompList brands={["Asksuite", "BookBoost", "Canary Technologies"]} />
+              </div>
 
-          <div style={{ background: "rgba(4,120,87,0.04)", borderRadius: 10, padding: "16px 18px" }}>
-            <p style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: "0 0 10px" }}>
-              4. Get listed in hospitality tech directories and review sites
-            </p>
-            <Dot>Capterra, G2, GetApp, and Hotel Tech Report are among the sources LLMs cite most frequently when recommending hospitality software. A Ranger listing on each — even with just a basic profile and one review — puts the product in front of the training data these models draw from.</Dot>
-            <Dot>Hotel Tech Report specifically runs annual rankings for guest messaging and AI concierge tools that generate their own indexed content. Being listed before the next ranking cycle is a compounding discoverability investment.</Dot>
-          </div>
+              <div style={{ background: "rgba(4,120,87,0.04)", borderRadius: 10, padding: "16px 18px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: 0 }}>
+                    3. Staff Operations Copilot: Formalise the Internal Workflow Layer
+                  </p>
+                  <Tag label="Product differentiator" color="#1d4ed8" bg="#dbeafe" />
+                </div>
+                <Dot>Ranger has staff-side capability built into KaribuKit — reservation updates, check-in preparation, internal routing — but this is not isolated or documented as a named product feature. Canary&apos;s Agent Studio explicitly lists staff, operations, and internal stakeholders as audiences. Asksuite&apos;s Sophia assists human agents with reservations. Ranger does both and currently claims neither.</Dot>
+                <Dot>Making the staff copilot a distinct, documented product layer — with clear workflows for reservation changes, upsell approvals, exception handling, and human escalation — is the one investment that makes Ranger structurally impossible to replace with a guest-chat tool alone.</Dot>
+                <CompList brands={["Canary Technologies", "Asksuite"]} />
+              </div>
 
-        </div>
+              <div style={{ background: "rgba(4,120,87,0.04)", borderRadius: 10, padding: "16px 18px" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: 0 }}>
+                    4. Use Case Cluster Expansion: Pre-Arrival &amp; Concierge Experience
+                  </p>
+                  <Tag label="Use case expansion" color="#7c3aed" bg="#ede9fe" />
+                </div>
+                <Dot>Safari lodges have complex pre-arrival workflows that no tracked competitor documents specifically: dietary requirements, wildlife preference declarations, special occasion setups, activity bookings (game drives, guided walks, conservation experiences), and ground transport coordination — all currently handled manually by lodge staff.</Dot>
+                <Dot>Ranger&apos;s WhatsApp-native architecture is the right delivery layer for a pre-arrival concierge flow. A structured sequence — sent 7 days before arrival via WhatsApp — that collects guest preferences, confirms activity bookings, and surfaces upsell options would be a distinct, ownable product cluster that Canary and Asksuite cannot claim without entering an entirely different market segment.</Dot>
+                <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px solid rgba(0,0,0,0.06)" }}>
+                  <p style={{ fontSize: 11, fontWeight: 700, color: "#000", opacity: 0.4, margin: "0 0 6px", letterSpacing: "0.04em", textTransform: "uppercase" as const }}>
+                    No tracked competitor documents this for safari / boutique lodge operators
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          );
+        })()}
       </div>
 
 
