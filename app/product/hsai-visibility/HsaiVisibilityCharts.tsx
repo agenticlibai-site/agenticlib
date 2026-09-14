@@ -1016,16 +1016,10 @@ export default function HsaiVisibilityCharts({
           }}>
 
             {/* ── Section header ── */}
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 6 }}>
-              <span style={{
-                fontSize: 14, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" as const,
-                color: "#047857", background: "rgba(4,120,87,0.08)", borderRadius: 999, padding: "6px 16px",
-              }}>
-                Buyer-Intent Insights
-              </span>
-              <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.07)" }} />
-            </div>
-            <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 24px", opacity: 0.65 }}>
+            <p style={{ fontSize: 22, fontWeight: 700, color: "#000", margin: "0 0 6px", letterSpacing: "-0.01em" }}>
+              Buyer-Intent Insights
+            </p>
+            <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 24px", opacity: 0.55 }}>
               When hospitality operators ask AI which platform to invest in or switch to, who gets recommended?
             </p>
 
@@ -1087,16 +1081,12 @@ export default function HsaiVisibilityCharts({
             })()}
 
             {/* ── AI Hospitality Market Validation subheading ── */}
-            <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "0 0 16px" }}>
-              <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.08)" }} />
-              <span style={{
-                fontSize: 11, fontWeight: 700, letterSpacing: "0.07em",
-                textTransform: "uppercase" as const, color: "#047857",
-                whiteSpace: "nowrap" as const, padding: "0 4px",
-              }}>AI Hospitality Market Validation</span>
-              <div style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.08)" }} />
+            <div style={{ borderTop: "1px solid rgba(0,0,0,0.07)", paddingTop: 28, margin: "0 0 6px" }}>
+              <p style={{ fontSize: 17, fontWeight: 700, color: "#000", margin: 0, letterSpacing: "-0.01em" }}>
+                AI Hospitality Market Validation
+              </p>
             </div>
-            <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: "0 0 20px", opacity: 0.6 }}>
+            <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: "0 0 20px", opacity: 0.55 }}>
               Market readiness indicators assessed across Canary Technologies and Asksuite — the two most LLM-visible competitors to Ranger.
             </p>
 
