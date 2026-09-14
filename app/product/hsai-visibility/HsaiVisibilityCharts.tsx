@@ -1057,49 +1057,34 @@ export default function HsaiVisibilityCharts({
               </div>
             </div>
 
-            {/* ── Warning callout ── */}
-            <div style={{
-              background: "rgba(234,88,12,0.06)", border: "1px solid rgba(234,88,12,0.18)",
-              borderRadius: 10, padding: "14px 18px", marginBottom: 24,
-              display: "flex", gap: 12, alignItems: "flex-start",
-            }}>
-              <span style={{ fontSize: 20, flexShrink: 0 }}>⚠️</span>
-              <div>
-                <p style={{ fontSize: 13, color: "#000", lineHeight: 1.65, margin: "0 0 8px" }}>
-                  <strong>Ranger (Simbastack) surfaces in {simbaIntentCount} out of ~{buyerTotal} buyer-intent LLM responses.</strong>{" "}
-                  When a lodge operator or hotel GM asks AI which platform to invest in, established competitors with broader public content dominate the recommendations.
-                </p>
-                {simbaIntentCount > 0 && (
-                  <p style={{ fontSize: 12.5, color: "#000", lineHeight: 1.65, margin: 0 }}>
-                    <strong>Most likely trigger:</strong> Prompt 3 — <em>&ldquo;Which hospitality AI platform is worth paying for as an independent lodge operator, and what are the real alternatives?&rdquo;</em> — which explicitly asks for AI-native tools and names the independent lodge operator use case closest to Ranger&apos;s documented positioning.
+            {/* ── Bar chart — only brands with ≥1 mention ── */}
+            {(() => {
+              const withMentions = buyerFiltered.filter(r => r.total_mentions > 0);
+              if (withMentions.length === 0) return null;
+              return (
+                <div style={{ marginBottom: 36 }}>
+                  <p style={{ fontSize: 11, color: "#000", opacity: 0.45, margin: "0 0 10px", fontStyle: "italic" }}>
+                    {buyerFiltered.length - withMentions.length} of {buyerFiltered.length} tracked brands received 0 mentions across all three prompts.
                   </p>
-                )}
-              </div>
-            </div>
-
-            {/* ── Bar chart ── */}
-            {!buyerFiltered.every(r => r.total_mentions === 0) && (
-              <div style={{ display: "flex", flexDirection: "column" as const, gap: 6, marginBottom: 36 }}>
-                {buyerFiltered.map(row => {
-                  const pct = maxBuyerMentions > 0 ? (row.total_mentions / maxBuyerMentions) * 100 : 0;
-                  const isSimba = row.brand === "Simbastack";
-                  return (
-                    <div key={row.brand} style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                      <span style={{
-                        fontSize: 12, color: "#000", width: 160, flexShrink: 0,
-                        fontWeight: isSimba ? 700 : 400,
-                      }}>{row.brand}</span>
-                      <div style={{ flex: 1, height: 8, background: "rgba(0,0,0,0.06)", borderRadius: 4, overflow: "hidden" }}>
-                        <div style={{ width: `${pct}%`, height: "100%", background: isSimba ? "#047857" : brandColor(row.brand), borderRadius: 4 }} />
-                      </div>
-                      <span style={{ fontSize: 12, color: "#000", width: 36, textAlign: "right" as const, fontVariantNumeric: "tabular-nums" }}>
-                        {row.total_mentions}
-                      </span>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+                  <div style={{ display: "flex", flexDirection: "column" as const, gap: 6 }}>
+                    {withMentions.map(row => {
+                      const pct = maxBuyerMentions > 0 ? (row.total_mentions / maxBuyerMentions) * 100 : 0;
+                      return (
+                        <div key={row.brand} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                          <span style={{ fontSize: 12, color: "#000", width: 160, flexShrink: 0 }}>{row.brand}</span>
+                          <div style={{ flex: 1, height: 8, background: "rgba(0,0,0,0.06)", borderRadius: 4, overflow: "hidden" }}>
+                            <div style={{ width: `${pct}%`, height: "100%", background: brandColor(row.brand), borderRadius: 4 }} />
+                          </div>
+                          <span style={{ fontSize: 12, color: "#000", width: 36, textAlign: "right" as const, fontVariantNumeric: "tabular-nums" }}>
+                            {row.total_mentions}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* ── AI Hospitality Market Validation subheading ── */}
             <div style={{ display: "flex", alignItems: "center", gap: 12, margin: "0 0 16px" }}>
