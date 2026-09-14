@@ -565,7 +565,7 @@ export default function HsaiVisibilityCharts({
               return (
                 <div key={cluster.tag} style={{ background: "rgba(0,0,0,0.02)", borderRadius: 10, padding: "16px 14px" }}>
                   <p style={{ fontSize: 13, fontWeight: 700, color: "#000", margin: "0 0 4px" }}>{cluster.label}</p>
-                  <p style={{ fontSize: 11, color: "#000", opacity: 0.55, margin: "0 0 10px", lineHeight: 1.4 }}>{cluster.description}</p>
+                  <p style={{ fontSize: 11, color: "#047857", margin: "0 0 10px", lineHeight: 1.5 }}>{cluster.description}</p>
                   {data.length === 0 ? (
                     <div style={{ height: 100, display: "flex", alignItems: "center", justifyContent: "center" }}>
                       <span style={{ fontSize: 12, color: "#000", opacity: 0.4 }}>No mentions yet</span>
