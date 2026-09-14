@@ -1022,9 +1022,9 @@ export default function HsaiVisibilityCharts({
             <p style={{ fontSize: 14, fontWeight: 700, color: "#000", margin: "0 0 10px" }}>
               1. Publish a detailed Mara Hilltop case study
             </p>
-            <Dot>Title it something an operator would search: <em>&ldquo;How a Maasai Mara safari lodge automated 90% of WhatsApp guest inquiries with an AI concierge.&rdquo;</em></Dot>
-            <Dot>Include the specific metrics LLMs learn to cite: inquiry-to-booking conversion rate, average response time before vs. after Ranger, languages handled, and number of staff hours freed per week.</Dot>
-            <Dot>Publish it on simbastack.com and submit it to hospitality tech publications (Hotelogix Blog, Cloudbeds Resource Hub, Skift, Hotel Management) — these are indexed sources LLMs draw from.</Dot>
+            <Dot>Title it around a real outcome Ranger actually delivered — something an operator would search: <em>&ldquo;How a Maasai Mara safari lodge automated [your actual %] of WhatsApp guest inquiries with an AI concierge.&rdquo;</em> The specific number must be Simbastack&apos;s own verified figure; do not use a placeholder in the published title.</Dot>
+            <Dot>Include the specific metrics LLMs learn to cite: inquiry-to-booking conversion rate, average response time before vs. after Ranger, languages handled, and number of staff hours freed per week. These should all be real, sourced figures — LLMs that cite fabricated numbers create reputational risk if an operator cross-checks them.</Dot>
+            <Dot>Publish it on simbastack.com and submit it to well-indexed hospitality trade publications — Skift and Hotel Management are the most broadly crawled in this category; Cloudbeds&apos; Resource Hub and Hotelogix Blog also surface frequently in hospitality search results. Getting byline coverage in any of these raises the probability of the content reaching LLM training pipelines, though this is an inference based on indexing patterns rather than a verified causal link.</Dot>
           </div>
 
           <div style={{ background: "rgba(4,120,87,0.04)", borderRadius: 10, padding: "16px 18px" }}>
