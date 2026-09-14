@@ -131,6 +131,9 @@ export default function Navbar() {
                       { label: "Legal", href: "/solutions/legal",
                         iconBg: "linear-gradient(135deg,#059669,#10b981)",
                         icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2v16M7 17.5h6" stroke="white" strokeWidth="1.7" strokeLinecap="round"/><path d="M4 7.5c0 0 1.5-3 3-3s3 3 3 3-1.5 2-3 2-3-2-3-2z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/><path d="M10 7.5c0 0 1.5-3 3-3s3 3 3 3-1.5 2-3 2-3-2-3-2z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/></svg> },
+                      { label: "Hospitality", href: "/product/hsai-visibility/login",
+                        iconBg: "linear-gradient(135deg,#047857,#34d399)",
+                        icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M3 17V8l7-5 7 5v9" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/><rect x="7.5" y="11" width="5" height="6" rx="0.5" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.2)"/><path d="M10 11v6" stroke="white" strokeWidth="1.2" strokeLinecap="round" opacity="0.6"/></svg> },
                       { label: "Video Creation", href: "/product/sdai-visibility/login",
                         iconBg: "linear-gradient(135deg,#7c3aed,#a78bfa)",
                         icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5.5" width="12" height="9" rx="2" stroke="white" strokeWidth="1.6" fill="rgba(255,255,255,0.18)"/><path d="M14.5 8.5l3-2v5l-3-2v-1z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.25)" strokeLinejoin="round"/></svg> },
@@ -263,6 +266,7 @@ export default function Navbar() {
                   { label: "Marketing", href: "/solutions/marketing" },
                   { label: "Sales", href: "/solutions/sales" },
                   { label: "Legal", href: "/solutions/legal" },
+                  { label: "Hospitality", href: "/product/hsai-visibility/login" },
                   { label: "Video Creation", href: "/product/sdai-visibility/login" },
                 ].map((item) => (
                   <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}

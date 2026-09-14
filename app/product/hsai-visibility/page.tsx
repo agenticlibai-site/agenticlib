@@ -12,7 +12,7 @@ import HsaiVisibilityCharts from "./HsaiVisibilityCharts";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Ranger AI Report – AgenticLib",
+  title: "SimbaStack: Ranger AI Report – AgenticLib",
   description:
     "Which hospitality AI agent platforms appear when LLMs are asked about guest communication, concierge automation, and lodge operations. 12 tracked brands, 11 use case clusters, 3 runs per prompt, collected daily.",
 };
@@ -44,7 +44,7 @@ export default async function HsaiVisibilityPage() {
             className="text-3xl md:text-4xl font-bold mb-3"
             style={{ color: "#000000", letterSpacing: "-0.02em", lineHeight: 1.15 }}
           >
-            Ranger AI Report
+            SimbaStack: Ranger AI Report
           </h1>
           <p className="text-base" style={{ color: "#000000", lineHeight: 1.6, maxWidth: 600 }}>
             Which AI agent platforms appear when Claude Haiku and GPT-4o-mini are asked about
