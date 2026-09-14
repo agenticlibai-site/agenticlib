@@ -44,12 +44,13 @@ export default async function HsaiLoginPage({
 
   return (
     <main
+      className="page-gap-fix"
       style={{
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        background: "#F7F8FC",
+        background: "#F0FDF4",
       }}
     >
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 18, width: "100%", maxWidth: 400, padding: "0 16px" }}>
