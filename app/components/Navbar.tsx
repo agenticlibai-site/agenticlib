@@ -192,22 +192,6 @@ export default function Navbar() {
               Company
             </Link>
 
-            {/* Pricing */}
-            <Link
-              href="/#pricing"
-              onClick={(e) => {
-                if (pathname === "/") {
-                  e.preventDefault();
-                  document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" });
-                }
-              }}
-              className="nb-link transition"
-              style={{ textDecoration: "none" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}
-            >
-              Pricing
-            </Link>
 
             {/* Contact Us */}
             <Link
@@ -310,11 +294,7 @@ export default function Navbar() {
               style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
               Company
             </Link>
-            <a href="/#pricing" onClick={() => setMobileOpen(false)}
-              className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
-              style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
-              Pricing
-            </a>
+
             <a href="/#contact" onClick={() => setMobileOpen(false)}
               className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
               style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
