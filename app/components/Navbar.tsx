@@ -82,17 +82,6 @@ export default function Navbar() {
           {/* NAV */}
           <nav className="nb-nav hidden md:flex items-center ml-10">
 
-            {/* Platform */}
-            <Link
-              href="/sage"
-              className="nb-link transition"
-              style={{ textDecoration: "none" }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}
-            >
-              Platform
-            </Link>
-
             {/* Solutions mega dropdown */}
             <div className="relative group">
               <button
@@ -284,11 +273,6 @@ export default function Navbar() {
                 ))}
               </div>
             )}
-            <Link href="/sage" onClick={() => setMobileOpen(false)}
-              className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
-              style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
-              Platform
-            </Link>
             <Link href="/company" onClick={() => setMobileOpen(false)}
               className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
               style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
