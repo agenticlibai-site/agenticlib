@@ -325,21 +325,6 @@ export default function Home() {
   const [demoOpen, setDemoOpen] = useState(false);
   const demoVideoRef = useRef<HTMLVideoElement>(null);
   const videoPlayedRef = useRef(false);
-  const snapIframeRef = useRef<HTMLIFrameElement>(null);
-
-  useEffect(() => {
-    const resize = () => {
-      const iframe = snapIframeRef.current;
-      if (!iframe?.parentElement) return;
-      const w = iframe.parentElement.clientWidth || 1060;
-      iframe.style.transform = `scale(${w / 1060})`;
-    };
-    resize();
-    const ro = new ResizeObserver(resize);
-    if (snapIframeRef.current?.parentElement) ro.observe(snapIframeRef.current.parentElement);
-    window.addEventListener("resize", resize);
-    return () => { ro.disconnect(); window.removeEventListener("resize", resize); };
-  }, []);
 
   const handleVideoPlay = () => {
     if (videoPlayedRef.current) return;
@@ -549,28 +534,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* RIGHT — product snapshot */}
-            <div
-              className="hero-snap-wrap"
-              style={{
-                flex: 1,
-                minWidth: 0,
-                aspectRatio: "1060 / 815",
-                borderRadius: 14,
-                overflow: "hidden",
-                border: "1.5px solid rgba(124,58,237,0.28)",
-                boxShadow: "0 0 0 4px rgba(124,58,237,0.08), 0 0 32px 6px rgba(124,58,237,0.18), 0 32px 80px rgba(124,58,237,0.22), 0 10px 28px rgba(236,72,153,0.10), 0 2px 6px rgba(0,0,0,0.06)",
-                position: "relative",
-                flexShrink: 0,
-              }}
-            >
-              <iframe
-                ref={snapIframeRef}
-                src="/sage-platform-demo.html"
-                title="Sage AI Platform"
-                style={{ width: 1060, height: 815, border: "none", display: "block", transformOrigin: "top left" }}
-              />
-            </div>
           </div>
         </section>
         </div>
