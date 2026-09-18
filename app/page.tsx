@@ -577,40 +577,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Testimonial label */}
-          <div style={{ display: "flex", alignItems: "center", gap: 16, margin: "40px 0 0" }}>
-            <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
-            <span style={{ fontSize: 13, fontWeight: 500, letterSpacing: "0.2em", textTransform: "uppercase", color: "#000", whiteSpace: "nowrap" }}>
-              Testimonial
-            </span>
-            <span style={{ flex: 1, height: 1, background: "rgba(0,0,0,0.12)" }} />
-          </div>
-
-          {/* Testimonial */}
-          <div style={{
-            maxWidth: 560,
-            margin: "20px auto 0",
-            textAlign: "center",
-            background: "#fff",
-            border: "2px dotted #7C3AED",
-            borderRadius: 20,
-            padding: "28px 32px",
-          }}>
-            <p style={{
-              fontSize: 16,
-              fontWeight: 400,
-              lineHeight: 1.6,
-              color: "#0F0B1E",
-              letterSpacing: "-0.01em",
-              margin: "0 0 18px",
-            }}>
-              <span className="testimonial-quote">&ldquo;Helped us map dewwie&apos;s features against the category to identify opportunities for differentiation, and making more informed product decisions.&rdquo;</span>
-            </p>
-            <div style={{ width: 36, height: 3, background: "#5B5BD6", borderRadius: 2, margin: "0 auto 14px" }} />
-            <span style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#888" }}>
-              Founder, Dewwie
-            </span>
-          </div>
         </div>
       </section>
 
