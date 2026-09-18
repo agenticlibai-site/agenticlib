@@ -75,7 +75,7 @@ export default function Navbar() {
             <img src="/logo.png" alt="AgenticLib logo" className="h-6 w-auto" />
             <div className="flex flex-col leading-none">
               <span className="text-lg font-semibold tracking-tight">AgenticLib</span>
-              <span className="logo-tagline nb-tagline" style={{ fontSize: 10.5, fontWeight: 500, color: "#000000", letterSpacing: "0.01em", marginTop: 1 }}>Product Management for AI Agent Builders</span>
+              <span className="logo-tagline nb-tagline" style={{ fontSize: 10.5, fontWeight: 500, color: "#000000", letterSpacing: "0.01em", marginTop: 1 }}>Context-Aware Product Management for AI Agent Builders</span>
             </div>
           </Link>
 
