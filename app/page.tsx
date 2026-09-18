@@ -394,7 +394,7 @@ export default function Home() {
             <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
               <h1
                 className="text-[32px] sm:text-[38px] md:text-[44px] lg:text-[52px]"
-                style={{ color: "#000000", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.08, margin: 0 }}
+                style={{ color: "#000000", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.08, margin: 0, maxWidth: 780, textWrap: "balance" }}
               >
                 Context-Aware Product Management for{" "}
                 <span style={{ backgroundImage: "linear-gradient(95deg, #6B4FBB 15%, #E8447A 85%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
