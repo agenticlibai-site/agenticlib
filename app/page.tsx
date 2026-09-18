@@ -402,7 +402,7 @@ export default function Home() {
                 </span>
               </h1>
               <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 24, fontWeight: 600, fontSize: 17, textAlign: "center", maxWidth: 680 }}>
-                Turn customer requests, agent behaviour analytics and competitor signals by domain and use case into a dynamic product roadmap. Built for product managers within AI Agent companies.
+                Turn customer requests, agent behaviour analytics and competitor signals by domain and use case into a dynamic product roadmap.<br />Built for product managers, product owners and product creators within AI Agent companies.
               </p>
               <div style={{ marginTop: 32, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                 <button
