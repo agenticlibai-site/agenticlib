@@ -391,7 +391,7 @@ export default function Home() {
             }}
           >
             {/* LEFT — text + CTA */}
-            <div style={{ flex: "0 0 auto", width: "42%", display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
               <h1
                 className="text-[32px] sm:text-[38px] md:text-[44px] lg:text-[52px]"
                 style={{ color: "#000000", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.08, margin: 0 }}
@@ -401,7 +401,7 @@ export default function Home() {
                   AI Agent Builders
                 </span>
               </h1>
-              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 24, fontWeight: 600, fontSize: 17, textAlign: "left", maxWidth: 480 }}>
+              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 24, fontWeight: 600, fontSize: 17, textAlign: "left", maxWidth: 680 }}>
                 Turn customer requests, agent behaviour analytics and competitor signals by domain and use case into a dynamic product roadmap. Built for product managers within AI Agent companies.
               </p>
               <div style={{ marginTop: 32, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
