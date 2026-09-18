@@ -287,14 +287,14 @@ export default function Home() {
         }
 
         @media (max-width: 900px) {
-          .hero-content { padding: 90px 24px 0 !important; max-width: 100% !important; flex-direction: column !important; align-items: flex-start !important; }
+          .hero-content { padding: 90px 24px 0 !important; max-width: 100% !important; flex-direction: column !important; align-items: center !important; }
           .hero-content > div:first-child { width: 100% !important; }
           .hero-snap-wrap { margin-top: 36px !important; border-radius: 10px !important; width: 100% !important; }
         }
         @media (max-width: 640px) {
           /* Hero */
           .hero-card-wrapper { margin: 0 0 16px !important; }
-          .hero-content { padding: 72px 20px 0 !important; flex-direction: column !important; }
+          .hero-content { padding: 72px 20px 0 !important; flex-direction: column !important; align-items: center !important; text-align: center !important; }
           .hero-tagline-text { font-size: 15px !important; }
           .hero-subhead { margin-top: 14px !important; font-size: 15px !important; max-width: 100% !important; }
 
@@ -391,7 +391,7 @@ export default function Home() {
             }}
           >
             {/* LEFT — text + CTA */}
-            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "flex-start", textAlign: "left" }}>
+            <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
               <h1
                 className="text-[32px] sm:text-[38px] md:text-[44px] lg:text-[52px]"
                 style={{ color: "#000000", fontWeight: 700, letterSpacing: "-0.02em", lineHeight: 1.08, margin: 0 }}
@@ -401,7 +401,7 @@ export default function Home() {
                   AI Agent Builders
                 </span>
               </h1>
-              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 24, fontWeight: 600, fontSize: 17, textAlign: "left", maxWidth: 680 }}>
+              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 24, fontWeight: 600, fontSize: 17, textAlign: "center", maxWidth: 680 }}>
                 Turn customer requests, agent behaviour analytics and competitor signals by domain and use case into a dynamic product roadmap. Built for product managers within AI Agent companies.
               </p>
               <div style={{ marginTop: 32, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
