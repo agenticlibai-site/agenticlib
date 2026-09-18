@@ -402,7 +402,7 @@ export default function Home() {
                 </span>
               </h1>
               <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 24, fontWeight: 600, fontSize: 17, textAlign: "left", maxWidth: 480 }}>
-                See what competitors are shipping, what buyers actually care about, and where the market is heading to get an edge on your product feature growth.
+                Turn customer requests, agent behaviour analytics and competitor signals by domain and use case into a dynamic product roadmap. Built for product managers within AI Agent companies.
               </p>
               <div style={{ marginTop: 32, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                 <button
