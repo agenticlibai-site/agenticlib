@@ -228,7 +228,7 @@ export default function EsaiVisibilityCharts({
   const brandColor = (brand: string) => brandColorMap[brand] ?? "#94a3b8";
 
   // ── Aggregate from clusterTrend — locked brands only ──
-  const allDates = [...new Set(clusterTrend.map(r => r.date))].sort();
+  const allDates = [...new Set([...clusterTrend.map(r => r.date), "2026-08-31"])].sort();
 
   const overallByBrand: Record<string, number> = {};
   const overallTrendMap: Record<string, Record<string, number>> = {};
