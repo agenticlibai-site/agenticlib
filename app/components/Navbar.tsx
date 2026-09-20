@@ -72,10 +72,12 @@ export default function Navbar() {
 
           {/* LOGO */}
           <Link href="/" style={{ textDecoration: "none", color: "inherit" }} className="flex items-center gap-2 flex-shrink-0">
-            <img src="/logo.png" alt="FeatureStream logo" className="h-6 w-auto" />
             <div className="flex flex-col leading-none">
-              <span className="text-lg font-semibold tracking-tight">FeatureStream</span>
-              <span style={{ fontSize: 10, fontWeight: 400, color: "#000", opacity: 0.45, marginTop: 1 }}>Formerly AgenticLib</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <img src="/logo.png" alt="FeatureStream logo" className="h-6 w-auto" />
+                <span className="text-lg font-semibold tracking-tight">FeatureStream</span>
+              </div>
+              <span style={{ fontSize: 10, fontWeight: 400, color: "#000", opacity: 0.45, marginTop: 2 }}>Formerly AgenticLib</span>
             </div>
           </Link>
 
