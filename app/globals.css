@@ -208,7 +208,7 @@ body {
 /* ── Product page outer padding wrapper ── */
 .product-outer { padding: 0 32px; }
 
-/* ── Why AgenticLib hero grid (ai-agent-builders) ── */
+/* ── Why FeatureStream hero grid (ai-agent-builders) ── */
 .why-grid {
   display: grid;
   grid-template-columns: minmax(0,1fr) minmax(0,1.05fr);
@@ -244,7 +244,7 @@ body {
   }
 }
 
-/* ── Why AgenticLib — phone: single column, text above, cards below ── */
+/* ── Why FeatureStream — phone: single column, text above, cards below ── */
 @media (max-width: 640px) {
   /* Single-column stack */
   .why-grid {
