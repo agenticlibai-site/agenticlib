@@ -74,8 +74,10 @@ export default function Navbar() {
           <Link href="/" style={{ textDecoration: "none", color: "inherit" }} className="flex items-center gap-2 flex-shrink-0">
             <img src="/logo.png" alt="FeatureStream logo" className="h-6 w-auto" />
             <div className="flex flex-col leading-none">
-              <span className="text-lg font-semibold tracking-tight">FeatureStream</span>
-              <span style={{ fontSize: 9.5, fontWeight: 400, color: "rgba(0,0,0,0.40)", letterSpacing: "0.01em", marginTop: 1.5 }}>formerly AgenticLib</span>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <span className="text-lg font-semibold tracking-tight">FeatureStream</span>
+                <span style={{ fontSize: 9, fontWeight: 600, color: "rgba(124,58,237,0.65)", letterSpacing: "0.06em", textTransform: "uppercase" as const, background: "rgba(124,58,237,0.07)", border: "1px solid rgba(124,58,237,0.18)", borderRadius: 99, padding: "2px 7px", lineHeight: 1, whiteSpace: "nowrap" as const }}>formerly AgenticLib</span>
+              </div>
             </div>
           </Link>
 
