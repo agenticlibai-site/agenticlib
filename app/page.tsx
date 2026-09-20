@@ -736,21 +736,74 @@ export default function Home() {
           </h2>
           <p style={{ fontSize: 16, lineHeight: 1.65, color: "rgba(15,11,30,0.62)", margin: "0 0 40px", maxWidth: "60ch" }}>One permanent record per feature or use case, spanning its entire life. Every entry links back to the original evidence that justified it — so months later a PM can answer &ldquo;why do we have this feature?&rdquo; without digging through old notes.</p>
 
-          {/* Lifecycle strip */}
-          <div style={{ display: "flex", alignItems: "center", gap: 0, marginBottom: 48, overflowX: "auto" as const, paddingBottom: 4 }}>
-            {(["Idea", "Evidence", "PRD", "In development", "Shipped", "Fixed", "Evaluated"] as string[]).map((stage, i, arr) => (
-              <div key={stage} style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
-                <div style={{
-                  padding: "7px 16px", borderRadius: 9999, fontSize: 13, fontWeight: 600,
-                  background: i === 0 ? "linear-gradient(135deg,#7C3AED,#C2186A)" : i === arr.length - 1 ? "linear-gradient(135deg,#7C3AED,#C2186A)" : "rgba(124,58,237,0.08)",
-                  color: (i === 0 || i === arr.length - 1) ? "#fff" : "#5B21B6",
-                  border: (i === 0 || i === arr.length - 1) ? "none" : "1px solid rgba(124,58,237,0.2)",
-                }}>
-                  {stage}
+          {/* Flow visual: inputs → Product Catalogue */}
+          <div style={{ display: "flex", alignItems: "center", gap: 0, marginBottom: 48, background: "#fff", borderRadius: 20, padding: "28px 28px", boxShadow: "0 2px 16px rgba(0,0,0,0.06)", border: "1px solid rgba(124,58,237,0.10)", overflowX: "auto" as const }}>
+
+            {/* Left: input sources */}
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 12, flexShrink: 0, width: 230 }}>
+              {([
+                {
+                  label: "Customer requests",
+                  icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" stroke="#7C3AED" strokeWidth="1.8" strokeLinejoin="round"/></svg>,
+                },
+                {
+                  label: "Lost deal notes",
+                  icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" stroke="#7C3AED" strokeWidth="1.8" strokeLinejoin="round"/><path d="M14 2v6h6M9 15l2 2 4-4" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+                },
+                {
+                  label: "Observability evals",
+                  icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><polyline points="22,12 18,12 15,21 9,3 6,12 2,12" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+                },
+                {
+                  label: "Prompt/version changelogs",
+                  icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#7C3AED" strokeWidth="1.8"/><polyline points="12,6 12,12 16,14" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round"/></svg>,
+                },
+              ] as { label: string; icon: React.ReactNode }[]).map(({ label, icon }) => (
+                <div key={label} style={{ display: "flex", alignItems: "center", gap: 10, padding: "11px 14px", background: "rgba(124,58,237,0.05)", borderRadius: 12, border: "1px solid rgba(124,58,237,0.14)" }}>
+                  <div style={{ width: 36, height: 36, borderRadius: 10, background: "rgba(124,58,237,0.10)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                    {icon}
+                  </div>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: "#0F0B1E", lineHeight: 1.3 }}>{label}</span>
                 </div>
-                {i < arr.length - 1 && <div style={{ width: 28, height: 1, background: "rgba(124,58,237,0.25)", flexShrink: 0 }} />}
+              ))}
+            </div>
+
+            {/* Middle: SVG connector lines */}
+            <svg viewBox="0 0 180 276" style={{ flex: 1, height: 276, minWidth: 60 }} preserveAspectRatio="none">
+              <defs>
+                <linearGradient id="flow-line" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0" stopColor="#7C3AED" stopOpacity="0.35"/>
+                  <stop offset="1" stopColor="#C2186A" stopOpacity="0.9"/>
+                </linearGradient>
+              </defs>
+              <path d="M0,30 C90,30 90,138 180,138"   fill="none" stroke="url(#flow-line)" strokeWidth="2" strokeDasharray="6 3"/>
+              <path d="M0,102 C90,102 90,138 180,138"  fill="none" stroke="url(#flow-line)" strokeWidth="2" strokeDasharray="6 3"/>
+              <path d="M0,174 C90,174 90,138 180,138"  fill="none" stroke="url(#flow-line)" strokeWidth="2" strokeDasharray="6 3"/>
+              <path d="M0,246 C90,246 90,138 180,138"  fill="none" stroke="url(#flow-line)" strokeWidth="2" strokeDasharray="6 3"/>
+              <circle cx="0" cy="30"  r="4" fill="#7C3AED" opacity="0.5"/>
+              <circle cx="0" cy="102" r="4" fill="#7C3AED" opacity="0.5"/>
+              <circle cx="0" cy="174" r="4" fill="#7C3AED" opacity="0.5"/>
+              <circle cx="0" cy="246" r="4" fill="#7C3AED" opacity="0.5"/>
+              <polygon points="172,133 180,138 172,143" fill="#C2186A"/>
+            </svg>
+
+            {/* Right: Product Catalogue destination */}
+            <div style={{ flexShrink: 0, width: 220, background: "linear-gradient(150deg,#7C3AED 0%,#9B5DE5 52%,#5E6CE8 100%)", borderRadius: 18, padding: "22px 20px", boxShadow: "0 12px 32px rgba(124,58,237,0.35)" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
+                <div style={{ width: 38, height: 38, borderRadius: 10, background: "rgba(255,255,255,0.22)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  <img src="/logo.png" alt="FeatureStream" style={{ width: 26, height: 26, objectFit: "contain" }} />
+                </div>
+                <div style={{ color: "#fff", fontWeight: 700, fontSize: 15, lineHeight: 1.2 }}>Product<br/>Catalogue</div>
               </div>
-            ))}
+              <div style={{ display: "flex", flexDirection: "column" as const, gap: 7 }}>
+                {(["Idea", "Evidence", "PRD", "In development", "Shipped", "Fixed", "Evaluated"] as string[]).map((stage, i, arr) => (
+                  <div key={stage} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 7, height: 7, borderRadius: "50%", background: (i === 0 || i === arr.length - 1) ? "#fff" : "rgba(255,255,255,0.45)", flexShrink: 0 }} />
+                    <span style={{ fontSize: 12.5, fontWeight: (i === 0 || i === arr.length - 1) ? 700 : 400, color: (i === 0 || i === arr.length - 1) ? "#fff" : "rgba(255,255,255,0.68)" }}>{stage}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Three attributes */}
