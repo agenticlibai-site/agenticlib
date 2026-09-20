@@ -791,7 +791,7 @@ export default function Home() {
             <div style={{ flexShrink: 0, width: 220, background: "linear-gradient(150deg,#7C3AED 0%,#9B5DE5 52%,#5E6CE8 100%)", borderRadius: 18, padding: "22px 20px", boxShadow: "0 12px 32px rgba(124,58,237,0.35)" }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 18 }}>
                 <div style={{ width: 38, height: 38, borderRadius: 10, background: "rgba(255,255,255,0.22)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-                  <img src="/logo.png" alt="FeatureStream" style={{ width: 26, height: 26, objectFit: "contain" }} />
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="5" rx="9" ry="3" stroke="white" strokeWidth="1.8"/><path d="M3 5v5c0 1.66 4.03 3 9 3s9-1.34 9-3V5" stroke="white" strokeWidth="1.8"/><path d="M3 10v5c0 1.66 4.03 3 9 3s9-1.34 9-3v-5" stroke="white" strokeWidth="1.8"/><path d="M3 15v4c0 1.66 4.03 3 9 3s9-1.34 9-3v-4" stroke="white" strokeWidth="1.8"/></svg>
                 </div>
                 <div style={{ color: "#fff", fontWeight: 700, fontSize: 15, lineHeight: 1.2 }}>Product<br/>Catalogue</div>
               </div>
