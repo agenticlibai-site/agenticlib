@@ -488,12 +488,12 @@ export default function Home() {
             <div>
               <span style={{ display: "inline-block", border: "1px solid rgba(124,58,237,.30)", background: "rgba(255,255,255,.45)", color: "#000000", fontSize: 13.5, fontWeight: 600, letterSpacing: ".01em", padding: "7px 15px", borderRadius: 9 }}>Why FeatureStream</span>
               <h2 style={{ fontSize: "clamp(24px,2.6vw,36px)", fontWeight: 600, lineHeight: 1.2, letterSpacing: "-.025em", color: "#000000", margin: "26px 0 0", maxWidth: "26ch" }}>
-                {"An entirely context-aware "}
-                <span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 45%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>product harness for agentic workflows</span>
-                {" by vertical."}
+                {"One connected loop — "}
+                <span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 45%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>idea to impact on a single catalogue record</span>
+                {"."}
               </h2>
-              <p style={{ fontSize: 17, lineHeight: 1.62, color: "#000000", margin: "22px 0 0", maxWidth: "52ch" }}>FeatureStream combines customers requests, lost deal notes, support tickets, agent behaviour, user analytics as well as competitor signals by use case to advise on product feature opportunities ranked by impact and use case cluster expansions.</p>
-              <p style={{ fontSize: 20, fontWeight: 700, margin: "20px 0 0", backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 55%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>Built to streamline the process involved in creating an agentic product.</p>
+              <p style={{ fontSize: 17, lineHeight: 1.62, color: "#000000", margin: "22px 0 0", maxWidth: "52ch" }}>FeatureStream is not a roadmap tool bolted onto an analytics dashboard. It is a Product Catalogue that spans the full lifecycle of every feature — from the first customer signal that justified it, through the PRD and build, to the post-launch eval that proves it worked. The roadmap is a filtered view of the catalogue, not a separate database.</p>
+              <p style={{ fontSize: 20, fontWeight: 700, margin: "20px 0 0", backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 55%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>Built for AI agent builders — the only PMs who need to manage product and agent behaviour in the same place.</p>
             </div>
             <div className="why-visual" style={{ position: "relative", height: 480, display: "flex", alignItems: "center", gap: 0, width: "100%", minWidth: 0 }}>
               <div style={{ position: "absolute", width: "82%", height: "60%", left: "50%", top: "50%", transform: "translate(-50%,-50%)", background: "radial-gradient(circle,rgba(124,58,237,.25),transparent 70%)", filter: "blur(16px)" }}></div>
@@ -527,7 +527,7 @@ export default function Home() {
                   <span style={{ width: 44, height: 44, flex: "none", borderRadius: 13, background: "rgba(124,58,237,.12)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
                     <svg width="23" height="23" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="hp-ic2" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#5E6CE8"/></linearGradient></defs><rect x="3" y="11" width="4.4" height="9" rx="1.6" fill="url(#hp-ic2)"/><rect x="9.8" y="5" width="4.4" height="15" rx="1.6" fill="url(#hp-ic2)"/><rect x="16.6" y="8.5" width="4.4" height="11.5" rx="1.6" fill="url(#hp-ic2)"/></svg>
                   </span>
-                  <div style={{ fontWeight: 700, fontSize: 14.5, color: "#000000", letterSpacing: "-.01em" }}>Reasoning insights</div>
+                  <div style={{ fontWeight: 700, fontSize: 14.5, color: "#000000", letterSpacing: "-.01em" }}>Evidence-weighted reasoning</div>
                 </div>
                 {/* Product Feature Intelligence */}
                 <div style={{ display: "flex", alignItems: "center", gap: 13, background: "rgba(255,255,255,.58)", backdropFilter: "blur(20px) saturate(150%)", WebkitBackdropFilter: "blur(20px) saturate(150%)", border: "1px solid rgba(255,255,255,.85)", borderRadius: 16, padding: "13px 16px 13px 13px", boxShadow: "0 10px 26px rgba(124,58,237,.12)" }}>
@@ -541,7 +541,7 @@ export default function Home() {
                   <span style={{ width: 44, height: 44, flex: "none", borderRadius: 13, background: "rgba(124,58,237,.12)", display: "inline-flex", alignItems: "center", justifyContent: "center" }}>
                     <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="url(#hp-ic4)" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><defs><linearGradient id="hp-ic4" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stopColor="#7C3AED"/><stop offset="1" stopColor="#9B5DE5"/></linearGradient></defs><path d="M12 2a7 7 0 0 1 5.5 11.3c-.8 1-1.5 2-1.5 2.7v.5a1 1 0 0 1-1 1h-6a1 1 0 0 1-1-1v-.5c0-.7-.7-1.7-1.5-2.7A7 7 0 0 1 12 2z"/><path d="M9.5 20.5h5"/><path d="M10.5 22.5h3"/></svg>
                   </span>
-                  <div style={{ fontWeight: 700, fontSize: 14.5, color: "#000000", letterSpacing: "-.01em" }}>Integration with observability platforms</div>
+                  <div style={{ fontWeight: 700, fontSize: 14.5, color: "#000000", letterSpacing: "-.01em" }}>Observability integrations</div>
                 </div>
               </div>
             </div>
@@ -726,6 +726,193 @@ export default function Home() {
       </section>
 
 
+      {/* ── Product Catalogue ───────────────────────────────────────────────── */}
+      <section style={{ padding: "72px 24px 80px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 980, margin: "0 auto" }}>
+          <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", marginBottom: 12 }}>Core architecture</p>
+          <h2 style={{ fontSize: "clamp(26px,3vw,38px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.12, color: "#0F0B1E", margin: "0 0 12px", maxWidth: "30ch" }}>
+            The Product Catalogue is the{" "}
+            <span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 45%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>central hub</span>
+          </h2>
+          <p style={{ fontSize: 16, lineHeight: 1.65, color: "rgba(15,11,30,0.62)", margin: "0 0 40px", maxWidth: "60ch" }}>One permanent record per feature or use case, spanning its entire life. Every entry links back to the original evidence that justified it — so months later a PM can answer &ldquo;why do we have this feature?&rdquo; without digging through old notes.</p>
+
+          {/* Lifecycle strip */}
+          <div style={{ display: "flex", alignItems: "center", gap: 0, marginBottom: 48, overflowX: "auto" as const, paddingBottom: 4 }}>
+            {(["Idea", "Evidence", "PRD", "In development", "Shipped", "Fixed", "Evaluated"] as string[]).map((stage, i, arr) => (
+              <div key={stage} style={{ display: "flex", alignItems: "center", flexShrink: 0 }}>
+                <div style={{
+                  padding: "7px 16px", borderRadius: 9999, fontSize: 13, fontWeight: 600,
+                  background: i === 0 ? "linear-gradient(135deg,#7C3AED,#C2186A)" : i === arr.length - 1 ? "linear-gradient(135deg,#7C3AED,#C2186A)" : "rgba(124,58,237,0.08)",
+                  color: (i === 0 || i === arr.length - 1) ? "#fff" : "#5B21B6",
+                  border: (i === 0 || i === arr.length - 1) ? "none" : "1px solid rgba(124,58,237,0.2)",
+                }}>
+                  {stage}
+                </div>
+                {i < arr.length - 1 && <div style={{ width: 28, height: 1, background: "rgba(124,58,237,0.25)", flexShrink: 0 }} />}
+              </div>
+            ))}
+          </div>
+
+          {/* Three attributes */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 16, marginBottom: 48 }}>
+            {([
+              {
+                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L3 7v10l9 5 9-5V7L12 2z" stroke="#7C3AED" strokeWidth="1.8" strokeLinejoin="round"/><path d="M3 7l9 5 9-5" stroke="#7C3AED" strokeWidth="1.8"/><path d="M12 12v10" stroke="#7C3AED" strokeWidth="1.8"/></svg>,
+                title: "Revenue & time impact tags",
+                desc: "Every entry carries a predicted impact tag. Once shipped, a realised-outcome tag closes the loop — turning estimates into a credible, compounding track record.",
+              },
+              {
+                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="2" stroke="#7C3AED" strokeWidth="1.8"/><rect x="13" y="3" width="8" height="8" rx="2" stroke="#7C3AED" strokeWidth="1.8"/><rect x="3" y="13" width="8" height="8" rx="2" stroke="#7C3AED" strokeWidth="1.8"/><rect x="13" y="13" width="8" height="8" rx="2" stroke="#7C3AED" strokeWidth="1.8"/></svg>,
+                title: "Use case clustering",
+                desc: "Entries are tagged by status (Jira WIP / backlog / planned / shipped) and by use case cluster, so a PM can see full coverage of any use case at a glance.",
+              },
+              {
+                icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M14 3h7v7" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><path d="M21 3L12 12" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round"/><path d="M10 5H5a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2v-5" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>,
+                title: "Templated agentic workflows",
+                desc: "Agentic workflow templates are stored in the catalogue for reuse across features — so patterns that work get built on rather than rebuilt from scratch.",
+              },
+            ] as { icon: React.ReactNode; title: string; desc: string }[]).map(({ icon, title, desc }) => (
+              <div key={title} style={{ background: "#fff", borderRadius: 16, padding: "22px 22px 24px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", border: "1px solid rgba(124,58,237,0.10)" }}>
+                <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(124,58,237,0.08)", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 14 }}>{icon}</div>
+                <div style={{ fontSize: 15, fontWeight: 700, color: "#0F0B1E", marginBottom: 7 }}>{title}</div>
+                <div style={{ fontSize: 14, lineHeight: 1.6, color: "rgba(15,11,30,0.58)" }}>{desc}</div>
+              </div>
+            ))}
+          </div>
+
+          {/* Documents grid */}
+          <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", marginBottom: 20 }}>Documents FeatureStream generates</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(220px,1fr))", gap: 12 }}>
+            {([
+              { label: "PRD", note: "Includes agentic workflow flowchart" },
+              { label: "Agentic fix spec", note: "Pointed at one diagnosed issue with root-cause and suggested fix" },
+              { label: "Implementation spec", note: "With flowchart diagrams" },
+              { label: "UI / design review", note: "Turned into rough wireframes" },
+              { label: "Release notes", note: "Framed around agent behaviour outcomes, not just 'we shipped X'" },
+              { label: "Post-launch eval spec", note: "Compares prompt/version changes against feedback and revenue outcomes" },
+              { label: "Prompt / version changelog", note: "Timeline of every prompt change paired with before/after metrics" },
+            ] as { label: string; note: string }[]).map(({ label, note }) => (
+              <div key={label} style={{ background: "linear-gradient(150deg,#F3EEFE,#EDE6FD)", borderRadius: 12, padding: "16px 18px", border: "1px solid rgba(124,58,237,0.12)" }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#4C1D95", marginBottom: 5 }}>{label}</div>
+                <div style={{ fontSize: 12.5, lineHeight: 1.5, color: "rgba(76,29,149,0.65)" }}>{note}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Integrations + PM Copilot ────────────────────────────────────────── */}
+      <section style={{ padding: "72px 24px 80px", background: "linear-gradient(150deg,#EEE8FD 0%,#E8E5FD 55%,#F0E9FD 100%)", fontFamily: "var(--font-schibsted), system-ui, sans-serif", margin: "0 32px", borderRadius: 24 }}>
+        <div style={{ maxWidth: 980, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 64 }}>
+
+          {/* Left — Integrations */}
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", marginBottom: 12 }}>What connects in</p>
+            <h3 style={{ fontSize: "clamp(22px,2.4vw,30px)", fontWeight: 700, letterSpacing: "-0.025em", lineHeight: 1.2, color: "#0F0B1E", margin: "0 0 24px" }}>FeatureStream works with the tools you already use</h3>
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 10 }}>
+              {([
+                { label: "Customer requests", sub: "Feature requests and product feedback" },
+                { label: "Lost-deal notes", sub: "Win/loss context from sales and CRM" },
+                { label: "Support tickets", sub: "Bug reports and friction signals" },
+                { label: "Competitor signals", sub: "By use case cluster, tracked continuously" },
+                { label: "Jira", sub: "Status sync — WIP, backlog, planned, shipped" },
+                { label: "Local KAG + architecture context", sub: "Your stack, your agent's design decisions" },
+                { label: "Observability platforms", sub: "Langfuse first — traces, latency, eval scores, completion rate, hallucination signals" },
+              ] as { label: string; sub: string }[]).map(({ label, sub }) => (
+                <div key={label} style={{ display: "flex", alignItems: "flex-start", gap: 12, background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", borderRadius: 12, padding: "12px 16px", border: "1px solid rgba(255,255,255,0.8)" }}>
+                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: "linear-gradient(135deg,#7C3AED,#C2186A)", flexShrink: 0, marginTop: 6 }} />
+                  <div>
+                    <div style={{ fontSize: 14, fontWeight: 700, color: "#0F0B1E" }}>{label}</div>
+                    <div style={{ fontSize: 12.5, color: "rgba(15,11,30,0.55)", marginTop: 2 }}>{sub}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Right — PM Copilot */}
+          <div>
+            <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", marginBottom: 12 }}>The PM copilot</p>
+            <h3 style={{ fontSize: "clamp(22px,2.4vw,30px)", fontWeight: 700, letterSpacing: "-0.025em", lineHeight: 1.2, color: "#0F0B1E", margin: "0 0 12px" }}>A conversational layer on top of the catalogue</h3>
+            <p style={{ fontSize: 15, lineHeight: 1.65, color: "rgba(15,11,30,0.62)", margin: "0 0 28px" }}>Brainstorm and refine an opportunity before committing it to the roadmap. The copilot draws on three sources to give you sharper revenue and impact estimates — not generic priority scores.</p>
+            <div style={{ display: "flex", flexDirection: "column" as const, gap: 12 }}>
+              {([
+                {
+                  n: "01",
+                  title: "Product Catalogue (RAG)",
+                  desc: "Local retrieval over your own catalogue, tagged with realised outcomes — so every suggestion is grounded in what actually worked.",
+                },
+                {
+                  n: "02",
+                  title: "Architecture context (KAG)",
+                  desc: "Your agent's design decisions and technical constraints, so recommendations fit what you're actually building.",
+                },
+                {
+                  n: "03",
+                  title: "Public market signals",
+                  desc: "Competitor feature launches and use-case coverage, weighted by evidence count — not opinion.",
+                },
+              ] as { n: string; title: string; desc: string }[]).map(({ n, title, desc }) => (
+                <div key={n} style={{ background: "rgba(255,255,255,0.55)", backdropFilter: "blur(12px)", borderRadius: 14, padding: "16px 18px", border: "1px solid rgba(255,255,255,0.8)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 6 }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, color: "#7C3AED", fontFamily: "var(--font-space-mono), monospace" }}>{n}</span>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: "#0F0B1E" }}>{title}</span>
+                  </div>
+                  <div style={{ fontSize: 13, lineHeight: 1.6, color: "rgba(15,11,30,0.58)" }}>{desc}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ marginTop: 24, padding: "14px 18px", borderRadius: 12, background: "rgba(124,58,237,0.07)", border: "1px solid rgba(124,58,237,0.15)" }}>
+              <p style={{ fontSize: 13, color: "#4C1D95", margin: 0, lineHeight: 1.6 }}>
+                <strong>Note:</strong> FeatureStream surfaces historical and current context today. Predictive forecasting (what will happen) is a roadmap item, not a current capability.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── The honest differentiation ──────────────────────────────────────── */}
+      <section style={{ padding: "72px 24px 80px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 980, margin: "0 auto" }}>
+          <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", marginBottom: 12 }}>What makes FeatureStream different</p>
+          <h2 style={{ fontSize: "clamp(26px,3vw,38px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.12, color: "#0F0B1E", margin: "0 0 12px", maxWidth: "36ch" }}>
+            Not defensible because of one piece of technology —{" "}
+            <span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 45%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>defensible because of the loop</span>
+          </h2>
+          <p style={{ fontSize: 16, lineHeight: 1.65, color: "rgba(15,11,30,0.62)", margin: "0 0 40px", maxWidth: "62ch" }}>Competitors have pieces of this. Amplitude Agent Analytics, Langfuse, Productboard, and Squad each do parts well. Nobody has the full connected loop — assembled for AI agent builders specifically.</p>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 16 }}>
+            {([
+              {
+                rank: "Primary",
+                title: "The full connected loop",
+                desc: "Diagnosis (agent traces) → evidence (customer signals) → decision (roadmap) → build (PRD/fix spec) → ship (Jira + release notes) → re-evaluate (post-launch eval feeding back as new evidence). All on one catalogue record.",
+              },
+              {
+                rank: "Primary",
+                title: "Business-value framing",
+                desc: "Every recommendation is tagged with revenue and time impact in the customer's own language — not a generic priority score. Speaking to how AI agent builders actually compete.",
+              },
+              {
+                rank: "Compounding",
+                title: "Cross-customer compounding",
+                desc: "As more customers in the same vertical join, the shared taxonomy and evidence-weighting sharpens for everyone. This is the structural long-term advantage — but it requires real customer density to kick in.",
+              },
+              {
+                rank: "Foundation",
+                title: "Design-partner depth",
+                desc: "Built through direct, ongoing collaboration with real AI agent builders shaping the product — not inferred from surveys or analyst reports.",
+              },
+            ] as { rank: string; title: string; desc: string }[]).map(({ rank, title, desc }) => (
+              <div key={title} style={{ background: "#fff", borderRadius: 16, padding: "22px 24px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", border: "1px solid rgba(124,58,237,0.10)", borderLeft: "3px solid #7C3AED" }}>
+                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#7C3AED", marginBottom: 8 }}>{rank}</div>
+                <div style={{ fontSize: 16, fontWeight: 700, color: "#0F0B1E", marginBottom: 8 }}>{title}</div>
+                <div style={{ fontSize: 14, lineHeight: 1.65, color: "rgba(15,11,30,0.6)" }}>{desc}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── FAQ ──────────────────────────────────────────────────────── */}
       <section style={{ padding: "80px 24px 88px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
@@ -737,28 +924,28 @@ export default function Home() {
             {([
               {
                 q: "What is FeatureStream?",
-                a: "FeatureStream is a product management platform for AI agent builders that combines market insights, buyer intent and competitor signals to advise on product feature roadmap decisions.",
+                a: "FeatureStream is the Product Management OS for AI agent builders. At its core is a Product Catalogue — one permanent record per feature or use case, spanning the full lifecycle from the first customer signal that justified it, through the PRD and build, to the post-launch eval that proves it worked. The roadmap is a filtered view of the catalogue, not a separate database.",
               },
               {
                 q: "What problem does FeatureStream solve?",
-                a: "Most AI agent builders are making product feature decisions without real visibility into what competitors are shipping, which use cases they're winning or losing in, or what buyers are actually comparing before they make contact. Piecing that together manually from lost-deal notes, Slack screenshots, and customer calls is slow, manual, and almost no one actually does it consistently. FeatureStream solves this through product and marketing intelligence.",
+                a: "AI agent PMs are stitching together context from lost-deal notes, support tickets, Jira, agent traces, and competitor signals across separate tools — then making roadmap calls without a single source of truth. Months later, nobody can answer 'why do we have this feature?' without digging through old Slack threads. FeatureStream connects those signals into one catalogue record, so the evidence behind every decision is permanently attached to it.",
               },
               {
-                q: "What is Sage AI?",
-                a: "Sage AI is FeatureStream's platform for AI agent builders. Pick your business domain and instantly see the top competitor brands, filterable by use case, with in-depth product feature scores across security, technical capability, and pricing, each backed by evidence from Claude and GPT. Sage AI currently gives builders insight into their competitive landscape and market insights. Live competitor shipment feeds, benchmarking analysis, and buyer-intent signals are coming next.",
+                q: "What does FeatureStream generate?",
+                a: "Every output is sourced from the same catalogue record: a PRD with agentic workflow flowchart, implementation specs with diagrams, UI/design review wireframes, an agentic fix spec (narrower than a PRD — pointed at one diagnosed issue with root-cause and suggested fix), release notes framed around agent behaviour outcomes, a post-launch evaluation spec that feeds back into the catalogue as a realised-outcome tag, and a prompt/version changelog pairing every change with before-and-after metrics.",
               },
               {
                 q: "Is my business domain covered?",
-                a: "We currently cover three types of domains. Vertical domains are industry-specific - think skincare, insurance, or legal. Horizontal domains are cross-industry functions like sales, marketing, or HR. Tech domains are capability-specific categories like AI video creation or voice AI. If your domain isn't listed yet, you can request it - we'll build a customised report for your domain.",
+                a: "We currently cover vertical domains (skincare, insurance, legal, construction), horizontal functions (sales, marketing), and tech capability domains. If your domain isn't listed, you can request it — we'll build a report for your space.",
                 hasRequest: true,
               },
               {
-                q: "What do the customised reports cover?",
-                a: "Every report covers product feature scores across security, integrations, pricing, and capability, brand and use case benchmarking to show you who owns each buying moment and why, sentiment analysis of how LLMs actually describe brands, and an LLM visibility playbook with citations and data collected from Parallel AI with actionable steps on exactly how to get LLM visible. On top of that, each report calls out the top 3 product features you should build next: specific, evidence-backed recommendations to close the gap on competitors and win the use cases your buyers care about.",
+                q: "What observability platforms does FeatureStream connect to?",
+                a: "Langfuse is the first integration — covering agent traces, latency, token cost, completion rate, eval scores, and hallucination signals. Additional observability platforms are on the roadmap. FeatureStream uses these signals to surface agentic fix specs: when step 3 has a 40% drop-off, it diagnoses the likely cause and generates a pointed spec for the fix rather than a generic bug report.",
               },
               {
                 q: "Where is FeatureStream headed?",
-                a: "We're building toward fully automating the manual process of piecing together messy customer, market, and competitor signals, through integrations with the tools builders already use, like Granola for meeting notes and CRMs like Attio or HubSpot where lost-deal context actually lives. The idea is to connect a builder's own product context directly with our taxonomy of product features, so FeatureStream can continuously advise on what to build next and which use case clusters to expand into. We're also working on doing the content fix ourselves, so builders don't just get told what to publish, we actually do it for them to get them LLM-visible in the areas where their buyers are already asking.",
+                a: "We're deepening the connected loop — tighter Jira sync, broader observability coverage, and cross-customer evidence compounding within verticals so that as more AI agent builders in the same space use FeatureStream, the taxonomy and evidence-weighting gets sharper for everyone. Predictive forecasting (what will happen, not what has happened) is a longer-term roadmap item and not something we're claiming today.",
               },
             ] as { q: string; a: string; hasRequest?: boolean }[]).map(({ q, a, hasRequest }, i) => (
               <div key={i} style={{ borderTop: i === 0 ? "1px solid rgba(124,58,237,0.15)" : undefined, borderBottom: "1px solid rgba(124,58,237,0.15)" }}>
