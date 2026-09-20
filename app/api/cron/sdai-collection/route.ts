@@ -124,7 +124,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — SDAI Collection failed (${model}, ${today})`,
+        subject: `[FeatureStream] ALERT — SDAI Collection failed (${model}, ${today})`,
         html: `<h2>SDAI Brand Coverage — Collection Failures</h2><p>Model: ${model} | Date: ${today} | Succeeded: ${succeeded}/${expected} | Failed: ${failed}</p>`,
       }).catch(() => {});
     }

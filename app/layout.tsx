@@ -44,8 +44,8 @@ const ebGaramond = EB_Garamond({
 export const metadata: Metadata = {
   metadataBase: new URL("https://agenticlib.com"),
   title: {
-    default: "AgenticLib — Context-Aware Product Management for AI Agent Builders",
-    template: "%s | AgenticLib",
+    default: "FeatureStream — Context-Aware Product Management for AI Agent Builders",
+    template: "%s | FeatureStream",
   },
   description:
     "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
@@ -57,12 +57,12 @@ export const metadata: Metadata = {
     "AI agent benchmarking",
     "track brand visibility in AI search",
   ],
-  authors: [{ name: "AgenticLib" }],
-  creator: "AgenticLib",
+  authors: [{ name: "FeatureStream" }],
+  creator: "FeatureStream",
   openGraph: {
     type: "website",
-    siteName: "AgenticLib",
-    title: "AgenticLib — Context-Aware Product Management for AI Agent Builders",
+    siteName: "FeatureStream",
+    title: "FeatureStream — Context-Aware Product Management for AI Agent Builders",
     description:
       "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
     url: "https://agenticlib.com",
@@ -71,13 +71,13 @@ export const metadata: Metadata = {
         url: "/recommendations-cover.png",
         width: 1200,
         height: 630,
-        alt: "AgenticLib — Context-Aware Product Management for AI Agent Builders",
+        alt: "FeatureStream — Context-Aware Product Management for AI Agent Builders",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AgenticLib — Context-Aware Product Management for AI Agent Builders",
+    title: "FeatureStream — Context-Aware Product Management for AI Agent Builders",
     description:
       "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
     images: ["/recommendations-cover.png"],
@@ -109,10 +109,10 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Organization",
-            "name": "AgenticLib",
+            "name": "FeatureStream",
             "url": "https://agenticlib.com",
             "logo": "https://agenticlib.com/logo.png",
-            "description": "AgenticLib is the product management platform for AI agent builders. Track LLM search visibility, benchmark features against competitors, and turn gaps into a roadmap.",
+            "description": "FeatureStream is the product management platform for AI agent builders. Track LLM search visibility, benchmark features against competitors, and turn gaps into a roadmap.",
             "sameAs": [],
             "contactPoint": { "@type": "ContactPoint", "contactType": "customer support", "email": "hello@agenticlib.com" },
           }) }}

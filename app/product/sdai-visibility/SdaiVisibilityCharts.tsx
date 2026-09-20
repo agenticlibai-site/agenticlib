@@ -1676,7 +1676,7 @@ export default function SdaiVisibilityCharts({
             </p>
           </div>
           <p style={{ fontSize: 11, color: "rgba(0,0,0,0.3)", marginTop: 10, textAlign: "center" as const }}>
-            Research conducted via Parallel.ai · August 2026 · AgenticLib
+            Research conducted via Parallel.ai · August 2026 · FeatureStream
           </p>
         </div>
       </div>

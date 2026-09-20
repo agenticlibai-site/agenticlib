@@ -64,7 +64,7 @@ export async function GET(request: Request) {
         `<tr><td style="padding:4px 12px 4px 0">${r.brand_name}</td><td style="padding:4px 12px 4px 0">${r.bucket_tag}</td><td>${r.drift_reason}</td></tr>`
       ).join("");
       await sendEmail({
-        subject: `[AgenticLib] ALERT — SDAI sentiment drift detected (${weekStart})`,
+        subject: `[FeatureStream] ALERT — SDAI sentiment drift detected (${weekStart})`,
         html: `<h2>SDAI Sentiment Pipeline — Drift Flags</h2>
           <p>Week: ${weekStart} → ${weekEnd} | Timestamp: ${runTimestamp}</p>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -83,7 +83,7 @@ export async function GET(request: Request) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("[cron] sdai-sentiment-aggregate crashed:", message);
     await sendEmail({
-      subject: `[AgenticLib] CRASH — SDAI Sentiment Aggregate (${weekStart ?? "unknown"})`,
+      subject: `[FeatureStream] CRASH — SDAI Sentiment Aggregate (${weekStart ?? "unknown"})`,
       html: `<h2>SDAI Sentiment Aggregate — Crash</h2><p>Timestamp: ${runTimestamp} | Error: ${message}</p>`,
     }).catch(() => {});
     return Response.json({ error: "Internal server error", message }, { status: 500 });

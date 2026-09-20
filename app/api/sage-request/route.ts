@@ -29,8 +29,8 @@ export async function POST(req: NextRequest) {
 
   try {
     await sendEmail({
-      subject:  `[AgenticLib SAGE] New platform request — ${typeLabel}`,
-      fromName: "AgenticLib SAGE",
+      subject:  `[FeatureStream SAGE] New platform request — ${typeLabel}`,
+      fromName: "FeatureStream SAGE",
       to:       "srinidhi.murali@agenticlib.com",
       html: `
         <h2 style="font-family:sans-serif;color:#18181b;margin:0 0 16px;">Platform Request — SAGE</h2>

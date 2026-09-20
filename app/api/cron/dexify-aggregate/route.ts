@@ -141,7 +141,7 @@ export async function GET(request: Request) {
       }).join("");
 
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Dexify Aggregate incomplete (${today})`,
+        subject: `[FeatureStream] ALERT — Dexify Aggregate incomplete (${today})`,
         html: `
           <h2>Dexify Pipeline — Aggregation Health Check</h2>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -169,7 +169,7 @@ export async function GET(request: Request) {
     console.error("[cron] dexify-aggregate crashed:", message);
 
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Dexify Aggregate (${today})`,
+      subject: `[FeatureStream] CRASH — Dexify Aggregate (${today})`,
       html: `
         <h2>Dexify Pipeline — Unhandled Crash</h2>
         <table style="border-collapse:collapse;font-family:monospace">

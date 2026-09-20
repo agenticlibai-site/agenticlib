@@ -18,7 +18,7 @@ export async function POST(req: Request) {
     await sendEmail({
       to:      NOTIFY_TO,
       subject: `New pricing signup — ${planLabel}`,
-      fromName: "AgenticLib",
+      fromName: "FeatureStream",
       html: `
         <h2>New Pricing Sign-up</h2>
         <p><strong>Plan:</strong> ${planLabel}</p>

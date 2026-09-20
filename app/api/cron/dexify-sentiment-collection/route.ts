@@ -315,7 +315,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Dexify Sentiment Collection failed (${model}, ${today})`,
+        subject: `[FeatureStream] ALERT — Dexify Sentiment Collection failed (${model}, ${today})`,
         html: `<h2>Dexify Sentiment Pipeline — Collection Failures</h2>
           <p>Timestamp: ${runTimestamp} | Model: ${model} | Date: ${today}</p>
           <p>Succeeded: ${succeeded} / ${expected} | Failed: ${failed}</p>
@@ -339,7 +339,7 @@ export async function GET(request: Request) {
     const message = err instanceof Error ? err.message : String(err);
     console.error(`[cron] dexify-sentiment-collection crashed (${model}):`, message);
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Dexify Sentiment Collection (${model}, ${today ?? "unknown"})`,
+      subject: `[FeatureStream] CRASH — Dexify Sentiment Collection (${model}, ${today ?? "unknown"})`,
       html: `<h2>Dexify Sentiment Pipeline — Unhandled Crash</h2>
         <p>Model: ${model} | Timestamp: ${runTimestamp} | Error: ${message}</p>`,
     }).catch(() => {});

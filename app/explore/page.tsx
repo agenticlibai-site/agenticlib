@@ -163,7 +163,7 @@ export default function ExplorePage() {
         </main>
 
         <footer className="border-t border-zinc-100 py-8 text-center text-sm text-black/50">
-          <p>© {new Date().getFullYear()} AgenticLib - The AI Agent Discovery Platform</p>
+          <p>© {new Date().getFullYear()} FeatureStream - The AI Agent Discovery Platform</p>
         </footer>
 
       </div>

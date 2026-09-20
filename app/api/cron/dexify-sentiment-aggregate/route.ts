@@ -74,7 +74,7 @@ export async function GET(request: Request) {
         .join("");
 
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Dexify sentiment drift detected (${weekStart})`,
+        subject: `[FeatureStream] ALERT — Dexify sentiment drift detected (${weekStart})`,
         html: `<h2>Dexify Sentiment Pipeline — Drift Flags</h2>
           <p>Week: ${weekStart} → ${weekEnd} | Timestamp: ${runTimestamp}</p>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -101,7 +101,7 @@ export async function GET(request: Request) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("[cron] dexify-sentiment-aggregate crashed:", message);
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Dexify Sentiment Aggregate (week ${weekStart})`,
+      subject: `[FeatureStream] CRASH — Dexify Sentiment Aggregate (week ${weekStart})`,
       html: `<h2>Dexify Sentiment Pipeline — Unhandled Crash</h2>
         <p>Week start: ${weekStart} | Timestamp: ${runTimestamp} | Error: ${message}</p>`,
     }).catch(() => {});

@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Insurance Broker AI Agent Visibility – AgenticLib",
+  title: "Insurance Broker AI Agent Visibility – FeatureStream",
   description:
     "Which AI agent brands appear when LLMs are asked about renewal management, document processing, and claims advocacy for insurance brokers. Updated daily.",
   robots: { index: false, follow: false },

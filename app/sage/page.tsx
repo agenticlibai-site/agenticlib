@@ -103,7 +103,7 @@ const getSageData = unstable_cache(
 );
 
 export const metadata = {
-  title: "Sage — Competitor Intelligence · AgenticLib",
+  title: "Sage — Competitor Intelligence · FeatureStream",
   description: "See the top brands in your domain, compare product feature scores, and find where rivals outrank you.",
 };
 

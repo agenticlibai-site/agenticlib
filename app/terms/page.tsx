@@ -2,8 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms & Conditions - AgenticLib",
-  description: "AgenticLib Terms and Conditions",
+  title: "Terms & Conditions - FeatureStream",
+  description: "FeatureStream Terms and Conditions",
 };
 
 export default function TermsPage() {
@@ -13,7 +13,7 @@ export default function TermsPage() {
       <div className="border-b border-zinc-100 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link href="/" className="text-sm text-black/60 hover:text-black transition">
-            ← Back to AgenticLib
+            ← Back to FeatureStream
           </Link>
           <span className="text-xs text-black/50">Last updated: January 2026</span>
         </div>
@@ -24,14 +24,14 @@ export default function TermsPage() {
         <div>
           <h1 className="text-3xl font-bold text-black mb-3">Terms &amp; Conditions</h1>
           <p>
-            Welcome to AgenticLib. These Terms and Conditions ("Terms") govern your use of our website:{" "}
+            Welcome to FeatureStream. These Terms and Conditions ("Terms") govern your use of our website:{" "}
             <a href="https://www.agenticlib.com" className="text-violet-600 underline underline-offset-2">
               https://www.agenticlib.com
             </a>{" "}
             (the "Site"), and any related products or services (collectively, the "Services").
           </p>
           <p className="mt-3">
-            By accessing or using AgenticLib, you agree to comply with and be bound by these Terms. If you do
+            By accessing or using FeatureStream, you agree to comply with and be bound by these Terms. If you do
             not agree, please do not use our Services.
           </p>
         </div>
@@ -47,19 +47,19 @@ export default function TermsPage() {
             <li>Copy, distribute, or reproduce content without permission</li>
           </ul>
           <p>
-            We reserve the right to suspend or terminate your access to AgenticLib if you violate these Terms.
+            We reserve the right to suspend or terminate your access to FeatureStream if you violate these Terms.
           </p>
         </section>
 
         <section className="space-y-3">
           <h2 className="text-xl font-semibold text-black">2. Intellectual Property</h2>
           <p>
-            All content, design, features, and functionality on AgenticLib — including logos, text, graphics,
-            software, and data — are the intellectual property of AgenticLib and are protected by copyright,
+            All content, design, features, and functionality on FeatureStream — including logos, text, graphics,
+            software, and data — are the intellectual property of FeatureStream and are protected by copyright,
             trademark, and other applicable laws.
           </p>
           <p>
-            You may not use, reproduce, or distribute any content from AgenticLib without prior written consent.
+            You may not use, reproduce, or distribute any content from FeatureStream without prior written consent.
           </p>
         </section>
 
@@ -77,7 +77,7 @@ export default function TermsPage() {
         <section className="space-y-3">
           <h2 className="text-xl font-semibold text-black">4. Third-Party Links</h2>
           <p>
-            AgenticLib may contain links to third-party websites or services. We are not responsible for the
+            FeatureStream may contain links to third-party websites or services. We are not responsible for the
             content, privacy policies, or practices of those third parties. Accessing such links is at your own
             risk.
           </p>
@@ -85,20 +85,20 @@ export default function TermsPage() {
 
         <section className="space-y-3">
           <h2 className="text-xl font-semibold text-black">5. Disclaimers</h2>
-          <p>AgenticLib provides information and listings "as is" and "as available."</p>
+          <p>FeatureStream provides information and listings "as is" and "as available."</p>
           <p>We make no warranties or representations, express or implied, about:</p>
           <ul className="list-disc pl-6 space-y-1">
             <li>The accuracy or reliability of any content</li>
             <li>The completeness or suitability of data provided by AI tools or third parties</li>
             <li>The uninterrupted or error-free operation of the Site</li>
           </ul>
-          <p>Use of AgenticLib is at your own discretion and risk.</p>
+          <p>Use of FeatureStream is at your own discretion and risk.</p>
         </section>
 
         <section className="space-y-3">
           <h2 className="text-xl font-semibold text-black">6. Limitation of Liability</h2>
           <p>
-            To the maximum extent permitted by law, AgenticLib and its affiliates shall not be liable for any
+            To the maximum extent permitted by law, FeatureStream and its affiliates shall not be liable for any
             indirect, incidental, or consequential damages arising from your use of the Site or Services,
             including but not limited to loss of data, profits, or business opportunities.
           </p>
@@ -107,7 +107,7 @@ export default function TermsPage() {
         <section className="space-y-3">
           <h2 className="text-xl font-semibold text-black">7. Indemnification</h2>
           <p>
-            You agree to indemnify and hold harmless AgenticLib, its founders, employees, and affiliates from
+            You agree to indemnify and hold harmless FeatureStream, its founders, employees, and affiliates from
             any claims, losses, or damages resulting from your breach of these Terms or misuse of the Services.
           </p>
         </section>
@@ -148,7 +148,7 @@ export default function TermsPage() {
 
       {/* Footer */}
       <div className="border-t border-zinc-100 px-6 py-6 text-center text-xs text-black/50">
-        © 2026 AgenticLib ·{" "}
+        © 2026 FeatureStream ·{" "}
         <Link href="/privacy" className="hover:text-black transition">
           Privacy Policy
         </Link>

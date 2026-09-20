@@ -151,7 +151,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — SDAI Sentiment Collection failed (${model}, ${today})`,
+        subject: `[FeatureStream] ALERT — SDAI Sentiment Collection failed (${model}, ${today})`,
         html: `<h2>SDAI Sentiment — Failures</h2><p>Model: ${model} | Date: ${today} | Succeeded: ${succeeded}/${expected} | Failed: ${failed}</p>`,
       }).catch(() => {});
     }

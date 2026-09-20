@@ -11,7 +11,7 @@ const FEATURES = [
     iconBg: "linear-gradient(160deg,#F3EEFE,#EDE6FD)",
     Icon: Target,
     title: "Requirements-first matching",
-    body: "AgenticLib starts by understanding what you actually need: your team size, workflow, and goals. It then matches you to the right agent. No browsing, no guesswork.",
+    body: "FeatureStream starts by understanding what you actually need: your team size, workflow, and goals. It then matches you to the right agent. No browsing, no guesswork.",
   },
   {
     num: "02", color: "#5E6CE8",
@@ -38,7 +38,7 @@ const FEATURES = [
     iconBg: "linear-gradient(160deg,#FFF1F4,#FCE4EC)",
     Icon: Database,
     title: "Data-driven architecture",
-    body: "AgenticLib surfaces structured, decision-relevant intelligence. Every agent profile is built around the dimensions that actually matter for your use case.",
+    body: "FeatureStream surfaces structured, decision-relevant intelligence. Every agent profile is built around the dimensions that actually matter for your use case.",
   },
   {
     num: "05", color: "#5E6CE8",
@@ -47,7 +47,7 @@ const FEATURES = [
     iconBg: "linear-gradient(160deg,#EEF0FE,#E5E9FD)",
     Icon: BarChart2,
     title: "Comparison Analytics",
-    body: "See how AI agents are recommended, described, and rated across Claude and GPT-5 in real queries. AgenticLib tracks brand visibility and sentiment so you deploy with confidence.",
+    body: "See how AI agents are recommended, described, and rated across Claude and GPT-5 in real queries. FeatureStream tracks brand visibility and sentiment so you deploy with confidence.",
   },
 ];
 
@@ -173,7 +173,7 @@ export default function RecommendationsPage() {
             {/* Left: copy */}
             <div>
               <span style={{ display: "inline-block", border: "1px solid rgba(124,58,237,0.25)", background: "rgba(255,255,255,0.60)", color: "#6B35CC", fontSize: 13, fontWeight: 600, letterSpacing: "0.01em", padding: "6px 14px", borderRadius: 8, marginBottom: 14 }}>
-                Sage by AgenticLib
+                Sage by FeatureStream
               </span>
 
               <h1 style={{ fontSize: "clamp(36px, 4.2vw, 54px)", fontWeight: 800, letterSpacing: "-0.03em", lineHeight: 1.12, color: "#000000", margin: "0 0 16px" }}>
@@ -208,7 +208,7 @@ export default function RecommendationsPage() {
       <div id="sage-demo" className="product-outer" style={{ maxWidth: 900, margin: "0 auto 56px" }}>
         <div style={{ borderRadius: 24, overflow: "hidden", boxShadow: "0 4px 8px rgba(0,0,0,0.04), 0 20px 60px rgba(124,58,237,0.10)" }}>
           <video
-            src="/AgenticLib demo video.mp4"
+            src="/FeatureStream demo video.mp4"
             controls
             poster="/recommendations-cover.png"
             style={{ width: "100%", display: "block" }}

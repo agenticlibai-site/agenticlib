@@ -91,7 +91,7 @@ export async function GET(request: Request) {
 
     if (flagRate > 30 || errors > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Feature Scoring elevated flags (${today})`,
+        subject: `[FeatureStream] ALERT — Feature Scoring elevated flags (${today})`,
         html: `
           <h2>Feature Scoring Pipeline — Aggregate Results</h2>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -121,7 +121,7 @@ export async function GET(request: Request) {
     console.error("[cron] feature-scoring-aggregate crashed:", message);
 
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Feature Scoring Aggregate (${today})`,
+      subject: `[FeatureStream] CRASH — Feature Scoring Aggregate (${today})`,
       html: `
         <h2>Feature Scoring Pipeline — Unhandled Crash</h2>
         <table style="border-collapse:collapse;font-family:monospace">

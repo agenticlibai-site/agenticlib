@@ -87,7 +87,7 @@ export async function GET(request: Request) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("[cron] hsai-aggregate crashed:", message);
     await sendEmail({
-      subject: `[AgenticLib] CRASH — HSAI Aggregate (${today ?? "unknown"})`,
+      subject: `[FeatureStream] CRASH — HSAI Aggregate (${today ?? "unknown"})`,
       html: `<h2>HSAI Aggregate — Crash</h2><p>Error: ${message}</p>`,
     }).catch(() => {});
     return Response.json({ error: "Internal server error", message }, { status: 500 });

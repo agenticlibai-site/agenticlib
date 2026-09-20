@@ -15,7 +15,7 @@ export async function POST(req: Request) {
     await sendEmail({
       to:      "srinidhi.murali@agenticlib.com",
       subject: `Domain Report Request — ${domain || "Unspecified"}`,
-      fromName: "AgenticLib",
+      fromName: "FeatureStream",
       html: `
         <h2>New Domain Report Request</h2>
         <p><strong>Domain requested:</strong> ${domain || "Not specified"}</p>

@@ -159,7 +159,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Dexify Collection failed (${model}, ${today})`,
+        subject: `[FeatureStream] ALERT — Dexify Collection failed (${model}, ${today})`,
         html: `
           <h2>Dexify Pipeline — Collection Failures</h2>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -189,7 +189,7 @@ export async function GET(request: Request) {
     console.error(`[cron] dexify-collection crashed (${model}):`, message);
 
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Dexify Collection (${model}, ${today})`,
+      subject: `[FeatureStream] CRASH — Dexify Collection (${model}, ${today})`,
       html: `
         <h2>Dexify Pipeline — Unhandled Crash</h2>
         <table style="border-collapse:collapse;font-family:monospace">

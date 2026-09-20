@@ -111,13 +111,13 @@ export default async function SeamlessReportPage() {
         <div style={{ marginTop: 48, borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: 28 }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: "#000", marginBottom: 10 }}>Disclaimer &amp; Terms of Use</p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
-            This report was created by AgenticLib. All feature scores, rankings, and assessments are based on publicly available information at the time of research and represent AgenticLib&apos;s independent evaluation. They are not official ratings, endorsements, or certifications.
+            This report was created by FeatureStream. All feature scores, rankings, and assessments are based on publicly available information at the time of research and represent FeatureStream&apos;s independent evaluation. They are not official ratings, endorsements, or certifications.
           </p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
             Competitive intelligence data is derived from automated queries to Claude Haiku and GPT-4o-mini APIs. Scores reflect model output at specific points in time and may not represent the current state of any brand&apos;s product. This report is intended for the private use of its recipient.
           </p>
           <p style={{ fontSize: 11, color: "#000", marginTop: 14 }}>
-            © {new Date().getFullYear()} AgenticLib. All rights reserved.
+            © {new Date().getFullYear()} FeatureStream. All rights reserved.
           </p>
         </div>
 

@@ -154,7 +154,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — HSAI Sentiment Collection failed (${model}, ${today})`,
+        subject: `[FeatureStream] ALERT — HSAI Sentiment Collection failed (${model}, ${today})`,
         html: `<h2>HSAI Sentiment — Failures</h2><p>Model: ${model} | Date: ${today} | Succeeded: ${succeeded}/${expected} | Failed: ${failed}</p>`,
       }).catch(() => {});
     }

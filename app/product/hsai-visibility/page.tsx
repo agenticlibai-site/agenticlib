@@ -12,7 +12,7 @@ import HsaiVisibilityCharts from "./HsaiVisibilityCharts";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "SimbaStack: Ranger AI Report – AgenticLib",
+  title: "SimbaStack: Ranger AI Report – FeatureStream",
   description:
     "Which hospitality AI agent platforms appear when LLMs are asked about guest communication, concierge automation, and lodge operations. 12 tracked brands, 11 use case clusters, 3 runs per prompt, collected daily.",
 };
@@ -128,16 +128,16 @@ export default async function HsaiVisibilityPage() {
             Disclaimer &amp; Terms of Use
           </p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
-            This report was created by AgenticLib. All rankings and assessments are based on automated queries to publicly accessible large language model APIs (Claude Haiku and GPT-4o-mini) and represent AgenticLib&apos;s independent evaluation. They are not official ratings, endorsements, or certifications.
+            This report was created by FeatureStream. All rankings and assessments are based on automated queries to publicly accessible large language model APIs (Claude Haiku and GPT-4o-mini) and represent FeatureStream&apos;s independent evaluation. They are not official ratings, endorsements, or certifications.
           </p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
             Brand names and trademarks referenced are the property of their respective owners. Scores and rankings reflect LLM knowledge as of the collection period and may differ from current product capabilities.
           </p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7 }}>
-            This report is intended for the private use of its recipient. Redistribution or commercial use without prior written consent of AgenticLib is not permitted.
+            This report is intended for the private use of its recipient. Redistribution or commercial use without prior written consent of FeatureStream is not permitted.
           </p>
           <p style={{ fontSize: 11, color: "#000", marginTop: 14 }}>
-            © {new Date().getFullYear()} AgenticLib. All rights reserved.
+            © {new Date().getFullYear()} FeatureStream. All rights reserved.
           </p>
         </div>
 

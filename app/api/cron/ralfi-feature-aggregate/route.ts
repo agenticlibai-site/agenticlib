@@ -68,7 +68,7 @@ export async function GET(request: Request) {
 
     if (flagRate > 30 || errors > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Ralfi Feature Scoring elevated flags (${today})`,
+        subject: `[FeatureStream] ALERT — Ralfi Feature Scoring elevated flags (${today})`,
         html: `<h2>Ralfi Feature Pipeline — Aggregate Results</h2>
           <p>Timestamp: ${runTimestamp} | Date: ${today}</p>
           <p>Scored: ${scored} | Flagged: ${flagged} (${flagRate}%) | Errors: ${errors}</p>
@@ -85,7 +85,7 @@ export async function GET(request: Request) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("[cron] ralfi-feature-aggregate crashed:", message);
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Ralfi Feature Aggregate (${today ?? "unknown"})`,
+      subject: `[FeatureStream] CRASH — Ralfi Feature Aggregate (${today ?? "unknown"})`,
       html: `<h2>Ralfi Feature Pipeline — Unhandled Crash</h2>
         <p>Timestamp: ${runTimestamp} | Error: ${message}</p>`,
     }).catch(() => {});

@@ -202,7 +202,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Sentiment Collection failed (${model}, ${today})`,
+        subject: `[FeatureStream] ALERT — Sentiment Collection failed (${model}, ${today})`,
         html: `
           <h2>Sentiment Pipeline — Collection Failures</h2>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -232,7 +232,7 @@ export async function GET(request: Request) {
     console.error(`[cron] sentiment-collection crashed (${model}):`, message);
 
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Sentiment Collection (${model}, ${today})`,
+      subject: `[FeatureStream] CRASH — Sentiment Collection (${model}, ${today})`,
       html: `
         <h2>Sentiment Pipeline — Unhandled Crash</h2>
         <table style="border-collapse:collapse;font-family:monospace">

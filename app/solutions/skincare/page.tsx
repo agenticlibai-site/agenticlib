@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Skincare & Beauty AI Agents – AgenticLib",
-  description: "AgenticLib helps skincare and beauty AI agents compete. Track LLM visibility, benchmark personalisation depth and ingredient intelligence against competitors, and understand consumer trust signals before buyers shortlist.",
+  title: "Skincare & Beauty AI Agents – FeatureStream",
+  description: "FeatureStream helps skincare and beauty AI agents compete. Track LLM visibility, benchmark personalisation depth and ingredient intelligence against competitors, and understand consumer trust signals before buyers shortlist.",
   keywords: ["skincare AI agents", "beauty AI tools comparison", "AI skincare personalisation", "LLM visibility beauty AI", "compare skincare AI platforms", "AI agent benchmarking skincare"],
   alternates: { canonical: "https://agenticlib.com/solutions/skincare" },
-  openGraph: { type: "website", siteName: "AgenticLib", title: "Skincare & Beauty AI Agents – AgenticLib", description: "Track your skincare AI agent's visibility in LLM search, benchmark personalisation depth against competitors, and surface where consumers are finding alternatives.", url: "https://agenticlib.com/solutions/skincare", images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "AgenticLib – Skincare AI" }] },
-  twitter: { card: "summary_large_image", title: "Skincare & Beauty AI Agents – AgenticLib", description: "Track your skincare AI agent's visibility in LLM search, benchmark personalisation depth against competitors, and surface where consumers are finding alternatives.", images: ["/recommendations-cover.png"] },
+  openGraph: { type: "website", siteName: "FeatureStream", title: "Skincare & Beauty AI Agents – FeatureStream", description: "Track your skincare AI agent's visibility in LLM search, benchmark personalisation depth against competitors, and surface where consumers are finding alternatives.", url: "https://agenticlib.com/solutions/skincare", images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream – Skincare AI" }] },
+  twitter: { card: "summary_large_image", title: "Skincare & Beauty AI Agents – FeatureStream", description: "Track your skincare AI agent's visibility in LLM search, benchmark personalisation depth against competitors, and surface where consumers are finding alternatives.", images: ["/recommendations-cover.png"] },
 };
 
 const ACCENT = "#C2186A";
@@ -55,7 +55,7 @@ export default function SkincarePage() {
             Product and marketing intelligence<br />
             <span style={{ background: "linear-gradient(135deg, #C2186A 0%, #7C3AED 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>for skincare AI agents</span>
           </h1>
-          <p style={{ fontSize: 18, lineHeight: 1.7, color: "#444", maxWidth: 540, margin: "0 auto 40px" }}>AgenticLib tracks where your product appears when consumers and beauty brands research skincare AI — and benchmarks every feature that drives trust, personalisation, and recommendations.</p>
+          <p style={{ fontSize: 18, lineHeight: 1.7, color: "#444", maxWidth: 540, margin: "0 auto 40px" }}>FeatureStream tracks where your product appears when consumers and beauty brands research skincare AI — and benchmarks every feature that drives trust, personalisation, and recommendations.</p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
             <a href="/#contact" className="btn-primary" style={{ display: "inline-block", padding: "14px 32px", borderRadius: 10, color: "#fff", fontWeight: 600, fontSize: 15, textDecoration: "none" }}>Get Your Visibility Report</a>
             <a href="/#contact" style={{ display: "inline-block", padding: "14px 32px", borderRadius: 10, color: "#C2186A", fontWeight: 600, fontSize: 15, textDecoration: "none", background: "rgba(255,255,255,0.7)", border: "1.5px solid rgba(194,24,106,0.22)", backdropFilter: "blur(8px)" }}>Talk to Us</a>
@@ -67,7 +67,7 @@ export default function SkincarePage() {
       <section style={{ maxWidth: 860, margin: "0 auto", padding: "80px 48px 0" }}>
         <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: ACCENT, marginBottom: 10 }}>How It Works</p>
         <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, letterSpacing: "-0.02em", color: "#0A0A0A", lineHeight: 1.2, marginBottom: 12 }}>Five signals. One roadmap.</h2>
-        <p style={{ fontSize: 15, color: "#555", lineHeight: 1.65, maxWidth: 580, marginBottom: 36 }}>Most AI agent builders find out what buyers wanted after losing the deal. AgenticLib collects five intelligence signals and combines them into a prioritised product roadmap — so you build from evidence, not memory.</p>
+        <p style={{ fontSize: 15, color: "#555", lineHeight: 1.65, maxWidth: 580, marginBottom: 36 }}>Most AI agent builders find out what buyers wanted after losing the deal. FeatureStream collects five intelligence signals and combines them into a prioritised product roadmap — so you build from evidence, not memory.</p>
 
         {/* Three-panel diagram */}
         <div className="signal-diagram" style={{ display: "grid", gridTemplateColumns: "1fr 56px 1fr", alignItems: "stretch", background: "rgba(255,255,255,0.7)", border: "1px solid rgba(0,0,0,0.07)", borderRadius: 18, overflow: "hidden", marginBottom: 44, backdropFilter: "blur(16px)" }}>
@@ -168,7 +168,7 @@ export default function SkincarePage() {
               <h3 style={{ fontSize: 18, fontWeight: 700, color: "#0A0A0A", letterSpacing: "-0.02em", lineHeight: 1.2 }}>What to build next</h3>
             </div>
           </div>
-          <p style={{ fontSize: 14, color: "#666", lineHeight: 1.65, marginBottom: 22, maxWidth: 540 }}>When all five signals point to the same gap, that&apos;s the feature. AgenticLib surfaces the agreement so your roadmap is built on market evidence — not whoever spoke loudest in the last planning call.</p>
+          <p style={{ fontSize: 14, color: "#666", lineHeight: 1.65, marginBottom: 22, maxWidth: 540 }}>When all five signals point to the same gap, that&apos;s the feature. FeatureStream surfaces the agreement so your roadmap is built on market evidence — not whoever spoke loudest in the last planning call.</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {[
               { priority: "01", title: "Ingredient depth and education layer", reason: "42% of B2B losses cite it, customers keep asking for it, and no brand owns it at scale. The largest uncontested gap in the category." },
@@ -192,7 +192,7 @@ export default function SkincarePage() {
         <div style={{ background: "rgba(255,255,255,0.65)", backdropFilter: "blur(24px)", WebkitBackdropFilter: "blur(24px)", border: `1px solid rgba(${A},0.12)`, borderRadius: 20, padding: "44px 44px 48px", boxShadow: `0 4px 32px rgba(${A},0.07), 0 1px 4px rgba(0,0,0,0.04)` }}>
           <p style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.14em", textTransform: "uppercase", color: ACCENT, marginBottom: 12 }}>Product Intelligence</p>
           <h2 style={{ fontSize: "clamp(22px, 3vw, 30px)", fontWeight: 700, letterSpacing: "-0.02em", color: "#0A0A0A", lineHeight: 1.2, marginBottom: 12 }}>What a skincare AI agent needs to win</h2>
-          <p style={{ fontSize: 15, color: "#555", lineHeight: 1.65, maxWidth: 560, marginBottom: 36 }}>AgenticLib tracks these features across every skincare AI agent in the market — benchmarking where your product leads, where it lags, and what your roadmap needs to prioritise.</p>
+          <p style={{ fontSize: 15, color: "#555", lineHeight: 1.65, maxWidth: 560, marginBottom: 36 }}>FeatureStream tracks these features across every skincare AI agent in the market — benchmarking where your product leads, where it lags, and what your roadmap needs to prioritise.</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
             {FEATURES.map((f) => (
               <div key={f.name} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>

@@ -159,7 +159,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Ralfi Collection failed (${model}, ${today})`,
+        subject: `[FeatureStream] ALERT — Ralfi Collection failed (${model}, ${today})`,
         html: `
           <h2>Ralfi Pipeline — Collection Failures</h2>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -189,7 +189,7 @@ export async function GET(request: Request) {
     console.error(`[cron] ralfi-collection crashed (${model}):`, message);
 
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Ralfi Collection (${model}, ${today})`,
+      subject: `[FeatureStream] CRASH — Ralfi Collection (${model}, ${today})`,
       html: `
         <h2>Ralfi Pipeline — Unhandled Crash</h2>
         <table style="border-collapse:collapse;font-family:monospace">

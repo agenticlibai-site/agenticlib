@@ -1087,9 +1087,9 @@ export default function RalfiVisibilityCharts({ dailySummary, weeklySummary, llm
       <div style={{ borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: 20, display: "flex", flexDirection: "column", gap: 6 }}>
         <p style={{ fontSize: 13, fontWeight: 700, color: "#333", margin: 0 }}>Disclaimer &amp; Terms of Use</p>
         <p style={{ fontSize: 12, color: "#555", lineHeight: 1.65, margin: 0, maxWidth: 820 }}>
-          This report was created by AgenticLib. All feature scores, rankings, and assessments are based on publicly available information at the time of research and represent AgenticLib&rsquo;s independent evaluation. Competitive intelligence data is derived from automated queries to Claude Haiku and GPT-4o-mini APIs. This data reflects model output at specific points in time and may not represent the current or future state of any brand&rsquo;s market position.
+          This report was created by FeatureStream. All feature scores, rankings, and assessments are based on publicly available information at the time of research and represent FeatureStream&rsquo;s independent evaluation. Competitive intelligence data is derived from automated queries to Claude Haiku and GPT-4o-mini APIs. This data reflects model output at specific points in time and may not represent the current or future state of any brand&rsquo;s market position.
         </p>
-        <p style={{ fontSize: 12, color: "#888", margin: 0 }}>&copy; 2026 AgenticLib. All rights reserved.</p>
+        <p style={{ fontSize: 12, color: "#888", margin: 0 }}>&copy; 2026 FeatureStream. All rights reserved.</p>
       </div>
 
     </div>

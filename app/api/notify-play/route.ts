@@ -23,7 +23,7 @@ export async function POST(req: Request) {
       to: "srinidhi.murali@agenticlib.com",
       subject: `Someone just played the demo video — ${source}`,
       text: `A visitor clicked play on the demo video.\n\nSource: ${source}\nTime: ${new Date().toUTCString()}\nLocation: ${location}`,
-      html: `<p>A visitor clicked <strong>play</strong> on the AgenticLib demo video.</p>
+      html: `<p>A visitor clicked <strong>play</strong> on the FeatureStream demo video.</p>
              <p style="font-size:13px;color:#555;">📺 <strong>Source:</strong> ${source}</p>
              <p style="font-size:13px;color:#555;">📍 <strong>Location:</strong> ${location}</p>
              <p style="color:#888;font-size:13px;">🕐 ${new Date().toUTCString()}</p>`,

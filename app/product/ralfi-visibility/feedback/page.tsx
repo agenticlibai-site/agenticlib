@@ -160,7 +160,7 @@ export default function RalfiFeedbackPage() {
               marginBottom: 16,
             }}
           >
-            AgenticLib · Report Feedback
+            FeatureStream · Report Feedback
           </div>
           <h1
             style={{
@@ -341,7 +341,7 @@ export default function RalfiFeedbackPage() {
                 gap: 12, flexWrap: "wrap" as const,
               }}>
                 <p style={{ fontSize: 12, color: "#aaa", margin: 0, lineHeight: 1.5, maxWidth: 280 }}>
-                  Responses are visible only to the AgenticLib team.
+                  Responses are visible only to the FeatureStream team.
                 </p>
                 <button type="submit" disabled={submitting} style={{
                   background: GREEN, color: "#fff", border: "none", borderRadius: 9,

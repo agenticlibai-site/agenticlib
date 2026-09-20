@@ -313,7 +313,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Ralfi Feature Collection failed (${model}, ${today})`,
+        subject: `[FeatureStream] ALERT — Ralfi Feature Collection failed (${model}, ${today})`,
         html: `<h2>Ralfi Feature Pipeline — Collection Failures</h2>
           <p>Model: ${model} | Date: ${today} | Succeeded: ${succeeded}/${expected} | Failed: ${failed}</p>
           <p>Check Vercel function logs for per-task errors.</p>`,
@@ -329,7 +329,7 @@ export async function GET(request: Request) {
     const message = err instanceof Error ? err.message : String(err);
     console.error(`[cron] ralfi-feature-collection crashed (${model}):`, message);
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Ralfi Feature Collection (${model}, ${today ?? "unknown"})`,
+      subject: `[FeatureStream] CRASH — Ralfi Feature Collection (${model}, ${today ?? "unknown"})`,
       html: `<h2>Ralfi Feature Pipeline — Unhandled Crash</h2>
         <p>Model: ${model} | Timestamp: ${runTimestamp} | Error: ${message}</p>`,
     }).catch(() => {});

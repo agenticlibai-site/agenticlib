@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Marketing AI Agents – AgenticLib",
-  description: "AgenticLib helps marketing AI agents compete. Track your LLM visibility, benchmark features against competitors like Jasper, Copy.ai and Typeface, and surface exactly where buyers are finding alternatives.",
+  title: "Marketing AI Agents – FeatureStream",
+  description: "FeatureStream helps marketing AI agents compete. Track your LLM visibility, benchmark features against competitors like Jasper, Copy.ai and Typeface, and surface exactly where buyers are finding alternatives.",
   keywords: [
     "marketing AI agents", "AI marketing tools comparison", "AI content generation visibility",
     "LLM search marketing", "AI agent benchmarking marketing", "compare marketing AI tools",
@@ -10,15 +10,15 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://agenticlib.com/solutions/marketing" },
   openGraph: {
     type: "website",
-    siteName: "AgenticLib",
-    title: "Marketing AI Agents – AgenticLib",
+    siteName: "FeatureStream",
+    title: "Marketing AI Agents – FeatureStream",
     description: "Track your marketing AI agent's visibility in LLM search, benchmark features against competitors, and turn gaps into a roadmap.",
     url: "https://agenticlib.com/solutions/marketing",
-    images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "AgenticLib – Marketing AI" }],
+    images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream – Marketing AI" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Marketing AI Agents – AgenticLib",
+    title: "Marketing AI Agents – FeatureStream",
     description: "Track your marketing AI agent's visibility in LLM search, benchmark features against competitors, and turn gaps into a roadmap.",
     images: ["/recommendations-cover.png"],
   },
@@ -77,7 +77,7 @@ export default function MarketingPage() {
             </span>
           </h1>
           <p style={{ fontSize: 18, lineHeight: 1.7, color: "#444", maxWidth: 540, margin: "0 auto 40px" }}>
-            AgenticLib tracks where your product appears when marketers research AI tools —
+            FeatureStream tracks where your product appears when marketers research AI tools —
             and benchmarks every feature your buyers use to compare you against the field.
           </p>
           <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap" }}>
@@ -98,7 +98,7 @@ export default function MarketingPage() {
           Five signals. One roadmap.
         </h2>
         <p style={{ fontSize: 15, color: "#555", lineHeight: 1.65, maxWidth: 580, marginBottom: 36 }}>
-          Most AI agent builders find out what buyers wanted after losing the deal. AgenticLib collects five intelligence signals and combines them into a prioritised product roadmap — so you build from evidence, not memory.
+          Most AI agent builders find out what buyers wanted after losing the deal. FeatureStream collects five intelligence signals and combines them into a prioritised product roadmap — so you build from evidence, not memory.
         </p>
 
         {/* Three-panel diagram */}
@@ -258,7 +258,7 @@ export default function MarketingPage() {
             </div>
           </div>
           <p style={{ fontSize: 14, color: "#666", lineHeight: 1.65, marginBottom: 22, maxWidth: 540 }}>
-            When all five signals point to the same gap, that&apos;s the feature. AgenticLib surfaces the agreement so your roadmap is built on market evidence — not whoever spoke loudest in the last planning call.
+            When all five signals point to the same gap, that&apos;s the feature. FeatureStream surfaces the agreement so your roadmap is built on market evidence — not whoever spoke loudest in the last planning call.
           </p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {[
@@ -286,7 +286,7 @@ export default function MarketingPage() {
             What a marketing AI agent needs to win
           </h2>
           <p style={{ fontSize: 15, color: "#555", lineHeight: 1.65, maxWidth: 560, marginBottom: 36 }}>
-            AgenticLib tracks these features across every marketing AI agent in the market — benchmarking where your product leads, where it lags, and what your roadmap needs to prioritise.
+            FeatureStream tracks these features across every marketing AI agent in the market — benchmarking where your product leads, where it lags, and what your roadmap needs to prioritise.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14 }}>
             {FEATURES.map((f) => (

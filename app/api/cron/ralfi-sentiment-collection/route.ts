@@ -293,7 +293,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Ralfi Sentiment Collection failed (${model}, ${today})`,
+        subject: `[FeatureStream] ALERT — Ralfi Sentiment Collection failed (${model}, ${today})`,
         html: `<h2>Ralfi Sentiment Pipeline — Collection Failures</h2>
           <p>Timestamp: ${runTimestamp} | Model: ${model} | Date: ${today}</p>
           <p>Succeeded: ${succeeded} / ${expected} | Failed: ${failed}</p>
@@ -317,7 +317,7 @@ export async function GET(request: Request) {
     const message = err instanceof Error ? err.message : String(err);
     console.error(`[cron] ralfi-sentiment-collection crashed (${model}):`, message);
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Ralfi Sentiment Collection (${model}, ${today ?? "unknown"})`,
+      subject: `[FeatureStream] CRASH — Ralfi Sentiment Collection (${model}, ${today ?? "unknown"})`,
       html: `<h2>Ralfi Sentiment Pipeline — Unhandled Crash</h2>
         <p>Model: ${model} | Timestamp: ${runTimestamp} | Error: ${message}</p>`,
     }).catch(() => {});

@@ -61,7 +61,7 @@ export async function GET(request: Request) {
 
     if (flagged > scored * 0.5 && scored > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — HSAI Feature Scoring elevated flags (${today})`,
+        subject: `[FeatureStream] ALERT — HSAI Feature Scoring elevated flags (${today})`,
         html: `<h2>HSAI Feature Scoring</h2><p>Timestamp: ${runTimestamp} | Date: ${today} | Scored: ${scored} | Flagged: ${flagged}</p>`,
       }).catch(() => {});
     }
@@ -71,7 +71,7 @@ export async function GET(request: Request) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("[cron] hsai-feature-aggregate crashed:", message);
     await sendEmail({
-      subject: `[AgenticLib] CRASH — HSAI Feature Aggregate (${today ?? "unknown"})`,
+      subject: `[FeatureStream] CRASH — HSAI Feature Aggregate (${today ?? "unknown"})`,
       html: `<h2>HSAI Feature Aggregate — Crash</h2><p>Timestamp: ${runTimestamp} | Error: ${message}</p>`,
     }).catch(() => {});
     return Response.json({ error: "Internal server error", message }, { status: 500 });

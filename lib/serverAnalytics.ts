@@ -106,7 +106,7 @@ function buildEmailHtml(event: string, payload: TrackPayload): string {
     <h2 style="margin-bottom:4px;">Popup Interaction</h2>
     <p style="color:#71717a;margin-top:0;font-size:13px;">${new Date().toUTCString()}</p>
     <table style="border-collapse:collapse;width:100%;margin-top:12px;">${rows}</table>
-    <p style="margin-top:20px;color:#a1a1aa;font-size:11px;">AgenticLib Analytics</p>
+    <p style="margin-top:20px;color:#a1a1aa;font-size:11px;">FeatureStream Analytics</p>
   </div>`;
 }
 

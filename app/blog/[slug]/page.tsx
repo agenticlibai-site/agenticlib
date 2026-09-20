@@ -17,14 +17,14 @@ export async function generateMetadata({
   if (!blog) return {};
 
   return {
-    title: `${blog.title} | AgenticLib Blog`,
+    title: `${blog.title} | FeatureStream Blog`,
     description: blog.description,
     alternates: { canonical: `https://agenticlib.com/blog/${slug}` },
     openGraph: {
       title: blog.title,
       description: blog.description,
       url: `https://agenticlib.com/blog/${slug}`,
-      siteName: "AgenticLib",
+      siteName: "FeatureStream",
       type: "article",
       images: blog.image ? [{ url: blog.image }] : undefined,
     },

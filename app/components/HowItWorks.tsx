@@ -319,7 +319,7 @@ export default function HowItWorks() {
     {
       num: "01",
       title: "Tell us what you need",
-      body: "Answer a few quick questions about your domain, team size, and goal. No browsing required - AgenticLib builds your profile on the fly.",
+      body: "Answer a few quick questions about your domain, team size, and goal. No browsing required - FeatureStream builds your profile on the fly.",
     },
     {
       num: "02",

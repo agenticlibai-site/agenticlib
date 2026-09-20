@@ -323,7 +323,7 @@ export default function Home() {
           /* Contact */
           #contact { padding-top: 28px !important; padding-bottom: 44px !important; }
 
-          /* Why AgenticLib card */
+          /* Why FeatureStream card */
           .why-agenticlib-card { margin: 0 10px !important; border-radius: 16px !important; padding: 0 !important; }
         }
         @media (min-width: 641px) and (max-width: 900px) {
@@ -486,28 +486,28 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Why AgenticLib ────────────────────────────────────────────────────── */}
+      {/* ── Why FeatureStream ────────────────────────────────────────────────────── */}
       <section className="why-agenticlib-card" style={{ position: "relative", overflow: "hidden", background: "linear-gradient(150deg,#EEE8FD 0%,#E8E5FD 55%,#F0E9FD 100%)", padding: "12px 24px 16px", fontFamily: "var(--font-schibsted), system-ui, sans-serif", margin: "0 32px", borderRadius: 24 }}>
         <div style={{ position: "absolute", inset: 0, background: "radial-gradient(circle at 0% 0%,rgba(124,58,237,.30) 0%,transparent 46%),radial-gradient(circle at 100% 6%,rgba(94,108,232,.24) 0%,transparent 48%),radial-gradient(circle at 92% 100%,rgba(167,139,250,.22) 0%,transparent 50%),radial-gradient(circle at 12% 100%,rgba(220,209,255,.30) 0%,transparent 52%),radial-gradient(circle at 52% 50%,rgba(255,255,255,.48) 0%,transparent 58%)", pointerEvents: "none" }}></div>
         <div style={{ position: "absolute", inset: 0, backdropFilter: "blur(64px) saturate(140%)", WebkitBackdropFilter: "blur(64px) saturate(140%)", background: "rgba(255,255,255,.18)", pointerEvents: "none" }}></div>
           <div className="why-grid" style={{ maxWidth: 1200, margin: "0 auto", position: "relative", zIndex: 2 }}>
             <div>
-              <span style={{ display: "inline-block", border: "1px solid rgba(124,58,237,.30)", background: "rgba(255,255,255,.45)", color: "#000000", fontSize: 13.5, fontWeight: 600, letterSpacing: ".01em", padding: "7px 15px", borderRadius: 9 }}>Why AgenticLib</span>
+              <span style={{ display: "inline-block", border: "1px solid rgba(124,58,237,.30)", background: "rgba(255,255,255,.45)", color: "#000000", fontSize: 13.5, fontWeight: 600, letterSpacing: ".01em", padding: "7px 15px", borderRadius: 9 }}>Why FeatureStream</span>
               <h2 style={{ fontSize: "clamp(24px,2.6vw,36px)", fontWeight: 600, lineHeight: 1.2, letterSpacing: "-.025em", color: "#000000", margin: "26px 0 0", maxWidth: "26ch" }}>
                 {"An entirely context-aware "}
                 <span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 45%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>product harness for agentic workflows</span>
                 {" by vertical."}
               </h2>
-              <p style={{ fontSize: 17, lineHeight: 1.62, color: "#000000", margin: "22px 0 0", maxWidth: "52ch" }}>AgenticLib combines customers requests, lost deal notes, support tickets, agent behaviour, user analytics as well as competitor signals by use case to advise on product feature opportunities ranked by impact and use case cluster expansions.</p>
+              <p style={{ fontSize: 17, lineHeight: 1.62, color: "#000000", margin: "22px 0 0", maxWidth: "52ch" }}>FeatureStream combines customers requests, lost deal notes, support tickets, agent behaviour, user analytics as well as competitor signals by use case to advise on product feature opportunities ranked by impact and use case cluster expansions.</p>
               <p style={{ fontSize: 20, fontWeight: 700, margin: "20px 0 0", backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 55%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>Built to streamline the process involved in creating an agentic product.</p>
             </div>
             <div className="why-visual" style={{ position: "relative", height: 480, display: "flex", alignItems: "center", gap: 0, width: "100%", minWidth: 0 }}>
               <div style={{ position: "absolute", width: "82%", height: "60%", left: "50%", top: "50%", transform: "translate(-50%,-50%)", background: "radial-gradient(circle,rgba(124,58,237,.25),transparent 70%)", filter: "blur(16px)" }}></div>
               <div style={{ flex: "none", position: "relative", zIndex: 3, width: 138, borderRadius: 22, padding: "20px 14px", background: "linear-gradient(150deg,#7C3AED 0%,#9B5DE5 52%,#5E6CE8 100%)", boxShadow: "0 18px 42px rgba(124,58,237,.40)", textAlign: "center" }}>
                 <span style={{ display: "inline-flex", width: 48, height: 48, borderRadius: 13, background: "#fff", alignItems: "center", justifyContent: "center", boxShadow: "0 5px 14px rgba(124,58,237,.22)", overflow: "hidden" }}>
-                  <img src="/logo.png" alt="AgenticLib" style={{ width: 34, height: 34, objectFit: "contain" }} />
+                  <img src="/logo.png" alt="FeatureStream" style={{ width: 34, height: 34, objectFit: "contain" }} />
                 </span>
-                <div style={{ marginTop: 13, color: "#fff", fontWeight: 700, fontSize: 16, letterSpacing: "-.01em" }}>AgenticLib</div>
+                <div style={{ marginTop: 13, color: "#fff", fontWeight: 700, fontSize: 16, letterSpacing: "-.01em" }}>FeatureStream</div>
               </div>
               <svg viewBox="0 0 200 400" preserveAspectRatio="none" style={{ flex: 1, minWidth: 0, alignSelf: "stretch", height: "100%", overflow: "hidden", zIndex: 2 }}>
                 <defs>
@@ -596,7 +596,7 @@ export default function Home() {
           {/* Bridge heading */}
           <div style={{ marginBottom: 32 }}>
             <p style={{ fontFamily: "var(--font-schibsted), system-ui, sans-serif", fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", margin: 0 }}>
-              AgenticLib keeps you ahead.
+              FeatureStream keeps you ahead.
             </p>
           </div>
 
@@ -751,16 +751,16 @@ export default function Home() {
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
             {([
               {
-                q: "What is AgenticLib?",
-                a: "AgenticLib is a product management platform for AI agent builders that combines market insights, buyer intent and competitor signals to advise on product feature roadmap decisions.",
+                q: "What is FeatureStream?",
+                a: "FeatureStream is a product management platform for AI agent builders that combines market insights, buyer intent and competitor signals to advise on product feature roadmap decisions.",
               },
               {
-                q: "What problem does AgenticLib solve?",
-                a: "Most AI agent builders are making product feature decisions without real visibility into what competitors are shipping, which use cases they're winning or losing in, or what buyers are actually comparing before they make contact. Piecing that together manually from lost-deal notes, Slack screenshots, and customer calls is slow, manual, and almost no one actually does it consistently. AgenticLib solves this through product and marketing intelligence.",
+                q: "What problem does FeatureStream solve?",
+                a: "Most AI agent builders are making product feature decisions without real visibility into what competitors are shipping, which use cases they're winning or losing in, or what buyers are actually comparing before they make contact. Piecing that together manually from lost-deal notes, Slack screenshots, and customer calls is slow, manual, and almost no one actually does it consistently. FeatureStream solves this through product and marketing intelligence.",
               },
               {
                 q: "What is Sage AI?",
-                a: "Sage AI is AgenticLib's platform for AI agent builders. Pick your business domain and instantly see the top competitor brands, filterable by use case, with in-depth product feature scores across security, technical capability, and pricing, each backed by evidence from Claude and GPT. Sage AI currently gives builders insight into their competitive landscape and market insights. Live competitor shipment feeds, benchmarking analysis, and buyer-intent signals are coming next.",
+                a: "Sage AI is FeatureStream's platform for AI agent builders. Pick your business domain and instantly see the top competitor brands, filterable by use case, with in-depth product feature scores across security, technical capability, and pricing, each backed by evidence from Claude and GPT. Sage AI currently gives builders insight into their competitive landscape and market insights. Live competitor shipment feeds, benchmarking analysis, and buyer-intent signals are coming next.",
               },
               {
                 q: "Is my business domain covered?",
@@ -772,8 +772,8 @@ export default function Home() {
                 a: "Every report covers product feature scores across security, integrations, pricing, and capability, brand and use case benchmarking to show you who owns each buying moment and why, sentiment analysis of how LLMs actually describe brands, and an LLM visibility playbook with citations and data collected from Parallel AI with actionable steps on exactly how to get LLM visible. On top of that, each report calls out the top 3 product features you should build next: specific, evidence-backed recommendations to close the gap on competitors and win the use cases your buyers care about.",
               },
               {
-                q: "Where is AgenticLib headed?",
-                a: "We're building toward fully automating the manual process of piecing together messy customer, market, and competitor signals, through integrations with the tools builders already use, like Granola for meeting notes and CRMs like Attio or HubSpot where lost-deal context actually lives. The idea is to connect a builder's own product context directly with our taxonomy of product features, so AgenticLib can continuously advise on what to build next and which use case clusters to expand into. We're also working on doing the content fix ourselves, so builders don't just get told what to publish, we actually do it for them to get them LLM-visible in the areas where their buyers are already asking.",
+                q: "Where is FeatureStream headed?",
+                a: "We're building toward fully automating the manual process of piecing together messy customer, market, and competitor signals, through integrations with the tools builders already use, like Granola for meeting notes and CRMs like Attio or HubSpot where lost-deal context actually lives. The idea is to connect a builder's own product context directly with our taxonomy of product features, so FeatureStream can continuously advise on what to build next and which use case clusters to expand into. We're also working on doing the content fix ourselves, so builders don't just get told what to publish, we actually do it for them to get them LLM-visible in the areas where their buyers are already asking.",
               },
             ] as { q: string; a: string; hasRequest?: boolean }[]).map(({ q, a, hasRequest }, i) => (
               <div key={i} style={{ borderTop: i === 0 ? "1px solid rgba(124,58,237,0.15)" : undefined, borderBottom: "1px solid rgba(124,58,237,0.15)" }}>

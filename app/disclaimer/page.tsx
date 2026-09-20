@@ -2,8 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Web Disclaimer - AgenticLib",
-  description: "AgenticLib Web Disclaimer",
+  title: "Web Disclaimer - FeatureStream",
+  description: "FeatureStream Web Disclaimer",
 };
 
 export default function DisclaimerPage() {
@@ -13,7 +13,7 @@ export default function DisclaimerPage() {
       <div className="border-b border-zinc-100 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link href="/" className="text-sm text-black/60 hover:text-black transition">
-            &larr; Back to AgenticLib
+            &larr; Back to FeatureStream
           </Link>
           <span className="text-xs text-black/50">Last updated: June 2026</span>
         </div>
@@ -39,8 +39,8 @@ export default function DisclaimerPage() {
         <section className="space-y-3">
           <h2 className="text-xl font-semibold text-black">Informational purposes only</h2>
           <p>
-            The information contained on AgenticLib - including AI agent profiles, domain categorisations,
-            capability comparisons, and recommendation outputs - represents AgenticLib&apos;s view as of the date
+            The information contained on FeatureStream - including AI agent profiles, domain categorisations,
+            capability comparisons, and recommendation outputs - represents FeatureStream&apos;s view as of the date
             it is published. Agent capabilities, pricing, availability, and integrations change frequently.
             Content on this platform should not be interpreted as a guarantee of any agent&apos;s performance,
             fitness for purpose, or commercial availability.
@@ -50,9 +50,9 @@ export default function DisclaimerPage() {
         <section className="space-y-3">
           <h2 className="text-xl font-semibold text-black">Third-party agents &amp; services</h2>
           <p>
-            AgenticLib does not own, operate, or endorse any of the AI agents listed on this platform. We do
+            FeatureStream does not own, operate, or endorse any of the AI agents listed on this platform. We do
             not control the services, pricing, data practices, or terms of any third-party agent provider.
-            AgenticLib specifically disclaims any liability arising from your use of, or reliance on, any agent
+            FeatureStream specifically disclaims any liability arising from your use of, or reliance on, any agent
             discovered or recommended through this platform. Any engagement with a third-party agent is solely
             at your own risk.
           </p>
@@ -61,9 +61,9 @@ export default function DisclaimerPage() {
         <section className="space-y-3">
           <h2 className="text-xl font-semibold text-black">Recommendation engine</h2>
           <p>
-            AgenticLib&apos;s AI-powered recommendation engine generates suggestions based on user-provided inputs
+            FeatureStream&apos;s AI-powered recommendation engine generates suggestions based on user-provided inputs
             and our internal knowledge base. These outputs are automated and do not constitute professional,
-            legal, technical, or business advice. Results may not be exhaustive, and AgenticLib does not
+            legal, technical, or business advice. Results may not be exhaustive, and FeatureStream does not
             guarantee that the most suitable agent for your use case will appear in any recommendation output.
           </p>
         </section>
@@ -71,7 +71,7 @@ export default function DisclaimerPage() {
         <section className="space-y-3">
           <h2 className="text-xl font-semibold text-black">Changes to content</h2>
           <p>
-            AgenticLib may at any time update, revise, add, or remove agent listings, domain categories,
+            FeatureStream may at any time update, revise, add, or remove agent listings, domain categories,
             platform features, and any other content on this website. Where material changes are made, an
             updated publication date will be reflected on the relevant page. We recommend checking this
             platform periodically to stay informed of any updates.

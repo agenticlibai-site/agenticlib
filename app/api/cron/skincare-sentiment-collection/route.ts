@@ -146,7 +146,7 @@ export async function GET(request: Request) {
       const healthy = todayRows >= EXPECTED_TODAY;
       if (!healthy) {
         await sendEmail({
-          subject: `[AgenticLib] ALERT — Skincare Sentiment Aggregation (${today})`,
+          subject: `[FeatureStream] ALERT — Skincare Sentiment Aggregation (${today})`,
           html: `
             <h2>Skincare Sentiment — Aggregation Health Check</h2>
             <table style="border-collapse:collapse;font-family:monospace">
@@ -211,7 +211,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Skincare Sentiment Collection failed (${modelParam ?? "all"}, ${today})`,
+        subject: `[FeatureStream] ALERT — Skincare Sentiment Collection failed (${modelParam ?? "all"}, ${today})`,
         html: `
           <h2>Skincare Sentiment — Collection Failures</h2>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -230,7 +230,7 @@ export async function GET(request: Request) {
     const message = err instanceof Error ? err.message : String(err);
     console.error(`[cron] skincare-sentiment ${jobLabel} crashed:`, message);
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Skincare Sentiment ${jobLabel} (${today})`,
+      subject: `[FeatureStream] CRASH — Skincare Sentiment ${jobLabel} (${today})`,
       html: `<h2>Crash</h2><p><strong>Job:</strong> ${jobLabel}</p><p><strong>Error:</strong> ${message}</p><p><strong>Timestamp:</strong> ${runTimestamp}</p>`,
     }).catch((e) => console.error("[alert] sentiment crash email failed:", e));
     return Response.json({ error: "Internal server error", message }, { status: 500 });

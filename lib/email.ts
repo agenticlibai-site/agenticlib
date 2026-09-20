@@ -9,7 +9,7 @@ interface SendEmailOptions {
   to?:       string;
 }
 
-export async function sendEmail({ subject, html, fromName = "AgenticLib Analytics", to = TO }: SendEmailOptions): Promise<void> {
+export async function sendEmail({ subject, html, fromName = "FeatureStream Analytics", to = TO }: SendEmailOptions): Promise<void> {
   const user = process.env.EMAIL_USER;
   const pass = process.env.EMAIL_PASS;
 

@@ -162,7 +162,7 @@ export async function GET(request: Request) {
           }).join("");
 
           await sendEmail({
-            subject: `[AgenticLib] ALERT — Skincare Visibility Aggregation failed (${today})`,
+            subject: `[FeatureStream] ALERT — Skincare Visibility Aggregation failed (${today})`,
             html: `
               <h2>Skincare Visibility Pipeline — Aggregation Health Check Failed</h2>
               <table style="border-collapse:collapse;font-family:monospace">
@@ -254,7 +254,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Skincare Visibility Collection failed (${modelParam ?? "all"}, ${today})`,
+        subject: `[FeatureStream] ALERT — Skincare Visibility Collection failed (${modelParam ?? "all"}, ${today})`,
         html: `
           <h2>Skincare Visibility Pipeline — Collection Failures</h2>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -282,7 +282,7 @@ export async function GET(request: Request) {
     console.error(`[cron] skincare-visibility ${jobLabel} crashed:`, message);
 
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Skincare Visibility ${jobLabel} (${today})`,
+      subject: `[FeatureStream] CRASH — Skincare Visibility ${jobLabel} (${today})`,
       html: `
         <h2>Skincare Visibility Pipeline — Unhandled Crash</h2>
         <table style="border-collapse:collapse;font-family:monospace">

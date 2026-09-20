@@ -14,7 +14,7 @@ export async function POST(req: Request) {
 
     await sendEmail({
       subject:  `Report Request`,
-      fromName: "AgenticLib",
+      fromName: "FeatureStream",
       html: `
         <h2>New Free Report Request</h2>
         <p><strong>Email:</strong> ${email}</p>

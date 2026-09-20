@@ -96,7 +96,7 @@ export async function GET(request: Request) {
       }).join("");
 
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Sales Visibility Aggregate incomplete (${today})`,
+        subject: `[FeatureStream] ALERT — Sales Visibility Aggregate incomplete (${today})`,
         html: `
           <h2>Sales Visibility Pipeline — Aggregation Health Check</h2>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -124,7 +124,7 @@ export async function GET(request: Request) {
     console.error("[cron] sales-visibility-aggregate crashed:", message);
 
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Sales Visibility Aggregate (${today})`,
+      subject: `[FeatureStream] CRASH — Sales Visibility Aggregate (${today})`,
       html: `
         <h2>Sales Visibility Pipeline — Unhandled Crash</h2>
         <table style="border-collapse:collapse;font-family:monospace">

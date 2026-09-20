@@ -1,28 +1,28 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Company – AgenticLib",
+  title: "Company – FeatureStream",
   description:
-    "AgenticLib is the product and marketing intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search, benchmark features against competitors, and turn gaps into a roadmap.",
+    "FeatureStream is the product and marketing intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search, benchmark features against competitors, and turn gaps into a roadmap.",
   keywords: [
-    "AgenticLib company", "AI agent comparison platform", "AI visibility tracking",
+    "FeatureStream company", "AI agent comparison platform", "AI visibility tracking",
     "LLM search visibility", "AI competitive intelligence", "AI agent benchmarking",
   ],
   alternates: { canonical: "https://agenticlib.com/company" },
   openGraph: {
     type: "website",
-    siteName: "AgenticLib",
-    title: "Company – AgenticLib",
+    siteName: "FeatureStream",
+    title: "Company – FeatureStream",
     description:
-      "AgenticLib is the product and marketing intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search and benchmark features against competitors.",
+      "FeatureStream is the product and marketing intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search and benchmark features against competitors.",
     url: "https://agenticlib.com/company",
-    images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "AgenticLib" }],
+    images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Company – AgenticLib",
+    title: "Company – FeatureStream",
     description:
-      "AgenticLib is the product and marketing intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search and benchmark features against competitors.",
+      "FeatureStream is the product and marketing intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search and benchmark features against competitors.",
     images: ["/recommendations-cover.png"],
   },
 };
@@ -456,7 +456,7 @@ export default function CompanyPage() {
                     form of a customer asking why they shouldn't just go with the other guy.
                   </p>
                   <p>
-                    AgenticLib's mission is to close that gap before it opens. A platform that watches the
+                    FeatureStream's mission is to close that gap before it opens. A platform that watches the
                     competitor landscape for you, tracks who owns which use case by share of
                     voice, and turns what it finds into a clear product feature roadmap: what to
                     build next, and what to scale, to stay ahead of the market curve. So a

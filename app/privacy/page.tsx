@@ -2,8 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - AgenticLib",
-  description: "AgenticLib Privacy Policy",
+  title: "Privacy Policy - FeatureStream",
+  description: "FeatureStream Privacy Policy",
 };
 
 export default function PrivacyPage() {
@@ -13,7 +13,7 @@ export default function PrivacyPage() {
       <div className="border-b border-zinc-100 px-6 py-4">
         <div className="max-w-3xl mx-auto flex items-center justify-between">
           <Link href="/" className="text-sm text-black/60 hover:text-black transition">
-            ← Back to AgenticLib
+            ← Back to FeatureStream
           </Link>
           <span className="text-xs text-black/50">Last updated: January 2026</span>
         </div>
@@ -24,7 +24,7 @@ export default function PrivacyPage() {
         <div>
           <h1 className="text-3xl font-bold text-black mb-3">Privacy Policy</h1>
           <p>
-            Welcome to AgenticLib. Your privacy is important to us. This Privacy Policy explains how we collect,
+            Welcome to FeatureStream. Your privacy is important to us. This Privacy Policy explains how we collect,
             use, disclose, and protect your information when you visit our website:{" "}
             <a href="https://www.agenticlib.com/" className="text-violet-600 underline underline-offset-2">
               https://www.agenticlib.com/
@@ -167,7 +167,7 @@ export default function PrivacyPage() {
 
       {/* Footer */}
       <div className="border-t border-zinc-100 px-6 py-6 text-center text-xs text-black/50">
-        © 2026 AgenticLib ·{" "}
+        © 2026 FeatureStream ·{" "}
         <Link href="/terms" className="hover:text-black transition">
           Terms &amp; Conditions
         </Link>

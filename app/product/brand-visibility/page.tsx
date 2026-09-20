@@ -59,7 +59,7 @@ export default async function BrandVisibilityPage() {
           className="inline-flex items-center gap-2 text-sm font-semibold transition-colors"
           style={{ textDecoration: "none", background: "white", borderRadius: 8, padding: "8px 16px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)", color: "#7C3AED" }}
         >
-          ← AgenticLib
+          ← FeatureStream
         </Link>
       </nav>
 

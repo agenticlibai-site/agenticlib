@@ -333,7 +333,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Sales Feature Collection failed (${model}${halfLabel}, ${today})`,
+        subject: `[FeatureStream] ALERT — Sales Feature Collection failed (${model}${halfLabel}, ${today})`,
         html: `
           <h2>Sales Feature Pipeline — Collection Failures</h2>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -366,7 +366,7 @@ export async function GET(request: Request) {
     console.error(`[cron] sales-feature-collection crashed (${model}${halfLabel}):`, message);
 
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Sales Feature Collection (${model}${halfLabel}, ${today})`,
+      subject: `[FeatureStream] CRASH — Sales Feature Collection (${model}${halfLabel}, ${today})`,
       html: `
         <h2>Sales Feature Pipeline — Unhandled Crash</h2>
         <table style="border-collapse:collapse;font-family:monospace">

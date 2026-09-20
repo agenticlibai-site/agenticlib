@@ -73,7 +73,7 @@ export async function GET(request: Request) {
         .join("");
 
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Ralfi sentiment drift detected (${weekStart})`,
+        subject: `[FeatureStream] ALERT — Ralfi sentiment drift detected (${weekStart})`,
         html: `<h2>Ralfi Sentiment Pipeline — Drift Flags</h2>
           <p>Week: ${weekStart} → ${weekEnd} | Timestamp: ${runTimestamp}</p>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -100,7 +100,7 @@ export async function GET(request: Request) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("[cron] ralfi-sentiment-aggregate crashed:", message);
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Ralfi Sentiment Aggregate (week ${weekStart})`,
+      subject: `[FeatureStream] CRASH — Ralfi Sentiment Aggregate (week ${weekStart})`,
       html: `<h2>Ralfi Sentiment Pipeline — Unhandled Crash</h2>
         <p>Week start: ${weekStart} | Timestamp: ${runTimestamp} | Error: ${message}</p>`,
     }).catch(() => {});

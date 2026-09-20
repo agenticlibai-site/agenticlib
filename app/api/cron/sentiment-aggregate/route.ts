@@ -81,7 +81,7 @@ export async function GET(request: Request) {
         .join("");
 
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Sentiment drift detected (${weekStart})`,
+        subject: `[FeatureStream] ALERT — Sentiment drift detected (${weekStart})`,
         html: `
           <h2>Sentiment Pipeline — Drift Flags</h2>
           <p>Week: ${weekStart} → ${weekEnd}</p>
@@ -112,7 +112,7 @@ export async function GET(request: Request) {
     console.error("[cron] sentiment-aggregate crashed:", message);
 
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Sentiment Aggregate (week ${weekStart})`,
+      subject: `[FeatureStream] CRASH — Sentiment Aggregate (week ${weekStart})`,
       html: `
         <h2>Sentiment Pipeline — Unhandled Crash</h2>
         <table style="border-collapse:collapse;font-family:monospace">

@@ -30,7 +30,7 @@ export async function generateMetadata({
       title: domain.metaTitle,
       description: domain.metaDescription,
       url: `https://agenticlib.com/domain/${slug}`,
-      siteName: "AgenticLib",
+      siteName: "FeatureStream",
       type: "website",
     },
     twitter: {
@@ -189,7 +189,7 @@ export default async function DomainSeoPage({
       </main>
 
       <footer className="border-t border-zinc-100 py-8 text-center text-sm text-black/50">
-        <p>© {new Date().getFullYear()} AgenticLib - The AI Agent Discovery Platform</p>
+        <p>© {new Date().getFullYear()} FeatureStream - The AI Agent Discovery Platform</p>
         <p className="mt-1">
           <Link href="/" className="hover:text-black transition">Home</Link>
           {" · "}

@@ -134,7 +134,7 @@ export async function GET(request: Request) {
       }).join("");
 
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Ralfi Aggregate incomplete (${today})`,
+        subject: `[FeatureStream] ALERT — Ralfi Aggregate incomplete (${today})`,
         html: `
           <h2>Ralfi Pipeline — Aggregation Health Check</h2>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -162,7 +162,7 @@ export async function GET(request: Request) {
     console.error("[cron] ralfi-aggregate crashed:", message);
 
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Ralfi Aggregate (${today})`,
+      subject: `[FeatureStream] CRASH — Ralfi Aggregate (${today})`,
       html: `
         <h2>Ralfi Pipeline — Unhandled Crash</h2>
         <table style="border-collapse:collapse;font-family:monospace">

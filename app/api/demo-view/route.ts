@@ -29,7 +29,7 @@ export async function POST(request: Request) {
           </table>
         </div>
       `,
-      fromName: "AgenticLib Demo",
+      fromName: "FeatureStream Demo",
     });
 
     return Response.json({ ok: true });

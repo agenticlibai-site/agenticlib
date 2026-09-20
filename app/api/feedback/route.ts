@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: "srinidhi.murali@agenticlib.com",
-      subject: `AgenticLib Survey Response: ${option}`,
+      subject: `FeatureStream Survey Response: ${option}`,
       html: `
         <h2 style="font-family:sans-serif;color:#18181b;">New Survey Response</h2>
         <table style="font-family:sans-serif;border-collapse:collapse;width:100%;max-width:480px;">

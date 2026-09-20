@@ -91,7 +91,7 @@ export async function GET(request: Request) {
     const message = err instanceof Error ? err.message : String(err);
     console.error("[cron] sdai-aggregate crashed:", message);
     await sendEmail({
-      subject: `[AgenticLib] CRASH — SDAI Aggregate (${today ?? "unknown"})`,
+      subject: `[FeatureStream] CRASH — SDAI Aggregate (${today ?? "unknown"})`,
       html: `<h2>SDAI Aggregate — Crash</h2><p>Error: ${message}</p>`,
     }).catch(() => {});
     return Response.json({ error: "Internal server error", message }, { status: 500 });

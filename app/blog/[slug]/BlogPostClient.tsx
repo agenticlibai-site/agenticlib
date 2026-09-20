@@ -217,8 +217,8 @@ export default function BlogPostClient({ blog, related }: Props) {
       <header className="fixed top-0 inset-x-0 z-50 px-4 pt-3 pointer-events-auto">
         <div className="max-w-6xl mx-auto bg-white/70 backdrop-blur-md border border-white/20 shadow-sm rounded-xl px-6 py-3 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/logo.png" alt="AgenticLib" width={120} height={24} className="h-6 w-auto" />
-            <span className="text-lg font-semibold tracking-tight">AgenticLib</span>
+            <Image src="/logo.png" alt="FeatureStream" width={120} height={24} className="h-6 w-auto" />
+            <span className="text-lg font-semibold tracking-tight">FeatureStream</span>
           </Link>
           <div className="flex items-center gap-6">
             <Link href="/blog" className="text-sm text-black/60 hover:text-black transition">
@@ -325,7 +325,7 @@ export default function BlogPostClient({ blog, related }: Props) {
       </div>
 
       <footer className="relative z-10 py-10 text-center text-sm text-black/50 border-t border-white/30">
-        © 2026 AgenticLib
+        © 2026 FeatureStream
       </footer>
 
     </div>

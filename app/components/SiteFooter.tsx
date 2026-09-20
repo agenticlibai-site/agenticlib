@@ -53,7 +53,7 @@ export default function SiteFooter() {
               WebkitTextFillColor: "transparent",
               backgroundClip: "text",
             }}>
-              AgenticLib
+              FeatureStream
             </h2>
           </div>
 
@@ -68,8 +68,8 @@ export default function SiteFooter() {
             {/* Brand */}
             <div className="footer-brand">
               <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 14 }}>
-                <img src="/logo.png" alt="AgenticLib" style={{ height: 28, width: "auto", objectFit: "contain" }} />
-                <span style={{ fontSize: 17, fontWeight: 800, color: "#000", letterSpacing: "-0.02em" }}>AgenticLib</span>
+                <img src="/logo.png" alt="FeatureStream" style={{ height: 28, width: "auto", objectFit: "contain" }} />
+                <span style={{ fontSize: 17, fontWeight: 800, color: "#000", letterSpacing: "-0.02em" }}>FeatureStream</span>
               </div>
               <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 20px", maxWidth: 220 }}>
                 Helping AI agent builders succeed.
@@ -77,7 +77,7 @@ export default function SiteFooter() {
               <div style={{ display: "flex", gap: 14, alignItems: "center" }}>
                 {[
                   { href: "https://www.linkedin.com/company/108024233/", icon: "in" },
-                  { href: "https://x.com/AgenticLibAI/status/1960527278087266557", icon: "𝕏" },
+                  { href: "https://x.com/FeatureStreamAI/status/1960527278087266557", icon: "𝕏" },
                 ].map(({ href, icon }) => (
                   <a
                     key={href}
@@ -121,7 +121,7 @@ export default function SiteFooter() {
               <p style={{ fontSize: 14, fontWeight: 700, color: "#0F0B1E", marginBottom: 16, marginTop: 0 }}>Connect</p>
               <NavLink href="mailto:srinidhi.murali@agenticlib.com">Email us</NavLink>
               <NavLink href="https://www.linkedin.com/company/108024233/" external>LinkedIn</NavLink>
-              <NavLink href="https://x.com/AgenticLibAI/status/1960527278087266557" external>X / Twitter</NavLink>
+              <NavLink href="https://x.com/FeatureStreamAI/status/1960527278087266557" external>X / Twitter</NavLink>
               <NavLink href="https://www.producthunt.com/p/self-promotion/agenticlib-simplifying-your-ai-agent-discovery-journey" external>Product Hunt</NavLink>
               <NavLink href="https://www.reddit.com/r/SideProject/comments/1m6bfy1/agenticlib_simplifying_your_ai_agent_discovery/" external>Reddit</NavLink>
             </div>
@@ -136,7 +136,7 @@ export default function SiteFooter() {
             justifyContent: "space-between",
           }}>
             <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-              <span style={{ fontSize: 13, color: "#000" }}>© 2026 AgenticLib. All rights reserved.</span>
+              <span style={{ fontSize: 13, color: "#000" }}>© 2026 FeatureStream. All rights reserved.</span>
               <span style={{ fontSize: 12, color: "#000" }}>Sydney, Australia</span>
             </div>
             <span style={{ fontSize: 13, color: "#000", fontStyle: "italic" }}>Follow along as we build</span>

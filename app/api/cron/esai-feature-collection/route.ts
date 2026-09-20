@@ -233,7 +233,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — ESAI Feature Collection failed (${model}, ${today})`,
+        subject: `[FeatureStream] ALERT — ESAI Feature Collection failed (${model}, ${today})`,
         html: `<h2>ESAI Feature Pipeline — Failures</h2><p>Model: ${model} | Date: ${today} | Succeeded: ${succeeded}/${expected} | Failed: ${failed}</p>`,
       }).catch(() => {});
     }

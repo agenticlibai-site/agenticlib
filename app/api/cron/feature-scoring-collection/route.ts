@@ -358,7 +358,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Feature Scoring Collection failed (${model}${halfLabel}, ${today})`,
+        subject: `[FeatureStream] ALERT — Feature Scoring Collection failed (${model}${halfLabel}, ${today})`,
         html: `
           <h2>Feature Scoring Pipeline — Collection Failures</h2>
           <table style="border-collapse:collapse;font-family:monospace">
@@ -391,7 +391,7 @@ export async function GET(request: Request) {
     console.error(`[cron] feature-scoring-collection crashed (${model}${halfLabel}):`, message);
 
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Feature Scoring Collection (${model}${halfLabel}, ${today})`,
+      subject: `[FeatureStream] CRASH — Feature Scoring Collection (${model}${halfLabel}, ${today})`,
       html: `
         <h2>Feature Scoring Pipeline — Unhandled Crash</h2>
         <table style="border-collapse:collapse;font-family:monospace">

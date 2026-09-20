@@ -14,7 +14,7 @@ import SdaiVisibilityCharts from "../SdaiVisibilityCharts";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Superdegree Report: AI Video Creation Visibility – AgenticLib",
+  title: "Superdegree Report: AI Video Creation Visibility – FeatureStream",
   description:
     "Which AI video creation platforms appear when LLMs are asked about recording, editing, voice cloning, captions, translation, and distribution.",
   robots: { index: false, follow: false },
@@ -120,13 +120,13 @@ export default async function SdaiReportPage() {
         <div style={{ marginTop: 48, borderTop: "1px solid rgba(0,0,0,0.08)", paddingTop: 28 }}>
           <p style={{ fontSize: 13, fontWeight: 700, color: "#000", marginBottom: 10 }}>Disclaimer &amp; Terms of Use</p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
-            This report was created by AgenticLib. All feature scores, rankings, and assessments are based on publicly available information at the time of research and represent AgenticLib&apos;s independent evaluation.
+            This report was created by FeatureStream. All feature scores, rankings, and assessments are based on publicly available information at the time of research and represent FeatureStream&apos;s independent evaluation.
           </p>
           <p style={{ fontSize: 12, color: "#000", lineHeight: 1.7, marginBottom: 10 }}>
             Competitive intelligence data is derived from automated queries to Claude Haiku and GPT-4o-mini APIs. This data reflects model output at specific points in time and may not represent the current or future state of any brand&apos;s market position.
           </p>
           <p style={{ fontSize: 11, color: "#000", marginTop: 14 }}>
-            © {new Date().getFullYear()} AgenticLib. All rights reserved.
+            © {new Date().getFullYear()} FeatureStream. All rights reserved.
           </p>
         </div>
       </div>

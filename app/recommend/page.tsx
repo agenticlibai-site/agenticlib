@@ -283,7 +283,7 @@ const handleSubmit = async () => {
                 </div>
               ) : (
                 <div className="w-full">
-                  <p className="text-xs font-semibold text-purple-600 mb-3 uppercase tracking-wide">AgenticLib</p>
+                  <p className="text-xs font-semibold text-purple-600 mb-3 uppercase tracking-wide">FeatureStream</p>
                   <AIOutput content={msg.content} />
                 </div>
               )}

@@ -288,7 +288,7 @@ export async function GET(request: Request) {
 
     if (failed > 0) {
       await sendEmail({
-        subject: `[AgenticLib] ALERT — Dexify Feature Collection failed (${model}, ${today})`,
+        subject: `[FeatureStream] ALERT — Dexify Feature Collection failed (${model}, ${today})`,
         html: `<h2>Dexify Feature Pipeline — Collection Failures</h2>
           <p>Model: ${model} | Date: ${today} | Succeeded: ${succeeded}/${expected} | Failed: ${failed}</p>
           <p>Check Vercel function logs for per-task errors.</p>`,
@@ -304,7 +304,7 @@ export async function GET(request: Request) {
     const message = err instanceof Error ? err.message : String(err);
     console.error(`[cron] dexify-feature-collection crashed (${model}):`, message);
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Dexify Feature Collection (${model}, ${today ?? "unknown"})`,
+      subject: `[FeatureStream] CRASH — Dexify Feature Collection (${model}, ${today ?? "unknown"})`,
       html: `<h2>Dexify Feature Pipeline — Unhandled Crash</h2><p>Model: ${model} | Error: ${message}</p>`,
     }).catch(() => {});
     return Response.json({ error: "Internal server error", message }, { status: 500 });

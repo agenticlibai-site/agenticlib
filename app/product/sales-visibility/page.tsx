@@ -1,5 +1,5 @@
 export const metadata = {
-  title: "Sales AI Agent Visibility – AgenticLib",
+  title: "Sales AI Agent Visibility – FeatureStream",
   description:
     "How AI models recommend and describe sales AI agent brands across Claude and GPT-4o-mini, updated daily.",
 };

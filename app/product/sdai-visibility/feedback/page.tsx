@@ -160,7 +160,7 @@ export default function SdaiFeedbackPage() {
               marginBottom: 16,
             }}
           >
-            AgenticLib · Report Feedback
+            FeatureStream · Report Feedback
           </div>
           <h1
             style={{
@@ -408,7 +408,7 @@ export default function SdaiFeedbackPage() {
                 }}
               >
                 <p style={{ fontSize: 12, color: "#aaa", margin: 0, lineHeight: 1.5, maxWidth: 280 }}>
-                  Responses are visible only to the AgenticLib team.
+                  Responses are visible only to the FeatureStream team.
                 </p>
                 <button
                   type="submit"

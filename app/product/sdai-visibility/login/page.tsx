@@ -31,7 +31,7 @@ async function verifyPassword(formData: FormData) {
 }
 
 export const metadata = {
-  title: "Access Required – AgenticLib",
+  title: "Access Required – FeatureStream",
   robots: "noindex",
 };
 

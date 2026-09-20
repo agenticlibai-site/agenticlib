@@ -141,7 +141,7 @@ export async function GET(request: Request) {
   // without touching any real data. Safe to call at any time.
   if (testAlert) {
     await sendEmail({
-      subject: `[AgenticLib] TEST ALERT — Brand Visibility Pipeline (${today})`,
+      subject: `[FeatureStream] TEST ALERT — Brand Visibility Pipeline (${today})`,
       html: `
         <p>This is a <strong>test alert</strong> triggered manually via <code>?test_alert</code>.</p>
         <p>If you received this, email alerting is working correctly for the brand-visibility pipeline.</p>
@@ -188,7 +188,7 @@ export async function GET(request: Request) {
         }).join("");
 
         await sendEmail({
-          subject: `[AgenticLib] ALERT — Brand Visibility Aggregation failed (${today})`,
+          subject: `[FeatureStream] ALERT — Brand Visibility Aggregation failed (${today})`,
           html: `
             <h2>Brand Visibility Pipeline — Aggregation Health Check Failed</h2>
             <table style="border-collapse:collapse;font-family:monospace">
@@ -288,7 +288,7 @@ export async function GET(request: Request) {
 
   if (failed > 0) {
     await sendEmail({
-      subject: `[AgenticLib] ALERT — Brand Visibility Collection failed (${modelParam ?? "all"}, ${today})`,
+      subject: `[FeatureStream] ALERT — Brand Visibility Collection failed (${modelParam ?? "all"}, ${today})`,
       html: `
         <h2>Brand Visibility Pipeline — Collection Failures</h2>
         <table style="border-collapse:collapse;font-family:monospace">
@@ -319,7 +319,7 @@ export async function GET(request: Request) {
     console.error(`[cron] brand-visibility ${jobLabel} crashed:`, message);
 
     await sendEmail({
-      subject: `[AgenticLib] CRASH — Brand Visibility ${jobLabel} (${today})`,
+      subject: `[FeatureStream] CRASH — Brand Visibility ${jobLabel} (${today})`,
       html: `
         <h2>Brand Visibility Pipeline — Unhandled Crash</h2>
         <table style="border-collapse:collapse;font-family:monospace">

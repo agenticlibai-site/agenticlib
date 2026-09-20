@@ -14,7 +14,7 @@ import RalfiVisibilityCharts from "../RalfiVisibilityCharts";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Ralfi Report: Insurance Broker AI Agent Visibility – AgenticLib",
+  title: "Ralfi Report: Insurance Broker AI Agent Visibility – FeatureStream",
   description:
     "Which AI agents appear when LLMs are asked about renewal management, document processing, and claims advocacy for insurance brokers.",
   robots: { index: false, follow: false },

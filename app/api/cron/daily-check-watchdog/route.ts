@@ -94,7 +94,7 @@ export async function GET(request: Request) {
 
       if (sentimentRecovery.length > 0) {
         await sendEmail({
-          subject: `[AgenticLib] Auto-recovered missed sentiment cron (gpt-4o-mini, ${today})`,
+          subject: `[FeatureStream] Auto-recovered missed sentiment cron (gpt-4o-mini, ${today})`,
           html: `
             <h2>Sentiment Pipeline — Automatic Recovery</h2>
             <p><em>No action required.</em> The 16:00 UTC watchdog detected that today's
@@ -194,7 +194,7 @@ export async function GET(request: Request) {
 
     if (sentimentRecovery.length > 0) {
       await sendEmail({
-        subject: `[AgenticLib] Auto-recovered missed sentiment cron (claude-haiku-4-5, ${targetDate})`,
+        subject: `[FeatureStream] Auto-recovered missed sentiment cron (claude-haiku-4-5, ${targetDate})`,
         html: `
           <h2>Sentiment Pipeline — Automatic Recovery</h2>
           <p><em>No action required.</em> The 5:45 UTC watchdog detected that yesterday's
@@ -252,7 +252,7 @@ export async function GET(request: Request) {
 
     // No recent write activity — pipeline is genuinely stalled or never started.
     await sendEmail({
-      subject: `[AgenticLib] WATCHDOG — No successful brand-visibility run for ${targetDate}`,
+      subject: `[FeatureStream] WATCHDOG — No successful brand-visibility run for ${targetDate}`,
       html: `
         <h2>Brand Visibility Pipeline — Watchdog Alert</h2>
         <p>
@@ -298,7 +298,7 @@ export async function GET(request: Request) {
     console.error("[watchdog] check failed:", message);
 
     await sendEmail({
-      subject: `[AgenticLib] WATCHDOG ERROR — Watchdog check itself failed (${targetDate})`,
+      subject: `[FeatureStream] WATCHDOG ERROR — Watchdog check itself failed (${targetDate})`,
       html: `
         <h2>Brand Visibility Pipeline — Watchdog Check Failed</h2>
         <p>

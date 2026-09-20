@@ -31,7 +31,7 @@ async function verifyPassword(formData: FormData) {
 }
 
 export const metadata = {
-  title: "Construction AI — AgenticLib",
+  title: "Construction AI — FeatureStream",
   robots: "noindex",
 };
 
