@@ -44,7 +44,7 @@ const ebGaramond = EB_Garamond({
 export const metadata: Metadata = {
   metadataBase: new URL("https://agenticlib.com"),
   title: {
-    default: "FeatureStream — Context-Aware Product Management for AI Agent Builders",
+    default: "FeatureStream — The Product Management OS for AI Agent Builders",
     template: "%s | FeatureStream",
   },
   description:
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     siteName: "FeatureStream",
-    title: "FeatureStream — Context-Aware Product Management for AI Agent Builders",
+    title: "FeatureStream — The Product Management OS for AI Agent Builders",
     description:
       "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
     url: "https://agenticlib.com",
@@ -71,13 +71,13 @@ export const metadata: Metadata = {
         url: "/recommendations-cover.png",
         width: 1200,
         height: 630,
-        alt: "FeatureStream — Context-Aware Product Management for AI Agent Builders",
+        alt: "FeatureStream — The Product Management OS for AI Agent Builders",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "FeatureStream — Context-Aware Product Management for AI Agent Builders",
+    title: "FeatureStream — The Product Management OS for AI Agent Builders",
     description:
       "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
     images: ["/recommendations-cover.png"],
