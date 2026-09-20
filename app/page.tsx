@@ -871,47 +871,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── The honest differentiation ──────────────────────────────────────── */}
-      <section style={{ padding: "72px 24px 80px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
-        <div style={{ maxWidth: 980, margin: "0 auto" }}>
-          <p style={{ fontSize: 13, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", marginBottom: 12 }}>What makes FeatureStream different</p>
-          <h2 style={{ fontSize: "clamp(26px,3vw,38px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.12, color: "#0F0B1E", margin: "0 0 12px", maxWidth: "36ch" }}>
-            Not defensible because of one piece of technology —{" "}
-            <span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 45%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>defensible because of the loop</span>
-          </h2>
-          <p style={{ fontSize: 16, lineHeight: 1.65, color: "rgba(15,11,30,0.62)", margin: "0 0 40px", maxWidth: "62ch" }}>Competitors have pieces of this. Amplitude Agent Analytics, Langfuse, Productboard, and Squad each do parts well. Nobody has the full connected loop — assembled for AI agent builders specifically.</p>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(2,1fr)", gap: 16 }}>
-            {([
-              {
-                rank: "Primary",
-                title: "The full connected loop",
-                desc: "Diagnosis (agent traces) → evidence (customer signals) → decision (roadmap) → build (PRD/fix spec) → ship (Jira + release notes) → re-evaluate (post-launch eval feeding back as new evidence). All on one catalogue record.",
-              },
-              {
-                rank: "Primary",
-                title: "Business-value framing",
-                desc: "Every recommendation is tagged with revenue and time impact in the customer's own language — not a generic priority score. Speaking to how AI agent builders actually compete.",
-              },
-              {
-                rank: "Compounding",
-                title: "Cross-customer compounding",
-                desc: "As more customers in the same vertical join, the shared taxonomy and evidence-weighting sharpens for everyone. This is the structural long-term advantage — but it requires real customer density to kick in.",
-              },
-              {
-                rank: "Foundation",
-                title: "Design-partner depth",
-                desc: "Built through direct, ongoing collaboration with real AI agent builders shaping the product — not inferred from surveys or analyst reports.",
-              },
-            ] as { rank: string; title: string; desc: string }[]).map(({ rank, title, desc }) => (
-              <div key={title} style={{ background: "#fff", borderRadius: 16, padding: "22px 24px", boxShadow: "0 2px 12px rgba(0,0,0,0.06)", border: "1px solid rgba(124,58,237,0.10)", borderLeft: "3px solid #7C3AED" }}>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "#7C3AED", marginBottom: 8 }}>{rank}</div>
-                <div style={{ fontSize: 16, fontWeight: 700, color: "#0F0B1E", marginBottom: 8 }}>{title}</div>
-                <div style={{ fontSize: 14, lineHeight: 1.65, color: "rgba(15,11,30,0.6)" }}>{desc}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* ── FAQ ──────────────────────────────────────────────────────── */}
       <section style={{ padding: "80px 24px 88px", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
@@ -923,29 +882,29 @@ export default function Home() {
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 0 }}>
             {([
               {
-                q: "What is FeatureStream?",
-                a: "FeatureStream is the Product Management OS for AI agent builders. At its core is a Product Catalogue — one permanent record per feature or use case, spanning the full lifecycle from the first customer signal that justified it, through the PRD and build, to the post-launch eval that proves it worked. The roadmap is a filtered view of the catalogue, not a separate database.",
+                q: "What is the Product Catalogue?",
+                a: "The Product Catalogue is the core of FeatureStream — one permanent record per feature or use case, tracking its full lifecycle: idea, evidence, PRD, in development, shipped, fixed, and evaluated. Every entry links back to the original evidence that justified it, carries a predicted revenue or time impact tag, and once shipped, a realised-outcome tag. The roadmap is simply a filtered view of the catalogue — not a separate database.",
               },
               {
-                q: "What problem does FeatureStream solve?",
-                a: "AI agent PMs are stitching together context from lost-deal notes, support tickets, Jira, agent traces, and competitor signals across separate tools — then making roadmap calls without a single source of truth. Months later, nobody can answer 'why do we have this feature?' without digging through old Slack threads. FeatureStream connects those signals into one catalogue record, so the evidence behind every decision is permanently attached to it.",
+                q: "What signals does FeatureStream pull in?",
+                a: "FeatureStream connects customer requests, lost-deal notes, support tickets, competitor signals by use case cluster, Jira (for status sync), local architecture and KAG context, and observability platforms — starting with Langfuse, which surfaces agent traces, latency, token cost, completion rate, eval scores, and hallucination signals.",
               },
               {
-                q: "What does FeatureStream generate?",
-                a: "Every output is sourced from the same catalogue record: a PRD with agentic workflow flowchart, implementation specs with diagrams, UI/design review wireframes, an agentic fix spec (narrower than a PRD — pointed at one diagnosed issue with root-cause and suggested fix), release notes framed around agent behaviour outcomes, a post-launch evaluation spec that feeds back into the catalogue as a realised-outcome tag, and a prompt/version changelog pairing every change with before-and-after metrics.",
+                q: "What does FeatureStream actually generate?",
+                a: "Every output comes from the same catalogue record: a PRD with agentic workflow flowchart, an agentic fix spec (pointed at one diagnosed issue — e.g. '40% drop-off at step 3, likely cause: prompt ambiguity, suggested fix: X'), implementation specs with diagrams, UI/design wireframes, release notes framed around agent behaviour outcomes, a post-launch evaluation spec that feeds back as a new realised-outcome tag, and a prompt/version changelog pairing every change with before-and-after metrics.",
+              },
+              {
+                q: "How does the PM Copilot work?",
+                a: "The copilot is a conversational layer on top of the catalogue for brainstorming and refining an opportunity before committing it to the roadmap. It draws on three sources: your Product Catalogue via local RAG (tagged with realised outcomes), your architecture and KAG context, and public competitor and market signals weighted by evidence count. It produces sharper revenue and impact estimates — not generic priority scores. Predictive forecasting is a future roadmap item, not a current capability.",
+              },
+              {
+                q: "How is FeatureStream different from Productboard or Amplitude?",
+                a: "Those tools do parts of this well. Productboard handles roadmap discovery; Amplitude Agent Analytics handles diagnostics. FeatureStream connects the full loop — diagnosis, evidence, decision, build, ship, re-evaluate — on a single catalogue record, built specifically for AI agent builders who need product and agent behaviour managed in the same place. The differentiation is the assembled loop, not any single feature.",
               },
               {
                 q: "Is my business domain covered?",
-                a: "We currently cover vertical domains (skincare, insurance, legal, construction), horizontal functions (sales, marketing), and tech capability domains. If your domain isn't listed, you can request it — we'll build a report for your space.",
+                a: "We currently cover vertical domains (skincare, insurance, legal, construction), horizontal functions (sales, marketing), and tech capability domains. If your domain isn't listed, request it below.",
                 hasRequest: true,
-              },
-              {
-                q: "What observability platforms does FeatureStream connect to?",
-                a: "Langfuse is the first integration — covering agent traces, latency, token cost, completion rate, eval scores, and hallucination signals. Additional observability platforms are on the roadmap. FeatureStream uses these signals to surface agentic fix specs: when step 3 has a 40% drop-off, it diagnoses the likely cause and generates a pointed spec for the fix rather than a generic bug report.",
-              },
-              {
-                q: "Where is FeatureStream headed?",
-                a: "We're deepening the connected loop — tighter Jira sync, broader observability coverage, and cross-customer evidence compounding within verticals so that as more AI agent builders in the same space use FeatureStream, the taxonomy and evidence-weighting gets sharper for everyone. Predictive forecasting (what will happen, not what has happened) is a longer-term roadmap item and not something we're claiming today.",
               },
             ] as { q: string; a: string; hasRequest?: boolean }[]).map(({ q, a, hasRequest }, i) => (
               <div key={i} style={{ borderTop: i === 0 ? "1px solid rgba(124,58,237,0.15)" : undefined, borderBottom: "1px solid rgba(124,58,237,0.15)" }}>
