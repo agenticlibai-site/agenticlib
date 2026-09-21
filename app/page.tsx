@@ -621,7 +621,7 @@ export default function Home() {
                 // [label, path, cx, cy, stroke-color]
                 // 7 items, 360/7≈51.43° apart, starting at 270° (top)
                 ["Customer requests",  "M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z",                      240, 80,  "#7C3AED"],
-                ["Revenue metrics",    "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 9v1m-5.4-9A9 9 0 1121 12a9 9 0 01-14.4 7.2",  365, 140, "#F97316"],
+                ["Revenue metrics",    "M18 20V10M12 20V4M6 20v-6",  365, 140, "#F97316"],
                 ["PRDs & specs",       "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8", 396, 276, "#3B82F6"],
                 ["Post-launch evals",  "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",                                  309, 384, "#10B981"],
                 ["Prompt changelogs",  "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",                                           171, 384, "#A21CAF"],
