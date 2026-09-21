@@ -582,15 +582,14 @@ export default function Home() {
           <div>
             <span style={{ display: "inline-block", fontSize: 12, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", background: "rgba(124,58,237,0.07)", border: "1px solid rgba(124,58,237,0.15)", borderRadius: 9999, padding: "5px 14px", marginBottom: 28 }}>Product Catalogue</span>
             <h2 style={{ fontSize: "clamp(26px,2.8vw,42px)", fontWeight: 700, lineHeight: 1.12, letterSpacing: "-0.03em", color: "#0F0B1E", margin: "0 0 22px", maxWidth: "22ch" }}>
-              The product owner's{" "}
-              <span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 45%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>complete view</span>
-              {" "}in one place.
+              Keep track of every product detail{" "}
+              <span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 45%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>with the Product Catalogue.</span>
             </h2>
-            <p style={{ fontSize: 16.5, lineHeight: 1.65, color: "rgba(15,11,30,0.60)", margin: "0 0 28px", maxWidth: "46ch" }}>
-              The Product Catalogue gives you full visibility across every feature — customer requests, use cases, revenue and time impact, status updates and prompt changelogs all on a single record.
+            <p style={{ fontSize: 16.5, lineHeight: 1.65, color: "rgba(15,11,30,0.60)", margin: "0 0 24px", maxWidth: "46ch" }}>
+              The product owner gets a full view of every feature: customer requests, use cases, revenue and time impact metrics, Planned, In Development and Shipped status updates, and prompt and version changelogs.
             </p>
             <p style={{ fontSize: 16.5, lineHeight: 1.65, color: "rgba(15,11,30,0.60)", margin: "0 0 36px", maxWidth: "46ch" }}>
-              From that record, generate any document you need — PRDs, UI wireframes, implementation specs, agentic fix specs, release notes and post-launch evaluation specs — without copy-pasting context between tools.
+              From the same record, generate PRDs, UI wireframes, implementation specs, agentic fix specs, release notes and post-launch evaluation specs without switching tools or copying context.
             </p>
             {/* Status chips */}
             <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 10 }}>
@@ -604,36 +603,38 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right — circular visual */}
-          <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            {/* Background card */}
-            <div style={{ width: "100%", aspectRatio: "1", maxWidth: 520, borderRadius: 28, background: "linear-gradient(145deg,#EEE8FD 0%,#DDD6FD 40%,#C4B5FD 100%)", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
-              {/* Concentric rings */}
-              <div style={{ position: "absolute", width: "70%", aspectRatio: "1", borderRadius: "50%", border: "1px solid rgba(124,58,237,0.18)", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
-              <div style={{ position: "absolute", width: "88%", aspectRatio: "1", borderRadius: "50%", border: "1px solid rgba(124,58,237,0.10)", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
+          {/* Right — circular visual, fixed 480×480 for precise orbital positioning */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ position: "relative", width: 480, height: 480, borderRadius: 28, background: "linear-gradient(145deg,#EEE8FD 0%,#DDD6FD 45%,#C4B5FD 100%)", flexShrink: 0 }}>
 
-              {/* Centre node */}
-              <div style={{ position: "relative", zIndex: 4, width: 80, height: 80, borderRadius: 22, background: "linear-gradient(150deg,#7C3AED 0%,#9B5DE5 55%,#5E6CE8 100%)", boxShadow: "0 16px 40px rgba(124,58,237,0.45)", display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center", gap: 6 }}>
-                <img src="/logo.png" alt="FeatureStream" style={{ width: 32, height: 32, objectFit: "contain" }} />
+              {/* Concentric rings */}
+              <div style={{ position: "absolute", width: 300, height: 300, borderRadius: "50%", border: "1.2px solid rgba(124,58,237,0.22)", top: 90, left: 90 }} />
+              <div style={{ position: "absolute", width: 390, height: 390, borderRadius: "50%", border: "1px solid rgba(124,58,237,0.10)", top: 45, left: 45 }} />
+
+              {/* Centre node — logo */}
+              <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", zIndex: 4, width: 80, height: 80, borderRadius: 22, background: "linear-gradient(150deg,#7C3AED 0%,#9B5DE5 55%,#5E6CE8 100%)", boxShadow: "0 16px 40px rgba(124,58,237,0.45)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <img src="/logo.png" alt="FeatureStream" style={{ width: 36, height: 36, objectFit: "contain" }} />
               </div>
 
-              {/* Orbiting icons — positioned absolutely around the circle */}
+              {/* Orbiting icon tiles — positions computed on circle r=160 centred at (240,240) */}
               {([
-                // [label, icon-svg-path-d, top%, left%, color]
-                ["Customer requests", "M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z", "6%", "38%", "#7C3AED"],
-                ["Features & use cases", "M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18", "20%", "78%", "#A21CAF"],
-                ["Revenue metrics", "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z", "55%", "88%", "#C2186A"],
-                ["Status updates", "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", "82%", "68%", "#059669"],
-                ["Prompt changelogs", "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4", "82%", "20%", "#5E6CE8"],
-                ["Documents", "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z", "55%", "4%", "#7C3AED"],
-                ["PRDs & specs", "M4 6h16M4 10h16M4 14h10M4 18h6", "20%", "14%", "#A21CAF"],
-              ] as [string, string, string, string, string][]).map(([label, pathD, top, left, color]) => (
-                <div key={label} title={label} style={{ position: "absolute", top, left, transform: "translate(-50%,-50%)", zIndex: 3, background: "#fff", borderRadius: 16, width: 52, height: 52, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 6px 20px rgba(0,0,0,0.10)", border: "1px solid rgba(255,255,255,0.9)" }}>
+                // [label, path, cx, cy, stroke-color]
+                // 7 items, 360/7≈51.43° apart, starting at 270° (top)
+                ["Customer requests",  "M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z",                      240, 80,  "#7C3AED"],
+                ["Revenue metrics",    "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V7m0 9v1m-5.4-9A9 9 0 1121 12a9 9 0 01-14.4 7.2",  365, 140, "#F97316"],
+                ["PRDs & specs",       "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8", 396, 276, "#3B82F6"],
+                ["Post-launch evals",  "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",                                  309, 384, "#10B981"],
+                ["Prompt changelogs",  "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",                                           171, 384, "#A21CAF"],
+                ["Use case clusters",  "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5",                         84,  276, "#EAB308"],
+                ["Status tracking",    "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10zM12 6v6l4 2", 115, 140, "#06B6D4"],
+              ] as [string, string, number, number, string][]).map(([label, pathD, cx, cy, color]) => (
+                <div key={label} title={label} style={{ position: "absolute", left: cx - 26, top: cy - 26, zIndex: 3, background: "#fff", borderRadius: 16, width: 52, height: 52, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 18px rgba(0,0,0,0.11)", border: "1.5px solid rgba(255,255,255,0.95)" }}>
                   <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
                     <path d={pathD} />
                   </svg>
                 </div>
               ))}
+
             </div>
           </div>
 
