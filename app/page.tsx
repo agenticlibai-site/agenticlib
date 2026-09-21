@@ -574,6 +574,72 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Product Catalogue ──────────────────────────────────────────── */}
+      <section style={{ padding: "88px 24px 96px", fontFamily: "var(--font-schibsted), system-ui, sans-serif", background: "#fff" }}>
+        <div style={{ maxWidth: 1160, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+
+          {/* Left — copy */}
+          <div>
+            <span style={{ display: "inline-block", fontSize: 12, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase" as const, color: "#5B21B6", background: "rgba(124,58,237,0.07)", border: "1px solid rgba(124,58,237,0.15)", borderRadius: 9999, padding: "5px 14px", marginBottom: 28 }}>Product Catalogue</span>
+            <h2 style={{ fontSize: "clamp(26px,2.8vw,42px)", fontWeight: 700, lineHeight: 1.12, letterSpacing: "-0.03em", color: "#0F0B1E", margin: "0 0 22px", maxWidth: "22ch" }}>
+              The product owner's{" "}
+              <span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 45%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>complete view</span>
+              {" "}in one place.
+            </h2>
+            <p style={{ fontSize: 16.5, lineHeight: 1.65, color: "rgba(15,11,30,0.60)", margin: "0 0 28px", maxWidth: "46ch" }}>
+              The Product Catalogue gives you full visibility across every feature — customer requests, use cases, revenue and time impact, status updates and prompt changelogs all on a single record.
+            </p>
+            <p style={{ fontSize: 16.5, lineHeight: 1.65, color: "rgba(15,11,30,0.60)", margin: "0 0 36px", maxWidth: "46ch" }}>
+              From that record, generate any document you need — PRDs, UI wireframes, implementation specs, agentic fix specs, release notes and post-launch evaluation specs — without copy-pasting context between tools.
+            </p>
+            {/* Status chips */}
+            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 10 }}>
+              {[
+                ["Planned", "#7C3AED", "rgba(124,58,237,0.08)"],
+                ["In Development", "#5E6CE8", "rgba(94,108,232,0.08)"],
+                ["Shipped", "#059669", "rgba(5,150,105,0.08)"],
+              ].map(([label, color, bg]) => (
+                <span key={label} style={{ fontSize: 13, fontWeight: 600, color, background: bg, border: `1px solid ${color}33`, borderRadius: 9999, padding: "5px 14px" }}>{label}</span>
+              ))}
+            </div>
+          </div>
+
+          {/* Right — circular visual */}
+          <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            {/* Background card */}
+            <div style={{ width: "100%", aspectRatio: "1", maxWidth: 520, borderRadius: 28, background: "linear-gradient(145deg,#EEE8FD 0%,#DDD6FD 40%,#C4B5FD 100%)", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden" }}>
+              {/* Concentric rings */}
+              <div style={{ position: "absolute", width: "70%", aspectRatio: "1", borderRadius: "50%", border: "1px solid rgba(124,58,237,0.18)", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
+              <div style={{ position: "absolute", width: "88%", aspectRatio: "1", borderRadius: "50%", border: "1px solid rgba(124,58,237,0.10)", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }} />
+
+              {/* Centre node */}
+              <div style={{ position: "relative", zIndex: 4, width: 80, height: 80, borderRadius: 22, background: "linear-gradient(150deg,#7C3AED 0%,#9B5DE5 55%,#5E6CE8 100%)", boxShadow: "0 16px 40px rgba(124,58,237,0.45)", display: "flex", flexDirection: "column" as const, alignItems: "center", justifyContent: "center", gap: 6 }}>
+                <img src="/logo.png" alt="FeatureStream" style={{ width: 32, height: 32, objectFit: "contain" }} />
+              </div>
+
+              {/* Orbiting icons — positioned absolutely around the circle */}
+              {([
+                // [label, icon-svg-path-d, top%, left%, color]
+                ["Customer requests", "M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z", "6%", "38%", "#7C3AED"],
+                ["Features & use cases", "M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18", "20%", "78%", "#A21CAF"],
+                ["Revenue metrics", "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z", "55%", "88%", "#C2186A"],
+                ["Status updates", "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z", "82%", "68%", "#059669"],
+                ["Prompt changelogs", "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4", "82%", "20%", "#5E6CE8"],
+                ["Documents", "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z", "55%", "4%", "#7C3AED"],
+                ["PRDs & specs", "M4 6h16M4 10h16M4 14h10M4 18h6", "20%", "14%", "#A21CAF"],
+              ] as [string, string, string, string, string][]).map(([label, pathD, top, left, color]) => (
+                <div key={label} title={label} style={{ position: "absolute", top, left, transform: "translate(-50%,-50%)", zIndex: 3, background: "#fff", borderRadius: 16, width: 52, height: 52, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 6px 20px rgba(0,0,0,0.10)", border: "1px solid rgba(255,255,255,0.9)" }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d={pathD} />
+                  </svg>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
+
       {/* ── How It Works (removed) ── */}
       <section className="how-it-works" style={{ display: "none" }}>
         <div style={{ maxWidth: 980, margin: "0 auto" }}>
