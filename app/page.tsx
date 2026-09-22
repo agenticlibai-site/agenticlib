@@ -549,7 +549,7 @@ export default function Home() {
       </section>
 
       {/* ── How the product roadmap is created ───────────────────────────── */}
-      <section style={{ padding: "88px 24px 96px", background: "#F8F7FF", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+      <section style={{ padding: "88px 24px 96px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
         <div style={{ maxWidth: 1160, margin: "0 auto" }}>
           <div style={{ textAlign: "center" as const, marginBottom: 56 }}>
             <h2 style={{ fontSize: "clamp(26px,3vw,42px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, color: "#000", margin: 0 }}>
@@ -568,13 +568,16 @@ export default function Home() {
                   {([["#7C3AED","M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z M9 22V12h6v10"],
                      ["#5E6CE8","M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"],
                      ["#059669","M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"],
-                     ["#A21CAF","M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"],
+                     ["#A21CAF","M18 20V10M12 20V4M6 20v-6"],
                   ] as [string,string][]).map(([color, path], i) => {
                     const y = 8 + i * 30;
                     return (
                       <g key={color+i}>
                         <rect x="10" y={y} width="36" height="24" rx="7" fill={`${color}12`} stroke={`${color}30`} strokeWidth="1"/>
-                        <svg x="20" y={y+4} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={path}/></svg>
+                        {/* Icon via transform instead of nested svg to avoid overflow */}
+                        <g transform={`translate(20,${y+4}) scale(0.667)`} fill="none" stroke={color} strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round">
+                          <path d={path}/>
+                        </g>
                         {/* Connector line */}
                         <line x1="46" y1={y+12} x2="106" y2="65" stroke={`${color}50`} strokeWidth="1.2" strokeDasharray="4 3"/>
                       </g>
