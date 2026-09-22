@@ -681,7 +681,7 @@ export default function Home() {
             {/* Card 4 — Usage analytics */}
             <div style={{ background: "#fff", borderRadius: 18, border: "1px solid rgba(0,0,0,0.07)", boxShadow: "0 2px 16px rgba(0,0,0,0.05)", overflow: "hidden" }}>
               <div style={{ background: "rgba(124,58,237,0.05)", padding: "28px 20px 24px", minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg viewBox="0 0 200 130" style={{ width: "100%" }}>
+                <svg viewBox="0 0 200 145" style={{ width: "100%" }}>
                   {/* 3 ranked items with approve/reject */}
                   {([
                     ["#1", 8,  "#7C3AED"],
