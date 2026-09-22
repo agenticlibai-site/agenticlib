@@ -852,6 +852,18 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Post-launch evaluation ─────────────────────────────────────────── */}
+      <section style={{ padding: "88px 24px 96px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 860, margin: "0 auto" }}>
+          <h2 style={{ fontSize: "clamp(28px,3.2vw,48px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, color: "#0F0B1E", margin: "0 0 24px", maxWidth: "20ch" }}>
+            Post-launch evaluation.
+          </h2>
+          <p style={{ fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.65, color: "rgba(15,11,30,0.58)", margin: 0, maxWidth: "58ch" }}>
+            FeatureStream measures post-launch impact directly tying the implementation of new product features and product error fixes to revenue and customer satisfaction.
+          </p>
+        </div>
+      </section>
+
       {/* ── How It Works (removed) ── */}
       <section className="how-it-works" style={{ display: "none" }}>
         <div style={{ maxWidth: 980, margin: "0 auto" }}>
