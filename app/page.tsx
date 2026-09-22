@@ -548,6 +548,182 @@ export default function Home() {
           </div>
       </section>
 
+      {/* ── How the product roadmap is created ───────────────────────────── */}
+      <section style={{ padding: "88px 24px 96px", background: "#F8F7FF", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 1160, margin: "0 auto" }}>
+          <div style={{ textAlign: "center" as const, marginBottom: 56 }}>
+            <h2 style={{ fontSize: "clamp(26px,3vw,42px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, color: "#000", margin: 0 }}>
+              The Process.
+            </h2>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }}>
+
+            {/* Card 1 — Integrations */}
+            <div style={{ background: "#fff", borderRadius: 18, border: "1px solid rgba(0,0,0,0.07)", boxShadow: "0 2px 16px rgba(0,0,0,0.05)", overflow: "hidden" }}>
+              <div style={{ background: "rgba(124,58,237,0.05)", padding: "28px 20px 24px", minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg viewBox="0 0 200 130" style={{ width: "100%" }}>
+                  <defs><linearGradient id="c1lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#7C3AED"/><stop offset="100%" stopColor="#5E6CE8"/></linearGradient></defs>
+                  {/* 4 source tiles on left */}
+                  {([["#7C3AED","M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z M9 22V12h6v10"],
+                     ["#5E6CE8","M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"],
+                     ["#059669","M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"],
+                     ["#A21CAF","M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"],
+                  ] as [string,string][]).map(([color, path], i) => {
+                    const y = 8 + i * 30;
+                    return (
+                      <g key={color+i}>
+                        <rect x="10" y={y} width="36" height="24" rx="7" fill={`${color}12`} stroke={`${color}30`} strokeWidth="1"/>
+                        <svg x="20" y={y+4} width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={path}/></svg>
+                        {/* Connector line */}
+                        <line x1="46" y1={y+12} x2="106" y2="65" stroke={`${color}50`} strokeWidth="1.2" strokeDasharray="4 3"/>
+                      </g>
+                    );
+                  })}
+                  {/* Central FS circle */}
+                  <circle cx="124" cy="65" r="24" fill="url(#c1lg)" opacity="0.12"/>
+                  <circle cx="124" cy="65" r="18" fill="url(#c1lg)"/>
+                  <text x="124" y="70" textAnchor="middle" fontSize="9" fill="white" fontWeight="700" fontFamily="system-ui,sans-serif">FS</text>
+                  {/* Output arrow */}
+                  <line x1="142" y1="65" x2="168" y2="65" stroke="rgba(124,58,237,0.4)" strokeWidth="1.5"/>
+                  <polygon points="168,61 176,65 168,69" fill="rgba(124,58,237,0.5)"/>
+                  <rect x="178" y="55" width="18" height="20" rx="5" fill="rgba(124,58,237,0.10)" stroke="rgba(124,58,237,0.30)" strokeWidth="1"/>
+                  <text x="187" y="68" textAnchor="middle" fontSize="7" fill="#5B21B6" fontFamily="system-ui" fontWeight="700">DB</text>
+                </svg>
+              </div>
+              <div style={{ padding: "20px 22px 26px" }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#000", letterSpacing: "0.04em" }}>01</span>
+                <div style={{ fontSize: 17, fontWeight: 700, color: "#000", margin: "8px 0 12px", lineHeight: 1.25 }}>Integrations with all the tools in your environment.</div>
+                <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column" as const, gap: 8 }}>
+                  {[
+                    ["Observability platforms", "to understand agent behaviour"],
+                    ["CRM & Note-taking tools", "to understand lost deal notes"],
+                    ["Customer support/ticketing platforms", "to understand customer feedback and requests"],
+                    ["Usage Analytics platforms", "to understand how a user interacts with your agent"],
+                  ].map(([bold, rest]) => (
+                    <li key={bold} style={{ fontSize: 13, lineHeight: 1.5, color: "#000", display: "flex", gap: 8, alignItems: "flex-start" }}>
+                      <span style={{ color: "#000", fontWeight: 700, marginTop: 2, flexShrink: 0 }}>·</span>
+                      <span><span style={{ fontWeight: 700, color: "#000" }}>{bold}</span>{" - "}{rest}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Card 2 — Note storage */}
+            <div style={{ background: "#fff", borderRadius: 18, border: "1px solid rgba(0,0,0,0.07)", boxShadow: "0 2px 16px rgba(0,0,0,0.05)", overflow: "hidden" }}>
+              <div style={{ background: "rgba(94,108,232,0.05)", padding: "28px 20px 24px", minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg viewBox="0 0 200 130" style={{ width: "100%" }}>
+                  {/* Your context — left column */}
+                  {[16, 46, 76, 106].map((y, i) => (
+                    <g key={y}>
+                      <rect x="8" y={y} width="72" height="22" rx="6" fill="rgba(124,58,237,0.10)" stroke="rgba(124,58,237,0.25)" strokeWidth="1"/>
+                      <rect x="16" y={y+7} width={[44,38,50,36][i]} height="8" rx="4" fill="rgba(124,58,237,0.35)"/>
+                    </g>
+                  ))}
+                  {/* Dashed match lines */}
+                  {[27, 57, 87, 117].map((y, i) => (
+                    <line key={y} x1="80" y1={y} x2="120" y2={y} stroke="rgba(124,58,237,0.30)" strokeWidth="1.2" strokeDasharray="4 3"/>
+                  ))}
+                  {/* Match dots at center */}
+                  {[27, 57, 87].map(y => (
+                    <circle key={y} cx="100" cy={y} r="3" fill="#7C3AED" opacity="0.7"/>
+                  ))}
+                  {/* Competitor signals — right column */}
+                  {[16, 46, 76, 106].map((y, i) => (
+                    <g key={y+200}>
+                      <rect x="120" y={y} width="72" height="22" rx="6" fill="rgba(194,24,106,0.08)" stroke="rgba(194,24,106,0.22)" strokeWidth="1"/>
+                      <rect x="128" y={y+7} width={[40,52,34,48][i]} height="8" rx="4" fill="rgba(194,24,106,0.30)"/>
+                    </g>
+                  ))}
+                </svg>
+              </div>
+              <div style={{ padding: "20px 22px 26px" }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#000", letterSpacing: "0.04em" }}>02</span>
+                <div style={{ fontSize: 17, fontWeight: 700, color: "#000", margin: "8px 0 10px", lineHeight: 1.25 }}>Matched against market signals.</div>
+                <div style={{ fontSize: 14, lineHeight: 1.65, color: "#000" }}>Your private context is matched against our feature taxonomy, then compared to competitor signals within the same use case and business domain, showing exactly which competitors have shipped what, where it counts.</div>
+              </div>
+            </div>
+
+            {/* Card 3 — Support tickets */}
+            <div style={{ background: "#fff", borderRadius: 18, border: "1px solid rgba(0,0,0,0.07)", boxShadow: "0 2px 16px rgba(0,0,0,0.05)", overflow: "hidden" }}>
+              <div style={{ background: "rgba(124,58,237,0.05)", padding: "28px 20px 24px", minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg viewBox="0 0 200 130" style={{ width: "100%" }}>
+                  {/* 4 roadmap item rows */}
+                  {([
+                    ["#7C3AED", 8],
+                    ["#5E6CE8", 38],
+                    ["#F97316", 68],
+                    ["#06B6D4", 98],
+                  ] as [string, number][]).map(([color, y]) => (
+                    <g key={y}>
+                      {/* Card background */}
+                      <rect x="8" y={y} width="184" height="24" rx="7" fill="#fff" stroke="rgba(0,0,0,0.07)" strokeWidth="1"/>
+                      {/* Left color accent */}
+                      <rect x="8" y={y} width="6" height="24" rx="3" fill={color}/>
+                      {/* Priority dot */}
+                      <circle cx="26" cy={y+12} r="4" fill={`${color}25`} stroke={color} strokeWidth="1"/>
+                      {/* Content bars */}
+                      <rect x="38" y={y+8} width="80" height="8" rx="4" fill="rgba(0,0,0,0.09)"/>
+                      {/* Impact badge */}
+                      <rect x="148" y={y+6} width="36" height="12" rx="4" fill={`${color}15`} stroke={`${color}35`} strokeWidth="0.8"/>
+                    </g>
+                  ))}
+                </svg>
+              </div>
+              <div style={{ padding: "20px 22px 26px" }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#000", letterSpacing: "0.04em" }}>03</span>
+                <div style={{ fontSize: 17, fontWeight: 700, color: "#000", margin: "8px 0 10px", lineHeight: 1.25 }}>Product Roadmap Elements.</div>
+                <div style={{ fontSize: 14, lineHeight: 1.65, color: "#000" }}>FeatureStream surfaces four kinds of opportunities as required: new product features, use case expansions, agentic fixes, and UI fixes - all in the same roadmap.</div>
+              </div>
+            </div>
+
+            {/* Card 4 — Usage analytics */}
+            <div style={{ background: "#fff", borderRadius: 18, border: "1px solid rgba(0,0,0,0.07)", boxShadow: "0 2px 16px rgba(0,0,0,0.05)", overflow: "hidden" }}>
+              <div style={{ background: "rgba(124,58,237,0.05)", padding: "28px 20px 24px", minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg viewBox="0 0 200 130" style={{ width: "100%" }}>
+                  {/* 3 ranked items with approve/reject */}
+                  {([
+                    ["#1", 8,  "#7C3AED"],
+                    ["#2", 40, "#5E6CE8"],
+                    ["#3", 72, "#A21CAF"],
+                  ] as [string, number, string][]).map(([rank, y, color]) => (
+                    <g key={rank}>
+                      <rect x="8" y={y} width="184" height="26" rx="7" fill="#fff" stroke="rgba(0,0,0,0.07)" strokeWidth="1"/>
+                      {/* Rank */}
+                      <rect x="14" y={y+6} width="18" height="14" rx="4" fill={`${color}15`}/>
+                      <text x="23" y={y+16} textAnchor="middle" fontSize="7.5" fill={color} fontFamily="system-ui" fontWeight="700">{rank}</text>
+                      {/* Content bar */}
+                      <rect x="40" y={y+9} width="84" height="8" rx="4" fill="rgba(0,0,0,0.08)"/>
+                      {/* Approve button */}
+                      <rect x="140" y={y+6} width="22" height="14" rx="5" fill="rgba(5,150,105,0.12)" stroke="rgba(5,150,105,0.35)" strokeWidth="1"/>
+                      <path d={`M${145} ${y+13} l4 4 6-7`} fill="none" stroke="#059669" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      {/* Reject button */}
+                      <rect x="168" y={y+6} width="22" height="14" rx="5" fill="rgba(239,68,68,0.10)" stroke="rgba(239,68,68,0.30)" strokeWidth="1"/>
+                      <path d={`M${173} ${y+10} l6 6 M${179} ${y+10} l-6 6`} fill="none" stroke="#EF4444" strokeWidth="1.5" strokeLinecap="round"/>
+                    </g>
+                  ))}
+                  {/* Output arrow */}
+                  <line x1="100" y1="104" x2="100" y2="116" stroke="rgba(124,58,237,0.35)" strokeWidth="1.5"/>
+                  <polygon points="96,116 100,123 104,116" fill="rgba(124,58,237,0.4)"/>
+                  {/* Output pills */}
+                  <rect x="18" y="120" width="70" height="18" rx="6" fill="rgba(5,150,105,0.10)" stroke="rgba(5,150,105,0.30)" strokeWidth="1"/>
+                  <text x="53" y="132" textAnchor="middle" fontSize="7.5" fill="#059669" fontFamily="system-ui" fontWeight="700">Jira</text>
+                  <rect x="112" y="120" width="70" height="18" rx="6" fill="rgba(124,58,237,0.08)" stroke="rgba(124,58,237,0.25)" strokeWidth="1"/>
+                  <text x="147" y="132" textAnchor="middle" fontSize="7.5" fill="#5B21B6" fontFamily="system-ui" fontWeight="700">Catalogue</text>
+                </svg>
+              </div>
+              <div style={{ padding: "20px 22px 26px" }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: "#000", letterSpacing: "0.04em" }}>04</span>
+                <div style={{ fontSize: 17, fontWeight: 700, color: "#000", margin: "8px 0 10px", lineHeight: 1.25 }}>The Product Owner stays in control.</div>
+                <div style={{ fontSize: 14, lineHeight: 1.65, color: "#000" }}>Every item in the roadmap is ranked by impact. Nothing ships without the approval of the product owner - reject what doesn't fit, approve what does, and it flows straight to Jira and the FeatureStream product catalogue.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       <section className="trusted-by-section" style={{ padding: "0 24px 56px", position: "relative", zIndex: 1, background: "transparent" }}>
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
 
