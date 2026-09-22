@@ -858,7 +858,7 @@ export default function Home() {
           <h2 style={{ fontSize: "clamp(28px,3.2vw,48px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, color: "#0F0B1E", margin: "0 0 24px", maxWidth: "20ch" }}>
             Post-launch evaluation.
           </h2>
-          <p style={{ fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.65, color: "rgba(15,11,30,0.58)", margin: "0 0 52px", maxWidth: "58ch" }}>
+          <p style={{ fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.65, color: "#000", margin: "0 0 52px", maxWidth: "58ch" }}>
             FeatureStream measures post-launch impact directly tying the implementation of new product features and product error fixes to revenue, customer satisfaction and product usage analytics.
           </p>
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
