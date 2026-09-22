@@ -820,6 +820,38 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ── Product Specs ──────────────────────────────────────────────────── */}
+      <section style={{ padding: "80px 24px 88px", background: "#F0EDFB", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 860, margin: "0 auto" }}>
+          <h2 style={{ fontSize: "clamp(22px,2.6vw,34px)", fontWeight: 700, letterSpacing: "-0.025em", lineHeight: 1.2, color: "#0F0B1E", margin: "0 0 52px", maxWidth: "36ch" }}>
+            FeatureStream creates product specifications tailored to each iteration and build cycle.
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column" as const, gap: 36 }}>
+            {([
+              {
+                label: "PRDs (with written specs and flowcharts)",
+                icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>,
+              },
+              {
+                label: "UI design reviews and wireframing",
+                icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M3 9h18M9 21V9"/></svg>,
+              },
+              {
+                label: "Agentic Fixes spec",
+                icon: <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>,
+              },
+            ] as { label: string; icon: React.ReactNode }[]).map(({ label, icon }) => (
+              <div key={label} style={{ display: "flex", alignItems: "center", gap: 20 }}>
+                <div style={{ width: 52, height: 52, borderRadius: 14, background: "rgba(124,58,237,0.10)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+                  {icon}
+                </div>
+                <span style={{ fontSize: "clamp(18px,2vw,24px)", fontWeight: 700, color: "#0F0B1E", letterSpacing: "-0.02em", lineHeight: 1.2 }}>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── How It Works (removed) ── */}
       <section className="how-it-works" style={{ display: "none" }}>
         <div style={{ maxWidth: 980, margin: "0 auto" }}>
