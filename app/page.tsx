@@ -858,9 +858,17 @@ export default function Home() {
           <h2 style={{ fontSize: "clamp(28px,3.2vw,48px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, color: "#0F0B1E", margin: "0 0 24px", maxWidth: "20ch" }}>
             Post-launch evaluation.
           </h2>
-          <p style={{ fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.65, color: "rgba(15,11,30,0.58)", margin: 0, maxWidth: "58ch" }}>
-            FeatureStream measures post-launch impact directly tying the implementation of new product features and product error fixes to revenue and customer satisfaction.
+          <p style={{ fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.65, color: "rgba(15,11,30,0.58)", margin: "0 0 52px", maxWidth: "58ch" }}>
+            FeatureStream measures post-launch impact directly tying the implementation of new product features and product error fixes to revenue, customer satisfaction and product usage analytics.
           </p>
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            <div style={{ width: 52, height: 52, borderRadius: 14, background: "rgba(124,58,237,0.10)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+            </div>
+            <span style={{ fontSize: "clamp(18px,2vw,24px)", fontWeight: 700, color: "#0F0B1E", letterSpacing: "-0.02em", lineHeight: 1.2 }}>Post-launch evaluation spec</span>
+          </div>
         </div>
       </section>
 
