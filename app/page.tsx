@@ -402,7 +402,7 @@ export default function Home() {
                 </span>
               </h1>
               <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 24, fontWeight: 600, fontSize: 17, textAlign: "center", maxWidth: 680 }}>
-                Turn customer requests, agent behaviour analytics and competitor signals by domain and use case into a dynamic product roadmap.<br /><br /><span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 55%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>Built for product managers, product owners and product creators within AI Agent companies.</span>
+                FeatureStream's contextual intelligence layer turns customer requests, agent behaviour analytics and competitor signals by domain and use case into a dynamic product roadmap.<br /><br /><span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 55%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>Built for product managers, product owners and product creators within AI Agent companies.</span>
               </p>
               <div style={{ marginTop: 32, display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                 <button
