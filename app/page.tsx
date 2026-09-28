@@ -1028,10 +1028,6 @@ export default function Home() {
                 a: "Every output comes from the same catalogue record: a PRD with agentic workflow flowchart, an agentic fix spec (pointed at one diagnosed issue — e.g. '40% drop-off at step 3, likely cause: prompt ambiguity, suggested fix: X'), implementation specs with diagrams, UI/design wireframes, release notes framed around agent behaviour outcomes, a post-launch evaluation spec that feeds back as a new realised-outcome tag, and a prompt/version changelog pairing every change with before-and-after metrics.",
               },
               {
-                q: "How does the PM Copilot work?",
-                a: "The copilot is a conversational layer on top of the catalogue for brainstorming and refining an opportunity before committing it to the roadmap. It draws on three sources: your Product Catalogue via local RAG (tagged with realised outcomes), your architecture and KAG context, and public competitor and market signals weighted by evidence count. It produces sharper revenue and impact estimates — not generic priority scores. Predictive forecasting is a future roadmap item, not a current capability.",
-              },
-              {
                 q: "Is my business domain covered?",
                 a: "We currently cover vertical domains (skincare, insurance, legal, construction), horizontal functions (sales, marketing), and tech capability domains. If your domain isn't listed, request it below.",
                 hasRequest: true,
