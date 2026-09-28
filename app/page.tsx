@@ -1032,10 +1032,6 @@ export default function Home() {
                 a: "The copilot is a conversational layer on top of the catalogue for brainstorming and refining an opportunity before committing it to the roadmap. It draws on three sources: your Product Catalogue via local RAG (tagged with realised outcomes), your architecture and KAG context, and public competitor and market signals weighted by evidence count. It produces sharper revenue and impact estimates — not generic priority scores. Predictive forecasting is a future roadmap item, not a current capability.",
               },
               {
-                q: "How is FeatureStream different from Productboard or Amplitude?",
-                a: "Those tools do parts of this well. Productboard handles roadmap discovery; Amplitude Agent Analytics handles diagnostics. FeatureStream connects the full loop — diagnosis, evidence, decision, build, ship, re-evaluate — on a single catalogue record, built specifically for AI agent builders who need product and agent behaviour managed in the same place. The differentiation is the assembled loop, not any single feature.",
-              },
-              {
                 q: "Is my business domain covered?",
                 a: "We currently cover vertical domains (skincare, insurance, legal, construction), horizontal functions (sales, marketing), and tech capability domains. If your domain isn't listed, request it below.",
                 hasRequest: true,
