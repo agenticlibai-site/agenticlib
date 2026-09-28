@@ -77,7 +77,6 @@ export default function Navbar() {
                 <img src="/logo.png" alt="FeatureStream logo" className="h-6 w-auto" />
                 <span className="text-lg font-semibold tracking-tight">FeatureStream</span>
               </div>
-              <span style={{ fontSize: 10, fontWeight: 400, color: "#000", opacity: 0.45, marginTop: 2 }}>Formerly AgenticLib</span>
             </div>
           </Link>
 
