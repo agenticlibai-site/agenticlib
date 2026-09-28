@@ -752,16 +752,6 @@ export default function Home() {
             <p style={{ fontSize: 16.5, lineHeight: 1.65, color: "rgba(15,11,30,0.60)", margin: "0 0 36px", maxWidth: "46ch" }}>
               From the same record, generate PRDs, UI wireframes, implementation specs, agentic fix specs, release notes and post-launch evaluation specs without switching tools or copying context.
             </p>
-            {/* Status chips */}
-            <div style={{ display: "flex", flexWrap: "wrap" as const, gap: 10 }}>
-              {[
-                ["Planned", "#7C3AED", "rgba(124,58,237,0.08)"],
-                ["In Development", "#5E6CE8", "rgba(94,108,232,0.08)"],
-                ["Shipped", "#059669", "rgba(5,150,105,0.08)"],
-              ].map(([label, color, bg]) => (
-                <span key={label} style={{ fontSize: 13, fontWeight: 600, color, background: bg, border: `1px solid ${color}33`, borderRadius: 9999, padding: "5px 14px" }}>{label}</span>
-              ))}
-            </div>
           </div>
 
           {/* Right — circular visual, fixed 480×480 for precise orbital positioning */}
