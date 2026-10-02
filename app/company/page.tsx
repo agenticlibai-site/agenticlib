@@ -452,13 +452,13 @@ export default function CompanyPage() {
                     Building an AI agent product is unlike any other kind of software development.
                     Customer requests, agent behaviour data, competitor signals, prompt changelogs,
                     observability evals and post-launch outcomes all need to feed the same product
-                    decision — but most teams are stitching this together across five different tools,
+                    decision, but most teams are stitching this together across five different tools,
                     none of which were designed with agents in mind.
                   </p>
                   <p>
                     FeatureStream's mission is to bring all of that context into one place. A
                     context-aware product management OS that turns customer requests, agent
-                    behaviour analytics and competitor signals into a ranked roadmap — and then
+                    behaviour analytics and competitor signals into a ranked roadmap, and then
                     carries that decision all the way through to a PRD, implementation spec, agentic
                     fix, and post-launch evaluation, without ever leaving the platform.
                   </p>
@@ -470,7 +470,7 @@ export default function CompanyPage() {
                     <line x1="17.5" y1="15" x2="9" y2="15"/>
                   </svg>
                   <span className="co-footer-text">
-                      Built so that the full loop — from evidence to roadmap to spec to post-launch evaluation — lives in one place.
+                      Built so that the full loop from evidence to roadmap to spec to post-launch evaluation lives in one place.
                   </span>
                 </div>
               </div>
@@ -568,12 +568,12 @@ export default function CompanyPage() {
                   <p>
                     Right now, the product management process for an AI agent company is
                     fragmented by default. Evidence lives in support tickets, lost deal notes,
-                    observability dashboards and competitor research — and none of it connects
+                    observability dashboards and competitor research, and none of it connects
                     automatically to what gets built next. The teams that do it well are doing
                     it manually, at significant cost to speed and focus.
                   </p>
                   <p>
-                    Our vision is a world where every AI agent team — regardless of size — has a
+                    Our vision is a world where every AI agent team, regardless of size, has a
                     single system that understands their product context deeply enough to surface
                     the right opportunity, generate the right specification, and measure the right
                     outcome. Where product decisions are grounded in real evidence, not gut feel,
