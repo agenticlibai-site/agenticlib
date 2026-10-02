@@ -353,7 +353,7 @@ export default function CompanyPage() {
                     margin: 0,
                     whiteSpace: "nowrap",
                   }}>
-                    Give every AI agent builder the intelligence to build what wins.
+                    Give every AI agent builder a complete product management OS built for how agentic products are actually made.
                   </p>
                 </div>
               </div>
@@ -449,19 +449,18 @@ export default function CompanyPage() {
 
                 <div className="co-body" style={{ margin: "0 0 36px" }}>
                   <p>
-                    Most AI agent builders across every business domain aren't short on ambition.
-                    What they're short on is awareness: of who's moving in their category, what
-                    features a competitor just shipped, whether they're winning or losing the use
-                    cases that actually matter. That awareness usually arrives too late, in the
-                    form of a customer asking why they shouldn't just go with the other guy.
+                    Building an AI agent product is unlike any other kind of software development.
+                    Customer requests, agent behaviour data, competitor signals, prompt changelogs,
+                    observability evals and post-launch outcomes all need to feed the same product
+                    decision — but most teams are stitching this together across five different tools,
+                    none of which were designed with agents in mind.
                   </p>
                   <p>
-                    FeatureStream's mission is to close that gap before it opens. A platform that watches the
-                    competitor landscape for you, tracks who owns which use case by share of
-                    voice, and turns what it finds into a clear product feature roadmap: what to
-                    build next, and what to scale, to stay ahead of the market curve. So a
-                    builder never has to lose a deal because their own customer had to tell them
-                    who they're up against.
+                    FeatureStream's mission is to bring all of that context into one place. A
+                    context-aware product management OS that turns customer requests, agent
+                    behaviour analytics and competitor signals into a ranked roadmap — and then
+                    carries that decision all the way through to a PRD, implementation spec, agentic
+                    fix, and post-launch evaluation, without ever leaving the platform.
                   </p>
                 </div>
                 <div className="co-footer">
@@ -471,7 +470,7 @@ export default function CompanyPage() {
                     <line x1="17.5" y1="15" x2="9" y2="15"/>
                   </svg>
                   <span className="co-footer-text">
-                    Built so that every AI agent builder knows where they stand before a customer has to tell them.
+                      Built so that the full loop — from evidence to roadmap to spec to post-launch evaluation — lives in one place.
                   </span>
                 </div>
               </div>
@@ -558,7 +557,7 @@ export default function CompanyPage() {
                     margin: 0,
                     whiteSpace: "nowrap",
                   }}>
-                    Helping all AI agent builders succeed.
+                    A world where every AI agent team ships the right thing, faster.
                   </p>
                 </div>
               </div>
@@ -567,19 +566,19 @@ export default function CompanyPage() {
               <div>
                 <div className="co-body">
                   <p>
-                    The odds are stacked against good AI agent builders, and not because their
-                    product isn't good enough. It's because the market has gotten too loud to
-                    read. Competitors ship in silence, buyers ask AI models instead of searching,
-                    and most builders have no idea what those models say about them. The signal
-                    that should guide what to build next gets lost, until a lost deal spells it
-                    out the hard way.
+                    Right now, the product management process for an AI agent company is
+                    fragmented by default. Evidence lives in support tickets, lost deal notes,
+                    observability dashboards and competitor research — and none of it connects
+                    automatically to what gets built next. The teams that do it well are doing
+                    it manually, at significant cost to speed and focus.
                   </p>
                   <p>
-                    Our vision is a world where every AI agent builder, regardless of team size
-                    or runway, has a clear view of where they stand in the conversations that
-                    drive their buyers' decisions, and a direct path to improving that position.
-                    Using our own taxonomy and data-driven architecture, we read buyer intent at
-                    scale and turn it into signal every builder can act on.
+                    Our vision is a world where every AI agent team — regardless of size — has a
+                    single system that understands their product context deeply enough to surface
+                    the right opportunity, generate the right specification, and measure the right
+                    outcome. Where product decisions are grounded in real evidence, not gut feel,
+                    and where the distance between insight and shipped feature collapses to days,
+                    not months.
                   </p>
                 </div>
                 <div className="co-footer">
@@ -589,7 +588,7 @@ export default function CompanyPage() {
                     <line x1="17.5" y1="15" x2="9" y2="15"/>
                   </svg>
                   <span className="co-footer-text">
-                    Product intelligence should not be a privilege of scale. It should be a given.
+                    Context-aware product management should not be a privilege of scale. It should be the default.
                   </span>
                 </div>
               </div>
