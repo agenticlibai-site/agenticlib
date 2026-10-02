@@ -353,7 +353,7 @@ export default function CompanyPage() {
                     margin: 0,
                     whiteSpace: "nowrap",
                   }}>
-                    Give every AI agent builder a complete product management OS built for how agentic products are actually made.
+                    The product management OS for AI agent companies.
                   </p>
                 </div>
               </div>
