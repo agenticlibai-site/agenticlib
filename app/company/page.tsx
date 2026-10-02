@@ -626,14 +626,14 @@ export default function CompanyPage() {
                   LinkedIn
                 </a>
                 <a
-                  href="mailto:srinidhi.murali@agenticlib.com"
+                  href="mailto:srinidhi.murali@featstream.com"
                   style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#ffffff", color: "#0F0B1E", fontSize: 14, fontWeight: 700, padding: "12px 22px", borderRadius: 9999, textDecoration: "none" }}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="2" y="4" width="20" height="16" rx="2"/>
                     <path d="m2 7 10 7 10-7"/>
                   </svg>
-                  srinidhi.murali@agenticlib.com
+                  srinidhi.murali@featstream.com
                 </a>
               </div>
             </div>
