@@ -626,7 +626,7 @@ export default function Home() {
               <div style={{ padding: "20px 22px 26px" }}>
                 <span style={{ fontSize: 13, fontWeight: 700, color: "#000", letterSpacing: "0.04em" }}>02</span>
                 <div style={{ fontSize: 17, fontWeight: 700, color: "#000", margin: "8px 0 10px", lineHeight: 1.25 }}>Matched against market signals.</div>
-                <div style={{ fontSize: 14, lineHeight: 1.65, color: "#000" }}>Your private context is matched against our feature taxonomy, then compared to competitor signals within the same use case and business domain, showing exactly which competitors have shipped what, where it counts.</div>
+                <div style={{ fontSize: 14, lineHeight: 1.65, color: "#000" }}>Your private context is studied and matched against competitor signals within the same use case and business domain, showing exactly which competitors have shipped what, where it counts.</div>
               </div>
             </div>
 
