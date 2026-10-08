@@ -581,14 +581,14 @@ export default function Home() {
                 <div style={{ fontSize: 17, fontWeight: 700, color: "#000", margin: "8px 0 12px", lineHeight: 1.25 }}>Integrations with all the tools in your environment.</div>
                 <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column" as const, gap: 8 }}>
                   {[
-                    ["Observability platforms", "to understand agent behaviour"],
-                    ["CRM & Note-taking tools", "to understand lost deal notes"],
-                    ["Customer support/ticketing platforms", "to understand customer feedback and requests"],
-                    ["Usage Analytics platforms", "to understand how a user interacts with your agent"],
-                  ].map(([bold, rest]) => (
-                    <li key={bold} style={{ fontSize: 13, lineHeight: 1.5, color: "#000", display: "flex", gap: 8, alignItems: "flex-start" }}>
+                    "Observability platforms",
+                    "CRM & Note-taking tools",
+                    "Customer support/ticketing platforms",
+                    "Usage Analytics platforms",
+                  ].map((label) => (
+                    <li key={label} style={{ fontSize: 13, lineHeight: 1.5, color: "#000", display: "flex", gap: 8, alignItems: "flex-start" }}>
                       <span style={{ color: "#000", fontWeight: 700, marginTop: 2, flexShrink: 0 }}>·</span>
-                      <span><span style={{ fontWeight: 700, color: "#000" }}>{bold}</span>{" - "}{rest}</span>
+                      <span style={{ fontWeight: 700, color: "#000" }}>{label}</span>
                     </li>
                   ))}
                 </ul>
