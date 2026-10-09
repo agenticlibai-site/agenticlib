@@ -474,7 +474,7 @@ export default function Home() {
                 <span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 45%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>product management</span>
                 {" for teams building AI agents."}
               </h2>
-              <p style={{ fontSize: 17, lineHeight: 1.62, color: "#000000", margin: "22px 0 0", maxWidth: "52ch" }}>Building an AI agent means managing a moving target. Customer needs shift, agent behaviour changes, competitors ship. FeatureStream keeps all of it in view and tells you what to build next.</p>
+              <p style={{ fontSize: 17, lineHeight: 1.62, color: "#000000", margin: "22px 0 0", maxWidth: "52ch" }}>Product owners of AI agents manage customer, market, domain, use case and product usage signals across too many tools to know what to build next. Customer needs shift, agent behaviour changes, competitors ship. FeatureStream keeps all of it in view and tells you what to build next.</p>
               <p style={{ fontSize: 20, fontWeight: 700, margin: "20px 0 0", backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 55%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>Built to streamline the process involved in creating and managing an agentic product.</p>
             </div>
             <div className="why-visual" style={{ position: "relative", height: 480, display: "flex", alignItems: "center", gap: 0, width: "100%", minWidth: 0 }}>
@@ -870,12 +870,27 @@ export default function Home() {
               Keep track of every product detail{" "}
               <span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 45%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>with the Product Catalogue.</span>
             </h2>
-            <p style={{ fontSize: 16.5, lineHeight: 1.65, color: "rgba(15,11,30,0.60)", margin: "0 0 24px", maxWidth: "46ch" }}>
-              The product owner gets a full view of every feature: customer requests, use cases, revenue and time impact metrics, Planned, In Development and Shipped status updates, and prompt and version changelogs.
+            <p style={{ fontSize: 16.5, lineHeight: 1.65, color: "#000", margin: "0 0 16px", maxWidth: "46ch" }}>
+              After the product owner approves or rejects a feature, it is automatically shipped to the product catalogue - the single source of truth for every product feature. It contains:
             </p>
-            <p style={{ fontSize: 16.5, lineHeight: 1.65, color: "rgba(15,11,30,0.60)", margin: "0 0 36px", maxWidth: "46ch" }}>
-              From the same record, generate PRDs, UI wireframes, implementation specs, agentic fix specs, release notes and post-launch evaluation specs without switching tools or copying context.
-            </p>
+            <div style={{ margin: "0 0 24px", display: "flex", flexDirection: "column" as const, gap: 10 }}>
+              {[
+                "Customer requests organised by product features, errors and UI changes.",
+                "The reasoning behind each recommended feature and use case.",
+                "Features tagged by status: Planned, In Development, Shipped.",
+                "Prompt and version changelogs for agentic errors.",
+              ].map(item => (
+                <div key={item} style={{ display: "flex", gap: 10, alignItems: "flex-start" }}>
+                  <span style={{ color: "#7C3AED", fontWeight: 700, fontSize: 16, lineHeight: 1.65, flexShrink: 0 }}>·</span>
+                  <span style={{ fontSize: 15.5, lineHeight: 1.65, color: "#000" }}>{item}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ margin: "0 0 36px", padding: "18px 22px", background: "linear-gradient(135deg, rgba(124,58,237,0.07) 0%, rgba(162,28,175,0.06) 100%)", border: "1px solid rgba(124,58,237,0.18)", borderRadius: 16, maxWidth: "46ch" }}>
+              <p style={{ fontSize: 15.5, lineHeight: 1.65, color: "#000", margin: 0, fontStyle: "italic" as const }}>
+                The product catalogue is the brain that helps a product owner derive revenue, customer satisfaction and product usage metrics.
+              </p>
+            </div>
           </div>
 
           {/* Right — circular visual, fixed 480×480 for precise orbital positioning */}
