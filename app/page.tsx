@@ -893,7 +893,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right — circular visual, fixed 480×480 for precise orbital positioning */}
+          {/* Right — circular orbital visual */}
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{ position: "relative", width: 480, height: 480, borderRadius: 28, background: "linear-gradient(145deg,#EEE8FD 0%,#DDD6FD 45%,#C4B5FD 100%)", flexShrink: 0 }}>
 
@@ -906,12 +906,10 @@ export default function Home() {
                 <img src="/logo.png" alt="FeatureStream" style={{ width: 36, height: 36, objectFit: "contain" }} />
               </div>
 
-              {/* Orbiting icon tiles — positions computed on circle r=160 centred at (240,240) */}
+              {/* Orbiting icon tiles */}
               {([
-                // [label, path, cx, cy, stroke-color]
-                // 7 items, 360/7≈51.43° apart, starting at 270° (top)
                 ["Customer requests",  "M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z",                      240, 80,  "#7C3AED"],
-                ["Revenue metrics",    "M18 20V10M12 20V4M6 20v-6",  365, 140, "#F97316"],
+                ["Revenue metrics",    "M18 20V10M12 20V4M6 20v-6",                                                       365, 140, "#F97316"],
                 ["PRDs & specs",       "M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8zM14 2v6h6M16 13H8M16 17H8M10 9H8", 396, 276, "#3B82F6"],
                 ["Post-launch evals",  "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z",                                  309, 384, "#10B981"],
                 ["Prompt changelogs",  "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",                                           171, 384, "#A21CAF"],
