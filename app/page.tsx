@@ -608,7 +608,7 @@ export default function Home() {
           {/* Right: text */}
           <div>
             <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" as const, color: "#7C3AED" }}>BUILT AROUND YOUR WORKFLOW</span>
-            <h2 style={{ fontSize: "clamp(28px,3.5vw,48px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, color: "#000", margin: "16px 0 20px" }}>
+            <h2 style={{ fontSize: "clamp(22px,2.6vw,36px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, color: "#000", margin: "16px 0 20px" }}>
               Connects to the tools you already use.
             </h2>
             <p style={{ fontSize: 17, lineHeight: 1.65, color: "#000", margin: "0 0 36px" }}>
@@ -633,8 +633,8 @@ export default function Home() {
       <section style={{ padding: "88px 24px 96px", background: "#F9F8FC", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
         <div style={{ maxWidth: 1160, margin: "0 auto" }}>
           <div style={{ marginBottom: 56 }}>
-            <h2 style={{ fontSize: "clamp(32px,4vw,56px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.05, color: "#000", margin: 0, maxWidth: "22ch" }}>
-              From signal to shipped.
+            <h2 style={{ fontSize: "clamp(22px,2.6vw,36px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.05, color: "#000", margin: 0, maxWidth: "22ch" }}>
+              Know exactly what your agentic product needs next.
             </h2>
           </div>
 
@@ -714,7 +714,7 @@ export default function Home() {
               </div>
               <div style={{ borderTop: "1px solid rgba(0,0,0,0.06)", padding: "22px 24px 28px" }}>
                 <div style={{ fontSize: 18, fontWeight: 700, color: "#000", lineHeight: 1.25, marginBottom: 10 }}>Matched against market signals.</div>
-                <div style={{ fontSize: 14, lineHeight: 1.7, color: "#444" }}>Your private context is studied and matched against competitor signals within the same use case and business domain, showing exactly which competitors have shipped what, where it counts.</div>
+                <div style={{ fontSize: 14, lineHeight: 1.7, color: "#444" }}>Your private context is studied and matched against competitor signals by business domain and use case, showing what competitors have shipped.</div>
               </div>
             </div>
 
