@@ -474,7 +474,7 @@ export default function Home() {
                 <span style={{ backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 45%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>product management</span>
                 {" for teams building AI agents."}
               </h2>
-              <p style={{ fontSize: 17, lineHeight: 1.62, color: "#000000", margin: "22px 0 0", maxWidth: "52ch" }}>FeatureStream combines customers requests, lost deal notes, support tickets, agent behaviour, user analytics as well as competitor signals to advise on product feature opportunities ranked by impact as well as use case cluster expansions by vertical.</p>
+              <p style={{ fontSize: 17, lineHeight: 1.62, color: "#000000", margin: "22px 0 0", maxWidth: "52ch" }}>Building an AI agent means managing a moving target. Customer needs shift, agent behaviour changes, competitors ship. FeatureStream keeps all of it in view and tells you what to build next.</p>
               <p style={{ fontSize: 20, fontWeight: 700, margin: "20px 0 0", backgroundImage: "linear-gradient(135deg,#7C3AED 0%,#A21CAF 55%,#C2186A 100%)", WebkitBackgroundClip: "text", backgroundClip: "text", WebkitTextFillColor: "transparent" }}>Built to streamline the process involved in creating and managing an agentic product.</p>
             </div>
             <div className="why-visual" style={{ position: "relative", height: 480, display: "flex", alignItems: "center", gap: 0, width: "100%", minWidth: 0 }}>
@@ -530,178 +530,281 @@ export default function Home() {
           </div>
       </section>
 
-      {/* ── How the product roadmap is created ───────────────────────────── */}
-      <section style={{ padding: "88px 24px 96px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+      {/* ── Integrations section (TrueMile style) ───────────────────────── */}
+      <section style={{ padding: "88px 24px 96px", background: "#F9F8FC", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 1160, margin: "0 auto", display: "grid", gridTemplateColumns: "1fr 1fr", gap: 80, alignItems: "center" }}>
+          {/* Left: logo grid visual — SVG for grid+lines+hub, HTML for logos */}
+          <div style={{ position: "relative", width: "100%", paddingBottom: "105%" }}>
+            {/* Background layer: grid, lines, central hub */}
+            <svg viewBox="0 0 400 420" style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}>
+              <defs>
+                <linearGradient id="intHub" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stopColor="#7C3AED"/>
+                  <stop offset="100%" stopColor="#5E6CE8"/>
+                </linearGradient>
+              </defs>
+              {[80,160,240,320].map(v => (
+                <g key={v}>
+                  <line x1="0" y1={v} x2="400" y2={v} stroke="rgba(0,0,0,0.055)" strokeWidth="1"/>
+                  <line x1={v} y1="0" x2={v} y2="420" stroke="rgba(0,0,0,0.055)" strokeWidth="1"/>
+                </g>
+              ))}
+              {([
+                [75,75],[200,48],[325,75],
+                [48,210],[352,210],
+                [75,345],[200,372],[325,345],
+              ] as [number,number][]).map(([cx,cy],i) => (
+                <line key={i} x1={cx} y1={cy} x2={200} y2={210} stroke="rgba(0,0,0,0.09)" strokeWidth="1.2" strokeDasharray="4 3"/>
+              ))}
+              <circle cx="200" cy="210" r="52" fill="rgba(124,58,237,0.07)" stroke="rgba(124,58,237,0.14)" strokeWidth="1.5"/>
+              <circle cx="200" cy="210" r="38" fill="url(#intHub)"/>
+              <text x="200" y="206" textAnchor="middle" fontSize="10" fontWeight="700" fill="white" fontFamily="system-ui">Feature</text>
+              <text x="200" y="220" textAnchor="middle" fontSize="10" fontWeight="700" fill="white" fontFamily="system-ui">Stream</text>
+            </svg>
+            {/* Foreground layer: logo boxes — inline SVG with brand colours */}
+            {([
+              { name: "Datadog",    color: "#632CA6", lp: 18.75, tp: 17.86, path: "M19.57 17.04l-1.997-1.316-1.665 2.782-1.937-.567-1.706 2.604.087.82 9.274-1.71-.538-5.794zm-8.649-2.498l1.488-.204c.241.108.409.15.697.223.45.117.97.23 1.741-.16.18-.088.553-.43.704-.625l6.096-1.106.622 7.527-10.444 1.882zm11.325-2.712l-.602.115L20.488 0 .789 2.285l2.427 19.693 2.306-.334c-.184-.263-.471-.581-.96-.989-.68-.564-.44-1.522-.039-2.127.53-1.022 3.26-2.322 3.106-3.956-.056-.594-.15-1.368-.702-1.898-.02.22.017.432.017.432s-.227-.289-.34-.683c-.112-.15-.2-.199-.319-.4-.085.233-.073.503-.073.503s-.186-.437-.216-.807c-.11.166-.137.48-.137.48s-.241-.69-.186-1.062c-.11-.323-.436-.965-.343-2.424.6.421 1.924.321 2.44-.439.171-.251.288-.939-.086-2.293-.24-.868-.835-2.16-1.066-2.651l-.028.02c.122.395.374 1.223.47 1.625.293 1.218.372 1.642.234 2.204-.116.488-.397.808-1.107 1.165-.71.358-1.653-.514-1.713-.562-.69-.55-1.224-1.447-1.284-1.883-.062-.477.275-.763.445-1.153-.243.07-.514.192-.514.192s.323-.334.722-.624c.165-.109.262-.178.436-.323a9.762 9.762 0 0 0-.456.003s.42-.227.855-.392c-.318-.014-.623-.003-.623-.003s.937-.419 1.678-.727c.509-.208 1.006-.147 1.286.257.367.53.752.817 1.569.996.501-.223.653-.337 1.284-.509.554-.61.99-.688.99-.688s-.216.198-.274.51c.314-.249.66-.455.66-.455s-.134.164-.259.426l.03.043c.366-.22.797-.394.797-.394s-.123.156-.268.358c.277-.002.838.012 1.056.037 1.285.028 1.552-1.374 2.045-1.55.618-.22.894-.353 1.947.68.903.888 1.609 2.477 1.259 2.833-.294.295-.874-.115-1.516-.916a3.466 3.466 0 0 1-.716-1.562 1.533 1.533 0 0 0-.497-.85s.23.51.23.96c0 .246.03 1.165.424 1.68-.039.076-.057.374-.1.43-.458-.554-1.443-.95-1.604-1.067.544.445 1.793 1.468 2.273 2.449.453.927.186 1.777.416 1.997.065.063.976 1.197 1.15 1.767.306.994.019 2.038-.381 2.685l-1.117.174c-.163-.045-.273-.068-.42-.153.08-.143.241-.5.243-.572l-.063-.111c-.348.492-.93.97-1.414 1.245-.633.359-1.363.304-1.838.156-1.348-.415-2.623-1.327-2.93-1.566 0 0-.01.191.048.234.34.383 1.119 1.077 1.872 1.56l-1.605.177.759 5.908c-.337.048-.39.071-.757.124-.325-1.147-.946-1.895-1.624-2.332-.599-.384-1.424-.47-2.214-.314l-.05.059a2.851 2.851 0 0 1 1.863.444c.654.413 1.181 1.481 1.375 2.124.248.822.42 1.7-.248 2.632-.476.662-1.864 1.028-2.986.237.3.481.705.876 1.25.95.809.11 1.577-.03 2.106-.574.452-.464.69-1.434.628-2.456l.714-.104.258 1.834 11.827-1.424zM15.05 6.848c-.034.075-.085.125-.007.37l.004.014.013.032.032.073c.14.287.295.558.552.696.067-.011.136-.019.207-.023.242-.01.395.028.492.08.009-.048.01-.119.005-.222-.018-.364.072-.982-.626-1.308-.264-.122-.634-.084-.757.068a.302.302 0 0 1 .058.013c.186.066.06.13.027.207m1.958 3.392c-.092-.05-.52-.03-.821.005-.574.068-1.193.267-1.328.372-.247.191-.135.523.047.66.511.382.96.638 1.432.575.29-.038.546-.497.728-.914.124-.288.124-.598-.058-.698m-5.077-2.942c.162-.154-.805-.355-1.556.156-.554.378-.571 1.187-.041 1.646.053.046.096.078.137.104a4.77 4.77 0 0 1 1.396-.412c.113-.125.243-.345.21-.745-.044-.542-.455-.456-.146-.749" },
+              { name: "New Relic",  color: "#1CE783", lp: 50,    tp: 11.43, path: "M8.0015 14.3091v7.384L12.0008 24V12.0008L1.6078 5.9996v4.6167ZM12.0008 0 2.8232 5.2976 6.8209 7.606l5.1799-2.9893 6.3936 3.6913v7.384l-5.1783 2.9908v4.6167l9.176-5.2991V5.9996Z" },
+              { name: "Intercom",   color: "#286EFA", lp: 81.25, tp: 17.86, path: "M21 0H3C1.343 0 0 1.343 0 3v18c0 1.658 1.343 3 3 3h18c1.658 0 3-1.342 3-3V3c0-1.657-1.342-3-3-3zm-5.801 4.399c0-.44.36-.8.802-.8.44 0 .8.36.8.8v10.688c0 .442-.36.801-.8.801-.443 0-.802-.359-.802-.801V4.399zM11.2 3.994c0-.44.357-.799.8-.799s.8.359.8.799v11.602c0 .44-.357.8-.8.8s-.8-.36-.8-.8V3.994zm-4 .405c0-.44.359-.8.799-.8.443 0 .802.36.802.8v10.688c0 .442-.36.801-.802.801-.44 0-.799-.359-.799-.801V4.399zM3.199 6c0-.442.36-.8.802-.8.44 0 .799.358.799.8v7.195c0 .441-.359.8-.799.8-.443 0-.802-.36-.802-.8V6zM20.52 18.202c-.123.105-3.086 2.593-8.52 2.593-5.433 0-8.397-2.486-8.521-2.593-.335-.288-.375-.792-.086-1.128.285-.334.79-.375 1.125-.09.047.041 2.693 2.211 7.481 2.211 4.848 0 7.456-2.186 7.479-2.207.334-.289.839-.25 1.128.086.289.336.25.84-.086 1.128zm.281-5.007c0 .441-.36.8-.801.8-.441 0-.801-.36-.801-.8V6c0-.442.361-.8.801-.8.441 0 .801.357.801.8v7.195z" },
+              { name: "Salesforce", color: "#00A1E0", lp: 12,    tp: 50,    path: "M10.006 5.415a4.195 4.195 0 013.045-1.306c1.56 0 2.954.9 3.69 2.205.63-.3 1.35-.45 2.1-.45 2.85 0 5.159 2.34 5.159 5.22s-2.31 5.22-5.176 5.22c-.345 0-.69-.044-1.02-.104a3.75 3.75 0 01-3.3 1.95c-.6 0-1.155-.15-1.65-.375A4.314 4.314 0 018.88 20.4a4.302 4.302 0 01-4.05-2.82c-.27.062-.54.076-.825.076-2.204 0-4.005-1.8-4.005-4.05 0-1.5.811-2.805 2.01-3.51-.255-.57-.39-1.2-.39-1.846 0-2.58 2.1-4.65 4.65-4.65 1.53 0 2.85.705 3.72 1.8" },
+              { name: "Zendesk",    color: "#03363D", lp: 88,    tp: 50,    path: "M12.914 2.904V16.29L24 2.905H12.914zM0 2.906C0 5.966 2.483 8.45 5.543 8.45s5.542-2.484 5.543-5.544H0zm11.086 4.807L0 21.096h11.086V7.713zm7.37 7.84c-3.063 0-5.542 2.48-5.542 5.543H24c0-3.06-2.48-5.543-5.543-5.543z" },
+              { name: "Notion",     color: "#000000", lp: 18.75, tp: 82.14, path: "M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z" },
+              { name: "Mixpanel",   color: "#7856FF", lp: 50,    tp: 88.57, path: "M6.967 9.996h3.053c-.763-.477-1.048-1.145-1.431-2.384L7.443 3.366C6.919 1.458 6.49.551 4.39.551H.004v1.145h.621c1.286 0 1.431.477 1.814 1.908L3.44 7.326c.524 1.814 1.337 2.67 3.53 2.67h-.003Zm7.06 0h3.053c2.194 0 2.956-.86 3.484-2.67l1.001-3.722c.382-1.431.57-1.908 1.814-1.908H24V.551h-4.34c-2.146 0-2.576.86-3.053 2.815l-1.145 4.246c-.384 1.286-.673 1.907-1.435 2.384Zm-4.007 4.008h4.007V9.996H10.02v4.008ZM0 23.449h4.39c2.1 0 2.529-.907 3.053-2.815l1.146-4.246c.383-1.239.668-1.907 1.431-2.384H6.967c-2.194 0-3.007.86-3.531 2.67l-1.001 3.722c-.383 1.431-.524 1.907-1.814 1.907H0v1.146Zm19.65 0h4.343v-1.146h-.622c-1.239 0-1.431-.476-1.814-1.907l-1.001-3.722c-.524-1.814-1.286-2.67-3.483-2.67h-3.046c.762.477 1.041 1.098 1.424 2.384l1.145 4.246c.477 1.955.907 2.815 3.054 2.815Z" },
+              { name: "Amplitude",  color: "#E8644D", lp: 81.25, tp: 82.14, path: "M2.4 21.6L12 2.4l9.6 19.2H2.4zm3.12-2.4h12.96L12 6.48 5.52 19.2z" },
+            ] as { name: string; color: string; lp: number; tp: number; path: string }[]).map(({ name, color, lp, tp, path }) => {
+              const isBottom = tp > 70;
+              return (
+                <div key={name} style={{ position: "absolute", left: `${lp}%`, top: `${tp}%`, transform: "translate(-50%,-50%)", display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 6 }}>
+                  {isBottom && <span style={{ fontSize: 10, color: "#000", fontFamily: "system-ui,sans-serif", whiteSpace: "nowrap" as const }}>{name}</span>}
+                  <div style={{ width: 52, height: 52, borderRadius: 13, background: "white", border: "1.5px solid rgba(0,0,0,0.09)", boxShadow: "0 2px 10px rgba(0,0,0,0.07)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <svg viewBox="0 0 24 24" width="28" height="28" fill={color}><path d={path}/></svg>
+                  </div>
+                  {!isBottom && <span style={{ fontSize: 10, color: "#000", fontFamily: "system-ui,sans-serif", whiteSpace: "nowrap" as const }}>{name}</span>}
+                </div>
+              );
+            })}
+          </div>
+          {/* Right: text */}
+          <div>
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.15em", textTransform: "uppercase" as const, color: "#7C3AED" }}>BUILT AROUND YOUR WORKFLOW</span>
+            <h2 style={{ fontSize: "clamp(28px,3.5vw,48px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, color: "#000", margin: "16px 0 20px" }}>
+              Connects to the tools you already use.
+            </h2>
+            <p style={{ fontSize: 17, lineHeight: 1.65, color: "#000", margin: "0 0 36px" }}>
+              FeatureStream integrates with the tools your team already uses, reads from them directly and synthesises signals to create a ranked list of suggestions by impact your product owner can approve or reject.
+            </p>
+            {[
+              { label: "Observability platforms", examples: "Datadog, New Relic, Grafana" },
+              { label: "CRM & Note-taking", examples: "Salesforce, HubSpot, Notion" },
+              { label: "Customer support & ticketing", examples: "Intercom, Zendesk, Linear" },
+              { label: "Usage analytics", examples: "Mixpanel, Amplitude, PostHog" },
+            ].map((item, i) => (
+              <div key={item.label} style={{ borderTop: "1px solid rgba(0,0,0,0.10)", padding: "16px 0", display: "flex", justifyContent: "space-between", alignItems: "baseline", gap: 24 }}>
+                <span style={{ fontSize: 15, fontWeight: 700, color: "#000" }}>{item.label}</span>
+                <span style={{ fontSize: 13, color: "#000", whiteSpace: "nowrap" as const }}>{item.examples}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Features section ─────────────────────────────────────────────── */}
+      <section style={{ padding: "88px 24px 96px", background: "#F9F8FC", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
         <div style={{ maxWidth: 1160, margin: "0 auto" }}>
-          <div style={{ textAlign: "center" as const, marginBottom: 56 }}>
-            <h2 style={{ fontSize: "clamp(26px,3vw,42px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, color: "#000", margin: 0 }}>
-              The Process.
+          <div style={{ marginBottom: 56 }}>
+            <h2 style={{ fontSize: "clamp(32px,4vw,56px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.05, color: "#000", margin: 0, maxWidth: "22ch" }}>
+              From signal to shipped.
             </h2>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 20 }}>
 
-            {/* Card 1 — Integrations */}
-            <div style={{ background: "#fff", borderRadius: 18, border: "1px solid rgba(0,0,0,0.07)", boxShadow: "0 2px 16px rgba(0,0,0,0.05)", overflow: "hidden" }}>
-              <div style={{ background: "rgba(124,58,237,0.05)", padding: "28px 20px 24px", minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg viewBox="0 0 200 130" style={{ width: "100%" }}>
-                  <defs><linearGradient id="c1lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stopColor="#7C3AED"/><stop offset="100%" stopColor="#5E6CE8"/></linearGradient></defs>
-                  {/* 4 source tiles on left */}
-                  {([["#7C3AED","M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z M9 22V12h6v10"],
-                     ["#5E6CE8","M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"],
-                     ["#059669","M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"],
-                     ["#A21CAF","M18 20V10M12 20V4M6 20v-6"],
-                  ] as [string,string][]).map(([color, path], i) => {
-                    const y = 8 + i * 30;
+            {/* Card 1 — Market signals */}
+            <div style={{ background: "#fff", borderRadius: 22, border: "1px solid rgba(124,58,237,0.10)", boxShadow: "0 4px 24px rgba(0,0,0,0.06)", overflow: "hidden", display: "flex", flexDirection: "column" as const }}>
+              <div style={{ padding: "22px 24px 0", display: "flex" }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#7C3AED", letterSpacing: "0.08em" }}>01</span>
+              </div>
+              <div style={{ flex: 1, padding: "12px 16px 16px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg viewBox="0 0 300 200" style={{ width: "100%", maxHeight: 200 }}>
+                  <defs>
+                    <linearGradient id="lgPurple" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#7C3AED" stopOpacity="0.15"/>
+                      <stop offset="100%" stopColor="#7C3AED" stopOpacity="0.04"/>
+                    </linearGradient>
+                    <linearGradient id="lgPink" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#C2186A" stopOpacity="0.13"/>
+                      <stop offset="100%" stopColor="#C2186A" stopOpacity="0.03"/>
+                    </linearGradient>
+                  </defs>
+                  {/* Column headers */}
+                  <text x="62" y="16" textAnchor="middle" fontSize="8.5" fill="#7C3AED" fontFamily="system-ui" fontWeight="700" letterSpacing="0.08em">YOUR CONTEXT</text>
+                  <text x="238" y="16" textAnchor="middle" fontSize="8.5" fill="#C2186A" fontFamily="system-ui" fontWeight="700" letterSpacing="0.08em">MARKET SIGNALS</text>
+                  {/* Left column — context rows */}
+                  {([
+                    { y: 24, w: 68, label: "Auth flows" },
+                    { y: 54, w: 52, label: "Rate limits" },
+                    { y: 84, w: 76, label: "Tool chaining" },
+                    { y: 114, w: 60, label: "Memory layer" },
+                  ] as { y: number; w: number; label: string }[]).map(({ y, w, label }) => (
+                    <g key={y}>
+                      <rect x="10" y={y} width="104" height="24" rx="8" fill="url(#lgPurple)" stroke="rgba(124,58,237,0.22)" strokeWidth="1"/>
+                      <rect x="20" y={y+8} width={w} height="8" rx="4" fill="rgba(124,58,237,0.40)"/>
+                    </g>
+                  ))}
+                  {/* Right column — signal rows */}
+                  {([
+                    { y: 24, w: 62, matched: true },
+                    { y: 54, w: 48, matched: false },
+                    { y: 84, w: 70, matched: true },
+                    { y: 114, w: 56, matched: true },
+                  ] as { y: number; w: number; matched: boolean }[]).map(({ y, w, matched }) => (
+                    <g key={y+1000}>
+                      <rect x="186" y={y} width="104" height="24" rx="8" fill="url(#lgPink)" stroke="rgba(194,24,106,0.20)" strokeWidth="1"/>
+                      <rect x="196" y={y+8} width={w} height="8" rx="4" fill="rgba(194,24,106,0.38)"/>
+                      {matched && (
+                        <circle cx="290" cy={y+12} r="4" fill="rgba(5,150,105,0.15)" stroke="#059669" strokeWidth="1.2"/>
+                      )}
+                    </g>
+                  ))}
+                  {/* Match lines */}
+                  {([
+                    { y1: 36, y2: 36, matched: true },
+                    { y1: 66, y2: 66, matched: false },
+                    { y1: 96, y2: 96, matched: true },
+                    { y1: 126, y2: 126, matched: true },
+                  ] as { y1: number; y2: number; matched: boolean }[]).map(({ y1, y2, matched }, i) => (
+                    <line key={i} x1="114" y1={y1} x2="186" y2={y2}
+                      stroke={matched ? "rgba(124,58,237,0.35)" : "rgba(0,0,0,0.10)"}
+                      strokeWidth={matched ? "1.5" : "1"}
+                      strokeDasharray={matched ? "5 3" : "3 4"}/>
+                  ))}
+                  {/* Center match dots */}
+                  {[36, 96, 126].map(y => (
+                    <circle key={y} cx="150" cy={y} r="4" fill="#7C3AED" opacity="0.80"/>
+                  ))}
+                  {/* "No match" dot */}
+                  <circle cx="150" cy="66" r="4" fill="rgba(0,0,0,0.12)"/>
+                  {/* Legend */}
+                  <circle cx="20" cy="168" r="4" fill="#7C3AED" opacity="0.8"/>
+                  <text x="30" y="172" fontSize="8" fill="#555" fontFamily="system-ui">Competitor shipped this</text>
+                  <circle cx="158" cy="168" r="4" fill="rgba(0,0,0,0.12)"/>
+                  <text x="168" y="172" fontSize="8" fill="#555" fontFamily="system-ui">No signal found</text>
+                </svg>
+              </div>
+              <div style={{ borderTop: "1px solid rgba(0,0,0,0.06)", padding: "22px 24px 28px" }}>
+                <div style={{ fontSize: 18, fontWeight: 700, color: "#000", lineHeight: 1.25, marginBottom: 10 }}>Matched against market signals.</div>
+                <div style={{ fontSize: 14, lineHeight: 1.7, color: "#444" }}>Your private context is studied and matched against competitor signals within the same use case and business domain, showing exactly which competitors have shipped what, where it counts.</div>
+              </div>
+            </div>
+
+            {/* Card 2 — Ranked roadmap */}
+            <div style={{ background: "#fff", borderRadius: 22, border: "1px solid rgba(124,58,237,0.10)", boxShadow: "0 4px 24px rgba(0,0,0,0.06)", overflow: "hidden", display: "flex", flexDirection: "column" as const }}>
+              <div style={{ padding: "22px 24px 0", display: "flex" }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#7C3AED", letterSpacing: "0.08em" }}>02</span>
+              </div>
+              <div style={{ flex: 1, padding: "12px 20px 16px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg viewBox="0 0 280 200" style={{ width: "100%", maxHeight: 200 }}>
+                  <defs>
+                    <linearGradient id="impactBar1" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#7C3AED"/>
+                      <stop offset="100%" stopColor="#A21CAF"/>
+                    </linearGradient>
+                    <linearGradient id="impactBar2" x1="0" y1="0" x2="1" y2="0">
+                      <stop offset="0%" stopColor="#5E6CE8"/>
+                      <stop offset="100%" stopColor="#7C3AED"/>
+                    </linearGradient>
+                  </defs>
+                  {/* Column headers */}
+                  <text x="10" y="14" fontSize="8" fill="#999" fontFamily="system-ui" fontWeight="600" letterSpacing="0.06em">ITEM</text>
+                  <text x="178" y="14" fontSize="8" fill="#999" fontFamily="system-ui" fontWeight="600" letterSpacing="0.06em">TYPE</text>
+                  <text x="248" y="14" fontSize="8" fill="#999" fontFamily="system-ui" fontWeight="600" letterSpacing="0.06em">IMPACT</text>
+                  {/* Divider */}
+                  <line x1="0" y1="19" x2="280" y2="19" stroke="rgba(0,0,0,0.07)" strokeWidth="1"/>
+                  {/* Rows */}
+                  {([
+                    { rank: "#1", label: "Multi-agent handoff", type: "New feature", typeColor: "#7C3AED", impact: 92, bar: "impactBar1" },
+                    { rank: "#2", label: "Context window limits", type: "Agentic fix", typeColor: "#059669", impact: 78, bar: "impactBar2" },
+                    { rank: "#3", label: "Tool call latency UI", type: "UI improvement", typeColor: "#5E6CE8", impact: 61, bar: "impactBar2" },
+                    { rank: "#4", label: "RAG use case expansion", type: "Use case", typeColor: "#A21CAF", impact: 44, bar: "impactBar2" },
+                  ] as { rank: string; label: string; type: string; typeColor: string; impact: number; bar: string }[]).map(({ rank, label, type, typeColor, impact, bar }, i) => {
+                    const y = 28 + i * 40;
                     return (
-                      <g key={color+i}>
-                        <rect x="10" y={y} width="36" height="24" rx="7" fill={`${color}12`} stroke={`${color}30`} strokeWidth="1"/>
-                        {/* Icon via transform instead of nested svg to avoid overflow */}
-                        <g transform={`translate(20,${y+4}) scale(0.667)`} fill="none" stroke={color} strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round">
-                          <path d={path}/>
-                        </g>
-                        {/* Connector line */}
-                        <line x1="46" y1={y+12} x2="106" y2="65" stroke={`${color}50`} strokeWidth="1.2" strokeDasharray="4 3"/>
+                      <g key={rank}>
+                        <rect x="0" y={y} width="280" height="34" rx="9" fill={i === 0 ? "rgba(124,58,237,0.04)" : "#fff"} stroke={i === 0 ? "rgba(124,58,237,0.15)" : "rgba(0,0,0,0.06)"} strokeWidth="1"/>
+                        {/* Rank */}
+                        <text x="12" y={y+20} fontSize="9.5" fill={i === 0 ? "#7C3AED" : "#888"} fontFamily="system-ui" fontWeight="700">{rank}</text>
+                        {/* Label */}
+                        <text x="38" y={y+21} fontSize="10.5" fill="#111" fontFamily="system-ui" fontWeight={i === 0 ? "700" : "400"}>{label}</text>
+                        {/* Type badge */}
+                        <rect x="172" y={y+9} width="62" height="16" rx="5" fill={`${typeColor}12`} stroke={`${typeColor}30`} strokeWidth="0.8"/>
+                        <text x="203" y={y+20} textAnchor="middle" fontSize="7.5" fill={typeColor} fontFamily="system-ui" fontWeight="600">{type}</text>
+                        {/* Impact bar track */}
+                        <rect x="244" y={y+13} width="28" height="8" rx="4" fill="rgba(0,0,0,0.06)"/>
+                        {/* Impact bar fill */}
+                        <rect x="244" y={y+13} width={28 * impact / 100} height="8" rx="4" fill={`url(#${bar})`}/>
                       </g>
                     );
                   })}
-                  {/* Central FS circle */}
-                  <circle cx="124" cy="65" r="24" fill="url(#c1lg)" opacity="0.12"/>
-                  <circle cx="124" cy="65" r="18" fill="url(#c1lg)"/>
-                  <text x="124" y="70" textAnchor="middle" fontSize="9" fill="white" fontWeight="700" fontFamily="system-ui,sans-serif">FS</text>
-                  {/* Output arrow */}
-                  <line x1="142" y1="65" x2="168" y2="65" stroke="rgba(124,58,237,0.4)" strokeWidth="1.5"/>
-                  <polygon points="168,61 176,65 168,69" fill="rgba(124,58,237,0.5)"/>
-                  <rect x="178" y="55" width="18" height="20" rx="5" fill="rgba(124,58,237,0.10)" stroke="rgba(124,58,237,0.30)" strokeWidth="1"/>
-                  <text x="187" y="68" textAnchor="middle" fontSize="7" fill="#5B21B6" fontFamily="system-ui" fontWeight="700">DB</text>
                 </svg>
               </div>
-              <div style={{ padding: "20px 22px 26px" }}>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#000", letterSpacing: "0.04em" }}>01</span>
-                <div style={{ fontSize: 17, fontWeight: 700, color: "#000", margin: "8px 0 12px", lineHeight: 1.25 }}>Integrations with all the tools in your environment.</div>
-                <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column" as const, gap: 8 }}>
-                  {[
-                    "Observability platforms",
-                    "CRM & Note-taking tools",
-                    "Customer support/ticketing platforms",
-                    "Usage Analytics platforms",
-                  ].map((label) => (
-                    <li key={label} style={{ fontSize: 13, lineHeight: 1.5, color: "#000", display: "flex", gap: 8, alignItems: "flex-start" }}>
-                      <span style={{ color: "#000", fontWeight: 700, marginTop: 2, flexShrink: 0 }}>·</span>
-                      <span style={{ fontWeight: 700, color: "#000" }}>{label}</span>
-                    </li>
-                  ))}
-                </ul>
+              <div style={{ borderTop: "1px solid rgba(0,0,0,0.06)", padding: "22px 24px 28px" }}>
+                <div style={{ fontSize: 18, fontWeight: 700, color: "#000", lineHeight: 1.25, marginBottom: 10 }}>Agent-specific Feature and Roadmap UI.</div>
+                <div style={{ fontSize: 14, lineHeight: 1.7, color: "#444" }}>New features, use case expansions, agentic fixes, and UI improvements. Every item ranked by impact, ready for review.</div>
               </div>
             </div>
 
-            {/* Card 2 — Note storage */}
-            <div style={{ background: "#fff", borderRadius: 18, border: "1px solid rgba(0,0,0,0.07)", boxShadow: "0 2px 16px rgba(0,0,0,0.05)", overflow: "hidden" }}>
-              <div style={{ background: "rgba(94,108,232,0.05)", padding: "28px 20px 24px", minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg viewBox="0 0 200 130" style={{ width: "100%" }}>
-                  {/* Your context — left column */}
-                  {[16, 46, 76, 106].map((y, i) => (
-                    <g key={y}>
-                      <rect x="8" y={y} width="72" height="22" rx="6" fill="rgba(124,58,237,0.10)" stroke="rgba(124,58,237,0.25)" strokeWidth="1"/>
-                      <rect x="16" y={y+7} width={[44,38,50,36][i]} height="8" rx="4" fill="rgba(124,58,237,0.35)"/>
-                    </g>
-                  ))}
-                  {/* Dashed match lines */}
-                  {[27, 57, 87, 117].map((y, i) => (
-                    <line key={y} x1="80" y1={y} x2="120" y2={y} stroke="rgba(124,58,237,0.30)" strokeWidth="1.2" strokeDasharray="4 3"/>
-                  ))}
-                  {/* Match dots at center */}
-                  {[27, 57, 87].map(y => (
-                    <circle key={y} cx="100" cy={y} r="3" fill="#7C3AED" opacity="0.7"/>
-                  ))}
-                  {/* Competitor signals — right column */}
-                  {[16, 46, 76, 106].map((y, i) => (
-                    <g key={y+200}>
-                      <rect x="120" y={y} width="72" height="22" rx="6" fill="rgba(194,24,106,0.08)" stroke="rgba(194,24,106,0.22)" strokeWidth="1"/>
-                      <rect x="128" y={y+7} width={[40,52,34,48][i]} height="8" rx="4" fill="rgba(194,24,106,0.30)"/>
-                    </g>
-                  ))}
-                </svg>
+            {/* Card 3 — Product Owner control */}
+            <div style={{ background: "#fff", borderRadius: 22, border: "1px solid rgba(124,58,237,0.10)", boxShadow: "0 4px 24px rgba(0,0,0,0.06)", overflow: "hidden", display: "flex", flexDirection: "column" as const }}>
+              <div style={{ padding: "22px 24px 0", display: "flex" }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#7C3AED", letterSpacing: "0.08em" }}>03</span>
               </div>
-              <div style={{ padding: "20px 22px 26px" }}>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#000", letterSpacing: "0.04em" }}>02</span>
-                <div style={{ fontSize: 17, fontWeight: 700, color: "#000", margin: "8px 0 10px", lineHeight: 1.25 }}>Matched against market signals.</div>
-                <div style={{ fontSize: 14, lineHeight: 1.65, color: "#000" }}>Your private context is studied and matched against competitor signals within the same use case and business domain, showing exactly which competitors have shipped what, where it counts.</div>
-              </div>
-            </div>
-
-            {/* Card 3 — Support tickets */}
-            <div style={{ background: "#fff", borderRadius: 18, border: "1px solid rgba(0,0,0,0.07)", boxShadow: "0 2px 16px rgba(0,0,0,0.05)", overflow: "hidden" }}>
-              <div style={{ background: "rgba(124,58,237,0.05)", padding: "28px 20px 24px", minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg viewBox="0 0 200 130" style={{ width: "100%" }}>
-                  {/* 4 roadmap item rows */}
+              <div style={{ flex: 1, padding: "12px 16px 16px", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <svg viewBox="0 0 280 200" style={{ width: "100%", maxHeight: 200 }}>
+                  {/* 3 approval rows */}
                   {([
-                    ["#7C3AED", 8],
-                    ["#5E6CE8", 38],
-                    ["#F97316", 68],
-                    ["#06B6D4", 98],
-                  ] as [string, number][]).map(([color, y]) => (
-                    <g key={y}>
-                      {/* Card background */}
-                      <rect x="8" y={y} width="184" height="24" rx="7" fill="#fff" stroke="rgba(0,0,0,0.07)" strokeWidth="1"/>
-                      {/* Left color accent */}
-                      <rect x="8" y={y} width="6" height="24" rx="3" fill={color}/>
-                      {/* Priority dot */}
-                      <circle cx="26" cy={y+12} r="4" fill={`${color}25`} stroke={color} strokeWidth="1"/>
-                      {/* Content bars */}
-                      <rect x="38" y={y+8} width="80" height="8" rx="4" fill="rgba(0,0,0,0.09)"/>
-                      {/* Impact badge */}
-                      <rect x="148" y={y+6} width="36" height="12" rx="4" fill={`${color}15`} stroke={`${color}35`} strokeWidth="0.8"/>
-                    </g>
-                  ))}
+                    { rank: "#1", label: "Multi-agent handoff", state: "approved" },
+                    { rank: "#2", label: "Context window limits", state: "pending" },
+                    { rank: "#3", label: "RAG use case expansion", state: "rejected" },
+                  ] as { rank: string; label: string; state: string }[]).map(({ rank, label, state }, i) => {
+                    const y = 8 + i * 42;
+                    const approved = state === "approved";
+                    const rejected = state === "rejected";
+                    return (
+                      <g key={rank}>
+                        <rect x="4" y={y} width="272" height="34" rx="10" fill="#fff" stroke="rgba(0,0,0,0.07)" strokeWidth="1"/>
+                        {/* Rank badge */}
+                        <rect x="12" y={y+9} width="22" height="16" rx="5" fill="rgba(124,58,237,0.08)"/>
+                        <text x="23" y={y+20} textAnchor="middle" fontSize="8.5" fill="#7C3AED" fontFamily="system-ui" fontWeight="700">{rank}</text>
+                        {/* Label */}
+                        <text x="42" y={y+21} fontSize="10.5" fill="#111" fontFamily="system-ui" fontWeight="500">{label}</text>
+                        {/* Approve button */}
+                        <rect x="196" y={y+8} width="34" height="18" rx="6"
+                          fill={approved ? "rgba(5,150,105,0.15)" : "rgba(5,150,105,0.06)"}
+                          stroke={approved ? "#059669" : "rgba(5,150,105,0.25)"}
+                          strokeWidth={approved ? "1.5" : "1"}/>
+                        <path d={`M${204} ${y+17} l4 4 8-8`} fill="none" stroke="#059669" strokeWidth={approved ? "2" : "1.3"} strokeLinecap="round" strokeLinejoin="round" opacity={approved ? 1 : 0.45}/>
+                        {/* Reject button */}
+                        <rect x="236" y={y+8} width="34" height="18" rx="6"
+                          fill={rejected ? "rgba(239,68,68,0.12)" : "rgba(239,68,68,0.05)"}
+                          stroke={rejected ? "#EF4444" : "rgba(239,68,68,0.22)"}
+                          strokeWidth={rejected ? "1.5" : "1"}/>
+                        <path d={`M${243} ${y+13} l8 8 M${251} ${y+13} l-8 8`} fill="none" stroke="#EF4444" strokeWidth={rejected ? "2" : "1.3"} strokeLinecap="round" opacity={rejected ? 1 : 0.45}/>
+                      </g>
+                    );
+                  })}
+                  {/* Arrow down */}
+                  <line x1="140" y1="136" x2="140" y2="152" stroke="rgba(124,58,237,0.35)" strokeWidth="1.5" strokeLinecap="round"/>
+                  <polygon points="135,150 140,158 145,150" fill="rgba(124,58,237,0.45)"/>
+                  {/* Output destinations */}
+                  <rect x="26" y="162" width="98" height="28" rx="9" fill="rgba(5,150,105,0.08)" stroke="rgba(5,150,105,0.28)" strokeWidth="1.2"/>
+                  <text x="75" y="176" textAnchor="middle" fontSize="8" fill="#059669" fontFamily="system-ui" fontWeight="700" letterSpacing="0.04em">↗ Jira</text>
+                  <rect x="156" y="162" width="98" height="28" rx="9" fill="rgba(124,58,237,0.07)" stroke="rgba(124,58,237,0.22)" strokeWidth="1.2"/>
+                  <text x="205" y="176" textAnchor="middle" fontSize="8" fill="#5B21B6" fontFamily="system-ui" fontWeight="700" letterSpacing="0.04em">↗ Catalogue</text>
                 </svg>
               </div>
-              <div style={{ padding: "20px 22px 26px" }}>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#000", letterSpacing: "0.04em" }}>03</span>
-                <div style={{ fontSize: 17, fontWeight: 700, color: "#000", margin: "8px 0 10px", lineHeight: 1.25 }}>Product Roadmap Elements.</div>
-                <div style={{ fontSize: 14, lineHeight: 1.65, color: "#000" }}>FeatureStream surfaces four kinds of opportunities as required: new product features, use case expansions, agentic fixes, and UI fixes - all in the same roadmap.</div>
-              </div>
-            </div>
-
-            {/* Card 4 — Usage analytics */}
-            <div style={{ background: "#fff", borderRadius: 18, border: "1px solid rgba(0,0,0,0.07)", boxShadow: "0 2px 16px rgba(0,0,0,0.05)", overflow: "hidden" }}>
-              <div style={{ background: "rgba(124,58,237,0.05)", padding: "28px 20px 24px", minHeight: 200, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <svg viewBox="0 0 200 145" style={{ width: "100%" }}>
-                  {/* 3 ranked items with approve/reject */}
-                  {([
-                    ["#1", 8,  "#7C3AED"],
-                    ["#2", 40, "#5E6CE8"],
-                    ["#3", 72, "#A21CAF"],
-                  ] as [string, number, string][]).map(([rank, y, color]) => (
-                    <g key={rank}>
-                      <rect x="8" y={y} width="184" height="26" rx="7" fill="#fff" stroke="rgba(0,0,0,0.07)" strokeWidth="1"/>
-                      {/* Rank */}
-                      <rect x="14" y={y+6} width="18" height="14" rx="4" fill={`${color}15`}/>
-                      <text x="23" y={y+16} textAnchor="middle" fontSize="7.5" fill={color} fontFamily="system-ui" fontWeight="700">{rank}</text>
-                      {/* Content bar */}
-                      <rect x="40" y={y+9} width="84" height="8" rx="4" fill="rgba(0,0,0,0.08)"/>
-                      {/* Approve button */}
-                      <rect x="140" y={y+6} width="22" height="14" rx="5" fill="rgba(5,150,105,0.12)" stroke="rgba(5,150,105,0.35)" strokeWidth="1"/>
-                      <path d={`M${145} ${y+13} l4 4 6-7`} fill="none" stroke="#059669" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                      {/* Reject button */}
-                      <rect x="168" y={y+6} width="22" height="14" rx="5" fill="rgba(239,68,68,0.10)" stroke="rgba(239,68,68,0.30)" strokeWidth="1"/>
-                      <path d={`M${173} ${y+10} l6 6 M${179} ${y+10} l-6 6`} fill="none" stroke="#EF4444" strokeWidth="1.5" strokeLinecap="round"/>
-                    </g>
-                  ))}
-                  {/* Output arrow */}
-                  <line x1="100" y1="104" x2="100" y2="116" stroke="rgba(124,58,237,0.35)" strokeWidth="1.5"/>
-                  <polygon points="96,116 100,123 104,116" fill="rgba(124,58,237,0.4)"/>
-                  {/* Output pills */}
-                  <rect x="18" y="120" width="70" height="18" rx="6" fill="rgba(5,150,105,0.10)" stroke="rgba(5,150,105,0.30)" strokeWidth="1"/>
-                  <text x="53" y="132" textAnchor="middle" fontSize="7.5" fill="#059669" fontFamily="system-ui" fontWeight="700">Jira</text>
-                  <rect x="112" y="120" width="70" height="18" rx="6" fill="rgba(124,58,237,0.08)" stroke="rgba(124,58,237,0.25)" strokeWidth="1"/>
-                  <text x="147" y="132" textAnchor="middle" fontSize="7.5" fill="#5B21B6" fontFamily="system-ui" fontWeight="700">Catalogue</text>
-                </svg>
-              </div>
-              <div style={{ padding: "20px 22px 26px" }}>
-                <span style={{ fontSize: 13, fontWeight: 700, color: "#000", letterSpacing: "0.04em" }}>04</span>
-                <div style={{ fontSize: 17, fontWeight: 700, color: "#000", margin: "8px 0 10px", lineHeight: 1.25 }}>The Product Owner stays in control.</div>
-                <div style={{ fontSize: 14, lineHeight: 1.65, color: "#000" }}>Every item in the roadmap is ranked by impact. Nothing ships without the approval of the product owner - reject what doesn't fit, approve what does, and it flows straight to Jira and the FeatureStream product catalogue.</div>
+              <div style={{ borderTop: "1px solid rgba(0,0,0,0.06)", padding: "22px 24px 28px" }}>
+                <div style={{ fontSize: 18, fontWeight: 700, color: "#000", lineHeight: 1.25, marginBottom: 10 }}>The Product Owner stays in control.</div>
+                <div style={{ fontSize: 14, lineHeight: 1.7, color: "#444" }}>Nothing ships without your approval. Reject what doesn't fit, approve what does. It flows straight to Jira and the product catalogue.</div>
               </div>
             </div>
 
