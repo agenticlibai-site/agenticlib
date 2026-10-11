@@ -220,6 +220,9 @@ function DomainRequestModal({ onClose }: { onClose: () => void }) {
   );
 }
 
+
+
+
 export default function Home() {
   const [faqOpen, setFaqOpen] = useState<Set<number>>(new Set());
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -977,6 +980,26 @@ export default function Home() {
               </svg>
             </div>
             <span style={{ fontSize: "clamp(18px,2vw,24px)", fontWeight: 700, color: "#0F0B1E", letterSpacing: "-0.02em", lineHeight: 1.2 }}>Post-launch evaluation spec</span>
+          </div>
+        </div>
+      </section>
+
+      {/* ── AI Assistant ───────────────────────────────────────────────────── */}
+      <section style={{ padding: "88px 24px 96px", background: "#F9F8FC", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 860, margin: "0 auto" }}>
+          <h2 style={{ fontSize: "clamp(28px,3.2vw,48px)", fontWeight: 700, letterSpacing: "-0.03em", lineHeight: 1.1, color: "#0F0B1E", margin: "0 0 24px", maxWidth: "22ch" }}>
+            AI Assistant.
+          </h2>
+          <p style={{ fontSize: "clamp(16px,1.8vw,20px)", lineHeight: 1.65, color: "#000", margin: "0 0 52px", maxWidth: "58ch" }}>
+            The product owner can query any part of the product management process through natural language. From feature signals to post-launch metrics, every answer is grounded in your live product data.
+          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            <div style={{ width: 52, height: 52, borderRadius: 14, background: "rgba(124,58,237,0.10)", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+              </svg>
+            </div>
+            <span style={{ fontSize: "clamp(18px,2vw,24px)", fontWeight: 700, color: "#0F0B1E", letterSpacing: "-0.02em", lineHeight: 1.2 }}>Ask anything about your product</span>
           </div>
         </div>
       </section>
