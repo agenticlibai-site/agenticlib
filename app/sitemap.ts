@@ -7,7 +7,8 @@ const BASE = SITE_URL;
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE,                                    lastModified: new Date(), changeFrequency: "weekly",  priority: 1.0 },
-    { url: `${BASE}/company`,                       lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE}/demo`,                          lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: `${BASE}/company`,                      lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/solutions/marketing`,           lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/solutions/sales`,               lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/solutions/skincare`,            lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },

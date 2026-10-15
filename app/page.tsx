@@ -361,6 +361,7 @@ export default function Home() {
               </p>
               <div style={{ marginTop: 36, display: "flex", alignItems: "center", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
                 <Link href="/#contact" className="btn-accent">Get started</Link>
+                <Link href="/demo" className="btn-outline">Book a demo</Link>
               </div>
             </div>
 
