@@ -5,37 +5,31 @@ import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [productExpanded, setProductExpanded] = useState(false);
   const [resourcesExpanded, setResourcesExpanded] = useState(false);
   const pathname = usePathname();
 
   return (
     <>
       <style>{`
-        /* ── Desktop: floating pill ── */
+        /* ── Desktop: plain white bar ── */
         @media (min-width: 768px) {
           .nb-outer {
-            background: transparent !important;
-            border-bottom: none !important;
-            padding: 12px 24px !important;
+            background: #fff !important;
+            border-bottom: 1px solid rgba(0,0,0,0.08) !important;
+            padding: 0 32px !important;
             position: fixed !important;
             top: 0 !important;
             left: 0 !important;
             right: 0 !important;
             display: flex !important;
-            justify-content: center !important;
           }
           .nb-pill {
-            width: fit-content !important;
-            max-width: calc(100vw - 48px) !important;
-            margin: 0 !important;
-            padding: 7px 20px !important;
-            background: rgba(255,255,255,0.62) !important;
-            border-radius: 100px !important;
-            border: 1px solid rgba(255,255,255,0.55) !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 32px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.8) !important;
-            backdrop-filter: blur(24px) saturate(1.6) !important;
-            -webkit-backdrop-filter: blur(24px) saturate(1.6) !important;
+            width: 100% !important;
+            max-width: 1360px !important;
+            margin: 0 auto !important;
+            height: 68px !important;
+            padding: 0 !important;
+            background: transparent !important;
             position: relative !important;
           }
           .nb-tagline  { display: none !important; }
@@ -43,7 +37,7 @@ export default function Navbar() {
             margin-left: 20px !important;
             gap: 0px !important;
           }
-          .nb-link     { font-size: 15px !important; font-weight: 400 !important; color: #1a1a1a !important; padding: 6px 18px !important; border-radius: 100px !important; white-space: nowrap !important; }
+          .nb-link     { font-size: 15px !important; font-weight: 400 !important; color: #000 !important; padding: 6px 16px !important; border-radius: 8px !important; white-space: nowrap !important; }
           .nb-link:hover { background: rgba(0,0,0,0.05) !important; }
         }
 
@@ -83,62 +77,22 @@ export default function Navbar() {
           {/* NAV */}
           <nav className="nb-nav hidden md:flex items-center ml-10">
 
-            {/* Solutions mega dropdown */}
-            <div className="relative group">
-              <button
-                className="nb-link transition flex items-center gap-1"
-                style={{ background: "none", border: "none", cursor: "pointer" }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.05)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = ""; }}
-              >
-                Solutions
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginTop: 1 }}>
-                  <path d="M2.5 4.5l3.5 3.5 3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-              <div className="absolute top-full pt-2 hidden group-hover:block" style={{ zIndex: 9999, width: 660, left: "50%", transform: "translateX(-50%)" }}>
-                <div className="rounded-2xl" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 20px 60px rgba(0,0,0,0.13), 0 4px 12px rgba(0,0,0,0.06)" }}>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 0, padding: "20px 8px 16px" }}>
-                    {[
-                      { label: "Skincare", href: "/solutions/skincare",
-                        iconBg: "linear-gradient(135deg,#7c3aed,#a78bfa)",
-                        icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2.5C10 2.5 4 8.5 4 13a6 6 0 0012 0c0-4.5-6-10.5-6-10.5z" stroke="white" strokeWidth="1.7" strokeLinejoin="round" fill="rgba(255,255,255,0.18)"/><circle cx="10" cy="13.5" r="1.5" fill="white" opacity="0.8"/></svg> },
-                      { label: "Insurance Broker", href: "/product/ralfi-visibility/login",
-                        iconBg: "linear-gradient(135deg,#0d9488,#14b8a6)",
-                        icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2L3.5 5.5V10c0 4.5 3 7.5 6.5 8.5 3.5-1 6.5-4 6.5-8.5V5.5L10 2z" stroke="white" strokeWidth="1.6" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/><polyline points="7,10 9.5,12.5 13.5,7.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-                      { label: "Trades", href: "/product/dexify-visibility/login",
-                        iconBg: "linear-gradient(135deg,#ea580c,#fb923c)",
-                        icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M4 16l3.5-3.5M12.5 3.5a3 3 0 014 4L13 11l-4-4 3.5-3.5z" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" fill="rgba(255,255,255,0.18)"/><path d="M7.5 12.5l-3 3a1 1 0 001.4 1.4l3-3" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg> },
-                      { label: "Construction", href: "/solutions/construction",
-                        iconBg: "linear-gradient(135deg,#92400e,#d97706)",
-                        icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M3 16h14M5 16V9l5-5 5 5v7" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/><rect x="8" y="11" width="4" height="5" rx="0.5" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.2)"/></svg> },
-                      { label: "Marketing", href: "/solutions/marketing",
-                        iconBg: "linear-gradient(135deg,#e11d48,#f43f5e)",
-                        icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M2.5 10.5L10 3.5l7.5 7" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.5 8.5V16.5h4v-3.5h3v3.5h4V8.5" stroke="white" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-                      { label: "Sales", href: "/solutions/sales",
-                        iconBg: "linear-gradient(135deg,#2563eb,#60a5fa)",
-                        icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><polyline points="2.5,15.5 7.5,9 12,12.5 17.5,4.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><polyline points="14,4.5 17.5,4.5 17.5,8" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg> },
-                      { label: "Legal", href: "/solutions/legal",
-                        iconBg: "linear-gradient(135deg,#059669,#10b981)",
-                        icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M10 2v16M7 17.5h6" stroke="white" strokeWidth="1.7" strokeLinecap="round"/><path d="M4 7.5c0 0 1.5-3 3-3s3 3 3 3-1.5 2-3 2-3-2-3-2z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/><path d="M10 7.5c0 0 1.5-3 3-3s3 3 3 3-1.5 2-3 2-3-2-3-2z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.18)" strokeLinejoin="round"/></svg> },
-                      { label: "Hospitality", href: "/product/hsai-visibility/login",
-                        iconBg: "linear-gradient(135deg,#047857,#34d399)",
-                        icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M3 17V8l7-5 7 5v9" stroke="white" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/><rect x="7.5" y="11" width="5" height="6" rx="0.5" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.2)"/><path d="M10 11v6" stroke="white" strokeWidth="1.2" strokeLinecap="round" opacity="0.6"/></svg> },
-                      { label: "Video Creation", href: "/product/sdai-visibility/login",
-                        iconBg: "linear-gradient(135deg,#7c3aed,#a78bfa)",
-                        icon: <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="5.5" width="12" height="9" rx="2" stroke="white" strokeWidth="1.6" fill="rgba(255,255,255,0.18)"/><path d="M14.5 8.5l3-2v5l-3-2v-1z" stroke="white" strokeWidth="1.4" fill="rgba(255,255,255,0.25)" strokeLinejoin="round"/></svg> },
-                    ].map((item) => (
-                      <a key={item.href} href={item.href} className="flex items-center gap-3 py-2.5 rounded-xl px-3" style={{ textDecoration: "none" }}
-                        onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.04)"; }}
-                        onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
-                        <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: item.iconBg }}>{item.icon}</div>
-                        <span style={{ fontSize: 13.5, fontWeight: 600, color: "#000" }}>{item.label}</span>
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
+            {/* Product: scrolls to the Feature Selection card on the homepage */}
+            <Link
+              href="/#product"
+              onClick={(e) => {
+                if (pathname === "/") {
+                  e.preventDefault();
+                  document.getElementById("product")?.scrollIntoView({ behavior: "smooth" });
+                }
+              }}
+              className="nb-link transition"
+              style={{ textDecoration: "none" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}
+            >
+              Product
+            </Link>
 
             {/* Resources dropdown */}
             <div className="relative group">
@@ -156,10 +110,10 @@ export default function Navbar() {
               <div className="absolute left-0 top-full pt-2 hidden group-hover:block" style={{ zIndex: 9999, minWidth: 340 }}>
                 <div className="rounded-2xl p-2" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 16px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)" }}>
                   <Link href="/blog" className="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-colors" style={{ textDecoration: "none" }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#f8f8ff"; }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#F6F5F2"; }}
                     onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
-                    <div className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: "linear-gradient(135deg,#f59e0b,#fbbf24)" }}>
-                      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="2.5" rx="1.25" fill="white"/><rect x="3" y="8.5" width="10" height="2.5" rx="1.25" fill="white" fillOpacity=".8"/><rect x="3" y="13" width="7" height="2.5" rx="1.25" fill="white" fillOpacity=".6"/></svg>
+                    <div className="icon-dot" style={{ width: 36, height: 36 }}>
+                      <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="2" rx="1" fill="#000"/><rect x="3" y="9" width="10" height="2" rx="1" fill="#000"/><rect x="3" y="14" width="7" height="2" rx="1" fill="#000"/></svg>
                     </div>
                     <div className="flex flex-col flex-1">
                       <span style={{ fontSize: 13, fontWeight: 600, color: "#000000", lineHeight: 1.3 }}>Blog</span>
@@ -202,6 +156,13 @@ export default function Navbar() {
 
           </nav>
 
+          {/* CTA — desktop only */}
+          <div className="hidden md:block" style={{ marginLeft: "auto" }}>
+            <Link href="/#contact" className="btn-accent" style={{ padding: "11px 18px", fontSize: 14.5 }}>
+              Get started
+            </Link>
+          </div>
+
           {/* Hamburger — mobile only */}
           <button
             className="md:hidden ml-auto flex flex-col justify-center items-center gap-1.5 p-2 rounded-lg"
@@ -220,37 +181,11 @@ export default function Navbar() {
         {/* Mobile menu */}
         {mobileOpen && (
           <div className="md:hidden mt-2 rounded-2xl overflow-hidden" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 8px 24px rgba(0,0,0,0.08)" }}>
-            <button
-              onClick={() => setProductExpanded((o) => !o)}
-              className="w-full flex items-center justify-between px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
-              style={{ background: "none", border: "none", cursor: "pointer", borderBottom: "1px solid #f3f4f6" }}
-            >
-              <span>Solutions</span>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ transform: productExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>
-                <path d="M3 5l4 4 4-4" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            {productExpanded && (
-              <div style={{ background: "#fafafa", borderBottom: "1px solid #f3f4f6" }}>
-                {[
-                  { label: "Skincare", href: "/solutions/skincare" },
-                  { label: "Insurance Broker", href: "/product/ralfi-visibility/login" },
-                  { label: "Trades", href: "/product/dexify-visibility/login" },
-                  { label: "Construction", href: "/solutions/construction" },
-                  { label: "Marketing", href: "/solutions/marketing" },
-                  { label: "Sales", href: "/solutions/sales" },
-                  { label: "Legal", href: "/solutions/legal" },
-                  { label: "Hospitality", href: "/product/hsai-visibility/login" },
-                  { label: "Video Creation", href: "/product/sdai-visibility/login" },
-                ].map((item) => (
-                  <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                    className="block pl-8 pr-5 py-3 text-sm text-black hover:text-black hover:bg-gray-100 transition-colors"
-                    style={{ textDecoration: "none", borderBottom: "1px solid #f0f0f0" }}>
-                    {item.label}
-                  </a>
-                ))}
-              </div>
-            )}
+            <Link href="/#product" onClick={() => setMobileOpen(false)}
+              className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
+              style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
+              Product
+            </Link>
             <button
               onClick={() => setResourcesExpanded((o) => !o)}
               className="w-full flex items-center justify-between px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"

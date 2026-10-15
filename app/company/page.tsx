@@ -33,8 +33,8 @@ export default function CompanyPage() {
       <style>{`
         .co-page {
           min-height: 100vh;
-          background: #FDF0F5;
-          font-family: var(--font-geist-sans), system-ui, sans-serif;
+          background: #ffffff;
+          font-family: var(--font-schibsted), system-ui, sans-serif;
           margin-top: -68px;
           padding-top: 68px;
         }
@@ -89,13 +89,13 @@ export default function CompanyPage() {
           font-weight: 800;
           line-height: 1.05;
           letter-spacing: -0.035em;
-          color: #0F0B1E;
+          color: #000;
           margin: 0;
           text-wrap: balance;
         }
 
         .co-gradient {
-          background: linear-gradient(95deg, #7C3AED 0%, #C2186A 100%);
+          background: none;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -113,7 +113,7 @@ export default function CompanyPage() {
           font-weight: 700;
           line-height: 1.22;
           letter-spacing: -0.025em;
-          color: #0F0B1E;
+          color: #000;
           margin: 0 0 28px;
           text-wrap: balance;
         }
@@ -144,11 +144,11 @@ export default function CompanyPage() {
           margin-top: 2px;
         }
         .co-footer-text {
-          font-family: var(--font-geist-sans), system-ui, sans-serif;
+          font-family: var(--font-schibsted), system-ui, sans-serif;
           font-size: 14px;
           font-style: italic;
           line-height: 1.6;
-          color: #7C3AED;
+          color: #55524C;
           letter-spacing: -0.01em;
         }
 
@@ -156,7 +156,7 @@ export default function CompanyPage() {
         .co-founder-banner {
           margin-top: 64px;
           border-radius: 20px;
-          background: linear-gradient(110deg, #7C3AED 0%, #b0306a 55%, #E05A5A 100%);
+          background: #FBF8F3;
           padding: 56px 56px;
           display: flex;
           align-items: center;
@@ -178,7 +178,7 @@ export default function CompanyPage() {
           font-weight: 700;
           letter-spacing: 0.18em;
           text-transform: uppercase;
-          color: rgba(255,255,255,0.65);
+          color: #55524C;
           margin: 0 0 16px;
         }
 
@@ -194,7 +194,7 @@ export default function CompanyPage() {
         .co-founder-role {
           font-size: 16px;
           font-weight: 500;
-          color: rgba(255,255,255,0.80);
+          color: #55524C;
           margin: 0 0 32px;
           line-height: 1.5;
         }
@@ -210,7 +210,7 @@ export default function CompanyPage() {
           align-items: center;
           gap: 8px;
           background: #ffffff;
-          color: #0F0B1E;
+          color: #000;
           font-size: 14px;
           font-weight: 700;
           padding: 12px 22px;
@@ -279,76 +279,39 @@ export default function CompanyPage() {
           <section className="co-section" style={{ borderTop: "none", paddingTop: 0, marginTop: -48 }}>
             <div className="co-right" style={{ gridColumn: "1 / -1" }}>
 
-              {/* Bold statement — fluid gradient hero card, full-width */}
+              {/* Bold statement — beige hero card, full-width */}
               <div className="co-mission-card" style={{
                 position: "relative",
                 borderRadius: 18,
                 overflow: "hidden",
                 marginBottom: 32,
                 padding: "48px 44px 44px",
-                background: "#EDE7FF",
+                background: "#FBF8F3",
               }}>
-                {/* Fluid blob layer */}
-                <div aria-hidden="true" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-                  <div style={{
-                    position: "absolute", left: "-8%", top: "0%",
-                    width: "50%", height: "140%",
-                    borderRadius: "50%",
-                    background: "rgba(124,58,237,0.20)",
-                    filter: "blur(56px)",
-                    transform: "rotate(-18deg)",
-                  }} />
-                  <div style={{
-                    position: "absolute", right: "-6%", top: "-30%",
-                    width: "42%", height: "110%",
-                    borderRadius: "50%",
-                    background: "rgba(194,24,106,0.32)",
-                    filter: "blur(50px)",
-                    transform: "rotate(22deg)",
-                  }} />
-                  <div style={{
-                    position: "absolute", left: "30%", top: "15%",
-                    width: "38%", height: "75%",
-                    borderRadius: "50%",
-                    background: "rgba(235,215,255,0.65)",
-                    filter: "blur(40px)",
-                  }} />
-                  <div style={{
-                    position: "absolute", left: "55%", bottom: "-20%",
-                    width: "32%", height: "80%",
-                    borderRadius: "50%",
-                    background: "rgba(160,34,142,0.28)",
-                    filter: "blur(46px)",
-                    transform: "rotate(-12deg)",
-                  }} />
-                </div>
 
                 {/* Content */}
                 <div style={{ position: "relative", zIndex: 1 }}>
-                  <h2 className="co-mission-h2" style={{
+                  <h2 className="co-mission-h2 display" style={{
                     display: "flex",
                     alignItems: "center",
                     gap: 14,
-                    fontSize: "clamp(38px, 4.8vw, 64px)",
-                    fontWeight: 800,
-                    lineHeight: 1.05,
-                    letterSpacing: "-0.035em",
-                    color: "#0F0B1E",
+                    fontSize: "clamp(44px, 5.4vw, 72px)",
+                    lineHeight: 1.03,
                     margin: "0 0 20px",
                   }}>
                     Mission
                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, opacity: 0.70 }}>
-                      <circle cx="16" cy="16" r="3" fill="#0F0B1E"/>
-                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#0F0B1E" strokeWidth="1.5"/>
-                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#0F0B1E" strokeWidth="1.5" transform="rotate(60 16 16)"/>
-                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#0F0B1E" strokeWidth="1.5" transform="rotate(120 16 16)"/>
+                      <circle cx="16" cy="16" r="3" fill="#000"/>
+                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#000" strokeWidth="1.5"/>
+                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#000" strokeWidth="1.5" transform="rotate(60 16 16)"/>
+                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#000" strokeWidth="1.5" transform="rotate(120 16 16)"/>
                     </svg>
                   </h2>
                   <p className="co-mission-title" style={{
                     fontSize: "clamp(22px, 2.6vw, 32px)",
                     fontWeight: 700,
                     letterSpacing: "-0.025em",
-                    color: "#0F0B1E",
+                    color: "#000",
                     lineHeight: 1.25,
                     margin: 0,
                     whiteSpace: "nowrap",
@@ -381,7 +344,7 @@ export default function CompanyPage() {
                 }}>
                   {[
                     {
-                      accent: "#7C3AED",
+                      accent: "#FF8A73",
                       eyebrow: "Business Domain",
                       label: "By Business Domain",
                       sub: "Know which verticals your agent owns and where competitors are gaining ground.",
@@ -395,7 +358,7 @@ export default function CompanyPage() {
                       ),
                     },
                     {
-                      accent: "#3B6FD4",
+                      accent: "#FF8A73",
                       eyebrow: "Use Case",
                       label: "By Use Case",
                       sub: "Track the exact moments buyers compare agents and see who wins the conversation.",
@@ -409,7 +372,7 @@ export default function CompanyPage() {
                       ),
                     },
                     {
-                      accent: "#C2186A",
+                      accent: "#FF8A73",
                       eyebrow: "Product Feature",
                       label: "By Product Feature",
                       sub: "Pinpoint the specific capabilities costing you positions in LLM responses.",
@@ -426,7 +389,7 @@ export default function CompanyPage() {
                       padding: "24px",
                       borderRadius: 16,
                       background: "#ffffff",
-                      border: "1px solid rgba(0,0,0,0.07)",
+                      border: "1px solid #EDE6E0",
                       display: "flex",
                       flexDirection: "column",
                       gap: 0,
@@ -434,14 +397,14 @@ export default function CompanyPage() {
                       {/* Top row: eyebrow + decorative icon */}
                       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: 16, marginBottom: 18 }}>
                         <span style={{
-                          fontFamily: "var(--font-geist-sans), system-ui, sans-serif",
+                          fontFamily: "var(--font-geist-mono), ui-monospace, monospace",
                           fontSize: 13,
-                          fontWeight: 700,
-                          letterSpacing: "0.10em",
+                          fontWeight: 400,
+                          letterSpacing: "0.14em",
                           textTransform: "uppercase" as const,
-                          color: accent,
+                          color: "#000",
                         }}>{eyebrow}</span>
-                        <div style={{ color: accent, opacity: 0.18, flexShrink: 0 }}>{icon}</div>
+                        <div style={{ color: accent, flexShrink: 0 }}>{icon}</div>
                       </div>
                     </div>
                   ))}
@@ -464,7 +427,7 @@ export default function CompanyPage() {
                   </p>
                 </div>
                 <div className="co-footer">
-                  <svg className="co-footer-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <svg className="co-footer-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF8A73" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                     <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
                     <line x1="16" y1="8" x2="2" y2="22"/>
                     <line x1="17.5" y1="15" x2="9" y2="15"/>
@@ -481,78 +444,41 @@ export default function CompanyPage() {
           <section className="co-section" style={{ borderTop: "none", marginTop: -40 }}>
             <div className="co-right" style={{ gridColumn: "1 / -1" }}>
 
-              {/* Vision hero card — pink-dominant, purple accent */}
+              {/* Vision hero card — beige */}
               <div className="co-mission-card" style={{
                 position: "relative",
                 borderRadius: 18,
                 overflow: "hidden",
                 marginBottom: 32,
                 padding: "48px 44px 44px",
-                background: "#FFE5F2",
+                background: "#FBF8F3",
               }}>
-                {/* Fluid blob layer */}
-                <div aria-hidden="true" style={{ position: "absolute", inset: 0, overflow: "hidden" }}>
-                  <div style={{
-                    position: "absolute", right: "-10%", top: "-10%",
-                    width: "55%", height: "140%",
-                    borderRadius: "50%",
-                    background: "rgba(194,24,106,0.40)",
-                    filter: "blur(56px)",
-                    transform: "rotate(18deg)",
-                  }} />
-                  <div style={{
-                    position: "absolute", left: "-8%", top: "5%",
-                    width: "44%", height: "110%",
-                    borderRadius: "50%",
-                    background: "rgba(124,58,237,0.28)",
-                    filter: "blur(50px)",
-                    transform: "rotate(-20deg)",
-                  }} />
-                  <div style={{
-                    position: "absolute", left: "32%", top: "10%",
-                    width: "36%", height: "80%",
-                    borderRadius: "50%",
-                    background: "rgba(255,210,235,0.70)",
-                    filter: "blur(40px)",
-                  }} />
-                  <div style={{
-                    position: "absolute", right: "42%", bottom: "-20%",
-                    width: "30%", height: "75%",
-                    borderRadius: "50%",
-                    background: "rgba(180,30,120,0.25)",
-                    filter: "blur(44px)",
-                    transform: "rotate(10deg)",
-                  }} />
-                </div>
 
                 {/* Content */}
                 <div style={{ position: "relative", zIndex: 1 }}>
-                  <h2 className="co-mission-h2" style={{
+                  <h2 className="co-mission-h2 display" style={{
                     display: "flex",
                     alignItems: "center",
                     gap: 14,
-                    fontSize: "clamp(38px, 4.8vw, 64px)",
-                    fontWeight: 800,
-                    lineHeight: 1.05,
-                    letterSpacing: "-0.035em",
-                    color: "#0F0B1E",
+                    fontSize: "clamp(44px, 5.4vw, 72px)",
+                    lineHeight: 1.03,
                     margin: "0 0 20px",
                   }}>
                     Vision
                     <svg width="44" height="44" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, opacity: 0.70 }}>
-                      <path d="M16 2 L17.5 14.5 L16 16 L14.5 14.5 Z" fill="#0F0B1E"/>
-                      <path d="M30 16 L17.5 17.5 L16 16 L17.5 14.5 Z" fill="#0F0B1E"/>
-                      <path d="M16 30 L14.5 17.5 L16 16 L17.5 17.5 Z" fill="#0F0B1E"/>
-                      <path d="M2 16 L14.5 14.5 L16 16 L14.5 17.5 Z" fill="#0F0B1E"/>
-                      <circle cx="16" cy="16" r="2" fill="#0F0B1E"/>
-                      <circle cx="16" cy="16" r="5.5" stroke="#0F0B1E" strokeWidth="1" opacity="0.3"/>
+                      <path d="M16 2 L17.5 14.5 L16 16 L14.5 14.5 Z" fill="#000"/>
+                      <path d="M30 16 L17.5 17.5 L16 16 L17.5 14.5 Z" fill="#000"/>
+                      <path d="M16 30 L14.5 17.5 L16 16 L17.5 17.5 Z" fill="#000"/>
+                      <path d="M2 16 L14.5 14.5 L16 16 L14.5 17.5 Z" fill="#000"/>
+                      <circle cx="16" cy="16" r="2" fill="#000"/>
+                      <circle cx="16" cy="16" r="5.5" stroke="#000" strokeWidth="1" opacity="0.3"/>
                     </svg>
                   </h2>
                   <p className="co-mission-title" style={{
                     fontSize: "clamp(22px, 2.6vw, 32px)",
                     fontWeight: 700,
                     letterSpacing: "-0.025em",
-                    color: "#0F0B1E",
+                    color: "#000",
                     lineHeight: 1.25,
                     margin: 0,
                     whiteSpace: "nowrap",
@@ -582,7 +508,7 @@ export default function CompanyPage() {
                   </p>
                 </div>
                 <div className="co-footer">
-                  <svg className="co-footer-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
+                  <svg className="co-footer-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF8A73" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                     <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
                     <line x1="16" y1="8" x2="2" y2="22"/>
                     <line x1="17.5" y1="15" x2="9" y2="15"/>
@@ -599,7 +525,7 @@ export default function CompanyPage() {
           <div style={{
             margin: "24px auto 0",
             borderRadius: 20,
-            background: "linear-gradient(110deg, #7C3AED 0%, #b0306a 55%, #E05A5A 100%)",
+            background: "#FBF8F3",
             padding: "36px 40px",
             display: "flex",
             alignItems: "center",
@@ -610,14 +536,15 @@ export default function CompanyPage() {
             maxWidth: 680,
           }}>
             <div style={{ position: "relative", zIndex: 1, flex: 1 }}>
-              <p style={{ fontFamily: "var(--font-geist-sans), system-ui, sans-serif", fontSize: 18, fontWeight: 700, letterSpacing: "0.18em", textTransform: "uppercase", color: "rgba(255,255,255,0.80)", margin: "0 0 12px" }}>Founder</p>
-              <h2 style={{ fontFamily: "var(--font-geist-sans), system-ui, sans-serif", fontSize: "clamp(22px, 2.4vw, 32px)", fontWeight: 800, lineHeight: 1.05, letterSpacing: "-0.025em", color: "#ffffff", margin: "0 0 28px" }}>Srinidhi Murali</h2>
+              <p className="eyebrow" style={{ margin: "0 0 12px" }}>Founder</p>
+              <h2 className="display" style={{ fontSize: "clamp(32px, 3.4vw, 44px)", lineHeight: 1.05, margin: "0 0 24px" }}>Srinidhi Murali</h2>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-start" }}>
                 <a
                   href="https://www.linkedin.com/in/srinidhi-murali06/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#ffffff", color: "#0F0B1E", fontSize: 14, fontWeight: 700, padding: "12px 22px", borderRadius: 9999, textDecoration: "none" }}
+                  className="btn-accent"
+                  style={{ fontSize: 14, padding: "12px 20px" }}
                 >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
@@ -626,7 +553,8 @@ export default function CompanyPage() {
                 </a>
                 <a
                   href="mailto:srinidhi.murali@featstream.com"
-                  style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#ffffff", color: "#0F0B1E", fontSize: 14, fontWeight: 700, padding: "12px 22px", borderRadius: 9999, textDecoration: "none" }}
+                  className="btn-outline"
+                  style={{ fontSize: 14, padding: "11px 19px" }}
                 >
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <rect x="2" y="4" width="20" height="16" rx="2"/>
@@ -639,12 +567,12 @@ export default function CompanyPage() {
 
             {/* Orbital rings */}
             <svg style={{ position: "absolute", right: 24, top: "50%", transform: "translateY(-50%)", width: 260, height: 260, pointerEvents: "none", flexShrink: 0 }} viewBox="0 0 320 320" fill="none">
-              <circle cx="160" cy="160" r="120" stroke="rgba(255,255,255,0.15)" strokeWidth="1"/>
-              <circle cx="160" cy="160" r="80" stroke="rgba(255,255,255,0.15)" strokeWidth="1"/>
-              <circle cx="160" cy="160" r="56" fill="rgba(255,255,255,0.10)"/>
-              <circle cx="160" cy="40" r="7" fill="rgba(255,255,255,0.85)"/>
-              <circle cx="272" cy="178" r="6" fill="rgba(200,220,255,0.75)"/>
-              <circle cx="96" cy="254" r="5" fill="rgba(255,255,255,0.65)"/>
+              <circle cx="160" cy="160" r="120" stroke="rgba(0,0,0,0.08)" strokeWidth="1"/>
+              <circle cx="160" cy="160" r="80" stroke="rgba(0,0,0,0.08)" strokeWidth="1"/>
+              <circle cx="160" cy="160" r="56" fill="rgba(255,138,115,0.10)"/>
+              <circle cx="160" cy="40" r="7" fill="#FF8A73"/>
+              <circle cx="272" cy="178" r="6" fill="#FFC2B5"/>
+              <circle cx="96" cy="254" r="5" fill="#FF8A73"/>
             </svg>
           </div>
 

@@ -1,8 +1,6 @@
 "use client";
 import Link from "next/link";
 
-const PURPLE = "#C2186A";
-
 function NavLink({ href, children, external }: { href: string; children: React.ReactNode; external?: boolean }) {
   const props = external ? { target: "_blank", rel: "noopener noreferrer" } : {};
   const Tag = href.startsWith("/") ? Link : "a";
@@ -11,7 +9,7 @@ function NavLink({ href, children, external }: { href: string; children: React.R
       href={href}
       {...props}
       style={{ display: "block", fontSize: 15, color: "#000", textDecoration: "none", marginBottom: 10, transition: "color 0.15s" }}
-      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#C2186A"; }}
+      onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#55524C"; }}
       onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#000"; }}
     >
       {children}
@@ -30,11 +28,8 @@ export default function SiteFooter() {
     >
       {/* Rounded card — light lavender, extends flush to bottom */}
       <div style={{
-        background: "linear-gradient(135deg, #E2CEFF 0%, #FFD8EA 100%)",
-        borderRadius: "28px 28px 0 0",
-        border: "1px solid #C2186A",
-        borderBottom: "none",
-        borderBottom: "none",
+        background: "#F6F5F2",
+        borderRadius: "24px 24px 0 0",
         padding: "48px 64px 0",
       }}>
         <div style={{ maxWidth: 1120, margin: "0 auto" }}>
@@ -42,16 +37,14 @@ export default function SiteFooter() {
           {/* ── CTA ───────────────────────────────────────────────────────── */}
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{
-              fontSize: "clamp(40px, 7vw, 88px)",
-              fontWeight: 900,
-              letterSpacing: "-0.04em",
+              fontSize: "clamp(48px, 8vw, 112px)",
+              fontFamily: "var(--font-instrument-serif), Georgia, serif",
+              fontWeight: 400,
+              letterSpacing: "-0.03em",
               lineHeight: 1,
               margin: 0,
               paddingBottom: "0.12em",
-              background: "linear-gradient(90deg, #7C3AED, #C73C8E, #F0617A)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
+              color: "#000",
             }}>
               FeatureStream
             </h2>
@@ -86,13 +79,13 @@ export default function SiteFooter() {
                     rel="noopener noreferrer"
                     style={{
                       width: 34, height: 34, borderRadius: "50%",
-                      background: "rgba(0,0,0,0.10)",
+                      background: "var(--accent)",
                       display: "flex", alignItems: "center", justifyContent: "center",
                       fontSize: 13, fontWeight: 700, color: "#000",
                       textDecoration: "none", transition: "background 0.15s",
                     }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(108,76,241,0.22)"; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(108,76,241,0.12)"; }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "var(--accent-hover)"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "var(--accent)"; }}
                   >
                     {icon}
                   </a>
@@ -103,7 +96,6 @@ export default function SiteFooter() {
             {/* Product */}
             <div>
               <p style={{ fontSize: 14, fontWeight: 700, color: "#0F0B1E", marginBottom: 16, marginTop: 0 }}>Product</p>
-              <NavLink href="/#sage">Sage AI</NavLink>
               <NavLink href="/#pricing">Pricing</NavLink>
             </div>
 
@@ -129,7 +121,7 @@ export default function SiteFooter() {
 
           {/* ── Bottom bar ────────────────────────────────────────────────── */}
           <div className="footer-bottom" style={{
-            borderTop: "1px solid rgba(108,76,241,0.15)",
+            borderTop: "1px solid rgba(0,0,0,0.10)",
             padding: "20px 0 32px",
             display: "flex",
             alignItems: "center",

@@ -1,0 +1,62 @@
+import ScaleWrapper from './ScaleWrapper';
+
+const HTML = `<div style="position: relative; width: 692px; height: 580px; flex-shrink: 0; border-radius: 36px; background: var(--frame-gradient); overflow: hidden; font-family: 'DM Sans', system-ui, sans-serif; color: #16181D">
+    <div style="position: absolute; left: -60px; top: 260px; width: 260px; height: 260px; border-radius: 50%; background: rgba(255,255,255,0.55); filter: blur(34px)"></div>
+    <div style="position: absolute; right: -40px; top: 40px; width: 240px; height: 240px; border-radius: 50%; background: rgba(255,255,255,0.45); filter: blur(34px)"></div>
+    <div style="position: absolute; right: 80px; bottom: -80px; width: 340px; height: 340px; border-radius: 50%; background: rgba(255,255,255,0.5); filter: blur(40px)"></div>
+    <div style="position: absolute; left: 14px; top: 14px; right: 14px; bottom: 14px; border-radius: 20px; overflow: hidden; background: #F7F6F3; box-shadow: 0 10px 30px rgba(20,90,90,0.18)">
+    <div style="position: relative; width: 824px; height: 685px; box-sizing: border-box; padding: 20px 28px 0 28px; background: #F7F6F3; transform: scale(0.806); transform-origin: 0 0">
+      <div style="display:flex;gap:16px;height:100%">
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;height:43px"><div style="font-family:'Instrument Serif',Georgia,serif;font-size:40px;line-height:1.1;letter-spacing:-0.01em;white-space:nowrap">Documents</div></div><div style="margin-top:8px;height:1px;background:#DAD8D2"></div>
+          <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div style="background:#fff;border-radius:20px;box-shadow:0 1px 10px rgba(22,24,29,0.06);padding:10px;display:flex;flex-direction:column;min-width:0">
+<div style="position:relative;height:186px;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,#D5ECE1,#EEF8F2)"><div style="position:absolute;left:36px;top:24px;width:172px;height:140px;border-radius:12px;background:rgba(255,255,255,.6)"></div>
+<div style="position:absolute;left:22px;top:14px;width:200px;box-sizing:border-box;padding:12px 14px;border-radius:12px;background:#fff;box-shadow:0 6px 18px rgba(22,24,29,0.10);">
+<div style="display:flex;align-items:center;gap:6px"><span style="font-size:11.5px;font-weight:700">Refund small orders</span><span style="margin-left:auto"><span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#D5ECE1;color:#14503F;font-size:9.5px;font-weight:700;white-space:nowrap">PRD v2</span></span></div>
+<div style="height:5px;width:40%;border-radius:3px;background:#B7D9CC;margin-top:8px"></div><div style="font-size:9px;color:#8A8F9B;margin-top:9px;font-weight:600;letter-spacing:.04em">GOAL</div><div style="height:5px;width:92%;border-radius:3px;background:#E3E1EC;margin-top:6px"></div><div style="height:5px;width:78%;border-radius:3px;background:#E3E1EC;margin-top:6px"></div><div style="font-size:9px;color:#8A8F9B;margin-top:9px;font-weight:600;letter-spacing:.04em">SUCCESS METRIC</div><div style="height:5px;width:85%;border-radius:3px;background:#E3E1EC;margin-top:6px"></div>
+</div>
+<div style="position:absolute;left:234px;top:70px;width:70px;height:84px;box-sizing:border-box;border-radius:12px;border:1.5px dashed #6FB6A2;display:flex;align-items:center;justify-content:center;color:#1F6F5C;font-size:20px;background:rgba(255,255,255,.35)">+</div>
+<div style="position:absolute;left:222px;top:22px;white-space:nowrap;padding:3px 9px;border-radius:999px;background:#fff;box-shadow:0 6px 18px rgba(22,24,29,0.10);font-size:9.5px;font-weight:700;color:#14503F">Cycle 3 · iter 2</div></div>
+<div style="padding:10px 4px 2px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:14px;font-weight:700">PRDs</span><span style="margin-left:auto;font-size:10.5px;color:#8A8F9B">8 docs</span></div><div style="margin-top:3px;font-size:12px;color:#5A5F6B;line-height:1.35">One for every build cycle and iteration, written from the evidence based off your company&#39;s agentic workflows.</div></div></div>
+<div style="background:#fff;border-radius:20px;box-shadow:0 1px 10px rgba(22,24,29,0.06);padding:10px;display:flex;flex-direction:column;min-width:0">
+<div style="position:relative;height:186px;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,#E8E0F7,#F5F1FC)"><div style="position:absolute;left:22px;top:20px;width:196px;height:146px;box-sizing:border-box;border-radius:12px;background:#fff;box-shadow:0 6px 18px rgba(22,24,29,0.10);overflow:hidden">
+<div style="height:20px;background:#F3EFFB;display:flex;align-items:center;gap:4px;padding-left:10px"><i style="width:6px;height:6px;border-radius:50%;background:#CFC3EC"></i><i style="width:6px;height:6px;border-radius:50%;background:#CFC3EC"></i><i style="width:6px;height:6px;border-radius:50%;background:#CFC3EC"></i></div>
+<div style="padding:10px 12px"><div style="height:8px;width:50%;border-radius:3px;background:#D9CFF2"></div>
+<div style="display:flex;gap:8px;margin-top:10px"><div style="flex:1;height:52px;border-radius:8px;background:#EEEAF8"></div><div style="flex:1;height:52px;border-radius:8px;background:#EEEAF8"></div></div>
+<div style="margin-top:10px;height:20px;border-radius:7px;background:#CDBDEE;width:45%"></div></div></div>
+<div style="position:absolute;left:70px;top:60px;width:20px;height:20px;border-radius:50%;background:#7A55C9;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px rgba(122,85,201,.25)">1</div>
+<div style="position:absolute;left:176px;top:122px;width:20px;height:20px;border-radius:50%;background:#7A55C9;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px rgba(122,85,201,.25)">2</div>
+<div style="position:absolute;left:196px;top:36px;width:112px;box-sizing:border-box;padding:9px 10px;border-radius:12px;background:#fff;box-shadow:0 6px 18px rgba(22,24,29,0.10);"><div style="font-size:9.5px;font-weight:700;color:#4B2E8A">Review note</div><div style="height:5px;width:95%;border-radius:3px;background:#E3E1EC;margin-top:6px"></div><div style="height:5px;width:70%;border-radius:3px;background:#E3E1EC;margin-top:6px"></div><div style="margin-top:8px"><span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#D5ECE1;color:#14503F;font-size:9.5px;font-weight:700;white-space:nowrap">Approved</span></div></div></div>
+<div style="padding:10px 4px 2px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:14px;font-weight:700">UI design reviews</span><span style="margin-left:auto;font-size:10.5px;color:#8A8F9B">5 docs</span></div><div style="margin-top:3px;font-size:12px;color:#5A5F6B;line-height:1.35">Review specs and wireframes for every new interface.</div></div></div>
+<div style="background:#fff;border-radius:20px;box-shadow:0 1px 10px rgba(22,24,29,0.06);padding:10px;display:flex;flex-direction:column;min-width:0">
+<div style="position:relative;height:186px;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,#FFF1D6,#FFF8EA)"><div style="position:absolute;left:22px;top:18px;width:260px;box-sizing:border-box;padding:12px 14px;border-radius:12px;background:#fff;box-shadow:0 6px 18px rgba(22,24,29,0.10);">
+<div style="display:flex;align-items:center;gap:6px"><span style="font-size:11.5px;font-weight:700">Fix refund-policy errors</span><span style="margin-left:auto"><span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#FFF1D6;color:#7A4A00;font-size:9.5px;font-weight:700;white-space:nowrap">Spec v1</span></span></div>
+<div style="margin-top:10px;display:flex;align-items:center;gap:8px"><span style="flex:1;padding:7px 9px;border-radius:9px;background:#FBE6E3;font-size:9.5px;color:#8A2D22;font-weight:600">Invents a policy</span><span style="color:#8A8F9B;font-size:12px">&#8594;</span><span style="flex:1;padding:7px 9px;border-radius:9px;background:#D5ECE1;font-size:9.5px;color:#14503F;font-weight:600">Cites real policy</span></div>
+<div style="margin-top:10px;display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;align-items:center;gap:7px"><i style="width:11px;height:11px;border-radius:3px;background:#C98A1B"></i><div style="height:5px;width:78%;border-radius:3px;background:#EFE2C4"></div></div>
+<div style="display:flex;align-items:center;gap:7px"><i style="width:11px;height:11px;border-radius:3px;background:#C98A1B"></i><div style="height:5px;width:62%;border-radius:3px;background:#EFE2C4"></div></div>
+<div style="display:flex;align-items:center;gap:7px"><i style="width:11px;height:11px;border-radius:3px;border:1.5px solid #C98A1B;box-sizing:border-box"></i><div style="height:5px;width:70%;border-radius:3px;background:#EFE2C4"></div></div></div></div>
+<div style="position:absolute;left:224px;top:140px;white-space:nowrap;padding:4px 10px;border-radius:999px;background:#fff;box-shadow:0 6px 18px rgba(22,24,29,0.10);font-size:9.5px;font-weight:700;color:#7A4A00">Agent-ready</div></div>
+<div style="padding:10px 4px 2px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:14px;font-weight:700">Agentic fix specs</span><span style="margin-left:auto;font-size:10.5px;color:#8A8F9B">3 docs</span></div><div style="margin-top:3px;font-size:12px;color:#5A5F6B;line-height:1.35">What broke, why, and the exact fix the agent should make.</div></div></div>
+<div style="background:#fff;border-radius:20px;box-shadow:0 1px 10px rgba(22,24,29,0.06);padding:10px;display:flex;flex-direction:column;min-width:0">
+<div style="position:relative;height:186px;border-radius:14px;overflow:hidden;background:linear-gradient(135deg,#DCE8FA,#EFF4FC)"><div style="position:absolute;left:22px;top:18px;width:260px;box-sizing:border-box;padding:12px 14px;border-radius:12px;background:#fff;box-shadow:0 6px 18px rgba(22,24,29,0.10);">
+<div style="display:flex;align-items:center;gap:6px"><span style="font-size:11.5px;font-weight:700">Week 1 results</span><span style="margin-left:auto"><span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#DCE8FA;color:#1E4A8A;font-size:9.5px;font-weight:700;white-space:nowrap">Eval</span></span></div>
+<div style="margin-top:8px;display:flex;align-items:flex-end;gap:14px;height:76px"><div style="display:flex;align-items:flex-end;gap:5px;flex:1"><div style="width:12px;height:30px;border-radius:4px 4px 0 0;background:#B9CDEE"></div><div style="width:12px;height:52px;border-radius:4px 4px 0 0;background:#3B6FC4"></div><div style="width:12px;height:24px;border-radius:4px 4px 0 0;background:#B9CDEE"></div><div style="width:12px;height:46px;border-radius:4px 4px 0 0;background:#3B6FC4"></div><div style="width:12px;height:36px;border-radius:4px 4px 0 0;background:#B9CDEE"></div><div style="width:12px;height:64px;border-radius:4px 4px 0 0;background:#3B6FC4"></div></div><div style="text-align:right"><div style="font-family:'Instrument Serif',Georgia,serif;font-size:30px;line-height:1;color:#1E4A8A">+22%</div><div style="font-size:9.5px;color:#8A8F9B;margin-top:2px">resolved</div></div></div>
+<div style="margin-top:8px;display:flex;gap:6px"><span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#E6EDF8;color:#1E4A8A;font-size:9.5px;font-weight:700;white-space:nowrap">Before</span><span style="display:inline-block;padding:2px 8px;border-radius:999px;background:#3B6FC4;color:#fff;font-size:9.5px;font-weight:700;white-space:nowrap">After</span></div></div>
+<div style="position:absolute;left:224px;top:140px;white-space:nowrap;padding:4px 10px;border-radius:999px;background:#fff;box-shadow:0 6px 18px rgba(22,24,29,0.10);font-size:9.5px;font-weight:700;color:#1E4A8A">Did it work?</div></div>
+<div style="padding:10px 4px 2px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:14px;font-weight:700">Post-launch evaluation specs</span><span style="margin-left:auto;font-size:10.5px;color:#8A8F9B">4 docs</span></div><div style="margin-top:3px;font-size:12px;color:#5A5F6B;line-height:1.35">Did it work after shipping? Before and after, measured.</div></div></div>
+</div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>`;
+
+export default function Screen11KnowDocuments() {
+  return (
+    <ScaleWrapper designWidth={692} designHeight={580}>
+      <div dangerouslySetInnerHTML={{ __html: HTML }} />
+    </ScaleWrapper>
+  );
+}

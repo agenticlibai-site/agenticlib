@@ -1,55 +1,25 @@
-import Link from "next/link";
-
+import Screen05PlanRoadmap from '@/components/product/Screen05PlanRoadmap';
+import Screen06PlanTimeline from '@/components/product/Screen06PlanTimeline';
+import Screen07KnowCatalogue from '@/components/product/Screen07KnowCatalogue';
+import Screen08KnowCustomerRequests from '@/components/product/Screen08KnowCustomerRequests';
+import Screen09KnowFeatureStatus from '@/components/product/Screen09KnowFeatureStatus';
+import Screen10KnowImpact from '@/components/product/Screen10KnowImpact';
+import Screen11KnowDocuments from '@/components/product/Screen11KnowDocuments';
 export const metadata = {
-  title: "Product – FeatureStream",
-  description: "See FeatureStream in action.",
+  title: 'Product – FeatureStream',
+  description: 'See FeatureStream in action.',
 };
 
 export default function ProductPage() {
   return (
-    <main className="min-h-screen">
-      {/* Nav */}
-      <nav className="sticky top-0 z-50 bg-white border-b border-gray-100 px-6 py-3 flex items-center gap-4">
-        <Link href="/" className="font-semibold text-black text-sm hover:text-violet-600 transition-colors">
-          ← FeatureStream
-        </Link>
-      </nav>
-
-      <div className="max-w-4xl mx-auto px-6 py-16 flex flex-col gap-16">
-
-        {/* Demo 1 */}
-        <section className="text-center">
-          <h2 className="text-4xl font-semibold mb-3 text-black">See how it works</h2>
-          <p className="text-black text-base mb-8">
-            Watch how FeatureStream turns a few simple questions into tailored AI agent recommendations.
-          </p>
-          <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200">
-            <video
-              src="/FeatureStream demo video.mp4"
-              controls
-              poster="/recommendations-cover.png"
-              className="w-full"
-            />
-          </div>
-        </section>
-
-        {/* Demo 2 */}
-        <section className="text-center">
-          <h2 className="text-4xl font-semibold mb-3 text-black">Where we&apos;re headed</h2>
-          <p className="text-black text-base mb-8">
-            Compare, research, and decide — all in one place.
-          </p>
-          <div className="rounded-2xl overflow-hidden shadow-xl border border-gray-200">
-            <video
-              src="/C&R Video.mp4"
-              controls
-              poster="/research-cover.png"
-              className="w-full"
-            />
-          </div>
-        </section>
-
-      </div>
-    </main>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '48px', background: '#fff', padding: '48px 0' }}>
+<Screen05PlanRoadmap />
+      <Screen06PlanTimeline />
+      <Screen07KnowCatalogue />
+      <Screen08KnowCustomerRequests />
+      <Screen09KnowFeatureStatus />
+      <Screen10KnowImpact />
+      <Screen11KnowDocuments />
+    </div>
   );
 }

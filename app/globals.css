@@ -3,6 +3,15 @@
 :root {
   --background: #ffffff;
   --foreground: #000000;
+  /* Brand accent (coral) — only for buttons and icon badges */
+  --accent: #FF8A73;
+  --accent-hover: #F5735A;
+  --surface: #F6F5F2;
+  --line: rgba(0, 0, 0, 0.10);
+  /* Product screenshot frames: coral → butter → seafoam.
+     Only the top + left edges show behind the screen, so run bottom-left → top-right. */
+  --frame-gradient: linear-gradient(45deg, #FF8A73 0%, #FFE7A3 50%, #7DDCCF 100%);
+  --muted: #55524C;
 }
 
 @theme inline {
@@ -15,15 +24,45 @@
 body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(
-    170deg,
-    #FEF0F5 0%,
-    #FDFAFF 28%,
-    #FFF8FC 52%,
-    #F8F3FF 76%,
-    #FEF0F5 100%
-  );
-  background-attachment: fixed;
+  background: var(--background);
+}
+
+/* ── Accent buttons (flat accent fill, black text) ── */
+.btn-accent {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #000;
+  font-weight: 500; font-size: 15px; line-height: 1;
+  padding: 14px 22px; border-radius: 8px; border: 1px solid transparent;
+  text-decoration: none; cursor: pointer;
+  transition: background 0.15s ease;
+}
+.btn-accent:hover { background: var(--accent-hover); }
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; color: #000;
+  font-weight: 500; font-size: 15px; line-height: 1;
+  padding: 13px 21px; border-radius: 8px; border: 1px solid #000;
+  text-decoration: none; cursor: pointer;
+  transition: background 0.15s ease;
+}
+.btn-outline:hover { background: var(--surface); }
+
+/* ── Icon badge: accent circle, black line icon ── */
+.icon-dot {
+  display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0;
+  border-radius: 50%; background: var(--accent); color: #000;
+}
+
+/* ── Mono eyebrow above headlines ── */
+.eyebrow {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: #000;
+}
+
+/* ── Serif display headings ── */
+.display {
+  font-family: var(--font-instrument-serif), Georgia, serif;
+  font-weight: 400; letter-spacing: -0.02em; color: #000;
 }
 
 /* ── Fixed navbar offset — desktop only ── */
@@ -44,7 +83,7 @@ body {
 /* ── Page background ── */
 .page-bg {
   min-height: 100vh;
-  background: linear-gradient(160deg, #EDE9FE 0%, #F5F2FF 30%, #FAF8FF 55%, #FDF0F8 80%, #FCE7F3 100%);
+  background: #fff;
 }
 
 /* ── Gradient headline text ── */
@@ -147,9 +186,17 @@ body {
 }
 
 
+/* ── Product screen font redirects (dangerouslySetInnerHTML uses literal names) ── */
+[style*="DM Sans"] {
+  font-family: var(--font-dm-sans, 'DM Sans', system-ui, sans-serif) !important;
+}
+[style*="Instrument Serif"] {
+  font-family: var(--font-instrument-serif, 'Instrument Serif', Georgia, serif) !important;
+}
+
 /* ── Text selection highlight ── */
 ::selection {
-  background: rgba(240, 97, 122, 0.35);
+  background: rgba(255, 138, 115, 0.45);
   color: inherit;
 }
 
@@ -208,88 +255,210 @@ body {
 /* ── Product page outer padding wrapper ── */
 .product-outer { padding: 0 32px; }
 
-/* ── Why FeatureStream hero grid (ai-agent-builders) ── */
-.why-grid {
+/* ── Why FeatureStream: two-column header + four illustrated cards ── */
+.why-head {
   display: grid;
-  grid-template-columns: minmax(0,1fr) minmax(0,1.05fr);
-  gap: 40px;
-  align-items: center;
-  padding: 40px 48px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 80px;
+  align-items: end;
+  background: #FBF8F3;
+  border-radius: 24px;
+  padding: 56px 56px 60px;
+}
+.why-cards {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 52px;
+}
+.why-card-art {
+  height: 360px;
+  border: 1px solid #EDE6E0;
+  border-radius: 18px;
+  background: linear-gradient(180deg, #FFF4EF 0%, #FFFFFF 70%);
+  overflow: hidden;
+}
+.why-card-art svg { display: block; width: 100%; height: 100%; }
+@media (max-width: 1024px) {
+  .why-head { grid-template-columns: minmax(0, 1fr); gap: 24px; padding: 36px 28px 40px; }
+  .why-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 40px; }
+}
+@media (max-width: 640px) {
+  .why-head { padding: 28px 20px 32px; border-radius: 18px; }
+  .why-cards { grid-template-columns: minmax(0, 1fr); margin-top: 36px; }
+}
+
+/* ── Integrations: glass logo bubbles on a soft coral → butter → seafoam stage ── */
+.int-stage {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  padding: 48px 0 0;
+  background:
+    radial-gradient(60% 70% at 88% 18%, rgba(255, 138, 115, 0.42) 0%, rgba(255, 138, 115, 0) 70%),
+    radial-gradient(55% 60% at 8% 92%, rgba(125, 220, 207, 0.38) 0%, rgba(125, 220, 207, 0) 70%),
+    radial-gradient(50% 55% at 45% 100%, rgba(255, 231, 163, 0.55) 0%, rgba(255, 231, 163, 0) 70%),
+    linear-gradient(180deg, #FFF6F1 0%, #FFFBF6 100%);
+}
+.int-head { position: relative; z-index: 2; text-align: center; padding: 0 32px; }
+.int-field {
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1200 / 400;
+  margin-top: 0;
+}
+.int-waves { position: absolute; inset: 0; width: 100%; height: 100%; }
+.int-spark {
+  position: absolute; width: 4px; height: 4px; margin: -2px 0 0 -2px; border-radius: 50%;
+  background: #fff; box-shadow: 0 0 8px 2px rgba(255, 255, 255, 0.9);
+  animation: int-twinkle 3.5s ease-in-out infinite;
+}
+.int-bubble {
+  position: absolute;
+  width: calc(var(--s) * 1cqw);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 32% 26%, #FFFFFF 0%, rgba(255, 255, 255, 0.96) 38%, rgba(255, 244, 239, 0.88) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 14px 32px -10px rgba(140, 70, 45, 0.28),
+    inset 0 -6px 14px rgba(255, 138, 115, 0.14),
+    inset 0 3px 6px rgba(255, 255, 255, 0.9);
+  animation: int-float 7s ease-in-out infinite;
+}
+.int-bubble-tint {
+  background: radial-gradient(circle at 32% 26%, #FFFFFF 0%, #FFF1EC 40%, #FFD9CE 100%);
+  box-shadow:
+    0 30px 60px -18px rgba(255, 110, 80, 0.45),
+    inset 0 -14px 30px rgba(255, 138, 115, 0.22),
+    inset 0 6px 14px rgba(255, 255, 255, 0.95);
+}
+.int-bubble img { width: 58%; height: 58%; object-fit: contain; display: block; }
+.int-cats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 36px;
+}
+.int-cats > div { border-top: 1px solid rgba(0, 0, 0, 0.10); padding-top: 16px; }
+@keyframes int-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+@keyframes int-twinkle { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .int-bubble, .int-spark { animation: none; }
+}
+@media (max-width: 1024px) {
+  .int-cats { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 28px; }
+}
+@media (max-width: 640px) {
+  .int-stage { padding-top: 44px; border-radius: 20px; }
+  .int-head { padding: 0 20px; }
+  /* Taller field so the bubbles stay legible; sizes scale up with it. */
+  .int-field { aspect-ratio: 1200 / 760; }
+  .int-bubble { width: calc(var(--s) * 1.55cqw); }
+  .int-cats { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* ── CTA band: sunset photo background (set inline in page.tsx) with white type ── */
+.cta-band {
+  position: relative; isolation: isolate;
+  max-width: 1160px; margin: 0 auto; border-radius: 24px; overflow: hidden;
+  min-height: 340px; padding: 72px 32px; box-sizing: border-box;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 30px; text-align: center;
+  background: #F3C2A6;
+}
+.cta-band h2 {
+  margin: 0; color: #fff; font-size: clamp(34px, 4.6vw, 64px); line-height: 1.04;
+  max-width: 24ch; text-wrap: balance; text-shadow: 0 1px 2px rgba(150, 60, 40, 0.3), 0 2px 22px rgba(150, 60, 40, 0.45);
+}
+@media (max-width: 640px) {
+  .cta-band { min-height: 280px; padding: 52px 20px; border-radius: 18px; }
+}
+
+/* ── Built for agentic products: header + bento grid (6-col track: 4+2 / 2+2+2 / 2+4) ── */
+.bento-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px 40px;
+  flex-wrap: wrap;
+}
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 48px;
+}
+.bento-card {
+  grid-column: span 2;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #E3E0DA;
+  border-radius: 22px;
+  background: #F7F6F4;
+  overflow: hidden;
+  min-width: 0;
+}
+.bento-wide { grid-column: span 4; }
+.bento-art { flex: 1; min-height: 0; padding-top: 14px; }
+.bento-art svg { display: block; width: 100%; height: 100%; }
+.bento-art .bento-art-sm { display: none; }
+.bento-copy { padding: 0 32px 28px; }
+@media (max-width: 1024px) {
+  .bento-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bento-card { grid-column: span 1; }
+  /* .bento-fill: a narrow card that takes the whole row on tablet so no card is left alone */
+  .bento-wide, .bento-fill { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .bento-grid { grid-template-columns: minmax(0, 1fr); margin-top: 36px; }
+  .bento-card { height: 360px; }
+  .bento-copy { padding: 0 22px 22px; }
+  .bento-art .bento-art-lg { display: none; }
+  .bento-art .bento-art-sm { display: block; }
+}
+
+/* ── Animated feature frames (components/product/animations) ── */
+/* Fragments ship their own @property; kept here too in case a pipeline strips it from inline <style>. */
+@property --t { syntax: '<number>'; inherits: true; initial-value: 0; }
+.fs-anim {
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 848 / 532;
+  overflow: hidden; /* the frame draws its own rounded painted border */
+  font-family: var(--font-dm-sans), system-ui, sans-serif;
+  color: #16181D;
+  text-align: left;
+}
+.fs-anim-inner {
+  width: 848px;
+  height: 532px;
+  transform-origin: 0 0;
+  transform: scale(tan(atan2(100cqw, 848px))); /* unitless container-width / 848 */
+}
+/* Frames name fonts literally; map them to the next/font families */
+.fs-anim [style*="Instrument Serif"] { font-family: var(--font-instrument-serif), Georgia, serif !important; }
+.fs-anim.is-paused *, .fs-anim.is-paused { animation-play-state: paused !important; }
+@media (prefers-reduced-motion: reduce) {
+  .fs-anim * { animation-play-state: paused !important; animation-delay: var(--fs-hold) !important; }
+}
+
+/* ── Homepage feature cards: stack on small screens ── */
+@media (max-width: 768px) {
+  .feat-card { grid-template-columns: minmax(0, 1fr) !important; gap: 28px !important; padding: 40px 20px 0 !important; }
+  .feat-card > div:first-child { padding-bottom: 0 !important; }
+  .feat-card .feat-frame { padding-bottom: 20px !important; }
 }
 
 /* ── Mobile overrides for product/solution pages ── */
-@media (max-width: 960px) {
-  .why-grid {
-    grid-template-columns: 1fr !important;
-    padding: 32px 20px 28px !important;
-    gap: 0 !important;
-  }
-  /* Scale the visual down to fit single-column; compensate dead space with negative margin */
-  .why-visual {
-    display: flex !important;
-    transform: scale(0.72) !important;
-    transform-origin: top center !important;
-    margin-bottom: -101px !important; /* (1 - 0.72) × 360 ≈ 101px */
-    overflow: visible !important;
-  }
-}
 @media (max-width: 768px) {
   .product-outer { padding: 0 16px !important; }
   .feature-card-icon { display: none !important; }
   .feature-card-last { width: 100% !important; max-width: 100% !important; margin: 0 !important; }
-  /* Scale down further on narrow phones */
-  .why-visual {
-    transform: scale(0.58) !important;
-    margin-bottom: -151px !important; /* (1 - 0.58) × 360 ≈ 151px */
-  }
-}
-
-/* ── Why FeatureStream — phone: single column, text above, cards below ── */
-@media (max-width: 640px) {
-  /* Single-column stack */
-  .why-grid {
-    grid-template-columns: 1fr !important;
-    padding: 24px 18px 20px !important;
-    gap: 20px !important;
-    align-items: start !important;
-  }
-  /* Text column: normal sizing */
-  .why-grid > div:first-child h2 { font-size: clamp(20px, 5.5vw, 26px) !important; margin-top: 14px !important; max-width: none !important; }
-  .why-grid > div:first-child p  { font-size: 14px !important; margin-top: 12px !important; line-height: 1.55 !important; max-width: none !important; }
-
-  /* Visual: horizontal row of 3 cards, no transform, no center card, no SVG */
-  .why-visual {
-    flex-direction: row !important;
-    flex-wrap: wrap !important;
-    align-items: stretch !important;
-    height: auto !important;
-    min-height: 0 !important;
-    gap: 8px !important;
-    transform: none !important;
-    margin-bottom: 0 !important;
-    overflow: visible !important;
-    width: 100% !important;
-  }
-  /* Hide glow blob, center card, SVG lines */
-  .why-visual > div:first-child { display: none !important; }
-  .why-visual > div:nth-child(2) { display: none !important; }
-  .why-visual > svg { display: none !important; }
-  /* Output cards container: row wrap filling full width */
-  .why-visual > div:last-child {
-    width: 100% !important;
-    height: auto !important;
-    flex-direction: column !important;
-    justify-content: flex-start !important;
-    gap: 8px !important;
-  }
-  /* Each output card: full width, compact */
-  .why-visual > div:last-child > div {
-    padding: 12px 14px !important;
-    border-radius: 12px !important;
-    gap: 10px !important;
-  }
-  .why-visual > div:last-child > div > span { width: 36px !important; height: 36px !important; border-radius: 10px !important; flex-shrink: 0 !important; }
-  .why-visual > div:last-child > div > div  { font-size: 13px !important; }
 }
 
 /* ── Sage AI Platform section header — aligns with card-inner left edge ── */
