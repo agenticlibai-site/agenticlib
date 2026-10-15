@@ -11,34 +11,44 @@ export default function Navbar() {
   return (
     <>
       <style>{`
-        /* ── Desktop: plain white bar ── */
+        /* ── Desktop: floating pill ── */
         @media (min-width: 768px) {
           .nb-outer {
-            background: #fff !important;
-            border-bottom: 1px solid rgba(0,0,0,0.08) !important;
-            padding: 0 32px !important;
+            background: transparent !important;
+            border-bottom: none !important;
+            padding: 0 24px !important;
             position: fixed !important;
-            top: 0 !important;
+            top: 14px !important;
             left: 0 !important;
             right: 0 !important;
             display: flex !important;
+            justify-content: center !important;
+            pointer-events: none;
           }
           .nb-pill {
-            width: 100% !important;
-            max-width: 1360px !important;
+            pointer-events: auto;
+            width: fit-content !important;
+            max-width: 100% !important;
             margin: 0 auto !important;
-            height: 68px !important;
-            padding: 0 !important;
-            background: transparent !important;
+            height: 64px !important;
+            padding: 0 8px 0 28px !important;
+            background: rgba(250, 249, 249, 0.97) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0,0,0,0.04) !important;
+            border-radius: 999px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04) !important;
             position: relative !important;
           }
           .nb-tagline  { display: none !important; }
           .nb-nav      {
-            margin-left: 20px !important;
-            gap: 0px !important;
+            margin-left: 28px !important;
+            gap: 6px !important;
           }
-          .nb-link     { font-size: 15px !important; font-weight: 400 !important; color: #000 !important; padding: 6px 16px !important; border-radius: 8px !important; white-space: nowrap !important; }
+          .nb-link     { font-size: 15.5px !important; font-weight: 400 !important; color: #2b2b2b !important; padding: 8px 16px !important; border-radius: 999px !important; white-space: nowrap !important; }
           .nb-link:hover { background: rgba(0,0,0,0.05) !important; }
+          .nb-cta      { margin-left: 22px !important; }
+          .nb-cta .btn-accent { border-radius: 999px !important; padding: 13px 26px !important; font-size: 15.5px !important; font-weight: 500 !important; }
         }
 
         /* ── Mobile: original full-width style ── */
@@ -69,7 +79,7 @@ export default function Navbar() {
             <div className="flex flex-col leading-none">
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <img src="/logo.png" alt="FeatureStream logo" className="h-6 w-auto" />
-                <span className="text-lg font-semibold tracking-tight">FeatureStream</span>
+                <span style={{ fontFamily: "var(--font-instrument-serif), Georgia, serif", fontSize: 25, fontWeight: 400, letterSpacing: "-0.01em", lineHeight: 1 }}>FeatureStream</span>
               </div>
             </div>
           </Link>
@@ -157,7 +167,7 @@ export default function Navbar() {
           </nav>
 
           {/* CTA — desktop only */}
-          <div className="hidden md:block" style={{ marginLeft: "auto" }}>
+          <div className="nb-cta hidden md:block">
             <Link href="/#contact" className="btn-accent" style={{ padding: "11px 18px", fontSize: 14.5 }}>
               Get started
             </Link>
@@ -180,7 +190,7 @@ export default function Navbar() {
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="md:hidden mt-2 rounded-2xl overflow-hidden" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 8px 24px rgba(0,0,0,0.08)" }}>
+          <div className="md:hidden mt-2 rounded-2xl overflow-hidden" style={{ margin: "8px 12px 12px", background: "white", border: "1px solid #e5e7eb", boxShadow: "0 8px 24px rgba(0,0,0,0.08)" }}>
             <Link href="/#product" onClick={() => setMobileOpen(false)}
               className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
               style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>

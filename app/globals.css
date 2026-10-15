@@ -454,6 +454,20 @@ body {
   .feat-card .feat-frame { padding-bottom: 20px !important; }
 }
 
+/* ── Homepage: phone layout ── */
+@media (max-width: 640px) {
+  /* Tighter vertical rhythm between sections */
+  .home-section { padding-top: 48px !important; padding-bottom: 48px !important; }
+  /* Product UI frames bleed to the card edges so they read larger */
+  .feat-card { padding: 36px 16px 0 !important; }
+  .feat-card .feat-frame { margin: 0 -10px !important; padding-bottom: 10px !important; }
+  /* Backer logos sit side by side within the screen */
+  .backers-row { gap: 28px !important; flex-wrap: nowrap !important; }
+  .backers-row img { height: 36px !important; }
+  .backers-row .backer-genesis { height: 64px !important; }
+  .backers-row span { font-size: 10px !important; }
+}
+
 /* ── Mobile overrides for product/solution pages ── */
 @media (max-width: 768px) {
   .product-outer { padding: 0 16px !important; }

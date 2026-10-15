@@ -57,7 +57,7 @@ const CATEGORIES = [
 
 export default function IntegrationsShowcase() {
   return (
-    <section style={{ padding: "88px 24px 96px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+    <section className="home-section" style={{ padding: "88px 24px 96px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
       <div style={{ maxWidth: 880, margin: "0 auto" }}>
         <div className="int-stage">
           <div className="int-head">

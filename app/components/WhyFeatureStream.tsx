@@ -216,7 +216,7 @@ const CARDS = [
 
 export default function WhyFeatureStream() {
   return (
-    <section style={{ padding: "72px 24px 88px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+    <section className="home-section" style={{ padding: "72px 24px 88px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div className="why-head">
           <div>

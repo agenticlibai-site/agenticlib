@@ -362,7 +362,7 @@ const CARDS: { title: string; body: string; Art: () => ReactNode; span?: "wide" 
 
 export default function AgenticBento() {
   return (
-    <section style={{ padding: "88px 24px 96px", background: "#fff", fontFamily: "var(--font-dm-sans), system-ui, sans-serif" }}>
+    <section className="home-section" style={{ padding: "88px 24px 96px", background: "#fff", fontFamily: "var(--font-dm-sans), system-ui, sans-serif" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div className="bento-head">
           <div>

@@ -295,7 +295,12 @@ export default function Home() {
           .hero-snap-wrap { margin-top: 28px !important; border-radius: 8px !important; width: 100% !important; }
 
           /* Supported by spacing */
-          .trusted-by-section { padding: 40px 16px 44px !important; }
+          .trusted-by-section { padding: 0 16px 40px !important; }
+          .trusted-by-section > div > div { margin-top: 0 !important; }
+
+          /* Section gaps and CTA gutter */
+          .feat-section { padding-bottom: 8px !important; }
+          .home-cta-section { padding: 0 24px 48px !important; }
 
           /* Sage AI header */
           .sage-header { padding: 0 20px !important; }
@@ -383,13 +388,13 @@ export default function Home() {
             <div style={{ textAlign: "center", marginBottom: 28 }}>
               <span className="eyebrow" style={{ color: "#55524C" }}>Supported by</span>
             </div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 56 }}>
+            <div className="backers-row" style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 56, flexWrap: "wrap" }}>
               <a href="https://www.blackbird.vc/giants" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "flex", flexDirection: "column" as const, alignItems: "center", gap: 10, opacity: 0.55, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget; el.style.opacity = "0.55"; el.style.filter = "grayscale(1)"; }}>
                 <img src="/blackbird logo.jpg" alt="Blackbird VC" style={{ height: 44, width: "auto", objectFit: "contain", borderRadius: 8 }} />
                 <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#000" }}>Blackbird VC Giants</span>
               </a>
               <a href="https://www.sydney.edu.au/business/study/student-experience/sydney-genesis.html" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "flex", alignItems: "center", opacity: 0.45, filter: "grayscale(1)" }} onMouseEnter={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.opacity = "1"; el.style.filter = "none"; }} onMouseLeave={e => { const el = e.currentTarget as HTMLAnchorElement; el.style.opacity = "0.45"; el.style.filter = "grayscale(1)"; }}>
-                <img src="/genesis-transparent.png" alt="University of Sydney Genesis" style={{ height: 90, width: "auto", objectFit: "contain" }} />
+                <img className="backer-genesis" src="/genesis-transparent.png" alt="University of Sydney Genesis" style={{ height: 90, maxWidth: "100%", width: "auto", objectFit: "contain" }} />
               </a>
             </div>
           </div>
@@ -398,7 +403,7 @@ export default function Home() {
       </section>
 
       {/* ── Feature Selection preview ───────────────────────────────────────── */}
-      <section style={{ background: "#fff", padding: "0 24px 80px" }}>
+      <section className="feat-section" style={{ background: "#fff", padding: "0 24px 80px" }}>
         {/* Cream card: heading + ChooseAnimation */}
         <div id="product" className="feat-card" style={{ scrollMarginTop: 96, maxWidth: 1160, margin: "0 auto", borderRadius: 24, background: "#F6F5F2", padding: "64px 64px 0 64px", overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: 48, alignItems: "center" }}>
           {/* Left — copy */}
@@ -499,7 +504,7 @@ export default function Home() {
       </section>
 
       {/* ── Product Specs ──────────────────────────────────────────────────── */}
-      <section style={{ padding: "80px 24px 88px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+      <section className="home-section" style={{ padding: "80px 24px 88px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
           <h2 className="display" style={{ fontSize: "clamp(30px,3.2vw,46px)", lineHeight: 1.08, margin: "0 0 52px", maxWidth: "28ch" }}>
             FeatureStream creates product specifications tailored to each iteration and build cycle.
@@ -531,7 +536,7 @@ export default function Home() {
       </section>
 
       {/* ── Painted CTA band ── */}
-      <section style={{ padding: "0 24px 88px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+      <section className="home-cta-section" style={{ padding: "0 24px 88px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
         <div
           className="cta-band"
           style={{ background: "linear-gradient(180deg, rgba(196, 104, 80, 0.10), rgba(196, 104, 80, 0.22)), url(/cta-sunset.jpg) center 58% / cover no-repeat", minHeight: "clamp(300px, 36vw, 440px)" }}
