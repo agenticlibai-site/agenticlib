@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { seoDomains, getSeoDomain, NOINDEX_SLUGS } from "@/data/seo-domains";
 import { domains } from "@/data/agents";
+import { SITE_URL } from "@/lib/site";
 
 // ── Static params ─────────────────────────────────────────────────────────────
 
@@ -24,12 +25,12 @@ export async function generateMetadata({
   return {
     title: domain.metaTitle,
     description: domain.metaDescription,
-    alternates: { canonical: `https://agenticlib.com/domain/${slug}` },
+    alternates: { canonical: `${SITE_URL}/domain/${slug}` },
     robots: { index: false, follow: true },
     openGraph: {
       title: domain.metaTitle,
       description: domain.metaDescription,
-      url: `https://agenticlib.com/domain/${slug}`,
+      url: `${SITE_URL}/domain/${slug}`,
       siteName: "FeatureStream",
       type: "website",
     },

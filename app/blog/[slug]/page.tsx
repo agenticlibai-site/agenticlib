@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { blogs } from "@/data/blogs";
 import BlogPostClient from "./BlogPostClient";
+import { SITE_URL } from "@/lib/site";
 
 export function generateStaticParams() {
   return blogs.map((b) => ({ slug: b.slug }));
@@ -19,11 +20,11 @@ export async function generateMetadata({
   return {
     title: `${blog.title} | FeatureStream Blog`,
     description: blog.description,
-    alternates: { canonical: `https://agenticlib.com/blog/${slug}` },
+    alternates: { canonical: `${SITE_URL}/blog/${slug}` },
     openGraph: {
       title: blog.title,
       description: blog.description,
-      url: `https://agenticlib.com/blog/${slug}`,
+      url: `${SITE_URL}/blog/${slug}`,
       siteName: "FeatureStream",
       type: "article",
       images: blog.image ? [{ url: blog.image }] : undefined,

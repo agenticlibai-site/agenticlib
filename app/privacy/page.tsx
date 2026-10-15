@@ -26,8 +26,8 @@ export default function PrivacyPage() {
           <p>
             Welcome to FeatureStream. Your privacy is important to us. This Privacy Policy explains how we collect,
             use, disclose, and protect your information when you visit our website:{" "}
-            <a href="https://www.agenticlib.com/" className="text-violet-600 underline underline-offset-2">
-              https://www.agenticlib.com/
+            <a href="https://www.featstream.com/" className="text-violet-600 underline underline-offset-2">
+              https://www.featstream.com/
             </a>{" "}
             (the "Site") or use our services (collectively, the "Services").
           </p>
@@ -158,8 +158,8 @@ export default function PrivacyPage() {
             </a>
             <br />
             🌐{" "}
-            <a href="https://www.agenticlib.com/" className="text-violet-600 underline underline-offset-2">
-              https://www.agenticlib.com/
+            <a href="https://www.featstream.com/" className="text-violet-600 underline underline-offset-2">
+              https://www.featstream.com/
             </a>
           </p>
         </section>

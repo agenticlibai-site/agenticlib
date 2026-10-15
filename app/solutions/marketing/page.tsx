@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Marketing AI Agents – FeatureStream",
@@ -7,13 +8,13 @@ export const metadata: Metadata = {
     "marketing AI agents", "AI marketing tools comparison", "AI content generation visibility",
     "LLM search marketing", "AI agent benchmarking marketing", "compare marketing AI tools",
   ],
-  alternates: { canonical: "https://agenticlib.com/solutions/marketing" },
+  alternates: { canonical: `${SITE_URL}/solutions/marketing` },
   openGraph: {
     type: "website",
     siteName: "FeatureStream",
     title: "Marketing AI Agents – FeatureStream",
     description: "Track your marketing AI agent's visibility in LLM search, benchmark features against competitors, and turn gaps into a roadmap.",
-    url: "https://agenticlib.com/solutions/marketing",
+    url: `${SITE_URL}/solutions/marketing`,
     images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream – Marketing AI" }],
   },
   twitter: {

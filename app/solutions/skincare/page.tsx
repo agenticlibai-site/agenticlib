@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Skincare & Beauty AI Agents – FeatureStream",
   description: "FeatureStream helps skincare and beauty AI agents compete. Track LLM visibility, benchmark personalisation depth and ingredient intelligence against competitors, and understand consumer trust signals before buyers shortlist.",
   keywords: ["skincare AI agents", "beauty AI tools comparison", "AI skincare personalisation", "LLM visibility beauty AI", "compare skincare AI platforms", "AI agent benchmarking skincare"],
-  alternates: { canonical: "https://agenticlib.com/solutions/skincare" },
-  openGraph: { type: "website", siteName: "FeatureStream", title: "Skincare & Beauty AI Agents – FeatureStream", description: "Track your skincare AI agent's visibility in LLM search, benchmark personalisation depth against competitors, and surface where consumers are finding alternatives.", url: "https://agenticlib.com/solutions/skincare", images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream – Skincare AI" }] },
+  alternates: { canonical: `${SITE_URL}/solutions/skincare` },
+  openGraph: { type: "website", siteName: "FeatureStream", title: "Skincare & Beauty AI Agents – FeatureStream", description: "Track your skincare AI agent's visibility in LLM search, benchmark personalisation depth against competitors, and surface where consumers are finding alternatives.", url: `${SITE_URL}/solutions/skincare`, images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream – Skincare AI" }] },
   twitter: { card: "summary_large_image", title: "Skincare & Beauty AI Agents – FeatureStream", description: "Track your skincare AI agent's visibility in LLM search, benchmark personalisation depth against competitors, and surface where consumers are finding alternatives.", images: ["/recommendations-cover.png"] },
 };
 

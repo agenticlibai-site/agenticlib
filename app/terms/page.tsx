@@ -25,8 +25,8 @@ export default function TermsPage() {
           <h1 className="text-3xl font-bold text-black mb-3">Terms &amp; Conditions</h1>
           <p>
             Welcome to FeatureStream. These Terms and Conditions ("Terms") govern your use of our website:{" "}
-            <a href="https://www.agenticlib.com" className="text-violet-600 underline underline-offset-2">
-              https://www.agenticlib.com
+            <a href="https://www.featstream.com" className="text-violet-600 underline underline-offset-2">
+              https://www.featstream.com
             </a>{" "}
             (the "Site"), and any related products or services (collectively, the "Services").
           </p>
@@ -139,8 +139,8 @@ export default function TermsPage() {
             </a>
             <br />
             🌐{" "}
-            <a href="https://www.agenticlib.com" className="text-violet-600 underline underline-offset-2">
-              https://www.agenticlib.com
+            <a href="https://www.featstream.com" className="text-violet-600 underline underline-offset-2">
+              https://www.featstream.com
             </a>
           </p>
         </section>

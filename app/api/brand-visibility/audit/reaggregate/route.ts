@@ -10,7 +10,7 @@ export const maxDuration = 300;
 // Safe to call multiple times — all aggregation functions use ON CONFLICT DO UPDATE.
 //
 // Usage:
-//   curl -H "Authorization: Bearer $CRON_SECRET" https://agenticlib.com/api/brand-visibility/audit/reaggregate
+//   curl -H "Authorization: Bearer $CRON_SECRET" https://www.featstream.com/api/brand-visibility/audit/reaggregate
 //
 // Optionally pass ?dry_run to insert denylist entries and check dates without re-aggregating.
 

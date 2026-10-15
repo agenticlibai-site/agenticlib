@@ -12,7 +12,7 @@ export const maxDuration = 60;
 // Safe to call multiple times — subsequent runs find nothing to merge.
 // Trigger with:
 //   curl -H "Authorization: Bearer $CRON_SECRET" \
-//        https://agenticlib.com/api/admin/dexify-brand-canonicalize
+//        https://www.featstream.com/api/admin/dexify-brand-canonicalize
 
 export async function GET(request: Request) {
   const secret = request.headers.get("authorization")?.replace("Bearer ", "");

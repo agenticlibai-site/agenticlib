@@ -7,8 +7,8 @@ export const dynamic = "force-dynamic";
 // collection results without a frontend page.
 //
 // Usage:
-//   curl -H "Authorization: Bearer $CRON_SECRET" https://agenticlib.com/api/skincare-visibility/audit
-//   curl -H "Authorization: Bearer $CRON_SECRET" "https://agenticlib.com/api/skincare-visibility/audit?date=2026-06-25"
+//   curl -H "Authorization: Bearer $CRON_SECRET" https://www.featstream.com/api/skincare-visibility/audit
+//   curl -H "Authorization: Bearer $CRON_SECRET" "https://www.featstream.com/api/skincare-visibility/audit?date=2026-06-25"
 //
 // Returns:
 //   raw_responses     — one row per (prompt, model, run) collected on the date

@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
 import Navbar from "./components/Navbar";
 import ContactWidget from "./components/ContactWidget";
+import { SITE_URL, SITE_DOMAIN } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -56,7 +57,7 @@ const instrumentSerif = Instrument_Serif({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://agenticlib.com"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "FeatureStream — The Product Management OS for AI Agent Builders",
     template: "%s | FeatureStream",
@@ -79,7 +80,7 @@ export const metadata: Metadata = {
     title: "FeatureStream — The Product Management OS for AI Agent Builders",
     description:
       "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
-    url: "https://agenticlib.com",
+    url: SITE_URL,
     images: [
       {
         url: "/recommendations-cover.png",
@@ -100,9 +101,8 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
-  alternates: {
-    canonical: "https://agenticlib.com",
-  },
+  // No site-wide canonical: it would be inherited by every page without its own and mark them all
+  // as duplicates of the homepage. Pages that need one set `alternates.canonical` themselves.
 };
 
 export default function RootLayout({
@@ -124,8 +124,8 @@ export default function RootLayout({
             "@context": "https://schema.org",
             "@type": "Organization",
             "name": "FeatureStream",
-            "url": "https://agenticlib.com",
-            "logo": "https://agenticlib.com/logo.png",
+            "url": SITE_URL,
+            "logo": `${SITE_URL}/logo.png`,
             "description": "FeatureStream is the product management platform for AI agent builders. Track LLM search visibility, benchmark features against competitors, and turn gaps into a roadmap.",
             "sameAs": [],
             "contactPoint": { "@type": "ContactPoint", "contactType": "customer support", "email": "hello@agenticlib.com" },
@@ -143,7 +143,7 @@ export default function RootLayout({
         {/* Plausible */}
         <Script
           defer
-          data-domain="agenticlib.com"
+          data-domain={SITE_DOMAIN}
           src="https://plausible.io/js/script.js"
           strategy="afterInteractive"
         />

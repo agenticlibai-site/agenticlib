@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Insurance Broker AI Agents – FeatureStream",
   description: "FeatureStream helps insurance broker AI agents compete. Track LLM visibility among brokerages, benchmark renewal automation and compliance capabilities against competitors, and understand how buyers evaluate insurance broker AI before shortlisting.",
   keywords: ["insurance broker AI agents", "AI insurance broker tools", "LLM visibility insurance AI", "compare insurance broker AI", "insurance brokerage AI competitive intelligence", "AI agent benchmarking insurance"],
-  alternates: { canonical: "https://agenticlib.com/solutions/insurance-broker" },
-  openGraph: { type: "website", siteName: "FeatureStream", title: "Insurance Broker AI Agents – FeatureStream", description: "Track your insurance broker AI agent's LLM visibility, benchmark renewal automation and compliance capabilities against competitors, and surface where brokerages are finding alternatives.", url: "https://agenticlib.com/solutions/insurance-broker", images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream – Insurance Broker AI" }] },
+  alternates: { canonical: `${SITE_URL}/solutions/insurance-broker` },
+  openGraph: { type: "website", siteName: "FeatureStream", title: "Insurance Broker AI Agents – FeatureStream", description: "Track your insurance broker AI agent's LLM visibility, benchmark renewal automation and compliance capabilities against competitors, and surface where brokerages are finding alternatives.", url: `${SITE_URL}/solutions/insurance-broker`, images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream – Insurance Broker AI" }] },
   twitter: { card: "summary_large_image", title: "Insurance Broker AI Agents – FeatureStream", description: "Track your insurance broker AI agent's LLM visibility, benchmark renewal automation and compliance capabilities against competitors, and surface where brokerages are finding alternatives.", images: ["/recommendations-cover.png"] },
 };
 

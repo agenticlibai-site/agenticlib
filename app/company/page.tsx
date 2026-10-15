@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Company – FeatureStream",
@@ -8,14 +9,14 @@ export const metadata: Metadata = {
     "FeatureStream company", "AI agent comparison platform", "AI visibility tracking",
     "LLM search visibility", "AI competitive intelligence", "AI agent benchmarking",
   ],
-  alternates: { canonical: "https://agenticlib.com/company" },
+  alternates: { canonical: `${SITE_URL}/company` },
   openGraph: {
     type: "website",
     siteName: "FeatureStream",
     title: "Company – FeatureStream",
     description:
       "FeatureStream is the product and marketing intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search and benchmark features against competitors.",
-    url: "https://agenticlib.com/company",
+    url: `${SITE_URL}/company`,
     images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream" }],
   },
   twitter: {

@@ -2,6 +2,7 @@ import { sql } from "@vercel/postgres";
 import { after } from "next/server";
 import { initBrandVisibilityDB } from "@/lib/brand-visibility/db";
 import { sendEmail } from "@/lib/email";
+import { SITE_URL } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -32,7 +33,7 @@ export const maxDuration = 30;
  *                           check (use a future date to confirm alert fires)
  */
 
-const CRON_ORIGIN = "https://agenticlib.com";
+const CRON_ORIGIN = SITE_URL;
 
 function cronHeaders(secret: string | undefined) {
   return { Authorization: `Bearer ${secret ?? ""}` };
