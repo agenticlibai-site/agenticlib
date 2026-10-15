@@ -7,9 +7,10 @@ interface SendEmailOptions {
   html:      string;
   fromName?: string;
   to?:       string;
+  replyTo?:  string;
 }
 
-export async function sendEmail({ subject, html, fromName = "FeatureStream Analytics", to = TO }: SendEmailOptions): Promise<void> {
+export async function sendEmail({ subject, html, fromName = "FeatureStream Analytics", to = TO, replyTo }: SendEmailOptions): Promise<void> {
   const user = process.env.EMAIL_USER;
   const pass = process.env.EMAIL_PASS;
 
@@ -29,7 +30,7 @@ export async function sendEmail({ subject, html, fromName = "FeatureStream Analy
 
   console.log("[email] sending to:", to, "subject:", subject);
 
-  const info = await transporter.sendMail({ from, to, subject, html });
+  const info = await transporter.sendMail({ from, to, subject, html, replyTo });
 
   console.log("[email] sent — messageId:", info.messageId, "response:", info.response);
 }
