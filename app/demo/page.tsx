@@ -74,7 +74,7 @@ export default function DemoPage() {
       <div className="dm-wrap">
         <div>
           <div className="eyebrow" style={{ color: "#55524C" }}>Book a demo</div>
-          <h1 className="display dm-heading">Build and ship the best agentic products with FeatureStream</h1>
+          <h1 className="display dm-heading">Maintain and ship the best agentic products with FeatureStream</h1>
           <p className="dm-intro">
             If you are an AI agent builder or product owner within an AI agent company, request a demo and we will reach out to you by email.
           </p>
