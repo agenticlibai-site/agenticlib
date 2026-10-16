@@ -195,8 +195,6 @@ export default async function DomainSeoPage({
           <Link href="/" className="hover:text-black transition">Home</Link>
           {" · "}
           <Link href="/explore" className="hover:text-black transition">Browse Domains</Link>
-          {" · "}
-          <Link href="/blog" className="hover:text-black transition">Blog</Link>
         </p>
       </footer>
 

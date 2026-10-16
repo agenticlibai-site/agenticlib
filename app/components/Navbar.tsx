@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [resourcesExpanded, setResourcesExpanded] = useState(false);
   const pathname = usePathname();
 
   return (
@@ -104,37 +103,6 @@ export default function Navbar() {
               Product
             </Link>
 
-            {/* Resources dropdown */}
-            <div className="relative group">
-              <button
-                className="nb-link transition flex items-center gap-1"
-                style={{ background: "none", border: "none", cursor: "pointer" }}
-                onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "rgba(0,0,0,0.05)"; }}
-                onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = ""; }}
-              >
-                Resources
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style={{ marginTop: 1 }}>
-                  <path d="M2.5 4.5l3.5 3.5 3.5-3.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </button>
-              <div className="absolute left-0 top-full pt-2 hidden group-hover:block" style={{ zIndex: 9999, minWidth: 340 }}>
-                <div className="rounded-2xl p-2" style={{ background: "white", border: "1px solid #e5e7eb", boxShadow: "0 16px 40px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06)" }}>
-                  <Link href="/blog" className="flex items-center gap-4 px-4 py-3.5 rounded-xl transition-colors" style={{ textDecoration: "none" }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "#F6F5F2"; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}>
-                    <div className="icon-dot" style={{ width: 36, height: 36 }}>
-                      <svg width="18" height="18" viewBox="0 0 20 20" fill="none"><rect x="3" y="4" width="14" height="2" rx="1" fill="#000"/><rect x="3" y="9" width="10" height="2" rx="1" fill="#000"/><rect x="3" y="14" width="7" height="2" rx="1" fill="#000"/></svg>
-                    </div>
-                    <div className="flex flex-col flex-1">
-                      <span style={{ fontSize: 13, fontWeight: 600, color: "#000000", lineHeight: 1.3 }}>Blog</span>
-                      <span style={{ fontSize: 11.5, color: "#000000", marginTop: 2 }}>Insights, guides and updates</span>
-                    </div>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" style={{ flexShrink: 0, color: "#d1d5db" }}><path d="M6 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                  </Link>
-                </div>
-              </div>
-            </div>
-
             {/* Company */}
             <Link
               href="/company"
@@ -196,29 +164,6 @@ export default function Navbar() {
               style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
               Product
             </Link>
-            <button
-              onClick={() => setResourcesExpanded((o) => !o)}
-              className="w-full flex items-center justify-between px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
-              style={{ background: "none", border: "none", cursor: "pointer", borderBottom: "1px solid #f3f4f6" }}
-            >
-              <span>Resources</span>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style={{ transform: resourcesExpanded ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>
-                <path d="M3 5l4 4 4-4" stroke="#000000" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            {resourcesExpanded && (
-              <div style={{ background: "#fafafa", borderBottom: "1px solid #f3f4f6" }}>
-                {[
-                  { label: "Blog", href: "/blog" },
-                ].map((item) => (
-                  <a key={item.href} href={item.href} onClick={() => setMobileOpen(false)}
-                    className="block pl-8 pr-5 py-3 text-sm text-black hover:text-black hover:bg-gray-100 transition-colors"
-                    style={{ textDecoration: "none", borderBottom: "1px solid #f0f0f0" }}>
-                    {item.label}
-                  </a>
-                ))}
-              </div>
-            )}
             <Link href="/company" onClick={() => setMobileOpen(false)}
               className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
               style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>

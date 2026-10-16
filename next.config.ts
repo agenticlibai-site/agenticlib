@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
       { source: "/domains", destination: "/explore", permanent: true },
       // /domains/[slug] (client-only, no SEO) → /domain/[slug] (SSG, full metadata)
       { source: "/domains/:slug", destination: "/domain/:slug", permanent: true },
+      // Blog removed: send old blog links to the homepage
+      { source: "/blog", destination: "/", permanent: true },
+      { source: "/blog/:slug", destination: "/", permanent: true },
     ];
   },
   async rewrites() {

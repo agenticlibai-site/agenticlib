@@ -103,7 +103,6 @@ export default function SiteFooter() {
             <div>
               <p style={{ fontSize: 14, fontWeight: 700, color: "#0F0B1E", marginBottom: 16, marginTop: 0 }}>Company</p>
               <NavLink href="/company">Mission</NavLink>
-              <NavLink href="/blog">Blog</NavLink>
               <NavLink href="/privacy">Privacy policy</NavLink>
               <NavLink href="/terms">Terms &amp; conditions</NavLink>
             </div>
