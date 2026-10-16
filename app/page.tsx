@@ -8,6 +8,8 @@ import { usePathname } from "next/navigation";
 import { Share2, Mail, X as XIcon, ArrowUp, MessageCircle } from "lucide-react";
 import IntelligenceModules from "@/components/IntelligenceModules";
 import SiteFooter from "./components/SiteFooter";
+import WaitlistForm from "./components/WaitlistForm";
+import DemoVideoGate from "./components/DemoVideoGate";
 import ChooseAnimation from "@/components/product/animations/ChooseAnimation";
 import PlanAnimation from "@/components/product/animations/PlanAnimation";
 import KnowAnimation from "@/components/product/animations/KnowAnimation";
@@ -359,9 +361,34 @@ export default function Home() {
               <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 28, fontWeight: 400, fontSize: 18, textAlign: "center", maxWidth: 640 }}>
                 FeatureStream turns your private business context and market signals into a dynamic product roadmap. Built for product managers, product owners and product creators within AI agent companies.
               </p>
-              <div style={{ marginTop: 36, display: "flex", alignItems: "center", justifyContent: "center", gap: 14, flexWrap: "wrap" }}>
-                <Link href="/#contact" className="btn-accent">Get started</Link>
-                <Link href="/demo" className="btn-outline">Book a demo</Link>
+              <style>{`
+                .hero-cta-card {
+                  margin-top: 36px; padding: 26px 36px 28px; border-radius: 22px; max-width: 640px;
+                  background: linear-gradient(180deg, #FFF4EF 0%, #FBF8F3 100%);
+                  border: 1px solid rgba(255,138,115,0.28);
+                  box-shadow: 0 14px 36px rgba(196,104,80,0.08);
+                }
+                .hero-cta-q { margin: 0; font-size: 20px; line-height: 1.6; font-weight: 500; color: #000; letter-spacing: -0.01em; }
+                .hero-role { display: inline-block; padding: 1px 12px; border-radius: 999px; background: rgba(255,138,115,0.22); font-weight: 600; white-space: nowrap; }
+                .hero-cta-sub { margin: 6px 0 0; font-size: 15.5px; line-height: 1.5; color: #55524C; }
+                @media (max-width: 640px) {
+                  .hero-cta-card { padding: 22px 18px 22px; border-radius: 18px; }
+                  .hero-cta-q { font-size: 17.5px; }
+                  .hero-cta-sub { font-size: 14.5px; }
+                }
+              `}</style>
+              <div className="hero-cta-card">
+                <p className="hero-cta-q">
+                  Are you an <span className="hero-role">AI agent builder</span> or <span className="hero-role">product owner</span>?
+                </p>
+                <p className="hero-cta-sub">Managing, maintaining and shipping agentic products? Join our waitlist.</p>
+                <div style={{ marginTop: 20, display: "flex", alignItems: "center", justifyContent: "center", gap: 12, flexWrap: "wrap" }}>
+                  <WaitlistForm />
+                  <Link href="/demo" className="btn-outline">Book a demo</Link>
+                </div>
+              </div>
+              <div style={{ marginTop: 18 }}>
+                <DemoVideoGate />
               </div>
             </div>
 
@@ -543,6 +570,7 @@ export default function Home() {
           style={{ background: "linear-gradient(180deg, rgba(196, 104, 80, 0.10), rgba(196, 104, 80, 0.22)), url(/cta-sunset.jpg) center 58% / cover no-repeat", minHeight: "clamp(300px, 36vw, 440px)" }}
         >
           <h2 className="display">Maintain and ship the best agentic products.</h2>
+          <WaitlistForm buttonStyle={{ background: "#fff", padding: "16px 28px", fontSize: 16, borderRadius: 10, boxShadow: "0 8px 24px rgba(150,60,40,0.22)" }} />
         </div>
       </section>
 

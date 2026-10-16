@@ -1,8 +1,7 @@
 import { sendEmail } from "@/lib/email";
+import { companyEmailError } from "@/lib/companyEmail";
 
 const NOTIFY_TO = "srinidhi.murali@featstream.com";
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function escapeHtml(s: string): string {
   return s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -27,7 +26,8 @@ export async function POST(req: Request) {
 
     if (!name)                        return Response.json({ error: "Please enter your name." }, { status: 400 });
     if (!company)                     return Response.json({ error: "Please enter your company name." }, { status: 400 });
-    if (!email || !EMAIL_RE.test(email)) return Response.json({ error: "Please enter a valid work email." }, { status: 400 });
+    const emailError = companyEmailError(email ?? "");
+    if (emailError)                   return Response.json({ error: emailError }, { status: 400 });
     if (phone === null)               return Response.json({ error: "Please enter a shorter phone number." }, { status: 400 });
     if (!message)                     return Response.json({ error: "Please tell us how we can help." }, { status: 400 });
 

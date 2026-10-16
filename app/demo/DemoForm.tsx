@@ -1,5 +1,6 @@
 "use client";
 import { useState, type FormEvent } from "react";
+import { companyEmailError } from "@/lib/companyEmail";
 
 type Status = "idle" | "sending" | "sent" | "error";
 
@@ -17,6 +18,8 @@ export default function DemoForm() {
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
+    const emailError = companyEmailError(fields.email);
+    if (emailError) { setError(emailError); setStatus("error"); return; }
     setStatus("sending");
     setError("");
     try {
