@@ -110,11 +110,9 @@ export default function SiteFooter() {
             {/* Connect */}
             <div>
               <p style={{ fontSize: 14, fontWeight: 700, color: "#0F0B1E", marginBottom: 16, marginTop: 0 }}>Connect</p>
-              <NavLink href="mailto:srinidhi.murali@agenticlib.com">Email us</NavLink>
+              <NavLink href="mailto:srinidhi.murali@featstream.com">Email us</NavLink>
               <NavLink href="https://www.linkedin.com/company/108024233/" external>LinkedIn</NavLink>
               <NavLink href="https://x.com/FeatureStreamAI/status/1960527278087266557" external>X / Twitter</NavLink>
-              <NavLink href="https://www.producthunt.com/p/self-promotion/agenticlib-simplifying-your-ai-agent-discovery-journey" external>Product Hunt</NavLink>
-              <NavLink href="https://www.reddit.com/r/SideProject/comments/1m6bfy1/agenticlib_simplifying_your_ai_agent_discovery/" external>Reddit</NavLink>
             </div>
           </div>
 

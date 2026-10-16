@@ -128,7 +128,7 @@ export default function RootLayout({
             "logo": `${SITE_URL}/logo.png`,
             "description": "FeatureStream is the product management OS for AI agent builders. It turns private business context, customer requests, usage analytics and market signals into a ranked, evidence-backed product roadmap.",
             "sameAs": [],
-            "contactPoint": { "@type": "ContactPoint", "contactType": "customer support", "email": "hello@agenticlib.com" },
+            "contactPoint": { "@type": "ContactPoint", "contactType": "customer support", "email": "srinidhi.murali@featstream.com" },
           }) }}
         />
 

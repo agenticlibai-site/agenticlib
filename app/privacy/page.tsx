@@ -26,7 +26,7 @@ export default function PrivacyPage() {
           <p>
             Welcome to FeatureStream. Your privacy is important to us. This Privacy Policy explains how we collect,
             use, disclose, and protect your information when you visit our website:{" "}
-            <a href="https://www.featstream.com/" className="text-violet-600 underline underline-offset-2">
+            <a href="https://www.featstream.com/" className="text-[#C2412B] underline underline-offset-2">
               https://www.featstream.com/
             </a>{" "}
             (the "Site") or use our services (collectively, the "Services").
@@ -125,8 +125,8 @@ export default function PrivacyPage() {
           </ul>
           <p>
             You can contact us at{" "}
-            <a href="mailto:srinidhi.murali@agenticlib.com" className="text-violet-600 underline underline-offset-2">
-              srinidhi.murali@agenticlib.com
+            <a href="mailto:srinidhi.murali@featstream.com" className="text-[#C2412B] underline underline-offset-2">
+              srinidhi.murali@featstream.com
             </a>{" "}
             to exercise these rights.
           </p>
@@ -153,12 +153,12 @@ export default function PrivacyPage() {
           <p>If you have questions or concerns about this Privacy Policy, please contact us at:</p>
           <p>
             📧{" "}
-            <a href="mailto:srinidhi.murali@agenticlib.com" className="text-violet-600 underline underline-offset-2">
-              srinidhi.murali@agenticlib.com
+            <a href="mailto:srinidhi.murali@featstream.com" className="text-[#C2412B] underline underline-offset-2">
+              srinidhi.murali@featstream.com
             </a>
             <br />
             🌐{" "}
-            <a href="https://www.featstream.com/" className="text-violet-600 underline underline-offset-2">
+            <a href="https://www.featstream.com/" className="text-[#C2412B] underline underline-offset-2">
               https://www.featstream.com/
             </a>
           </p>

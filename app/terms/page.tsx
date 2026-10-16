@@ -25,7 +25,7 @@ export default function TermsPage() {
           <h1 className="text-3xl font-bold text-black mb-3">Terms &amp; Conditions</h1>
           <p>
             Welcome to FeatureStream. These Terms and Conditions ("Terms") govern your use of our website:{" "}
-            <a href="https://www.featstream.com" className="text-violet-600 underline underline-offset-2">
+            <a href="https://www.featstream.com" className="text-[#C2412B] underline underline-offset-2">
               https://www.featstream.com
             </a>{" "}
             (the "Site"), and any related products or services (collectively, the "Services").
@@ -134,12 +134,12 @@ export default function TermsPage() {
           <p>If you have any questions about these Terms, please contact us at:</p>
           <p>
             📧{" "}
-            <a href="mailto:srinidhi.murali@agenticlib.com" className="text-violet-600 underline underline-offset-2">
-              srinidhi.murali@agenticlib.com
+            <a href="mailto:srinidhi.murali@featstream.com" className="text-[#C2412B] underline underline-offset-2">
+              srinidhi.murali@featstream.com
             </a>
             <br />
             🌐{" "}
-            <a href="https://www.featstream.com" className="text-violet-600 underline underline-offset-2">
+            <a href="https://www.featstream.com" className="text-[#C2412B] underline underline-offset-2">
               https://www.featstream.com
             </a>
           </p>

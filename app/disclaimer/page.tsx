@@ -31,7 +31,7 @@ export default function DisclaimerPage() {
           <h2 className="text-xl font-semibold text-black uppercase tracking-wide text-sm">No warranties</h2>
           <p className="font-medium text-black">
             ALL CONTENT, AGENT LISTINGS, RECOMMENDATIONS, AND RELATED INFORMATION ON THIS WEBSITE ARE PROVIDED
-            FOR INFORMATIONAL PURPOSES ONLY. AGENTICLIB MAKES NO WARRANTIES, EXPRESS, IMPLIED, OR STATUTORY,
+            FOR INFORMATIONAL PURPOSES ONLY. FEATURESTREAM MAKES NO WARRANTIES, EXPRESS, IMPLIED, OR STATUTORY,
             REGARDING THE ACCURACY, COMPLETENESS, OR SUITABILITY OF ANY INFORMATION PUBLISHED ON THIS PLATFORM.
           </p>
         </section>
@@ -81,7 +81,7 @@ export default function DisclaimerPage() {
         <section className="space-y-3">
           <h2 className="text-xl font-semibold text-black">Limitation of liability</h2>
           <p className="font-medium text-black">
-            TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, AGENTICLIB AND ITS AFFILIATES, OFFICERS,
+            TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, FEATURESTREAM AND ITS AFFILIATES, OFFICERS,
             EMPLOYEES, AND AGENTS SHALL NOT BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, OR
             CONSEQUENTIAL DAMAGES ARISING OUT OF OR IN CONNECTION WITH YOUR USE OF THIS PLATFORM OR RELIANCE
             ON ANY CONTENT HEREIN.
