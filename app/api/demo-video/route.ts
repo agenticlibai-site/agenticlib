@@ -43,22 +43,22 @@ export async function POST(req: Request) {
       VALUES (${email}, ${country})
       ON CONFLICT (email) DO NOTHING
     `;
+    const returning = !rowCount;
 
-    // Only notify the first time an email unlocks the video.
-    if (rowCount) {
-      await sendEmail({
-        to:       NOTIFY_TO,
-        replyTo:  email,
-        subject:  `Demo video watched by ${email}`,
-        fromName: "FeatureStream Website",
-        html: `
-          <h2>Someone unlocked the demo video</h2>
-          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
-          <p><strong>Country:</strong> ${escapeHtml(country ?? "Unknown")}</p>
-          <p><strong>Time:</strong> ${new Date().toISOString()}</p>
-        `,
-      }).catch((err) => console.error("[demo-video] notify failed:", err));
-    }
+    // Notify on every registration, flagging emails that have registered before.
+    await sendEmail({
+      to:       NOTIFY_TO,
+      replyTo:  email,
+      subject:  `Demo video watched by ${email}${returning ? " (again)" : ""}`,
+      fromName: "FeatureStream Website",
+      html: `
+        <h2>Someone registered to watch the demo video</h2>
+        <p><strong>Email:</strong> ${escapeHtml(email)}</p>
+        <p><strong>Country:</strong> ${escapeHtml(country ?? "Unknown")}</p>
+        <p><strong>Time:</strong> ${new Date().toISOString()}</p>
+        ${returning ? "<p>This email has registered before.</p>" : ""}
+      `,
+    }).catch((err) => console.error("[demo-video] notify failed:", err));
 
     return Response.json({ ok: true });
   } catch (err) {
