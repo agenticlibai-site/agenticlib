@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Marketing AI Agents – FeatureStream",
+  title: "Marketing AI Agents",
   description: "FeatureStream helps marketing AI agents compete. Track your LLM visibility, benchmark features against competitors like Jasper, Copy.ai and Typeface, and surface exactly where buyers are finding alternatives.",
   keywords: [
     "marketing AI agents", "AI marketing tools comparison", "AI content generation visibility",
@@ -15,13 +15,13 @@ export const metadata: Metadata = {
     title: "Marketing AI Agents – FeatureStream",
     description: "Track your marketing AI agent's visibility in LLM search, benchmark features against competitors, and turn gaps into a roadmap.",
     url: `${SITE_URL}/solutions/marketing`,
-    images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream – Marketing AI" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "FeatureStream – Marketing AI" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Marketing AI Agents – FeatureStream",
     description: "Track your marketing AI agent's visibility in LLM search, benchmark features against competitors, and turn gaps into a roadmap.",
-    images: ["/recommendations-cover.png"],
+    images: ["/og-image.png"],
   },
 };
 

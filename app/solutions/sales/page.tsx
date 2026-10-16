@@ -29,12 +29,12 @@ async function verifyPassword(formData: FormData) {
 }
 
 export const metadata: Metadata = {
-  title: "Sales AI Agents – FeatureStream",
+  title: "Sales AI Agents",
   description: "FeatureStream helps sales AI agents compete. Track your LLM visibility among revenue teams, benchmark capabilities against tools like Outreach, Apollo and Gong, and understand how buyers evaluate sales AI before shortlisting.",
   keywords: ["sales AI agents", "AI sales tools comparison", "LLM visibility sales AI", "compare sales AI platforms", "AI agent benchmarking sales", "sales AI competitive intelligence"],
   alternates: { canonical: `${SITE_URL}/solutions/sales` },
-  openGraph: { type: "website", siteName: "FeatureStream", title: "Sales AI Agents – FeatureStream", description: "Track your sales AI agent's visibility in LLM search, benchmark capabilities against competitors, and surface where revenue teams are finding alternatives.", url: `${SITE_URL}/solutions/sales`, images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream – Sales AI" }] },
-  twitter: { card: "summary_large_image", title: "Sales AI Agents – FeatureStream", description: "Track your sales AI agent's visibility in LLM search, benchmark capabilities against competitors, and surface where revenue teams are finding alternatives.", images: ["/recommendations-cover.png"] },
+  openGraph: { type: "website", siteName: "FeatureStream", title: "Sales AI Agents – FeatureStream", description: "Track your sales AI agent's visibility in LLM search, benchmark capabilities against competitors, and surface where revenue teams are finding alternatives.", url: `${SITE_URL}/solutions/sales`, images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "FeatureStream – Sales AI" }] },
+  twitter: { card: "summary_large_image", title: "Sales AI Agents – FeatureStream", description: "Track your sales AI agent's visibility in LLM search, benchmark capabilities against competitors, and surface where revenue teams are finding alternatives.", images: ["/og-image.png"] },
 };
 
 const ACCENT = "#2563EB";

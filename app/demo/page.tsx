@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESCRIPTION,
     url: `${SITE_URL}/demo`,
-    images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "FeatureStream" }],
   },
 };
 

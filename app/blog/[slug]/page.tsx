@@ -18,7 +18,7 @@ export async function generateMetadata({
   if (!blog) return {};
 
   return {
-    title: `${blog.title} | FeatureStream Blog`,
+    title: `${blog.title} | Blog`,
     description: blog.description,
     alternates: { canonical: `${SITE_URL}/blog/${slug}` },
     openGraph: {

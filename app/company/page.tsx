@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Company – FeatureStream",
+  title: "Company",
   description:
     "FeatureStream is the product and marketing intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search, benchmark features against competitors, and turn gaps into a roadmap.",
   keywords: [
@@ -17,14 +17,14 @@ export const metadata: Metadata = {
     description:
       "FeatureStream is the product and marketing intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search and benchmark features against competitors.",
     url: `${SITE_URL}/company`,
-    images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "FeatureStream" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Company – FeatureStream",
     description:
       "FeatureStream is the product and marketing intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search and benchmark features against competitors.",
-    images: ["/recommendations-cover.png"],
+    images: ["/og-image.png"],
   },
 };
 

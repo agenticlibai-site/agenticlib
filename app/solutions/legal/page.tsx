@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
-  title: "Legal AI Agents – FeatureStream",
+  title: "Legal AI Agents",
   description: "FeatureStream helps legal AI agents compete. Track LLM visibility among law firms and GCs, benchmark contract review and document intelligence against tools like Harvey, Ironclad and Clio, and surface how buyers evaluate legal AI before shortlisting.",
   keywords: ["legal AI agents", "AI legal tools comparison", "LLM visibility legal AI", "compare legal AI platforms", "AI agent benchmarking legal", "law firm AI competitive intelligence"],
   alternates: { canonical: `${SITE_URL}/solutions/legal` },
-  openGraph: { type: "website", siteName: "FeatureStream", title: "Legal AI Agents – FeatureStream", description: "Track your legal AI agent's visibility among law firms and GCs, benchmark document intelligence against competitors, and surface where buyers are finding alternatives.", url: `${SITE_URL}/solutions/legal`, images: [{ url: "/recommendations-cover.png", width: 1200, height: 630, alt: "FeatureStream – Legal AI" }] },
-  twitter: { card: "summary_large_image", title: "Legal AI Agents – FeatureStream", description: "Track your legal AI agent's visibility among law firms and GCs, benchmark document intelligence against competitors, and surface where buyers are finding alternatives.", images: ["/recommendations-cover.png"] },
+  openGraph: { type: "website", siteName: "FeatureStream", title: "Legal AI Agents – FeatureStream", description: "Track your legal AI agent's visibility among law firms and GCs, benchmark document intelligence against competitors, and surface where buyers are finding alternatives.", url: `${SITE_URL}/solutions/legal`, images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "FeatureStream – Legal AI" }] },
+  twitter: { card: "summary_large_image", title: "Legal AI Agents – FeatureStream", description: "Track your legal AI agent's visibility among law firms and GCs, benchmark document intelligence against competitors, and surface where buyers are finding alternatives.", images: ["/og-image.png"] },
 };
 
 const ACCENT = "#059669";

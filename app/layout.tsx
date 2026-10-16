@@ -63,15 +63,14 @@ export const metadata: Metadata = {
     template: "%s | FeatureStream",
   },
   description:
-    "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
+    "FeatureStream turns customer, market and usage signals into an evidence-backed product roadmap for teams building AI agents. Join the waitlist or book a demo.",
   keywords: [
-    "AI search visibility",
-    "AI agent comparison tool",
-    "AI brand monitoring",
-    "compare AI agent features",
-    "AI agent benchmarking",
-    "track brand visibility in AI search",
+    "Product Management for AI Agent Builders",
+    "Product Management for AI Agent Companies",
+    "Roadmap creation for agentic products",
+    "Product roadmap for AI agents",
   ],
+  applicationName: "FeatureStream",
   authors: [{ name: "FeatureStream" }],
   creator: "FeatureStream",
   openGraph: {
@@ -79,11 +78,12 @@ export const metadata: Metadata = {
     siteName: "FeatureStream",
     title: "FeatureStream — The Product Management OS for AI Agent Builders",
     description:
-      "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
+      "Turn customer, market and usage signals into an evidence-backed product roadmap for your AI agent. Built for AI agent builders and product owners.",
     url: SITE_URL,
+    locale: "en_US",
     images: [
       {
-        url: "/recommendations-cover.png",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "FeatureStream — The Product Management OS for AI Agent Builders",
@@ -94,8 +94,8 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "FeatureStream — The Product Management OS for AI Agent Builders",
     description:
-      "Benchmark your AI agent's visibility against competitors and turn feature gaps into a roadmap — so you show up where buyers are actually asking.",
-    images: ["/recommendations-cover.png"],
+      "Turn customer, market and usage signals into an evidence-backed product roadmap for your AI agent. Built for AI agent builders and product owners.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -126,7 +126,7 @@ export default function RootLayout({
             "name": "FeatureStream",
             "url": SITE_URL,
             "logo": `${SITE_URL}/logo.png`,
-            "description": "FeatureStream is the product management platform for AI agent builders. Track LLM search visibility, benchmark features against competitors, and turn gaps into a roadmap.",
+            "description": "FeatureStream is the product management OS for AI agent builders. It turns private business context, customer requests, usage analytics and market signals into a ranked, evidence-backed product roadmap.",
             "sameAs": [],
             "contactPoint": { "@type": "ContactPoint", "contactType": "customer support", "email": "hello@agenticlib.com" },
           }) }}
