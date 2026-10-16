@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
+  // Old AgenticLib product page: kept reachable by link but hidden from search.
+  robots: { index: false, follow: true },
   title: "Skincare & Beauty AI Agents",
   description: "FeatureStream helps skincare and beauty AI agents compete. Track LLM visibility, benchmark personalisation depth and ingredient intelligence against competitors, and understand consumer trust signals before buyers shortlist.",
   keywords: ["skincare AI agents", "beauty AI tools comparison", "AI skincare personalisation", "LLM visibility beauty AI", "compare skincare AI platforms", "AI agent benchmarking skincare"],

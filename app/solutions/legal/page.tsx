@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
+  // Old AgenticLib product page: kept reachable by link but hidden from search.
+  robots: { index: false, follow: true },
   title: "Legal AI Agents",
   description: "FeatureStream helps legal AI agents compete. Track LLM visibility among law firms and GCs, benchmark contract review and document intelligence against tools like Harvey, Ironclad and Clio, and surface how buyers evaluate legal AI before shortlisting.",
   keywords: ["legal AI agents", "AI legal tools comparison", "LLM visibility legal AI", "compare legal AI platforms", "AI agent benchmarking legal", "law firm AI competitive intelligence"],

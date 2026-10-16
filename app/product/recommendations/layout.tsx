@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  // Old AgenticLib product page: kept reachable by link but hidden from search.
+  robots: { index: false, follow: true },
   title: "Sage: AI Agent Recommendations",
   description: "Sage by FeatureStream turns a few questions about your workflow into matched, explainable AI agent recommendations.",
   alternates: { canonical: "/product/recommendations" },

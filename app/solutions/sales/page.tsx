@@ -29,6 +29,8 @@ async function verifyPassword(formData: FormData) {
 }
 
 export const metadata: Metadata = {
+  // Old AgenticLib product page: kept reachable by link but hidden from search.
+  robots: { index: false, follow: true },
   title: "Sales AI Agents",
   description: "FeatureStream helps sales AI agents compete. Track your LLM visibility among revenue teams, benchmark capabilities against tools like Outreach, Apollo and Gong, and understand how buyers evaluate sales AI before shortlisting.",
   keywords: ["sales AI agents", "AI sales tools comparison", "LLM visibility sales AI", "compare sales AI platforms", "AI agent benchmarking sales", "sales AI competitive intelligence"],

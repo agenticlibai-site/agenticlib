@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  // Old AgenticLib product page: kept reachable by link but hidden from search.
+  robots: { index: false, follow: true },
   title: "Vera: Research & Compare AI Agents",
   description: "Vera by FeatureStream gives you a curated breakdown of any AI agent's capabilities, pricing and visibility, and compares agents side by side.",
   alternates: { canonical: "/product/research" },

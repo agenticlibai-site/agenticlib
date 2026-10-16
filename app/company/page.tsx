@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
+  // Old AgenticLib product page: kept reachable by link but hidden from search.
+  robots: { index: false, follow: true },
   title: "Company",
   description:
     "FeatureStream is the product and marketing intelligence platform for AI agent builders. Track your AI agent's visibility in LLM search, benchmark features against competitors, and turn gaps into a roadmap.",

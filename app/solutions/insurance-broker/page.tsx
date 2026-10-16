@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = {
+  // Old AgenticLib product page: kept reachable by link but hidden from search.
+  robots: { index: false, follow: true },
   title: "Insurance Broker AI Agents",
   description: "FeatureStream helps insurance broker AI agents compete. Track LLM visibility among brokerages, benchmark renewal automation and compliance capabilities against competitors, and understand how buyers evaluate insurance broker AI before shortlisting.",
   keywords: ["insurance broker AI agents", "AI insurance broker tools", "LLM visibility insurance AI", "compare insurance broker AI", "insurance brokerage AI competitive intelligence", "AI agent benchmarking insurance"],
