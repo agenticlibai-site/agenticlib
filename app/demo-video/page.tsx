@@ -38,9 +38,6 @@ export default function DemoVideoPage() {
         }
         .dvp-heading { font-size: 72px; line-height: 0.98; margin: 18px 0 0; text-wrap: balance; }
         .dvp-intro { margin-top: 28px; font-size: 19px; line-height: 1.6; color: #55524C; max-width: 470px; }
-        .dvp-points { margin: 28px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 16px; color: #000; }
-        .dvp-points li { display: flex; gap: 12px; align-items: baseline; }
-        .dvp-points li::before { content: ""; flex: none; width: 8px; height: 8px; border-radius: 50%; background: #FF8A73; transform: translateY(-2px); }
         .dvp-card {
           position: relative; background: #fff; border-radius: 24px; padding: 32px;
           border: 1px solid rgba(0,0,0,0.06);
@@ -82,11 +79,6 @@ export default function DemoVideoPage() {
           <p className="dvp-intro">
             A 2-minute walkthrough of how FeatureStream turns customer, market and usage signals into an evidence-backed product roadmap for your AI agent.
           </p>
-          <ul className="dvp-points">
-            <li>Connect the tools your team already uses</li>
-            <li>See requests and signals ranked by evidence</li>
-            <li>Turn them into a roadmap you can defend</li>
-          </ul>
         </div>
         <DemoVideoRegister />
       </div>
