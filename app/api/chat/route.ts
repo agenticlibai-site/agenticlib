@@ -1,6 +1,6 @@
-import Anthropic from "@anthropic-ai/sdk";
+import OpenAI from "openai";
 
-const MODEL = "claude-haiku-5-5";
+const MODEL = "gpt-4o-mini";
 const MAX_MESSAGES = 20;          // per conversation sent to the model
 const MAX_CHARS = 1000;           // per visitor message
 const RATE_LIMIT = 30;            // messages per IP per hour (per server instance)
@@ -68,21 +68,25 @@ export async function POST(req: Request) {
   const messages = parseMessages(body.messages);
   if (!messages) return Response.json({ error: `Please keep messages under ${MAX_CHARS} characters.` }, { status: 400 });
 
-  if (!process.env.ANTHROPIC_API_KEY) {
+  if (!process.env.OPENAI_API_KEY) {
     return Response.json({ error: "The assistant isn't available right now. Please use Contact us." }, { status: 503 });
   }
 
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
   const encoder = new TextEncoder();
 
   const stream = new ReadableStream({
     async start(controller) {
       try {
-        const res = client.messages.stream({ model: MODEL, max_tokens: 400, system: SYSTEM_PROMPT, messages });
-        for await (const event of res) {
-          if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
-            controller.enqueue(encoder.encode(event.delta.text));
-          }
+        const res = await client.chat.completions.create({
+          model: MODEL,
+          max_tokens: 400,
+          stream: true,
+          messages: [{ role: "system", content: SYSTEM_PROMPT }, ...messages],
+        });
+        for await (const chunk of res) {
+          const text = chunk.choices[0]?.delta?.content;
+          if (text) controller.enqueue(encoder.encode(text));
         }
       } catch (err) {
         console.error("[chat] error:", err instanceof Error ? err.message : err);
