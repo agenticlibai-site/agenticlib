@@ -19,8 +19,22 @@ interface Props {
  */
 export default function AnimatedFrame({ html, label, hold }: Props) {
   const ref = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
   // Starts paused on its first frame, so the animation begins only once the card is scrolled into view.
   const [inView, setInView] = useState(false);
+
+  // Scale the 848px frame to the container width. Safari (every iPhone browser) miscomputes the CSS
+  // tan(atan2(cqw)) fallback as a negative scale, which flips the frame out of view, so set it from JS.
+  useEffect(() => {
+    const el = ref.current;
+    const inner = innerRef.current;
+    if (!el || !inner) return;
+    const fit = () => { inner.style.transform = `scale(${el.clientWidth / 848})`; };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -42,7 +56,7 @@ export default function AnimatedFrame({ html, label, hold }: Props) {
       className={`fs-anim${inView ? '' : ' is-paused'}`}
       style={{ '--fs-hold': hold } as CSSProperties}
     >
-      <div className="fs-anim-inner" aria-hidden="true" dangerouslySetInnerHTML={{ __html: html }} />
+      <div ref={innerRef} className="fs-anim-inner" aria-hidden="true" dangerouslySetInnerHTML={{ __html: html }} />
     </div>
   );
 }

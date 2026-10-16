@@ -124,7 +124,12 @@ export default function ContactWidget() {
         .cw-link { align-self: flex-start; background: none; border: none; padding: 0; color: #55524C; font: inherit; font-size: 13px; text-decoration: underline; cursor: pointer; }
         @media (max-width: 480px) {
           .cw-root { right: 12px !important; bottom: 12px !important; }
-          .cw-panel { width: calc(100vw - 24px); }
+          /* Fits between the navbar and the launcher, using the visible height (dvh) so iOS toolbars don't cover it */
+          .cw-panel { width: calc(100vw - 24px); bottom: 64px; height: calc(100vh - 160px); height: calc(100dvh - 160px); }
+          /* Icon-only launcher on phones so it doesn't cover page buttons */
+          .cw-fab { width: 52px !important; height: 52px !important; padding: 0 !important; }
+          .cw-fab-label { display: none; }
+          .cw-logo { display: none; }
         }
         @media (prefers-reduced-motion: reduce) { .cw-panel { animation: none; } .cw-typing span { animation: none; opacity: 0.6; } }
       `}</style>
@@ -133,9 +138,9 @@ export default function ContactWidget() {
         <div className="cw-panel" role="dialog" aria-label="FeatureStream assistant">
           {/* Header */}
           <div style={{ display: "flex", alignItems: "center", gap: 10, padding: "14px 14px 14px 18px", background: "#FBF8F3", borderBottom: "1px solid rgba(0,0,0,0.05)" }}>
-            <img src="/logo.png" alt="" style={{ height: 22, width: "auto" }} />
+            <img className="cw-logo" src="/logo.png" alt="" style={{ height: 22, width: "auto" }} />
             <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 15, fontWeight: 600, color: "#000" }}>FeatureStream assistant</div>
+              <div style={{ fontSize: 15, fontWeight: 600, color: "#000", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>FeatureStream assistant</div>
               <div style={{ fontSize: 12, color: "#8A867F" }}>Answers instantly · AI</div>
             </div>
             {mode === "chat" && (
@@ -248,7 +253,7 @@ export default function ContactWidget() {
         ) : (
           <>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4h0A1.5 1.5 0 0 1 4 14.5z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" /></svg>
-            Chat with us
+            <span className="cw-fab-label">Chat with us</span>
           </>
         )}
       </button>
