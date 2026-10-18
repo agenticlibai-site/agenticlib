@@ -434,12 +434,7 @@ export default function Home() {
       {/* ── Why FeatureStream ────────────────────────────────────────────────────── */}
       <WhyFeatureStream />
 
-      {/* ── Integrations ─────────────────────────────────────────────────── */}
-      <IntegrationsShowcase />
-
-      {/* ── Built for agentic products (bento) ─────────────────────────── */}
-      <AgenticBento />
-
+      {/* ── Supported by ─────────────────────────────────────────────── */}
       <section className="trusted-by-section" style={{ padding: "0 24px 56px", position: "relative", zIndex: 1, background: "transparent" }}>
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
 
@@ -461,6 +456,12 @@ export default function Home() {
 
         </div>
       </section>
+
+      {/* ── Integrations ─────────────────────────────────────────────────── */}
+      <IntegrationsShowcase />
+
+      {/* ── Built for agentic products (bento) ─────────────────────────── */}
+      <AgenticBento />
 
       {/* ── Feature Selection preview ───────────────────────────────────────── */}
       <section className="feat-section" style={{ background: "#fff", padding: "0 24px 80px" }}>
