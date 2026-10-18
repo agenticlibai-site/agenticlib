@@ -68,7 +68,7 @@ export default function DemoVideoRegister() {
       <form className="dvp-form" onSubmit={onSubmit}>
         <input
           className="dvp-input" type="email" required autoComplete="email" maxLength={254}
-          placeholder="Company email" aria-label="Company email"
+          placeholder="Company email (you@company.com)" aria-label="Company email"
           value={email} onChange={(e) => setEmail(e.target.value)}
         />
         {/* Honeypot, hidden from people */}
