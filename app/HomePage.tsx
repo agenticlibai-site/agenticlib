@@ -300,7 +300,10 @@ export default function Home() {
           .trusted-by-section { padding: 0 16px 40px !important; }
           .trusted-by-section > div > div { margin-top: 0 !important; }
           .trusted-logos-section { padding: 36px 16px 16px !important; }
-          .trusted-row { display: grid !important; grid-template-columns: repeat(2, auto); justify-content: center; justify-items: center; gap: 28px 48px !important; }
+          .trusted-marquee { overflow: hidden; margin: 0 -16px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent); }
+          .trusted-track { display: flex; width: max-content; animation: trusted-scroll 18s linear infinite; }
+          .trusted-row { flex-wrap: nowrap !important; justify-content: flex-start !important; gap: 0 44px !important; padding-right: 44px; }
+          .trusted-dup { display: flex !important; }
           .trusted-logo img { height: 32px !important; }
           .trusted-dewwie { font-size: 26px !important; }
 
@@ -327,6 +330,9 @@ export default function Home() {
 
         }
         .trusted-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 32px 56px; }
+        .trusted-dup { display: none; }
+        @keyframes trusted-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+        @media (prefers-reduced-motion: reduce) { .trusted-track { animation: none !important; } }
         .trusted-logo { display: flex; align-items: center; text-decoration: none; opacity: 0.5; filter: grayscale(1); transition: opacity 0.2s, filter 0.2s; }
         .trusted-logo:hover { opacity: 1; filter: none; }
         .trusted-logo img { height: 40px; width: auto; object-fit: contain; }
@@ -415,17 +421,24 @@ export default function Home() {
             <div style={{ textAlign: "center", marginBottom: 28 }}>
               <span className="eyebrow" style={{ color: "#55524C" }}>Trusted by teams shipping AI agents</span>
             </div>
-            <div className="trusted-row">
-              <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" className="trusted-logo trusted-dewwie" aria-label="Dewwie">dewwie</a>
-              <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" className="trusted-logo">
-                <img src="/lamigo logo .png" alt="Lamigo" />
-              </a>
-              <a href="https://dexifyai.com/" target="_blank" rel="noopener noreferrer" className="trusted-logo">
-                <img src="/dexify-logo.png" alt="Dexify" />
-              </a>
-              <a href="https://ralfi.io/" target="_blank" rel="noopener noreferrer" className="trusted-logo">
-                <img src="/Ralfi ai.png" alt="Ralfi AI" style={{ height: 52 }} />
-              </a>
+            {/* On phones the row becomes a looping marquee; the duplicate copy is only shown there */}
+            <div className="trusted-marquee">
+              <div className="trusted-track">
+                {[false, true].map((dup) => (
+                  <div key={String(dup)} className={dup ? "trusted-row trusted-dup" : "trusted-row"} aria-hidden={dup || undefined}>
+                    <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" tabIndex={dup ? -1 : undefined} className="trusted-logo trusted-dewwie" aria-label="Dewwie">dewwie</a>
+                    <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" tabIndex={dup ? -1 : undefined} className="trusted-logo">
+                      <img src="/lamigo logo .png" alt="Lamigo" />
+                    </a>
+                    <a href="https://dexifyai.com/" target="_blank" rel="noopener noreferrer" tabIndex={dup ? -1 : undefined} className="trusted-logo">
+                      <img src="/dexify-logo.png" alt="Dexify" />
+                    </a>
+                    <a href="https://ralfi.io/" target="_blank" rel="noopener noreferrer" tabIndex={dup ? -1 : undefined} className="trusted-logo">
+                      <img src="/Ralfi ai.png" alt="Ralfi AI" style={{ height: 52 }} />
+                    </a>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>

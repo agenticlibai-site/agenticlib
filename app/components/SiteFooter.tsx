@@ -62,7 +62,7 @@ export default function SiteFooter() {
             <div className="footer-brand">
               <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 14 }}>
                 <img src="/logo.png" alt="FeatureStream" style={{ height: 28, width: "auto", objectFit: "contain" }} />
-                <span style={{ fontSize: 17, fontWeight: 800, color: "#000", letterSpacing: "-0.02em" }}>FeatureStream</span>
+                <span style={{ fontFamily: "var(--font-instrument-serif), Georgia, serif", fontSize: 26, fontWeight: 400, color: "#000", letterSpacing: "-0.01em", lineHeight: 1 }}>FeatureStream</span>
               </div>
               <p style={{ fontSize: 14, color: "#000", lineHeight: 1.65, margin: "0 0 20px", maxWidth: 220 }}>
                 Helping AI agent builders succeed.
