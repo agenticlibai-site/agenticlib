@@ -299,6 +299,10 @@ export default function Home() {
           /* Supported by spacing */
           .trusted-by-section { padding: 0 16px 40px !important; }
           .trusted-by-section > div > div { margin-top: 0 !important; }
+          .trusted-logos-section { padding: 36px 16px 16px !important; }
+          .trusted-row { display: grid !important; grid-template-columns: repeat(2, auto); justify-content: center; justify-items: center; gap: 28px 48px !important; }
+          .trusted-logo img { height: 32px !important; }
+          .trusted-dewwie { font-size: 26px !important; }
 
           /* Section gaps and CTA gutter */
           .feat-section { padding-bottom: 8px !important; }
@@ -322,6 +326,11 @@ export default function Home() {
           #contact { padding-top: 28px !important; padding-bottom: 44px !important; }
 
         }
+        .trusted-row { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 32px 56px; }
+        .trusted-logo { display: flex; align-items: center; text-decoration: none; opacity: 0.5; filter: grayscale(1); transition: opacity 0.2s, filter 0.2s; }
+        .trusted-logo:hover { opacity: 1; filter: none; }
+        .trusted-logo img { height: 40px; width: auto; object-fit: contain; }
+        .trusted-dewwie { font-family: Georgia, 'Times New Roman', serif; font-size: 32px; line-height: 1; color: #1a0fb0; }
         @media (min-width: 641px) and (max-width: 900px) {
           .hero-snap-wrap { margin-top: 32px !important; }
         }
@@ -398,6 +407,29 @@ export default function Home() {
         </div>
 
       </main>
+
+      {/* ── Trusted by ─────────────────────────────────────────────────── */}
+      <section className="trusted-logos-section" style={{ padding: "48px 24px 24px", position: "relative", zIndex: 1, background: "transparent" }}>
+        <div style={{ maxWidth: 860, margin: "0 auto" }}>
+          <div>
+            <div style={{ textAlign: "center", marginBottom: 28 }}>
+              <span className="eyebrow" style={{ color: "#55524C" }}>Trusted by teams shipping AI agents</span>
+            </div>
+            <div className="trusted-row">
+              <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" className="trusted-logo trusted-dewwie" aria-label="Dewwie">dewwie</a>
+              <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" className="trusted-logo">
+                <img src="/lamigo logo .png" alt="Lamigo" />
+              </a>
+              <a href="https://dexifyai.com/" target="_blank" rel="noopener noreferrer" className="trusted-logo">
+                <img src="/dexify-logo.png" alt="Dexify" />
+              </a>
+              <a href="https://ralfi.io/" target="_blank" rel="noopener noreferrer" className="trusted-logo">
+                <img src="/Ralfi ai.png" alt="Ralfi AI" style={{ height: 52 }} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* ── Why FeatureStream ────────────────────────────────────────────────────── */}
       <WhyFeatureStream />
