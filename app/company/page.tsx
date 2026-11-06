@@ -539,7 +539,7 @@ export default function CompanyPage() {
             maxWidth: 680,
           }}>
             <div style={{ position: "relative", zIndex: 1, flex: 1 }}>
-              <p className="eyebrow" style={{ margin: "0 0 12px" }}>Founder</p>
+              <p className="eyebrow" style={{ margin: "0 0 12px" }}>Founder &amp; CEO</p>
               <h2 className="display" style={{ fontSize: "clamp(32px, 3.4vw, 44px)", lineHeight: 1.05, margin: "0 0 24px" }}>Srinidhi Murali</h2>
               <div style={{ display: "flex", flexDirection: "column", gap: 10, alignItems: "flex-start" }}>
                 <a
@@ -576,6 +576,45 @@ export default function CompanyPage() {
               <circle cx="160" cy="40" r="7" fill="#FF8A73"/>
               <circle cx="272" cy="178" r="6" fill="#FFC2B5"/>
               <circle cx="96" cy="254" r="5" fill="#FF8A73"/>
+            </svg>
+          </div>
+
+          {/* TEAM MEMBER */}
+          <div style={{
+            margin: "16px auto 0",
+            borderRadius: 20,
+            background: "#FBF8F3",
+            padding: "36px 40px",
+            overflow: "hidden",
+            position: "relative",
+            maxWidth: 680,
+          }}>
+            <div style={{ position: "relative", zIndex: 1 }}>
+              <p className="eyebrow" style={{ margin: "0 0 12px" }}>Feature Engineer (AI Agents)</p>
+              <h2 className="display" style={{ fontSize: "clamp(32px, 3.4vw, 44px)", lineHeight: 1.05, margin: "0 0 24px" }}>Akshara Murali</h2>
+              <a
+                href="mailto:akshara.murali@featstream.com"
+                className="btn-outline"
+                style={{ fontSize: 14, padding: "11px 19px" }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="4" width="20" height="16" rx="2"/>
+                  <path d="m2 7 10 7 10-7"/>
+                </svg>
+                akshara.murali@featstream.com
+              </a>
+            </div>
+            {/* Stacked arcs */}
+            <svg style={{ position: "absolute", right: 24, bottom: 0, width: 260, height: 130, pointerEvents: "none" }} viewBox="0 90 320 160" fill="none" aria-hidden="true">
+              <path d="M120 250a40 40 0 0 1 80 0z" fill="rgba(255,138,115,0.10)"/>
+              <g stroke="rgba(0,0,0,0.08)" strokeWidth="1">
+                <path d="M85 250a75 75 0 0 1 150 0"/>
+                <path d="M50 250a110 110 0 0 1 220 0"/>
+                <path d="M15 250a145 145 0 0 1 290 0"/>
+              </g>
+              <circle cx="215" cy="155" r="7" fill="#FF8A73"/>
+              <circle cx="49" cy="157" r="5" fill="#FFC2B5"/>
+              <circle cx="147" cy="176" r="5" fill="#FF8A73"/>
             </svg>
           </div>
 
