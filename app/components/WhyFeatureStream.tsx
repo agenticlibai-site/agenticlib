@@ -214,9 +214,29 @@ const CARDS = [
   { title: "Sharper each launch", body: "Ship it. Measure it. The result feeds your next recommendation.", Art: SharperEachLaunchArt },
 ];
 
-export default function WhyFeatureStream() {
+// Rendered in two parts on the homepage: the intro card sits above the
+// trusted-by logos, the four illustrated cards below them.
+export default function WhyFeatureStream({ part }: { part: "head" | "cards" }) {
+  if (part === "cards") {
+    return (
+      <section className="home-section" style={{ padding: "48px 24px 88px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <div className="why-cards" style={{ marginTop: 0 }}>
+            {CARDS.map(({ title, body, Art }) => (
+              <div key={title} style={{ minWidth: 0 }}>
+                <div className="why-card-art"><Art /></div>
+                <h3 className="display" style={{ fontSize: 30, lineHeight: 1.15, margin: "22px 0 0", letterSpacing: "-0.01em" }}>{title}</h3>
+                <p style={{ fontSize: 16, lineHeight: 1.55, color: "#222", margin: "8px 0 0" }}>{body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="home-section" style={{ padding: "72px 24px 88px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+    <section className="why-head-section" style={{ padding: "56px 24px 0", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div className="why-head">
           <div>
@@ -229,16 +249,6 @@ export default function WhyFeatureStream() {
             <p style={{ fontSize: 17, lineHeight: 1.6, color: "#333", margin: 0, maxWidth: "52ch" }}>Product owners of AI agents manage customer, market, domain, use case and product usage signals across too many tools to know what to build next. Customer needs shift, agent behaviour changes, competitors ship. FeatureStream keeps all of it in view and tells you what to build next.</p>
             <p style={{ fontSize: 17, lineHeight: 1.5, fontWeight: 600, color: "#000", margin: "14px 0 0" }}>Built to streamline the process involved in creating and managing an agentic product.</p>
           </div>
-        </div>
-
-        <div className="why-cards">
-          {CARDS.map(({ title, body, Art }) => (
-            <div key={title} style={{ minWidth: 0 }}>
-              <div className="why-card-art"><Art /></div>
-              <h3 className="display" style={{ fontSize: 30, lineHeight: 1.15, margin: "22px 0 0", letterSpacing: "-0.01em" }}>{title}</h3>
-              <p style={{ fontSize: 16, lineHeight: 1.55, color: "#222", margin: "8px 0 0" }}>{body}</p>
-            </div>
-          ))}
         </div>
       </div>
     </section>

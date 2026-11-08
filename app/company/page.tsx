@@ -254,6 +254,10 @@ export default function CompanyPage() {
         /* Mobile */
         @media (max-width: 768px) {
           .co-wrap { padding: 32px 20px 72px; }
+          /* Team card graphics: keep them clear of the names and buttons */
+          .co-art-rings { width: 120px !important; height: 120px !important; top: -28px !important; right: -28px !important; transform: none !important; }
+          .co-card-arcs { padding-bottom: 96px !important; }
+          .co-art-arcs { width: 160px !important; height: 80px !important; right: 50% !important; transform: translateX(50%); }
           .co-section {
             grid-template-columns: 1fr;
             gap: 24px;
@@ -569,7 +573,7 @@ export default function CompanyPage() {
             </div>
 
             {/* Orbital rings */}
-            <svg style={{ position: "absolute", right: 24, top: "50%", transform: "translateY(-50%)", width: 260, height: 260, pointerEvents: "none", flexShrink: 0 }} viewBox="0 0 320 320" fill="none">
+            <svg className="co-art-rings" style={{ position: "absolute", right: 24, top: "50%", transform: "translateY(-50%)", width: 260, height: 260, pointerEvents: "none", flexShrink: 0 }} viewBox="0 0 320 320" fill="none">
               <circle cx="160" cy="160" r="120" stroke="rgba(0,0,0,0.08)" strokeWidth="1"/>
               <circle cx="160" cy="160" r="80" stroke="rgba(0,0,0,0.08)" strokeWidth="1"/>
               <circle cx="160" cy="160" r="56" fill="rgba(255,138,115,0.10)"/>
@@ -580,7 +584,7 @@ export default function CompanyPage() {
           </div>
 
           {/* TEAM MEMBER */}
-          <div style={{
+          <div className="co-card-arcs" style={{
             margin: "16px auto 0",
             borderRadius: 20,
             background: "#FBF8F3",
@@ -605,7 +609,7 @@ export default function CompanyPage() {
               </a>
             </div>
             {/* Stacked arcs */}
-            <svg style={{ position: "absolute", right: 24, bottom: 0, width: 260, height: 130, pointerEvents: "none" }} viewBox="0 90 320 160" fill="none" aria-hidden="true">
+            <svg className="co-art-arcs" style={{ position: "absolute", right: 24, bottom: 0, width: 260, height: 130, pointerEvents: "none" }} viewBox="0 90 320 160" fill="none" aria-hidden="true">
               <path d="M120 250a40 40 0 0 1 80 0z" fill="rgba(255,138,115,0.10)"/>
               <g stroke="rgba(0,0,0,0.08)" strokeWidth="1">
                 <path d="M85 250a75 75 0 0 1 150 0"/>

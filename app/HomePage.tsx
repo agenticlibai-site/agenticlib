@@ -414,6 +414,9 @@ export default function Home() {
 
       </main>
 
+      {/* ── Introducing FeatureStream ───────────────────────────────────── */}
+      <WhyFeatureStream part="head" />
+
       {/* ── Trusted by ─────────────────────────────────────────────────── */}
       <section className="trusted-logos-section" style={{ padding: "48px 24px 24px", position: "relative", zIndex: 1, background: "transparent" }}>
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
@@ -445,7 +448,7 @@ export default function Home() {
       </section>
 
       {/* ── Why FeatureStream ────────────────────────────────────────────────────── */}
-      <WhyFeatureStream />
+      <WhyFeatureStream part="cards" />
 
       {/* ── Supported by ─────────────────────────────────────────────── */}
       <section className="trusted-by-section" style={{ padding: "0 24px 56px", position: "relative", zIndex: 1, background: "transparent" }}>
