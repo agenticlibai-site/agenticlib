@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter, Schibsted_Grotesk, Space_Mono, EB_Garamond, DM_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
-import Script from "next/script";
 import Navbar from "./components/Navbar";
 import ContactWidget from "./components/ContactWidget";
-import { SITE_URL, SITE_DOMAIN } from "@/lib/site";
+import { SITE_URL } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -115,6 +114,16 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${schibstedGrotesk.variable} ${spaceMono.variable} ${ebGaramond.variable} ${dmSans.variable} ${instrumentSerif.variable} h-full antialiased`}
     >
+      <head>
+        {/* Privacy-friendly analytics by Plausible */}
+        <script async src="https://plausible.io/js/pa-CbGXDg7uKjpMQ9jlfOss7.js"></script>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};\n  plausible.init()",
+          }}
+        />
+      </head>
       <body className="min-h-full flex flex-col">
 
         {/* JSON-LD — Organization schema */}
@@ -139,14 +148,6 @@ export default function RootLayout({
 
         {/* Floating "Contact us" chat button */}
         <ContactWidget />
-
-        {/* Plausible */}
-        <Script
-          defer
-          data-domain={SITE_DOMAIN}
-          src="https://plausible.io/js/script.js"
-          strategy="afterInteractive"
-        />
 
         {/* Vercel Analytics */}
         <Analytics />
