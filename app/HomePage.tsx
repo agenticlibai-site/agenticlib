@@ -282,14 +282,14 @@ export default function Home() {
       )}
       <style>{`
         @media (max-width: 900px) {
-          .hero-content { padding: 90px 24px 0 !important; max-width: 100% !important; flex-direction: column !important; align-items: center !important; }
+          .hero-content { padding: 72px 24px 0 !important; max-width: 100% !important; flex-direction: column !important; align-items: center !important; }
           .hero-content > div:first-child { width: 100% !important; }
           .hero-snap-wrap { margin-top: 36px !important; border-radius: 10px !important; width: 100% !important; }
         }
         @media (max-width: 640px) {
           /* Hero */
           .hero-card-wrapper { margin: 0 0 16px !important; }
-          .hero-content { padding: 72px 20px 0 !important; flex-direction: column !important; align-items: center !important; text-align: center !important; }
+          .hero-content { padding: 56px 20px 0 !important; flex-direction: column !important; align-items: center !important; text-align: center !important; }
           .hero-tagline-text { font-size: 15px !important; }
           .hero-subhead { margin-top: 14px !important; font-size: 15px !important; max-width: 100% !important; }
 
@@ -358,7 +358,7 @@ export default function Home() {
             style={{
               zIndex: 2, position: "relative",
               maxWidth: 1400, margin: "0 auto",
-              padding: "150px 48px 0",
+              padding: "132px 48px 0",
               display: "flex",
               flexDirection: "row",
               alignItems: "center",
@@ -373,7 +373,7 @@ export default function Home() {
               >
                 The Product Management OS for AI Agent Builders
               </h1>
-              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 28, fontWeight: 400, fontSize: 18, textAlign: "center", maxWidth: 640 }}>
+              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 28, fontWeight: 400, fontSize: 18, textAlign: "center", maxWidth: 820, marginLeft: "auto", marginRight: "auto", alignSelf: "center", textWrap: "balance" }}>
                 FeatureStream turns your private business context and market signals into a dynamic product roadmap. Built for product managers, product owners and product creators within AI agent companies.
               </p>
               <style>{`

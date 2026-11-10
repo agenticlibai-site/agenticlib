@@ -236,7 +236,7 @@ export default function WhyFeatureStream({ part }: { part: "head" | "cards" }) {
   }
 
   return (
-    <section className="why-head-section" style={{ padding: "56px 24px 0", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
+    <section className="why-head-section" style={{ padding: "48px 24px 0", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <div className="why-head">
           <div>
