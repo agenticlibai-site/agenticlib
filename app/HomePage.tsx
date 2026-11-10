@@ -373,9 +373,6 @@ export default function Home() {
               >
                 The Product Management OS for AI Agent Builders
               </h1>
-              <p className="hero-subhead" style={{ color: "#000000", lineHeight: 1.5, marginTop: 28, fontWeight: 400, fontSize: 18, textAlign: "center", maxWidth: 820, marginLeft: "auto", marginRight: "auto", alignSelf: "center", textWrap: "balance" }}>
-                FeatureStream turns your private business context and market signals into a dynamic product roadmap. Built for product managers, product owners and product creators within AI agent companies.
-              </p>
               <style>{`
                 .hero-cta-card {
                   margin-top: 36px; padding: 26px 36px 28px; border-radius: 22px; max-width: 640px;
