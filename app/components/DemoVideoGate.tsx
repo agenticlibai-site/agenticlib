@@ -6,6 +6,8 @@ export default function DemoVideoGate() {
     <>
       <style>{`
         .dv-link { display: inline-flex; align-items: center; gap: 8px; padding: 4px 2px; font-size: 15px; color: #000; text-decoration: none; }
+        .dv-link svg { flex: none; }
+        @media (max-width: 640px) { .dv-link { display: inline; text-align: center; line-height: 1.6; } .dv-link svg { display: inline-block; vertical-align: -4px; margin-right: 6px; } }
         .dv-link span { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(0,0,0,0.35); transition: text-decoration-color 0.15s; }
         .dv-link:hover span { text-decoration-color: #000; }
       `}</style>

@@ -159,12 +159,11 @@ export default function SiteFooter() {
             width: 100% !important;
             box-sizing: border-box !important;
           }
-          footer[id="contact"] > div > div > div:first-child h2 {
-            font-size: 32px !important;
-          }
+          /* the big wordmark repeats the logo row right below it on phones */
+          footer[id="contact"] > div > div > div:first-child { display: none !important; }
           .footer-cols {
-            grid-template-columns: 1fr !important;
-            gap: 28px 0 !important;
+            grid-template-columns: 1fr 1fr !important;
+            gap: 28px 20px !important;
             padding-bottom: 24px !important;
           }
           .footer-brand {
