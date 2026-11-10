@@ -1,11 +1,48 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { SOLUTIONS } from "@/app/solutions/_shared/solutions";
+
+// Simple line icons for the Solutions dropdown, keyed by solution slug
+const iconProps = { width: 18, height: 18, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.7, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
+const SOLUTION_ICONS: Record<string, React.ReactNode> = {
+  // shield
+  "insurance-ai": <svg {...iconProps}><path d="M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z" /></svg>,
+  // bar chart
+  "finance-ai": <svg {...iconProps}><path d="M4 20h16" /><path d="M7 16v-5" /><path d="M12 16V7" /><path d="M17 16v-8" /></svg>,
+  // trending line
+  "sales-ai": <svg {...iconProps}><path d="M3 17l6-6 4 4 8-8" /><path d="M15 7h6v6" /></svg>,
+  // scales
+  "legal-ai": <svg {...iconProps}><path d="M12 4v16" /><path d="M8 20h8" /><path d="M5 7h14" /><path d="M5 7l-3 6a3 3 0 006 0z" /><path d="M19 7l-3 6a3 3 0 006 0z" /></svg>,
+  // wrench
+  // tooth
+  "dental-ai": <svg {...iconProps}><path d="M7 3c-2.5 0-4 2-4 4.5 0 2 1 3.5 1.5 5.5.5 2.5 1 8 3 8 1.5 0 1.5-5 4.5-5s3 5 4.5 5c2 0 2.5-5.5 3-8 .5-2 1.5-3.5 1.5-5.5C21 5 19.5 3 17 3c-2 0-3 1-5 1S9 3 7 3z" /></svg>,
+  // play
+  "video-ai": <svg {...iconProps}><rect x="3" y="5" width="18" height="14" rx="3" /><path d="M10 9.5v5l4.5-2.5z" /></svg>,
+  "trades-ai": <svg {...iconProps}><path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.5 2.5-2.4-.6-.6-2.4z" /></svg>,
+};
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [solutionsOpen, setSolutionsOpen] = useState(false);
+  const solutionsRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+
+  // Close the Solutions dropdown on outside click or Escape
+  useEffect(() => {
+    if (!solutionsOpen) return;
+    const onDown = (e: MouseEvent) => {
+      if (!solutionsRef.current?.contains(e.target as Node)) setSolutionsOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setSolutionsOpen(false); };
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [solutionsOpen]);
 
   return (
     <>
@@ -49,6 +86,25 @@ export default function Navbar() {
           .nb-cta      { margin-left: 22px !important; }
           .nb-cta .btn-accent { border-radius: 999px !important; padding: 13px 26px !important; font-size: 15.5px !important; font-weight: 500 !important; }
         }
+
+        /* ── Solutions dropdown ── */
+        .nb-sol { position: relative; }
+        .nb-sol-btn { display: inline-flex; align-items: center; gap: 6px; background: none; border: none; cursor: pointer; font: inherit; color: inherit; }
+        .nb-sol-btn:hover { background: rgba(0,0,0,0.05); }
+        .nb-sol-panel { position: absolute; top: 100%; left: 50%; transform: translateX(-50%); padding-top: 12px; z-index: 1000; }
+        .nb-sol-menu { width: 300px; background: #fff; border: 1px solid rgba(0,0,0,0.07); border-radius: 20px; padding: 8px; box-shadow: 0 24px 48px -12px rgba(0,0,0,0.16), 0 4px 12px rgba(0,0,0,0.04); animation: nb-sol-in 0.14s ease-out; }
+        .nb-sol-list { padding: 4px 2px 6px; }
+        .nb-sol-icon { width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; background: #FFF1EC; color: #E8604A; display: flex; align-items: center; justify-content: center; transition: background 0.15s, color 0.15s; }
+        .nb-sol-item:hover .nb-sol-icon, .nb-sol-item:focus-visible .nb-sol-icon { background: #FF8A73; color: #000; }
+        .nb-sol-left { display: flex; align-items: center; gap: 14px; }
+        @keyframes nb-sol-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+        @media (prefers-reduced-motion: reduce) { .nb-sol-menu { animation: none; } }
+        .nb-sol-label { display: block; padding: 10px 12px 8px; font-family: var(--font-geist-mono), ui-monospace, monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #8A867F; }
+        .nb-sol-item { display: flex; align-items: center; justify-content: space-between; padding: 8px 12px 8px 8px; border-radius: 12px; text-decoration: none; color: #1a1a1a; transition: background 0.15s; }
+        .nb-sol-item:hover, .nb-sol-item:focus-visible { background: #FBF8F3; outline: none; }
+        .nb-sol-name { font-size: 15px; font-weight: 500; }
+        .nb-sol-arrow { color: #E8604A; opacity: 0; transform: translateX(-4px); transition: opacity 0.15s, transform 0.15s; }
+        .nb-sol-item:hover .nb-sol-arrow, .nb-sol-item:focus-visible .nb-sol-arrow { opacity: 1; transform: none; }
 
         /* ── Mobile: original full-width style ── */
         @media (max-width: 767px) {
@@ -102,6 +158,47 @@ export default function Navbar() {
             >
               Product
             </Link>
+
+            {/* Solutions dropdown */}
+            <div
+              ref={solutionsRef}
+              className="nb-sol"
+              onMouseEnter={() => setSolutionsOpen(true)}
+              onMouseLeave={() => setSolutionsOpen(false)}
+            >
+              <button
+                type="button"
+                className="nb-link nb-sol-btn transition"
+                aria-haspopup="true"
+                aria-expanded={solutionsOpen}
+                onClick={() => setSolutionsOpen((o) => !o)}
+              >
+                Solutions
+                <svg width="12" height="12" viewBox="0 0 20 20" fill="none" aria-hidden="true" style={{ transform: solutionsOpen ? "rotate(180deg)" : "none", transition: "transform 0.15s" }}>
+                  <path d="M5 8l5 5 5-5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </button>
+              {solutionsOpen && (
+                <div className="nb-sol-panel">
+                  <div className="nb-sol-menu" role="menu">
+                    <div className="nb-sol-list">
+                      <span className="nb-sol-label" aria-hidden="true">By industry</span>
+                      {SOLUTIONS.map((s) => (
+                        <Link key={s.slug} href={`/solutions/${s.slug}`} role="menuitem" className="nb-sol-item" onClick={() => setSolutionsOpen(false)}>
+                          <span className="nb-sol-left">
+                            <span className="nb-sol-icon" aria-hidden="true">{SOLUTION_ICONS[s.slug]}</span>
+                            <span className="nb-sol-name">{s.navLabel}</span>
+                          </span>
+                          <svg className="nb-sol-arrow" width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                            <path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Company */}
             <Link
@@ -164,6 +261,15 @@ export default function Navbar() {
               style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
               Product
             </Link>
+            <div className="px-5 pt-3.5 pb-1 text-sm font-medium text-black">Solutions</div>
+            {SOLUTIONS.map((s) => (
+              <Link key={s.slug} href={`/solutions/${s.slug}`} onClick={() => setMobileOpen(false)}
+                className="block pl-9 pr-5 py-2.5 text-sm text-black hover:bg-gray-50 transition-colors"
+                style={{ textDecoration: "none", color: "#55524C" }}>
+                {s.navLabel}
+              </Link>
+            ))}
+            <div style={{ borderBottom: "1px solid #f3f4f6", marginTop: 6 }} />
             <Link href="/company" onClick={() => setMobileOpen(false)}
               className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
               style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
