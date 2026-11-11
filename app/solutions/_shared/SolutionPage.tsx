@@ -168,7 +168,7 @@ export default function SolutionPage({ s }: { s: Solution }) {
             <div className="sol-intro">
               <h1 className="display">Build the best {s.heroTerm} agents</h1>
               <p className="sol-hero-sub">
-                <strong>FeatureStream&apos;s contextual feature library</strong>
+                <strong>FeatureStream&apos;s {s.heroTerm} feature library</strong>
                 The best product features for your agent, by use case. Every
                 feature is tailored to your business, your domain and the
                 workflows your customers actually run.
