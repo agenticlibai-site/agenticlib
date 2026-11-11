@@ -19,7 +19,13 @@ export type OfferingScreens = {
     unlocks: string;
     value: "High" | "Medium";
   }[];
-  review: { user: string; agent: Hl[]; flag: string; fix: string };
+  review: {
+    user: string;
+    agent: Hl[];
+    flag: string;
+    fix: string;
+    pattern: string;
+  };
   kb: {
     type: "Decision" | "Workflow" | "Insight" | "Learning";
     text: string;
@@ -63,6 +69,11 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
         text: "A person for sensitive claims",
         sources: ["Complaints"],
         trend: "New",
+      },
+      {
+        text: "Explain why a claim was declined",
+        sources: ["Complaints", "Adjuster notes"],
+        trend: "Steady",
       },
     ],
     flow: [
@@ -110,6 +121,7 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
       ],
       flag: "Missed sensitive context",
       fix: "Hand bereavement claims to a person",
+      pattern: "Also in injury and hardship claims",
     },
     kb: [
       { type: "Decision", text: "Allow documents after lodging" },
@@ -122,6 +134,8 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
         type: "Learning",
         text: "Asking the incident date first cuts follow-ups",
       },
+      { type: "Decision", text: "Hand complex claims to an assessor" },
+      { type: "Learning", text: "Policy jargon prompts repeat questions" },
     ],
     evaluation: {
       scenario: "Water damage claim without receipts",
@@ -179,6 +193,11 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
         sources: ["Sales calls"],
         trend: "New",
       },
+      {
+        text: "Answers to technical questions in the thread",
+        sources: ["Replies"],
+        trend: "Steady",
+      },
     ],
     flow: [
       { name: "Find leads", state: "ok" },
@@ -221,6 +240,7 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
       ],
       flag: "Ignored “not now”",
       fix: "Pause the sequence and set a revisit date",
+      pattern: "Also after “wrong person” replies",
     },
     kb: [
       {
@@ -233,6 +253,11 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
       },
       { type: "Insight", text: "Executives prefer a reply from a person" },
       { type: "Learning", text: "Template openers get recognised and ignored" },
+      { type: "Decision", text: "Pause sequences after a “not now”" },
+      {
+        type: "Learning",
+        text: "One pitch per account avoids duplicate threads",
+      },
     ],
     evaluation: {
       scenario: "Prospect with no recent news",
@@ -278,6 +303,11 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
         sources: ["Audit findings"],
         trend: "New",
       },
+      {
+        text: "Commentary in the board pack’s style",
+        sources: ["Controller feedback"],
+        trend: "New",
+      },
     ],
     flow: [
       { name: "Pull data", state: "ok" },
@@ -319,12 +349,15 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
       ],
       flag: "Circular explanation",
       fix: "Break variances down by driver and vendor",
+      pattern: "Also in payroll and travel variances",
     },
     kb: [
       { type: "Decision", text: "Every figure links to its source" },
       { type: "Workflow", text: "Pull → reconcile → draft → review → publish" },
       { type: "Insight", text: "Controllers review commentary line by line" },
       { type: "Learning", text: "Intercompany items need a human check" },
+      { type: "Decision", text: "Controllers approve before anything posts" },
+      { type: "Learning", text: "Generic commentary gets rewritten in review" },
     ],
     evaluation: {
       scenario: "Month with a large one-off accrual",
@@ -382,6 +415,11 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
         sources: ["Voice notes"],
         trend: "New",
       },
+      {
+        text: "Quotes in my own branding",
+        sources: ["Quotes sent"],
+        trend: "Steady",
+      },
     ],
     flow: [
       { name: "Record job on site", state: "ok" },
@@ -433,12 +471,15 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
       agent: ["Quote ready. ", { hl: "Shower reseal: price estimated." }],
       flag: "Guessed a price",
       fix: "Flag items missing from the price list",
+      pattern: "Also on call-out fees and materials",
     },
     kb: [
       { type: "Decision", text: "Never guess a price" },
       { type: "Workflow", text: "Record → transcribe → price → build → send" },
       { type: "Insight", text: "Tradies quote from the van between jobs" },
       { type: "Learning", text: "Trade slang trips up transcription" },
+      { type: "Decision", text: "Attach site photos to every quote" },
+      { type: "Learning", text: "Quotes without a follow-up tend to go cold" },
     ],
     evaluation: {
       scenario: "Voice note with an unlisted item",
@@ -496,6 +537,11 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
         sources: ["Agent logs"],
         trend: "New",
       },
+      {
+        text: "Research saved to the matter",
+        sources: ["Lawyer feedback"],
+        trend: "Steady",
+      },
     ],
     flow: [
       { name: "Read question", state: "ok" },
@@ -546,6 +592,7 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
       ],
       flag: "Wrong jurisdiction",
       fix: "Filter authorities to binding courts",
+      pattern: "Also in contract and tort questions",
     },
     kb: [
       { type: "Decision", text: "Show the supporting passage on every cite" },
@@ -558,6 +605,8 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
         type: "Learning",
         text: "Real cases can still be cited for the wrong point",
       },
+      { type: "Decision", text: "Only cite courts that bind the matter" },
+      { type: "Learning", text: "Overturned cases slip past existence checks" },
     ],
     evaluation: {
       scenario: "Clause question across two jurisdictions",
@@ -611,6 +660,11 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
         sources: ["Patient calls"],
         trend: "New",
       },
+      {
+        text: "Reminders before every appointment",
+        sources: ["SMS replies"],
+        trend: "Steady",
+      },
     ],
     flow: [
       { name: "Answer call", state: "ok" },
@@ -661,6 +715,7 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
       ],
       flag: "Confused “accepted” with “covered”",
       fix: "Check plan benefits before answering",
+      pattern: "Also for fillings and orthodontics",
     },
     kb: [
       { type: "Decision", text: "Collect member ID during booking" },
@@ -670,6 +725,8 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
       },
       { type: "Insight", text: "Many patients call after hours" },
       { type: "Learning", text: "Benefit questions need a billing callback" },
+      { type: "Decision", text: "Route urgent pain to same-day slots" },
+      { type: "Learning", text: "New patient exams need longer slots" },
     ],
     evaluation: {
       scenario: "New patient asking if a crown is covered",
@@ -727,6 +784,11 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
         sources: ["Support tickets"],
         trend: "New",
       },
+      {
+        text: "Captions in more languages",
+        sources: ["Creator feedback"],
+        trend: "New",
+      },
     ],
     flow: [
       { name: "Pick topic", state: "ok" },
@@ -778,6 +840,7 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
       agent: ["Scene four is ready, ", { hl: "with a new presenter look." }],
       flag: "Character drift",
       fix: "Lock a reference image per character",
+      pattern: "Also with logos and product shots",
     },
     kb: [
       {
@@ -790,6 +853,8 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
       },
       { type: "Insight", text: "Creators fix one scene at a time" },
       { type: "Learning", text: "Text-only prompts let characters drift" },
+      { type: "Decision", text: "Regenerate one scene, never the whole video" },
+      { type: "Learning", text: "Brand kits must load before the storyboard" },
     ],
     evaluation: {
       scenario: "Ten-scene explainer with one presenter",

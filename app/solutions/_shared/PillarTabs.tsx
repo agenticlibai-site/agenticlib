@@ -31,7 +31,13 @@ const styles = `
   @keyframes pt-fill { from { width: 0; } to { width: 100%; } }
   .pt-panel { border-radius: 28px; padding: 56px 48px; min-height: 460px; display: grid; place-items: center;
     background: #F9DCC8 url("/other%20ui%20screens%20bg.png") center / cover no-repeat; }
-  .pt-screen { width: 100%; max-width: 440px; }
+  .pt-screen { width: 100%; max-width: 440px; display: grid; }
+  .pt-screen > * { grid-area: 1 / 1; }
+  .pt-screen > .off { visibility: hidden; }
+  @media (min-width: 1001px) { .pt-side { padding: 32px; } .pt-side .pt-screen { max-width: 448px; } .pt-screen .st { aspect-ratio: 1 / 1; } }
+  .pt-screen .st { display: flex; }
+  .pt-screen .st-app { flex: 1; display: flex; flex-direction: column; }
+  .pt-screen .st-list, .pt-screen .st-steps { flex: 1; align-content: space-between; }
   .pt-screen .st { margin: 0; background: #fff; border-color: rgba(0,0,0,0.05); border-radius: 20px; box-shadow: 0 24px 50px -28px rgba(60,30,10,0.35); }
   .pt-screen .st-app { padding: 24px; }
   .pt-screen .st-row { box-shadow: none; background: #FBFAF8; }
@@ -48,6 +54,19 @@ const styles = `
     .pt-body > .pt-desc { font-size: 16px; }
   }
 `;
+
+/* All screens share one grid cell, so each takes the height of the tallest. */
+function Screens({ pillars, active }: { pillars: Pillar[]; active: number }) {
+  return (
+    <div className="pt-screen">
+      {pillars.map((p, i) => (
+        <div key={p.title} className={i === active ? undefined : "off"} style={{ display: "grid" }}>
+          {p.visual}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function PillarTabs({ pillars }: { pillars: Pillar[] }) {
   const [active, setActive] = useState(0);
@@ -76,7 +95,7 @@ export default function PillarTabs({ pillars }: { pillars: Pillar[] }) {
             </button>
             {i === active && (
               <div className="pt-panel pt-inline">
-                <div className="pt-screen">{p.visual}</div>
+                <Screens pillars={pillars} active={active} />
               </div>
             )}
             {i === active && (
@@ -91,7 +110,7 @@ export default function PillarTabs({ pillars }: { pillars: Pillar[] }) {
         ))}
       </ul>
       <div className="pt-panel pt-side">
-        <div className="pt-screen">{pillars[active].visual}</div>
+        <Screens pillars={pillars} active={active} />
       </div>
     </div>
   );

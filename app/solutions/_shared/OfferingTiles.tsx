@@ -53,6 +53,7 @@ export function NeedsTile({ d, user }: P & { user: string }) {
 
 /* 2 — Agent Workflow Intelligence: the workflow map, with where it gets stuck */
 export function FlowTile({ d, name }: P & { name: string }) {
+  const stuck = d.flow.find((x) => x.state === "stuck");
   const pill = { ok: ["g", "Smooth"], slow: ["y", "Friction"], stuck: ["r", "Stuck"] } as const;
   return (
     <Frame title={name} sub="Where users and the agent get stuck">
@@ -68,6 +69,12 @@ export function FlowTile({ d, name }: P & { name: string }) {
           </div>
         ))}
       </div>
+      {stuck && (
+        <div className="st-quote" style={{ marginTop: 10 }}>
+          <div className="st-who">Biggest blocker</div>
+          {stuck.name}: {stuck.note?.toLowerCase()}
+        </div>
+      )}
     </Frame>
   );
 }
@@ -112,6 +119,10 @@ export function ReviewTile({ d, user }: P & { user: string }) {
         <div className="st-row ot-fix">
           <span className="st-pill g">Opportunity</span>
           <span className="ot-t">{d.review.fix}</span>
+        </div>
+        <div className="st-row">
+          <span className="st-pill n">Pattern</span>
+          <span className="ot-t">{d.review.pattern}</span>
         </div>
       </div>
     </Frame>
