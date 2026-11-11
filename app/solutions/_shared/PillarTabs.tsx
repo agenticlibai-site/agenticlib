@@ -2,7 +2,7 @@
 
 import { useState, type ReactNode } from "react";
 
-export type Pillar = { title: string; body: string; visual: ReactNode };
+export type Pillar = { title: string; tagline: string; body: string; visual: ReactNode };
 
 /* Accordion list on the left (active item expands, progress bar auto-advances),
    matching screen in a tinted panel on the right. */
@@ -24,6 +24,7 @@ const styles = `
   .pt-item.on .pt-body { grid-template-rows: 1fr; }
   .pt-body > .pt-desc { display: block; overflow: hidden; margin: 0; font-size: 17px; line-height: 1.55; color: #8A857C; max-width: 520px; text-wrap: pretty; }
   .pt-item.on .pt-body > .pt-desc { padding-top: 8px; }
+  .pt-tag { display: block; margin-bottom: 6px; font-weight: 600; color: #22201C; }
   .pt-bar { position: absolute; left: 0; bottom: -1px; height: 2px; width: 0; background: #E8604A; }
   .pt-item.on .pt-bar { animation: pt-fill ${DURATION}s linear forwards; }
   .pt:hover .pt-item.on .pt-bar { animation-play-state: paused; }
@@ -67,7 +68,10 @@ export default function PillarTabs({ pillars }: { pillars: Pillar[] }) {
               <span className="pt-num">Offering #{i + 1}</span>
               <span className="pt-title">{p.title}</span>
               <span className="pt-body">
-                <span className="pt-desc">{p.body}</span>
+                <span className="pt-desc">
+                  <strong className="pt-tag">{p.tagline}</strong>
+                  {p.body}
+                </span>
               </span>
             </button>
             {i === active && (

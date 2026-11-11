@@ -6,15 +6,17 @@ import AgentLibrary from "./AgentLibrary";
 import PillarTabs, { type Pillar } from "./PillarTabs";
 import { USE_CASES } from "./useCases";
 import { DOMAIN_COPY } from "./domainCopy";
+import { tileStyles } from "./SolutionTiles";
+import { OFFERING_SCREENS } from "./offeringScreens";
 import {
-  WorkflowTile,
-  RoadmapTile,
-  BehaviourTile,
-  EvaluationTile,
-  ContextTile,
-  KnowledgeTile,
-  tileStyles,
-} from "./SolutionTiles";
+  NeedsTile,
+  FlowTile,
+  CapabilityTile,
+  ReviewTile,
+  KnowledgeBaseTile,
+  EvalTile,
+  offeringTileStyles,
+} from "./OfferingTiles";
 
 export function solutionMetadata(s: Solution): Metadata {
   const url = `${SITE_URL}/solutions/${s.slug}`;
@@ -46,32 +48,53 @@ export function solutionMetadata(s: Solution): Metadata {
   };
 }
 
-/* ── Pillars: titles shared, copy tailored per domain (domainCopy.ts) ── */
+/* ── Offerings: same eight on every domain; the example screens use each domain's data ── */
 
-const TITLES = [
-  "Agent workflow intelligence",
-  "Agent capability roadmapping",
-  "Agent behaviour intelligence",
-  "Agent evaluation & improvement",
-  "Customer context intelligence",
-  "Agent product knowledge base",
+const OFFERINGS: { title: string; tagline: string; body: string }[] = [
+  {
+    title: "Customer Intelligence",
+    tagline: "Understand what users need from your agent.",
+    body: "FeatureStream connects customer signals across conversations, requests, feedback and usage patterns to help PMs identify unmet needs, recurring problems and opportunities for improvement.",
+  },
+  {
+    title: "Agent Workflow Intelligence",
+    tagline: "Understand how your agent solves customer problems.",
+    body: "FeatureStream helps PMs map agent workflows, identify where users or agents get stuck, and uncover opportunities to improve how the agent completes tasks.",
+  },
+  {
+    title: "Agent Capability Intelligence",
+    tagline: "Know which capabilities your agent needs next.",
+    body: "FeatureStream helps PMs understand which new abilities, tools, integrations or behaviours could create the most value for users.",
+  },
+  {
+    title: "Agent Behaviour Intelligence",
+    tagline: "Understand why your agent succeeds or fails.",
+    body: "FeatureStream helps PMs connect agent behaviour — including errors, failures and user friction — to product improvement opportunities.",
+  },
+  {
+    title: "Agent Product Knowledge Base",
+    tagline: "Maintain the intelligence behind your AI product.",
+    body: "FeatureStream helps teams capture product decisions, workflows, customer insights and agent learnings so the product continuously improves over time.",
+  },
+  {
+    title: "Evaluation & Continuous Improvement Intelligence",
+    tagline: "Measure what works and keep improving.",
+    body: "FeatureStream helps PMs evaluate agent changes against user needs, product goals and real-world outcomes, then turns customer interactions and agent performance into ongoing product improvements.",
+  },
 ];
 
 const pillars = (s: Solution): Pillar[] => {
-  const c = DOMAIN_COPY[s.slug];
+  const user = DOMAIN_COPY[s.slug].user;
+  const d = OFFERING_SCREENS[s.slug];
   const visuals = [
-    <WorkflowTile key="w" t={s.tiles} c={c} />,
-    <RoadmapTile key="r" t={s.tiles} c={c} />,
-    <BehaviourTile key="b" t={s.tiles} c={c} />,
-    <EvaluationTile key="e" t={s.tiles} />,
-    <ContextTile key="c" t={s.tiles} c={c} />,
-    <KnowledgeTile key="k" t={s.tiles} c={c} />,
+    <NeedsTile key="1" d={d} user={user} />,
+    <FlowTile key="2" d={d} name={s.tiles.workflow.name} />,
+    <CapabilityTile key="3" d={d} />,
+    <ReviewTile key="5" d={d} user={user} />,
+    <KnowledgeBaseTile key="6" d={d} />,
+    <EvalTile key="7" d={d} />,
   ];
-  return TITLES.map((title, i) => ({
-    title,
-    visual: visuals[i],
-    body: c.pillars[i].body,
-  }));
+  return OFFERINGS.map((o, i) => ({ ...o, visual: visuals[i] }));
 };
 
 const tintVars = (t: {
@@ -123,6 +146,7 @@ export default function SolutionPage({ s }: { s: Solution }) {
         .sol-h2 { font-size: 52px; line-height: 1.05; margin: 0; max-width: 900px; text-wrap: balance; }
         .sol-lead { margin: 16px 0 0; font-size: 17px; line-height: 1.6; color: #55524C; max-width: 720px; text-wrap: pretty; }
         ${tileStyles}
+        ${offeringTileStyles}
         @media (max-width: 767px) {
           .sol-hero { margin-top: 0; padding: 52px 0 60px; }
         }

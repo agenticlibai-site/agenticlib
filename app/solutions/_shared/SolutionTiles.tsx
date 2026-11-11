@@ -38,7 +38,7 @@ export const tileStyles = `
   @media (max-width: 1000px) { .st { max-width: 520px; } }
 `;
 
-function Frame({ title, sub, children }: { title: string; sub: string; children: ReactNode }) {
+export function Frame({ title, sub, children }: { title: string; sub: string; children: ReactNode }) {
   return (
     <div className="st" aria-hidden>
       <div className="st-app">
