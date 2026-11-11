@@ -35,7 +35,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
       decisionSub: "Why the claims agent works this way",
     },
     user: "Policyholder",
-    lead: "FeatureStream connects to your claims calls, complaints, adjuster notes and agent logs, then shows your PMs where policyholders struggle and what to build next.",
+    lead: "Your PMs know where policyholders struggle and what to build next, backed by your claims calls, complaints, adjuster notes and agent logs.",
     sources: [
       "Claims calls",
       "Complaints",
@@ -46,7 +46,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
     linked: ["Complaints", "Agent logs", "Adjuster notes"],
     pillars: [
       {
-        body: "We map every claim and policy conversation to its steps, so you can see exactly where policyholders stall or drop off.",
+        body: "See exactly where policyholders stall or drop off. FeatureStream maps every claim and policy conversation to its steps.",
         items: [
           "Map policyholder problems to claims steps",
           "Find where claims stall before settlement",
@@ -55,7 +55,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We group policyholder and adjuster requests into ranked roadmap items, each linked to the conversations behind it.",
+        body: "A ranked roadmap built from what policyholders and adjusters ask for, each item linked to the conversations behind it.",
         items: [
           "Capture requests from claims and service",
           "Spot recurring coverage questions",
@@ -64,7 +64,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We flag where the agent confuses or frustrates policyholders, like unclear cover decisions, and tie each issue to a fix.",
+        body: "Fewer confused and frustrated policyholders. FeatureStream flags issues like unclear cover decisions and ties each one to a fix.",
         items: [
           "Find repeated coverage misunderstandings",
           "Spot frustration in distressing claims",
@@ -73,7 +73,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "Before you ship, we run the new version on past claims and show what got better, what got worse and any new compliance risk.",
+        body: "No surprises after release. FeatureStream tests each new version on past claims and show what improved, what regressed and any new compliance risk.",
         items: [
           "Build scenarios from past claims",
           "Compare versions on accuracy and fairness",
@@ -82,7 +82,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We link calls, complaints and adjuster notes to one policyholder need, so every roadmap item has real evidence behind it.",
+        body: "Every roadmap item backed by real evidence. FeatureStream links calls, complaints and adjuster notes to the policyholder need behind them.",
         items: [
           "Combine calls, complaints and notes",
           "Understand what policyholders need",
@@ -91,7 +91,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We keep a record of why each cover rule and decision exists, so new PMs and auditors can follow the reasoning.",
+        body: "A clear record of why each cover rule and decision exists, so new PMs and auditors can follow the reasoning.",
         items: [
           "Record why claims rules exist",
           "Track product and wording changes",
@@ -111,7 +111,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
       decisionSub: "Why the SDR agent works this way",
     },
     user: "Prospect",
-    lead: "FeatureStream connects to your sales calls, email replies, CRM data and agent logs, then shows your PMs where prospects drop off and what to build next.",
+    lead: "Your PMs know where prospects drop off and what to build next, backed by your sales calls, email replies, CRM data and agent logs.",
     sources: [
       "Sales calls",
       "Rep feedback",
@@ -122,7 +122,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
     linked: ["Sales calls", "Agent logs", "CRM data"],
     pillars: [
       {
-        body: "We map every prospect conversation from first touch to booked meeting, so you can see the step where leads go quiet.",
+        body: "See the exact step where leads go quiet. FeatureStream maps every prospect conversation from first touch to booked meeting.",
         items: [
           "Map lead journeys from reply to meeting",
           "Find where qualification breaks down",
@@ -131,7 +131,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We group rep feedback and prospect objections into ranked roadmap items, each linked to the threads behind it.",
+        body: "A ranked roadmap built from rep feedback and prospect objections, each item linked to the threads behind it.",
         items: [
           "Capture requests from sales reps",
           "Spot recurring objections",
@@ -140,7 +140,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We flag messages that sound off-brand, repeat themselves or annoy prospects, and tie each issue to a fix.",
+        body: "Outreach that sounds on-brand and keeps prospects engaged. FeatureStream flags repetitive or off-putting messages and ties each to a fix.",
         items: [
           "Find off-brand or repetitive messages",
           "Spot prospects annoyed by follow-ups",
@@ -149,7 +149,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "Before you ship, we run the new version on past prospect threads and show where qualification got better or worse.",
+        body: "No surprises after release. FeatureStream tests each new version on past prospect threads and show where qualification improved or regressed.",
         items: [
           "Build scenarios from past threads",
           "Compare versions on qualification accuracy",
@@ -158,7 +158,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We link calls, emails and CRM notes to one prospect need, so every roadmap item has real evidence behind it.",
+        body: "Every roadmap item backed by real evidence. FeatureStream links calls, emails and CRM notes to the prospect need behind them.",
         items: [
           "Combine calls, emails and CRM notes",
           "Understand what reps need from leads",
@@ -167,7 +167,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We keep a record of why each qualification and routing rule exists, so sales leaders and new PMs can follow the reasoning.",
+        body: "A clear record of why each qualification and routing rule exists, so sales leaders and new PMs can follow the reasoning.",
         items: [
           "Record why routing rules exist",
           "Track messaging and offer changes",
@@ -187,7 +187,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
       decisionSub: "Why the finance agent works this way",
     },
     user: "Finance team",
-    lead: "FeatureStream connects to your exception queues, controller feedback, audit findings and agent logs, then shows your PMs where finance teams lose time and what to build next.",
+    lead: "Your PMs know where finance teams lose time and what to build next, backed by your exception queues, controller feedback, audit findings and agent logs.",
     sources: [
       "Exception queues",
       "Controller feedback",
@@ -198,7 +198,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
     linked: ["Controller feedback", "Audit findings", "ERP data"],
     pillars: [
       {
-        body: "We map each invoice, match and close task to its steps, so you can see where exceptions pile up.",
+        body: "See exactly where exceptions pile up. FeatureStream maps each invoice, match and close task to its steps.",
         items: [
           "Map finance problems to process steps",
           "Find where exceptions pile up",
@@ -207,7 +207,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We group controller requests and audit findings into ranked roadmap items, each linked to the cases behind them.",
+        body: "A ranked roadmap built from controller requests and audit findings, each item linked to the cases behind it.",
         items: [
           "Capture requests from controllers",
           "Spot recurring exception types",
@@ -216,7 +216,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We flag matching errors and unexplained numbers that make finance teams stop trusting outputs, and tie each to a fix.",
+        body: "Outputs finance teams trust. FeatureStream flags matching errors and unexplained numbers and ties each one to a fix.",
         items: [
           "Find repeated matching errors",
           "Spot where teams stop trusting outputs",
@@ -225,7 +225,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "Before you ship, we run the new version on past exceptions and ledgers and show match accuracy and any new control risk.",
+        body: "No surprises after release. FeatureStream tests each new version on past exceptions and ledgers and show match accuracy and any new control risk.",
         items: [
           "Build scenarios from past exceptions",
           "Compare versions on match accuracy",
@@ -234,7 +234,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We link queues, controller notes and audit findings to one finance team need, so every roadmap item has evidence behind it.",
+        body: "Every roadmap item backed by real evidence. FeatureStream links queues, controller notes and audit findings to the finance team need behind them.",
         items: [
           "Combine queues, notes and findings",
           "Understand what finance teams need",
@@ -243,7 +243,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We keep a record of why each control and threshold exists, giving you an audit-ready history of every decision.",
+        body: "An audit-ready history of every decision, with a clear record of why each control and threshold exists.",
         items: [
           "Record why controls exist",
           "Track policy and threshold changes",
@@ -263,7 +263,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
       decisionSub: "Why the admin agent works this way",
     },
     user: "Tradie",
-    lead: "FeatureStream connects to your tradies’ voice notes, quotes, invoices and agent logs, then shows your PMs where admin gets stuck and what to build next.",
+    lead: "Your PMs know where admin gets stuck and what to build next, backed by your tradies’ voice notes, quotes, invoices and agent logs.",
     sources: [
       "Voice notes",
       "Quotes sent",
@@ -274,7 +274,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
     linked: ["Voice notes", "Quotes sent", "Agent logs"],
     pillars: [
       {
-        body: "We map each job from site visit to paid invoice, so you can see where quotes and invoices stall.",
+        body: "See exactly where quotes and invoices stall. FeatureStream maps each job from site visit to paid invoice.",
         items: [
           "Map tradie admin to quote and invoice steps",
           "Find where quotes stall before sending",
@@ -283,7 +283,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We group tradie edits and customer replies into ranked roadmap items, each linked to the jobs behind them.",
+        body: "A ranked roadmap built from tradie edits and customer replies, each item linked to the jobs behind it.",
         items: [
           "Capture requests from tradies on site",
           "Spot recurring pricing and paperwork gaps",
@@ -292,7 +292,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We flag quotes with missed line items, output tradies retype and unanswered customer enquiries, and tie each to a fix.",
+        body: "Less retyping for tradies and fewer missed enquiries. FeatureStream flags quotes with missing line items and ties each issue to a fix.",
         items: [
           "Find quotes with missed line items",
           "Spot tradies retyping agent output",
@@ -301,7 +301,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "Before you ship, we run the new version on past voice notes and jobs and show quote and invoice accuracy side by side.",
+        body: "No surprises after release. FeatureStream tests each new version on past voice notes and jobs and show quote and invoice accuracy side by side.",
         items: [
           "Build scenarios from past voice notes",
           "Compare versions on quote and invoice accuracy",
@@ -310,7 +310,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We link voice notes, quotes and customer replies to one tradie need, so every roadmap item has real evidence behind it.",
+        body: "Every roadmap item backed by real evidence. FeatureStream links voice notes, quotes and customer replies to the tradie need behind them.",
         items: [
           "Combine notes, quotes and replies",
           "Understand what tradies need",
@@ -319,7 +319,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We keep a record of why each pricing rule and safety template exists, so support and new PMs can follow the reasoning.",
+        body: "A clear record of why each pricing rule and safety template exists, so support and new PMs can follow the reasoning.",
         items: [
           "Record why pricing rules exist",
           "Track SWMS template changes",
@@ -339,7 +339,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
       decisionSub: "Why the research agent works this way",
     },
     user: "Lawyer",
-    lead: "FeatureStream connects to lawyer feedback, matter notes, citation checks and agent logs, then shows your PMs where lawyers lose trust and what to build next.",
+    lead: "Your PMs know where lawyers lose trust and what to build next, backed by lawyer feedback, matter notes, citation checks and agent logs.",
     sources: [
       "Lawyer feedback",
       "Matter notes",
@@ -350,7 +350,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
     linked: ["Lawyer feedback", "Agent logs", "Citation checks"],
     pillars: [
       {
-        body: "We map each research, review and intake task to its steps, so you can see where lawyers re-check the agent’s work.",
+        body: "See exactly where lawyers re-check the agent’s work. FeatureStream maps each research, review and intake task to its steps.",
         items: [
           "Map lawyer problems to task steps",
           "Find where answers get re-checked",
@@ -359,7 +359,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We group practice group requests and research gaps into ranked roadmap items, each linked to the matters behind them.",
+        body: "A ranked roadmap built from practice group requests and research gaps, each item linked to the matters behind it.",
         items: [
           "Capture requests from practice groups",
           "Spot recurring research gaps",
@@ -368,7 +368,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We flag unsupported citations, missed clauses and missed deadlines, and tie each issue to a fix.",
+        body: "Work lawyers can rely on. FeatureStream flags unsupported citations, missed clauses and missed deadlines and ties each one to a fix.",
         items: [
           "Find unsupported citations",
           "Spot where lawyers stop trusting answers",
@@ -377,7 +377,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "Before you ship, we run the new version on past legal questions and documents and show citation accuracy and any new risk.",
+        body: "No surprises after release. FeatureStream tests each new version on past legal questions and documents and show citation accuracy and any new risk.",
         items: [
           "Build scenarios from past matters",
           "Compare versions on citation accuracy",
@@ -386,7 +386,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We link lawyer feedback, matter notes and citation checks to one lawyer need, so every roadmap item has evidence behind it.",
+        body: "Every roadmap item backed by real evidence. FeatureStream links lawyer feedback, matter notes and citation checks to the lawyer need behind them.",
         items: [
           "Combine feedback, notes and checks",
           "Understand what lawyers need",
@@ -395,7 +395,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We keep a record of why each playbook and review rule exists, giving you a defensible history of every decision.",
+        body: "A defensible history of every decision, with a clear record of why each playbook and review rule exists.",
         items: [
           "Record why review rules exist",
           "Track playbook and jurisdiction changes",
@@ -415,7 +415,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
       decisionSub: "Why the reception agent works this way",
     },
     user: "Patient",
-    lead: "FeatureStream connects to your patient calls, front desk notes, practice data and agent logs, then shows your PMs where calls fail to book and what to build next.",
+    lead: "Your PMs know where calls fail to book and what to build next, backed by your patient calls, front desk notes, practice data and agent logs.",
     sources: [
       "Patient calls",
       "Front desk notes",
@@ -426,7 +426,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
     linked: ["Patient calls", "Agent logs", "Front desk notes"],
     pillars: [
       {
-        body: "We map each patient call to its steps, so you can see where patients hang up before booking.",
+        body: "See exactly where patients hang up before booking. FeatureStream maps each patient call to its steps.",
         items: [
           "Map patient problems to call steps",
           "Find where patients hang up",
@@ -435,7 +435,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We group front desk requests and patient questions into ranked roadmap items, each linked to the calls behind them.",
+        body: "A ranked roadmap built from front desk requests and patient questions, each item linked to the calls behind it.",
         items: [
           "Capture requests from front desk staff",
           "Spot recurring insurance questions",
@@ -444,7 +444,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We flag unanswered coverage questions, anxious patients and missed emergencies, and tie each issue to a fix.",
+        body: "Calmer patients and no missed emergencies. FeatureStream flags unanswered coverage questions and anxious callers and ties each issue to a fix.",
         items: [
           "Find unanswered coverage questions",
           "Spot anxious or frustrated patients",
@@ -453,7 +453,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "Before you ship, we run the new version on past patient calls and show booking accuracy and any new privacy or clinical risk.",
+        body: "No surprises after release. FeatureStream tests each new version on past patient calls and show booking accuracy and any new privacy or clinical risk.",
         items: [
           "Build scenarios from past calls",
           "Compare versions on booking accuracy",
@@ -462,7 +462,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We link calls, front desk notes and reviews to one patient need, so every roadmap item has real evidence behind it.",
+        body: "Every roadmap item backed by real evidence. FeatureStream links calls, front desk notes and reviews to the patient need behind them.",
         items: [
           "Combine calls, notes and reviews",
           "Understand what patients need",
@@ -471,7 +471,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We keep a record of why each triage and booking rule exists, so practice managers and new PMs can follow the reasoning.",
+        body: "A clear record of why each triage and booking rule exists, so practice managers and new PMs can follow the reasoning.",
         items: [
           "Record why triage rules exist",
           "Track insurance and scheduling changes",
@@ -491,7 +491,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
       decisionSub: "Why the video agent works this way",
     },
     user: "Creator",
-    lead: "FeatureStream connects to creator feedback, project data, render logs and agent logs, then shows your PMs where projects stall and what to build next.",
+    lead: "Your PMs know where projects stall and what to build next, backed by creator feedback, project data, render logs and agent logs.",
     sources: [
       "Creator feedback",
       "Project data",
@@ -502,7 +502,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
     linked: ["Creator feedback", "Agent logs", "Project data"],
     pillars: [
       {
-        body: "We map each project from topic to export, so you can see where creators abandon drafts.",
+        body: "See exactly where creators abandon drafts. FeatureStream maps each project from topic to export.",
         items: [
           "Map creator problems to production steps",
           "Find where projects are abandoned",
@@ -511,7 +511,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We group creator requests and editing needs into ranked roadmap items, each linked to the projects behind them.",
+        body: "A ranked roadmap built from creator requests and editing needs, each item linked to the projects behind it.",
         items: [
           "Capture creator feature requests",
           "Spot recurring editing needs",
@@ -520,7 +520,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We flag scenes that drift from the script, style and voice slips, and repeated re-renders, and tie each to a fix.",
+        body: "Videos that stay on script, on style and on voice. FeatureStream flags drift and repeated re-renders and ties each one to a fix.",
         items: [
           "Find scenes that drift from the script",
           "Spot frustration with re-renders",
@@ -529,7 +529,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "Before you ship, we run the new version on past projects and show script adherence and any new content policy risk.",
+        body: "No surprises after release. FeatureStream tests each new version on past projects and show script adherence and any new content policy risk.",
         items: [
           "Build scenarios from past projects",
           "Compare versions on script adherence",
@@ -538,7 +538,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We link creator feedback, project data and tickets to one creator need, so every roadmap item has real evidence behind it.",
+        body: "Every roadmap item backed by real evidence. FeatureStream links creator feedback, project data and tickets to the creator need behind them.",
         items: [
           "Combine feedback, projects and tickets",
           "Understand what creators need",
@@ -547,7 +547,7 @@ export const DOMAIN_COPY: Record<string, DomainCopy> = {
         ],
       },
       {
-        body: "We keep a record of why each style and generation rule exists, so the team and new PMs can follow the reasoning.",
+        body: "A clear record of why each style and generation rule exists, so the team and new PMs can follow the reasoning.",
         items: [
           "Record why generation rules exist",
           "Track model and style changes",

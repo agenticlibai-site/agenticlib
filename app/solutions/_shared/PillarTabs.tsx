@@ -17,6 +17,8 @@ const styles = `
   .pt-btn:focus-visible { outline: 2px solid #E8604A; outline-offset: 4px; border-radius: 4px; }
   .pt-title { display: block; font-size: 24px; line-height: 1.25; letter-spacing: -0.01em; color: #B9B4AB; transition: color .2s; }
   .pt-item:hover .pt-title { color: #8A857C; }
+  .pt-num { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 600; letter-spacing: 0.02em; color: #C9C3B9; transition: color .2s; }
+  .pt-item.on .pt-num { color: #E8604A; }
   .pt-item.on .pt-title { color: #22201C; }
   .pt-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease; }
   .pt-item.on .pt-body { grid-template-rows: 1fr; }
@@ -62,6 +64,7 @@ export default function PillarTabs({ pillars }: { pillars: Pillar[] }) {
               aria-expanded={i === active}
               onClick={() => setActive(i)}
             >
+              <span className="pt-num">Offering #{i + 1}</span>
               <span className="pt-title">{p.title}</span>
               <span className="pt-body">
                 <span className="pt-desc">{p.body}</span>
