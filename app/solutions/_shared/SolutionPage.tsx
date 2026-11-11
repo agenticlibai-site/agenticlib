@@ -54,32 +54,32 @@ const OFFERINGS: { title: string; tagline: string; body: string }[] = [
   {
     title: "Customer Intelligence",
     tagline: "Understand what users need from your agent.",
-    body: "FeatureStream connects customer signals across conversations, requests, feedback and usage patterns to help PMs identify unmet needs, recurring problems and opportunities for improvement.",
+    body: "Your PMs know exactly what users need, which problems keep coming up and where the biggest opportunities to improve are.",
   },
   {
     title: "Agent Workflow Intelligence",
     tagline: "Understand how your agent solves customer problems.",
-    body: "FeatureStream helps PMs map agent workflows, identify where users or agents get stuck, and uncover opportunities to improve how the agent completes tasks.",
+    body: "Your PMs see exactly where users and the agent get stuck, and know how to make every task easier to complete.",
   },
   {
     title: "Agent Capability Intelligence",
     tagline: "Know which capabilities your agent needs next.",
-    body: "FeatureStream helps PMs understand which new abilities, tools, integrations or behaviours could create the most value for users.",
+    body: "Your PMs know which new abilities, tools and integrations will create the most value for users, before they build them.",
   },
   {
     title: "Agent Behaviour Intelligence",
     tagline: "Understand why your agent succeeds or fails.",
-    body: "FeatureStream helps PMs connect agent behaviour — including errors, failures and user friction — to product improvement opportunities.",
+    body: "Your PMs know why the agent succeeds or fails, and every error or moment of friction becomes a clear product improvement.",
   },
   {
     title: "Agent Product Knowledge Base",
     tagline: "Maintain the intelligence behind your AI product.",
-    body: "FeatureStream helps teams capture product decisions, workflows, customer insights and agent learnings so the product continuously improves over time.",
+    body: "Product decisions, workflows, customer insights and agent learnings stay in one place, so your product keeps getting smarter instead of starting over.",
   },
   {
     title: "Evaluation & Continuous Improvement Intelligence",
     tagline: "Measure what works and keep improving.",
-    body: "FeatureStream helps PMs evaluate agent changes against user needs, product goals and real-world outcomes, then turns customer interactions and agent performance into ongoing product improvements.",
+    body: "Your PMs know whether every change really works for users, product goals and real-world outcomes, and the product gets better with every release.",
   },
 ];
 
