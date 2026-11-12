@@ -731,7 +731,7 @@ export const SOLUTIONS: Solution[] = [
         { label: "Repeated insurance question", risk: "Medium" },
       ],
       workflow: {
-        name: "Booking workflow",
+        name: "Follow-up workflow",
         steps: [
           "Answer call",
           "Identify patient",

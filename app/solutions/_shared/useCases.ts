@@ -554,6 +554,32 @@ export const USE_CASES: Record<string, UseCase[]> = {
   ],
   "dental-ai": [
     {
+      name: "Recall and reactivation",
+      desc: "Brings overdue patients back for check-ups",
+      features: [
+        ["Overdue patient detection", "data"],
+        ["Recall timing", "wf"],
+        ["Personalised reminders", "exp"],
+        ["Channel preference", "rea"],
+        ["Rebooking flow", "wf"],
+        ["Unanswered recall follow-up", "esc"],
+        ["Opt-out handling", "comp"],
+      ],
+    },
+    {
+      name: "Treatment plan follow-up",
+      desc: "Helps patients go ahead with planned treatment",
+      features: [
+        ["Treatment plan recall", "data"],
+        ["Cost explanations", "exp"],
+        ["Payment option guidance", "exp"],
+        ["Hesitation detection", "rea"],
+        ["Follow-up cadence", "wf"],
+        ["Clinical question hand-off", "esc"],
+        ["No clinical advice boundary", "comp"],
+      ],
+    },
+    {
       name: "Call answering",
       desc: "Answers patient calls day and night",
       features: [
@@ -616,32 +642,6 @@ export const USE_CASES: Record<string, UseCase[]> = {
         ["Plain-language questions", "exp"],
         ["Duplicate patient prevention", "acc"],
         ["Consent and privacy notices", "comp"],
-      ],
-    },
-    {
-      name: "Recall and reactivation",
-      desc: "Brings overdue patients back for check-ups",
-      features: [
-        ["Overdue patient detection", "data"],
-        ["Recall timing", "wf"],
-        ["Personalised reminders", "exp"],
-        ["Channel preference", "rea"],
-        ["Rebooking flow", "wf"],
-        ["Unanswered recall follow-up", "esc"],
-        ["Opt-out handling", "comp"],
-      ],
-    },
-    {
-      name: "Treatment plan follow-up",
-      desc: "Helps patients go ahead with planned treatment",
-      features: [
-        ["Treatment plan recall", "data"],
-        ["Cost explanations", "exp"],
-        ["Payment option guidance", "exp"],
-        ["Hesitation detection", "rea"],
-        ["Follow-up cadence", "wf"],
-        ["Clinical question hand-off", "esc"],
-        ["No clinical advice boundary", "comp"],
       ],
     },
     {
@@ -765,4 +765,65 @@ export const USE_CASES: Record<string, UseCase[]> = {
       ],
     },
   ],
+};
+
+/* "Ask AI" demo in the library screen: one feature, explained for a PM.
+   No "agent" wording; no figures. */
+export type LibraryAsk = {
+  useCase: string;
+  feature: string;
+  answer: string;
+  verdict: string;
+};
+
+export const LIBRARY_ASK: Partial<Record<string, LibraryAsk>> = {
+  "insurance-ai": {
+    useCase: "Claims intake",
+    feature: "Vulnerable customer detection",
+    answer:
+      "Yes, if claimants often reach out in distress or confusion. It spots signs someone needs extra care, slows the pace and offers a person sooner. Start here if complaints mention feeling rushed or misunderstood during a claim.",
+    verdict: "Strong fit for claims",
+  },
+  "sales-ai": {
+    useCase: "Lead qualification",
+    feature: "Hand-off with full context",
+    answer:
+      "Yes, if reps re-ask questions the lead already answered. It passes the full conversation, fit and timing to the rep, so the first call picks up where the chat left off. Start here if qualified leads go cold after hand-off.",
+    verdict: "Strong fit for qualification",
+  },
+  "finance-ai": {
+    useCase: "Accounts payable",
+    feature: "Exception escalation",
+    answer:
+      "Yes, if invoices that fail matching sit unnoticed. It routes each exception to the right approver with why it failed and what’s needed to clear it. Start here if late payments keep tracing back to stuck exceptions.",
+    verdict: "Strong fit for payables",
+  },
+  "trades-ai": {
+    useCase: "Enquiry handling",
+    feature: "Urgent job hand-off",
+    answer:
+      "Yes, if urgent jobs like leaks or power loss come in after hours. It recognises the urgency, captures the key details and alerts whoever is on call straight away. Start here if urgent work is slipping to competitors.",
+    verdict: "Strong fit for enquiries",
+  },
+  "legal-ai": {
+    useCase: "Client intake",
+    feature: "Urgent deadline detection",
+    answer:
+      "Yes, if enquiries arrive with limitation periods or court dates attached. It flags time-critical matters at intake and routes them to a lawyer first. Start here if urgent matters wait in the same queue as routine ones.",
+    verdict: "Strong fit for intake",
+  },
+  "video-ai": {
+    useCase: "Topic and research",
+    feature: "Unverified claim flags",
+    answer:
+      "Yes, if scripts include facts creators can’t easily check. It marks claims without a solid source before the outline is approved, so nothing goes out unchecked. Start here if accuracy comments keep coming up on published videos.",
+    verdict: "Strong fit for research",
+  },
+  "dental-ai": {
+    useCase: "Recall and reactivation",
+    feature: "Unanswered recall follow-up",
+    answer:
+      "Yes, if many recall texts go unanswered. It sends a second, more personal nudge a few days later, using the patient’s own reason to come back, then hands quiet patients to your team. Start here if unanswered recalls are your biggest drop-off.",
+    verdict: "Strong fit for recall",
+  },
 };

@@ -4,7 +4,7 @@ import { SITE_URL } from "@/lib/site";
 import type { Solution } from "./solutions";
 import AgentLibrary from "./AgentLibrary";
 import PillarTabs, { type Pillar } from "./PillarTabs";
-import { USE_CASES } from "./useCases";
+import { USE_CASES, LIBRARY_ASK } from "./useCases";
 import { DOMAIN_COPY } from "./domainCopy";
 import { tileStyles } from "./SolutionTiles";
 import { OFFERING_SCREENS } from "./offeringScreens";
@@ -168,13 +168,19 @@ export default function SolutionPage({ s }: { s: Solution }) {
             <div className="sol-intro">
               <h1 className="display">Build the best {s.heroTerm} agents</h1>
               <p className="sol-hero-sub">
-                <strong>FeatureStream&apos;s {s.heroTerm} feature library</strong>
+                <strong>
+                  FeatureStream&apos;s {s.heroTerm} feature library
+                </strong>
                 The best product features for your agent, by use case. Every
                 feature is tailored to your business, your domain and the
                 workflows your customers actually run.
               </p>
             </div>
-            <AgentLibrary cases={USE_CASES[s.slug]} label={s.navLabel} />
+            <AgentLibrary
+              cases={USE_CASES[s.slug]}
+              label={s.navLabel}
+              ask={LIBRARY_ASK[s.slug]}
+            />
           </div>
         </div>
       </section>

@@ -7,6 +7,10 @@
 type Hl = string | { hl: string };
 
 export type OfferingScreens = {
+  opportunity: string; // biggest opportunity, for the top need
+  easier: string; // how to make the stuck step easier
+  firstWhy: string; // why the top capability comes first
+  works: string; // why the agent succeeds
   needs: {
     text: string;
     sources: string[];
@@ -49,6 +53,10 @@ export type OfferingScreens = {
 
 export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
   "insurance-ai": {
+    opportunity: "Let policyholders lodge first and add documents later",
+    easier: "Let documents follow after lodging",
+    firstWhy: "Every cover question depends on it",
+    works: "Simple claims flow when cover comes from the live policy",
     needs: [
       {
         text: "Lodge a claim now, add documents later",
@@ -172,6 +180,10 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
   },
 
   "sales-ai": {
+    opportunity: "Personalise only from facts with a source",
+    easier: "Personalise only from verified sources",
+    firstWhy: "Invented details cost the most trust",
+    works: "Replies land when the opener cites a real event",
     needs: [
       {
         text: "Outreach that references something real",
@@ -282,6 +294,10 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
   },
 
   "finance-ai": {
+    opportunity: "Show the source behind every figure",
+    easier: "Auto-match items and flag only true exceptions",
+    firstWhy: "Reconciliation is where the close stalls",
+    works: "Reports pass review when every figure links to source",
     needs: [
       {
         text: "See the source behind every figure",
@@ -394,6 +410,10 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
   },
 
   "trades-ai": {
+    opportunity: "Quote from the tradie’s own prices, on site",
+    easier: "Flag unlisted items for a quick price",
+    firstWhy: "Guessed prices are why quotes get edited",
+    works: "Quotes go out unedited when every item is listed",
     needs: [
       {
         text: "Quote before leaving the driveway",
@@ -516,6 +536,10 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
   },
 
   "legal-ai": {
+    opportunity: "Citations lawyers can rely on first time",
+    easier: "Show the supporting passage beside each cite",
+    firstWhy: "Overturned cases are the riskiest miss",
+    works: "Answers get used when every cite shows its passage",
     needs: [
       {
         text: "Rely on citations without re-checking each one",
@@ -643,126 +667,131 @@ export const OFFERING_SCREENS: Record<string, OfferingScreens> = {
   },
 
   "dental-ai": {
+    opportunity: "Hand cost questions to the team with a ready reply",
+    easier: "Offer after-school and same-dentist times first",
+    firstWhy: "Parents ask to book siblings together",
+    works: "Patients book when the text names their own reason",
     needs: [
       {
-        text: "Book after hours without a callback",
-        sources: ["Patient calls", "Missed calls"],
+        text: "Know what I’ll pay before I book",
+        sources: ["SMS replies", "Team inbox"],
         trend: "Rising",
       },
       {
-        text: "Know if my treatment is covered",
-        sources: ["Patient calls", "Front desk notes"],
+        text: "Times after school for the kids",
+        sources: ["SMS replies"],
         trend: "Rising",
       },
-      { text: "Reschedule by text", sources: ["SMS replies"], trend: "Steady" },
       {
-        text: "Same-day help for dental pain",
-        sources: ["Patient calls"],
+        text: "Book the whole family in one go",
+        sources: ["SMS replies", "Team inbox"],
         trend: "New",
       },
       {
-        text: "Reminders before every appointment",
+        text: "See the same dentist as last time",
+        sources: ["Practice system", "SMS replies"],
+        trend: "Steady",
+      },
+      {
+        text: "Ask me again when I’m ready",
         sources: ["SMS replies"],
         trend: "Steady",
       },
     ],
     flow: [
-      { name: "Answer call", state: "ok" },
+      { name: "Find patients due", state: "ok" },
       {
-        name: "Identify patient",
-        note: "New vs existing confused",
+        name: "Send first text",
+        note: "Feels generic to lapsed patients",
         state: "slow",
       },
+      { name: "Follow up", state: "ok" },
       {
-        name: "Check insurance",
-        note: "Coverage questions stall",
+        name: "Offer times",
+        note: "Replied, but no time suited",
         state: "stuck",
       },
-      { name: "Find a slot", note: "Wrong appointment length", state: "slow" },
-      { name: "Confirm booking", state: "ok" },
+      {
+        name: "Book or hand over",
+        note: "Simple questions handed over",
+        state: "slow",
+      },
     ],
     capabilities: [
       {
-        kind: "Integration",
-        name: "Practice system sync",
-        unlocks: "Books into the live schedule",
-        value: "High",
-      },
-      {
-        kind: "Integration",
-        name: "Eligibility check",
-        unlocks: "Coverage checked before the visit",
-        value: "High",
-      },
-      {
         kind: "Behaviour",
-        name: "Appointment-type rules",
-        unlocks: "Right slot length per treatment",
+        name: "Family bookings in one reply",
+        unlocks: "Siblings booked side by side",
         value: "High",
       },
       {
         kind: "Ability",
-        name: "Urgent pain triage",
-        unlocks: "Emergencies seen same day",
+        name: "Match the usual dentist",
+        unlocks: "Times patients actually accept",
+        value: "High",
+      },
+      {
+        kind: "Integration",
+        name: "More practice systems",
+        unlocks: "Follow-up for more clinics",
+        value: "High",
+      },
+      {
+        kind: "Tool",
+        name: "Hold offered times",
+        unlocks: "No clashing offers",
         value: "Medium",
       },
     ],
     review: {
-      user: "Will my insurance cover a crown?",
+      user: "How much will the crown be?",
       agent: [
-        "Good news! ",
-        { hl: "We accept your insurance, so you’re covered." },
+        "Great question! ",
+        { hl: "It’s usually a few hundred dollars after your cover." },
       ],
-      flag: "Confused “accepted” with “covered”",
-      fix: "Check plan benefits before answering",
-      pattern: "Also for fillings and orthodontics",
+      flag: "Gave a fee estimate it can’t verify",
+      fix: "Hand to the team with a suggested reply",
+      pattern: "Also for clinical questions about pain",
     },
     kb: [
-      { type: "Decision", text: "Collect member ID during booking" },
-      {
-        type: "Workflow",
-        text: "Answer → identify → insurance → slot → confirm",
-      },
-      { type: "Insight", text: "Many patients call after hours" },
-      { type: "Learning", text: "Benefit questions need a billing callback" },
-      { type: "Decision", text: "Route urgent pain to same-day slots" },
-      { type: "Learning", text: "New patient exams need longer slots" },
+      { type: "Decision", text: "Never give clinical or fee advice" },
+      { type: "Workflow", text: "Due → first text → follow up → times → book" },
+      { type: "Insight", text: "Lapsed patients reply to a personal reason" },
+      { type: "Decision", text: "Stop means stop, every time" },
+      { type: "Learning", text: "Parents want after-school times first" },
+      { type: "Learning", text: "Fee questions need a suggested reply" },
     ],
     evaluation: {
-      scenario: "New patient asking if a crown is covered",
+      scenario: "Lapsed patient, overdue for a check-up",
       rows: [
         {
-          name: "Accepted vs covered answered right",
+          name: "Sounds like the clinic",
           against: "User need",
           result: "Better",
         },
+        { name: "Booked by text", against: "Product goal", result: "Better" },
+        { name: "Opt-outs", against: "Product goal", result: "Same" },
         {
-          name: "Member ID collected",
-          against: "Product goal",
-          result: "Better",
-        },
-        {
-          name: "Right appointment length",
-          against: "Product goal",
-          result: "Same",
-        },
-        {
-          name: "No billing surprise at the desk",
+          name: "Patient back in the chair",
           against: "Real outcome",
           result: "Better",
         },
       ],
     },
     loop: {
-      signal: "Patients surprised by bills at the front desk",
-      insight: "The agent says “covered” when it means “accepted”",
-      change: "Check eligibility before confirming",
-      result: "Better on coverage answers",
-      watching: "Billing complaints",
+      signal: "Lapsed patients ignore the first text",
+      insight: "Generic nudges get no reply",
+      change: "Open with the patient’s own reason to return",
+      result: "More replies from lapsed patients",
+      watching: "Opt-outs",
     },
   },
 
   "video-ai": {
+    opportunity: "Keep characters consistent across every scene",
+    easier: "Lock a character reference before generating",
+    firstWhy: "Character drift drives the most regenerations",
+    works: "Videos export first time when the presenter stays locked",
     needs: [
       {
         text: "The same character in every scene",
