@@ -337,6 +337,11 @@ export default function Home() {
         .trusted-logo:hover { opacity: 1; filter: none; }
         .trusted-logo img { height: 40px; width: auto; object-fit: contain; }
         .trusted-dewwie { font-family: Georgia, 'Times New Roman', serif; font-size: 32px; line-height: 1; color: #1a0fb0; }
+        .testimonial-label { margin-top: 64px; text-align: center; }
+        .testimonial { margin: 20px auto 24px; max-width: 720px; text-align: center; background: #FFF4F0; border: 1px solid #FDE1D8; border-radius: 18px; padding: 32px 40px; }
+        .testimonial blockquote { margin: 0; font-size: 17px; line-height: 1.55; font-weight: 500; color: #22201C; text-wrap: balance; }
+        .testimonial figcaption { margin-top: 14px; font-size: 16px; font-weight: 600; color: #C2412B; }
+        @media (max-width: 640px) { .testimonial-label { margin-top: 44px; } .testimonial { padding: 24px 20px; } .testimonial blockquote { font-size: 15px; } }
         @media (min-width: 641px) and (max-width: 900px) {
           .hero-snap-wrap { margin-top: 32px !important; }
         }
@@ -441,6 +446,19 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          {/* ── Testimonial ── */}
+          <div className="testimonial-label">
+            <span className="eyebrow" style={{ color: "#55524C" }}>Testimonial</span>
+          </div>
+          <figure className="testimonial">
+            <blockquote>
+              &ldquo;FeatureStream would help Dexify base our voice agent&apos;s
+              roadmap on what tradies actually need, using real usage and call
+              data.&rdquo;
+            </blockquote>
+            <figcaption>Founder, Dexify</figcaption>
+          </figure>
         </div>
       </section>
 
@@ -448,11 +466,11 @@ export default function Home() {
       <WhyFeatureStream part="cards" />
 
       {/* ── Supported by ─────────────────────────────────────────────── */}
-      <section className="trusted-by-section" style={{ padding: "0 24px 56px", position: "relative", zIndex: 1, background: "transparent" }}>
+      <section className="trusted-by-section" style={{ padding: "0 24px 24px", position: "relative", zIndex: 1, background: "transparent" }}>
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
 
           {/* Supported by */}
-          <div style={{ marginTop: 40 }}>
+          <div style={{ marginTop: 16 }}>
             <div style={{ textAlign: "center", marginBottom: 28 }}>
               <span className="eyebrow" style={{ color: "#55524C" }}>Supported by</span>
             </div>
