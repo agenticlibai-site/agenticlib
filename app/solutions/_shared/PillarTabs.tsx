@@ -39,7 +39,7 @@ const styles = `
   .pt-screen { width: 100%; max-width: 440px; display: grid; }
   .pt-screen > * { grid-area: 1 / 1; }
   .pt-screen > .off { visibility: hidden; }
-  @media (min-width: 1001px) { .pt-side { padding: 32px; } .pt-side .pt-screen { max-width: 448px; } .pt-screen .st { aspect-ratio: 1 / 1; } }
+  @media (min-width: 1001px) { .pt-side { padding: 32px; align-self: center; } .pt-side .pt-screen { max-width: 448px; } .pt-screen .st { aspect-ratio: 1 / 1; } }
   .pt-screen .st { display: flex; }
   .pt-screen .st-app { flex: 1; display: flex; flex-direction: column; }
   .pt-screen .st-list, .pt-screen .st-steps { flex: 1; align-content: space-between; }
