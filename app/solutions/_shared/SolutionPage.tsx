@@ -171,9 +171,9 @@ export default function SolutionPage({ s }: { s: Solution }) {
                 <strong>
                   FeatureStream&apos;s {s.heroTerm} feature library
                 </strong>
-                The best product features for your agent, by use case. Every
-                feature is tailored to your business, your domain and the
-                workflows your customers actually run.
+                The best product features for your agent, by use case. FeatureStream&apos;s AI
+                assistant helps you identify which features from the library
+                will add the most value to your agent.
               </p>
             </div>
             <AgentLibrary

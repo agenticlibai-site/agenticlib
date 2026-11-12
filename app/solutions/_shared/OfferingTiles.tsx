@@ -55,7 +55,7 @@ export const offeringTileStyles = `
   .ot-slow i { flex: none; width: 7px; height: 7px; border-radius: 50%; background: #E0A526; }
   .ot-slow b { font-weight: 700; color: #22201C; }
 
-  @media (max-width: 1000px) { .ot-node { font-size: 9.5px; padding: 0; letter-spacing: -0.01em; } .ot-map { column-gap: 6px; } .pt .pt-screen .st .st-list { align-content: start; } }
+  .ot-q .ot-kchip.m { display: none; }
 
   /* 3 — build next: one clear first pick, then the queue */
   .ot-first { border-radius: 14px; padding: 12px; background: linear-gradient(160deg, #F4FAF7, #E3F2EB); border: 1.5px solid #9FCDBB; }
@@ -132,6 +132,22 @@ export const offeringTileStyles = `
   .ot-rel span.now { color: #14503F; }
   .ot-rel span.now::before { background: #1F6F5C; box-shadow: 0 0 0 3px #D5ECE1; }
   .ot-rel span.next::before { background: #fff; border: 2px solid #1F6F5C; }
+  @media (max-width: 1000px) {
+    .ot-node { font-size: 9.5px; padding: 0; letter-spacing: -0.01em; } .ot-map { column-gap: 6px; }
+    .pt .pt-screen .st .st-list { align-content: start; }
+    .pt .pt-screen .st-app { padding: 20px 16px; }
+    .ot-grid { grid-template-columns: 1fr; }
+    .ot-kb p { -webkit-line-clamp: unset; }
+    .ot-search .ot-long { display: none; }
+    .ot-res { grid-template-columns: minmax(0, 1fr) auto; row-gap: 3px; }
+    .ot-res > .ot-lab { grid-column: 1 / -1; }
+    .ot-res > .ot-t { -webkit-line-clamp: 2; }
+    .ot-q > .ot-kchip { display: none; }
+    .ot-q .ot-kchip.m { display: inline-flex; margin-top: 4px; }
+    .ot-q .ot-t { -webkit-line-clamp: 2; }
+    .ot-ok .ot-t { -webkit-line-clamp: 2; }
+    .st-sub { white-space: normal; }
+  }
 `;
 
 type P = { d: OfferingScreens };
@@ -305,9 +321,9 @@ const KIND_ICON = {
   Tool: "bolt",
 } as const;
 
-function Kind({ k }: { k: keyof typeof KIND_ICON }) {
+function Kind({ k, m }: { k: keyof typeof KIND_ICON; m?: boolean }) {
   return (
-    <span className={`ot-kchip ${k}`}>
+    <span className={`ot-kchip ${k}${m ? " m" : ""}`}>
       <span className="ot-ic" style={{ width: 11, height: 11 }}>
         <Icon d={KIND_ICON[k]} />
       </span>
@@ -341,6 +357,7 @@ export function CapabilityTile({ d }: P) {
             <span className="ot-mid">
               <span className="ot-t ot-t1">{x.name}</span>
               <span className="st-why ot-t ot-t1">Unlocks: {x.unlocks}</span>
+              <Kind k={x.kind} m />
             </span>
             <Kind k={x.kind} />
             <span
@@ -430,7 +447,7 @@ export function KnowledgeBaseTile({ d }: P) {
         <span style={{ width: 12, height: 12, display: "grid" }}>
           <Icon d="search" />
         </span>
-        Search decisions, workflows, insights…
+        Search<span className="ot-long"> decisions, workflows, insights</span>…
         <span className="ot-grow">
           <Icon d="plus" />
           Grows every release

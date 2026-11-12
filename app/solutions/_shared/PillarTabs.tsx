@@ -2,7 +2,12 @@
 
 import { useState, type ReactNode } from "react";
 
-export type Pillar = { title: string; tagline: string; body: string; visual: ReactNode };
+export type Pillar = {
+  title: string;
+  tagline: string;
+  body: string;
+  visual: ReactNode;
+};
 
 /* Accordion list on the left (active item expands, progress bar auto-advances),
    matching screen in a tinted panel on the right. */
@@ -47,7 +52,8 @@ const styles = `
   @media (prefers-reduced-motion: reduce) { .pt-item.on .pt-bar { animation: none; width: 100%; } .pt-body { transition: none; } }
   @media (max-width: 1000px) {
     .pt { grid-template-columns: minmax(0, 1fr); gap: 36px; }
-    .pt-panel { min-height: 0; padding: 32px 20px; border-radius: 22px; }
+    .pt-panel { min-height: 0; padding: 20px 12px; border-radius: 22px; }
+    .pt-inline .pt-screen > .off { display: none !important; }
     .pt-side { display: none; }
     .pt-inline { display: grid; margin-bottom: 22px; }
     .pt-title { font-size: 21px; }
@@ -60,7 +66,11 @@ function Screens({ pillars, active }: { pillars: Pillar[]; active: number }) {
   return (
     <div className="pt-screen">
       {pillars.map((p, i) => (
-        <div key={p.title} className={i === active ? undefined : "off"} style={{ display: "grid" }}>
+        <div
+          key={p.title}
+          className={i === active ? undefined : "off"}
+          style={{ display: "grid" }}
+        >
           {p.visual}
         </div>
       ))}
