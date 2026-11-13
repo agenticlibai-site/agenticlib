@@ -338,10 +338,11 @@ export default function Home() {
         .trusted-logo img { height: 40px; width: auto; object-fit: contain; }
         .trusted-dewwie { font-family: Georgia, 'Times New Roman', serif; font-size: 32px; line-height: 1; color: #1a0fb0; }
         .testimonial-label { margin-top: 64px; text-align: center; }
-        .testimonial { margin: 20px auto 24px; max-width: 720px; text-align: center; background: #FFF4F0; border: 1px solid #FDE1D8; border-radius: 18px; padding: 32px 40px; }
+        .testimonial { margin: 20px auto 24px; max-width: 720px; text-align: center; background: #FFF4F0; border: 1px solid #FDE1D8; border-radius: 18px; padding: 22px 32px; }
         .testimonial blockquote { margin: 0; font-size: 17px; line-height: 1.55; font-weight: 500; color: #22201C; text-wrap: balance; }
-        .testimonial-logo { display: block; height: 30px; width: auto; margin: 0 auto 18px; }
-        .testimonial figcaption { margin-top: 14px; font-size: 16px; font-weight: 600; color: #C2412B; }
+        .testimonial-logo { display: block; height: 28px; width: auto; }
+        .testimonial figcaption span { font-size: 16px; }
+        .testimonial figcaption { display: flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 14px; font-size: 16px; font-weight: 600; color: #C2412B; }
         @media (max-width: 640px) { .testimonial-label { margin-top: 44px; } .testimonial { padding: 24px 20px; } .testimonial blockquote { font-size: 15px; } }
         @media (min-width: 641px) and (max-width: 900px) {
           .hero-snap-wrap { margin-top: 32px !important; }
@@ -453,13 +454,15 @@ export default function Home() {
             <span className="eyebrow" style={{ color: "#55524C" }}>Testimonial</span>
           </div>
           <figure className="testimonial">
-            <img className="testimonial-logo" src="/dexify-logo.png" alt="Dexify" />
             <blockquote>
               &ldquo;FeatureStream would help Dexify base our voice agent&apos;s
               roadmap on what tradies actually need, using real usage and call
               data.&rdquo;
             </blockquote>
-            <figcaption>Novin W, Co-founder @ Dexify</figcaption>
+            <figcaption>
+              <span>Co-founder @ Dexify</span>
+              <img className="testimonial-logo" src="/dexify-logo.png" alt="Dexify" />
+            </figcaption>
           </figure>
         </div>
       </section>
