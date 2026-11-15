@@ -15,7 +15,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${BASE}/solutions/legal-ai`,            lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/solutions/dental-ai`,           lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
     { url: `${BASE}/solutions/video-ai`,            lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
-    { url: `${BASE}/privacy`,                      lastModified: new Date(), changeFrequency: "yearly",  priority: 0.3 },
+    { url: `${BASE}/security`,                      lastModified: new Date(), changeFrequency: "monthly", priority: 0.6 },
+    { url: `${BASE}/privacy`,                     lastModified: new Date(), changeFrequency: "yearly",  priority: 0.3 },
     { url: `${BASE}/terms`,                         lastModified: new Date(), changeFrequency: "yearly",  priority: 0.3 },
     { url: `${BASE}/disclaimer`,                    lastModified: new Date(), changeFrequency: "yearly",  priority: 0.3 },
   ];

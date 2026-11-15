@@ -122,8 +122,8 @@ export default function CompanyPage() {
         }
 
         .co-body {
-          font-size: 16px;
-          line-height: 1.72;
+          font-size: 18px;
+          line-height: 1.7;
           color: #000000;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
@@ -251,10 +251,19 @@ export default function CompanyPage() {
           flex-shrink: 0;
         }
 
+        /* Personality */
+        .co-hl { background: linear-gradient(transparent 58%, #FFD3C8 58%); color: inherit; padding: 0 2px; }
+        .co-hl.teal { background: linear-gradient(transparent 58%, #FFD3C8 58%); }
+        .co-winby-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .co-winby-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(232, 96, 74, 0.14); }
+        .co-footer { border-top: none; border-left: 3px solid #FF8A73; padding: 4px 0 4px 20px; }
+        .co-footer.teal { border-left-color: #C2412B; }
+        .co-footer-icon { display: block; width: 18px; height: 18px; margin-top: 6px; }
+        .co-footer .co-footer-text { font-family: inherit; font-size: 18px; font-style: normal; line-height: 1.7; color: #000; letter-spacing: normal; }
+
         /* Mobile */
         @media (max-width: 768px) {
           .co-wrap { padding: 32px 20px 72px; }
-          /* Team card graphics: keep them clear of the names and buttons */
           .co-art-rings { width: 120px !important; height: 120px !important; top: -28px !important; right: -28px !important; transform: none !important; }
           .co-card-arcs { padding-bottom: 96px !important; }
           .co-art-arcs { width: 160px !important; height: 80px !important; right: 50% !important; transform: translateX(50%); }
@@ -266,7 +275,7 @@ export default function CompanyPage() {
           }
           .co-headline { font-size: clamp(32px, 9vw, 48px); }
           .co-subhead  { font-size: clamp(18px, 5vw, 24px); }
-          .co-body     { font-size: 15px; }
+          .co-body     { font-size: 17px; }
           .co-founder-banner { padding: 32px 24px; flex-direction: column; }
           .co-founder-name   { font-size: 32px; }
           .co-orbs { display: none; }
@@ -292,8 +301,8 @@ export default function CompanyPage() {
                 borderRadius: 18,
                 overflow: "hidden",
                 marginBottom: 32,
-                padding: "48px 44px 44px",
-                background: "#FBF8F3",
+                padding: "36px 36px 34px",
+                background: "radial-gradient(ellipse 60% 70% at 85% 45%, rgba(248,190,205,0.3), transparent 70%), radial-gradient(ellipse 55% 80% at 10% 90%, rgba(253,236,190,0.55), transparent 70%), linear-gradient(115deg, #FEF6E9 0%, #FEEEE6 45%, #FCE6E8 100%)",
               }}>
 
                 {/* Content */}
@@ -302,20 +311,21 @@ export default function CompanyPage() {
                     display: "flex",
                     alignItems: "center",
                     gap: 14,
-                    fontSize: "clamp(44px, 5.4vw, 72px)",
+                    fontSize: "clamp(40px, 4.6vw, 60px)",
                     lineHeight: 1.03,
                     margin: "0 0 20px",
+                    color: "#C2412B",
                   }}>
                     Mission
-                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, opacity: 0.70 }}>
-                      <circle cx="16" cy="16" r="3" fill="#000"/>
-                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#000" strokeWidth="1.5"/>
-                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#000" strokeWidth="1.5" transform="rotate(60 16 16)"/>
-                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#000" strokeWidth="1.5" transform="rotate(120 16 16)"/>
+                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+                      <circle cx="16" cy="16" r="3" fill="#C2412B"/>
+                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#C2412B" strokeWidth="1.5"/>
+                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#C2412B" strokeWidth="1.5" transform="rotate(60 16 16)"/>
+                      <ellipse cx="16" cy="16" rx="13" ry="5.5" stroke="#C2412B" strokeWidth="1.5" transform="rotate(120 16 16)"/>
                     </svg>
                   </h2>
                   <p className="co-mission-title" style={{
-                    fontSize: "clamp(22px, 2.6vw, 32px)",
+                    fontSize: "clamp(20px, 2.2vw, 27px)",
                     fontWeight: 700,
                     letterSpacing: "-0.025em",
                     color: "#000",
@@ -331,7 +341,7 @@ export default function CompanyPage() {
               {/* Below-card content */}
               <div>
                 <p style={{
-                  fontSize: "clamp(17px, 1.6vw, 21px)",
+                  fontSize: "clamp(19px, 1.8vw, 23px)",
                   fontWeight: 700,
                   letterSpacing: "-0.02em",
                   color: "#000000",
@@ -392,11 +402,11 @@ export default function CompanyPage() {
                       ),
                     },
                   ].map(({ accent, eyebrow, label, sub, icon }) => (
-                    <div key={label} style={{
+                    <div key={label} className="co-winby-card" style={{
                       padding: "24px",
                       borderRadius: 16,
-                      background: "#ffffff",
-                      border: "1px solid #EDE6E0",
+                      background: "#FFF4F0",
+                      border: "1px solid #FDE1D8",
                       display: "flex",
                       flexDirection: "column",
                       gap: 0,
@@ -422,11 +432,11 @@ export default function CompanyPage() {
                     Building an AI agent product is unlike any other kind of software development.
                     Customer requests, agent behaviour data, competitor signals, prompt changelogs,
                     observability evals and post-launch outcomes all need to feed the same product
-                    decision, but most teams are stitching this together across five different tools,
+                    decision, but most teams are stitching this together across <mark className="co-hl">five different tools</mark>,
                     none of which were designed with agents in mind.
                   </p>
                   <p>
-                    FeatureStream's mission is to bring all of that context into one place. A
+                    FeatureStream&rsquo;s mission is to bring all of that context <mark className="co-hl">into one place</mark>. A
                     context-aware product management OS that turns customer requests, agent
                     behaviour analytics and competitor signals into a ranked roadmap, and then
                     carries that decision all the way through to a PRD, implementation spec, agentic
@@ -457,8 +467,8 @@ export default function CompanyPage() {
                 borderRadius: 18,
                 overflow: "hidden",
                 marginBottom: 32,
-                padding: "48px 44px 44px",
-                background: "#FBF8F3",
+                padding: "36px 36px 34px",
+                background: "radial-gradient(ellipse 50% 90% at 90% 20%, rgba(255,182,206,0.45), transparent 70%), radial-gradient(ellipse 45% 80% at 8% 85%, rgba(255,226,140,0.45), transparent 70%), linear-gradient(120deg, #FFF3E2 0%, #FFE9E0 50%, #FFE4EC 100%)",
               }}>
 
                 {/* Content */}
@@ -467,22 +477,22 @@ export default function CompanyPage() {
                     display: "flex",
                     alignItems: "center",
                     gap: 14,
-                    fontSize: "clamp(44px, 5.4vw, 72px)",
+                    fontSize: "clamp(40px, 4.6vw, 60px)",
                     lineHeight: 1.03,
                     margin: "0 0 20px",
+                    color: "#C2412B",
                   }}>
                     Vision
-                    <svg width="44" height="44" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0, opacity: 0.70 }}>
-                      <path d="M16 2 L17.5 14.5 L16 16 L14.5 14.5 Z" fill="#000"/>
-                      <path d="M30 16 L17.5 17.5 L16 16 L17.5 14.5 Z" fill="#000"/>
-                      <path d="M16 30 L14.5 17.5 L16 16 L17.5 17.5 Z" fill="#000"/>
-                      <path d="M2 16 L14.5 14.5 L16 16 L14.5 17.5 Z" fill="#000"/>
-                      <circle cx="16" cy="16" r="2" fill="#000"/>
-                      <circle cx="16" cy="16" r="5.5" stroke="#000" strokeWidth="1" opacity="0.3"/>
+                    <svg width="44" height="44" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ flexShrink: 0 }}>
+                      <path d="M16 2 L17.5 14.5 L16 16 L14.5 14.5 Z" fill="#C2412B"/>
+                      <path d="M30 16 L17.5 17.5 L16 16 L17.5 14.5 Z" fill="#C2412B"/>
+                      <path d="M16 30 L14.5 17.5 L16 16 L17.5 17.5 Z" fill="#C2412B"/>
+                      <path d="M2 16 L14.5 14.5 L16 16 L14.5 17.5 Z" fill="#C2412B"/>
+                      <circle cx="16" cy="16" r="2" fill="#C2412B"/>
                     </svg>
                   </h2>
                   <p className="co-mission-title" style={{
-                    fontSize: "clamp(22px, 2.6vw, 32px)",
+                    fontSize: "clamp(20px, 2.2vw, 27px)",
                     fontWeight: 700,
                     letterSpacing: "-0.025em",
                     color: "#000",
@@ -510,11 +520,11 @@ export default function CompanyPage() {
                     single system that understands their product context deeply enough to surface
                     the right opportunity, generate the right specification, and measure the right
                     outcome. Where product decisions are grounded in real evidence, not gut feel,
-                    and where the distance between insight and shipped feature collapses to days,
-                    not months.
+                    and where the distance between insight and shipped feature collapses to <mark className="co-hl teal">days,
+                    not months</mark>.
                   </p>
                 </div>
-                <div className="co-footer">
+                <div className="co-footer teal">
                   <svg className="co-footer-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF8A73" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                     <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"/>
                     <line x1="16" y1="8" x2="2" y2="22"/>

@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { SOLUTIONS } from "@/app/solutions/_shared/solutions";
 
 function NavLink({ href, children, external }: { href: string; children: React.ReactNode; external?: boolean }) {
   const props = external ? { target: "_blank", rel: "noopener noreferrer" } : {};
@@ -96,15 +97,16 @@ export default function SiteFooter() {
             {/* Product */}
             <div>
               <p style={{ fontSize: 14, fontWeight: 700, color: "#0F0B1E", marginBottom: 16, marginTop: 0 }}>Product</p>
-              <NavLink href="/#pricing">Pricing</NavLink>
+              <NavLink href="/#product">Product</NavLink>
+              <NavLink href="/security">Security</NavLink>
             </div>
 
-            {/* Company */}
+            {/* Solutions */}
             <div>
-              <p style={{ fontSize: 14, fontWeight: 700, color: "#0F0B1E", marginBottom: 16, marginTop: 0 }}>Company</p>
-              <NavLink href="/company">Mission</NavLink>
-              <NavLink href="/privacy">Privacy policy</NavLink>
-              <NavLink href="/terms">Terms &amp; conditions</NavLink>
+              <p style={{ fontSize: 14, fontWeight: 700, color: "#0F0B1E", marginBottom: 16, marginTop: 0 }}>Solutions</p>
+              {SOLUTIONS.map((s) => (
+                <NavLink key={s.slug} href={`/solutions/${s.slug}`}>{s.navLabel}</NavLink>
+              ))}
             </div>
 
             {/* Connect */}

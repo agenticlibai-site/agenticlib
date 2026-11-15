@@ -211,6 +211,16 @@ export default function Navbar() {
               Company
             </Link>
 
+            {/* Security */}
+            <Link
+              href="/security"
+              className="nb-link transition"
+              style={{ textDecoration: "none" }}
+              onMouseEnter={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = "rgba(0,0,0,0.05)"; }}
+              onMouseLeave={(e) => { (e.currentTarget as HTMLAnchorElement).style.background = ""; }}
+            >
+              Security
+            </Link>
 
             {/* Contact Us */}
             <Link
@@ -274,6 +284,11 @@ export default function Navbar() {
               className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
               style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
               Company
+            </Link>
+            <Link href="/security" onClick={() => setMobileOpen(false)}
+              className="block px-5 py-3.5 text-sm font-medium text-black hover:bg-gray-50 transition-colors"
+              style={{ textDecoration: "none", borderBottom: "1px solid #f3f4f6" }}>
+              Security
             </Link>
 
             <a href="/#contact" onClick={() => setMobileOpen(false)}
