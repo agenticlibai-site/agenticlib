@@ -6,10 +6,9 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      // /domains (orphaned listing) → /explore (the actual discovery page)
-      { source: "/domains", destination: "/explore", permanent: true },
-      // /domains/[slug] (client-only, no SEO) → /domain/[slug] (SSG, full metadata)
-      { source: "/domains/:slug", destination: "/domain/:slug", permanent: true },
+      // Old AgenticLib domain listing pages → homepage
+      { source: "/domains", destination: "/", permanent: true },
+      { source: "/domains/:slug", destination: "/", permanent: true },
       // Blog removed: send old blog links to the homepage
       { source: "/blog", destination: "/", permanent: true },
       { source: "/blog/:slug", destination: "/", permanent: true },
@@ -20,6 +19,13 @@ const nextConfig: NextConfig = {
       ]),
       { source: "/product/backstory-report", destination: "/", permanent: true },
       { source: "/product/seamless-report", destination: "/", permanent: true },
+      // Old AgenticLib agent-directory pages
+      ...[
+        "/explore", "/domain/:slug", "/recommend", "/sage", "/sage/:path*",
+        "/product/recommendations", "/product/research",
+        "/solutions/construction", "/solutions/insurance-broker", "/solutions/legal",
+        "/solutions/marketing", "/solutions/sales", "/solutions/skincare",
+      ].map((source) => ({ source, destination: "/", permanent: true })),
     ];
   },
   async rewrites() {
