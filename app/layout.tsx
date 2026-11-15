@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Inter, Schibsted_Grotesk, Space_Mono, EB_Garamond, DM_Sans, Instrument_Serif } from "next/font/google";
+import { Geist, Geist_Mono, Inter, Schibsted_Grotesk, Space_Mono, EB_Garamond, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Analytics } from "@vercel/analytics/react";
 import Navbar from "./components/Navbar";
@@ -48,10 +48,10 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
-const instrumentSerif = Instrument_Serif({
+// Heading font: Inter (bold, tight). Keeps the old variable name so every heading picks it up.
+const instrumentSerif = Inter({
   variable: "--font-instrument-serif",
   subsets: ["latin"],
-  weight: "400",
   display: "swap",
 });
 

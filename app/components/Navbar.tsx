@@ -134,7 +134,7 @@ export default function Navbar() {
             <div className="flex flex-col leading-none">
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 <img src="/logo.png" alt="FeatureStream logo" className="h-6 w-auto" />
-                <span style={{ fontFamily: "var(--font-instrument-serif), Georgia, serif", fontSize: 25, fontWeight: 400, letterSpacing: "-0.01em", lineHeight: 1 }}>FeatureStream</span>
+                <span style={{ fontFamily: "var(--font-instrument-serif), Georgia, serif", fontSize: 21, fontWeight: 400, letterSpacing: "-0.01em", lineHeight: 1 }}>FeatureStream</span>
               </div>
             </div>
           </Link>

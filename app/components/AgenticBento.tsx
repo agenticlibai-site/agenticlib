@@ -367,7 +367,7 @@ export default function AgenticBento() {
         <div className="bento-head">
           <div>
             <span className="eyebrow">Built for agentic products</span>
-            <h2 className="display" style={{ fontSize: "clamp(36px,4.2vw,58px)", lineHeight: 1.04, margin: "22px 0 0", textWrap: "balance" }}>
+            <h2 className="display" style={{ fontSize: "clamp(28px,2.8vw,40px)", lineHeight: 1.04, margin: "22px 0 0", textWrap: "balance" }}>
               Track what matters in your <span style={{ color: ACCENT }}>agentic</span> product.
               <br />
               <span style={{ color: "#8A8F9B" }}>From every request to every outcome.</span>
@@ -383,7 +383,7 @@ export default function AgenticBento() {
             <div key={title} className={`bento-card${span ? ` bento-${span}` : ""}`}>
               <div className="bento-art"><Art /></div>
               <div className="bento-copy">
-                <h3 style={{ fontSize: 19, fontWeight: 600, letterSpacing: "-0.01em", lineHeight: 1.3, color: "#000", margin: 0 }}>{title}</h3>
+                <h3 style={{ fontSize: 17, fontWeight: 600, letterSpacing: "-0.01em", lineHeight: 1.3, color: "#000", margin: 0 }}>{title}</h3>
                 <p style={{ fontSize: 14.5, lineHeight: 1.5, color: "#5A5F6B", margin: "6px 0 0", maxWidth: 520 }}>{body}</p>
               </div>
             </div>

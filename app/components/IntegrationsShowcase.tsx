@@ -62,7 +62,7 @@ export default function IntegrationsShowcase() {
         <div className="int-stage">
           <div className="int-head">
             <span className="eyebrow">Built around your workflow</span>
-            <h2 className="display" style={{ fontSize: "clamp(30px,3.4vw,46px)", lineHeight: 1.03, margin: "16px 0 16px", textWrap: "balance" }}>
+            <h2 className="display" style={{ fontSize: "clamp(24px,2.2vw,30px)", lineHeight: 1.1, margin: "16px 0 16px", textWrap: "balance" }}>
               Connects to the tools you already use.
             </h2>
             <p style={{ fontSize: 15.5, lineHeight: 1.6, color: "#000", margin: 0, maxWidth: "54ch", marginInline: "auto" }}>

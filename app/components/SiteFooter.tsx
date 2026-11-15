@@ -38,7 +38,7 @@ export default function SiteFooter() {
           {/* ── CTA ───────────────────────────────────────────────────────── */}
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{
-              fontSize: "clamp(48px, 8vw, 112px)",
+              fontSize: "clamp(40px, 5.6vw, 76px)",
               fontFamily: "var(--font-instrument-serif), Georgia, serif",
               fontWeight: 400,
               letterSpacing: "-0.03em",

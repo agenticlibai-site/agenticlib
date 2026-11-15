@@ -225,7 +225,7 @@ export default function WhyFeatureStream({ part }: { part: "head" | "cards" }) {
             {CARDS.map(({ title, body, Art }) => (
               <div key={title} style={{ minWidth: 0 }}>
                 <div className="why-card-art"><Art /></div>
-                <h3 className="display" style={{ fontSize: 30, lineHeight: 1.15, margin: "22px 0 0", letterSpacing: "-0.01em" }}>{title}</h3>
+                <h3 className="display" style={{ fontSize: 22, lineHeight: 1.2, margin: "22px 0 0", letterSpacing: "-0.01em" }}>{title}</h3>
                 <p style={{ fontSize: 16, lineHeight: 1.55, color: "#222", margin: "8px 0 0" }}>{body}</p>
               </div>
             ))}
@@ -241,8 +241,8 @@ export default function WhyFeatureStream({ part }: { part: "head" | "cards" }) {
         <div className="why-head">
           <div>
             <span className="eyebrow">Introducing FeatureStream</span>
-            <h2 className="display" style={{ fontSize: "clamp(36px,4.2vw,58px)", lineHeight: 1.03, margin: "22px 0 0", textWrap: "balance" }}>
-              Context-aware product management for teams building AI agents.
+            <h2 className="display" style={{ fontSize: "clamp(24px,2.4vw,32px)", lineHeight: 1.1, margin: "22px 0 0", textWrap: "balance" }}>
+              Context-aware product management for teams building <span className="why-hl">AI agents</span>.
             </h2>
           </div>
           <div>

@@ -375,20 +375,27 @@ export default function Home() {
             {/* LEFT — text + CTA */}
             <div style={{ flex: 1, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
               <h1
-                className="display text-[44px] sm:text-[56px] md:text-[72px] lg:text-[88px]"
-                style={{ lineHeight: 1.0, margin: 0, maxWidth: 1000, textWrap: "balance", textAlign: "center" }}
+                className="display text-[34px] sm:text-[44px] md:text-[52px] lg:text-[60px]"
+                style={{ lineHeight: 1.05, margin: 0, maxWidth: 860, textWrap: "balance", textAlign: "center" }}
               >
-                The Product Management OS for AI Agent Builders
+                AI-native Product Management OS for{" "}
+                <span className="hero-hl">AI Agent Companies</span>
               </h1>
               <style>{`
+                .hero-hl {
+                  background: linear-gradient(90deg, #E8604A 0%, #FF8A73 45%, #F28CA8 100%);
+                  -webkit-background-clip: text; background-clip: text;
+                  color: transparent; -webkit-text-fill-color: transparent;
+                  padding-bottom: 0.06em;
+                }
                 .hero-cta-card {
                   margin-top: 36px; padding: 26px 36px 28px; border-radius: 22px; max-width: 640px;
-                  background: linear-gradient(180deg, #FFF4EF 0%, #FBF8F3 100%);
-                  border: 1px solid rgba(255,138,115,0.28);
-                  box-shadow: 0 14px 36px rgba(196,104,80,0.08);
+                  background: #FBF8F3;
+                  border: 1px solid rgba(0,0,0,0.07);
+                  box-shadow: 0 16px 40px rgba(120,80,40,0.08);
                 }
                 .hero-cta-q { margin: 0; font-size: 20px; line-height: 1.6; font-weight: 500; color: #000; letter-spacing: -0.01em; }
-                .hero-role { display: inline-block; padding: 1px 12px; border-radius: 999px; background: rgba(255,138,115,0.22); font-weight: 600; white-space: nowrap; }
+                .hero-role { display: inline-block; padding: 1px 12px; border-radius: 999px; background: #E8604A; color: #fff; font-weight: 600; white-space: nowrap; }
                 .hero-cta-sub { margin: 6px 0 0; font-size: 15.5px; line-height: 1.5; color: #55524C; }
                 @media (max-width: 640px) {
                   .hero-cta-card { padding: 22px 18px 22px; border-radius: 18px; }
@@ -505,7 +512,7 @@ export default function Home() {
         <div id="product" className="feat-card" style={{ scrollMarginTop: 96, maxWidth: 1160, margin: "0 auto", borderRadius: 24, background: "#F6F5F2", padding: "64px 64px 0 64px", overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: 48, alignItems: "center" }}>
           {/* Left — copy */}
           <div style={{ paddingBottom: 64 }}>
-            <h2 style={{ margin: "0 0 18px", fontSize: "clamp(32px, 3.4vw, 50px)", fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.05, color: "#000", fontFamily: "var(--font-instrument-serif), Georgia, serif" }}>
+            <h2 style={{ margin: "0 0 18px", fontSize: "clamp(28px, 2.8vw, 40px)", fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.05, color: "#000", fontFamily: "var(--font-instrument-serif), Georgia, serif" }}>
               Select the right features to build next.
             </h2>
             <p style={{ margin: "0 0 28px", fontSize: 16, lineHeight: 1.7, color: "#000", maxWidth: "36ch", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
@@ -543,7 +550,7 @@ export default function Home() {
         {/* Roadmap cream card */}
         <div className="feat-card" style={{ maxWidth: 1160, margin: "48px auto 0", borderRadius: 24, background: "#F6F5F2", padding: "64px 64px 0 64px", overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: 48, alignItems: "center" }}>
           <div style={{ paddingBottom: 64 }}>
-            <h2 style={{ margin: "0 0 18px", fontSize: "clamp(32px, 3.4vw, 50px)", fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.05, color: "#000", fontFamily: "var(--font-instrument-serif), Georgia, serif" }}>
+            <h2 style={{ margin: "0 0 18px", fontSize: "clamp(28px, 2.8vw, 40px)", fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.05, color: "#000", fontFamily: "var(--font-instrument-serif), Georgia, serif" }}>
               Align your team around what to build next.
             </h2>
             <p style={{ margin: 0, fontSize: 16, lineHeight: 1.7, color: "#000", maxWidth: "36ch", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
@@ -558,7 +565,7 @@ export default function Home() {
         {/* Know cream card */}
         <div className="feat-card" style={{ maxWidth: 1160, margin: "48px auto 0", borderRadius: 24, background: "#F6F5F2", padding: "64px 64px 0 64px", overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: 48, alignItems: "center" }}>
           <div style={{ paddingBottom: 64 }}>
-            <h2 style={{ margin: "0 0 20px", fontSize: "clamp(32px, 3.4vw, 50px)", fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.05, color: "#000", fontFamily: "var(--font-instrument-serif), Georgia, serif" }}>
+            <h2 style={{ margin: "0 0 20px", fontSize: "clamp(28px, 2.8vw, 40px)", fontWeight: 400, letterSpacing: "-0.02em", lineHeight: 1.05, color: "#000", fontFamily: "var(--font-instrument-serif), Georgia, serif" }}>
               Know exactly what you&apos;ve built.
             </h2>
             <p style={{ margin: "0 0 18px", fontSize: 17, lineHeight: 1.7, color: "#000", maxWidth: "36ch", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
@@ -586,7 +593,7 @@ export default function Home() {
         {/* ── AI Assistant card ──────────────────────────────────────────────── */}
         <div className="feat-card" style={{ maxWidth: 1160, margin: "48px auto 0", borderRadius: 24, background: "#F6F5F2", padding: "64px 64px 0 64px", overflow: "hidden", display: "grid", gridTemplateColumns: "1fr 1.6fr", gap: 48, alignItems: "center", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
           <div style={{ paddingBottom: 64 }}>
-            <h2 className="display" style={{ fontSize: "clamp(32px,3.4vw,50px)", lineHeight: 1.05, margin: "0 0 18px" }}>
+            <h2 className="display" style={{ fontSize: "clamp(28px,2.8vw,40px)", lineHeight: 1.05, margin: "0 0 18px" }}>
               Ask anything about your product.
             </h2>
             <p style={{ fontSize: 16, lineHeight: 1.7, color: "#000", margin: 0, maxWidth: "36ch" }}>
@@ -603,7 +610,7 @@ export default function Home() {
       {/* ── Product Specs ──────────────────────────────────────────────────── */}
       <section className="home-section" style={{ padding: "80px 24px 88px", background: "#fff", fontFamily: "var(--font-schibsted), system-ui, sans-serif" }}>
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
-          <h2 className="display" style={{ fontSize: "clamp(30px,3.2vw,46px)", lineHeight: 1.08, margin: "0 0 52px", maxWidth: "28ch" }}>
+          <h2 className="display" style={{ fontSize: "clamp(26px,2.6vw,36px)", lineHeight: 1.08, margin: "0 0 52px", maxWidth: "28ch" }}>
             FeatureStream creates product specifications tailored to each iteration and build cycle.
           </h2>
           <div style={{ display: "flex", flexDirection: "column" as const, gap: 36 }}>
@@ -625,7 +632,7 @@ export default function Home() {
                 <div className="icon-dot" style={{ width: 56, height: 56 }}>
                   {icon}
                 </div>
-                <span style={{ fontSize: "clamp(18px,2vw,24px)", fontWeight: 500, color: "#000", letterSpacing: "-0.015em", lineHeight: 1.2 }}>{label}</span>
+                <span style={{ fontSize: "clamp(17px,1.7vw,20px)", fontWeight: 500, color: "#000", letterSpacing: "-0.015em", lineHeight: 1.2 }}>{label}</span>
               </div>
             ))}
           </div>
@@ -734,13 +741,13 @@ export default function Home() {
         <div>
           <div style={{ maxWidth: 720, margin: "0 auto 40px", textAlign: "center" }}>
             <p style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, letterSpacing: ".22em", color: "#C2186A", margin: "0 0 14px" }}>WHAT YOU GET</p>
-            <h2 style={{ fontSize: "clamp(28px,3.6vw,42px)", fontWeight: 600, letterSpacing: "-.03em", lineHeight: 1.06, margin: 0, color: "#000000" }}>Our analytics lead you to successful outcomes</h2>
+            <h2 style={{ fontSize: "clamp(26px,2.8vw,34px)", fontWeight: 600, letterSpacing: "-.03em", lineHeight: 1.06, margin: 0, color: "#000000" }}>Our analytics lead you to successful outcomes</h2>
           </div>
           <div className="caps-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, alignItems: "stretch" }}>
             <div className="caps-card" style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 14px 34px rgba(124,58,237,.08)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(124,58,237,.08), 0 0 40px 8px rgba(240,97,122,0.25)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(124,58,237,.08)"; }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 11 }}><span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color: "#7C3AED" }}>01</span><span style={{ height: 1, flex: 1, background: "linear-gradient(90deg,rgba(124,58,237,.34),transparent)", display: "block" }}></span></div>
-                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>Product Feature Analytics</h3>
+                <h3 style={{ fontSize: 18, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>Product Feature Analytics</h3>
                 <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#000000", margin: 0 }}>Know exactly which features get you cited. Scored across security, integrations, pricing, and capability — mapped to the use case that matters for your buyers.</p>
               </div>
               <div className="feature-card-icon" style={{ flex: "none", width: 150, height: 120, borderRadius: 16, background: "linear-gradient(160deg,#F3EEFE,#EDE6FD)", display: "flex", alignItems: "center", justifyContent: "center", padding: 18, boxShadow: "inset 0 1px 0 rgba(255,255,255,.7)" }}>
@@ -750,7 +757,7 @@ export default function Home() {
             <div className="caps-card" style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 14px 34px rgba(94,108,232,.09)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(94,108,232,.09), 0 0 40px 8px rgba(240,97,122,0.25)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(94,108,232,.09)"; }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 11 }}><span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color: "#5E6CE8" }}>02</span><span style={{ height: 1, flex: 1, background: "linear-gradient(90deg,rgba(94,108,232,.34),transparent)", display: "block" }}></span></div>
-                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>Brand &amp; Use Case Benchmarking</h3>
+                <h3 style={{ fontSize: 18, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>Brand &amp; Use Case Benchmarking</h3>
                 <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#000000", margin: 0 }}>See where rivals outrank you — and why. Share of voice by use case, who owns each buying moment, and what it takes to close the gap.</p>
               </div>
               <div className="feature-card-icon" style={{ flex: "none", width: 150, height: 120, borderRadius: 16, background: "linear-gradient(160deg,#EEF0FE,#E5E9FD)", display: "flex", alignItems: "flex-end", justifyContent: "center", padding: "18px 16px", boxShadow: "inset 0 1px 0 rgba(255,255,255,.7)" }}>
@@ -760,7 +767,7 @@ export default function Home() {
             <div className="caps-card" style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 14px 34px rgba(194,24,106,.08)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(194,24,106,.08), 0 0 40px 8px rgba(240,97,122,0.25)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 14px 34px rgba(194,24,106,.08)"; }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 11 }}><span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color: "#C2186A" }}>03</span><span style={{ height: 1, flex: 1, background: "linear-gradient(90deg,rgba(194,24,106,.34),transparent)", display: "block" }}></span></div>
-                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>Sentiment &amp; Brand Coverage</h3>
+                <h3 style={{ fontSize: 18, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>Sentiment &amp; Brand Coverage</h3>
                 <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#000000", margin: 0 }}>Hear what LLMs actually say about you. The words, tone, and tags used when a buyer asks Claude or GPT to recommend an agent like yours.</p>
               </div>
               <div className="feature-card-icon" style={{ flex: "none", width: 150, height: 120, borderRadius: 16, background: "linear-gradient(160deg,#FCEAF3,#F8DFEC)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 1px 0 rgba(255,255,255,.7)" }}>
@@ -770,7 +777,7 @@ export default function Home() {
             <div className="caps-card" style={{ display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 16px 38px rgba(219,39,119,.10)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 16px 38px rgba(219,39,119,.10), 0 0 40px 8px rgba(219,39,119,0.22)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 16px 38px rgba(219,39,119,.10)"; }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 11 }}><span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color: "#DB2777" }}>04</span><span style={{ height: 1, flex: 1, background: "linear-gradient(90deg,rgba(219,39,119,.4),transparent)", display: "block" }}></span></div>
-                <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>LLM Visibility Playbook</h3>
+                <h3 style={{ fontSize: 18, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>LLM Visibility Playbook</h3>
                 <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#000000", margin: 0 }}>Your playbook for getting cited by Claude and GPT. Grounded in what&apos;s actually indexed today through citations supported by Parallel.ai.</p>
               </div>
               <div className="feature-card-icon" style={{ flex: "none", width: 150, height: 120, borderRadius: 16, background: "linear-gradient(160deg,#FCE7F3,#FDF2F8)", border: "1px solid #F9A8D4", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 1px 0 rgba(255,255,255,.8)" }}>
@@ -781,7 +788,7 @@ export default function Home() {
               <div className="feature-card-last caps-card" style={{ width: "calc(50% - 10px)", display: "flex", gap: 22, alignItems: "center", background: "#fff", border: "1px solid #EFE3EA", borderRadius: 22, padding: "26px 26px 26px 28px", boxShadow: "0 16px 38px rgba(240,97,122,.12)", transition: "box-shadow 0.3s ease" }} onMouseEnter={(e) => { e.currentTarget.style.boxShadow = "0 16px 38px rgba(240,97,122,.12), 0 0 40px 8px rgba(240,97,122,0.25)"; }} onMouseLeave={(e) => { e.currentTarget.style.boxShadow = "0 16px 38px rgba(240,97,122,.12)"; }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 11 }}><span style={{ fontFamily: "var(--font-space-mono), monospace", fontSize: 12, fontWeight: 700, color: "#E0506A" }}>05</span><span style={{ height: 1, flex: 1, background: "linear-gradient(90deg,rgba(224,80,106,.4),transparent)", display: "block" }}></span></div>
-                  <h3 style={{ fontSize: 21, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>Competitive Intelligence</h3>
+                  <h3 style={{ fontSize: 18, fontWeight: 700, letterSpacing: "-.02em", lineHeight: 1.12, margin: "0 0 9px", color: "#000000" }}>Competitive Intelligence</h3>
                   <p style={{ fontSize: 14.5, lineHeight: 1.55, color: "#000000", margin: 0 }}>Continuously monitor hundreds of competitor websites, detect changes over time, and automatically alert users when a competitor ships a product feature.</p>
                 </div>
                 <div className="feature-card-icon" style={{ flex: "none", width: 150, height: 120, borderRadius: 16, background: "linear-gradient(160deg,#FFF1F4,#FCE4EC)", border: "1px solid #F6D8E2", position: "relative", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "inset 0 1px 0 rgba(255,255,255,.8)" }}>
