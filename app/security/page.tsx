@@ -47,7 +47,7 @@ const PROTECTIONS: { icon: ReactNode; title: string; body: string }[] = [
       </svg>
     ),
     title: "Data protection",
-    body: "Data is encrypted in transit and at rest.",
+    body: "Data is encrypted in transit and at rest, with encryption keys managed using a Key Management System (KMS).",
   },
   {
     icon: (
