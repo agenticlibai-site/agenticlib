@@ -305,6 +305,7 @@ export default function Home() {
           .trusted-row { flex-wrap: nowrap !important; justify-content: flex-start !important; gap: 0 44px !important; padding-right: 44px; }
           .trusted-dup { display: flex !important; }
           .trusted-logo img { height: 32px !important; }
+          .trusted-logo img.trusted-bythen { height: 48px !important; }
           .trusted-dewwie { font-size: 26px !important; }
 
           /* Section gaps and CTA gutter */
@@ -336,6 +337,7 @@ export default function Home() {
         .trusted-logo { display: flex; align-items: center; text-decoration: none; opacity: 0.5; filter: grayscale(1); transition: opacity 0.2s, filter 0.2s; }
         .trusted-logo:hover { opacity: 1; filter: none; }
         .trusted-logo img { height: 40px; width: auto; object-fit: contain; }
+        .trusted-logo img.trusted-bythen { height: 60px; }
         .trusted-dewwie { font-family: Georgia, 'Times New Roman', serif; font-size: 32px; line-height: 1; color: #1a0fb0; }
         .testimonial-label { margin-top: 64px; text-align: center; }
         .testimonial { margin: 20px auto 24px; max-width: 720px; text-align: center; background: #FFF4F0; border: 1px solid #FDE1D8; border-radius: 18px; padding: 22px 32px; }
@@ -433,7 +435,7 @@ export default function Home() {
         <div style={{ maxWidth: 860, margin: "0 auto" }}>
           <div>
             <div style={{ textAlign: "center", marginBottom: 28 }}>
-              <span className="eyebrow" style={{ color: "#55524C" }}>Trusted by teams shipping AI agents</span>
+              <span className="eyebrow" style={{ color: "#55524C" }}>Trusted by</span>
             </div>
             {/* On phones the row becomes a looping marquee; the duplicate copy is only shown there */}
             <div className="trusted-marquee">
@@ -445,6 +447,9 @@ export default function Home() {
                     </a>
                     <a href="https://www.figinito.com/" target="_blank" rel="noopener noreferrer" tabIndex={dup ? -1 : undefined} className="trusted-logo">
                       <img src="/figinito-logo.png" alt="Figinito" style={{ mixBlendMode: "multiply" }} />
+                    </a>
+                    <a href="https://www.bythen.ai/" target="_blank" rel="noopener noreferrer" tabIndex={dup ? -1 : undefined} className="trusted-logo">
+                      <img src="/bythen ai logo.png" alt="ByThen" className="trusted-bythen" style={{ mixBlendMode: "multiply" }} />
                     </a>
                   </div>
                 ))}
