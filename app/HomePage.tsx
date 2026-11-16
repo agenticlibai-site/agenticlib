@@ -448,9 +448,6 @@ export default function Home() {
                     <a href="https://www.figinito.com/" target="_blank" rel="noopener noreferrer" tabIndex={dup ? -1 : undefined} className="trusted-logo">
                       <img src="/figinito-logo.png" alt="Figinito" style={{ mixBlendMode: "multiply" }} />
                     </a>
-                    <a href="https://www.bythen.ai/" target="_blank" rel="noopener noreferrer" tabIndex={dup ? -1 : undefined} className="trusted-logo">
-                      <img src="/bythen ai logo.png" alt="ByThen" className="trusted-bythen" style={{ mixBlendMode: "multiply" }} />
-                    </a>
                   </div>
                 ))}
               </div>
