@@ -440,8 +440,8 @@ export default function Home() {
             {/* On phones the row becomes a looping marquee; the duplicate copy is only shown there */}
             <div className="trusted-marquee">
               <div className="trusted-track">
-                {[false, true].map((dup) => (
-                  <div key={String(dup)} className={dup ? "trusted-row trusted-dup" : "trusted-row"} aria-hidden={dup || undefined}>
+                {[false, true, true, true].map((dup, i) => (
+                  <div key={i} className={dup ? "trusted-row trusted-dup" : "trusted-row"} aria-hidden={dup || undefined}>
                     <a href="https://dexifyai.com/" target="_blank" rel="noopener noreferrer" tabIndex={dup ? -1 : undefined} className="trusted-logo">
                       <img src="/dexify-logo.png" alt="Dexify" />
                     </a>
