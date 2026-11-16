@@ -440,10 +440,6 @@ export default function Home() {
               <div className="trusted-track">
                 {[false, true].map((dup) => (
                   <div key={String(dup)} className={dup ? "trusted-row trusted-dup" : "trusted-row"} aria-hidden={dup || undefined}>
-                    <a href="https://www.dewwie.com/" target="_blank" rel="noopener noreferrer" tabIndex={dup ? -1 : undefined} className="trusted-logo trusted-dewwie" aria-label="Dewwie">dewwie</a>
-                    <a href="https://lamigo.ai/" target="_blank" rel="noopener noreferrer" tabIndex={dup ? -1 : undefined} className="trusted-logo">
-                      <img src="/lamigo logo .png" alt="Lamigo" />
-                    </a>
                     <a href="https://dexifyai.com/" target="_blank" rel="noopener noreferrer" tabIndex={dup ? -1 : undefined} className="trusted-logo">
                       <img src="/dexify-logo.png" alt="Dexify" />
                     </a>
